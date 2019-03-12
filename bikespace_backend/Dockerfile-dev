@@ -16,6 +16,10 @@ COPY ./Pipfile /usr/src/app/Pipfile
 COPY ./Pipfile.lock /usr/src/app/Pipfile.lock
 RUN pipenv install --system
 
+# add entrypoint.sh
+COPY ./entrypoint.sh /usr/src/app/entrypoint.sh
+RUN chmod +x /usr/src/app/entrypoint.sh
+
 # add app
 COPY . /usr/src/app
 
