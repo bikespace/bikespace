@@ -75,7 +75,7 @@ class Event(db.Model) :
     timestamp of the request, resides in the Event table."""
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    sourceIP = db.Column ()
+    sourceIP = db.Column (db.String (15))
     answer = db.Column (db.Integer, db.ForeignKey('surveyanswer.id'), nullable=False)
     timeOf = db.Column (db.DateTime, default=datetime.datetime.utcnow)
 
@@ -86,7 +86,7 @@ class Approval (db.Model) :
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     timeOfApproval = db.Column (db.DateTime, default=datetime.datetime.utcnow)
     moderatorId = db.Column (db.String (64), nullable = True)
-    status = db.Column (String (10), default = 'OK')
+    status = db.Column (db.String (10), default = 'OK')
     approved = db.Column (db.Integer, db.ForeignKey ('Event.id'), nullable = False)
 
 class Edit (db.Model) :
