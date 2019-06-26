@@ -47,8 +47,8 @@ class SurveyAnswer(db.Model):
     latitude = db.Column(db.Float, nullable=False)
     longitude = db.Column(db.Float, nullable=False)
     survey = db.Column(JSON, nullable=False)
-    event = db.relationship ('Event', backref='surveyanswer', uselist=False, lazy=True)
-    pictures = db.relationship ('Picture', backref='surveyanswer', lazy=True)
+    event = db.relationship ('Event', backref='bikeparking_surveyanswer', uselist=False, lazy=True)
+    pictures = db.relationship ('Picture', backref='bikeparking_surveyanswer', lazy=True)
 
     def __init__(self, latitude, longitude, survey):
         self.latitude = latitude
@@ -64,7 +64,7 @@ class Picture (db.Model) :
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     photo_uri = db.Column (db.String(256), default=None, nullable=True)
     photo_desc = db.Column (db.String(256), default=None, nullable=True)
-    answer = db.Column (db.Integer, db.ForeignKey('surveyanswer.id'), nullable=False)
+    answer = db.Column (db.Integer, db.ForeignKey('bikeparking_surveyanswer.id'), nullable=False)
 
 class Event(db.Model) :
     """The event table ties the request together. Request information falls into
@@ -74,29 +74,35 @@ class Event(db.Model) :
     second category, information derived from the transaction itself and the 
     timestamp of the request, resides in the Event table."""
 
+    __tablename__ = 'bikeparking_event'
+
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    sourceIP = db.Column (db.String (15))
-    answer = db.Column (db.Integer, db.ForeignKey('surveyanswer.id'), nullable=False)
+    sourceIP = db.Column (db.String (15), default=None, nullable=True)
+    answer = db.Column (db.Integer, db.ForeignKey('bikeparking_surveyanswer.id'), nullable=False)
     timeOf = db.Column (db.DateTime, default=datetime.datetime.utcnow)
 
 class Approval (db.Model) :
     """The entries in this table link to events approved for display or release 
     to the general public by a moderator."""
 
+    __tablename__ = 'bikeparking_approval'
+
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     timeOfApproval = db.Column (db.DateTime, default=datetime.datetime.utcnow)
     moderatorId = db.Column (db.String (64), nullable = True)
     status = db.Column (db.String (10), default = 'OK')
-    approved = db.Column (db.Integer, db.ForeignKey ('Event.id'), nullable = False)
+    approved = db.Column (db.Integer, db.ForeignKey ('bikeparking_event.id'), nullable = False)
 
 class Edit (db.Model) :
-    """Records the dits to the records made by a moderator or other privileged user."""
+    """Records the edits to the records made by a moderator or other privileged user."""
+
+    __tablename__ = 'bikeparking_edit'
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     by = db.Column (db.String (64), nullable = False)
     timeOfApproval = db.Column (db.DateTime, default=datetime.datetime.utcnow)
     field = db.Column (db.String (24), nullable = False);
-    edited = db.Column (db.Integer, db.ForeignKey ('Approval.id'), nullable = False)
+    edited = db.Column (db.Integer, db.ForeignKey ('bikeparking_approval.id'), nullable = False)
 
 
 
