@@ -79,7 +79,7 @@ class Event(db.Model) :
     answer = db.Column (db.Integer, db.ForeignKey('surveyanswer.id'), nullable=False)
     timeOf = db.Column (db.DateTime, default=datetime.datetime.utcnow)
 
-class Approval (models.Model) :
+class Approval (db.Model) :
     """The entries in this table link to events approved for display or release 
     to the general public by a moderator."""
 
@@ -89,7 +89,7 @@ class Approval (models.Model) :
     status = db.Column (String (10), default = 'OK')
     approved = db.Column (db.Integer, db.ForeignKey ('Event.id'), nullable = False)
 
-class Edit (models.Model) :
+class Edit (db.Model) :
     """Records the dits to the records made by a moderator or other privileged user."""
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
