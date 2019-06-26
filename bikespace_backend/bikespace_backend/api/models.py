@@ -77,26 +77,26 @@ class Event(db.Model) :
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     sourceIP = db.Column ()
     answer = db.Column (db.Integer, db.ForeignKey('surveyanswer.id'), nullable=False)
-    timeOf = db.column (db.DateTime, default=datetime.datetime.utcnow)
+    timeOf = db.Column (db.DateTime, default=datetime.datetime.utcnow)
 
 class Approval (models.Model) :
     """The entries in this table link to events approved for display or release 
     to the general public by a moderator."""
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    timeOfApproval = db.column (db.DateTime, default=datetime.datetime.utcnow)
-    moderatorId = db.column (db.String (64), nullable = True)
-    status = db.column (String (10), default = 'OK')
-    approved = db.column (db.Integer, db.ForeignKey ('Event.id'), nullable = False)
+    timeOfApproval = db.Column (db.DateTime, default=datetime.datetime.utcnow)
+    moderatorId = db.Column (db.String (64), nullable = True)
+    status = db.Column (String (10), default = 'OK')
+    approved = db.Column (db.Integer, db.ForeignKey ('Event.id'), nullable = False)
 
 class Edit (models.Model) :
     """Records the dits to the records made by a moderator or other privileged user."""
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    by = db.column (db.String (64), nullable = False)
-    timeOfApproval = db.column (db.DateTime, default=datetime.datetime.utcnow)
-    field = db.column (db.String (24), nullable = False);
-    edited = db.column (db.Integer, db.ForeignKey ('Approval.id'), nullable = False)
+    by = db.Column (db.String (64), nullable = False)
+    timeOfApproval = db.Column (db.DateTime, default=datetime.datetime.utcnow)
+    field = db.Column (db.String (24), nullable = False);
+    edited = db.Column (db.Integer, db.ForeignKey ('Approval.id'), nullable = False)
 
 
 
