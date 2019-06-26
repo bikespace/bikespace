@@ -18,9 +18,9 @@ Supplied is a `docker-compose-dev.yml` file for spinning up a containerized Flas
 docker-compose -f docker-compose-dev.yml up -d --build
 
 # For first time setup recreate and seed db for backend api
-docker-compose -f docker-compose-dev.yml run users python manage.py recreate-db
+docker-compose -f docker-compose-dev.yml run bikespace_backend python manage.py recreate-db
 
-docker-compose -f docker-compose-dev.yml run users python manage.py seed-db
+docker-compose -f docker-compose-dev.yml run bikespace_backend python manage.py seed-db
 ```
 
 Note: Windows users might need to open some files in vim and set the fileformat to unix
@@ -39,6 +39,11 @@ docker-compose -f docker-compose-dev.yml down
 While working on the project any major changes to the application in the frontend or the backend will require a rebuild of the containers.
 ```shell
 docker-compose -f docker-compose-dev.yml up -d --build
+```
+
+To run unittest:
+```shell
+docker-compose -f docker-compose-dev.yml run bikespace_backend python manage.py test
 ```
 
 # Development Workflow

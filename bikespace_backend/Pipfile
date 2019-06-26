@@ -1,27 +1,22 @@
 [[source]]
-
 url = "https://pypi.python.org/simple"
 verify_ssl = true
 name = "pypi"
 
-
 [dev-packages]
 
-
-
 [packages]
-
-flask = "*"
-flask-sqlalchemy = "*"
-flask-testing = "*"
+Flask = "*"
+Flask-SQLAlchemy = "*"
 gunicorn = "*"
 coverage = "*"
 "flake8" = "*"
-flask-migrate = "*"
-flask-bcrypt = "*"
-flask-debugtoolbar = "*"
+Flask-Migrate = "*"
+Flask-Bcrypt = "*"
+Flask-DebugToolbar = "*"
 "psycopg2-binary" = "*"
+pytest = "*"
+flask-testing = "*"
 
 [requires]
-
 python_version = "3.7"
