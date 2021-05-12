@@ -29,7 +29,7 @@ pytz==2017.2
 PyYAML==3.13
 ratelim==0.1.6
 requests==2.9.1
-rsa==3.4.2
+rsa==4.7
 s3transfer==0.1.12
 semantic-version==2.5.0
 six==1.10.0
