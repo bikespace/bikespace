@@ -2,7 +2,8 @@ PYTHON_VERSION = 3.9
 VENV = venv
 PYTHON  = $(VENV)/bin/python3
 PIP = $(VENV)/bin/pip
-MANAGE_PY = bikespace_backend/manage.py
+BIKESPACE_BACKEND_DIR = bikespace_backend
+MANAGE_PY = $(BIKESPACE_BACKEND_DIR)/manage.py
 
 export FLASK_DEBUG := true
 
@@ -23,4 +24,7 @@ pip-freeze: requirements.txt
 run-flask-app:
 	$(PYTHON) $(MANAGE_PY) run
 
-.PHONY: setup-py clean pip-freeze run-flask-app
+lint-py:
+	$(PYTHON) -m black $(BIKESPACE_BACKEND_DIR)
+
+.PHONY: setup-py clean pip-freeze run-flask-app lint-py

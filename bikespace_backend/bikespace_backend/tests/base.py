@@ -6,9 +6,10 @@ from bikespace_backend import create_app, db
 
 app = create_app()
 
+
 class BaseTestCase(TestCase):
     def create_app(self):
-        app.config.from_object('bikespace_backend.config.TestingConfig')
+        app.config.from_object("bikespace_backend.config.TestingConfig")
         return app
 
     def setup(self):
