@@ -30,7 +30,7 @@ def test():
 @cli.command()
 def seed_db():
     """Seeds the database"""
-    db.session.add(SurveyAnswer(43.6532, -79.3832,json.dumps(sample_survey)))
+    db.session.add(SurveyAnswer(43.6532, -79.3832,json.dumps(sample_survey), "comments"))
     db.session.commit()
     
 if __name__ == '__main__':

@@ -14,7 +14,8 @@ class SurveyAnswer(db.Model):
     survey = db.Column(JSON, nullable=False)
     comments = db.Column(db.String(256), default=None, nullable=True)
 
-    def __init__(self, latitude, longitude, survey):
+    def __init__(self, latitude, longitude, survey, comments):
         self.latitude = latitude
         self.longitude = longitude
         self.survey = survey
+        self.comments = comments
