@@ -4,8 +4,10 @@ PYTHON  = $(VENV)/bin/python3
 PIP = $(VENV)/bin/pip
 BIKESPACE_BACKEND_DIR = bikespace_backend
 MANAGE_PY = $(BIKESPACE_BACKEND_DIR)/manage.py
+export FLASK_DEBUG = true
+export APP_SETTINGS = bikespace_backend.config.DevelopmentConfig
+export DATABASE_URL = postgresql://postgres:postgres@localhost:5432/bikespace_dev
 
-export FLASK_DEBUG := true
 
 setup-py: $(VENV)
 
@@ -21,7 +23,7 @@ $(VENV): requirements.txt
 pip-freeze: requirements.txt
 	$(PIP) freeze > requirements.txt
 
-run-flask-app:
+run-flask-app: setup-py
 	$(PYTHON) $(MANAGE_PY) run
 
 lint-py:
