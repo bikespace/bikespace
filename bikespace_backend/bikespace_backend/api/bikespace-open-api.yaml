@@ -21,28 +21,15 @@ paths:
           in: query
           description: Specifies the page number of the answers to be displayed
           schema:
-            type: integer    
+            type: integer
       responses:
-        '200':
+        "200":
           description: Successfully returned a list of artists
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    id:
-                      type: integer
-                    latitude:
-                      type: number 
-                    longitude:
-                      type: number 
-                    survey:
-                      type: object
-                    comments:
-                      type: string
-        '400':
+                $ref: '#/components/schemas/Answer'
+        "400":
           description: Invalid request
           content:
             application/json:
@@ -51,3 +38,17 @@ paths:
                 properties:
                   message:
                     type: string
+components:
+  schemas:
+    Answer:
+      properties:
+        id:
+          type: integer
+        latitude:
+          type: number
+        longitude:
+          type: number
+        survey:
+          type: object
+        comments:
+          type: string
