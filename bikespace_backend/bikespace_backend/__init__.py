@@ -21,8 +21,10 @@ def create_app(script_info=None):
 
     # register blueprints
     from bikespace_backend.api.answers import answers_blueprint
+    from bikespace_backend.api.docs import docs_blueprint
 
     app.register_blueprint(answers_blueprint)
+    app.register_blueprint(docs_blueprint)
 
     # shell context for flask cli
     @app.shell_context_processor
