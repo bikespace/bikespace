@@ -1,8 +1,8 @@
 import unittest
 from flask.cli import FlaskGroup
 
-from bikespace_backend import create_app, db
-from bikespace_backend.api.models import SurveyAnswer
+from bikespace_api import create_app, db
+from bikespace_api.api.models import SurveyAnswer
 
 import json
 
@@ -23,7 +23,7 @@ def recreate_db():
 def test():
     """Runs the tests without code coverage."""
     tests = unittest.TestLoader().discover(
-        "bikespace_backend/tests", pattern="test*.py"
+        "bikespace_api/tests", pattern="test*.py"
     )
     result = unittest.TextTestRunner(verbosity=2).run(tests)
     if result.wasSuccessful():

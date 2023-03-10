@@ -1,11 +1,11 @@
-BIKESPACE_BACKEND_DIR = bikespace_backend
-MANAGE_PY = $(BIKESPACE_BACKEND_DIR)/manage.py
+BIKESPACE_API_DIR = bikespace_api
+MANAGE_PY = $(BIKESPACE_API_DIR)/manage.py
 PIP = $(VENV)/bin/pip
 PYTHON  = $(VENV)/bin/python3
 PYTHON_VERSION = 3.9
 VENV = venv
 
-export APP_SETTINGS = bikespace_backend.config.DevelopmentConfig
+export APP_SETTINGS = bikespace_api.config.DevelopmentConfig
 export DATABASE_URL = postgresql://postgres:postgres@localhost:5432/bikespace_dev
 export FLASK_DEBUG = true
 
@@ -31,7 +31,7 @@ run-flask-app: setup-py
 	$(PYTHON) $(MANAGE_PY) run
 
 lint-py:
-	$(PYTHON) -m black $(BIKESPACE_BACKEND_DIR)
+	$(PYTHON) -m black $(BIKESPACE_API_DIR)
 
 seed-db: setup-py
 	$(PYTHON) $(MANAGE_PY) seed-db

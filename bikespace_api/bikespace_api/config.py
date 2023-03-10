@@ -1,4 +1,4 @@
-# bikespace_backend/bikespace_backend/config.py
+# bikespace_api/bikespace_api/config.py
 
 import os
 

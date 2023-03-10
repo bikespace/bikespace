@@ -1,4 +1,4 @@
-# bikespace_backend/bikespace_backend/__init__.py
+# bikespace_api/bikespace_api/__init__.py
 
 import os
 from flask import Flask, jsonify
@@ -20,8 +20,8 @@ def create_app(script_info=None):
     db.init_app(app)
 
     # register blueprints
-    from bikespace_backend.api.answers import answers_blueprint
-    from bikespace_backend.api.docs import docs_blueprint
+    from bikespace_api.api.answers import answers_blueprint
+    from bikespace_api.api.docs import docs_blueprint
 
     app.register_blueprint(answers_blueprint, url_prefix="/api/v2")
     app.register_blueprint(docs_blueprint, url_prefix="/api/v2")

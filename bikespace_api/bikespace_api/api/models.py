@@ -1,8 +1,8 @@
-# bikespace_backend/bikespace_backend/api/models.py
+# bikespace_api/bikespace_api/api/models.py
 
 from sqlalchemy.sql import func
 from sqlalchemy.dialects.postgresql import JSON
-from bikespace_backend import db
+from bikespace_api import db
 
 
 class SurveyAnswer(db.Model):

@@ -1,53 +1,35 @@
-# Bikespace Backend
+# Bikespace 
 
-This is the backend service for the bikespace application. We are running it on the Flask framework paired with a Postgres database.
+This is the code repository for the BikeSpace application. We are running it on the Flask framework paired with a Postgres database.
 
-# Docker Workflow
+# Getting started
 
-Supplied is a `docker-compose-dev.yml` for a containerized workflow.
+The repository has only been tested on a Mac OSX machine. We utilize `make` and `python3` for developing the application.
+The api service is built using `flask`.
 
-[Install](https://docs.docker.com/install/) docker and docker-compose for your OS.
+It is recommended to have a python version of 3.9 or higher.
 
-For Mac and Windows if you install docker, docker-compose is already installed
-so don't have to worry about that.
+## Database
 
-Supplied is a `docker-compose-dev.yml` file for spinning up a containerized Flask and Postgres instances. Feel free to look around in the `bikespace_backend/db` and `bikespace_backend` folder for all the container startup files.
+To successfully run the application locally we also require a Postgres databse running along side the flask application.
+Ensure that is running on port `5432` with a database `bikespace_dev` with a default credentials of `postgres:postgres`
 
+## Running the API service
+
+There are various make targets to help run/build tasks.
+Running the application:
 ```shell
-# To run the the docker container of the project
-docker-compose -f docker-compose-dev.yml up -d --build
-
-# For first time setup recreate and seed db for backend api
-docker-compose -f docker-compose-dev.yml run users python manage.py recreate-db
-
-docker-compose -f docker-compose-dev.yml run users python manage.py seed-db
+make run-flask-app
 ```
 
-Note: Windows users might need to open some files in vim and set the fileformat to unix
-```vim
-:set fileformat=unix
-```
+The development server should now to be running at `127.0.0.1:8000`
 
-If all goes well and it confirms that you have succesfully ran the docker image, you can test to see if the flask is running. 
-On your browser you can visit `localhost:5001/answers/ping` it should return a json message with `pong`. That signifies that the Flask app is running.
+## API Docs
 
-To shutdown the containers, just run:
-```shell
-docker-compose -f docker-compose-dev.yml down
-```
+The api follows an OpenAPI 3.0 Spec, the spec can be found at `bikespace_api/api/static/bikespace-open-api.yaml`
 
-While working on the project any major changes to the application in the frontend or the backend will require a rebuild of the containers.
-```shell
-docker-compose -f docker-compose-dev.yml up -d --build
-```
+The swagger-ui to render the OpenAPI spec can be found at `127.0.0.1:8000/api/v2/docs`
 
 # Development Workflow
 
-Please when always working on a new feature checkout a new branch from the latest master branch and when submitting Pull Requests please submit PRs to the development branch from the feature branch you are working off. There are automated tests setup through gitlab's CI to test all PRs and branch pushes. All the development dependecies are in the containers themselves, but sometimes you have to update dependecies and for that you may need to build an run the service outside the docker workflow.
-
-## Backend service
-The backend service resides in `bikespace_backend/`, it is a Flask application and we are using `pipenv` for dependencies management. To develop the backend service only:
-
-* Activate the virtual environment: `pipenv install` in the `bikespace_backend/bikespace_backend` folder
-* To install new packages `pipenv install [package]` this will update the `Pipfile`
-
+Please when always working on a new feature checkout a new branch from the latest main branch and when submitting Pull Requests please submit PRs to the development branch from the feature branch you are working off.

@@ -1,8 +1,8 @@
-# bikespace_backend/bikespace_backend/api/answers.py
+# bikespace_api/bikespace_api/api/answers.py
 
 from flask import Blueprint, jsonify, request
-from bikespace_backend.api.models import SurveyAnswer
-from bikespace_backend import db
+from bikespace_api.api.models import SurveyAnswer
+from bikespace_api import db
 from sqlalchemy.exc import IntegrityError
 import json
 

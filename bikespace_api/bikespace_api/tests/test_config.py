@@ -1,4 +1,4 @@
-# bikespace_backend/bikespace_backend/tests/test_config.py
+# bikespace_api/bikespace_api/tests/test_config.py
 
 import os
 import unittest
@@ -6,14 +6,14 @@ import unittest
 from flask import current_app
 from flask_testing import TestCase
 
-from bikespace_backend import create_app
+from bikespace_api import create_app
 
 app = create_app()
 
 
 class TestDevelopmentConfig(TestCase):
     def create_app(self):
-        app.config.from_object("bikespace_backend.config.DevelopmentConfig")
+        app.config.from_object("bikespace_api.config.DevelopmentConfig")
         return app
 
     def test_app_is_development(self):
@@ -26,7 +26,7 @@ class TestDevelopmentConfig(TestCase):
 
 class TestTestingConfig(TestCase):
     def create_app(self):
-        app.config.from_object("bikespace_backend.config.TestingConfig")
+        app.config.from_object("bikespace_api.config.TestingConfig")
         return app
 
     def test_app_is_testing(self):
@@ -40,7 +40,7 @@ class TestTestingConfig(TestCase):
 
 class TestProductionConfig(TestCase):
     def create_app(self):
-        app.config.from_object("bikespace_backend.config.ProductionConfig")
+        app.config.from_object("bikespace_api.config.ProductionConfig")
         return app
 
     def test_app_is_production(self):
