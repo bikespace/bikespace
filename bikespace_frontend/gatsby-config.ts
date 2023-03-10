@@ -2,7 +2,7 @@ import type { GatsbyConfig } from "gatsby";
 
 const config: GatsbyConfig = {
   siteMetadata: {
-    title: `bikespace`,
+    title: `BikeSpace`,
     siteUrl: `https://app.bikespace.ca`
   },
   // More easily incorporate content into your pages through automatic TypeScript type generation and better GraphQL IntelliSense.
@@ -21,7 +21,7 @@ const config: GatsbyConfig = {
       "path": "./src/images/"
     },
     __key: "images"
-  }]
+  }, "gatsby-plugin-vanilla-extract"]
 };
 
 export default config;
