@@ -1,0 +1,46 @@
+# fly.toml file generated for holy-dawn-7414 on 2023-03-09T23:13:19-05:00
+
+app = "bikespace-api-dev"
+kill_signal = "SIGINT"
+kill_timeout = 5
+primary_region = "yyz"
+processes = []
+
+[build]
+  builder = "paketobuildpacks/builder:base"
+
+[env]
+  PORT = "8000"
+  APP_SETTINGS = "bikespace_api.config.DevelopmentConfig"
+
+[deploy]
+  release_command = "python manage.py recreate-db"
+
+[experimental]
+  auto_rollback = true
+
+[[services]]
+  http_checks = []
+  internal_port = 8000
+  processes = ["app"]
+  protocol = "tcp"
+  script_checks = []
+  [services.concurrency]
+    hard_limit = 25
+    soft_limit = 20
+    type = "connections"
+
+  [[services.ports]]
+    force_https = true
+    handlers = ["http"]
+    port = 80
+
+  [[services.ports]]
+    handlers = ["tls", "http"]
+    port = 443
+
+  [[services.tcp_checks]]
+    grace_period = "1s"
+    interval = "15s"
+    restart_limit = 0
+    timeout = "2s"
