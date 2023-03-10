@@ -25,7 +25,7 @@ paths:
             type: integer
       responses:
         "200":
-          description: Successfully returned a list of artists
+          description: Successfully returned a list of answers
           content:
             application/json:
               schema:
@@ -52,7 +52,6 @@ paths:
       responses:
         '201':
           description: Created
-        
 components:
   schemas:
     Answer:

@@ -12,7 +12,9 @@ processes = []
 [env]
   PORT = "8000"
   APP_SETTINGS = "bikespace_api.config.DevelopmentConfig"
-  FLASK_DEBUG = "true"
+
+[deploy]
+  release_command = "python manage.py recreate-db"
 
 [experimental]
   auto_rollback = true
@@ -42,3 +44,4 @@ processes = []
     interval = "15s"
     restart_limit = 0
     timeout = "2s"
+
