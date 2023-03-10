@@ -37,6 +37,12 @@ def seed_db():
     db.session.add(
         SurveyAnswer(43.6532, -79.3832, json.dumps(sample_survey), "comments")
     )
+    db.session.add(
+        SurveyAnswer(43.6531, -79.3832, json.dumps(sample_survey), "comments")
+    )
+    db.session.add(
+        SurveyAnswer(43.6530, -79.3832, json.dumps(sample_survey), "comments")
+    )
     db.session.commit()
 
 

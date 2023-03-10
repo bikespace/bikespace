@@ -33,4 +33,7 @@ run-flask-app: setup-py
 lint-py:
 	$(PYTHON) -m black $(BIKESPACE_BACKEND_DIR)
 
-.PHONY: setup-py clean pip-freeze run-flask-app lint-py 
+seed-db: setup-py
+	$(PYTHON) $(MANAGE_PY) seed-db
+
+.PHONY: setup-py clean pip-freeze run-flask-app lint-py seed-db
