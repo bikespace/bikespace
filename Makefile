@@ -36,4 +36,7 @@ lint-py:
 seed-db: setup-py
 	$(PYTHON) $(MANAGE_PY) seed-db
 
-.PHONY: setup-py clean pip-freeze run-flask-app lint-py seed-db
+recreate-db: setup-py
+	$(PYTHON) $(MANAGE_PY) recreate-db
+
+.PHONY: setup-py clean pip-freeze run-flask-app lint-py seed-db recreate-db

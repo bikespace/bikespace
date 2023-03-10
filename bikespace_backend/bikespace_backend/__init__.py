@@ -23,8 +23,8 @@ def create_app(script_info=None):
     from bikespace_backend.api.answers import answers_blueprint
     from bikespace_backend.api.docs import docs_blueprint
 
-    app.register_blueprint(answers_blueprint, url_prefix='/api/v2')
-    app.register_blueprint(docs_blueprint, url_prefix='/api/v2')
+    app.register_blueprint(answers_blueprint, url_prefix="/api/v2")
+    app.register_blueprint(docs_blueprint, url_prefix="/api/v2")
 
     # shell context for flask cli
     @app.shell_context_processor

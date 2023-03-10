@@ -6,7 +6,7 @@ info:
 
 servers:
   - url: http://127.0.0.1/api/v2
-  - url: https://bikespace.ca/api/v2
+  - url: https://app.bikespace.ca/api/v2
 
 paths:
   /answers:
@@ -39,6 +39,20 @@ paths:
                 properties:
                   message:
                     type: string
+    post:
+      summary: Submit a new survey answer
+      
+      requestBody:
+        description: Create a new survey answer
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Answer'
+      responses:
+        '201':
+          description: Created
+        
 components:
   schemas:
     Answer:
