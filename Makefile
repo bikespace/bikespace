@@ -1,5 +1,5 @@
 BIKESPACE_API_DIR = bikespace_api
-MANAGE_PY = $(BIKESPACE_API_DIR)/manage.py
+MANAGE_PY = manage.py
 PIP = $(VENV)/bin/pip
 PYTHON  = $(VENV)/bin/python3
 PYTHON_VERSION = 3.9
