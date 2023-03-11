@@ -2,7 +2,7 @@ import unittest
 from flask.cli import FlaskGroup
 
 from bikespace_api import create_app, db
-from bikespace_api.api.models import SurveyAnswer
+from bikespace_api.api.models import Submission
 
 import json
 
@@ -35,13 +35,13 @@ def test():
 def seed_db():
     """Seeds the database"""
     db.session.add(
-        SurveyAnswer(43.6532, -79.3832, json.dumps(sample_survey), "comments")
+        Submission(43.6532, -79.3832, json.dumps(sample_survey), "comments")
     )
     db.session.add(
-        SurveyAnswer(43.6531, -79.3832, json.dumps(sample_survey), "comments")
+        Submission(43.6531, -79.3832, json.dumps(sample_survey), "comments")
     )
     db.session.add(
-        SurveyAnswer(43.6530, -79.3832, json.dumps(sample_survey), "comments")
+        Submission(43.6530, -79.3832, json.dumps(sample_survey), "comments")
     )
     db.session.commit()
 

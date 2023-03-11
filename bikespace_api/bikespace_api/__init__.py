@@ -20,10 +20,10 @@ def create_app(script_info=None):
     db.init_app(app)
 
     # register blueprints
-    from bikespace_api.api.answers import answers_blueprint
+    from bikespace_api.api.submissions import submissions_blueprint
     from bikespace_api.api.docs import docs_blueprint
 
-    app.register_blueprint(answers_blueprint, url_prefix="/api/v2")
+    app.register_blueprint(submissions_blueprint, url_prefix="/api/v2")
     app.register_blueprint(docs_blueprint, url_prefix="/api/v2")
 
     # shell context for flask cli
