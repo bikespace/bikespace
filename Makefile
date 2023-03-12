@@ -51,6 +51,6 @@ run-frontend:
 	cd $(BIKESPACE_FRONTEND_DIR) && npm run start
 
 build-frontend:
-	cd $(BIKESPACE_FRONTEND_DIR) && npm run build
+	cd $(BIKESPACE_FRONTEND_DIR) && npm install && npm run build
 
 .PHONY: setup-py clean pip-freeze run-flask-app lint-py seed-db recreate-db fly-deploy-api fly-deploy-frontend
