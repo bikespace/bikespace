@@ -16,20 +16,52 @@ Ensure that is running on port `5432` with a database `bikespace_dev` with a def
 
 ## Running the API service
 
+Source code for the backend api service is under `bikespace_backend`, it is a python flask application.
 There are various make targets to help run/build tasks.
-Running the application:
+Running the backend service:
 ```shell
 make run-flask-app
 ```
-
 The development server should now to be running at `127.0.0.1:8000`
+
+## Running the frontend
+
+Source code for the frontend service is under `bikespace_frontend`, it is written in typescript with Reach framework and served with gatsby.
+Running the frontend:
+```shell
+make run-frontend
+```
 
 ## API Docs
 
-The api follows an OpenAPI 3.0 Spec, the spec can be found at `bikespace_api/api/static/bikespace-open-api.yaml`
+The api follows an OpenAPI 3.0 Spec, the spec can be found at `bikespace_api/bikespace_api/static/bikespace-open-api.yaml`
 
 The swagger-ui to render the OpenAPI spec can be found at `127.0.0.1:8000/api/v2/docs`
 
 # Development Workflow
 
 Please when always working on a new feature checkout a new branch from the latest main branch and when submitting Pull Requests please submit PRs to the development branch from the feature branch you are working off.
+
+# Project Strucutre
+
+```
+.
+├── LICENSE
+├── Makefile
+├── README.md
+├── bikespace_api
+│   ├── Procfile
+│   ├── bikespace_api
+│   ├── fly.toml
+│   ├── fly_release.sh
+│   ├── manage.py
+│   └── requirements.txt
+└── bikespace_frontend
+    ├── Dockerfile
+    ├── README.md
+    ├── fly.toml
+    ├── gatsby-config.ts
+    ├── package-lock.json
+    ├── package.json
+    ├── src
+    └── tsconfig.json```
