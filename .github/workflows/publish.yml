@@ -1,5 +1,5 @@
 name: Publish
-on: [push, pull_request]
+on: [push]
 jobs:
   publish:
     name: Publish to Cloudflare Pages
