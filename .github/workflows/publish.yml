@@ -17,7 +17,7 @@ jobs:
       - name: Build gatbsy static frontend
         run: make build-frontend
       - name: Publish to Cloudflare Pages
-        uses: cloudflare/pages-actions@v1
+        uses: cloudflare/pages-action@v1
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: $CLOUDFLARE_ACCOUNT_ID
