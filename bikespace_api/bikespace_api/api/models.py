@@ -5,8 +5,8 @@ from sqlalchemy.dialects.postgresql import JSON
 from bikespace_api import db
 
 
-class SurveyAnswer(db.Model):
-    __tablename__ = "bikeparking_surveyanswer"
+class Submission(db.Model):
+    __tablename__ = "bikeparking_submissions"
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     latitude = db.Column(db.Float, nullable=False)

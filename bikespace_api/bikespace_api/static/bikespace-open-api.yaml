@@ -6,10 +6,10 @@ info:
 
 servers:
   - url: http://127.0.0.1/api/v2
-  - url: https://app.bikespace.ca/api/v2
+  - url: https://api-dev.bikespace.ca/api/v2
 
 paths:
-  /answers:
+  /submissions:
     get:
       description: Returns a list of all the submitted answers
       parameters:
@@ -20,16 +20,16 @@ paths:
             type: integer
         - name: offset
           in: query
-          description: Specifies the page number of the answers to be displayed
+          description: Specifies the page number of the submissions to be displayed
           schema:
             type: integer
       responses:
         "200":
-          description: Successfully returned a list of answers
+          description: Successfully returned a list of submissions 
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Answer'
+                $ref: '#/components/schemas/Submission'
         "400":
           description: Invalid request
           content:
@@ -40,21 +40,21 @@ paths:
                   message:
                     type: string
     post:
-      summary: Submit a new survey answer
+      summary: Submit a new submission
       
       requestBody:
-        description: Create a new survey answer
+        description: Create a new submission
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Answer'
+              $ref: '#/components/schemas/Submission'
       responses:
         '201':
           description: Created
 components:
   schemas:
-    Answer:
+    Submission:
       properties:
         id:
           type: integer

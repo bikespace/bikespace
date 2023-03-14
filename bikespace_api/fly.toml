@@ -14,7 +14,7 @@ processes = []
   APP_SETTINGS = "bikespace_api.config.DevelopmentConfig"
 
 [deploy]
-  release_command = "python manage.py recreate-db"
+  release_command = "sh ./fly_release.sh"
 
 [experimental]
   auto_rollback = true
