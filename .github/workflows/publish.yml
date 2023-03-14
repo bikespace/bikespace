@@ -20,7 +20,7 @@ jobs:
         uses: cloudflare/pages-action@v1
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: $CLOUDFLARE_ACCOUNT_ID
-          projectName: bikespace-backend
+          accountId: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+          projectName: bikespace-v2
           directory: bikespace_frontend/public
           githubToken: ${{ secrets.GITHUB_TOKEN }}
