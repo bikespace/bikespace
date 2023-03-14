@@ -2,6 +2,7 @@ name: Publish
 on: [push, pull_request]
 jobs:
   publish:
+    name: Publish to Cloudflare Pages
     runs-on: ubuntu-latest
     permissions:
       contents: read
