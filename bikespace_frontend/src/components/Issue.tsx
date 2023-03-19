@@ -9,22 +9,22 @@ class Issue extends Component {
                 <h2>Choose at least one</h2>
                 <ul>
                     <li>
-                        Bicycle parking is 
-                        <strong>not provided</strong>
+                        Bicycle parking is
+                        <strong> not provided</strong>
                     </li>
                     <li>
                         Bicycle parking is
-                        <strong>full</strong>
+                        <strong> full</strong>
                     </li>
                     <li>
                         Bicycle parking is
-                        <strong>damaged</strong>
+                        <strong> damaged</strong>
                     </li>
                     <li>
                         A bicycle is
-                        <strong>abandoned</strong>
+                        <strong> abandoned</strong>
                     </li>
-                    <li>Something else</li>
+                    <li> Something else</li>
                 </ul>
             </div>
         );
