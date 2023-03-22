@@ -48,7 +48,7 @@ fly-deploy-frontend: $(BIKESPACE_FRONTEND_FLY_TOML)
 	cd $(BIKESPACE_FRONTEND_DIR) && flyctl deploy
 
 run-frontend:
-	cd $(BIKESPACE_FRONTEND_DIR) && npm run start
+	cd $(BIKESPACE_FRONTEND_DIR) && npm install && npm run start
 
 build-frontend:
 	cd $(BIKESPACE_FRONTEND_DIR) && npm install && npm run build

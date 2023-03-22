@@ -1,5 +1,5 @@
 import * as React from "react"
-import { graphql, PageProps } from "gatsby"
+import { graphql, PageProps, navigate } from "gatsby"
 import { button, title, logo, main } from "../styles/index.css"
 import { StaticImage }from "gatsby-plugin-image"
 
@@ -16,7 +16,7 @@ const IndexRoute = ({ data: {site} }: PageProps<DataProps>) => {
         <main className={ main }>
             <h1 className= { title }>{site.siteMetadata.title}</h1>
             <StaticImage className={ logo } src="../images/bikespace-logo.svg" alt="BikeSpace Logo" />
-            <button className={ button } >Report a parking issue</button>
+            <button className={ button } onClick={() => {navigate('/submission')}} >Report a parking issue</button>
         </main>
     )
 }
