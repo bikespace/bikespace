@@ -24,7 +24,7 @@ const config: GatsbyConfig = {
       "path": "./src/images/"
     },
     __key: "images"
-  }, "gatsby-plugin-vanilla-extract"]
+  }, "gatsby-plugin-vanilla-extract", "gatsby-plugin-sass"]
 };
 
 export default config;

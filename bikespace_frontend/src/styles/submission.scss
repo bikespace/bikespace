@@ -1,0 +1,36 @@
+@import "variables";
+
+body {
+  overflow: hidden;
+}
+
+#submission {
+  #submission-header {
+    position: sticky;
+    top: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    height: 50px;
+    h1 {
+      margin: 0;
+      color: $main-color;
+      font-size: 2rem;
+      font-weight: normal;
+    }
+  }
+
+  main {
+    height: calc(100vh - 50px);
+    background-image: url(../images/bikespace-background-desktop.jpeg);
+    background-size: cover;
+    background-position: center;
+    padding: 20px;
+  }
+
+  #main-content {
+    background-color: white;
+    height: calc(100vh - 90px);
+  }
+}

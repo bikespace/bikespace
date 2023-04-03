@@ -1,16 +1,11 @@
 import { style, globalStyle } from "@vanilla-extract/css"
 
 globalStyle(`body`, {
-    height: `100%`,
-    width: `100%`,
     fontSize: `18px`,
     fontFamily: `-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"`,
     backgroundColor: '#5f5b6b',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    position: 'absolute',
-    justifyContent: 'center'
+    margin: 0,
+    padding: 0,
 })
 
 export const main = style({
