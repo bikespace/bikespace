@@ -9,10 +9,16 @@ globalStyle(`body`, {
 })
 
 export const main = style({
-    height: "100%",
-    width: "100%",
     display: 'flex',
-    flexDirection: 'column'
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: '100vh',
+})
+
+export const mainContent = style({
+
+    display: 'flex',
+    flexDirection: 'column',
 })
 
 export const logo = style({
