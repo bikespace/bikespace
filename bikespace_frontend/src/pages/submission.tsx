@@ -6,24 +6,18 @@ import { Issue, Location, Time, Comment, Summary } from "../components/";
 const orderedComponents = [Issue, Location, Time, Comment, Summary];
 
 const SubmissionRoute = () => {
-    const [component, setComponent] = useState(0);
-    const ComponentToLoad = orderedComponents[component];
-    const buttonHandler = (event: MouseEvent<HTMLButtonElement>) => {
-        event.preventDefault();
-        const buttonName = event.currentTarget.name;
-        switch (buttonName) {
-            case "nextButton":
-                if (orderedComponents[component + 1]) {
-                    setComponent(component + 1);
-                    break;
-                }
-            case "backButton":
-                if (orderedComponents[component - 1]) {
-                    setComponent(component - 1);
-                    break;
-                }
+    const [step, setStep] = useState(0);
+    const handleBack = (event: MouseEvent<HTMLButtonElement>) => {
+        if (step > 0) {
+            setStep(step - 1);
         }
     };
+    const handleNext = (event: MouseEvent<HTMLButtonElement>) => {
+        if (step < orderedComponents.length - 1) {
+            setStep(step + 1);
+        }
+    };
+    const ComponentToLoad = orderedComponents[step];
     return (
         <div id="submission">
             <header id="submission-header">
@@ -31,29 +25,20 @@ const SubmissionRoute = () => {
             </header>
             <main>
                 <div id="main-content">
-                    <header>Component index: {component}</header>
+                    <header>Component index: {step}</header>
+
                     <ComponentToLoad />
+
                     <footer>
-                        <div>
-                            <button
-                                onClick={buttonHandler}
-                                name="backButton"
-                                disabled={component == 0 ? true : false}
-                            >
-                                back
-                            </button>
-                            <button
-                                onClick={buttonHandler}
-                                name="nextButton"
-                                disabled={
-                                    component == orderedComponents.length - 1
-                                        ? true
-                                        : false
-                                }
-                            >
-                                next
-                            </button>
-                        </div>
+                        <button
+                            className="pill-btn-no-fill"
+                            onClick={handleBack}
+                        >
+                            Back
+                        </button>
+                        <button className="pill-btn" onClick={handleNext}>
+                            Next
+                        </button>
                     </footer>
                 </div>
             </main>
