@@ -3,13 +3,20 @@ import Submission, {
   SubmissionComponentProps,
   IssueType,
 } from "../interfaces/Submission";
+import BaseButton from "./BaseButton";
 import "../styles/issue.scss";
 
 class Issue extends Component<SubmissionComponentProps> {
-  handleClick = (e: React.MouseEvent<HTMLLIElement>) => {
+  comments = () => this.props.submission.comments;
+  btnClasses = (issueType: IssueType) => {
+    return `secondary-pill-btn ${
+      this.comments().includes(issueType) ? "active" : ""
+    }`;
+  };
+  handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     let issueType: IssueType;
-    switch (e.currentTarget.dataset.type) {
+    switch (e.currentTarget.dataset.value) {
       case "not_provided":
         issueType = IssueType.NotProvided;
         break;
@@ -28,18 +35,16 @@ class Issue extends Component<SubmissionComponentProps> {
     }
 
     let newSubmission: Submission;
-    if (!this.props.submission.comments.includes(issueType)) {
+    if (!this.comments().includes(issueType)) {
       newSubmission = {
         ...this.props.submission,
-        comments: [...this.props.submission.comments, issueType],
+        comments: [...this.comments(), issueType],
       };
     } else {
       newSubmission = {
         ...this.props.submission,
         comments: [
-          ...this.props.submission.comments.filter(
-            (comment) => comment !== issueType
-          ),
+          ...this.comments().filter((comment) => comment !== issueType),
         ],
       };
     }
@@ -52,44 +57,50 @@ class Issue extends Component<SubmissionComponentProps> {
         <h2>What was the issue?</h2>
         <h3>Choose at least one</h3>
         <ul>
-          <li
-            className="secondary-pill-btn"
-            onClick={this.handleClick}
-            data-type="not_provided"
-          >
-            Bicycle parking is &nbsp;
-            <strong> not provided</strong>
+          <li>
+            <BaseButton
+              active={this.comments().includes(IssueType.NotProvided)}
+              value="not_provided"
+              onClick={this.handleClick}
+            >
+              Bicycle parking is&nbsp;<strong>not provided</strong>
+            </BaseButton>
           </li>
-          <li
-            className="secondary-pill-btn"
-            onClick={this.handleClick}
-            data-type="full"
-          >
-            Bicycle parking is &nbsp;
-            <strong>full</strong>
+          <li>
+            <BaseButton
+              active={this.comments().includes(IssueType.Full)}
+              value="full"
+              onClick={this.handleClick}
+            >
+              Bicycle parking is&nbsp;<strong>full</strong>
+            </BaseButton>
           </li>
-          <li
-            className="secondary-pill-btn"
-            onClick={this.handleClick}
-            data-type="damaged"
-          >
-            Bicycle parking is &nbsp;
-            <strong>damaged</strong>
+          <li>
+            <BaseButton
+              active={this.comments().includes(IssueType.Damaged)}
+              value="damaged"
+              onClick={this.handleClick}
+            >
+              Bicycle parking is&nbsp;<strong>damaged</strong>
+            </BaseButton>
           </li>
-          <li
-            className="secondary-pill-btn"
-            onClick={this.handleClick}
-            data-type="abandoned"
-          >
-            A bicycle is &nbsp;
-            <strong>abandoned</strong>
+          <li>
+            <BaseButton
+              active={this.comments().includes(IssueType.Abandoned)}
+              value="abandoned"
+              onClick={this.handleClick}
+            >
+              A bicycle is&nbsp;<strong>abandoned</strong>
+            </BaseButton>
           </li>
-          <li
-            className="secondary-pill-btn"
-            onClick={this.handleClick}
-            data-type="other"
-          >
-            Something else
+          <li>
+            <BaseButton
+              active={this.comments().includes(IssueType.Other)}
+              value="other"
+              onClick={this.handleClick}
+            >
+              Something else
+            </BaseButton>
           </li>
         </ul>
       </>
