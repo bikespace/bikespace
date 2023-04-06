@@ -1,6 +1,44 @@
 @import "variables";
 
-.secondary-pill-btn,
+body {
+  overflow: hidden;
+}
+
+body * {
+  box-sizing: border-box;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+}
+
+.primary-btn {
+  background-color: $main-color;
+  color: white;
+  border: none;
+  height: 42px;
+  border-radius: 21px;
+  padding: 10px 25px;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.primary-btn-no-fill {
+  background-color: white;
+  color: $main-color;
+  border: none;
+  height: 42px;
+  border-radius: 21px;
+  padding: 10px 25px;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
 .base-button {
   position: relative;
   display: flex;

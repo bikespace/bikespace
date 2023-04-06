@@ -44,10 +44,10 @@ const SubmissionRoute = () => {
           </section>
 
           <footer>
-            <button className="pill-btn-no-fill" onClick={handleBack}>
+            <button className="primary-btn-no-fill" onClick={handleBack}>
               Back
             </button>
-            <button className="pill-btn" onClick={handleNext}>
+            <button className="primary-btn" onClick={handleNext}>
               Next
             </button>
           </footer>

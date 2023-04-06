@@ -4,15 +4,9 @@ import Submission, {
   IssueType,
 } from "../interfaces/Submission";
 import BaseButton from "./BaseButton";
-import "../styles/issue.scss";
 
 class Issue extends Component<SubmissionComponentProps> {
   comments = () => this.props.submission.comments;
-  btnClasses = (issueType: IssueType) => {
-    return `secondary-pill-btn ${
-      this.comments().includes(issueType) ? "active" : ""
-    }`;
-  };
   handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     let issueType: IssueType;
@@ -53,7 +47,7 @@ class Issue extends Component<SubmissionComponentProps> {
 
   render(): React.ReactNode {
     return (
-      <>
+      <div id="submission-issue">
         <h2>What was the issue?</h2>
         <h3>Choose at least one</h3>
         <ul>
@@ -103,7 +97,7 @@ class Issue extends Component<SubmissionComponentProps> {
             </BaseButton>
           </li>
         </ul>
-      </>
+      </div>
     );
   }
 }

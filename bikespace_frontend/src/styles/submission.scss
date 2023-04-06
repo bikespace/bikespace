@@ -1,43 +1,5 @@
 @import "variables";
-
-body {
-  overflow: hidden;
-}
-
-body * {
-  box-sizing: border-box;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  margin: 0;
-}
-
-.pill-btn {
-  background-color: $main-color;
-  color: white;
-  border: none;
-  height: 42px;
-  border-radius: 21px;
-  padding: 10px 25px;
-  font-size: 1.2rem;
-  cursor: pointer;
-}
-
-.pill-btn-no-fill {
-  background-color: white;
-  color: $main-color;
-  border: none;
-  height: 42px;
-  border-radius: 21px;
-  padding: 10px 25px;
-  font-size: 1.2rem;
-  cursor: pointer;
-}
+@import "global";
 
 #submission {
   position: relative;
@@ -101,6 +63,17 @@ h6 {
       min-height: 44px;
       display: flex;
       justify-content: space-between;
+    }
+  }
+}
+
+#submission-issue {
+  ul {
+    padding: 0;
+
+    li {
+      list-style: none;
+      margin-bottom: 20px;
     }
   }
 }
