@@ -1,4 +1,5 @@
 import React from "react";
+import { StaticImage } from "gatsby-plugin-image";
 
 type BaseButtonProps = {
   children: React.ReactNode;
@@ -16,6 +17,11 @@ class BaseButton extends React.Component<BaseButtonProps> {
         data-value={this.props.value}
       >
         {this.props.children}
+        <StaticImage
+          className="check"
+          src="../images/check.svg"
+          alt="checkmark"
+        />
       </button>
     );
   }

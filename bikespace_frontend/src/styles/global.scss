@@ -2,6 +2,7 @@
 
 .secondary-pill-btn,
 .base-button {
+  position: relative;
   display: flex;
   align-items: center;
   background-color: white;
@@ -13,10 +14,21 @@
   padding-left: 10px;
   font-size: 1rem;
   cursor: pointer;
+  transition: all 0.2s ease-in-out;
+
+  .check {
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    opacity: 0;
+    transform: translateY(-50%);
+  }
 
   &.active {
     background-color: $secondary-color;
     color: white;
+    .check {
+      opacity: 1;
+    }
   }
-  // ✔
 }
