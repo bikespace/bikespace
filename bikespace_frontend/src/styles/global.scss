@@ -1,0 +1,20 @@
+@import "variables";
+
+.secondary-pill-btn {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  color: $secondary-color;
+  border: 2px solid $secondary-color;
+  height: 44px;
+  border-radius: 23px;
+  padding-left: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+
+  &.active {
+    background-color: $secondary-color;
+    color: white;
+  }
+  // ✔
+}

@@ -36,10 +36,12 @@ const SubmissionRoute = () => {
         <div id="main-content">
           <header>Component index: {step}</header>
 
-          <ComponentToLoad
-            submission={submission}
-            onSubmissionChanged={handleSubmissionChanged}
-          />
+          <section id="main-content-body">
+            <ComponentToLoad
+              submission={submission}
+              onSubmissionChanged={handleSubmissionChanged}
+            />
+          </section>
 
           <footer>
             <button className="pill-btn-no-fill" onClick={handleBack}>

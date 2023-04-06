@@ -3,7 +3,7 @@ import Submission, {
   SubmissionComponentProps,
   IssueType,
 } from "../interfaces/Submission";
-import { button, title, logo, main } from "../styles/index.css";
+import "../styles/issue.scss";
 
 class Issue extends Component<SubmissionComponentProps> {
   handleClick = (e: React.MouseEvent<HTMLLIElement>) => {
@@ -50,29 +50,45 @@ class Issue extends Component<SubmissionComponentProps> {
     return (
       <>
         <h2>What was the issue?</h2>
-        <p>Choose at least one</p>
+        <h3>Choose at least one</h3>
         <ul>
           <li
-            className="pill"
+            className="secondary-pill-btn"
             onClick={this.handleClick}
             data-type="not_provided"
           >
-            Bicycle parking is
+            Bicycle parking is &nbsp;
             <strong> not provided</strong>
           </li>
-          <li className="pill" onClick={this.handleClick} data-type="full">
-            Bicycle parking is
-            <strong> full</strong>
+          <li
+            className="secondary-pill-btn"
+            onClick={this.handleClick}
+            data-type="full"
+          >
+            Bicycle parking is &nbsp;
+            <strong>full</strong>
           </li>
-          <li className="pill" onClick={this.handleClick} data-type="damaged">
-            Bicycle parking is
-            <strong> damaged</strong>
+          <li
+            className="secondary-pill-btn"
+            onClick={this.handleClick}
+            data-type="damaged"
+          >
+            Bicycle parking is &nbsp;
+            <strong>damaged</strong>
           </li>
-          <li className="pill" onClick={this.handleClick} data-type="abandoned">
-            A bicycle is
-            <strong> abandoned</strong>
+          <li
+            className="secondary-pill-btn"
+            onClick={this.handleClick}
+            data-type="abandoned"
+          >
+            A bicycle is &nbsp;
+            <strong>abandoned</strong>
           </li>
-          <li className="pill" onClick={this.handleClick} data-type="other">
+          <li
+            className="secondary-pill-btn"
+            onClick={this.handleClick}
+            data-type="other"
+          >
             Something else
           </li>
         </ul>

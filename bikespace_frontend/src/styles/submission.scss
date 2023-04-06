@@ -1,75 +1,106 @@
 @import "variables";
 
 body {
-    overflow: hidden;
+  overflow: hidden;
 }
 
 body * {
-    box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
 }
 
 .pill-btn {
-    background-color: $main-color;
-    color: white;
-    border: none;
-    height: 42px;
-    border-radius: 21px;
-    padding: 10px 25px;
-    font-size: 1.2rem;
-    cursor: pointer;
+  background-color: $main-color;
+  color: white;
+  border: none;
+  height: 42px;
+  border-radius: 21px;
+  padding: 10px 25px;
+  font-size: 1.2rem;
+  cursor: pointer;
 }
 
 .pill-btn-no-fill {
-    background-color: white;
-    color: $main-color;
-    border: none;
-    height: 42px;
-    border-radius: 21px;
-    padding: 10px 25px;
-    font-size: 1.2rem;
-    cursor: pointer;
+  background-color: white;
+  color: $main-color;
+  border: none;
+  height: 42px;
+  border-radius: 21px;
+  padding: 10px 25px;
+  font-size: 1.2rem;
+  cursor: pointer;
 }
 
 #submission {
+  position: relative;
+
+  #submission-header {
+    position: sticky;
+    top: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    height: 50px;
+    h1 {
+      margin: 0;
+      color: $main-color;
+      font-size: 2rem;
+      font-weight: normal;
+    }
+  }
+
+  main {
     position: relative;
+    height: calc(100vh - 50px);
+    padding: 20px;
+    background-image: url(../images/bikespace-background-desktop.jpeg);
+    background-size: cover;
+    background-position: center;
+  }
 
-    #submission-header {
-        position: sticky;
-        top: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background-color: white;
-        height: 50px;
-        h1 {
-            margin: 0;
-            color: $main-color;
-            font-size: 2rem;
-            font-weight: normal;
-        }
+  #main-content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    height: calc(100vh - 90px);
+    padding: 17px;
+    padding-bottom: 24px;
+
+    #main-content-body {
+      position: relative;
+      overflow-y: scroll;
+      flex-grow: 1;
+
+      h2 {
+        margin-bottom: 5px;
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: #39393a;
+      }
+
+      h3 {
+        margin-bottom: 20px;
+        font-size: 1rem;
+        font-weight: normal;
+        color: #39393a;
+      }
     }
 
-    main {
-        position: relative;
-        height: calc(100vh - 50px);
-        padding: 20px;
-        background-image: url(../images/bikespace-background-desktop.jpeg);
-        background-size: cover;
-        background-position: center;
+    footer {
+      width: 100%;
+      min-height: 44px;
+      display: flex;
+      justify-content: space-between;
     }
-
-    #main-content {
-        position: relative;
-        background-color: white;
-        height: calc(100vh - 90px);
-
-        footer {
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            padding: 20px 17px;
-        }
-    }
+  }
 }
