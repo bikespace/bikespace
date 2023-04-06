@@ -24,7 +24,6 @@ const SubmissionRoute = () => {
     comments: [],
   });
   const handleSubmissionChanged = (newSubmission: Submission) => {
-    console.log("Submission changed: ", newSubmission);
     setSubmission(newSubmission);
   };
 
