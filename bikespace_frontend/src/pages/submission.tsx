@@ -1,6 +1,7 @@
 import React, { MouseEvent, useState } from "react";
 import { graphql, PageProps } from "gatsby";
 import "../styles/submission.scss";
+import SubmissionProgressBar from "../components/SubmissionProgressBar";
 import Submission from "../interfaces/Submission";
 import { Issue, Location, Time, Comment, Summary } from "../components/";
 
@@ -34,7 +35,9 @@ const SubmissionRoute = () => {
       </header>
       <main>
         <div id="main-content">
-          <header>Component index: {step}</header>
+          <header>
+            <SubmissionProgressBar step={step} />
+          </header>
 
           <section id="main-content-body">
             <ComponentToLoad

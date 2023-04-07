@@ -67,6 +67,37 @@
   }
 }
 
+#submission-progress-bar {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+
+  #middle-line {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    width: 100%;
+    height: 2px;
+    background-color: $gray-color;
+  }
+
+  .step {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: $gray-color;
+    transition: background-color 0.3s ease-in-out;
+    z-index: 10;
+
+    &.active {
+      background-color: $main-color;
+    }
+  }
+}
+
 #submission-issue {
   ul {
     padding: 0;
