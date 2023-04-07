@@ -1,6 +1,7 @@
 import React, { MouseEvent, useState } from "react";
 import { graphql, PageProps } from "gatsby";
 import "../styles/submission.scss";
+import { StaticImage } from "gatsby-plugin-image";
 import SubmissionProgressBar from "../components/SubmissionProgressBar";
 import Submission from "../interfaces/Submission";
 import { Issue, Location, Time, Comment, Summary } from "../components/";
@@ -31,7 +32,11 @@ const SubmissionRoute = () => {
   return (
     <div id="submission">
       <header id="submission-header">
-        <h1>BikeSpace</h1>
+        <StaticImage
+          className="header-logo"
+          src="../images/header-logo.svg"
+          alt="bike space logo"
+        />
       </header>
       <main>
         <div id="main-content">
