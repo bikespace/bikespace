@@ -1,0 +1,72 @@
+@import "variables";
+
+body {
+  overflow: hidden;
+}
+
+body * {
+  box-sizing: border-box;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+}
+
+.primary-btn {
+  background-color: $main-color;
+  color: white;
+  border: none;
+  height: 42px;
+  border-radius: 21px;
+  padding: 10px 25px;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.primary-btn-no-fill {
+  background-color: white;
+  color: $main-color;
+  border: none;
+  height: 42px;
+  border-radius: 21px;
+  padding: 10px 25px;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.base-button {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background-color: white;
+  color: $secondary-color;
+  border: 2px solid $secondary-color;
+  height: 44px;
+  width: 100%;
+  border-radius: 23px;
+  padding-left: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+
+  .check {
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    opacity: 0;
+    transform: translateY(-50%);
+  }
+
+  &.active {
+    background-color: $secondary-color;
+    color: white;
+    .check {
+      opacity: 1;
+    }
+  }
+}

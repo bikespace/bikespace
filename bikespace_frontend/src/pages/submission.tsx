@@ -1,41 +1,68 @@
-import React, { MouseEvent, useState } from "react"
-import { graphql, PageProps } from "gatsby"
-import { button, title, logo, main } from "../styles/index.css"
-import { Issue, Location, Time, Comment, Summary } from "../components/"
+import React, { MouseEvent, useState } from "react";
+import { graphql, PageProps } from "gatsby";
+import "../styles/submission.scss";
+import { StaticImage } from "gatsby-plugin-image";
+import SubmissionProgressBar from "../components/SubmissionProgressBar";
+import Submission from "../interfaces/Submission";
+import { Issue, Location, Time, Comment, Summary } from "../components/";
 
-const orderedComponents = [Issue, Location, Time, Comment, Summary]
+const orderedComponents = [Issue, Location, Time, Comment, Summary];
 
 const SubmissionRoute = () => {
-    const [component, setComponent] = useState(0)
-    const ComponentToLoad = orderedComponents[component]
-    const buttonHandler = (event: MouseEvent<HTMLButtonElement>) => {
-        event.preventDefault();
-        const buttonName = event.currentTarget.name;
-        switch (buttonName) {
-            case "nextButton":
-                if (orderedComponents[component + 1]) {
-                    setComponent(component + 1);
-                    break;
-                }
-            case "backButton":
-                if (orderedComponents[component - 1]) {
-                    setComponent(component - 1);
-                    break;
-                }
-        }
+  const [step, setStep] = useState(0);
+  const handleBack = (event: MouseEvent<HTMLButtonElement>) => {
+    if (step > 0) {
+      setStep(step - 1);
     }
-    return (
-        <div>
-            <h1>Component index: {component}</h1>
-            <ComponentToLoad />
-            <div>
-                <button onClick={buttonHandler} name="backButton"
-                    disabled={component == 0 ? true : false}>back</button>
-                <button onClick={buttonHandler} name="nextButton" 
-                    disabled={component == orderedComponents.length - 1 ? true : false}>next</button>
-            </div>
-        </div>
-    )
-}
+  };
+  const handleNext = (event: MouseEvent<HTMLButtonElement>) => {
+    if (step < orderedComponents.length - 1) {
+      setStep(step + 1);
+    }
+  };
+  const ComponentToLoad = orderedComponents[step];
 
-export default SubmissionRoute
+  const [submission, setSubmission] = useState<Submission>({
+    comments: [],
+  });
+  const handleSubmissionChanged = (newSubmission: Submission) => {
+    setSubmission(newSubmission);
+  };
+
+  return (
+    <div id="submission">
+      <header id="submission-header">
+        <StaticImage
+          className="header-logo"
+          src="../images/header-logo.svg"
+          alt="bike space logo"
+        />
+      </header>
+      <main>
+        <div id="main-content">
+          <header>
+            <SubmissionProgressBar step={step} />
+          </header>
+
+          <section id="main-content-body">
+            <ComponentToLoad
+              submission={submission}
+              onSubmissionChanged={handleSubmissionChanged}
+            />
+          </section>
+
+          <footer>
+            <button className="primary-btn-no-fill" onClick={handleBack}>
+              Back
+            </button>
+            <button className="primary-btn" onClick={handleNext}>
+              Next
+            </button>
+          </footer>
+        </div>
+      </main>
+    </div>
+  );
+};
+
+export default SubmissionRoute;
