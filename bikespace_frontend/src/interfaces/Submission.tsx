@@ -13,4 +13,6 @@ export interface SubmissionComponentProps {
 
 export default interface Submission {
   comments: IssueType[];
+  longitude: number;
+  latitude: number;
 }

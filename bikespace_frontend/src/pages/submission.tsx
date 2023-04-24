@@ -1,4 +1,4 @@
-import React, { MouseEvent, useState } from "react";
+import React, { MouseEvent, useState, useEffect } from "react";
 import { graphql, PageProps } from "gatsby";
 import "../styles/submission.scss";
 import { StaticImage } from "gatsby-plugin-image";
@@ -21,13 +21,25 @@ const SubmissionRoute = () => {
     }
   };
   const ComponentToLoad = orderedComponents[step];
-
   const [submission, setSubmission] = useState<Submission>({
     comments: [],
+    latitude: 43.6504628,
+    longitude: -79.3780052,
   });
   const handleSubmissionChanged = (newSubmission: Submission) => {
     setSubmission(newSubmission);
   };
+
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition((position) => {
+      console.log(position)
+      setSubmission({
+        ...submission,
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude,
+      });
+    });
+  }, []);
 
   return (
     <div id="submission">
