@@ -1,22 +1,19 @@
-import React, { useState } from "react";
-import Submission, { SubmissionComponentProps } from "../interfaces/Submission";
+import React from "react";
+import { LocationLatLng } from "../interfaces/Submission";
 import 'leaflet/dist/leaflet.css'
 import { MapContainer, TileLayer, Marker, useMapEvent } from 'react-leaflet'
 
-function Location(props: SubmissionComponentProps) {
-  const changeMarkLocation = (latitude: number, longitude: number) => {
-    let newSubmission: Submission;
-    newSubmission = {
-      ...props.submission,
-      latitude,
-      longitude,
-    };
-    props.onSubmissionChanged(newSubmission);
-  };
+function Location(props: {location: LocationLatLng, onLocationChanged: (location: LocationLatLng) => void}) {
+  const handleLocationChanged = (location: LocationLatLng) => {
+    props.onLocationChanged(location);
+  }
 
-  function MapHandler(props: {changeMarkLocation: (latitude: number, longitude: number) => void}) {
+  const MapHandler = () => {
     useMapEvent('click', (e) => {
-      props.changeMarkLocation(e.latlng.lat, e.latlng.lng)
+      handleLocationChanged({
+        latitude: e.latlng.lat,
+        longitude: e.latlng.lng
+      })
     })
     return null;
   }
@@ -28,7 +25,7 @@ function Location(props: SubmissionComponentProps) {
 
       <section id="outer-map-container">
         <MapContainer
-          center={[props.submission.latitude, props.submission.longitude]}
+          center={[props.location.latitude, props.location.longitude]}
           zoom={18}
           scrollWheelZoom={false}
           style={{ height: '100%' }}
@@ -38,9 +35,9 @@ function Location(props: SubmissionComponentProps) {
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
           <Marker
-            position={[props.submission.latitude, props.submission.longitude]}
+            position={[props.location.latitude, props.location.longitude]}
           />
-          <MapHandler changeMarkLocation={changeMarkLocation} />
+          <MapHandler />
         </MapContainer>
       </section>
     </div>

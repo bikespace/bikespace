@@ -6,6 +6,11 @@ export enum IssueType {
   Other = "other",
 }
 
+export interface LocationLatLng {
+  latitude: number;
+  longitude: number;
+}
+
 export interface SubmissionComponentProps {
   submission: Submission;
   onSubmissionChanged: (newSubmission: Submission) => void;

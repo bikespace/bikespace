@@ -5,6 +5,7 @@ import { StaticImage } from "gatsby-plugin-image";
 import SubmissionProgressBar from "../components/SubmissionProgressBar";
 import Submission from "../interfaces/Submission";
 import { Issue, Location, Time, Comment, Summary } from "../components/";
+import { LocationLatLng } from "../interfaces/Submission";
 
 const orderedComponents = [Issue, Location, Time, Comment, Summary];
 
@@ -20,7 +21,26 @@ const SubmissionRoute = () => {
       setStep(step + 1);
     }
   };
-  const ComponentToLoad = orderedComponents[step];
+  const ComponentToLoad = () => {
+    switch (orderedComponents[step]) {
+      case Issue:
+        return (
+          <Issue
+            submission={submission}
+            onSubmissionChanged={handleSubmissionChanged}
+          />
+        );
+      case Location:
+        return <Location location={location} onLocationChanged={setLocation} />;
+      case Time:
+        return <Time submission={submission} onSubmissionChanged={handleSubmissionChanged} />;
+      case Comment:
+        return <Comment submission={submission} onSubmissionChanged={handleSubmissionChanged} />;
+      case Summary:
+        return <Summary submission={submission} onSubmissionChanged={handleSubmissionChanged} />;
+    }
+  };
+
   const [submission, setSubmission] = useState<Submission>({
     comments: [],
     latitude: 43.6504628,
@@ -29,14 +49,15 @@ const SubmissionRoute = () => {
   const handleSubmissionChanged = (newSubmission: Submission) => {
     setSubmission(newSubmission);
   };
-
+  const [location, setLocation] = useState<LocationLatLng>({
+    latitude: 43.6504628,
+    longitude: -79.3780052
+  });
   useEffect(() => {
     navigator.geolocation.getCurrentPosition((position) => {
-      console.log(position)
-      setSubmission({
-        ...submission,
+      setLocation({
         latitude: position.coords.latitude,
-        longitude: position.coords.longitude,
+        longitude: position.coords.longitude
       });
     });
   }, []);
@@ -57,10 +78,7 @@ const SubmissionRoute = () => {
           </header>
 
           <section id="main-content-body">
-            <ComponentToLoad
-              submission={submission}
-              onSubmissionChanged={handleSubmissionChanged}
-            />
+            { ComponentToLoad() }
           </section>
 
           <footer>
