@@ -13,17 +13,21 @@ const SubmissionRoute = () => {
     latitude: 43.6504628,
     longitude: -79.3780052
   });
+  const [locationLoaded, setLocationLoaded] = useState(false);
   useEffect(() => {
     navigator.geolocation.getCurrentPosition((position) => {
       setLocation({
         latitude: position.coords.latitude,
         longitude: position.coords.longitude
       });
+      setLocationLoaded(true);
     });
   }, []);
 
   const [step, setStep] = useState(0);
   const handleStepChanged = (i: number) => {
+    if (!locationLoaded) { return locationLoaded }
+
     if (i === -1 && step > 0) {
       setStep(step - 1);
     } else if (i === 1 && step < orderedComponents.length - 1) {
