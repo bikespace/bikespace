@@ -11,11 +11,6 @@ export interface LocationLatLng {
   longitude: number;
 }
 
-export interface SubmissionComponentProps {
-  submission: Submission;
-  onSubmissionChanged: (newSubmission: Submission) => void;
-}
-
 export default interface Submission {
   comments: IssueType[];
   longitude: number;

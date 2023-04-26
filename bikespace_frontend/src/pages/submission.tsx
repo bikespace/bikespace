@@ -1,60 +1,13 @@
-import React, { MouseEvent, useState, useEffect } from "react";
-import { graphql, PageProps } from "gatsby";
+import React, { useState, useEffect } from "react";
 import "../styles/submission.scss";
 import { StaticImage } from "gatsby-plugin-image";
 import SubmissionProgressBar from "../components/SubmissionProgressBar";
-import Submission from "../interfaces/Submission";
 import { Issue, Location, Time, Comment, Summary } from "../components/";
 import { IssueType, LocationLatLng } from "../interfaces/Submission";
 
 const orderedComponents = [Issue, Location, Time, Comment, Summary];
 
 const SubmissionRoute = () => {
-  const [step, setStep] = useState(0);
-  const handleBack = (event: MouseEvent<HTMLButtonElement>) => {
-    if (step > 0) {
-      setStep(step - 1);
-    }
-  };
-  const handleNext = (event: MouseEvent<HTMLButtonElement>) => {
-    if (step < orderedComponents.length - 1) {
-      setStep(step + 1);
-    }
-  };
-  const ComponentToLoad = () => {
-    switch (orderedComponents[step]) {
-      case Issue:
-        return (
-          <Issue
-            comments={comments}
-            onCommentsChanged={setComments}
-          />
-        )
-      case Location:
-        return (
-          <Location
-            location={location}
-            onLocationChanged={setLocation}
-          />
-        )
-      case Time:
-        return <Time submission={submission} onSubmissionChanged={handleSubmissionChanged} />;
-      case Comment:
-        return <Comment submission={submission} onSubmissionChanged={handleSubmissionChanged} />;
-      case Summary:
-        return <Summary submission={submission} onSubmissionChanged={handleSubmissionChanged} />;
-    }
-  };
-
-  const [submission, setSubmission] = useState<Submission>({
-    comments: [],
-    latitude: 43.6504628,
-    longitude: -79.3780052,
-  });
-  const handleSubmissionChanged = (newSubmission: Submission) => {
-    setSubmission(newSubmission);
-  };
-
   const [comments, setComments] = useState<IssueType[]>([]);
   const [location, setLocation] = useState<LocationLatLng>({
     latitude: 43.6504628,
@@ -68,6 +21,29 @@ const SubmissionRoute = () => {
       });
     });
   }, []);
+
+  const [step, setStep] = useState(0);
+  const handleStepChanged = (i: number) => {
+    if (i === -1 && step > 0) {
+      setStep(step - 1);
+    } else if (i === 1 && step < orderedComponents.length - 1) {
+      setStep(step + 1);
+    }
+  }
+  const ComponentToLoad = () => {
+    switch (orderedComponents[step]) {
+      case Issue:
+        return <Issue comments={comments} onCommentsChanged={setComments} />
+      case Location:
+        return <Location location={location} onLocationChanged={setLocation} />
+      case Time:
+        return <Time />;
+      case Comment:
+        return <Comment />;
+      case Summary:
+        return <Summary />;
+    }
+  };
 
   return (
     <div id="submission">
@@ -89,10 +65,10 @@ const SubmissionRoute = () => {
           </section>
 
           <footer>
-            <button className="primary-btn-no-fill" onClick={handleBack}>
+            <button className="primary-btn-no-fill" onClick={() => handleStepChanged(-1)}>
               Back
             </button>
-            <button className="primary-btn" onClick={handleNext}>
+            <button className="primary-btn" onClick={() => handleStepChanged(1)}>
               Next
             </button>
           </footer>
