@@ -5,7 +5,7 @@ import { StaticImage } from "gatsby-plugin-image";
 import SubmissionProgressBar from "../components/SubmissionProgressBar";
 import Submission from "../interfaces/Submission";
 import { Issue, Location, Time, Comment, Summary } from "../components/";
-import { LocationLatLng } from "../interfaces/Submission";
+import { IssueType, LocationLatLng } from "../interfaces/Submission";
 
 const orderedComponents = [Issue, Location, Time, Comment, Summary];
 
@@ -26,12 +26,17 @@ const SubmissionRoute = () => {
       case Issue:
         return (
           <Issue
-            submission={submission}
-            onSubmissionChanged={handleSubmissionChanged}
+            comments={comments}
+            onCommentsChanged={setComments}
           />
-        );
+        )
       case Location:
-        return <Location location={location} onLocationChanged={setLocation} />;
+        return (
+          <Location
+            location={location}
+            onLocationChanged={setLocation}
+          />
+        )
       case Time:
         return <Time submission={submission} onSubmissionChanged={handleSubmissionChanged} />;
       case Comment:
@@ -49,6 +54,8 @@ const SubmissionRoute = () => {
   const handleSubmissionChanged = (newSubmission: Submission) => {
     setSubmission(newSubmission);
   };
+
+  const [comments, setComments] = useState<IssueType[]>([]);
   const [location, setLocation] = useState<LocationLatLng>({
     latitude: 43.6504628,
     longitude: -79.3780052
