@@ -20,8 +20,8 @@ function Location(props: {location: LocationLatLng, onLocationChanged: (location
 
   return (
     <div id="submission-location">
-      <h2>What was the issue?</h2>
-      <h3>Choose at least one</h3>
+      <h2>Where was the problem?</h2>
+      <h3>Pin the location</h3>
 
       <section id="outer-map-container">
         <MapContainer
