@@ -6,13 +6,14 @@ globalStyle(`body`, {
     backgroundColor: '#5f5b6b',
     margin: 0,
     padding: 0,
+    height: '100dvh'
 })
 
 export const main = style({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    height: '100vh',
+    height: '100dvh',
 })
 
 export const mainContent = style({
