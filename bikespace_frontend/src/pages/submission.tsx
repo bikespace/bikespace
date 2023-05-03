@@ -10,10 +10,9 @@ const orderedComponents = [Issue, Location, Time, Comment, Summary];
 const SubmissionRoute = () => {
   const [comments, setComments] = useState<IssueType[]>([]);
   const [location, setLocation] = useState<LocationLatLng>({
-    // default location is in the Lake Ontario so we can know if the user
-    // just didn't give us their location and make report
-    latitude: 43.635891,
-    longitude: -79.378737
+    // default location is the City Hall
+    latitude: 43.653220,
+    longitude: -79.384452
   });
   const [locationLoaded, setLocationLoaded] = useState(false);
   useEffect(() => {
