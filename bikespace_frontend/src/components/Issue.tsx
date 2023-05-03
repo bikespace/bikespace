@@ -1,14 +1,12 @@
-import React, { Component } from "react";
-import Submission, {
-  SubmissionComponentProps,
-  IssueType,
-} from "../interfaces/Submission";
+import React from "react";
+import { IssueType } from "../interfaces/Submission";
 import BaseButton from "./BaseButton";
 
-class Issue extends Component<SubmissionComponentProps> {
-  comments = () => this.props.submission.comments;
-  handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+const Issue = (props: {comments: IssueType[], onCommentsChanged: (comments: IssueType[]) => void}) => {
+  const comments = props.comments
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+
     let issueType: IssueType;
     switch (e.currentTarget.dataset.value) {
       case "not_provided":
@@ -28,78 +26,67 @@ class Issue extends Component<SubmissionComponentProps> {
         break;
     }
 
-    let newSubmission: Submission;
-    if (!this.comments().includes(issueType)) {
-      newSubmission = {
-        ...this.props.submission,
-        comments: [...this.comments(), issueType],
-      };
+    let newComments: IssueType[];
+    if (!comments.includes(issueType)) {
+      newComments = [...comments, issueType]
     } else {
-      newSubmission = {
-        ...this.props.submission,
-        comments: [
-          ...this.comments().filter((comment) => comment !== issueType),
-        ],
-      };
+      newComments = [...comments.filter((comment) => comment !== issueType)];
     }
-    this.props.onSubmissionChanged(newSubmission);
+    props.onCommentsChanged(newComments);
   };
 
-  render(): React.ReactNode {
-    return (
-      <div id="submission-issue">
-        <h2>What was the issue?</h2>
-        <h3>Choose at least one</h3>
-        <ul>
-          <li>
-            <BaseButton
-              active={this.comments().includes(IssueType.NotProvided)}
-              value="not_provided"
-              onClick={this.handleClick}
-            >
-              Bicycle parking is&nbsp;<strong>not provided</strong>
-            </BaseButton>
-          </li>
-          <li>
-            <BaseButton
-              active={this.comments().includes(IssueType.Full)}
-              value="full"
-              onClick={this.handleClick}
-            >
-              Bicycle parking is&nbsp;<strong>full</strong>
-            </BaseButton>
-          </li>
-          <li>
-            <BaseButton
-              active={this.comments().includes(IssueType.Damaged)}
-              value="damaged"
-              onClick={this.handleClick}
-            >
-              Bicycle parking is&nbsp;<strong>damaged</strong>
-            </BaseButton>
-          </li>
-          <li>
-            <BaseButton
-              active={this.comments().includes(IssueType.Abandoned)}
-              value="abandoned"
-              onClick={this.handleClick}
-            >
-              A bicycle is&nbsp;<strong>abandoned</strong>
-            </BaseButton>
-          </li>
-          <li>
-            <BaseButton
-              active={this.comments().includes(IssueType.Other)}
-              value="other"
-              onClick={this.handleClick}
-            >
-              Something else
-            </BaseButton>
-          </li>
-        </ul>
-      </div>
-    );
-  }
-}
-
+  return (
+    <div id="submission-issue">
+      <h2>What was the issue?</h2>
+      <h3>Choose at least one</h3>
+      <ul>
+        <li>
+          <BaseButton
+            active={comments.includes(IssueType.NotProvided)}
+            value="not_provided"
+            onClick={handleClick}
+          >
+            Bicycle parking is&nbsp;<strong>not provided</strong>
+          </BaseButton>
+        </li>
+        <li>
+          <BaseButton
+            active={comments.includes(IssueType.Full)}
+            value="full"
+            onClick={handleClick}
+          >
+            Bicycle parking is&nbsp;<strong>full</strong>
+          </BaseButton>
+        </li>
+        <li>
+          <BaseButton
+            active={comments.includes(IssueType.Damaged)}
+            value="damaged"
+            onClick={handleClick}
+          >
+            Bicycle parking is&nbsp;<strong>damaged</strong>
+          </BaseButton>
+        </li>
+        <li>
+          <BaseButton
+            active={comments.includes(IssueType.Abandoned)}
+            value="abandoned"
+            onClick={handleClick}
+          >
+            A bicycle is&nbsp;<strong>abandoned</strong>
+          </BaseButton>
+        </li>
+        <li>
+          <BaseButton
+            active={comments.includes(IssueType.Other)}
+            value="other"
+            onClick={handleClick}
+          >
+            Something else
+          </BaseButton>
+        </li>
+      </ul>
+    </div>
+  );
+};
 export default Issue;

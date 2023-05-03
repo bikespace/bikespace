@@ -18,13 +18,18 @@ const config: GatsbyConfig = {
       "icon": "src/images/icon.png"
     }
   }, "gatsby-plugin-sharp", "gatsby-transformer-sharp", {
-    resolve: 'gatsby-source-filesystem',
-    options: {
-      "name": "images",
-      "path": "./src/images/"
-    },
-    __key: "images"
-  }, "gatsby-plugin-vanilla-extract", "gatsby-plugin-sass"]
+      resolve: 'gatsby-source-filesystem',
+      options: {
+        "name": "images",
+        "path": "./src/images/"
+      },
+      __key: "images"
+    }, "gatsby-plugin-vanilla-extract", "gatsby-plugin-sass", {
+      resolve: 'gatsby-plugin-react-leaflet',
+      options: {
+        linkStyles: true // (default: true) Enable/disable loading stylesheets via CDN
+      }
+    }]
 };
 
 export default config;

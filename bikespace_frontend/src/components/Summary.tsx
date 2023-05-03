@@ -1,10 +1,5 @@
-import React, { Component } from "react";
-import { SubmissionComponentProps } from "../interfaces/Submission";
+import React from "react";
 
-class Summary extends React.Component<SubmissionComponentProps> {
-  render(): React.ReactNode {
-    return <h1>Summary</h1>;
-  }
+export default () => {
+  return <h1>Summary</h1>;
 }
-
-export default Summary;

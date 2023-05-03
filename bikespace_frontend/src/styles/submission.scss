@@ -106,3 +106,15 @@
     }
   }
 }
+
+#submission-location {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  #outer-map-container {
+    position: relative;
+    flex-grow: 1;
+    margin-bottom: 25px;
+  }
+}
