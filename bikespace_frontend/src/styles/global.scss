@@ -6,6 +6,7 @@ body {
 
 body * {
   box-sizing: border-box;
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
 h1,
