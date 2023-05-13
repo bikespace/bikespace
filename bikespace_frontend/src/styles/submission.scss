@@ -20,8 +20,7 @@
 
   main {
     position: relative;
-    //height: calc(100vh - 50px);
-    height: '100dvh';
+    height: calc(100vh - 50px);
     padding: 20px;
     background-image: url(../images/bikespace-background-desktop.jpeg);
     background-size: cover;
@@ -33,10 +32,9 @@
     display: flex;
     flex-direction: column;
     background-color: white;
-    //height: calc(100vh - 90px);
-    height: '100dvh';
+    height: calc(100dvh - 90px);
     padding: 17px;
-    padding-bottom: 4px;
+    padding-bottom: 24px;
 
     #main-content-body {
       position: relative;
