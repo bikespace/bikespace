@@ -11,8 +11,16 @@ export interface LocationLatLng {
   longitude: number;
 }
 
+export enum ParkingDuration {
+    Minutes = "minutes",
+    Hours = "hours",
+    Overnight = "overnight",
+    MultiDay = "multiday"
+}
+
 export default interface Submission {
   comments: IssueType[];
   longitude: number;
   latitude: number;
+  parkingDuration: ParkingDuration,
 }
