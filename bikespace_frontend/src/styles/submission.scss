@@ -42,7 +42,7 @@
       flex-grow: 1;
 
       h2 {
-        margin-bottom: 5px;
+        margin-bottom: 10px;
         font-size: 1.2rem;
         font-weight: bold;
         color: #39393a;
@@ -126,8 +126,22 @@
     grid-template-columns: repeat(2, 1fr);
     li {
       list-style: none;
-      margin-bottom: 20px;
+      margin: 2px;
       padding: 5px;
     }
   }
+}
+
+.date-picker {
+  margin-bottom: 25px;
+  input {
+    border: none;
+    font-size: 1rem;
+    height: 44px;
+    width: 100%;
+    text-align: center;
+    border: 2px solid $gray-color;
+    border-radius: 23px;
+    padding: 5px;
+  } 
 }

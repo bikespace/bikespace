@@ -47,6 +47,8 @@ const SubmissionRoute = () => {
         return <Location location={location} onLocationChanged={setLocation} />
       case Time:
         return <Time parkingDuration={parkingDuration} onParkingDurationChanged={setParkingDuration} date={date} onDateChanged={setDate}/>;
+      case Comment:
+        return <Comment />;
       case Summary:
         return <Summary />;
     }

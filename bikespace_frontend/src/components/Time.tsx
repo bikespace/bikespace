@@ -3,7 +3,6 @@ import { ParkingDuration } from "../interfaces/Submission";
 import BaseButton from "./BaseButton";
 import DatePicker, { ReactDatePicker } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import "../styles/global.scss";
 
 const Time = (props: { parkingDuration: ParkingDuration, onParkingDurationChanged: (parkingDuration: ParkingDuration) => void, date: Date, onDateChanged: (date: Date) => void }) => {
     const parkingDuration = props.parkingDuration;
@@ -38,7 +37,13 @@ const Time = (props: { parkingDuration: ParkingDuration, onParkingDurationChange
     return (
         <div id="submission-time">
             <h2>When did this happen?</h2>
-            <DatePicker showTimeSelect wrapperClassName="date-picker" selected={date} onChange={handleDate} dateFormat="MMMM d, yyyy h:mm aa" />
+            <DatePicker 
+                showTimeSelect
+                wrapperClassName="date-picker" 
+                selected={date} 
+                onChange={handleDate} 
+                dateFormat="MMMM d, yyyy h:mm aa"
+                />
             <h2>How long did you need to park?</h2>
             <ul title="How long did you need to park?">
                 <li>
