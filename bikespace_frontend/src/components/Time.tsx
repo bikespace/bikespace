@@ -1,10 +1,17 @@
 import React from "react";
 import { ParkingDuration } from "../interfaces/Submission";
 import BaseButton from "./BaseButton";
-import DatePicker from "react-datepicker";
+import DatePicker, { ReactDatePicker } from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import "../styles/global.scss";
 
-const Time = (props: {parkingDuration: ParkingDuration, onParkingDurationChanged: (parkingDuration: ParkingDuration) => void }) => {
+const Time = (props: { parkingDuration: ParkingDuration, onParkingDurationChanged: (parkingDuration: ParkingDuration) => void, date: Date, onDateChanged: (date: Date) => void }) => {
     const parkingDuration = props.parkingDuration;
+    const date = props.date;
+    const handleDate = (chosenDate: Date, e: React.SyntheticEvent<any>) => {
+        props.onDateChanged(chosenDate);
+    };
+
     const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         let duration: ParkingDuration;
@@ -31,10 +38,9 @@ const Time = (props: {parkingDuration: ParkingDuration, onParkingDurationChanged
     return (
         <div id="submission-time">
             <h2>When did this happen?</h2>
-            <ul>
-                <li>
-                    <DatePicker />
-                </li>
+            <DatePicker showTimeSelect wrapperClassName="date-picker" selected={date} onChange={handleDate} dateFormat="MMMM d, yyyy h:mm aa" />
+            <h2>How long did you need to park?</h2>
+            <ul title="How long did you need to park?">
                 <li>
                     <BaseButton
                         active={parkingDuration.includes(ParkingDuration.Minutes)}

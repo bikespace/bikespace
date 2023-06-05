@@ -98,7 +98,7 @@
 
 #submission-issue {
   ul {
-    padding: 0;
+    padding: 5px;
 
     li {
       list-style: none;
@@ -121,11 +121,13 @@
 
 #submission-time{
   ul {
-    padding: 0;
-
+    padding: 5px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     li {
       list-style: none;
       margin-bottom: 20px;
+      padding: 5px;
     }
   }
 }
