@@ -43,6 +43,9 @@ const Time = (props: { parkingDuration: ParkingDuration, onParkingDurationChange
                 selected={date} 
                 onChange={handleDate} 
                 dateFormat="MMMM d, yyyy h:mm aa"
+                popperProps={{
+                    positionFixed: true
+                }}
                 />
             <h2>How long did you need to park?</h2>
             <ul title="How long did you need to park?">
