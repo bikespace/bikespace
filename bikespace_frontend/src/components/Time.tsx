@@ -7,6 +7,7 @@ import "react-datepicker/dist/react-datepicker.css";
 const Time = (props: { parkingDuration: ParkingDuration, onParkingDurationChanged: (parkingDuration: ParkingDuration) => void, date: Date, onDateChanged: (date: Date) => void }) => {
     const parkingDuration = props.parkingDuration;
     const date = props.date;
+
     const handleDate = (chosenDate: Date, e: React.SyntheticEvent<any>) => {
         props.onDateChanged(chosenDate);
     };
@@ -43,9 +44,7 @@ const Time = (props: { parkingDuration: ParkingDuration, onParkingDurationChange
                 selected={date} 
                 onChange={handleDate} 
                 dateFormat="MMMM d, yyyy h:mm aa"
-                popperProps={{
-                    positionFixed: true
-                }}
+                popperClassName="popper-style"
                 />
             <h2>How long did you need to park?</h2>
             <ul title="How long did you need to park?">
