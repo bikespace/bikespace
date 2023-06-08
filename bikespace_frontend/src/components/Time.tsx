@@ -1,15 +1,15 @@
 import React from "react";
 import { ParkingDuration } from "../interfaces/Submission";
 import BaseButton from "./BaseButton";
-import DatePicker, { ReactDatePicker } from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 
-const Time = (props: { parkingDuration: ParkingDuration, onParkingDurationChanged: (parkingDuration: ParkingDuration) => void, date: Date, onDateChanged: (date: Date) => void }) => {
+const Time = (props: { parkingDuration: ParkingDuration, onParkingDurationChanged: (parkingDuration: ParkingDuration) => void, dateTime: Date, onDateTimeChanged: (dateTime: Date) => void }) => {
     const parkingDuration = props.parkingDuration;
-    const date = props.date;
+    const dateTime = props.dateTime;
 
-    const handleDate = (chosenDate: Date, e: React.SyntheticEvent<any>) => {
-        props.onDateChanged(chosenDate);
+    const handleDateTime = (e: React.ChangeEventHandler<HTMLInputElement>) => {
+        e.preventDefault();
+        let chosenDateTime = Date(e.target.value);
+        props.onDateTimeChanged(chosenDateTime);
     };
 
     const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -38,14 +38,9 @@ const Time = (props: { parkingDuration: ParkingDuration, onParkingDurationChange
     return (
         <div id="submission-time">
             <h2>When did this happen?</h2>
-            <DatePicker 
-                showTimeSelect
-                wrapperClassName="date-picker" 
-                selected={date} 
-                onChange={handleDate} 
-                dateFormat="MMMM d, yyyy h:mm aa"
-                popperClassName="popper-style"
-                />
+            <input type="datetime-local" onChange={handleDateTime}>
+            </input>
+
             <h2>How long did you need to park?</h2>
             <ul title="How long did you need to park?">
                 <li>

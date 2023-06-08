@@ -15,7 +15,7 @@ const SubmissionRoute = () => {
     longitude: -79.384452
   });
   const [parkingDuration, setParkingDuration] = useState<ParkingDuration>(ParkingDuration.Minutes);
-  const [date, setDate] = useState<Date>(new Date());
+  const [dateTime, setDateTime] = useState<Date>(new Date());
   const [locationLoaded, setLocationLoaded] = useState(false);
   useEffect(() => {
     navigator.geolocation.getCurrentPosition((position) => {
@@ -46,7 +46,7 @@ const SubmissionRoute = () => {
       case Location:
         return <Location location={location} onLocationChanged={setLocation} />
       case Time:
-        return <Time parkingDuration={parkingDuration} onParkingDurationChanged={setParkingDuration} date={date} onDateChanged={setDate}/>;
+        return <Time parkingDuration={parkingDuration} onParkingDurationChanged={setParkingDuration} dateTime={dateTime} onDateTimeChanged={setDateTime}/>;
       case Comment:
         return <Comment />;
       case Summary:
