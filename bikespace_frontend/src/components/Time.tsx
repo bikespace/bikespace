@@ -38,7 +38,7 @@ const Time = (props: { parkingDuration: ParkingDuration, onParkingDurationChange
     return (
         <div id="submission-time">
             <h2>When did this happen?</h2>
-            <input value={dateTime.toISOString().replace('Z', '')} type="datetime-local" onChange={handleDateTime}>
+            <input value={dateTime.toISOString().slice(0,-8)} type="datetime-local" onChange={handleDateTime}>
             </input>
 
             <h2>How long did you need to park?</h2>
