@@ -6,9 +6,9 @@ const Time = (props: { parkingDuration: ParkingDuration, onParkingDurationChange
     const parkingDuration = props.parkingDuration;
     const dateTime = props.dateTime;
 
-    const handleDateTime = (e: React.ChangeEventHandler<HTMLInputElement>) => {
+    const handleDateTime = (e: React.ChangeEvent<HTMLInputElement>) => {
         e.preventDefault();
-        let chosenDateTime = Date(e.target.value);
+        let chosenDateTime = new Date(e.currentTarget.value);
         props.onDateTimeChanged(chosenDateTime);
     };
 
@@ -38,7 +38,7 @@ const Time = (props: { parkingDuration: ParkingDuration, onParkingDurationChange
     return (
         <div id="submission-time">
             <h2>When did this happen?</h2>
-            <input type="datetime-local" onChange={handleDateTime}>
+            <input value={dateTime.toISOString().replace('Z', '')} type="datetime-local" onChange={handleDateTime}>
             </input>
 
             <h2>How long did you need to park?</h2>
