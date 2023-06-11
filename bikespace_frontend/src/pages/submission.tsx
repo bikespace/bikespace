@@ -3,7 +3,7 @@ import "../styles/submission.scss";
 import { StaticImage } from "gatsby-plugin-image";
 import SubmissionProgressBar from "../components/SubmissionProgressBar";
 import { Issue, Location, Time, Comment, Summary } from "../components/";
-import { IssueType, LocationLatLng } from "../interfaces/Submission";
+import { IssueType, LocationLatLng, ParkingDuration } from "../interfaces/Submission";
 
 const orderedComponents = [Issue, Location, Time, Comment, Summary];
 
@@ -14,6 +14,8 @@ const SubmissionRoute = () => {
     latitude: 43.653220,
     longitude: -79.384452
   });
+  const [parkingDuration, setParkingDuration] = useState<ParkingDuration>(ParkingDuration.Minutes);
+  const [dateTime, setDateTime] = useState<Date>(new Date());
   const [locationLoaded, setLocationLoaded] = useState(false);
   useEffect(() => {
     navigator.geolocation.getCurrentPosition((position) => {
@@ -44,7 +46,7 @@ const SubmissionRoute = () => {
       case Location:
         return <Location location={location} onLocationChanged={setLocation} />
       case Time:
-        return <Time />;
+        return <Time parkingDuration={parkingDuration} onParkingDurationChanged={setParkingDuration} dateTime={dateTime} onDateTimeChanged={setDateTime}/>;
       case Comment:
         return <Comment />;
       case Summary:

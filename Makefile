@@ -18,7 +18,7 @@ setup-py: $(VENV)
 
 clean:
 	rm -rf $(VENV)
-	rm -rf $(SWAGGER_UI)
+	cd $(BIKESPACE_FRONTEND_DIR) && npm run clean && rm -rf node_modules
 
 $(VENV): $(BIKESPACE_API_DIR)/requirements.txt
 	python$(PYTHON_VERSION) -m venv $(VENV)
