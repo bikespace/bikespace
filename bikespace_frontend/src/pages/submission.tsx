@@ -8,7 +8,7 @@ import { IssueType, LocationLatLng, ParkingDuration } from "../interfaces/Submis
 const orderedComponents = [Issue, Location, Time, Comment, Summary];
 
 const SubmissionRoute = () => {
-  const [comments, setComments] = useState<IssueType[]>([]);
+  const [issues, setIssues] = useState<IssueType[]>([]);
   const [location, setLocation] = useState<LocationLatLng>({
     // default location is the City Hall
     latitude: 43.653220,
@@ -42,7 +42,7 @@ const SubmissionRoute = () => {
   const ComponentToLoad = () => {
     switch (orderedComponents[step]) {
       case Issue:
-        return <Issue comments={comments} onCommentsChanged={setComments} />
+        return <Issue issues={issues} onIssuesChanged={setIssues} />
       case Location:
         return <Location location={location} onLocationChanged={setLocation} />
       case Time:

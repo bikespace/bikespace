@@ -24,7 +24,7 @@ export interface Time {
 }
 
 export default interface Submission {
-  comments: IssueType[];
+  issues: IssueType[];
   longitude: number;
   latitude: number;
   time: Time,
