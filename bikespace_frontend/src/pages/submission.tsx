@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import "../styles/submission.scss";
 import { StaticImage } from "gatsby-plugin-image";
 import SubmissionProgressBar from "../components/SubmissionProgressBar";
-import { Issue, Location, Time, Comment, Summary } from "../components/";
+import { Issue, Location, Time, Comments, Summary } from "../components/";
 import { IssueType, LocationLatLng, ParkingDuration } from "../interfaces/Submission";
 
-const orderedComponents = [Issue, Location, Time, Comment, Summary];
+const orderedComponents = [Issue, Location, Time, Comments, Summary];
 
 const SubmissionRoute = () => {
   const [issues, setIssues] = useState<IssueType[]>([]);
@@ -18,6 +18,7 @@ const SubmissionRoute = () => {
   const [parkingDuration, setParkingDuration] = useState<ParkingDuration>(ParkingDuration.Minutes);
   const [dateTime, setDateTime] = useState<Date>(new Date());
   const [locationLoaded, setLocationLoaded] = useState(false);
+  const [comments, setComments] = useState("");
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition((position) => {
@@ -49,8 +50,8 @@ const SubmissionRoute = () => {
         return <Location location={location} onLocationChanged={setLocation} />
       case Time:
         return <Time parkingDuration={parkingDuration} onParkingDurationChanged={setParkingDuration} dateTime={dateTime} onDateTimeChanged={setDateTime}/>;
-      case Comment:
-        return <Comment />;
+      case Comments:
+        return <Comments comments={comments} onCommentsChanged={setComments} />;
       case Summary:
         return <Summary />;
     }

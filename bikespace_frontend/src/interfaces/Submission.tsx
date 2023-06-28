@@ -28,4 +28,5 @@ export default interface Submission {
   longitude: number;
   latitude: number;
   time: Time,
+  comment: Comment
 }
