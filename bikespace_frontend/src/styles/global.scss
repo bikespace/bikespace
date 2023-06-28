@@ -26,6 +26,14 @@ h6 {
   padding: 10px 25px;
   font-size: 1.2rem;
   cursor: pointer;
+
+  &.hide {
+    visibility: hidden;
+  }
+
+  &.display-none {
+    display: none;
+  }
 }
 
 .primary-btn-no-fill {
@@ -37,6 +45,13 @@ h6 {
   padding: 10px 25px;
   font-size: 1.2rem;
   cursor: pointer;
+
+  &.hide {
+    visibility: hidden;
+  }
+  &.display-none {
+    display: none;
+  }
 }
 
 

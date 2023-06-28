@@ -14,9 +14,11 @@ const SubmissionRoute = () => {
     latitude: 43.653220,
     longitude: -79.384452
   });
+
   const [parkingDuration, setParkingDuration] = useState<ParkingDuration>(ParkingDuration.Minutes);
   const [dateTime, setDateTime] = useState<Date>(new Date());
   const [locationLoaded, setLocationLoaded] = useState(false);
+
   useEffect(() => {
     navigator.geolocation.getCurrentPosition((position) => {
       setLocation({
@@ -74,11 +76,16 @@ const SubmissionRoute = () => {
           </section>
 
           <footer>
-            <button className="primary-btn-no-fill" onClick={() => handleStepChanged(-1)}>
+            <button className={`primary-btn-no-fill ${step == 0 ? "hide": " "}`}
+              onClick={() => handleStepChanged(-1)}>
               Back
             </button>
-            <button className="primary-btn" onClick={() => handleStepChanged(1)}>
+            <button className={`primary-btn ${step == orderedComponents.length - 1 ? "display-none": " "}`}
+              onClick={() => handleStepChanged(1)}>
               Next
+            </button>
+            <button className={`primary-btn ${step == orderedComponents.length - 1 ? "": "display-none"}`}>
+              Submit
             </button>
           </footer>
         </div>
