@@ -2,17 +2,20 @@ import React from "react";
 
 const Comments = (props: {comments: string, onCommentsChanged: (comments: string) => void}) => {
   const comments = props.comments
-  const handleComments = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleComments = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     e.preventDefault();
     let commentText = e.currentTarget.value;
     props.onCommentsChanged(commentText);
   }
   return (
-    <div id="comments">
+    <div id="submission-comments">
       <h1>Comments</h1>
-      <input type="text"
+      <h3>Any additional comments you want to add...</h3>
+      <textarea
              onChange={handleComments}
-             value={comments}></input>
+             value={comments}
+             rows={10}
+             cols={33}></textarea>
     </div>
   )
 }
