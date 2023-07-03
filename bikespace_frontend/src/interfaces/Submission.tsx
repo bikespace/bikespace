@@ -1,5 +1,5 @@
 export enum IssueType {
-  NotProvided = "note_provided",
+  NotProvided = "not_provided",
   Full = "full",
   Damaged = "damaged",
   Abandoned = "abandoned",
@@ -18,15 +18,14 @@ export enum ParkingDuration {
     MultiDay = "multiday"
 }
 
-export interface Time {
+export interface ParkingTime {
     date: Date;
     parkingDuration: ParkingDuration;
 }
 
 export default interface Submission {
-  issues: IssueType[];
-  longitude: number;
-  latitude: number;
-  time: Time,
-  comment: Comment
+  issues: IssueType[],
+  location: LocationLatLng,
+  parkingTime: ParkingTime,
+  comments: String
 }

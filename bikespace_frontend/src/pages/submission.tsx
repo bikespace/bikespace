@@ -3,7 +3,8 @@ import "../styles/submission.scss";
 import { StaticImage } from "gatsby-plugin-image";
 import SubmissionProgressBar from "../components/SubmissionProgressBar";
 import { Issue, Location, Time, Comments, Summary } from "../components/";
-import { IssueType, LocationLatLng, ParkingDuration } from "../interfaces/Submission";
+import { IssueType, LocationLatLng, ParkingDuration, ParkingTime } from "../interfaces/Submission";
+import Submission from "../interfaces/Submission";
 
 const orderedComponents = [Issue, Location, Time, Comments, Summary];
 
@@ -19,7 +20,8 @@ const SubmissionRoute = () => {
   const [dateTime, setDateTime] = useState<Date>(new Date());
   const [locationLoaded, setLocationLoaded] = useState(false);
   const [comments, setComments] = useState("");
-
+  const parkingTime = { date: dateTime, parkingDuration: parkingDuration}
+  const submission = { issues: issues, location: location, parkingTime: parkingTime, comments: comments }
   useEffect(() => {
     navigator.geolocation.getCurrentPosition((position) => {
       setLocation({
@@ -49,50 +51,50 @@ const SubmissionRoute = () => {
       case Location:
         return <Location location={location} onLocationChanged={setLocation} />
       case Time:
-        return <Time parkingDuration={parkingDuration} onParkingDurationChanged={setParkingDuration} dateTime={dateTime} onDateTimeChanged={setDateTime}/>;
+        return <Time parkingDuration={parkingDuration} onParkingDurationChanged={setParkingDuration} dateTime={dateTime} onDateTimeChanged={setDateTime} />;
       case Comments:
         return <Comments comments={comments} onCommentsChanged={setComments} />;
       case Summary:
-        return <Summary />;
-    }
-  };
+        return <Summary submision={submission} />;
+  }
+};
 
-  return (
-    <div id="submission">
-      <header id="submission-header">
-        <StaticImage
-          className="header-logo"
-          src="../images/header-logo.svg"
-          alt="bike space logo"
-        />
-      </header>
-      <main>
-        <div id="main-content">
-          <header>
-            <SubmissionProgressBar step={step} />
-          </header>
+return (
+  <div id="submission">
+    <header id="submission-header">
+      <StaticImage
+        className="header-logo"
+        src="../images/header-logo.svg"
+        alt="bike space logo"
+      />
+    </header>
+    <main>
+      <div id="main-content">
+        <header>
+          <SubmissionProgressBar step={step} />
+        </header>
 
-          <section id="main-content-body">
-            { ComponentToLoad() }
-          </section>
+        <section id="main-content-body">
+          {ComponentToLoad()}
+        </section>
 
-          <footer>
-            <button className={`primary-btn-no-fill ${step == 0 ? "hide": " "}`}
-              onClick={() => handleStepChanged(-1)}>
-              Back
-            </button>
-            <button className={`primary-btn ${step == orderedComponents.length - 1 ? "display-none": " "}`}
-              onClick={() => handleStepChanged(1)}>
-              Next
-            </button>
-            <button className={`primary-btn ${step == orderedComponents.length - 1 ? "": "display-none"}`}>
-              Submit
-            </button>
-          </footer>
-        </div>
-      </main>
-    </div>
-  );
+        <footer>
+          <button className={`primary-btn-no-fill ${step == 0 ? "hide" : " "}`}
+            onClick={() => handleStepChanged(-1)}>
+            Back
+          </button>
+          <button className={`primary-btn ${step == orderedComponents.length - 1 ? "display-none" : " "}`}
+            onClick={() => handleStepChanged(1)}>
+            Next
+          </button>
+          <button className={`primary-btn ${step == orderedComponents.length - 1 ? "" : "display-none"}`}>
+            Submit
+          </button>
+        </footer>
+      </div>
+    </main>
+  </div>
+);
 };
 
 export default SubmissionRoute;
