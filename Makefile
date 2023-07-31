@@ -42,10 +42,10 @@ seed-db: setup-py
 recreate-db: setup-py
 	$(PYTHON) $(MANAGE_PY) recreate-db
 
-init-db: setup-py $(BIKESPACE_DB_MIGRATIONS)
+init-db: setup-py 
 	$(PYTHON) $(MANAGE_PY) db init --directory $(BIKESPACE_DB_MIGRATIONS)
 
-migrate-db: init-db 
+migrate-db: 
 	$(PYTHON) $(MANAGE_PY) db migrate --directory $(BIKESPACE_DB_MIGRATIONS)
 
 fly-deploy-api: $(BIKESPACE_API_FLY_TOML)

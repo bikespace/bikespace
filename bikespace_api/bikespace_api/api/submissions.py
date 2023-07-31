@@ -19,7 +19,9 @@ def get_answers():
                 "id": submission.id,
                 "latitude": submission.latitude,
                 "longitude": submission.longitude,
-                "survey": json.loads(submission.survey),
+                "issues": submission.issues,
+                "parking_duration": submission.comments,
+                "parking_time": submission.parking_time,
                 "comments": submission.comments,
             }
             json_output.append(submission_json)
@@ -28,13 +30,15 @@ def get_answers():
         print(type(request.json))
         json_body = request.json
         try:
-            new_survey_answer = Submission(
+            new_submission = Submission(
                 json_body["latitude"],
                 json_body["longitude"],
-                json.dumps(json_body["survey"]),
+                json_body["issues"],
+                json_body["parking_duration"],
+                json_body["parking_time"],
                 json_body["comments"],
             )
-            db.session.add(new_survey_answer)
+            db.session.add(new_submission)
             db.session.commit()
             return jsonify({"status": "created"}), 201
         except IntegrityError:
@@ -49,7 +53,9 @@ def get_submission_with_id(submission_id):
         "id": submission_with_id.id,
         "latitude": submission_with_id.latitude,
         "longitude": submission_with_id.longitude,
-        "survey": json.loads(submission_with_id.survey),
+        "issues": submission_with_id.issues,
+        "parking_duration": submission_with_id.parking_duration,
+        "parking_time": submission_with_id.parking_time,
         "comments": submission_with_id.comments,
     }
     return jsonify(submission_with_id_json)

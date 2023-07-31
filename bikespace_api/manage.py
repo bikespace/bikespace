@@ -3,6 +3,7 @@ from flask.cli import FlaskGroup
 
 from bikespace_api import create_app, db
 from bikespace_api.api.models import Submission
+from datetime import datetime
 
 import json
 
@@ -35,13 +36,13 @@ def test():
 def seed_db():
     """Seeds the database"""
     db.session.add(
-        Submission(43.6532, -79.3832, json.dumps(sample_survey), "comments")
+        Submission(43.6532, -79.3832, "not_provided", "minutes", datetime.now(), "comments1")
     )
     db.session.add(
-        Submission(43.6531, -79.3832, json.dumps(sample_survey), "comments")
+        Submission(43.6532, -79.3832, "not_provided,damaged", "hours", datetime.now(), "comments2")
     )
     db.session.add(
-        Submission(43.6530, -79.3832, json.dumps(sample_survey), "comments")
+        Submission(43.6532, -79.3832, "not_provided,full,abandonded", "multiday", datetime.now(), "comments2")
     )
     db.session.commit()
 
