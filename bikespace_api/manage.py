@@ -2,7 +2,7 @@ import unittest
 from flask.cli import FlaskGroup
 
 from bikespace_api import create_app, db
-from bikespace_api.api.models import Submission, IssueType
+from bikespace_api.api.models import Submission, IssueType, ParkingDuration
 from datetime import datetime
 
 import json
@@ -33,13 +33,13 @@ def test():
 def seed_db():
     """Seeds the database"""
     db.session.add(
-        Submission(43.6532, -79.3832, [IssueType.ABANDONDED], "minutes", datetime.now(), "comments1")
+        Submission(43.6532, -79.3832, [IssueType.ABANDONDED], ParkingDuration.MINUTES, datetime.now(), "comments1")
     )
     db.session.add(
-        Submission(43.6532, -79.3832, [IssueType.NOT_PROVIDED,IssueType.DAMAGED], "hours", datetime.now(), "comments2")
+        Submission(43.6532, -79.3832, [IssueType.NOT_PROVIDED,IssueType.DAMAGED], ParkingDuration.HOURS, datetime.now(), "comments2")
     )
     db.session.add(
-        Submission(43.6532, -79.3832, [IssueType.NOT_PROVIDED,IssueType.FULL,IssueType.ABANDONDED], "multiday", datetime.now(), "comments2")
+        Submission(43.6532, -79.3832, [IssueType.NOT_PROVIDED,IssueType.FULL,IssueType.ABANDONDED], ParkingDuration.MULTIDAY, datetime.now(), "comments2")
     )
     db.session.commit()
 

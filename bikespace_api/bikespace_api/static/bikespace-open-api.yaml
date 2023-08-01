@@ -74,6 +74,11 @@ components:
               - other
         parking_duration:
           type: string
+          enum:
+            - minutes
+            - hours
+            - overnight
+            - multiday
         parking_time:
           type: string
         comments:

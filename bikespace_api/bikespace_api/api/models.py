@@ -14,6 +14,12 @@ class IssueType(Enum):
     ABANDONDED = "abandoned"
     OTHER = "other"
 
+class ParkingDuration(Enum):
+    MINUTES = "minutes"
+    HOURS = "hours"
+    OVERNIGHT = "overnight"
+    MULTIDAY = "multiday"
+
 class Submission(db.Model):
     __tablename__ = "bikeparking_submissions"
 
@@ -21,7 +27,7 @@ class Submission(db.Model):
     latitude = db.Column(db.Float, nullable=False)
     longitude = db.Column(db.Float, nullable=False)
     issues = db.Column(pg.ARRAY(sa.Enum(IssueType, create_constraint=False, native_enum=False)))
-    parking_duration = db.Column(db.String(128), nullable=False, default="minutes")
+    parking_duration = db.Column(sa.Enum(ParkingDuration, create_constraint=False, native_enum=False))
     parking_time = db.Column(db.DateTime, nullable=False, default=datetime.now())
     comments = db.Column(db.String(256), default=None, nullable=True)
 

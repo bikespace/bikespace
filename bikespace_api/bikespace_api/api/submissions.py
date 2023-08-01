@@ -1,7 +1,7 @@
 # bikespace_api/bikespace_api/api/answers.py
 
 from flask import Blueprint, jsonify, request
-from bikespace_api.api.models import Submission, IssueType
+from bikespace_api.api.models import Submission, IssueType, ParkingDuration
 from bikespace_api import db
 from sqlalchemy.exc import IntegrityError
 import json
@@ -24,7 +24,7 @@ def get_answers():
                 "latitude": submission.latitude,
                 "longitude": submission.longitude,
                 "issues": issues,
-                "parking_duration": submission.comments,
+                "parking_duration": submission.parking_duration.value,
                 "parking_time": submission.parking_time,
                 "comments": submission.comments,
             }
@@ -40,7 +40,7 @@ def get_answers():
                 json_body["latitude"],
                 json_body["longitude"],
                 issues,
-                json_body["parking_duration"],
+                ParkingDuration(json_body["parking_duration"]),
                 json_body["parking_time"],
                 json_body["comments"],
             )
@@ -63,7 +63,7 @@ def get_submission_with_id(submission_id):
         "latitude": submission_with_id.latitude,
         "longitude": submission_with_id.longitude,
         "issues": issues,
-        "parking_duration": submission_with_id.parking_duration,
+        "parking_duration": submission_with_id.parking_duration.value,
         "parking_time": submission_with_id.parking_time,
         "comments": submission_with_id.comments,
     }
