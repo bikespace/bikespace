@@ -2,16 +2,13 @@ import unittest
 from flask.cli import FlaskGroup
 
 from bikespace_api import create_app, db
-from bikespace_api.api.models import Submission
+from bikespace_api.api.models import Submission, IssueType
 from datetime import datetime
 
 import json
 
 app = create_app()
 cli = FlaskGroup(create_app=create_app)
-
-sample_survey = {"key": "value"}
-
 
 @cli.command()
 def recreate_db():
@@ -36,13 +33,13 @@ def test():
 def seed_db():
     """Seeds the database"""
     db.session.add(
-        Submission(43.6532, -79.3832, "not_provided", "minutes", datetime.now(), "comments1")
+        Submission(43.6532, -79.3832, [IssueType.ABANDONDED], "minutes", datetime.now(), "comments1")
     )
     db.session.add(
-        Submission(43.6532, -79.3832, "not_provided,damaged", "hours", datetime.now(), "comments2")
+        Submission(43.6532, -79.3832, [IssueType.NOT_PROVIDED,IssueType.DAMAGED], "hours", datetime.now(), "comments2")
     )
     db.session.add(
-        Submission(43.6532, -79.3832, "not_provided,full,abandonded", "multiday", datetime.now(), "comments2")
+        Submission(43.6532, -79.3832, [IssueType.NOT_PROVIDED,IssueType.FULL,IssueType.ABANDONDED], "multiday", datetime.now(), "comments2")
     )
     db.session.commit()
 
