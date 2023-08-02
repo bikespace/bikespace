@@ -44,6 +44,40 @@ const SubmissionRoute = () => {
       setStep(step + 1);
     }
   }
+
+  const submissionPayload = {
+    latitude: submission.location.latitude,
+    longitude: submission.location.longitude,
+    issues: submission.issues,
+    parking_time: submission.parkingTime.date,
+    parking_duration: submission.parkingTime.parkingDuration,
+    comments: submission.comments
+  }
+  console.log(JSON.stringify(submissionPayload))
+  async function handleSubmit() {
+    try {
+        const response = await fetch("http://127.0.0.1:8000/api/v2/submissions", {
+            method: 'POST',
+            body: JSON.stringify(submissionPayload),
+            headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+            },
+        });
+        if (!response.ok) {
+            throw new Error(`Error! status: ${response.status}`);
+        }
+        console.log("result is " + response.status);
+    } catch(error) {
+        if (error instanceof Error) {
+            console.log("Error message: ", error.message);
+            return error.message;
+        } else {
+            console.log("unexpected error", error); 
+            return "An unexpected error occured";
+        }
+    }
+  }
   const ComponentToLoad = () => {
     switch (orderedComponents[step]) {
       case Issue:
@@ -87,7 +121,8 @@ return (
             onClick={() => handleStepChanged(1)}>
             Next
           </button>
-          <button className={`primary-btn ${step == orderedComponents.length - 1 ? "" : "display-none"}`}>
+          <button className={`primary-btn ${step == orderedComponents.length - 1 ? "" : "display-none"}`}
+            onClick={() => handleSubmit()}>
             Submit
           </button>
         </footer>

@@ -3,7 +3,6 @@ import Submission from "../interfaces/Submission";
 
 const Summary = (props: { submision: Submission }) => {
   const submission = props.submision;
-
   return (
     <div id="submission-summary">
       <h1>Summary</h1>
