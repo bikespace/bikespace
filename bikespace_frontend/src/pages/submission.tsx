@@ -53,10 +53,10 @@ const SubmissionRoute = () => {
     parking_duration: submission.parkingTime.parkingDuration,
     comments: submission.comments
   }
-  console.log(JSON.stringify(submissionPayload))
   async function handleSubmit() {
     try {
-        const response = await fetch("http://127.0.0.1:8000/api/v2/submissions", {
+        console.log(process.env.BIKESPACE_API_URL);
+        const response = await fetch(`${process.env.BIKESPACE_API_URL}/submissions`, {
             method: 'POST',
             body: JSON.stringify(submissionPayload),
             headers: {
@@ -78,6 +78,7 @@ const SubmissionRoute = () => {
         }
     }
   }
+
   const ComponentToLoad = () => {
     switch (orderedComponents[step]) {
       case Issue:
