@@ -13,8 +13,6 @@ export APP_SETTINGS = bikespace_api.config.DevelopmentConfig
 export DATABASE_URL = postgresql://postgres:postgres@localhost:5432/bikespace_dev
 export FLASK_DEBUG = true
 export FLASK_RUN_PORT = 8000
-export NODE_ENV=development
-
 
 setup-py: $(VENV)
 
