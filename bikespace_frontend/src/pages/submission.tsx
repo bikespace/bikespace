@@ -60,8 +60,8 @@ const SubmissionRoute = () => {
   });
   async function handleSubmit() {
     try {
-        console.log(process.env.BIKESPACE_API_URL);
-        const response = await fetch(`${process.env.BIKESPACE_API_URL}/submissions`, {
+        console.log(process.env.GATSBY_BIKESPACE_API_URL);
+        const response = await fetch(`${process.env.GATSBY_BIKESPACE_API_URL}/submissions`, {
             method: 'POST',
             body: JSON.stringify(submissionPayload),
             headers: {
