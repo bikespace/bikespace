@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
+import { navigate } from "gatsby";
 import "../styles/submission.scss";
 import { StaticImage } from "gatsby-plugin-image";
 import SubmissionProgressBar from "../components/SubmissionProgressBar";
 import { Issue, Location, Time, Comments, Summary } from "../components/";
-import { IssueType, LocationLatLng, ParkingDuration, ParkingTime } from "../interfaces/Submission";
-import Submission from "../interfaces/Submission";
+import { IssueType, LocationLatLng, ParkingDuration, ParkingTime, SubmissionStatus } from "../interfaces/Submission";
 
 const orderedComponents = [Issue, Location, Time, Comments, Summary];
 
@@ -38,10 +38,12 @@ const SubmissionRoute = () => {
   const handleStepChanged = (i: number) => {
     if (!locationLoaded) { return locationLoaded }
 
-    if (i === -1 && step > 0) {
+    if (i === -1 && step > 0 && submissionStatus.status == "summary") {
       setStep(step - 1);
     } else if (i === 1 && step < orderedComponents.length - 1) {
       setStep(step + 1);
+    } else if (i === -1 && step > 0 && submissionStatus.status != "summary") {
+      navigate("/")
     }
   }
 
@@ -53,6 +55,9 @@ const SubmissionRoute = () => {
     parking_duration: submission.parkingTime.parkingDuration,
     comments: submission.comments
   }
+  const [submissionStatus, setSubmissionStatus] = useState<SubmissionStatus>({
+    status: "summary"
+  });
   async function handleSubmit() {
     try {
         console.log(process.env.BIKESPACE_API_URL);
@@ -68,13 +73,16 @@ const SubmissionRoute = () => {
             throw new Error(`Error! status: ${response.status}`);
         }
         console.log("result is " + response.status);
+        if (response.status == 201) {
+            setSubmissionStatus({status: "success"});
+        }
     } catch(error) {
         if (error instanceof Error) {
             console.log("Error message: ", error.message);
-            return error.message;
+            setSubmissionStatus({status: "error"})
         } else {
             console.log("unexpected error", error); 
-            return "An unexpected error occured";
+            setSubmissionStatus({status: "error"})
         }
     }
   }
@@ -90,7 +98,7 @@ const SubmissionRoute = () => {
       case Comments:
         return <Comments comments={comments} onCommentsChanged={setComments} />;
       case Summary:
-        return <Summary submision={submission} />;
+        return <Summary submision={submission} submissionStatus={submissionStatus} />;
   }
 };
 
@@ -122,7 +130,7 @@ return (
             onClick={() => handleStepChanged(1)}>
             Next
           </button>
-          <button className={`primary-btn ${step == orderedComponents.length - 1 ? "" : "display-none"}`}
+          <button className={`primary-btn ${(step == orderedComponents.length - 1 && submissionStatus.status == "summary") ? "" : "display-none"}`}
             onClick={() => handleSubmit()}>
             Submit
           </button>

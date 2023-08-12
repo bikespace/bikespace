@@ -23,6 +23,10 @@ export interface ParkingTime {
     parkingDuration: ParkingDuration;
 }
 
+export interface SubmissionStatus {
+    status: string;
+}
+
 export default interface Submission {
   issues: IssueType[],
   location: LocationLatLng,
