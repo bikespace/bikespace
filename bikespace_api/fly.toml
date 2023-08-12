@@ -11,7 +11,7 @@ processes = []
 
 [env]
   PORT = "8000"
-  APP_SETTINGS = "bikespace_api.config.DevelopmentConfig"
+  APP_SETTINGS = "bikespace_api.config.ProductionConfig"
 
 [deploy]
   release_command = "sh ./fly_release.sh"
