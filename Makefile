@@ -47,6 +47,12 @@ init-db: setup-py
 migrate-db: 
 	$(PYTHON) $(MANAGE_PY) db migrate --directory $(BIKESPACE_DB_MIGRATIONS)
 
+upgrade-db:
+	$(PYTHON) $(MANAGE_PY) db upgrade --directory $(BIKESPACE_DB_MIGRATIONS)
+
+db-stamp-heads:
+	$(PYTHON) $(MANAGE_PY) db stamp heads --directory $(BIKESPACE_DB_MIGRATIONS)
+
 fly-deploy-api: $(BIKESPACE_API_FLY_TOML)
 	cd $(BIKESPACE_API_DIR) && flyctl deploy
 
