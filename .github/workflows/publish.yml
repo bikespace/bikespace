@@ -15,9 +15,11 @@ jobs:
         with:
           node-version: "v18.16.0"
       - name: Create env file
+        env:
+          BIKESPACE_API_URL: ${{ vars.BIKESPACE_API_URL }}
         run: |
           touch bikespace_frontend/.env.production
-          echo GATSBY_BIKESPACE_API_URL=https://bikespace-api-dev.fly.dev/api/v2 >> bikespace_frontend/.env.production
+          echo GATSBY_BIKESPACE_API_URL=$BIKESPACE_API_URL >> bikespace_frontend/.env.production
       - name: Build gatbsy static frontend
         run: make build-frontend
       - name: Publish to Cloudflare Pages
