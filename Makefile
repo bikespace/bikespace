@@ -1,18 +1,18 @@
 BIKESPACE_API_DIR = bikespace_api
+BIKESPACE_API_FLY_TOML = $(BIKESPACE_API_DIR)/fly.toml
 BIKESPACE_FRONTEND_DIR = bikespace_frontend
+BIKESPACE_FRONTEND_FLY_TOML = $(BIKESPACE_FRONTEND_DIR)/fly.toml
+BIKESPACE_DB_MIGRATIONS = $(BIKESPACE_API_DIR)/migrations
 MANAGE_PY = $(BIKESPACE_API_DIR)/manage.py
 PIP = $(VENV)/bin/pip
 PYTHON = $(VENV)/bin/python3
 PYTHON_VERSION = 3.9
 VENV = venv
-BIKESPACE_API_FLY_TOML = $(BIKESPACE_API_DIR)/fly.toml
-BIKESPACE_FRONTEND_FLY_TOML = $(BIKESPACE_FRONTEND_DIR)/fly.toml
 
 export APP_SETTINGS = bikespace_api.config.DevelopmentConfig
 export DATABASE_URL = postgresql://postgres:postgres@localhost:5432/bikespace_dev
 export FLASK_DEBUG = true
 export FLASK_RUN_PORT = 8000
-
 
 setup-py: $(VENV)
 
@@ -41,6 +41,18 @@ seed-db: setup-py
 recreate-db: setup-py
 	$(PYTHON) $(MANAGE_PY) recreate-db
 
+init-db: setup-py 
+	$(PYTHON) $(MANAGE_PY) db init --directory $(BIKESPACE_DB_MIGRATIONS)
+
+migrate-db: 
+	$(PYTHON) $(MANAGE_PY) db migrate --directory $(BIKESPACE_DB_MIGRATIONS)
+
+upgrade-db:
+	$(PYTHON) $(MANAGE_PY) db upgrade --directory $(BIKESPACE_DB_MIGRATIONS)
+
+db-stamp-heads:
+	$(PYTHON) $(MANAGE_PY) db stamp heads --directory $(BIKESPACE_DB_MIGRATIONS)
+
 fly-deploy-api: $(BIKESPACE_API_FLY_TOML)
 	cd $(BIKESPACE_API_DIR) && flyctl deploy
 
@@ -53,4 +65,7 @@ run-frontend:
 build-frontend:
 	cd $(BIKESPACE_FRONTEND_DIR) && npm install && npm run build
 
-.PHONY: setup-py clean pip-freeze run-flask-app lint-py seed-db recreate-db fly-deploy-api fly-deploy-frontend run-frontend build-frontend
+serve-frontend:
+	cd $(BIKESPACE_FRONTEND_DIR) && npm install && npm run serve
+
+.PHONY: setup-py clean pip-freeze run-flask-app lint-py seed-db recreate-db fly-deploy-api fly-deploy-frontend run-frontend build-frontend 

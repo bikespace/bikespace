@@ -2,8 +2,8 @@ import React from "react";
 import { IssueType } from "../interfaces/Submission";
 import BaseButton from "./BaseButton";
 
-const Issue = (props: {comments: IssueType[], onCommentsChanged: (comments: IssueType[]) => void}) => {
-  const comments = props.comments
+const Issue = (props: {issues: IssueType[], onIssuesChanged: (issues: IssueType[]) => void}) => {
+  const issues = props.issues
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
@@ -26,13 +26,13 @@ const Issue = (props: {comments: IssueType[], onCommentsChanged: (comments: Issu
         break;
     }
 
-    let newComments: IssueType[];
-    if (!comments.includes(issueType)) {
-      newComments = [...comments, issueType]
+    let newIssues: IssueType[];
+    if (!issues.includes(issueType)) {
+      newIssues = [...issues, issueType]
     } else {
-      newComments = [...comments.filter((comment) => comment !== issueType)];
+      newIssues = [...issues.filter((issue) => issue !== issueType)];
     }
-    props.onCommentsChanged(newComments);
+    props.onIssuesChanged(newIssues);
   };
 
   return (
@@ -42,7 +42,7 @@ const Issue = (props: {comments: IssueType[], onCommentsChanged: (comments: Issu
       <ul>
         <li>
           <BaseButton
-            active={comments.includes(IssueType.NotProvided)}
+            active={issues.includes(IssueType.NotProvided)}
             value="not_provided"
             onClick={handleClick}
           >
@@ -51,7 +51,7 @@ const Issue = (props: {comments: IssueType[], onCommentsChanged: (comments: Issu
         </li>
         <li>
           <BaseButton
-            active={comments.includes(IssueType.Full)}
+            active={issues.includes(IssueType.Full)}
             value="full"
             onClick={handleClick}
           >
@@ -60,7 +60,7 @@ const Issue = (props: {comments: IssueType[], onCommentsChanged: (comments: Issu
         </li>
         <li>
           <BaseButton
-            active={comments.includes(IssueType.Damaged)}
+            active={issues.includes(IssueType.Damaged)}
             value="damaged"
             onClick={handleClick}
           >
@@ -69,7 +69,7 @@ const Issue = (props: {comments: IssueType[], onCommentsChanged: (comments: Issu
         </li>
         <li>
           <BaseButton
-            active={comments.includes(IssueType.Abandoned)}
+            active={issues.includes(IssueType.Abandoned)}
             value="abandoned"
             onClick={handleClick}
           >
@@ -78,7 +78,7 @@ const Issue = (props: {comments: IssueType[], onCommentsChanged: (comments: Issu
         </li>
         <li>
           <BaseButton
-            active={comments.includes(IssueType.Other)}
+            active={issues.includes(IssueType.Other)}
             value="other"
             onClick={handleClick}
           >

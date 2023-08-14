@@ -111,3 +111,5 @@ test.py
 
 #swagger-ui 
 swagger-ui/
+
+.env*

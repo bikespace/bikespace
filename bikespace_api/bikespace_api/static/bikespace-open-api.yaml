@@ -62,7 +62,24 @@ components:
           type: number
         longitude:
           type: number
-        survey:
-          type: object
+        issues:
+          type: array
+          items:
+            type: string 
+            enum:
+              - not_provided
+              - full
+              - damaged
+              - abandoned
+              - other
+        parking_duration:
+          type: string
+          enum:
+            - minutes
+            - hours
+            - overnight
+            - multiday
+        parking_time:
+          type: string
         comments:
           type: string

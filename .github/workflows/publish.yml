@@ -14,6 +14,12 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: "v18.16.0"
+      - name: Create env file
+        env:
+          BIKESPACE_API_URL: ${{ vars.BIKESPACE_API_URL }}
+        run: |
+          touch bikespace_frontend/.env.production
+          echo GATSBY_BIKESPACE_API_URL=$BIKESPACE_API_URL >> bikespace_frontend/.env.production
       - name: Build gatbsy static frontend
         run: make build-frontend
       - name: Publish to Cloudflare Pages
@@ -23,4 +29,4 @@ jobs:
           accountId: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
           projectName: bikespace-v2
           directory: bikespace_frontend/public
-          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
