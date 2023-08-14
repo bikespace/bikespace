@@ -9,7 +9,7 @@ class BaseConfig:
     TESTING = False
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SECRET_KEY = os.environ.get("FLASK_SECRET_KEY") 
-
+    SQLALCHEMY_ENGINE_OPTIONS = {"pool_pre_ping": True}
 
 class DevelopmentConfig(BaseConfig):
     """Development configuration"""
