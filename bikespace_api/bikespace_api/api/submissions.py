@@ -6,7 +6,7 @@ from bikespace_api import db
 from sqlalchemy.exc import IntegrityError
 import json
 
-submissions_blueprint = Blueprint("submissions", __name__)
+submissions_blueprint = Blueprint("submissions", __name__, url_prefix="/api/v2")
 
 
 @submissions_blueprint.route("/submissions", methods=["GET", "POST"])

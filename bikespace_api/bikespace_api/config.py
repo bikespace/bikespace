@@ -10,6 +10,7 @@ class BaseConfig:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SECRET_KEY = os.environ.get("FLASK_SECRET_KEY") 
     SQLALCHEMY_ENGINE_OPTIONS = {"pool_pre_ping": True}
+    BIKESPACE_REDIS_URI = "memory://"
 
 class DevelopmentConfig(BaseConfig):
     """Development configuration"""
@@ -29,3 +30,4 @@ class ProductionConfig(BaseConfig):
 
     pass
     SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL")
+    BIKESPACE_REDIS_URI = os.environ.get("BIKESPACE_REDIS_URI")
