@@ -1,7 +1,7 @@
 # bikespace_api/bikespace_api/__init__.py
 
 import os
-from flask import Flask
+from flask import Flask, redirect
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
@@ -30,6 +30,10 @@ def create_app(script_info=None):
 
     app.register_blueprint(submissions_blueprint, url_prefix="/api/v2")
     app.register_blueprint(docs_blueprint, url_prefix="/api/v2")
+
+    @app.route('/')
+    def api_home_page():
+        return redirect("/api/v2/docs", code=302)
 
     # shell context for flask cli
     @app.shell_context_processor

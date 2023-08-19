@@ -113,3 +113,5 @@ test.py
 swagger-ui/
 
 .env*
+
+.vscode/
