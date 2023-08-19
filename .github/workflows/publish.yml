@@ -15,6 +15,7 @@ jobs:
         working-directory: ./bikespace_api
         run: pip install -r requirements.txt
       - name: Run pytest
+        working-directory: ./bikespace_api
         env: 
           TEST_DATABASE_URI: postgresql://postgres@localhost:5432/bikespace_test
         run: python -m pytest
