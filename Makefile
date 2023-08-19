@@ -32,7 +32,15 @@ pip-freeze: $(BIKESPACE_API_DIR)/requirements.txt
 	$(PIP) freeze > $(BIKESPACE_API_DIR)/requirements.txt
 
 run-flask-app: setup-py
+	export APP_SETTINGS=bikespace_api.config.DevelopmentConfig && \
+	export DATABASE_URL=postgresql://postgres:postgres@localhost:5432/bikespace_dev && \
+	export FLASK_DEBUG=true && \
+	export FLASK_RUN_PORT=8000 && \
 	$(PYTHON) $(MANAGE_PY) run
+
+run-pytest: setup-py
+	export TEST_DATABASE_URI=postgresql://postgres:postgres@localhost:5432/bikespace_test && \
+	$(PYTHON) -m pytest $(BIKESPACE_API_DIR)
 
 lint-py:
 	$(PYTHON) -m black $(BIKESPACE_API_DIR)

@@ -1,6 +1,24 @@
 name: Publish
 on: [push]
 jobs:
+  apitest:
+    name: API tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup python
+        uses: actions/setup-python@v4
+        with:
+          python-version : '3.9.17'
+      - name: Install requirements
+        working-directory: ./bikespace_api
+        run: pip install -r requirements.txt
+      - name: Run pytest
+        env: 
+          TEST_DATABASE_URI: postgresql://postgres@localhost:5432/bikespace_test
+        run: python -m pytest
+
   publish:
     name: Publish to Cloudflare Pages
     runs-on: ubuntu-latest
