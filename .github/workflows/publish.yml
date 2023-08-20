@@ -35,14 +35,15 @@ jobs:
         working-directory: ./bikespace_api
         env:
           PGPASSWORD: postgres
-          APP_SETTINGS: bikespace_api.config.DevelopmentConfig
-          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/bikespace_test
+          APP_SETTINGS: bikespace_api.config.TestingConfig
+          TEST_DATABASE_URI: postgresql://postgres:postgres@localhost:5432/bikespace_test
         run: |
           psql -U postgres -h 127.0.0.1 -d postgres -c "CREATE DATABASE bikespace_test"
           python manage.py recreate-db && python manage.py seed-db
       - name: Run pytest
         working-directory: ./bikespace_api
         env: 
+          APP_SETTINGS: bikespace_api.config.TestingConfig
           TEST_DATABASE_URI: postgresql://postgres:postgres@localhost:5432/bikespace_test
         run: python -m pytest
 
