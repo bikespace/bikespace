@@ -33,7 +33,7 @@ jobs:
         working-directory: ./bikespace_api
         env:
           APP_SETTINGS: bikespace_api.config.DevelopmentConfig
-          DATABASE_URL: postgresql://postgres:postgres@postgres:5432/bikespace_test
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/bikespace_test
         run: python manage.py recreate-db && python manage.py seed-db
       - name: Run pytest
         working-directory: ./bikespace_api
@@ -43,6 +43,7 @@ jobs:
 
   publish:
     name: Publish to Cloudflare Pages
+    needs: apitest
     runs-on: ubuntu-latest
     permissions:
       contents: read
