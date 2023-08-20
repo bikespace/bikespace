@@ -19,6 +19,8 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+        ports:
+          - 5432:5432
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -38,7 +40,7 @@ jobs:
       - name: Run pytest
         working-directory: ./bikespace_api
         env: 
-          TEST_DATABASE_URI: postgresql://postgres:postgres@postgres:5432/bikespace_test
+          TEST_DATABASE_URI: postgresql://postgres:postgres@localhost:5432/bikespace_test
         run: python -m pytest
 
   publish:
