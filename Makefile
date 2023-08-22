@@ -1,11 +1,13 @@
-BIKESPACE_API_DIR = bikespace_api
-BIKESPACE_API_FLY_TOML = $(BIKESPACE_API_DIR)/fly.toml
-BIKESPACE_FRONTEND_DIR = bikespace_frontend
+ROOT_PATH := $(abspath $(lastword $(MAKEFILE_LIST)))
+ROOT_DIR :=  $(dir $(ROOT_PATH))
+BIKESPACE_API_DIR = $(ROOT_DIR)/bikespace_api
+BIKESPACE_API_FLY_TOML = $(ROOT_DIR)/$(BIKESPACE_API_DIR)/fly.toml
+BIKESPACE_FRONTEND_DIR = $(ROOT_DIR)/bikespace_frontend
 BIKESPACE_FRONTEND_FLY_TOML = $(BIKESPACE_FRONTEND_DIR)/fly.toml
 BIKESPACE_DB_MIGRATIONS = $(BIKESPACE_API_DIR)/migrations
 MANAGE_PY = $(BIKESPACE_API_DIR)/manage.py
-PIP = $(VENV)/bin/pip
-PYTHON = $(VENV)/bin/python3
+PIP = $(ROOT_DIR)/$(VENV)/bin/pip
+PYTHON = $(ROOT_DIR)/$(VENV)/bin/python3
 PYTHON_VERSION = 3.9
 VENV = venv
 
@@ -39,8 +41,12 @@ run-flask-app: setup-py
 	$(PYTHON) $(MANAGE_PY) run
 
 run-pytest: setup-py
+	export APP_SETTINGS=bikespace_api.config.TestingConfig && \
 	export TEST_DATABASE_URI=postgresql://postgres:postgres@localhost:5432/bikespace_test && \
-	$(PYTHON) -m pytest $(BIKESPACE_API_DIR)
+	cd $(BIKESPACE_API_DIR) && \
+	$(PYTHON) $(MANAGE_PY) recreate-db && \
+	$(PYTHON) $(MANAGE_PY) seed-db && \
+	$(PYTHON) -m pytest 
 
 lint-py:
 	$(PYTHON) -m black $(BIKESPACE_API_DIR)

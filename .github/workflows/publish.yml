@@ -28,24 +28,13 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version : '3.9.17'
-      - name: Install requirements
-        working-directory: ./bikespace_api
-        run: pip install -r requirements.txt
-      - name: Setup app environment
-        working-directory: ./bikespace_api
+      - name: Setup app database
         env:
           PGPASSWORD: postgres
-          APP_SETTINGS: bikespace_api.config.TestingConfig
-          TEST_DATABASE_URI: postgresql://postgres:postgres@localhost:5432/bikespace_test
         run: |
           psql -U postgres -h 127.0.0.1 -d postgres -c "CREATE DATABASE bikespace_test"
-          python manage.py recreate-db && python manage.py seed-db
       - name: Run pytest
-        working-directory: ./bikespace_api
-        env: 
-          APP_SETTINGS: bikespace_api.config.TestingConfig
-          TEST_DATABASE_URI: postgresql://postgres:postgres@localhost:5432/bikespace_test
-        run: python -m pytest
+        run: make run-pytest
 
   publish:
     name: Publish to Cloudflare Pages
