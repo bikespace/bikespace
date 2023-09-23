@@ -5,6 +5,7 @@ from bikespace_api.api.models import Submission, IssueType, ParkingDuration
 from bikespace_api import db
 from sqlalchemy.exc import IntegrityError
 import json
+from better_profanity import profanity
 
 submissions_blueprint = Blueprint("submissions", __name__)
 
@@ -33,6 +34,8 @@ def get_answers():
     elif request.method == "POST":
         json_body = request.json
         issues = []
+        profanity.load_censor_words()
+        censored_comments = profanity.censor(json_body["comments"])
         for issue in json_body["issues"]:
             issues.append(IssueType(issue))
         try:
@@ -42,7 +45,7 @@ def get_answers():
                 issues,
                 ParkingDuration(json_body["parking_duration"]),
                 json_body["parking_time"],
-                json_body["comments"],
+                censored_comments,
             )
             db.session.add(new_submission)
             db.session.commit()

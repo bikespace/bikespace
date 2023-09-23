@@ -13,6 +13,7 @@ export APP_SETTINGS = bikespace_api.config.DevelopmentConfig
 export DATABASE_URL = postgresql://postgres:postgres@localhost:5432/bikespace_dev
 export FLASK_DEBUG = true
 export FLASK_RUN_PORT = 8000
+export GATSBY_BIKESPACE_API_URL = http://localhost:8000/api/v2
 
 setup-py: $(VENV)
 
