@@ -1,0 +1,1310 @@
+id,latitude,longitude,issues,parking_duration,parking_time,comments
+1356,43.65996705312329,-79.37787536180679,['damaged'],['hours'],2019-06-01T14:42:10.000Z,Bike has been here forever
+1398,43.7059467074119,-79.4423284678769,['not_provided'],['minutes'],2019-07-23T16:55:00.000Z,No bike parking anywhere close by. This is a bike route with many shops/restaurants and no bike rings. This makes no sense at all and I almost left before finding a small retaining wall with some basic metal rails that worked.
+1435,43.6872216406928,-79.39834642558662,['not_provided'],['hours'],2019-08-23T19:25:38.000Z,
+407,43.647360421364645,-79.39553453167724,['full'],['hours'],2018-06-07T19:10:59.000Z,
+1465,43.65844591873466,-79.35949828405609,['damaged'],['hours'],2019-10-10T00:19:30.000Z,Several abandoned bikes on rack at Regent Park community centre. 
+1495,43.651047155014915,-79.36519647501949,['not_provided'],['minutes'],2020-05-27T15:57:19.000Z,No bike parking at all on block LCBO and dollar store are high volume retail for local bike community. Some parking in front of metro always full.
+446,43.64106231851017,-79.37698368521671,['damaged'],['multiday'],2018-06-12T22:40:00.000Z,
+459,43.6394732,-79.38107930000001,['damaged'],['multiday'],2018-06-13T00:43:21.000Z,
+472,43.652861,-79.38323910000003,['other'],['hours'],2018-06-14T19:28:55.000Z,
+485,43.65278247806378,-79.38370235442335,['full'],['hours'],2018-06-15T00:47:29.000Z,
+496,43.64977129095396,-79.38812818308105,['full'],['hours'],2018-06-15T13:20:00.000Z,
+508,43.6711159,-79.41411049999999,['damaged'],['hours'],2018-06-20T00:06:42.000Z,
+518,43.639613257734574,-79.38086061336969,['full'],['hours'],2018-06-20T00:43:03.000Z,
+529,43.698479999999996,-79.30147349999999,['damaged'],['hours'],2018-06-20T16:12:29.000Z,
+559,43.64164329518506,-79.38075258837705,['other'],['overnight'],2018-06-27T00:11:33.000Z,
+568,43.6584186,-79.48162680000002,['damaged'],['overnight'],2018-06-27T03:35:43.000Z,
+577,43.6484512,-79.39302780000003,['damaged'],['multiday'],2018-06-27T15:06:12.000Z,testing
+585,43.68211163972182,-79.47204500491836,['not_provided'],['minutes'],2018-06-27T23:30:00.000Z,This is a large shopping plaza and the retail along Rogers also services transit riders and walk in customers. It’s an urban environment and should have bike rings on Rogers or Keele. 
+592,43.65049713558581,-79.44499101419677,['not_provided'],['hours'],2018-06-29T15:09:50.000Z,"Hello, it would be awesome if we could get bike parking posts installed on the sidewalk in front of 383 Sorauren Avenue.There's a ton of room there so I imagine you could fit at least four parking posts there!Thank you!"
+598,43.6486432,-79.39272819999996,['full'],['minutes'],2018-06-29T18:35:29.000Z,
+604,43.6704804672045,-79.38686634657898,['full'],['hours'],2018-06-28T13:30:00.000Z,It's always so full when the weather is nice. Lots of people commute to work.
+611,43.6580617,-79.3864974,"['not_provided', 'full', 'damaged', 'damaged', 'other']",['hours'],2018-07-03T16:17:51.000Z,
+617,43.70390617027408,-79.31159625297852,['damaged'],['hours'],2018-07-04T03:52:41.000Z,
+1302,43.644608613511124,-79.41140975733032,['not_provided'],['hours'],2019-05-09T13:04:00.000Z,"This stretch of Richmond Ave is near my office. During the day, there can be bikes chained to every pole and fence. There are no ring-and-posts on this block."
+395,43.76566009166408,-79.41223613051795,['not_provided'],['minutes'],2018-06-06T02:24:06.000Z,
+1436,43.692123545705556,-79.53216104752198,['not_provided'],['hours'],2019-08-24T15:00:00.000Z,"Royal York is a great N-S bike route that basically connects the waterfront to Weston and all the neighborhoods in between. Unfortunately, the retail centers don’t think cyclists shop. There wasn’t a single bike ring in the entire plaza or even a place that felt safe to lock a bike. Traffic on Royal York, of course, was at a stand still but that seems to be exactly what this city wants. "
+434,43.66529843868532,-79.36905379606918,['damaged'],['minutes'],2018-06-11T00:58:03.000Z,
+447,43.63977013450572,-79.38149666793066,"['full', 'damaged']",['hours'],2018-06-13T00:10:55.000Z,
+460,43.6929707,-79.30268050000001,['other'],['multiday'],2018-06-13T13:49:26.000Z,
+1466,43.65187722127377,-79.36558347300013,['damaged'],['minutes'],2019-10-10T00:42:59.000Z,"On King St E, north side, in front of Wolf/SubZero showroom, across street from Rooster Coffee"
+486,43.65269110259881,-79.38369312371037,['damaged'],['multiday'],2018-06-15T00:48:33.000Z,
+519,43.639277299999996,-79.38086220000002,['damaged'],['multiday'],2018-06-20T00:50:42.000Z,
+530,43.698479999999996,-79.30147349999999,['other'],['multiday'],2018-06-20T16:24:59.000Z,
+541,43.6289467,-79.3944199,['other'],['multiday'],2018-06-21T23:17:00.000Z,
+551,43.66593520000001,-79.40743029999999,['damaged'],['multiday'],2018-06-25T23:19:34.000Z,
+560,43.64164329518506,-79.38075258837705,['other'],['overnight'],2018-06-27T00:11:33.000Z,
+569,43.6584186,-79.48162680000002,['damaged'],['overnight'],2018-06-27T03:35:43.000Z,This is a comment!
+578,43.65792260632019,-79.40354007320803,['damaged'],['hours'],2018-06-27T15:47:27.000Z,
+586,43.670824332838826,-79.3740198181597,['damaged'],['hours'],2018-06-28T19:59:25.000Z,sdgsadg
+593,43.65365271107963,-79.37422361154785,['full'],['hours'],2018-06-29T15:35:36.000Z,Test. Penis. Penis.
+599,43.70330783133952,-79.36363477357361,['not_provided'],['minutes'],2018-06-29T18:59:03.000Z,
+605,43.65156480760996,-79.37304539075893,['full'],['hours'],2018-07-01T16:49:25.000Z,Too many people visiting the park today. 
+612,43.6580617,-79.3864974,"['not_provided', 'full', 'damaged', 'damaged', 'other']",['hours'],2018-07-03T16:17:51.000Z,
+618,43.6580617,-79.3864974,['damaged'],['minutes'],2018-07-04T05:14:32.000Z,
+623,43.647372,-79.39577889999998,['full'],['minutes'],2018-07-05T14:53:36.000Z,Tons of parking. All full. 
+628,43.649529146006074,-79.38881929523683,['full'],['hours'],2018-07-05T18:30:00.000Z,
+1358,43.64938887383572,-79.42171833006415,['damaged'],['hours'],2019-06-05T17:43:16.000Z,Bike was abandoned here months ago
+1400,43.604278747883264,-79.5181058332854,['not_provided'],['hours'],2019-07-26T17:46:25.000Z,
+435,43.76810273401365,-79.41301456984576,['not_provided'],['hours'],2018-06-10T20:09:00.000Z,
+487,43.65273900401792,-79.38369433532301,['full'],['hours'],2018-06-15T00:49:31.000Z,
+498,43.64123128369588,-79.41973533411254,['not_provided'],['hours'],2018-06-18T12:45:03.000Z,
+510,43.6392603,-79.3808429,['damaged'],['hours'],2018-06-20T00:14:55.000Z,
+520,43.639668908471116,-79.38107828606331,['other'],['multiday'],2018-06-20T00:54:39.000Z,
+531,43.698479999999996,-79.30147349999999,['other'],['multiday'],2018-06-20T16:25:34.000Z,
+542,43.6529123,-79.38368650000001,['other'],['hours'],2018-06-21T23:17:19.000Z,
+552,43.6580617,-79.3864974,['other'],['hours'],2018-06-25T23:43:46.000Z,
+561,43.639730349898485,-79.38125975214507,['damaged'],['hours'],2018-06-27T00:15:38.000Z,
+570,43.65289197249987,-79.37070455332031,['not_provided'],['hours'],2018-06-26T14:07:00.000Z,Great application.  Easy to use.  
+579,43.648415385127265,-79.39251435918982,['not_provided'],['hours'],2018-06-27T15:48:33.000Z,
+587,43.6564203,-79.38343499999996,['other'],['overnight'],2018-06-28T20:03:06.000Z,
+594,43.6611353810355,-79.43001355905761,['damaged'],['multiday'],2018-06-29T15:59:49.000Z,Broken post and ring at 990 Bloor Street West.
+600,43.68175252937642,-79.42609485168686,['damaged'],['hours'],2018-06-29T22:51:37.000Z,"several bikes outside the Subway sandwich shop have been abandoned and are in a state of disrepair, taking up the side walk and stopping people from actually using the locks"
+619,43.6708479,-79.38811550000003,['not_provided'],['hours'],2018-07-04T22:56:05.000Z,test
+624,43.6580617,-79.3864974,['not_provided'],['minutes'],2018-07-05T17:02:48.000Z,
+629,43.64882080618552,-79.37176760086663,"['full', 'not_provided']",['hours'],2018-07-05T23:23:00.000Z,Shortage of parking outside St Lawrence market. 
+632,43.692984599999996,-79.3024982,['damaged'],['hours'],2018-07-07T19:44:11.000Z,
+636,43.6580617,-79.3864974,"['damaged', 'damaged', 'full']",['minutes'],2018-07-08T20:44:27.000Z,
+644,43.6639729,-79.4167488,"['full', 'damaged']",['hours'],2018-07-11T22:18:47.000Z,"There is some parking between manning and Clinton, but clearly not enough. Ring and posts are full and bikes are locked to various other structures. "
+652,43.71296062891945,-79.22859039087524,['not_provided'],['hours'],2018-07-08T17:35:00.000Z,"There seems to be no biking parking at all at the beach by the Scarborough bluffs, we had to lock our bikes to trees/sign posts."
+654,43.661993034154044,-79.40188523311843,['full'],['hours'],2018-07-13T00:45:00.000Z,
+1359,43.67179036316631,-79.38711675974412,['full'],['hours'],2019-06-05T23:00:29.000Z,I'm fucking pissed there wasn't parking.
+1401,43.604781205579336,-79.51438303420389,['not_provided'],['hours'],2019-07-28T20:22:26.000Z,
+397,43.65304026237936,-79.37120299166565,['not_provided'],['hours'],2018-06-06T19:41:28.000Z,
+436,43.76810273401365,-79.41301456984576,['not_provided'],['hours'],2018-06-10T20:09:00.000Z,
+488,43.648495560969074,-79.37345115307431,['not_provided'],['hours'],2018-06-15T00:30:00.000Z,
+499,43.647636377729555,-79.37279892656773,['not_provided'],['overnight'],2018-06-18T13:43:39.000Z,
+511,43.6393284,-79.38106970000001,['damaged'],['minutes'],2018-06-20T00:12:33.000Z,
+521,43.6395299,-79.38109229999998,['damaged'],['minutes'],2018-06-20T00:40:26.000Z,
+543,43.6584186,-79.48162680000002,[],['hours'],2018-06-21T23:32:00.000Z,
+553,43.6580617,-79.3864974,['other'],['hours'],2018-06-25T23:43:46.000Z,
+562,43.6707306,-79.374505,"['not_provided', 'other']",['hours'],2018-06-27T01:43:34.000Z,asgsadg
+571,43.693142699999996,-79.30233120000003,['other'],['hours'],2018-06-27T12:12:55.000Z,
+580,43.64853598438529,-79.39263483072989,['other'],['hours'],2018-06-27T17:41:08.000Z,
+588,43.650401681674765,-79.39678218711555,['full'],['minutes'],2018-06-21T20:28:00.000Z,very popular spot and posts in front of CSI Spadina are at capacity
+595,43.6544133,-79.38852589999999,['not_provided'],['hours'],2018-06-29T16:09:27.000Z,The owners of the parking garage at 438 University should be lobbied to restore their secure bike locker for the tenants in the building above.
+601,43.66115674856726,-79.41326200962067,['full'],['minutes'],2018-06-29T23:05:01.000Z,
+607,43.655713261819855,-79.38308908184814,['other'],['hours'],2018-06-29T00:00:00.000Z,Need more secure options around this area. It's crawling with junkies and thieves that will steal anything off your bike :(
+614,43.647305162185226,-79.36151877834288,['full'],['hours'],2018-07-03T23:05:30.000Z,
+620,43.692984599999996,-79.3024982,['other'],['hours'],2018-07-05T04:32:21.000Z,
+625,43.6580617,-79.3864974,['not_provided'],['minutes'],2018-07-05T17:03:32.000Z,
+630,43.6580617,-79.3864974,['damaged'],['minutes'],2018-07-06T14:31:17.000Z,
+633,43.6799055,-79.34501119999999,['not_provided'],['hours'],2018-07-07T21:53:46.000Z,
+637,43.6657913,-79.4206001,['full'],['minutes'],2018-07-08T21:25:20.000Z,Christie pits public pool
+651,43.653148140648774,-79.3978270508789,['full'],['minutes'],2018-07-05T21:00:00.000Z,Was trying to park on the east side of Spadina north of Dundas. There are only a few ring and posts near the intersection. I wound up walking a while north to find something. 
+655,43.6663814,-79.37235989999999,['not_provided'],['hours'],2018-07-13T19:53:57.000Z,Kendall and spading. No Post & Rings near the alliance francaise. TV 
+398,43.6695898,-79.40904369999998,['other'],['minutes'],2018-06-06T20:05:01.000Z,
+424,43.4627162,-80.54405320000001,['damaged'],['multiday'],2018-06-09T17:49:21.000Z,
+437,43.6155885,-79.55595360000001,['not_provided'],['minutes'],2018-06-11T15:32:12.000Z,
+450,43.6398498,-79.3811121,['other'],['multiday'],2018-06-13T00:18:59.000Z,
+1360,43.671871498871596,-79.38720232669584,['full'],['hours'],2019-06-05T23:24:15.000Z,There’s never enough bike parking here. 
+1402,43.60416619310981,-79.51863683849729,['not_provided'],['hours'],2019-07-29T20:55:18.000Z,
+500,43.65353145559479,-79.37130575529471,"['damaged', 'full']",['hours'],2018-06-18T19:17:55.000Z,
+512,43.6580617,-79.3864974,['full'],['minutes'],2018-06-20T00:17:32.000Z,
+522,43.6395299,-79.38109229999998,['damaged'],['minutes'],2018-06-20T00:40:26.000Z,
+544,43.672202282171874,-79.46720724433595,['damaged'],['minutes'],2018-06-21T23:18:43.000Z,
+563,43.67069980000001,-79.37455439999997,"['damaged', 'full']",['overnight'],2018-06-27T01:49:34.000Z,
+572,43.693142699999996,-79.30233120000003,['damaged'],['multiday'],2018-06-27T12:14:03.000Z,
+581,43.6580617,-79.3864974,['other'],['multiday'],2018-06-27T18:31:38.000Z,
+596,43.6075033,-79.7034114,['full'],['hours'],2018-06-29T17:34:55.000Z,
+602,43.653590610332316,-79.36761464853515,['not_provided'],['hours'],2018-06-29T23:42:56.000Z,
+608,43.698479999999996,-79.30147349999999,['other'],['multiday'],2018-07-02T15:43:28.000Z,
+138,43.6580617,-79.3864974,['damaged'],['minutes'],2018-04-01T01:08:03.301Z,
+139,43.6580617,-79.3864974,['full'],['hours'],2018-04-01T01:10:27.009Z,
+140,43.6580617,-79.3864974,['damaged'],['hours'],2018-04-01T00:46:30.484Z,
+141,43.70643099999999,-79.398642,['not_provided'],['hours'],2018-04-01T01:41:29.130Z,
+142,43.6580617,-79.3864974,['not_provided'],['overnight'],2018-04-01T01:52:33.835Z,
+615,43.647230799999996,-79.36185160000002,['full'],['hours'],2018-07-04T00:51:51.000Z,
+621,43.692984599999996,-79.3024982,['damaged'],['hours'],2018-07-05T05:05:14.000Z,
+638,43.7043244,-79.3887901,['full'],['overnight'],2018-07-09T02:33:38.000Z,
+372,43.646033599999996,-79.38889240000003,['other'],['multiday'],2018-06-04T19:58:32.000Z,
+385,43.63960814480129,-79.3810830432393,['full'],['hours'],2018-06-05T22:42:34.000Z,
+411,43.64841816812482,-79.39244805862648,['not_provided'],"['hours', 'multiday']",2018-06-07T19:36:54.000Z,
+143,43.7659008,-79.41411049999999,"['damaged', 'other']",['minutes'],2018-04-03T21:13:03.935Z,
+144,43.64853372120051,-79.39339872873836,['damaged'],['minutes'],2018-04-03T23:50:09.162Z,
+145,43.7203738,-79.5991649,['not_provided'],['hours'],2018-04-05T18:42:06.958Z,
+1361,43.6580617,-79.3864974,['other'],['minutes'],2019-06-06T12:36:28.000Z,
+1403,43.650033099999995,-79.391594,['full'],['hours'],2019-07-31T00:08:19.000Z,
+1497,43.64547128604762,-79.38110713806763,['not_provided'],['hours'],2020-05-31T18:03:00.000Z,absolutely no outdoor bike parking available at union station. One set of bike racks by Go entrance along York street full of abandoned bikes. There should be rings along Front street.
+1438,43.64833510193005,-79.37979187746276,['not_provided'],['minutes'],2019-08-30T13:30:00.000Z,"Had an appointment in commerce court (199 Bay) and there are no bike racks or ring and post parking anywhere nearby along king or bay, or the courtyard in behind, (aside from a single ring and post on the north west corner of bay and Wellington, which has an abandoned bike locked to it). "
+1496,43.67082814004674,-79.43241823713608,['not_provided'],['multiday'],2020-05-30T14:48:51.000Z,Between Dovercourt and Ossington along Geary ave there is not a single bike ring. Nor up any side street. The closest is west of dovercourt where there are 4 which are often full. There are many workplaces and some multi-unit housing in the area yet nowhere to put a bike. 
+151,43.6580617,-79.3864974,"['not_provided', 'damaged', 'damaged']","['hours', 'hours', 'hours']",2018-04-10T23:45:59.941Z,
+152,43.648366499999995,-79.3934455,['full'],['minutes'],2018-04-10T23:58:06.738Z,
+1516,43.769753983924176,-79.18546315212478,['not_provided'],['hours'],2020-08-01T14:00:00.000Z,
+1419,43.714399149141265,-79.35883846063842,['not_provided'],['minutes'],2019-08-03T16:35:00.000Z,No parking in front or back of this massive shopping plaza.  Parking lot hostile for cyclists.
+155,43.6580617,-79.3864974,['not_provided'],['hours'],2018-04-11T00:05:36.629Z,
+156,43.6487189,-79.3936122,['damaged'],['overnight'],2018-04-11T00:17:47.771Z,
+157,43.648557904801365,-79.39335447625483,['full'],['minutes'],2018-04-11T00:05:33.212Z,
+1469,43.665877964793054,-79.40741606038148,['damaged'],['hours'],2019-10-14T22:00:53.000Z,
+1539,43.6580617,-79.3864974,['not_provided'],['minutes'],2021-05-09T21:18:03.000Z,
+160,43.6483784,-79.3937297,[],"['hours', 'minutes', 'overnight', 'hours', 'multiday', 'multiday']",2018-04-11T00:04:31.800Z,
+161,43.6487306,-79.3935893,['full'],"['multiday', 'minutes', 'minutes']",2018-04-11T00:28:40.396Z,
+162,43.6487306,-79.3935893,['full'],"['multiday', 'minutes', 'minutes']",2018-04-11T00:28:40.396Z,
+163,43.6487306,-79.3935893,['not_provided'],"['multiday', 'minutes', 'minutes', 'hours', 'multiday']",2018-04-11T00:28:40.396Z,
+166,43.648538952265625,-79.39337119429518,['damaged'],"['hours', 'hours', 'hours']",2018-04-11T00:30:43.580Z,
+1362,43.615899561071906,-79.55854264454427,['not_provided'],['minutes'],2019-05-30T18:30:00.000Z,"This big box plaza incl WalMart, Best Buy, Winners, Marks WW, Home Depot, McDonalds, plus several 'small-midsize' brands. The only bike parking I saw was a couple Ring+Post(?), near Best Buy. There's lots of retail traffic here. They could easily give up a (car) parking spot in a few places around plaza, to install some (multi-) bike racks, without impeding sidewalk space beside stores."
+168,43.6289467,-79.3944199,['damaged'],['multiday'],2018-04-11T20:55:25.969Z,
+169,43.6580617,-79.3864974,['full'],['hours'],2018-04-11T23:42:53.537Z,
+1404,43.6580617,-79.3864974,['not_provided'],['minutes'],2019-07-31T20:00:00.000Z,No place to park a bike on the west side of Bay between Bloor and Yorkville....I had to lock my bike to a small tree...not the best option!
+1439,43.70736646646447,-79.39504049114225,['damaged'],['hours'],2019-09-08T23:33:37.000Z,Yellow bike with basket on the front. The basket on the rear of the bike has turned into a garbage bin. Has been there for months.
+1517,43.6532213,-79.42885,['damaged'],['overnight'],2020-08-02T01:36:00.000Z,Ring was very loose on the city bike stand outside 1000 College St. Which makes it easy for theft to occur.
+1420,43.64482613123931,-79.41581853247112,['damaged'],['minutes'],2019-08-06T20:24:19.000Z,
+1540,43.6795626,-79.3775294,['full'],['hours'],2021-05-11T22:36:10.000Z,
+386,43.64418377533184,-79.39662295172798,"['not_provided', 'damaged']","['hours', 'multiday', 'overnight', 'minutes']",2018-06-05T23:05:24.000Z,
+399,43.67071552824179,-79.37411319116245,['not_provided'],"['hours', 'multiday']",2018-06-06T23:58:28.000Z,
+1470,43.657646430522284,-79.38140388508072,['not_provided'],['hours'],2019-10-15T20:14:41.000Z,There used to be a ring on this lamppost and 2 others next to it to allow the parking of bikes. The bike ring is gone now and I couldn't park my bike 
+425,43.6707786,-79.3745313,['not_provided'],"['hours', 'multiday']",2018-06-09T20:21:54.000Z,
+438,43.65061636596576,-79.39698699465578,['full'],['hours'],2018-06-11T16:28:15.000Z,
+451,43.6398498,-79.3811121,['other'],['hours'],2018-06-13T00:19:15.000Z,
+464,43.6534719,-79.38379309999999,['damaged'],['overnight'],2018-06-14T01:04:03.000Z,
+477,43.6695594,-79.40915139999998,['damaged'],['hours'],2018-06-14T22:57:13.000Z,
+513,43.65793268660807,-79.39048048038711,['other'],['overnight'],2018-06-20T00:23:40.000Z,
+534,43.698479999999996,-79.30147349999999,['other'],['minutes'],2018-06-20T04:54:00.000Z,
+545,43.6289467,-79.3944199,['other'],['multiday'],2018-06-21T23:34:46.000Z,
+555,43.762487864682456,-79.41082423836025,"['full', 'not_provided']",['multiday'],2018-06-26T19:14:04.000Z,test
+564,43.6707332,-79.37458199999998,['not_provided'],['multiday'],2018-06-27T02:25:47.000Z,dsgasdg
+573,43.659380857089694,-79.38991378885498,['full'],['hours'],2018-06-20T19:00:00.000Z,
+1363,43.615899561071906,-79.55854264454427,['not_provided'],['minutes'],2019-05-30T18:30:00.000Z,"This big box plaza incl WalMart, Best Buy, Winners, Marks WW, Home Depot, McDonalds, plus several 'small-midsize' brands. The only bike parking I saw was a couple Ring+Post(?), near Best Buy. There's lots of retail traffic here. They could easily give up a (car) parking spot in a few places around plaza, to install some (multi-) bike racks, without impeding sidewalk space beside stores."
+387,43.6399045676717,-79.38075324435681,['not_provided'],"['hours', 'multiday']",2018-06-06T00:04:59.000Z,
+1405,43.7135706,-79.36610830000001,['not_provided'],['hours'],2019-07-31T23:21:36.000Z,No nearby sufficient bike parking
+1440,43.6864639705596,-79.32121779699554,['full'],['hours'],2019-09-11T12:40:00.000Z,"More bike parking is needed around Earl Beatty School. My kids ride to school most multiday and we always have trouble finding bike parking. Each lock up ring has 3-4 bikes locked up, and people are forced to lock bikes to trees and sign poles. People also tie up dogs to bike lock up rings making these spaces unusable at school drop off time - could dedicated dog tie up posts be erected? Or signs? Thank you for your time. Amanda Chai"
+1471,43.64518614074817,-79.41843194459818,['not_provided'],['overnight'],2019-10-19T13:17:29.000Z,I live on Ossington and there is very limited bike rings. Entrance of my building is on Rebecca (off of Ossington). Suggesting bike rings be out there as there are many residents with bikes in my building.
+1498,43.640912950864916,-79.39600314874878,['damaged'],['hours'],2020-06-05T14:30:50.000Z,This bike has been here since I moved to the neighborhood six months ago.
+426,43.671007031579876,-79.38271024609378,['damaged'],['hours'],2018-06-09T20:25:00.000Z,
+1518,43.6580617,-79.3864974,"['full', 'damaged']",['hours'],2020-08-03T04:01:32.000Z,
+1425,43.6580617,-79.3864974,['not_provided'],['hours'],2019-08-13T13:02:55.000Z,No bike parking for a long stretch on Bathurst. I can’t pin the location but it’s around 3434 Bathurst st
+1541,43.7122963,-79.7224277,['not_provided'],['minutes'],2021-06-03T18:00:37.000Z,
+452,43.639492499999996,-79.38095909999998,['other'],['multiday'],2018-06-13T00:24:19.000Z,
+478,43.67880585055542,-79.40913547514651,['full'],['overnight'],2018-06-14T23:27:42.000Z,
+502,43.67017944389073,-79.39866065513843,"['not_provided', 'full']",['hours'],2018-06-18T23:16:57.000Z,
+514,43.63904454999999,-79.37901466000011,['full'],['hours'],2018-06-20T00:28:05.000Z,
+524,43.66973464241912,-79.3894156434082,['not_provided'],['minutes'],2018-06-20T13:22:23.000Z,
+535,43.6464459,-79.39032359999999,['full'],['hours'],2018-06-20T21:43:08.000Z,
+556,43.652510305070535,-79.38368694702967,['not_provided'],['hours'],2018-06-24T13:28:00.000Z,
+565,43.6707332,-79.37458199999998,['damaged'],['overnight'],2018-06-27T02:28:34.000Z,
+582,43.6647886,-79.34654469999998,['other'],['multiday'],2018-06-27T18:47:10.000Z,
+1364,43.615899561071906,-79.55854264454427,['not_provided'],['minutes'],2019-05-30T18:30:00.000Z,"This big box plaza incl WalMart, Best Buy, Winners, Marks WW, Home Depot, McDonalds, plus several 'small-midsize' brands. The only bike parking I saw was a couple Ring+Post(?), near Best Buy. There's lots of retail traffic here. They could easily give up a (car) parking spot in a few places around plaza, to install some (multi-) bike racks, without impeding sidewalk space beside stores."
+1406,43.71320372985328,-79.36638975088744,['full'],['hours'],2019-07-31T23:00:00.000Z,
+1472,43.664719277065714,-79.41107101875349,['full'],['hours'],2019-10-19T16:44:19.000Z,
+427,43.652137100000004,-79.41411049999999,['other'],['multiday'],2018-06-09T19:42:00.000Z,
+1519,43.7365655,-79.255116,['not_provided'],['hours'],2020-08-06T05:41:04.000Z,
+1427,43.6767271,-79.35577840000002,['damaged'],['minutes'],2019-08-15T22:56:40.000Z,"The post for the ring is loose (wiggles), as is the ring itself (wiggles against the post)."
+1441,43.6676707,-79.38727919999997,['not_provided'],['hours'],2019-09-11T21:56:07.000Z,child dev
+440,43.63111902622391,-79.3736321590332,[],['minutes'],2018-06-10T18:45:00.000Z,
+453,43.639492499999996,-79.38095909999998,['other'],['hours'],2018-06-13T00:24:30.000Z,
+466,43.6580617,-79.3864974,['full'],['hours'],2018-06-14T01:34:36.000Z,
+479,43.67880585055542,-79.40913547514651,['full'],['overnight'],2018-06-14T23:27:42.000Z,
+1499,43.65872702335385,-79.35044225070459,['damaged'],['hours'],2020-06-10T18:02:46.000Z,In front of 687 Queen St E
+1542,43.74246083156616,-79.26120605249633,['not_provided'],['minutes'],2021-06-22T00:56:13.000Z,No bike parking in the plaza at Stansbury
+1365,43.6154732159446,-79.52510707293112,['not_provided'],['minutes'],2019-06-03T21:30:00.000Z,"This is a WENDY'S fast food shop, plus Tim Hortons drive-thru. Quite busy. NO bike parking."
+389,43.6296406,-79.38122440000001,"['damaged', 'other', 'full', 'not_provided']",['hours'],2018-06-06T01:50:28.000Z,
+1442,43.685929901876904,-79.32133791115109,['full'],['hours'],2019-09-11T13:00:00.000Z,General comment - more bike rings needed around Earl Beatty school. They're often full! Thanks!
+1500,43.66960808574634,-79.43452779380698,['not_provided'],['hours'],2020-06-21T21:16:51.000Z,This is a studio I work at and there are only 2 bike rings that all the tenants must share. As it is a work space most people are parked for hours. There appears to be space for a few more much needed rings
+1520,43.7365708,-79.2551006,['not_provided'],['multiday'],2020-08-06T05:41:44.000Z,
+1407,43.669242409202006,-79.41297360591977,['damaged'],['hours'],2019-07-15T14:46:09.000Z,
+1433,43.6413483956209,-79.42268778117136,['damaged'],['minutes'],2019-08-20T21:04:39.000Z,
+1473,43.6842927,-79.36632850000001,['full'],['minutes'],2019-10-20T17:58:54.000Z,
+402,43.64862063237543,-79.39059218308103,['not_provided'],['minutes'],2018-06-07T18:29:31.000Z,
+1543,43.75631819546213,-79.48908116598358,['not_provided'],['minutes'],2021-06-22T00:58:52.000Z,No parking for the plaza at Ashwarren & Keele (S.E.)
+428,43.652137100000004,-79.41411049999999,['other'],['multiday'],2018-06-09T22:20:10.000Z,
+441,43.63111902622391,-79.3736321590332,[],['minutes'],2018-06-10T18:45:00.000Z,
+454,43.6660171,-79.40724720000003,['damaged'],['hours'],2018-06-13T00:24:37.000Z,
+467,43.67047610431138,-79.39266999283916,"['not_provided', 'damaged']","['minutes', 'multiday']",2018-06-14T13:28:23.000Z,
+480,43.6660171,-79.40724720000003,['full'],['hours'],2018-06-15T00:37:53.000Z,
+503,43.646444714300515,-79.39985748310318,['not_provided'],['hours'],2018-06-19T13:28:00.000Z,
+1366,43.66773147625187,-79.37199237699457,"['damaged', 'damaged']",['multiday'],2019-06-07T13:32:22.000Z,
+390,43.6296406,-79.38122440000001,"['damaged', 'other', 'full', 'not_provided']",['hours'],2018-06-06T01:50:28.000Z,
+403,43.66628073465379,-79.40520657738494,['damaged'],['multiday'],2018-06-07T19:05:47.000Z,
+1443,43.673593867167966,-79.33062046412965,['full'],['minutes'],2019-09-07T19:00:00.000Z,"Not NEARLY enough bike rings outside Left Field Brewery! All the ones there were jammed full and people are locking to gas lines, phone/hydro poles, neighbours' garages..."
+429,43.652137100000004,-79.41411049999999,['other'],['minutes'],2018-06-09T22:20:27.000Z,
+442,43.63111902622391,-79.3736321590332,[],['minutes'],2018-06-10T18:45:00.000Z,
+1474,43.670732799999996,-79.41406719999998,['full'],['minutes'],2019-10-30T17:22:50.000Z,Only post and ring parking available. All were fullThe actual time this occurred was Oct 22nd at 7:30pm
+420,43.648739176563744,-79.38057863756069,['not_provided'],['hours'],2018-06-08T21:48:03.000Z,
+1501,43.6695855993541,-79.43408572235371,"['not_provided', 'full']",['hours'],2020-06-11T21:21:18.000Z,
+1521,43.5873853,-79.6420574,['not_provided'],['minutes'],2020-08-28T16:19:03.000Z,
+1408,51.5317348,-0.1271248000000469,['full'],['hours'],2019-08-03T15:58:59.000Z,
+1437,43.676009042678594,-79.40675449666122,['damaged'],['hours'],2019-08-30T12:42:50.000Z,
+1544,43.65532940698333,-79.4134603061222,['damaged'],['minutes'],2021-07-06T20:20:00.000Z,Bike post appears to have been wrapped up with tape so as to prevent use. No indications that this is authorized.
+481,43.6711159,-79.41411049999999,['full'],['hours'],2018-06-15T00:38:26.000Z,
+1367,53.5162479,-113.4948334,['not_provided'],['hours'],2019-06-11T02:47:31.000Z,No parking outside Ohana donuts.
+404,43.66817825862553,-79.3962640925293,['other'],['multiday'],2018-06-07T19:06:00.000Z,
+1409,43.644848977257496,-79.3851585200656,['full'],['hours'],2019-08-02T16:00:00.000Z,"There's not enough bike parking at Simcoe and Front, and there's absolutely *none* right by the corner."
+430,43.652137100000004,-79.41411049999999,['other'],['overnight'],2018-06-09T22:21:00.000Z,
+443,43.64974415071037,-79.39785380154422,[],['overnight'],2018-06-11T19:55:37.000Z,
+456,43.639492499999996,-79.38095909999998,['other'],['multiday'],2018-06-13T00:24:51.000Z,
+1444,43.68571931211099,-79.32057718786075,['full'],['minutes'],2019-09-11T13:00:00.000Z,
+1475,43.69155711217399,-79.35577116480715,['not_provided'],['overnight'],2019-11-01T19:47:48.000Z,There's no public bike parking for blocks and blocks in this neighborhood :(
+482,43.6711159,-79.41411049999999,['full'],['hours'],2018-06-15T00:39:34.000Z,
+493,43.6301323,-79.51730989999999,['not_provided'],['minutes'],2018-06-15T18:31:30.000Z,
+1502,43.669347385545024,-79.43439655944653,['full'],['hours'],2020-06-22T14:26:39.000Z,We'd like more bike parking at our studio! 
+515,43.6396463,-79.38116359999998,"['not_provided', 'full', 'damaged', 'damaged', 'other']",['multiday'],2018-06-19T16:28:00.000Z,
+526,43.66321419109444,-79.33072860580444,[],['hours'],2018-06-20T22:00:00.000Z,
+537,43.6532328,-79.3969315,['full'],['hours'],2018-06-21T00:56:35.000Z,
+547,43.66573060081845,-79.3518384381752,['not_provided'],['hours'],2018-06-21T00:18:00.000Z,
+557,43.6580617,-79.3864974,['not_provided'],['hours'],2018-06-24T13:33:00.000Z,
+566,43.6707332,-79.37458199999998,['damaged'],['multiday'],2018-06-27T02:28:57.000Z,
+575,43.648512851077726,-79.3927211422764,['damaged'],['hours'],2018-06-27T14:57:15.000Z,
+590,43.6580617,-79.3864974,['other'],['multiday'],2018-06-29T14:29:42.000Z,
+597,43.81547527763881,-79.32285177224122,['not_provided'],['minutes'],2018-06-29T18:26:27.000Z,Not enough bike racks in shopping centre.
+433,43.765653194642404,-79.41227174509385,['not_provided'],['minutes'],2018-06-11T02:28:00.000Z,
+609,43.698479999999996,-79.30147349999999,['damaged'],['hours'],2018-07-02T17:32:03.000Z,
+616,43.670750299999995,-79.37453010000002,['damaged'],['hours'],2018-07-04T01:54:23.000Z,
+622,43.692984599999996,-79.3024982,['damaged'],['hours'],2018-07-05T06:28:53.000Z,
+627,43.6580617,-79.3864974,['not_provided'],['hours'],2018-07-05T18:24:21.000Z,
+631,43.64547041182428,-79.41928487741177,['full'],['minutes'],2018-07-06T21:32:23.000Z,"Serious lack of bike parking on Ossington. Bikes are locked to fences, gas meters, trees, etc. Need to repurpose some car parking!!"
+635,43.66389845492682,-79.39061727304687,['damaged'],['minutes'],2018-07-08T18:23:47.000Z,
+1368,52.2074893,-113.8156424,['not_provided'],['minutes'],2019-06-15T01:07:13.000Z,Peter's needs some parking. 
+1410,43.649779054044544,-79.44472279329528,['damaged'],['overnight'],2019-08-03T18:45:45.000Z,Two bike tires have been locked here for over 3 months. Need cutting off/removing.
+1445,43.65449106488332,-79.38860025186767,['damaged'],['hours'],2019-09-09T13:28:00.000Z,2-3 abandoned bikes have been here for months. There are limited bike spaces available.
+405,43.668865077670134,-79.392959611023,['other'],"['multiday', 'hours']",2018-06-07T19:08:29.000Z,
+1476,43.66416133617198,-79.37479764029302,['not_provided'],['hours'],2019-11-17T03:50:28.000Z,
+431,43.650053199999995,-79.41722749999997,['other'],['multiday'],2018-06-09T22:23:00.000Z,
+444,43.64974415071037,-79.39785380154422,[],['overnight'],2018-06-11T19:55:37.000Z,
+1503,43.6580617,-79.3864974,['not_provided'],['hours'],2020-07-02T19:49:51.000Z,There is not a single spot to lock my bike up.
+470,43.67065938839561,-79.37423996673579,['full'],"['hours', 'multiday']",2018-06-14T18:38:26.000Z,
+483,43.6580617,-79.3864974,['full'],['hours'],2018-06-15T00:40:17.000Z,
+1449,43.7601772,-79.4099003,['other'],['hours'],2019-09-15T21:19:37.000Z,
+1522,43.65900966121445,-79.34518615608125,['not_provided'],['minutes'],2020-08-31T23:18:09.000Z,Can we get a bike rack here? This is outside a popular yoga studio.
+1545,43.6580617,-79.3864974,['not_provided'],['hours'],2021-07-17T14:23:00.000Z,"There is no bicycle parking at Old Mill, Etienne Brule, Home Smith Road or Kings Mill Park!We have a kayak and planned to put in at Old Mill - but there's nowhere to lock our bikes! There is a bike share stand in the vicinity, so it's clear there are some facilities for cyclists and a recognition of that by the City. The map won't let me pin, but I'm trying to pin a spot near the Hurricane Hazel plaque near Old Mill Station."
+494,43.6301323,-79.51730989999999,['not_provided'],['minutes'],2018-06-15T18:31:30.000Z,
+506,43.6393793,-79.3810224,['not_provided'],['hours'],2018-06-19T23:55:21.000Z,
+516,43.781541462140304,-79.41325306367685,['full'],['overnight'],2018-06-20T00:00:00.000Z,
+527,43.698479999999996,-79.30147349999999,['other'],['minutes'],2018-06-13T16:02:00.000Z,
+1369,43.65986488246772,-79.36161623258238,['damaged'],['hours'],2019-06-17T20:40:12.000Z,There area number of bikes parked along the side of regent park blvd that have been there for at least a year. There is a sign that says temporary parking. It's along the side of the building on the east side of regent park blvd from dundas to sumach
+1411,43.65767125814723,-79.44797006044922,['damaged'],['multiday'],2018-07-01T10:49:23.000Z,At Dundas and Bloor near the Crossways Mall there are several abandoned bikes that has been there for more than one year.
+1446,43.65728681927374,-79.39040992636757,['not_provided'],['minutes'],2019-09-11T14:39:00.000Z,There are virtually no bike rings available during the day at Bay and Adelaide or anywhere else close. Thanks. 
+1477,43.663823491712954,-79.41843474298071,['damaged'],['multiday'],2019-11-17T03:52:54.000Z,
+1523,43.68978445113605,-79.28995933313598,['other'],['minutes'],2020-08-31T23:35:08.000Z,"Bike rack is not a great design for security purposes. Also not in front of store, which would be nice. This is the rack across from Shoppers. "
+1546,43.69285515675503,-79.44166926506198,['not_provided'],['overnight'],2021-07-23T00:00:00.000Z,
+1504,43.66928345897026,-79.43427530449961,['full'],['hours'],2020-07-06T16:59:50.000Z,
+432,43.680583191152394,-79.49459737012603,['not_provided'],['hours'],2018-06-09T22:49:47.000Z,
+445,43.648957583578536,-79.36545743814759,['not_provided'],['hours'],2018-06-12T22:46:44.000Z,
+458,43.6394732,-79.38107930000001,['damaged'],['multiday'],2018-06-13T00:43:21.000Z,
+471,43.6626956,-79.40004929999998,['other'],['multiday'],2018-06-14T19:27:01.000Z,
+484,43.65269496200043,-79.38368491502195,['not_provided'],['hours'],2018-06-15T00:46:57.000Z,
+507,43.59605402179688,-79.36686700571289,"['other', 'damaged', 'damaged', 'full', 'not_provided']",['hours'],2018-06-19T23:59:15.000Z,
+517,43.6580617,-79.3864974,['other'],['hours'],2018-06-20T00:35:17.000Z,
+528,43.66944710851391,-79.40894579746481,['full'],['hours'],2018-06-20T16:09:19.000Z,
+539,43.698479999999996,-79.30147349999999,['other'],['multiday'],2018-06-21T18:20:10.000Z,
+549,43.6580617,-79.3864974,['not_provided'],['minutes'],2018-06-25T20:17:42.000Z,
+567,43.6707463,-79.3745788,['not_provided'],['multiday'],2018-06-27T02:39:53.000Z,agsadg
+576,43.648477400000004,-79.39301169999999,['full'],['minutes'],2018-06-27T15:03:46.000Z,
+584,43.67066288007638,-79.37441753258531,['damaged'],['multiday'],2018-06-28T02:50:16.000Z,
+591,43.66451935290848,-79.38495244760742,['other'],['hours'],2018-06-29T14:30:30.000Z,
+358,43.64733967428089,-79.38090610338912,['full'],['minutes'],2018-06-01T13:40:15.000Z,
+359,43.64733967428089,-79.38090610338912,['full'],['minutes'],2018-06-01T13:40:15.000Z,
+1370,43.68045999928476,-79.49478974166573,['full'],['minutes'],2019-06-09T16:00:00.000Z,You would expect “downtown” Mimico to have a ton of bike parking. San Remo is a huge destination for people in Etobicoke and many cycle. I only saw one ring for the entire strip of shops and we (2 of us) had to lock our bikes to nearby fence. 
+1412,43.665629192051945,-79.44609608431091,['not_provided'],['minutes'],2019-08-01T23:00:00.000Z,There is no bicycle parking in front of the Dollarama. Could some please be added next to the building? (Not near the road - drivers frequently hop the curbs and could damage a parked bike).
+1478,43.66371662637923,-79.41839932952655,['damaged'],['multiday'],2019-11-17T03:53:18.000Z,
+640,43.66463573559755,-79.34158813996487,['full'],['overnight'],2018-07-09T23:59:17.000Z,
+647,43.63654312571555,-79.4260984585772,['damaged'],['minutes'],2018-07-12T13:40:00.000Z,
+1447,43.682017059790965,-79.47171507770162,['not_provided'],['minutes'],2019-09-14T16:53:17.000Z,
+1450,43.68809743786296,-79.28855629684148,['not_provided'],['minutes'],2019-09-19T16:23:00.000Z,Not sure if you can help! This is Loblaws at 50 Musgrave Avenue. They have hundreds and hundreds of car parking spot but barely room for more than 3 or 4 bikes. Desperately need more bike parking here! There are always bikes locked up to sign posts around the parking lot instead. 
+1505,43.66928345897026,-79.43427530449961,['full'],['hours'],2020-07-06T16:59:50.000Z,
+1524,43.669288663613564,-79.43441060451366,['full'],['hours'],2020-09-14T14:39:05.000Z,
+1547,43.6922905718335,-79.44077328703061,['damaged'],['overnight'],2021-07-23T00:00:00.000Z,Ring is missing from post
+656,43.6580617,-79.3864974,['not_provided'],['hours'],2018-07-13T20:21:30.000Z,"There really should be more bike stands around the hospitals.  Every time I go to TGH I have difficulty finding a parking space so have to tie up to a lamp post or something else.Also on St. Clair by Winona, the TD Bank used to have more than one parking  space but since the new TTC has been put back, only one bike space is there and it is usually full."
+658,43.6598883,-79.42953899999998,['full'],['hours'],2018-07-13T15:45:00.000Z,"There are bike rings, but not enough of them."
+659,43.6597556,-79.42966990000002,['not_provided'],['hours'],2018-07-13T17:30:00.000Z,"There is a single ring, but we can't use it during Fringe. There are rings next door, but they are always full."
+1371,43.6580617,-79.3864974,"['not_provided', 'damaged']",['minutes'],2019-06-04T17:18:00.000Z,
+660,43.65301544232301,-79.42919677364398,['damaged'],['hours'],2018-07-14T13:30:41.000Z,Abandoned bikes locked to tree at 1031 college
+1413,43.669296171983504,-79.39740594406356,['damaged'],['minutes'],2019-06-29T16:05:46.000Z,"All of the ring and posts are broken, damaged, or insecure in some way. Most of the bolts can be removed by hand, so anyone who locks up a bicycle here could have it stolen. Many are also lopsided or falling over. Also, many are not secured to the ground and could be pulled out. "
+1448,43.6580617,-79.3864974,['not_provided'],['hours'],2019-09-18T15:00:00.000Z,A whole foods parking lot should definitely have bike parking and the sheltered kind - not just sidewalk parking.
+1479,43.6580617,-79.3864974,['full'],['hours'],2019-11-29T14:40:17.000Z,
+1467,43.665713831999206,-79.40745933446976,['damaged'],['hours'],2019-10-14T21:59:28.000Z,
+1506,43.66928345897026,-79.43427530449961,['full'],['hours'],2020-07-06T16:59:50.000Z,
+1525,43.669288663613564,-79.43441060451366,['full'],['hours'],2020-09-14T14:39:05.000Z,
+1372,43.60449516877524,-79.51752066137198,['not_provided'],['overnight'],2019-06-21T01:41:09.000Z,
+663,43.6580617,-79.3864974,['not_provided'],['minutes'],2018-07-17T05:13:33.000Z,
+664,43.74744206147731,-79.4072869602661,['other'],['hours'],2018-07-17T15:00:35.000Z,
+665,43.24007408315995,-68.5979353743167,['full'],['hours'],2018-07-17T16:32:09.000Z,
+666,43.68409299621968,-79.4990251503371,['not_provided'],['hours'],2018-07-17T20:21:02.000Z,This is a busy bus intersection including the 195 Jane Express bus. It should have bike rings for commuters to leave their bike and hop on an express bus to Jane station or York U.
+667,43.6580617,-79.3864974,['not_provided'],['hours'],2018-07-17T23:34:28.000Z,Testing
+668,43.6580617,-79.3864974,['not_provided'],['minutes'],2018-07-17T23:35:49.000Z,
+669,43.6580617,-79.3864974,"['not_provided', 'full', 'damaged']",['hours'],2018-07-18T00:11:59.000Z,
+670,43.6438116,-79.36519229999999,['other'],['hours'],2018-07-18T00:27:23.000Z,
+671,43.64974962581732,-79.37592522044372,['damaged'],['hours'],2018-07-17T12:30:00.000Z,Two bike rings/posts are loose and need re-anchoring in the sidewalk.
+674,43.65663347143169,-79.40295543451538,['full'],['hours'],2018-07-17T23:45:00.000Z,The bike corral and all the ring-and-posts that were in good condition were full.
+676,43.6534714,-79.38366680000001,['other'],['multiday'],2018-07-19T23:22:42.000Z,
+677,43.692984599999996,-79.3024982,['other'],['hours'],2018-07-20T00:06:06.000Z,
+678,43.686994735685225,-79.48354138748164,['not_provided'],['hours'],2018-07-19T20:25:00.000Z,This is the No Frills parking lot. There used to be some flimsy broken parking rings and a bench where I would lock my bike. Now there’s nothing. 
+679,43.6483376,-79.3719931,['not_provided'],['hours'],2018-07-20T15:35:02.000Z,
+680,43.67049904781961,-79.38675489206543,['full'],['hours'],2018-07-20T13:20:00.000Z,
+681,43.67774295470459,-79.35031976486891,['full'],['minutes'],2018-07-20T16:40:00.000Z,All rings and signposts were used. It was the lunch rush. Had to go further down Bloor.
+683,43.67445753913874,-79.42226688834035,['full'],['hours'],2018-07-21T14:46:43.000Z,Bike racks at Wychwood Barns farmers market full. People using street signs or looking lost.
+684,43.67445753913874,-79.42226688834035,['full'],['hours'],2018-07-21T14:46:43.000Z,Bike racks at Wychwood Barns farmers market full. People using street signs or looking lost.
+673,43.6515452,-79.36828780000002,['damaged'],['minutes'],2018-07-18T23:52:05.000Z,
+661,43.662415884453345,-79.37640050874245,['not_provided'],['hours'],2018-07-16T02:30:00.000Z,lots of people bike to church on Sunmultiday and end up locking to trees. could use a few ring posts or a bike rack. could use church sidewalk area
+672,43.6483006,-79.3938751,['full'],['hours'],2018-07-18T17:40:46.000Z,Even all nearby tree-protecting fences are parked up with bikes
+675,43.6500259,-79.3745763,['damaged'],['hours'],2018-05-30T19:22:17.000Z,king and church in front of CREPE TO restaurant thank u
+685,43.64788741343063,-79.37072083361386,['full'],['minutes'],2018-07-21T17:34:51.000Z,Simply not  enough bike parking near St. Lawrence Market.
+686,43.648610697372376,-79.37315072729723,['damaged'],['multiday'],2018-05-01T20:32:54.000Z,Bike has no chain and a rusted sproket.
+687,43.6580617,-79.3864974,['damaged'],['multiday'],2018-07-23T02:50:13.000Z,
+688,23.075834191425773,72.52680050215918,['full'],['overnight'],2018-07-23T10:54:12.000Z,
+689,43.6460341,-79.38892829999998,['other'],['hours'],2018-07-23T20:52:56.000Z,just a test from desktop
+690,43.6659249,-79.40807230000001,['damaged'],['hours'],2018-07-23T22:31:50.000Z,TEST
+691,43.6659249,-79.40807230000001,['damaged'],['hours'],2018-07-23T23:03:46.000Z,
+692,43.692984599999996,-79.3024982,['other'],['hours'],2018-07-24T00:41:51.000Z,
+693,43.692984599999996,-79.3024982,['other'],['multiday'],2018-07-24T00:44:35.000Z,
+694,43.692984599999996,-79.3024982,['other'],['multiday'],2018-07-24T00:46:04.000Z,
+695,43.6464318155563,-79.39031185589675,['not_provided'],['hours'],2018-07-23T22:27:00.000Z,Not enough bike posts around TIFF. 
+696,43.63830603881936,-79.413688636941,['full'],['overnight'],2018-07-24T20:48:06.000Z,
+697,43.644678486538254,-79.39867903865775,['damaged'],['hours'],2018-07-24T21:24:40.000Z,This bike has been abandoned for months and is taking up a very precious parking spot :( 
+699,43.6616321227964,-79.36976041574707,"['not_provided', 'full']",['hours'],2018-07-24T21:30:00.000Z,
+700,43.6472363,-79.36183800000003,['not_provided'],['multiday'],2018-07-24T23:51:48.000Z,
+1373,43.6580617,-79.3864974,['full'],['hours'],2019-06-24T18:20:00.000Z,
+704,43.64734850660773,-79.36184152423272,"['full', 'other']",['hours'],2018-07-24T23:52:48.000Z,Not enough parking 
+1414,43.66946690421532,-79.39737107534637,['full'],['minutes'],2019-08-03T16:07:41.000Z,There is not enough bicycle parking on the north side of the street. There is only one ring and post.
+724,43.6580617,-79.3864974,"['damaged', 'damaged']",['overnight'],2018-07-25T14:48:39.000Z,
+725,43.63940099227217,-79.38090062631358,['damaged'],['hours'],2018-07-25T15:00:06.000Z,"Bike rack pulled out of ground. Someone's bike stollen here. Avoid this bike rack, use another one closer to Queens Quay."
+826,43.6580617,-79.3864974,['other'],['hours'],2018-07-28T18:43:05.000Z,
+702,43.6471602761668,-79.36180992368077,['full'],['hours'],2018-07-24T23:52:16.000Z,Test
+703,43.6471602761668,-79.36180992368077,['full'],['hours'],2018-07-24T23:52:16.000Z,Test
+698,43.6519513,-79.36408130000001,['not_provided'],['minutes'],2018-07-24T22:13:31.000Z,
+1374,43.6580617,-79.3864974,['not_provided'],['minutes'],2019-06-25T17:23:08.000Z,
+707,43.650294282305246,-79.37005910006104,"['damaged', 'other']",['minutes'],2018-07-09T23:57:00.000Z,
+708,43.64707800634203,-79.36104889625835,['not_provided'],['hours'],2018-07-24T22:30:00.000Z,Address is 307 Lakeshore.  Sidewalk Toronto 
+709,43.6580617,-79.3864974,"['not_provided', 'full']",['minutes'],2018-07-24T20:57:00.000Z,I had to bring my bike up to my dentist office due to the lack of parking on Bloor (between Yonge and Bay). The building security tried to stop me. I was late for my appointment.
+540,43.6482969,-79.38376920000002,['not_provided'],['minutes'],2018-06-21T20:58:30.000Z,
+710,43.6400609879577,-79.43907465111045,['damaged'],['minutes'],2018-07-23T21:16:00.000Z,ring missing from post.
+711,43.6566038189436,-79.40276728477784,['not_provided'],['hours'],2018-07-23T00:00:00.000Z,There is not enough bike parking in Kensington Market in general. 
+712,43.6580617,-79.3864974,['damaged'],['minutes'],2018-07-25T13:22:22.000Z,"Your map does not work; it does not allow me to add/identify a place to/on it!  There is a DAMAGED ring/post bike parking pole on Church Street, west side immediately north of King St E.  It has no RING.Your app also does not work on Edge browser,  it did not allow me to select type of problem. I am now using Chrome."
+713,43.65411846463772,-79.38475932855835,['damaged'],['hours'],2018-06-20T13:22:45.000Z,"Ring-post missing.  Location is across the street from 75-81 Elizabeth, under the stairs going up to City Hall podium green roof.  It was knocked over by construction team doing repairs to the ceiling."
+714,43.642482573065216,-79.40627555296953,['full'],['hours'],2018-07-25T13:28:11.000Z,
+715,43.76810498453789,-79.38292994180244,['not_provided'],['hours'],2018-07-25T13:33:22.000Z,No bike parking any where in the property Over 380 units Not one bike parking space for pedal or electric bikes 🤨
+717,43.64867307695342,-79.37119974288328,['not_provided'],['hours'],2018-07-25T13:40:48.000Z,enough space for several rings or a few racks
+718,43.61644286226271,-79.49687566538086,['full'],['hours'],2018-07-25T13:00:00.000Z,
+719,43.82956890079547,-79.23408304657471,['not_provided'],['hours'],2018-07-25T14:03:52.000Z,Actually bike parking is needed in front of the planet fitness. 
+720,43.65340527803268,-79.36926219542255,['damaged'],['hours'],2018-07-25T13:00:00.000Z,The bike has been abandoned here for a few months. Rusted and missing wheels.
+721,43.71378227331859,-79.33501969915619,['not_provided'],['minutes'],2018-07-24T16:00:00.000Z,No bike parking in this plaza
+722,46.511075999999996,-84.33159549999999,['not_provided'],['hours'],2018-07-25T14:30:00.000Z,"Despite construction of the LRT, we need sufficient bike parking along Eglinton. "
+723,43.6580617,-79.3864974,['damaged'],['minutes'],2018-07-20T21:30:00.000Z,Abandoned bike with no handlebars/seat
+1415,43.65305498872104,-79.35563053865661,['damaged'],['minutes'],2019-08-05T14:31:30.000Z,"one of the bike rings is bent halfway to the ground, I reported this last year and no action was taken, please fix."
+716,43.64548554553972,-79.40600867672117,['not_provided'],['hours'],2018-07-19T22:00:00.000Z,Our neighbourhood is fortunate enough to have three art galleries on Tecumseth @ Mitchell. They're tried for years to have bike parking installed but the city's response was always blamed on the pavement rather than concrete sidewalk. It's time to have that stretch changed to concrete and have the bike racks installed. Then we won't have to cut the bikes off of our fences as shown in this older photo.
+1451,43.6580617,-79.3864974,['not_provided'],['minutes'],2019-09-20T00:30:09.000Z,
+726,43.65102211044085,-79.36528496018298,['not_provided'],['minutes'],2018-07-25T15:03:58.000Z,"Lots of cyclists stopping in at LCBO or Dollarama, but no ring and post options unless they go to Berkeley or No Frills parking lot."
+727,43.6580617,-79.3864974,['full'],['minutes'],2018-07-24T21:26:00.000Z,
+728,43.6580617,-79.3864974,['not_provided'],['hours'],2018-07-25T15:27:53.000Z,
+1375,43.6580617,-79.3864974,['full'],['multiday'],2019-06-27T22:16:16.000Z,
+730,43.6693132,-79.39109510000003,['not_provided'],['multiday'],2018-07-25T15:28:08.000Z,
+550,43.66580542494145,-79.40755747187188,['full'],['hours'],2018-06-25T21:44:56.000Z,
+731,43.6693132,-79.39109510000003,['not_provided'],['multiday'],2018-07-25T15:28:08.000Z,
+732,43.6693132,-79.39109510000003,['not_provided'],['overnight'],2018-07-25T15:28:20.000Z,
+733,43.6693132,-79.39109510000003,['damaged'],['hours'],2018-07-25T15:28:25.000Z,
+734,43.6693132,-79.39109510000003,['damaged'],['multiday'],2018-07-25T15:28:29.000Z,
+735,43.6693132,-79.39109510000003,['damaged'],['overnight'],2018-07-25T15:28:34.000Z,
+736,43.645301255633974,-79.40042715588072,['not_provided'],['minutes'],2018-07-25T16:01:15.000Z,
+737,43.67061157368083,-79.38533868570556,['damaged'],['minutes'],2018-07-24T16:26:42.000Z,One of the new 'modern' BIA posts was partly pulled out of the ground on NE of Yonge and Bloor. All available bike parking was taken - this is a crucial repair.
+738,43.70083070818574,-79.397483728125,['not_provided'],['hours'],2018-07-20T16:28:21.000Z,
+739,43.67623425906345,-79.32336008861967,['damaged'],['minutes'],2018-07-25T16:33:45.000Z,Red Miele with no wheels locked to rack outside of The Bay at Yonge Bloor
+740,43.667700384174715,-79.38513215561142,['not_provided'],['hours'],2018-07-14T00:00:00.000Z,
+741,43.67709115532626,-79.39802016992797,['not_provided'],['hours'],2018-07-23T16:57:00.000Z,There  are a few restaurants on Dupont here but no bike rings.  I had to park to a pole on avenue / Dupont which was both far away and sketchy.  2-4 rings on this block would be huge!
+742,43.6548791921291,-79.39860067834798,['full'],['minutes'],2018-07-23T22:15:00.000Z,"There was room enough to park my bike, but the person who came after me had to lock their bike to a sign post."
+744,43.656695569032394,-79.3593749024414,['full'],['hours'],2018-07-20T01:00:00.000Z,"There are a few bars, cafes, and restaurants in the area. There isn't enough space to park your bike and go enjoy the area for a few hours."
+745,43.65611335477575,-79.38162206147518,['damaged'],['hours'],2018-07-25T18:14:28.000Z,There is a damaged bike rack at 1 Dundas Street W. 
+746,43.6559421,-79.38177830000001,['damaged'],['minutes'],2018-07-25T18:15:48.000Z,There are 2 abandoned bikes in front of 1 dundas street W. They have been there for more than 6 months. 
+750,43.6580617,-79.3864974,['full'],['hours'],2018-07-25T20:00:00.000Z,
+751,43.6700158880677,-79.3864359190365,['full'],['hours'],2018-07-25T18:45:00.000Z,Had to walk over to Park avenue before I found bike parking. 
+752,43.67404413658976,-79.45983546993148,['not_provided'],['minutes'],2018-07-25T20:09:57.000Z,Could only see one bike stand in the whole area. A few bikes parked to posts.
+775,43.64461885478771,-79.39935764634367,['full'],['hours'],2018-07-26T00:00:00.000Z,Not enough bike parking on king st 
+753,43.6580617,-79.3864974,['not_provided'],['hours'],2018-07-25T17:24:00.000Z,840 coxwell Ave busy medical building with no rings or racks I  had lock up to a street sign along with 4 other bikes for my Dr appointment 
+754,43.63863806282162,-79.41390190762081,['full'],['hours'],2018-07-25T21:04:30.000Z,We desperately need more public bike parking in Liberty Village. Most of the buildings have waiting lists at this point. The rings are always full. 
+756,43.6431072779798,-79.3722696222805,['not_provided'],['minutes'],2018-07-25T21:38:20.000Z,There used to be bike parking in front of the Queen’s Quay E LCBO. It was recently removed altogether.
+757,43.64852142028242,-79.38118662615051,['not_provided'],['minutes'],2018-07-25T22:14:19.000Z,
+758,43.655887088806715,-79.39083903055428,['damaged'],['hours'],2018-07-25T22:18:41.000Z,Several abandoned bikes on the rings to the west of the Charles Hastings coop on St. Patrick 
+759,43.667026163202685,-79.43172480840911,['damaged'],['minutes'],2018-07-25T22:15:00.000Z,"At the southwest corner of Dovercourt and Hallam, a ring and post is very wobbly. It looks like it was attached to a paver stone and that stone is coming loose. "
+760,43.65616323908813,-79.38062968557023,['full'],['minutes'],2018-07-25T22:44:20.000Z,Never enough bike spaces at Ted Rogers school of business at Ryerson
+763,43.761547546040596,-79.41022657532801,['not_provided'],['hours'],2018-07-25T23:38:39.000Z,There is no bike parking at the TTC subway entrance on the south side of Sheppard Avenue East (the entrance under the Hullmark Centre). Cyclists frequently lock their bikes to the infrastructure which I believe is actually designed for locking newspaper dispensers to.
+764,43.64822348782064,-79.3799533296899,['not_provided'],['hours'],2018-07-26T00:19:11.000Z,Major bay street offices have little to no street parking.
+765,43.653621660714,-79.38006009836425,['not_provided'],['minutes'],2018-07-25T23:00:00.000Z,
+767,43.66087947885884,-79.37402282724281,['not_provided'],['hours'],2018-07-24T16:30:00.000Z,Gerrard Street has a bike lane but when I went to meet a friend at Allan Gardens I had nowhere to park my bike on the north side of the street. The south side parking was completely full. 
+768,43.65609084396282,-79.40984301497667,['damaged'],['hours'],2018-07-26T01:33:44.000Z,"Bunch of abandoned bikes North side of college between Markham and Palmerston, they have been here since at least last fall"
+769,43.68821467705467,-79.31921129355135,['damaged'],['hours'],2018-07-26T01:39:31.000Z,There is a bike since last year park on Danforth close to the number 671 10 feet west of that number almost at the corner of Pape CCM bike is missing seat and some parts already. Needs to be removed.
+770,43.68827968884871,-79.31932804357973,['damaged'],['hours'],2018-07-26T01:43:28.000Z,Bike abandoned since last year 
+771,43.67666074197776,-79.4943717996299,['other'],['minutes'],2018-07-26T02:23:29.000Z, Bad rack in a bad spot
+772,43.66728528752332,-79.48737659868277,['full'],['hours'],2018-07-26T02:25:07.000Z,
+773,43.6927243719624,-79.466723639463,['not_provided'],['minutes'],2018-07-26T02:26:42.000Z,Your minutes/ hours/ overnight thing is broken
+774,43.66172906834218,-79.41239949245681,['damaged'],['multiday'],2017-09-01T02:32:47.000Z,
+903,43.67102227097627,-79.41351772664319,['damaged'],['multiday'],2018-07-31T21:09:40.000Z,
+766,43.666608,-79.44666289999998,['not_provided'],['minutes'],2018-07-26T01:01:02.000Z,
+762,43.6563985,-79.4014085,['damaged'],['multiday'],2018-07-25T23:18:02.000Z,
+776,43.68175726145015,-79.42590642390434,['damaged'],['overnight'],2018-07-26T03:40:02.000Z,Abandoned old bike since months ago
+777,43.68872492812216,-79.42529855672552,['not_provided'],['multiday'],2018-07-26T03:41:09.000Z,"The entire south side of Claxton Blvd is lined with multi-unit apartment buildings but there's nowhere secure to publicly park bikes. I've observed residents locking bikes on railings, benches, or even trees. The only parking available is at Kenwood/Vaughan and I assume the 2 poles behind the apartment building at Claxton/Kenwood are reserved for its residents. Even then, the poles are overloaded with bikes and a few bikes locked there have missing parts (possibly stolen?). Bikes locked on Vaughan often seem either abandoned or have parts stolen. Please I urge the city to look into (safe) bike parking in this area. "
+778,23.0759927,72.52690480000001,['not_provided'],['minutes'],2018-07-26T05:33:51.000Z,
+779,43.66676190193429,-79.418953641803,['damaged'],['multiday'],2015-07-01T12:13:11.000Z,"Blue bike, straight bar, suitable for an adult has been abandoned (locked) to a post for years."
+781,23.039281267645364,72.16109148960584,"['not_provided', 'full', 'damaged', 'damaged', 'other']",['multiday'],2018-07-26T12:54:20.000Z,
+782,43.6580617,-79.3864974,"['not_provided', 'full', 'damaged', 'damaged', 'other']",['minutes'],2018-07-26T12:56:41.000Z,
+784,43.664053680024445,-79.343453309729,['full'],['minutes'],2018-07-26T14:21:52.000Z,
+785,43.67834819073113,-79.29989423532714,['not_provided'],['overnight'],2018-07-26T14:25:55.000Z,
+786,43.6565443,-79.356379,['not_provided'],['minutes'],2018-07-26T14:34:31.000Z,My family doctor is here and it would be great if I could lock my bike up outside. Right now I have to go to a nearby apartment building hidden from the main street that is an obvious target for theives. Bikes there are often missing wheels etc. 
+787,43.64685932252568,-79.40602619034121,['not_provided'],['minutes'],2018-07-26T15:04:40.000Z,
+788,43.65377691238166,-79.39370717783203,"['not_provided', 'damaged']",['minutes'],2018-07-25T16:00:00.000Z,
+789,43.660794001036955,-79.40342440397683,['not_provided'],['hours'],2018-07-25T23:30:00.000Z,Very limited/virtually zero bike parking at bmo field. Forced to look for fences/sign posts/railings farther and farther from the stadium. There isn’t specific bike parking that I’m aware of (north end)There needs to be more bike parking for people who ride bikes to  tfc and Argos games
+790,43.65408741451287,-79.46554746408691,['damaged'],['hours'],2018-07-26T00:16:00.000Z,Many abandoned bikes in covered bike parking near high park station
+793,43.65064075086384,-79.37847223062744,['damaged'],['hours'],2018-07-26T19:40:59.000Z,"There are a few abandoned bicycles taking up space on parking rings on Yonge between Richmond and Adelaide (east side)Also, the Deloitte building on the west side of Yonge just north of Adelaide was recently constructed and has no bike parking around its perimeter."
+794,43.67565806857417,-79.4025881232788,['full'],['minutes'],2018-07-26T20:18:40.000Z,"The corner of Davenport and Dupont sees something in the order of 1500+ riders daily, and there are a number of storefronts (coffee shop, bike repair, 24 hr food store, tims, shoe repair, barber etc.) that would be popular for cycling commuters ... if there were more spaces. The whole area needs to be structurally considered for much improved bike parking. "
+795,43.714134316317676,-79.5576574620003,['not_provided'],['minutes'],2018-07-24T20:53:44.000Z,I get that this area is a car centric mess but the Humber trail makes getting up here quite nice and easy. This is a large suburban plaza with offices and restaurants but zero services for cyclists. A bike ring or two would go a long way especially for those riding the Humber trail. 
+796,43.657161298990445,-79.38203420419921,['other'],['hours'],2018-07-26T21:41:55.000Z,
+798,43.6526163,-79.39822630000003,"['damaged', 'full']",['minutes'],2018-07-26T22:49:29.000Z,Degens afoot - don't feel comfortable locking here.
+799,43.65086199534983,-79.39154263515701,['full'],['hours'],2018-07-27T12:30:00.000Z,Out front of 180 John Street there are three public bike rings which would realistically accommodate only 6 bikes. The surrounding buildings are offices full of people that bike and thus these racks are always full. There is plenty of room for more racks or a bigger rack.
+800,43.6580617,-79.3864974,['full'],['hours'],2018-07-27T13:16:19.000Z,"I love the focus on cycling, but jeez, what you'll discover is this app is utterly useless"
+1378,43.70826096370539,-79.47756376047363,['not_provided'],['hours'],2019-07-01T16:14:05.000Z,
+803,43.6489879,-79.384233,"['not_provided', 'full']",['hours'],2018-07-27T16:41:42.000Z,
+804,43.6580617,-79.3864974,['not_provided'],['hours'],2018-07-27T16:42:22.000Z,Needs bike parking
+806,43.668900384858524,-79.39414016476519,['damaged'],['hours'],2018-07-27T17:10:34.000Z,The ring around the bike post is gone.
+861,45.5157121,-73.68465709999998,"['other', 'not_provided', 'damaged']",['multiday'],2018-07-30T10:35:39.000Z,
+807,43.669773448056674,-79.39363322726138,['damaged'],['minutes'],2018-07-27T17:11:32.000Z,There's a black bike where the chain has come off and the bike has been there for months.
+808,43.673432414777885,-79.38800595274813,['damaged'],['hours'],2018-07-27T17:12:36.000Z,"There's a white linus bike that has been locked up to a bike post for over a year and never moved. Rusted, damaged, would appreciate freeing up the bike post.Thanks!"
+812,43.66846573934522,-79.38718143759309,"['damaged', 'damaged', 'full']",['hours'],2018-07-27T12:30:00.000Z,"Several bikes on the SW corner of St Nicholas and Charles that are badly damaged, double locked and abandoned. There are many posts, but never any spaces to lock bikes. "
+813,43.6580617,-79.3864974,['damaged'],['minutes'],2018-07-27T21:09:18.000Z,
+814,43.6638659273829,-79.41659741141774,['full'],['hours'],2018-07-26T00:00:00.000Z,Lots of bike friendly establishments around here but not enough parking!
+815,43.6485267,-79.39600310000003,['damaged'],['multiday'],2018-07-28T01:07:25.000Z,
+816,43.6545668,-79.48983809999999,['other'],['minutes'],2018-07-28T03:40:54.000Z,Congratulations to Bikespace on your launch!  (Just trying out the app tonight). - Allison (John Spragge's wife) wrote this.  
+818,43.620770451869596,-79.4834142228039,['not_provided'],['hours'],2018-07-28T12:06:57.000Z,Lots of businesses and cycles near the waterfront. No parking.
+819,43.6580617,-79.3864974,['other'],['minutes'],2018-07-28T12:43:04.000Z,
+820,43.63893818288821,-79.39078320710132,['other'],['hours'],2018-07-28T15:23:28.000Z,"I road in to the west ending the city from Mississauga and got downtown pretty quick, loved the gear grease I slathered on.   Well, fancy spandex outfit looking great on me too but I looked left and right, even up and down, but there is no where to lock my bike on the Gardener Express Way!!!!   OMG!  What’s a man in tight pink to do!!!!This must change!  #BiketheQEW!"
+821,43.79952344377786,-79.20307447119325,['not_provided'],['hours'],2018-07-28T15:29:17.000Z,There needs to be bike parking space everywhere in Toronto
+822,43.73620230354532,-79.39408690022128,"['not_provided', 'other']",['minutes'],2018-07-28T15:53:10.000Z,"Why don’t bike shoes have spikes?  Really?   Just smashed a killer ride over to the Golf Course, bag on back, and off we go!   Got through 8 holes but ran into a water hazard on 9 but CAN’T LOCK MY BIKE!!!!Wouldn’t a few short, solid, steel, posts be a great idea around the fairways?PS.  We need more spandex in Golf!!  "
+823,43.6580617,-79.3864974,['full'],['minutes'],2018-07-27T22:30:00.000Z,"With redevelopment of Holt Renfrew Centre and Manulife Centre, developers removed bike parking instead of providing alternatives as scaffolding and barriers have eliminated parking on Bloor St (north and south), Bay St (east side) and Balmuto St (west) around the 2 centres. Many cyclists park for work, shopping, going to Varsity, etc. "
+827,43.6469681,-79.4025997,"['full', 'damaged']",['minutes'],2018-07-28T20:01:16.000Z,
+828,43.6704425,-79.3944841,['not_provided'],['minutes'],2018-07-28T21:03:47.000Z,
+829,43.669003209863185,-79.40353747387161,['damaged'],['hours'],2018-07-28T21:21:16.000Z,"There are three bike parking spots here and one that is most south has an abandoned bike (rusty chain, missing wheel) here. "
+830,43.6580617,-79.3864974,['damaged'],['minutes'],2018-07-28T21:45:08.000Z,Cannot pin using android. North East intersection Gatineau Trail/Pan Am abandon bike chained to rack. Been there since June. Rusted up now. 
+831,43.64917026344184,-79.40387306375425,['damaged'],['hours'],2018-07-28T23:18:08.000Z,rusty damaged bike with damaged tires has not been moved for a couple of years now
+832,43.663865,-79.36904229999999,['not_provided'],['hours'],2018-07-28T23:58:46.000Z,
+833,43.6580617,-79.3864974,['not_provided'],['hours'],2018-07-29T11:26:42.000Z,
+834,43.666743425898545,-79.4466645685078,['not_provided'],['minutes'],2018-07-20T19:15:00.000Z,There is a grocery store and several condos and people end up locking them to fences across the street or leaving them unlocked on the sidewalk because there isn’t a single bike locking station despite there being a large business right there. 
+835,43.637297619726915,-79.40591122884979,['other'],['multiday'],2018-07-29T13:31:59.000Z,Multiple bike thefts. Smashed and sawn thru u locks and cable locks. Parts stolen
+836,43.741088248165426,-79.33462826301269,['not_provided'],['hours'],2018-07-27T15:30:00.000Z,
+837,43.7443757,-79.3280494,['other'],['hours'],2018-04-19T04:30:00.000Z,Existing bike rack in parking lot is inadequate.
+838,43.74273117205194,-79.30825774165038,['not_provided'],['minutes'],2018-07-29T14:10:39.000Z,There are no parking spaces in most Scarborough strip plazas.
+839,43.6580617,-79.3864974,['full'],['hours'],2018-07-29T00:37:00.000Z,"Bike parking around scotiabank theatre is always impossible. Lots of room for more racks on Widmer.Especially during TIFF, it's really hard to find parking near both Scotia and Tiff Lightbox cinemas.Thanks! "
+1379,43.72217276463188,-79.50921382684936,['not_provided'],['hours'],2019-07-01T16:17:32.000Z,
+841,43.672483199999995,-79.30715699999996,['full'],['hours'],2018-07-27T12:54:00.000Z,
+842,43.6580617,-79.3864974,['other'],['minutes'],2018-07-29T15:18:50.000Z,Outside Food Basics and Shoppers Drug Mart at DuPont and Lansdowne there is only one bike pole (accommodating 2 bikes) to lock up your bike on.
+843,43.64457858243098,-79.37617652930942,['damaged'],['overnight'],2018-07-29T16:01:34.000Z,Multiple abandoned bikes locked
+844,43.7252035800664,-79.40248061284223,['not_provided'],['minutes'],2018-07-20T16:28:28.000Z,No bike racks at Yonge & Lawrence
+847,43.6580617,-79.3864974,"['other', 'damaged']",['hours'],2018-07-29T21:41:08.000Z,Bike rack not secure. Bike racks are in parking lot and can easily be moved! No street bike parking on Landsdowne near grocery store entrance.
+848,43.66344927001236,-79.46636017360021,['full'],['hours'],2018-07-29T21:56:20.000Z,Bike parking at Annette library is almost always full and the incline makes it difficult to park there
+851,43.89839659475301,-79.26621979637451,['other'],['multiday'],2018-07-29T23:35:54.000Z,
+852,43.64820389014497,-79.38093555493322,['not_provided'],['minutes'],2018-07-29T16:20:00.000Z,There is no bike parking at TD or any of the other banks nearby at this corner on King and Bay.
+854,43.64958973868345,-79.44480939201031,['full'],['overnight'],2018-07-30T00:29:14.000Z,Sorauren park area needs way more bike racks
+855,43.66661192176453,-79.44740302365267,['not_provided'],['minutes'],2018-07-29T21:25:00.000Z,"There is no parking in front of the shoppers drugmart. There are two rings at the Food Basics, but they are always full"
+856,43.6576159365205,-79.40163822105131,['full'],['minutes'],2018-07-30T00:48:13.000Z,Outside of Independent City Market there is never enough parking 
+857,43.66199927978301,-79.31017765738397,['full'],['hours'],2018-07-27T00:49:20.000Z,Trying to find bike parking during volleyball games is extremely difficult!! 
+858,43.7129563,-79.3893898,['not_provided'],['hours'],2018-07-30T00:55:31.000Z,There is no place to lock bike on the west side of mount please St. Toronto. 
+859,43.65038063820812,-79.38516032647959,['full'],['hours'],2018-07-30T23:00:00.000Z,There's never enough parking here for people who work in the opera or ballet
+860,43.6580617,-79.3864974,['not_provided'],['hours'],2018-07-30T04:12:18.000Z,
+1380,43.72886905849111,-79.4031646085075,['damaged'],['minutes'],2019-07-02T17:07:44.000Z,
+863,43.652575642141585,-79.37873776914932,['other'],['hours'],2018-07-30T12:49:13.000Z,"Large U-lock is locked to ring and post parking spot. Has been there for months. On north side of Queen, east of Victoria."
+866,43.65857205061136,-79.4420432664894,['damaged'],['minutes'],2018-07-29T20:00:00.000Z,There is an abandoned bicycle locked up to a ring and post in front of the Metro Drugs at 1290 Bloor St W
+867,43.66192706127221,-79.37948074121704,['full'],['minutes'],2018-07-26T21:20:00.000Z,Frequently not enough bike parking outside the Maple Leaf Gardens Loblaws. 
+868,43.692984599999996,-79.3024982,['other'],['multiday'],2018-07-30T16:26:32.000Z,
+869,43.692984599999996,-79.3024982,['other'],['hours'],2018-07-30T16:30:45.000Z,
+870,43.712398394649576,-79.3530180670761,['not_provided'],['hours'],2018-05-09T13:00:00.000Z,
+871,43.6480361,-79.3960169,['full'],['minutes'],2018-07-30T16:39:58.000Z,
+872,43.6483525,-79.3928656,['full'],['minutes'],2018-07-30T16:49:34.000Z,
+873,43.6433696,-79.39014099999997,"['full', 'not_provided', 'damaged']",['minutes'],2018-07-30T16:57:54.000Z,
+874,43.6580617,-79.3864974,['damaged'],['minutes'],2018-07-30T17:17:10.000Z,one of the two bikesta ds in front of the metro is loose
+899,43.6580617,-79.3864974,['full'],['hours'],2018-07-29T17:00:00.000Z,"There are 2 bike parking stations at the entrance of Hanlan's beach however they are ALWAYS full. Most people have now taken to dismantling the wooden fence and locking their bikes there, however it is not a good solution. We need several additional bike corrals to accommodate the several bikes used by individuals trekking to the beach."
+901,43.6580617,-79.3864974,['not_provided'],['minutes'],2018-07-31T15:12:37.000Z,There is no bike parking on the North side of this section of Front street where there is a Dollarama and an LCBO and a bank.
+902,43.6861368,-79.39143680000001,['full'],['minutes'],2018-07-31T18:30:00.000Z,We need more bike parking lot!
+948,43.66161161341136,-79.37947982296919,['damaged'],['minutes'],2018-08-06T22:28:16.000Z,Abandoned bike stripped of parts.
+1381,43.64432165514307,-79.5242423759093,['not_provided'],['minutes'],2019-07-04T17:30:00.000Z,"Add a bike parking on bloor and islington on the south of bloor, in front of Physio First."
+878,43.6682951,-79.37027979999999,['not_provided'],['multiday'],2018-07-30T20:37:08.000Z,
+879,43.670545659781055,-79.38656080872039,['not_provided'],['hours'],2018-07-30T14:38:00.000Z,
+880,43.657487307811834,-79.40219905157318,"['not_provided', 'full']",['minutes'],2018-07-30T20:56:27.000Z,
+881,43.653551797332625,-79.40025176782837,"['not_provided', 'full']",['hours'],2018-07-11T21:30:00.000Z,
+882,43.6580617,-79.3864974,['full'],['minutes'],2018-07-30T21:14:40.000Z,
+883,47.6066058,-52.71454389999997,['full'],['minutes'],2018-07-30T21:35:18.000Z,
+1417,43.7077739,-79.38945639999997,['not_provided'],['minutes'],2019-08-05T15:08:49.000Z,No ring and posts
+523,43.67256276361589,-79.38854473291013,['full'],['hours'],2018-06-22T04:33:00.000Z,
+888,43.658837896930095,-79.38199128885498,['not_provided'],['hours'],2018-07-31T00:00:07.000Z,
+890,43.6580617,-79.3864974,['damaged'],['hours'],2018-07-31T00:32:00.000Z,
+891,43.6580617,-79.3864974,"['damaged', 'not_provided', 'full']",['overnight'],2018-07-31T00:05:55.000Z,
+892,43.6580617,-79.3864974,['damaged'],['overnight'],2018-07-31T00:42:26.000Z,
+893,43.73217280000003,-79.26738469848635,['full'],['minutes'],2018-07-31T00:44:44.000Z,
+894,43.67130266381825,-79.30793900446815,['not_provided'],['hours'],2018-07-31T00:57:08.000Z,Visiting friends who rent and don’t have access to the yard/shed. Where do I lock my bike on residential streets?
+895,43.65995764120108,-79.3895025034468,['damaged'],['minutes'],2018-07-31T01:02:50.000Z,Bike left after being stripped of parts.
+896,43.66003063348032,-79.38905443936306,['damaged'],['minutes'],2018-07-30T19:05:56.000Z,in front of Mars on College near Bay. I am having trouble pinning. also when you put abandoned bike you still have to put in time you parked. you need to just have a spot for abandoned without asking time and parking questions.
+897,43.67202394930694,-79.40177526254882,['not_provided'],['hours'],2018-07-31T04:14:04.000Z,
+898,43.65259698964147,-79.40001573343505,['full'],['hours'],2018-07-28T19:44:00.000Z,
+877,43.65185176333483,-79.39315464277496,['damaged'],['overnight'],2018-07-30T17:58:00.000Z,A bicycle has been abandoned in front of the Toronto Chinese Baptist Church at 72 Beverley St. Note the rusted chain on the bicycle in the photo - it does not appear to have been ridden since the winter!
+887,43.68194114492334,-79.46695253329744,['not_provided'],['hours'],2018-07-30T23:16:29.000Z,
+876,43.652107935920725,-79.39341213484039,['damaged'],['minutes'],2018-07-30T17:58:00.000Z,One (or perhaps two) bicycles have been abandoned. They are parked at a ring and post in front of 80 Beverley St.
+886,43.6411034,-79.38345529999998,['damaged'],['minutes'],2018-07-30T22:52:00.000Z,
+1382,43.62107077827706,-79.51512788523286,['not_provided'],['hours'],2019-07-06T15:33:00.000Z,Please add a bike parking at the Queensway Cineplex 
+906,43.65069223,-79.35807281000001,['not_provided'],['hours'],2018-07-31T21:42:42.000Z,Distillery District lacks bike parking as a whole
+908,43.647120722587005,-79.36165597367778,['full'],['hours'],2018-07-31T23:49:51.000Z,Bike parking full. 
+909,43.76520598969043,-79.4910820939088,['not_provided'],['hours'],2018-08-01T00:13:24.000Z,Their is a bike room that is locked might have to pay to use it why do you have s bike locker at a station where people can’t use...
+910,43.6472833,-79.36181690000001,['full'],['hours'],2018-08-01T00:27:37.000Z,
+911,43.6580617,-79.3864974,['not_provided'],['hours'],2018-06-05T11:00:00.000Z,
+915,43.65652860434693,-79.40442653899913,['full'],['hours'],2018-07-30T23:05:00.000Z,Bike racks are always full there..
+917,43.6396875,-79.43070239999997,['full'],['hours'],2018-07-31T23:31:00.000Z,This is an ongoing challenge - there is never enough bike space parking near the TIFF Bell lightbox. I have asked TIFF about it and they put me back to the city. Perhaps more spots with the King Street revival?
+1452,43.67802811477077,-79.44204863090744,['full'],['hours'],2019-09-23T13:55:00.000Z,insufficient bike rings available for locking.  Existing rings always full in the morning and closest alternates are further than should be available.
+950,43.640784688793545,-79.37829382741847,['full'],['hours'],2018-08-07T21:53:22.000Z,
+951,43.6580617,-79.3864974,['full'],['minutes'],2018-08-07T15:00:00.000Z,
+953,43.6580617,-79.3864974,['not_provided'],['hours'],2018-07-17T16:00:00.000Z,"It has always been a problem to find parking at union station.  The situation is slightly better now with some bike parking on west side, but still difficult to find a free spot."
+978,43.6405702,-79.39434119999999,"['full', 'damaged', 'other']",['minutes'],2018-08-10T22:50:38.000Z,Bike parking is too congested and does not meet City design standards
+1482,43.686384161127116,-79.37463340620116,['not_provided'],['hours'],2020-01-03T15:08:34.000Z,"There is a Bikeshare stand across the street, but there is next to no infrastructure in the area for visitors to lock their own bicycles!"
+1418,43.66957854657127,-79.39015362584234,['damaged'],['minutes'],2019-08-05T20:20:35.000Z,In front of Banana Republic 80 Bloor St W
+913,43.64218569471146,-79.40192420642524,['damaged'],['hours'],2018-08-01T12:52:48.000Z,
+912,43.638805057197565,-79.39910041330006,['damaged'],['hours'],2018-08-01T12:51:21.000Z,Fort York Blvd and Queens Wharf Road. Bike is smashed and rusted and been here for months.
+907,43.661366327404174,-79.34005417063827,['damaged'],['minutes'],2018-07-31T22:39:04.000Z,
+916,43.65609956864493,-79.38152307354125,['damaged'],['multiday'],2018-08-01T13:20:53.000Z,2 abandoned bikes still locked. I reported this to 311 a month ago and was advised they were aware and removing that week. I then submitted to BikeSpace two weeks ago also without any action. Please remove this ASAP as they prevent 4 other people locking up there. 
+1526,43.669288663613564,-79.43441060451366,['full'],['hours'],2020-09-14T14:39:05.000Z,
+1507,43.66929281644631,-79.43414756935007,['full'],['hours'],2020-07-06T17:00:19.000Z,This is a work space and many people need to park here. More bike rings please! 
+1383,43.67696312246472,-79.49483718652954,['not_provided'],['minutes'],2019-07-05T16:32:00.000Z,"Large commercial shopping plaza with grocery store, tim horton's, busy post office, restaurants, offices and a pizza pizza. ZERO bike parking. I see at least 3 or 4 areas in the plaza that could easily accommodate a bike rack or some rings. "
+920,43.641762244604585,-79.43237361264721,['not_provided'],['minutes'],2018-07-30T23:31:00.000Z,"Tons of bikes locked to fences here, no racks or rings available."
+921,43.641762244604585,-79.43237361264721,['not_provided'],['minutes'],2018-07-30T23:31:00.000Z,"Tons of bikes locked to fences here, no racks or rings available."
+922,43.6580617,-79.3864974,['not_provided'],['minutes'],2018-08-01T12:50:00.000Z,
+1453,43.678031024559616,-79.44205399532547,['full'],['hours'],2019-09-24T13:24:55.000Z,There are not enough parking space here - would be great to easily find a spot here. 
+1483,43.660315731344184,-79.36899752806615,['other'],['hours'],2020-01-20T21:41:06.000Z,"Hi, the bike parking at the Gerrard Square Mall was used as the snow dumping area for snow removal."
+928,43.64109914019832,-79.37743552053371,['full'],['hours'],2018-08-02T15:38:34.000Z,
+930,43.629413017032384,-79.5182260491394,['not_provided'],['minutes'],2018-07-27T20:30:00.000Z,"I went to RONA (Islington) to check on some small tools. NO bike parking at all (visible). I locked my bike to shopping cart corral, beside Cars. (I have photo, but on another mobile device.) Might be room for bike rack near doors?"
+932,43.6500218,-79.37646960000001,['full'],['minutes'],2018-08-02T21:01:56.000Z,
+933,43.6620238,-79.3841061,"['full', 'other']",['minutes'],2018-08-02T21:40:01.000Z,Poor quality design - handlebars tangle with each other
+934,43.655839,-79.3834885,"['full', 'damaged']",['minutes'],2018-08-02T22:47:08.000Z,
+936,43.6580617,-79.3864974,['not_provided'],['minutes'],2018-06-30T19:15:00.000Z,
+937,43.6580617,-79.3864974,['other'],['minutes'],2018-08-03T17:10:32.000Z,
+939,43.6580617,-79.3864974,['not_provided'],['hours'],2018-08-03T19:47:41.000Z,"There are only 2 bike stands at opposite ends of the York Mills plaza.  A lot more is needed.  There is a bike path connecting the plaza and a lot of bikes use it to get to the shopping plaza, so it makes sense to provide more bike parking spaces."
+940,43.739927,-79.33257229999998,['not_provided'],['minutes'],2018-08-03T19:52:27.000Z,"There is no parking for the Edwards Gardens botanical gardens, nor for the visitor centre.  This makes no sense since so many people get there with their bikes."
+941,43.6704796,-79.38690600000001,['not_provided'],['minutes'],2018-08-03T21:09:14.000Z,
+943,43.7108182,-79.36808259999998,['damaged'],['multiday'],2018-08-04T14:42:00.000Z,
+931,43.67159568269911,-79.38725766449494,['full'],['hours'],2018-08-02T20:47:29.000Z,
+938,43.6575334,-79.4026321,['full'],['minutes'],2018-08-03T19:36:56.000Z,
+952,43.6601884556693,-79.38548352499237,['damaged'],['hours'],2018-08-08T15:07:07.000Z,
+923,43.65555710242182,-79.39191086386853,['damaged'],['hours'],2018-08-01T21:08:10.000Z,Bike abandoned. Please remove!
+954,43.64638782844834,-79.4196734153686,['full'],['hours'],2018-08-04T16:33:00.000Z,"Bike parking in this area of Ossington is almost always full. People routinely lock bikes to trees, signposts, etc., and sometimes even THESE options are full. "
+955,43.6580617,-79.3864974,['not_provided'],['hours'],2018-06-28T00:17:00.000Z,There are a few businesses on this corner with no bike racks provided.  It's a busy intersection so it's not ideal to have to cross the street to find bike parking. 
+958,43.606911235608635,-79.4202009430793,['full'],['minutes'],2018-08-09T01:33:06.000Z,
+959,43.6580617,-79.3864974,['not_provided'],['minutes'],2018-08-09T09:22:00.000Z,
+960,43.66262559398808,-79.30894937296142,['full'],['hours'],2018-08-08T22:30:00.000Z,"All bike racks are constantly full during beach volleyball season (inter-murals). It means cyclists have no choice but to lock bikes to trees, playground equipment, or random signs. Given that there are dedicated bike paths that take cyclists to the beach, it would be sensible to also have plenty of bike parking available for said cyclists who use the path to get to the beach."
+961,43.66198915339829,-79.35386028070678,['not_provided'],['overnight'],2018-08-09T15:02:00.000Z,"There is no bike parking available east of the DVP to Munro street. You have to go to north side of broadview on Dundas, to find 2 parking spots. Considering the BikeShare lockers are located closeby, you would think it would be a more bicycle friendly area. "
+1384,43.68086994160885,-79.49737992067566,['not_provided'],['minutes'],2019-07-03T13:38:00.000Z,"This is a small commercial corner block with a dentist, a pharmacy, a laundromat and a computer repair shop. NO BIKE PARKING. The dentist has already lost my business and the pharmacy is next. "
+964,49.692130657271846,-112.83985044737096,['not_provided'],['minutes'],2018-08-01T17:10:58.000Z,Testing
+965,43.656948299999996,-79.4504895,['not_provided'],['hours'],2018-08-08T19:49:05.000Z,
+968,43.64248766270196,-79.38248734037143,['not_provided'],['hours'],2018-08-09T21:34:12.000Z,
+969,43.671907545979145,-79.37674488802185,"['not_provided', 'full']",['minutes'],2018-08-09T22:00:38.000Z,There is only one post on this block and it had two bikes on it already. Thanks for tracking this!
+970,43.671907545979145,-79.37674488802185,"['not_provided', 'full']",['minutes'],2018-08-09T22:00:38.000Z,There is only one post on this block and it had two bikes on it already. Thanks for tracking this!
+971,43.67853441595891,-79.34712257166137,['not_provided'],['hours'],2018-08-08T21:30:00.000Z,
+1532,43.679046532354704,-79.39078893442382,['not_provided'],['overnight'],2020-11-08T23:10:32.000Z,
+973,43.6420538,-79.4232662,['full'],['minutes'],2018-08-09T23:03:47.000Z,
+974,43.67172578583927,-79.38723877721827,['full'],['hours'],2018-08-09T23:05:54.000Z,
+975,43.6669024,-79.4496322,['not_provided'],['minutes'],2018-08-09T23:51:23.000Z,
+977,43.65604008567689,-79.38898195240881,['damaged'],['hours'],2018-08-10T15:25:18.000Z,
+956,43.6730749,-79.38781449999999,['damaged'],['hours'],2018-08-08T18:49:18.000Z,
+957,43.663793307861184,-79.36806121912696,['not_provided'],['hours'],2018-08-08T19:27:30.000Z,Instead of a table 4 why can’t we park 2 bikes??  What’s are you doing about this
+966,43.655509546936436,-79.3836470338905,['damaged'],['hours'],2018-08-09T20:13:22.000Z,
+967,43.6632579,-79.41055690000002,['full'],['hours'],2018-08-09T20:27:12.000Z,
+979,43.6473405,-79.39189320000003,['full'],['minutes'],2018-08-11T00:15:23.000Z,
+980,43.643135,-79.3925327,['full'],['minutes'],2018-08-11T00:23:02.000Z,
+981,43.6598702,-79.38288310000002,['not_provided'],['minutes'],2018-08-11T20:19:56.000Z,
+982,43.6479615,-79.39679130000002,"['full', 'damaged']",['minutes'],2018-08-11T21:08:51.000Z,
+983,43.6863263,-79.4226387,['not_provided'],['multiday'],2018-08-12T22:13:00.000Z,Very limited bike parking options for residents in this area. I contacted building about bike parking space and they don't plan on installing anything. Neighbours wont allow bike parking on their property and there are only a few city bike parking spots around the corner which are always full.
+984,43.67297844807863,-79.39472641725769,['not_provided'],['hours'],2018-08-12T06:33:28.000Z,apartment building has no bike parking for guests
+1385,53.545966208888686,-113.49481402460628,['full'],['hours'],2019-07-10T14:33:00.000Z,Bike parking is often full at edmonton tower
+1421,43.64108239787282,-79.3766713788263,['full'],['hours'],2019-08-05T16:00:00.000Z,There is very little bike parking at the ferry terminal and it was all full. There needs to be a lot more bike parking here for people going to the island 
+989,43.6387485,-79.41575949999998,['not_provided'],['minutes'],2018-08-12T18:23:36.000Z,
+991,43.7095726444679,-79.44124376386384,['full'],['hours'],2018-08-13T12:17:15.000Z,"There is never enough bike parking at this subway station. It’s poorly serviced by the local bus, the next 2 closest stations are on busy arterials, and the station entrance is usually flooded with parked cars... all of this makes it a perfect candidate for a safer bike route and a proper facility for parking bikes. "
+992,43.65335845822338,-79.38383303782115,['not_provided'],['hours'],2018-07-26T23:27:00.000Z,Budweiser stage - bike parking shortage.Even something temporary would be helpful. It was a mess out there! Shouldn’t alternative transit to concerts be encouraged? 
+993,43.65307827671654,-79.35568418283691,['damaged'],['minutes'],2018-08-12T15:16:00.000Z,One of the bike rings is bent/broken
+994,43.6703405,-79.3859789,['full'],['minutes'],2018-08-13T16:34:41.000Z,"Bloor and Yonge, NE corner, outside HBC."
+995,43.64984417302271,-79.38684894122275,['damaged'],['minutes'],2018-08-13T20:53:14.000Z,2 abandoned bikes
+996,43.55450962315461,-79.45426847890622,['damaged'],['hours'],2018-08-14T00:38:11.000Z,test
+997,43.6657728,-79.40768059999999,['full'],['hours'],2018-08-14T02:29:01.000Z,
+1014,43.65279882017478,-79.39362134714355,['damaged'],['minutes'],2018-08-16T15:05:11.000Z,There is a blue and white bicycle that has been abandoned. Parts are slowly being removed and it now is missing both wheels. It is locked to a pole located on the north side of Grange just west of Beverley.
+1015,43.64473753128114,-79.36546349337249,['damaged'],['minutes'],2018-08-16T21:01:38.000Z,Bent Ring and Post bike rack.
+1454,43.67800320660914,-79.44209356627044,['full'],['hours'],2019-09-24T18:35:22.000Z,only one bike ring in this location
+985,43.65301617490137,-79.39623918445176,['damaged'],['minutes'],2018-08-11T11:03:15.000Z,
+987,43.6691662,-79.33627089999999,['full'],['minutes'],2018-08-12T15:43:06.000Z,
+990,43.66480483738882,-79.42078182950996,['not_provided'],['hours'],2018-08-12T23:51:38.000Z,I think Christie Pitts park needs a few more places to lock up a bike. The washroom area would work well for all day visits as well as a bathroom break. Thank you! 
+1386,43.65643883583714,-79.45232804767863,['damaged'],['hours'],2019-07-11T19:46:49.000Z,
+999,43.63998899968127,-79.43713750620117,['not_provided'],['hours'],2018-08-14T15:54:19.000Z,"There are little to no bike parking spots on Jameson. Often I am left parking against private property fences or a construction fence. Or a tree. There are limited options and I feel bad parking by a tree but there is literally no other option. How can we encourage cycling in this city, especially in a low-income neighbourhood, when there are no bike parking spaces?"
+1000,43.6580617,-79.3864974,['full'],['minutes'],2018-08-14T17:12:21.000Z,
+1001,43.649137183717166,-79.37179443675348,['full'],['hours'],2018-08-14T18:03:29.000Z,
+1002,43.6491149544073,-79.37180069737548,"['full', 'not_provided']",['minutes'],2018-08-14T18:05:51.000Z,
+1003,43.6459649,-79.38891719999998,['other'],['multiday'],2018-08-14T20:36:36.000Z,who can i email about this app?
+1004,43.6431874,-79.39245460000001,['full'],['minutes'],2018-08-14T23:32:47.000Z,
+1005,43.6437981,-79.36524229999998,['full'],['hours'],2018-08-15T00:46:36.000Z,This is a test comment. Please disregard.
+1006,43.71060308715335,-79.37907304544677,['not_provided'],['hours'],2018-08-15T13:30:00.000Z,There are no bike rings on Eglinton East between Mt Pleasant and Bayview.
+1422,43.6580617,-79.3864974,['damaged'],['hours'],2019-08-08T14:16:29.000Z,"Quite a few of the bikes in the underground parking structure look abandoned, missing both wheels etc."
+1455,43.63334156712991,-79.4219298287154,['not_provided'],['hours'],2019-09-24T21:30:00.000Z,
+1012,43.63942483633132,-79.38075453490853,['full'],['minutes'],2018-08-15T22:12:11.000Z,
+1527,43.660405784122986,-79.31225385446777,['not_provided'],['hours'],2020-09-19T20:30:49.000Z,Ashbridges Bay Park has two car parking lots and zero bike parking. Add bike parking at both lots and at convenient locations.
+1008,43.66737540091058,-79.40104570169677,['full'],['minutes'],2018-08-15T19:16:16.000Z,"More parking is needed in front of OSIE, 252 Bloor Street West."
+1009,43.64590945966352,-79.38589733959475,['damaged'],['minutes'],2018-08-15T20:27:33.000Z,
+1011,43.65099466817297,-79.3789882597959,['damaged'],['minutes'],2018-08-15T22:00:30.000Z,
+1533,43.64746844243767,-79.40652640674591,['not_provided'],['multiday'],2020-11-13T03:30:47.000Z,There are no bike rings to lock bikes on Wolseley street at Palmerston Ave. We have nowhere to lock our bikes and people often lock to our gas pipe. We would love some bike parking rings! Thanks :). 
+1537,43.66225826030382,-79.44460688902434,['not_provided'],['minutes'],2021-03-23T15:11:00.000Z,"new grocer has opened up on wallace and lansdowne, combined with trendy takeout food that will sure become a hot location this summer.  very little and bike rings missing on wallace."
+1468,43.665868939556944,-79.40742891752052,['damaged'],['hours'],2019-10-14T22:00:10.000Z,
+1508,43.66929281644631,-79.43414756935007,['full'],['hours'],2020-07-06T17:00:19.000Z,This is a work space and many people need to park here. More bike rings please! 
+1484,43.64938071057951,-79.39364606344736,['damaged'],['hours'],2020-01-26T18:05:40.000Z,This was located at Hart House in U of T Hoskin and Towel Rd.
+1018,43.65349745909093,-79.38394393701782,['full'],['minutes'],2018-08-16T23:50:21.000Z,Not enough parking. 
+1019,43.61704179634005,-79.49698104530523,['full'],['hours'],2018-08-17T13:19:51.000Z,Need another rack at the Mimico station
+1020,37.09024,-95.71289100000001,['damaged'],['minutes'],2018-08-17T14:40:14.000Z,Bike ring missing from post on east side of Ossington between Rebecca and Bruce. 
+1021,43.64924728001886,-79.45024814386596,['damaged'],['overnight'],2018-08-17T15:18:46.000Z,this bike has been abandoned for a long time.
+1022,43.6580617,-79.3864974,['damaged'],['overnight'],2018-08-17T17:24:52.000Z,Broken bike been on lock for 3 + months. 
+1023,43.64904278353647,-79.44443702802732,['damaged'],['overnight'],2018-08-17T17:27:15.000Z,
+1024,43.648421725504825,-79.44460868940428,['full'],['multiday'],2018-08-17T17:27:47.000Z,Need more bike parking by sorauren Park!!!
+1025,43.648421725504825,-79.44443702802732,['full'],['overnight'],2018-08-17T17:28:32.000Z,Need many more bike loops on Sorauren Please!!
+1026,43.66906841507433,-79.39295086298216,"['not_provided', 'full']",['hours'],2018-08-17T17:30:03.000Z,
+1027,43.67330437101167,-79.34535231371154,['not_provided'],['hours'],2018-08-17T19:23:02.000Z,"There are no poles or bike bike racks at the Withrow Park soccer field. As a result, the many soccer players who come to play lock their bikes to the vulnerable young trees at the side of the soccer field. We need bike parking and a sign asking people not to lock their bikes to the trees because this can damage the bark and injure and possibly kill the trees. I've called the city for several years about this problem, as well as Paula Fletcher's office, but nothing has changed. We really need bike parking for soccer players! Thank you"
+1028,43.6580617,-79.3864974,['not_provided'],['minutes'],2018-08-18T17:30:00.000Z,No bike parking on the entire northwest block of Yonge and Lawrence. Neither on Yonge nor Lawrence. There is both a grocery store and a cafe on this corner. 
+1387,43.75173476112332,-79.54438151361359,['not_provided'],['minutes'],2019-07-16T12:33:23.000Z,This is a bit of a hellscape for cyclists but it’s connected to the Humber Trail and it’s a McDonald’s. You would expect at least a ring or two. 
+1031,43.6470271,-79.4197729,['full'],['minutes'],2018-08-19T19:16:43.000Z,
+1034,43.64624600546505,-79.39178902489016,['not_provided'],['hours'],2018-08-20T13:46:58.000Z,There is no bike parking along King Street in restaurant row or in front of TIFF
+1035,43.655864458590756,-79.38298557866426,['full'],['hours'],2018-08-20T17:29:24.000Z,
+1036,43.642302,-79.42389530000003,['not_provided'],['minutes'],2018-08-20T22:25:57.000Z,
+1037,43.642302581557225,-79.4029111053656,['not_provided'],['hours'],2018-08-21T03:02:08.000Z,
+1038,43.653887748736196,-79.38424201299745,['damaged'],['multiday'],2018-08-01T13:17:29.000Z,"At the bike rack, RIGHT outside the north entrance of City Hall by Elizabeth Street, there is an abandoned bicycle missing its real wheel that has been sitting there for a month. It takes up more than one parking spot because the spot next to it is hard to park in because of the handle bars of the abandoned bike."
+1039,43.655473010706,-79.38367571611633,['full'],['minutes'],2018-08-20T21:20:00.000Z,There are 2 ring/posts in front of the Motion building. Nothing in front of the Aroma coffee shop. This is a busy area and could use plenty more bike parking.
+1042,43.65116123669209,-79.41119007108608,['damaged'],['multiday'],2018-08-22T01:22:48.000Z,Abandoned black Specialized hybrid locked to tree in front of 711. It's been there for months. Please remove it and give it to someone who can use it.
+1041,43.6618565217575,-79.3295004222191,['not_provided'],['hours'],2018-08-21T20:42:09.000Z,observed on fence.  salvation army 27 leslie
+1045,43.6701712,-79.43000919999997,['full'],['hours'],2018-08-22T22:52:45.000Z,Bike packing is full. Need more bike racks
+1388,43.644321353765335,-79.52421273966064,['not_provided'],['hours'],2019-07-18T16:24:50.000Z,There is no bike parking in front of Physio First where my appointment is.  Thank you. 
+1050,43.646420471725385,-79.39054122290247,"['not_provided', 'full']",['hours'],2018-08-22T21:35:00.000Z,
+1051,43.7278588978827,-79.40260828430439,['not_provided'],['hours'],2018-08-23T22:28:40.000Z,Entrance to TTC subway station. No bike parking provided. Several bikes locked to railing.
+1052,43.64754540310606,-79.40635229686166,['not_provided'],['multiday'],2018-08-23T22:39:10.000Z,
+1053,43.6517214,-79.3708335,['not_provided'],['hours'],2018-08-23T23:50:54.000Z,
+1055,43.67329440713628,-79.35603007543364,['not_provided'],['hours'],2018-08-23T23:31:00.000Z,No bike racks or locks at the top of the stairs heading to Riverdale pool & rink.  There are racks at the bottom of the stairs but who wants to lug their bike up and Down stairs
+1056,43.667456,-79.38785280000002,"['other', 'damaged']",['multiday'],2018-08-24T20:43:19.000Z,
+1058,43.66313797048198,-79.41051168095089,['full'],['hours'],2018-08-24T18:00:00.000Z,
+1059,43.6580617,-79.3864974,['damaged'],['hours'],2018-08-25T03:10:32.000Z,
+1060,43.66869927530191,-79.29045953674711,['not_provided'],['hours'],2018-08-26T16:44:25.000Z,"Nowhere to park a bike near the beach here. No poles, nothing! Should be lined with parking every block."
+1061,43.66571398989322,-79.44646444492503,['not_provided'],['minutes'],2018-08-23T01:00:00.000Z,There is a new grocery store and shoppers drug at DuPont st and Lansdowne Ave. Bike parking was never installed/provided at the area. 
+1062,43.6481384,-79.3746868,"['damaged', 'full']",['minutes'],2018-08-26T20:49:03.000Z,
+1063,43.6432182563852,-79.41249701937187,['not_provided'],['hours'],2018-08-27T21:40:48.000Z,
+1064,43.6580617,-79.3864974,['full'],['hours'],2018-08-28T13:11:19.000Z,27 Davies holds a community acupuncture clinic with 4-6 people coming and going each hour. Parking a car is almost impossible but this is much harder to fix than bike parking which can also be a challenge.
+1065,43.6530789024205,-79.3795967681558,['not_provided'],['hours'],2018-08-28T14:54:05.000Z,
+1046,43.6701825,-79.42999729999997,['full'],['hours'],2018-08-22T22:55:17.000Z,
+1068,43.6802621,-79.43270899999999,"['not_provided', 'other']",['hours'],2018-08-28T22:03:14.000Z,locked to tree at 886 st claire ave
+1049,43.64255637704601,-79.38335751780477,['full'],['minutes'],2018-08-23T16:50:23.000Z,Not enough curb side or rack parking. 
+1044,43.67069013719054,-79.38391197838553,['not_provided'],['minutes'],2018-08-22T22:00:38.000Z,
+1048,43.65021869722331,-79.36918208721846,['not_provided'],['minutes'],2018-08-23T14:35:08.000Z,Can you add a feature to rotate photos?
+1054,43.6516651,-79.37085000000002,['not_provided'],['hours'],2018-08-23T23:53:51.000Z,
+1057,43.6641741,-79.41577030000002,['damaged'],['minutes'],2018-08-24T20:57:41.000Z,
+1067,43.66558173675431,-79.40962711356525,['damaged'],['minutes'],2018-08-28T16:54:08.000Z,Abandoned and many more bike than this one 
+1070,43.6500919,-79.36709819999999,['not_provided'],['minutes'],2018-08-29T16:42:06.000Z,
+1389,43.63638377986858,-79.50215845619749,['other'],['multiday'],2019-07-18T20:12:44.000Z,I would like to request a STOP sign at Elderidge and Grenview Blvd. (South West corner on Grenview)
+1072,43.646028,-79.38894140000002,['other'],['minutes'],2018-08-30T15:21:18.000Z,testing
+1074,43.654571600037514,-79.3916084292008,"['damaged', 'other']",['minutes'],2018-08-30T20:33:30.000Z,2 Bike rings used to be here but were removed for an unknown reason. 
+1076,43.6580617,-79.3864974,"['not_provided', 'full']",['hours'],2018-08-31T13:19:07.000Z,
+1077,43.617312804493686,-79.4886359192871,['not_provided'],['hours'],2018-08-31T16:44:59.000Z,
+1079,43.66865851182976,-79.30535878959671,['not_provided'],['minutes'],2018-09-01T17:40:38.000Z,No bike parking is available on the southeast corner of Queen and Woodbine. There are a fair number of shops here and we had to park our bikes by some signposts on Woodbine. 
+1081,43.6463868,-79.39073009999998,['full'],['minutes'],2018-09-01T19:19:12.000Z,No parking at south side of street. Not enough on north side. TIFF 
+1082,43.66237507513847,-79.38697642576625,['other'],['hours'],2018-09-03T17:51:16.000Z,"Ring and post parking overgrown with weeds. Would have liked to add a photo but the app can't access my gallery, just my camera...and I'm already inside :("
+1084,43.6498166,-79.37808710000002,['full'],['minutes'],2018-09-04T15:11:13.000Z,
+1085,43.67186098458483,-79.37688436289062,"['not_provided', 'full']",['minutes'],2018-09-04T16:53:44.000Z,There is one single ring post and it was full
+1086,43.67186098458483,-79.37688436289062,"['not_provided', 'full']",['minutes'],2018-09-04T16:53:44.000Z,There is one single ring post and it was full
+1423,43.65374688699142,-79.44234722839553,['not_provided'],['hours'],2019-08-08T14:19:09.000Z,
+1089,43.72517596938471,-79.2931207626288,['not_provided'],['hours'],2018-08-24T23:32:00.000Z,"Canadian Tire has no racks. You have to chain up on median in front where one sign is. In summer you chain to garden centre if you can, winter no luck. You can bring your bike into the store but awkward. Need a rack."
+1092,43.6604615,-79.37900239999999,['not_provided'],['minutes'],2018-09-05T21:18:38.000Z,
+1073,43.686195,-79.41439450000001,['damaged'],['hours'],2018-08-31T20:18:30.000Z,This is a test.
+1080,43.6465573,-79.39032329999998,['full'],['hours'],2018-09-01T19:18:44.000Z,
+1078,43.7666669,-79.40968479999998,['not_provided'],['hours'],2018-08-31T20:12:38.000Z,
+1083,43.6565629,-79.37844810000001,['full'],['hours'],2018-09-04T14:57:22.000Z,
+1069,43.70204645677665,-79.46494265944455,"['full', 'damaged']",['multiday'],2018-07-29T14:55:26.000Z,Building located at 1401 DuPont st is not providing decent bike parking. Racks are damaged/full
+1091,43.6617494,-79.37925689999997,['damaged'],['minutes'],2018-09-05T15:20:15.000Z,
+1075,43.67237509805516,-79.28900714822441,['not_provided'],['minutes'],2018-08-30T21:51:32.000Z,Parking on Queen or even side street at this corner is needed. 
+1087,43.66584391633251,-79.38725557195465,['damaged'],['minutes'],2018-09-04T20:15:00.000Z,910 Bay St. 
+1090,43.64848585610908,-79.38368590905054,['damaged'],['hours'],2018-09-05T13:24:50.000Z,observed on private property before Rego sign
+1093,43.6597918,-79.3853282,['not_provided'],['minutes'],2018-09-05T21:35:03.000Z,
+1094,43.654389,-79.39100689999998,['full'],['minutes'],2018-09-05T21:42:23.000Z,
+1095,43.65104630149579,-79.36823379200439,['full'],['minutes'],2018-09-03T19:32:00.000Z,
+1096,43.6552673079699,-79.413131735518,['full'],['minutes'],2018-09-05T23:35:02.000Z,
+1098,43.6614361,-79.38333669999997,['full'],['minutes'],2018-09-06T21:29:55.000Z,
+1099,43.6651977,-79.41076169999997,['full'],['minutes'],2018-09-06T22:11:27.000Z,
+1100,43.6499519,-79.38096089999999,['not_provided'],['minutes'],2018-09-06T22:44:41.000Z,
+1101,43.664982,-79.38052099999999,['full'],['minutes'],2018-09-06T22:59:10.000Z,
+1102,43.6707814,-79.3766058,['not_provided'],['minutes'],2018-09-06T23:14:02.000Z,
+1103,43.6551547,-79.3788619,['full'],['minutes'],2018-09-06T23:42:19.000Z,
+1104,43.7253649,-79.40263770000001,['not_provided'],['hours'],2018-09-07T14:09:27.000Z,There is no bike parking all around the intersection.  Many bikes are locked to park benches or private railings.
+1105,43.65277553207096,-79.39366426248779,['damaged'],['minutes'],2018-09-07T12:30:00.000Z,A blue bicycle has been locked to a pole and abandoned. It is slowly being stripped for parts. It is missing both wheels now!
+1106,43.665191,-79.38454460000003,['not_provided'],['minutes'],2018-09-07T17:03:20.000Z,
+1107,43.6487359,-79.3922058,['full'],['minutes'],2018-09-07T17:23:29.000Z,
+1108,43.6569265,-79.3752346,['not_provided'],['minutes'],2018-09-07T21:06:07.000Z,
+1109,43.6597681,-79.38550809999998,['not_provided'],['minutes'],2018-09-07T21:24:15.000Z,
+1110,43.6704527,-79.38619890000001,['not_provided'],['minutes'],2018-09-07T21:35:44.000Z,
+1424,43.65514481273929,-79.41464492193273,['damaged'],['hours'],2019-08-02T22:00:00.000Z,
+1112,43.67020454554388,-79.40554527495715,['not_provided'],['hours'],2018-09-08T19:33:23.000Z,No parking available at the Alliance française!
+1113,43.6580617,-79.3864974,['not_provided'],['hours'],2018-09-01T01:45:00.000Z,No parking at Manulife centre during construction 
+1114,43.661861,-79.42649590000002,['full'],['hours'],2018-09-09T17:04:34.000Z,
+1116,43.68842153702503,-79.39405360747116,['other'],['hours'],2018-09-10T03:17:48.000Z,"After recent renovations at 2 St Clair Ave E (both exterior and interior), all previous bicycle rings have been replaced with the vertical post system that appears to be the latest update by the City of Toronto.Unfortunately, the implementation of this new post has been short-sighted as it precludes cyclist's using a mini-Ulock from securing their bike. The vertical posts are simply too wide to accomodate smaller locks. It can even be challenging for those with a medium size lock to secure their bike in a desired configuration.Is it possible to have some additional ring and posts added to the corner of Yonge and St Clair?"
+1117,43.716861593567565,-79.41951839814453,['not_provided'],['hours'],2018-09-01T18:48:44.000Z,"There is a need for improved bike parking at 2040 Avenue Rd, North York, ON M5M 4A6."
+1097,43.6386573,-79.41863699999999,['not_provided'],['hours'],2018-09-06T16:05:25.000Z,
+1115,43.6557861,-79.3793167,['damaged'],['minutes'],2018-09-09T22:21:14.000Z,
+1118,43.64851428777196,-79.39257567626674,['not_provided'],['hours'],2018-09-10T19:28:03.000Z,
+1119,43.6446413918286,-79.39872141773037,['damaged'],['multiday'],2018-09-11T23:33:17.000Z,
+1121,43.6580617,-79.3864974,['damaged'],['minutes'],2018-09-12T01:53:42.000Z,
+1122,43.651143493788744,-79.41118802717864,['damaged'],['multiday'],2018-09-12T02:05:50.000Z,"Bike has been locked to tree outside 711, next to bus stop, for months. Please remove."
+1123,43.654408031958305,-79.39091065110182,['not_provided'],['hours'],2018-09-12T13:53:57.000Z,
+1124,43.68430711133869,-79.39055290003051,['not_provided'],['multiday'],2018-09-12T19:05:38.000Z,"This is a YWCA women's shelter. Many of the residents and staff use bicycles but there is no public bike parking. People currently lock their bikes to the accessibility ramp, which poses a problem for people using wheelchairs and other mobility devices."
+1456,43.6440748963319,-79.40874988206468,['not_provided'],['hours'],2019-09-24T21:30:00.000Z,
+1126,43.65206965360058,-79.36750168518068,['not_provided'],['overnight'],2018-09-12T21:28:31.000Z,Next to city bikes
+1127,43.651752203577324,-79.36564298310088,['full'],['hours'],2018-09-12T17:54:00.000Z,bike parking was all occupied. I  kept my bike inside of the school building shortly until a security told me to park outside
+1128,43.67550418376053,-79.6269553698404,['other'],['multiday'],2018-09-13T05:00:16.000Z,
+1129,43.657815259833676,-79.38181273213274,"['not_provided', 'full']",['hours'],2018-09-13T18:00:00.000Z,
+1132,43.66802730586221,-79.37209930200805,['not_provided'],['minutes'],2018-09-16T22:11:49.000Z,
+1134,43.65509653535179,-79.41761102457275,['full'],['minutes'],2018-09-17T23:45:00.000Z,
+1136,43.6580617,-79.3864974,['not_provided'],['minutes'],2018-09-19T01:21:00.000Z,"No bike parking in front of the new Shoppers Drug Mart at 1027 Yonge St.,I drag the marker to 1027 Yonge St but the app keeps pointing back to College / Bay in the Summary section... why is the app doing this?"
+1137,43.67805333293842,-79.38958730478515,['not_provided'],['hours'],2018-09-19T01:25:00.000Z,"No bike parking in front of the new Shoppers Drug Mart at 1027 Yonge St.,I moved the pointer to 1027 Yonge st but the summary section is showing Bay & Davenport.  Why can't the app save the correct location?"
+1138,43.65116863109692,-79.39044561166992,"['not_provided', 'full', 'other', 'damaged', 'damaged']",['multiday'],2018-09-19T19:34:08.000Z,
+1120,43.649529127577324,-79.36169150560886,['not_provided'],['hours'],2018-09-12T01:23:21.000Z,
+1130,43.63695789398737,-79.43684853992505,['damaged'],['hours'],2018-09-16T14:52:05.000Z,Been there quite a long time. 
+1131,43.679958243908665,-79.33987524290313,['not_provided'],['hours'],2018-09-16T20:12:05.000Z,please and thank you
+1133,43.736055441236246,-79.42025146952517,['not_provided'],['hours'],2018-09-16T22:15:00.000Z,No bike parking provided. Many coffee shops and restaurants in vicinity. 
+1135,43.63694871740075,-79.43686184358279,['damaged'],['minutes'],2018-09-19T03:56:48.000Z,
+1139,43.6580617,-79.3864974,['full'],['minutes'],2018-09-19T21:01:06.000Z,
+1140,43.669279358208655,-79.3754467000046,['full'],['minutes'],2018-09-19T21:02:00.000Z,
+1166,43.6841018,-79.44022310000003,['other'],['hours'],2018-10-02T19:11:04.000Z,badly located rack at school.  requires going up stairs and muddy and curb and out of sight
+1390,43.64620016288961,-79.4196924187683,['full'],['hours'],2019-07-18T21:47:00.000Z,All bike racks on Ossington are always full. Please more!!! 
+1142,43.6655738,-79.3989914,['full'],['hours'],2018-09-20T15:03:45.000Z,
+1146,43.65766942787956,-79.40162596004944,['full'],['minutes'],2018-09-22T20:47:52.000Z,"Busy commercial strip, all bike rings double occupied"
+1149,43.64818759949106,-79.32847585458984,['not_provided'],['hours'],2018-09-25T20:05:57.000Z,"This space is heavily used by visitors to the area, and there are zero secure bike parking options"
+1154,43.69382439396909,-79.44130491989745,['not_provided'],['minutes'],2018-09-22T00:00:00.000Z,
+1158,43.6580617,-79.3864974,['other'],['minutes'],2018-09-28T15:27:56.000Z,
+1160,43.6576578,-79.40139599999998,['full'],['minutes'],2018-09-29T15:34:30.000Z,
+1164,43.65760314663799,-79.40163754998468,"['not_provided', 'full']",['minutes'],2018-10-02T16:26:20.000Z,Not enough posts in front of the grocery store (Carmen's independent) on College west of spadina!! They're always full!
+1165,43.64785792838356,-79.38002600299683,['not_provided'],['hours'],2018-10-02T16:29:54.000Z,NO BIKE PARKING AT ALL ON BAY SOUTH OF KING!!!
+1143,43.6503571,-79.396816,['full'],['hours'],2018-09-20T16:16:02.000Z,
+1157,43.6455293,-79.4487322,['damaged'],['hours'],2018-09-27T23:03:45.000Z,
+1152,43.6802,-79.43598550000002,['not_provided'],['hours'],2018-09-27T12:50:25.000Z,observed 
+1163,43.6848288,-79.420049,['not_provided'],['hours'],2018-10-01T23:06:17.000Z,observed yall
+1153,43.649141102727356,-79.38455119152792,['full'],['minutes'],2018-09-26T17:00:00.000Z,Over capacity with extra bikes locked to ends. Adelaide north side just east of university 
+1156,43.65269557227205,-79.39910327628616,"['damaged', 'not_provided']",['minutes'],2018-09-27T21:05:21.000Z,Post and ring missing ring. Rings missing for retail demand.
+1147,43.63696396402277,-79.43689285918254,['damaged'],['multiday'],2018-09-24T16:16:45.000Z,Outside of no frills been there for years 
+1145,43.6806112,-79.43517969999999,['not_provided'],['hours'],2018-09-21T20:17:28.000Z,private rental tower
+1144,43.6460163,-79.3892803,['not_provided'],['hours'],2018-09-20T20:03:56.000Z,test 
+1159,43.6547499,-79.4006182,['full'],['minutes'],2018-09-28T21:15:12.000Z,
+1148,43.676931099804186,-79.39874594705873,['not_provided'],['hours'],2018-09-24T23:15:44.000Z,I come here weekly.
+1150,43.66094134016891,-79.42931618471374,['damaged'],['hours'],2018-09-26T13:04:21.000Z,Bloor and dovercourt
+1151,43.64936885565451,-79.38901939476125,['full'],['hours'],2018-09-26T17:53:57.000Z,
+1155,43.662341,-79.40588479999997,['full'],['hours'],2018-09-27T17:47:08.000Z,Wont let me adjust adress is ay 720 bathurst actually
+1161,43.70633742556012,-79.3598489560394,['other'],['minutes'],2018-09-30T18:27:00.000Z,"Seasonal produce outside longos supermarket creates a narrow walkway next to bike parking, making it difficult for those with mobility devices, strollers, and shopping carts to pass through."
+1162,43.6865314,-79.3695366,['not_provided'],['minutes'],2018-10-01T20:13:02.000Z,
+1167,43.6580617,-79.3864974,['not_provided'],['hours'],2018-10-02T22:42:44.000Z,
+1168,43.6580617,-79.3864974,['full'],['hours'],2018-10-04T16:53:12.000Z,"This was just a test for me, and it was seamless and intuitive. Great job! Thanks!"
+1169,43.6535187,-79.38373209999997,['other'],['multiday'],2018-10-04T20:35:06.000Z,test
+1170,43.6563633896234,-79.38063402867328,"['full', 'not_provided', 'damaged']",['hours'],2018-10-05T01:40:00.000Z,All the bike parking was full with a lot of abandoned and broken bikes
+1171,43.664622,-79.3058747,['not_provided'],['hours'],2018-10-07T19:10:55.000Z,There is no bike parking at east beaches
+1180,43.6580617,-79.3864974,['other'],['overnight'],2018-10-10T00:07:47.000Z,
+1181,43.66760709540879,-79.37227723977281,['not_provided'],['minutes'],2018-10-10T02:24:39.000Z,
+1186,43.64688651,-79.38918001000002,"['full', 'other']",['minutes'],2018-10-11T17:10:08.000Z,"Vertical racks at Metro Hall have terrible design - unintuitive, unwieldy, too many moving parts, does not accommodate fenders."
+1312,53.54227414197117,-113.44804958925783,['other'],['hours'],2019-05-11T22:35:50.000Z,This is a test.
+1183,43.66088695082438,-79.47446927813189,['other'],['hours'],2018-10-10T12:24:42.000Z,wheel bender at Annette community center
+1184,43.669734642419165,-79.39388956804504,['other'],['minutes'],2018-10-09T13:42:58.000Z,There are zip ties holding the parking sign for the parking lot attached to the bike ring. 
+1172,43.6580617,-79.3864974,['damaged'],['hours'],2018-10-08T16:22:54.000Z,The location is actually outside Jimmy’s Coffee Kensington Market 191 Baldwin Street. I can’t get the pinning function to work using the new iOS 12.0The ring is bent and it’s difficult to lock a bike at that angle especially if another bike is already parked there. It also look aesthetically unpleasing.
+1174,43.6580617,-79.3864974,['damaged'],['hours'],2018-10-08T16:22:54.000Z,The location is actually outside Jimmy’s Coffee Kensington Market 191 Baldwin Street. I can’t get the pinning function to work using the new iOS 12.0The ring is bent and it’s difficult to lock a bike at that angle especially if another bike is already parked there. It also look aesthetically unpleasing.
+1190,43.6367042,-79.39906830000001,['damaged'],['hours'],2018-10-13T13:49:31.000Z,All 3 abandoned for weeks
+1175,43.6580617,-79.3864974,['damaged'],['hours'],2018-10-08T16:22:54.000Z,The location is actually outside Jimmy’s Coffee Kensington Market 191 Baldwin Street. I can’t get the pinning function to work using the new iOS 12.0The ring is bent and it’s difficult to lock a bike at that angle especially if another bike is already parked there. It also look aesthetically unpleasing.
+1177,43.65893386465098,-79.38972908375524,['not_provided'],['hours'],2018-10-09T17:38:25.000Z,Lots of space for a bike rack next to Peter muni cardiac centre
+1178,43.6485048,-79.3909122,['damaged'],['minutes'],2018-10-09T18:42:28.000Z,Two bike rings at this spot have loose frames/wheels attached locked here that have been abandoned for quite some time.
+1179,43.65508379807293,-79.40334692099304,['damaged'],['hours'],2018-10-09T18:47:25.000Z,Two bike rings at this spot have loose frames/wheels attached locked here that have been abandoned for quite some time.
+1182,43.6247305337724,-79.48524714162227,['other'],['hours'],2018-10-09T21:51:00.000Z,Bike was stolen from storage room at south beach condo where multiple locks were broken. The thief proceeded to take off with the bike. Security has footage. 
+1185,43.6613416,-79.47464780000001,['not_provided'],['hours'],2018-10-10T19:58:03.000Z,annette rec center 
+410,43.6534974,-79.38355899999999,['full'],['hours'],2018-06-07T19:29:08.000Z,
+423,43.64850494082969,-79.41971422734514,['full'],['hours'],2018-06-09T12:51:16.000Z,
+449,43.6396042,-79.38059800000002,['other'],['hours'],2018-06-13T00:17:31.000Z,
+1187,43.646997928885746,-79.37943746548342,['full'],['hours'],2018-10-11T17:40:00.000Z,There is very little parking on bay st in the financial district. 
+1195,43.683994926001695,-79.3470264951053,['damaged'],['hours'],2018-10-14T10:30:00.000Z,2  abandoned  bikes locked  up  on  south  side  of  Fulton  ave.  Past  3  months   drug  related  thefts
+1197,43.669820007972135,-79.48357190866699,['not_provided'],['hours'],2018-10-06T13:36:00.000Z,"New establishments, such as High Park Brewery and the Starving Artist Waffles attracted me to come to this plaza on my bicycle, but there was no bike parking anywhere on the property or on the side walk."
+1198,43.68699630329432,-79.48346803095706,['not_provided'],['hours'],2018-10-14T23:39:00.000Z,There is no bike parking at the No Frills on this site.
+1208,43.66183101238818,-79.39056723308494,['not_provided'],['hours'],2018-10-23T22:31:12.000Z,
+1209,43.68003971533062,-79.43220224161377,['not_provided'],['multiday'],2018-10-24T13:00:00.000Z,not even sign posts to lock bicycle to.
+1202,43.6397047,-79.42484360000003,['not_provided'],['hours'],2018-10-20T13:06:11.000Z,test
+1205,43.66723302721969,-79.38157821835642,['full'],['minutes'],2018-10-20T19:49:04.000Z,Bike parking full near Barbara Hall Park / 519 Community Centre
+1194,43.6352896,-79.39882490000002,['damaged'],['overnight'],2018-10-13T13:56:53.000Z,Abandoned at public rack at Billy bishop
+1201,43.6576871,-79.4504584,['damaged'],['hours'],2018-10-19T12:03:37.000Z,"Bike has been here for months, flat tire and no seat. Closest spot to the GO entrance on the east side of the path. "
+1188,43.66939935837283,-79.37971444807886,['not_provided'],['hours'],2018-10-12T15:05:22.000Z,"Outside roosters coffee on Jarvis - multiple shops, no parking "
+1196,43.6490766,-79.40458569999998,['damaged'],['minutes'],2018-10-15T15:35:08.000Z,Abandoned and dismantled bike
+1210,43.6778361,-79.35852010000002,['damaged'],['hours'],2018-10-25T14:53:49.000Z,797 Broadview Ave 
+1189,43.6449071,-79.39805189999998,['damaged'],['hours'],2018-10-13T03:11:04.000Z,In front of 519 king. Abandoned and stripped grey bike
+1191,43.6367544,-79.3992763,['damaged'],['hours'],2018-10-13T13:50:15.000Z,
+1192,43.636812,-79.39880849999997,['damaged'],['hours'],2018-10-13T13:51:20.000Z,Abandoned for weeks
+1193,43.636864,-79.39928850000001,['damaged'],['hours'],2018-10-13T13:52:01.000Z,"Abandoned, stripped and insecure"
+1199,43.6544732198213,-79.4050840095793,['full'],['minutes'],2018-10-18T16:08:19.000Z,bmo center 
+1200,43.6515365,-79.40006460000001,['not_provided'],['hours'],2018-10-18T19:25:23.000Z,coop
+1203,43.64098282894789,-79.41962804575195,['not_provided'],['hours'],2018-10-20T15:14:04.000Z,
+1204,43.660043778706736,-79.35378256653269,['not_provided'],['minutes'],2018-10-20T17:27:30.000Z,Many people wanting to use bikes come here - there are two traffic sign poles and that’s it- Merchants of Green Coffee is a popular hangout cafe
+1207,43.674160295670085,-79.41017124090575,['damaged'],['multiday'],2018-10-21T20:35:36.000Z,
+1211,43.733794473822726,-79.3580767132782,['not_provided'],['hours'],2018-10-29T12:57:00.000Z,Could not find bike parking from Lawrence or the parking lot
+1212,43.666992512784134,-79.33028512629778,['not_provided'],['minutes'],2018-10-31T22:00:00.000Z,
+1213,43.6675838,-79.39903019999997,['other'],['minutes'],2018-11-04T19:58:58.000Z,
+1214,43.649963899999996,-79.43603819999998,['full'],['hours'],2018-11-08T01:49:00.000Z,i would appreciate more than one bike rack at lamport. It is always full when there's a game.thanks.
+1215,43.6580617,-79.3864974,['damaged'],['hours'],2018-11-10T03:03:15.000Z,
+1216,43.7934188,-79.38257599999997,['not_provided'],['hours'],2018-11-09T22:59:00.000Z,
+1217,43.6580617,-79.3864974,['damaged'],['hours'],2018-11-13T17:09:03.000Z,
+1218,43.6580617,-79.3864974,['damaged'],['hours'],2018-11-13T17:09:03.000Z,
+1219,43.639278,-79.41997730000003,['damaged'],['hours'],2018-11-14T23:56:50.000Z,
+1220,43.6525045,-79.3904245,"['damaged', 'full', 'damaged']",['minutes'],2018-11-15T17:56:00.000Z,"Several abandoned and stripped bikes attached to the only ring and post on this side of the street. Other ring and posts were here previously, but have been removed. "
+1221,43.65964901200053,-79.34661026973953,['other'],['minutes'],2018-11-17T21:33:47.000Z,Not enough bike parking
+1223,43.6580617,-79.3864974,['damaged'],['multiday'],2018-11-19T20:29:59.000Z,
+1225,43.686203299999995,-79.41463299999998,['other'],['hours'],2018-11-30T03:57:21.000Z,Jake test
+1227,43.64583031208419,-79.40347045736087,['full'],['minutes'],2018-12-05T02:41:00.000Z,
+1228,43.6505529,-79.39679799999999,['full'],['hours'],2018-12-05T16:54:55.000Z,"Bike parking is provided by Xpace gallery, not the city. Residents from the building park on the xpace bike racks, which are often full. bike parts are often stolen. even the bikes you do manage to park here get damaged, or jammed because the racks are so full."
+1229,43.67169801942031,-79.38732352037658,['full'],['hours'],2018-12-06T00:42:31.000Z,Too few spots in front of the Reference Library. 
+1230,43.671729060438146,-79.38722696085205,['full'],['hours'],2018-12-06T00:47:44.000Z,Spaces on Yonge in front of library full. 
+1426,43.644729196392134,-79.39895947743224,['not_provided'],['minutes'],2019-08-14T23:46:00.000Z,
+1233,47.658301207506,-122.31482910821308,['not_provided'],['minutes'],2018-12-25T22:47:43.000Z,
+1234,43.6368981,-79.39826370000003,['damaged'],['minutes'],2018-12-30T21:03:46.000Z,5 abandoned bike frames - have been here for several weeks.
+1226,43.70223425034015,-79.38762241133958,['damaged'],['hours'],2018-12-02T14:30:00.000Z,Bike post has been knocked over and is on an angle. 
+1222,43.6525919,-79.3907582,['damaged'],['minutes'],2018-11-17T23:42:46.000Z,2nd time reporting this spot. Reported it via this app months ago. I'm trying again to hopefully see this app make a difference
+1224,43.704735142082754,-79.40818776552885,['damaged'],['minutes'],2018-11-19T19:00:00.000Z,Bike post has ring missing
+1232,43.6608966,-79.38545999999997,['damaged'],['hours'],2018-12-13T15:00:02.000Z,Bike rings all full except for this broken one missing a ring
+1235,43.66023640661617,-79.36896820128993,['other'],['hours'],2019-01-02T13:12:56.000Z,The bike fixture is needs to be relocated because it too close to garden.
+1236,43.6580617,-79.3864974,['full'],['hours'],2018-09-17T13:00:00.000Z,"Bike parking is hard to find during the warmer seasons at Richmond and McCaul/Duncan. Could the City of Toronto install more bike rings or, even better, install a bike rack system on the street as was done in Kensington Market?"
+1237,43.65370122724379,-79.39435359020462,['not_provided'],['minutes'],2018-12-30T23:00:00.000Z,"This stretch of Dundas has very little in the way of bicycle parking, which is unfortunate given the large number of small shops along here that would be quite nice to visit by bicycle. I pinned outside the Lucky Moose supermarket because that's the one I tend to visit the most, but its an issue pretty much from the AGO all the way to Spadina (and the spots on Spadina are often filled, which exacerbates the issue)."
+1457,43.649176225243934,-79.39459208849269,['not_provided'],['hours'],2019-09-23T22:00:00.000Z,
+1240,43.64865339543243,-79.37953438539733,['not_provided'],['minutes'],2019-01-15T17:00:00.000Z,
+1241,43.6580617,-79.3864974,['not_provided'],['multiday'],2019-01-19T16:35:04.000Z,
+1242,50.680797145321655,7.03125,['damaged'],['multiday'],2019-01-28T19:14:59.000Z,
+1243,43.651921,-79.3681671,['not_provided'],['hours'],2019-02-16T19:40:57.000Z,
+1244,43.65145818288852,-79.36479905308283,"['damaged', 'full', 'not_provided']",['overnight'],2019-02-20T00:45:44.000Z,
+1245,53.54612100539306,-113.49754386582032,['not_provided'],['overnight'],2019-02-24T00:17:57.000Z,
+1246,53.53020648429783,-113.45892005600587,['full'],['overnight'],2019-02-24T00:19:18.000Z,Test. Please remove.
+1247,53.54850096559253,-113.45562138984377,['damaged'],['overnight'],2019-02-24T00:20:21.000Z,Please delete this.
+1249,43.655885760614005,-79.40351541336844,['not_provided'],['hours'],2019-03-01T21:59:35.000Z,insufficient parking available at this site.
+1250,43.6444268,-79.3684763,"['not_provided', 'damaged']",['hours'],2019-03-02T18:28:00.000Z,
+1251,43.65349745222093,-79.38405981617433,['damaged'],['minutes'],2019-03-03T20:17:42.000Z,
+1252,43.6580617,-79.3864974,['not_provided'],['minutes'],2019-03-03T21:33:48.000Z,hello ctechto
+1253,43.6580617,-79.3864974,['not_provided'],['minutes'],2019-03-03T21:46:00.000Z,hello techto
+1254,43.6580617,-79.3864974,['not_provided'],['hours'],2019-03-03T21:53:26.000Z,hello 
+1256,43.659303610271806,-79.38769902963867,['not_provided'],['overnight'],2019-03-05T00:52:15.000Z,Hello techTo :)
+1239,43.664937851705396,-79.32277452565529,['damaged'],['minutes'],2019-01-12T18:01:50.000Z,Bike left abandoned 
+1259,43.6627312545007,-79.3801296481218,['other'],['minutes'],2019-03-05T19:06:16.000Z,Mound of snow blocking bike share station.
+1258,43.6620209,-79.3802177,['damaged'],['minutes'],2019-03-05T19:03:36.000Z,
+1248,43.64886848243446,-79.40598816649663,['not_provided'],['overnight'],2019-02-25T19:40:06.000Z,appartment 
+1255,43.66767155994544,-79.37212129094115,['damaged'],['hours'],2019-03-04T19:13:16.000Z,
+1257,43.6620301,-79.37960150000004,['damaged'],['minutes'],2019-03-05T19:02:51.000Z,
+1261,43.64966262976135,-79.43334915601866,['not_provided'],['minutes'],2019-03-09T16:31:00.000Z,No parking available at post office 
+1262,43.6580617,-79.3864974,['not_provided'],['multiday'],2019-03-12T08:12:08.000Z,wq
+1263,43.649462904443034,-79.38906471807007,['full'],['overnight'],2019-03-12T22:37:25.000Z,
+1264,43.65316031698445,-79.39766288095018,['full'],['hours'],2019-03-13T00:07:13.000Z,
+1265,43.649383135144774,-79.37604751367797,['not_provided'],['minutes'],2019-03-13T00:12:46.000Z,
+1266,43.649460523253495,-79.38901219612592,['other'],['hours'],2019-03-13T00:44:10.000Z,
+1268,43.65384162704656,-79.33665596319793,['not_provided'],['hours'],2019-03-14T22:00:00.000Z,"There is an increasing number of businesses in the Lakeshore/Carlaw area that could use safe bicycle parking. Currently there is none available, even though the area is attractive to be reached by bike because it is located right on the Martin Goodman trail."
+1279,43.66874128887598,-79.30495824594726,['not_provided'],['hours'],2019-04-08T22:15:00.000Z,"No parking in front of the stores and restaurants east of Woodbine on the south side of Queen in the Beaches. I go there all the time, I have to lock my bike to some gas pipes."
+1272,44.25822462115664,-76.53682818925927,['other'],['minutes'],2019-03-25T01:07:43.000Z,
+1275,43.64339330209926,-79.38231496835783,"['not_provided', 'full']",['minutes'],2019-04-03T00:08:44.000Z,
+1278,43.59679434853338,-79.52509597036135,['other'],['multiday'],2019-04-08T07:17:43.000Z,
+1280,43.6707195,-79.37458529999998,['not_provided'],['multiday'],2019-04-10T01:42:50.000Z,test
+1281,43.65336593404884,-79.42666682790525,['not_provided'],['hours'],2019-04-10T23:50:02.000Z,
+1282,43.665426057438246,-79.40791928269357,['not_provided'],['multiday'],2019-04-12T15:53:38.000Z,
+1284,43.66462545952321,-79.42752378577154,['not_provided'],['hours'],2019-04-14T03:46:41.000Z,
+1276,43.64998477557983,-79.3970331170105,['full'],['hours'],2019-04-04T21:30:00.000Z,In front of CSI Spadina
+1260,43.649691682688704,-79.43333353440005,['damaged'],['minutes'],2019-03-09T17:29:39.000Z,Abandoned bikes need picked up
+1283,43.70256197136838,-79.3974329222034,['not_provided'],['hours'],2019-04-13T18:53:00.000Z,
+1267,43.66770245517328,-79.37200326586117,['damaged'],['multiday'],2019-03-13T12:40:52.000Z,
+1269,43.6608392,-79.38542949999999,"['damaged', 'full']",['hours'],2019-03-20T14:39:11.000Z,
+1271,43.6782453,-79.34963629999999,['other'],['minutes'],2019-03-24T19:24:15.000Z,There is only bike parking on the street but they are full of people and you are in their way. This little corner would be perfect for a bunch of lollipops! That way we could park without worrying about jamming up the sidewalks. 
+1273,43.66401170590777,-79.32715605377086,['damaged'],['hours'],2019-03-27T14:55:36.000Z,This abandoned bike has been here for a long time. 1328 Queen E
+1274,43.6499941,-79.3970233,['full'],['hours'],2019-04-02T17:04:57.000Z,
+1277,43.6184838,-79.49932969999998,['not_provided'],['minutes'],2019-04-06T17:55:59.000Z,Lots of cyclists but literally no parking
+1285,43.64781496013724,-79.38001181860199,['not_provided'],['hours'],2019-04-14T03:53:58.000Z,No bike parking on this corner. Events held at the Design Exchange frequently. 
+1286,43.6549681,-79.36940270000002,['not_provided'],['multiday'],2019-04-14T13:20:40.000Z,
+1287,43.689187088517734,-79.31417968054046,['not_provided'],['minutes'],2019-04-13T18:45:00.000Z,"I spoke with the owners of the convenience store at 1093 Woodbine Avenue after arriving by bike. They don't have any ring and post parking but would like some.Thanks,"
+1288,43.68235978503773,-79.46951953808366,['not_provided'],['minutes'],2019-04-14T15:00:00.000Z, This is where the Rogers Road Bike lane ends and there are a lot of businesses here. I did not see a single bike ring from Scott to Keele on this stretch of Rogers Rd
+1289,43.67254388141466,-79.38863243837585,['not_provided'],['overnight'],2019-04-14T21:00:00.000Z,There are multiple residential buildings here with no bike parking. More will be built with no options to park.
+1290,43.668005238327815,-79.42848119892125,['full'],['multiday'],2019-04-17T03:23:10.000Z,
+1293,43.6631844143089,-79.41068019647827,['full'],['hours'],2019-04-25T14:21:00.000Z,"Bike parking at the SW corner of Bathurst and Lennox is always full. Can we get some kind of bike corral installed on Bathurst St? Lennox is full of construction vehicles for the Mirvish Village development, so it would not be safe to put it there. A bike corral in front of CSI would be great. Thank you!"
+1294,43.67772743579769,-79.3505128838562,['not_provided'],['hours'],2019-04-24T22:11:00.000Z,"I went to the restaurant Messini's Authentic Gyros. It's a wide frontage with no bike parking. All the nearby parking was taken, suggesting a shortage on that strip. The address is 445 Danforth Ave. Thank you."
+1296,43.563491,-79.62364980000001,"['not_provided', 'full', 'damaged', 'damaged', 'other']",['minutes'],2019-05-07T01:06:04.000Z,
+1297,43.64577316597588,-79.51792295952072,['not_provided'],['hours'],2019-05-07T19:00:00.000Z,No nearby bike parking
+1298,43.7075975,-79.3901237,['not_provided'],['minutes'],2019-05-08T01:06:09.000Z,
+1299,43.65250736648112,-79.36378625683898,['not_provided'],['multiday'],2019-05-08T14:15:38.000Z,"Our office has 300+ people and there are only two bike rings on this stretch of road.  The side walk is too narrow for our office to provide a rack without obstructing pedestrians.Please can we have more bike rings along King St East, between Parliament and Beverley? BOTH sides of the road would be really appreciated!"
+1300,53.541238049482544,-113.49461759370115,['damaged'],['multiday'],2019-05-08T17:48:05.000Z,
+1303,43.6580617,-79.3864974,['other'],['minutes'],2019-05-10T13:07:33.000Z,
+1304,43.6707654,-79.3744049,['full'],['multiday'],2019-05-11T20:28:10.000Z,
+1305,53.54168620000001,-113.46929779999999,['other'],['minutes'],2019-05-11T20:33:20.000Z,This is a test.
+1292,43.6417727,-79.42361149999999,['full'],['hours'],2019-04-23T20:51:13.000Z,within green p parking not 
+1295,43.66031836256725,-79.36218076392947,['damaged'],['overnight'],2019-05-05T01:22:55.000Z,
+1301,43.6568229,-79.4055151,['damaged'],['minutes'],2019-05-08T20:18:32.000Z,
+1010,43.65100916446145,-79.37897875665703,['damaged'],['minutes'],2018-08-15T21:59:07.000Z,"On east side of Yonge, in front of Goidlife fitness "
+1291,43.66124005806299,-79.38150225010764,['damaged'],['minutes'],2019-04-19T19:14:28.000Z,Abandoned and stripped bike
+1141,43.640417600000006,-79.3923155,['damaged'],['overnight'],2017-07-01T14:41:00.000Z,This bike has been locked there for more than a year. I move in July 2017 to this condo and I always park my bike in the other slot of that rack. This bike in the photo has never been moved since. It's rotting and full of rust. 
+1391,43.664647412318416,-79.30447544832458,['not_provided'],['hours'],2019-07-15T19:00:00.000Z,"There is minimal bike parking along the martin goodman trail to the south of the pool at woodbine beach. People have resorted to locking their bikes to trees, signs and whatever they can find. The city's premier trail and busiest beach should have plenty of accessible, nearby, visible parking"
+1176,43.655909446849044,-79.39080006613159,['damaged'],['hours'],2018-10-08T22:21:16.000Z,Several old bikes have been on these rings for years. Corner of Elm and St. Patrick
+1238,43.65674012187287,-79.40595327255,['damaged'],['minutes'],2019-01-10T13:00:00.000Z,This bike's been there a while. 
+1428,43.67576425605183,-79.34865679521789,['not_provided'],['hours'],2019-08-16T15:09:23.000Z,"There is not much bike parking around Withrow Park, especially none within sight near the north end of the park where tons of people arrive from the Danforth direction. This became especially apparent recently during farmers markets and Dusk Dances events, when I noticed people locking their bikes to trees."
+1111,43.6561729,-79.38006129999997,"['not_provided', 'full']",['hours'],2018-09-07T22:50:40.000Z,"Busy intersection, no bike parking? Wtf"
+1458,43.67809814092462,-79.44208674013782,['full'],['hours'],2019-09-25T19:00:06.000Z,
+1486,43.6580617,-79.3864974,['full'],['hours'],2020-02-13T22:01:40.000Z,
+1206,43.6440275,-79.3884635,['not_provided'],['hours'],2018-10-19T19:02:15.000Z,"This area has so few spaces. Some are taken up with these broken bikes, but plenty more are needed. Could the city get rid of the broken bikes and add in more parking? "
+1071,43.6528718,-79.37660849999997,['other'],['hours'],2018-08-29T20:19:38.000Z,wheel benders on queen st.
+1306,43.670720499999995,-79.37424390000001,['damaged'],['multiday'],2019-05-11T21:19:14.000Z,
+1528,43.66188049213553,-79.3894156434082,['damaged'],['hours'],2020-07-31T20:31:39.000Z,All the ring and post parking stations across from Frost North Building are loose and need to be replaced.
+1307,53.54227414197117,-113.44804958925783,['other'],['hours'],2019-05-11T22:35:50.000Z,This is a test.
+1308,53.54227414197117,-113.44804958925783,['other'],['hours'],2019-05-11T22:35:50.000Z,
+1309,53.54227414197117,-113.44804958925783,['other'],['hours'],2019-05-11T22:35:50.000Z,This is a test.
+1310,53.54227414197117,-113.44804958925783,['other'],['hours'],2019-05-11T22:35:50.000Z,This is a test.
+1311,53.54227414197117,-113.44804958925783,['other'],['hours'],2019-05-11T22:35:50.000Z,This is a test.
+1538,43.6580617,-79.3864974,['not_provided'],['hours'],2021-05-03T23:00:57.000Z,
+1480,43.65340871118211,-79.39020281086977,[],['multiday'],2019-12-28T14:14:14.000Z,Bike has been here since I moved in 3 1/2 years ago
+1509,43.66929281644631,-79.43414756935007,['full'],['hours'],2020-07-06T17:00:19.000Z,This is a work space and many people need to park here. More bike rings please! 
+1534,43.65305546314202,-79.35791180165579,['damaged'],['hours'],2020-11-28T20:26:25.000Z,"abandoned bike, please remove"
+1318,53.5515126,-113.47382620000002,['other'],['minutes'],2019-05-12T22:28:24.000Z,Parking here. 
+1314,53.5127757,-113.27509650000002,['full'],['hours'],2019-05-12T00:09:25.000Z,Trying to park at the 7-11 in Sherwood Park. There's a bin obstructing the parking. 
+1317,53.5495758,-113.46492690000002,['other'],['hours'],2019-05-12T22:20:29.000Z,Bike parking here.
+1315,53.5415728,-113.46947110000002,['other'],['minutes'],2019-05-12T21:58:14.000Z,Parking is good here. 
+1313,53.5421696,-113.4714864,['other'],['minutes'],2019-05-11T23:44:46.000Z,Parking looks good!
+1316,53.5435381,-113.46817440000001,['other'],['minutes'],2019-05-12T22:06:06.000Z,Good parking here. 
+1355,43.656736931471535,-79.35945211806222,['damaged'],['hours'],2019-05-29T21:40:44.000Z,IN front of 471 Queen E
+1353,53.5457955,-113.4870965,['not_provided'],['hours'],2019-05-29T21:24:47.000Z,Bad parking outside law courts. 
+1351,43.65566827425748,-79.38345351812666,['damaged'],['minutes'],2019-05-28T17:46:04.000Z,Near Canadian tire door
+1392,43.669016790920246,-79.33672632951965,['not_provided'],['hours'],2019-07-12T17:00:00.000Z,No parking along the north side of Gerrard near all these shops and restaurants 
+1125,43.66121078560159,-79.38358422707421,['damaged'],['hours'],2018-09-12T21:08:43.000Z,Two abandoned bikes locked to each other right next to subway entrance - post and ring
+1270,43.664935565493344,-79.32299949392655,['damaged'],['minutes'],2019-03-23T16:44:41.000Z,This bike is in front of ashbridge estate on Queen
+1066,43.66551714056543,-79.40932088890207,"['damaged', 'full']",['minutes'],2018-08-28T16:51:13.000Z,A lot of abandoned bikes along this stretch 
+1429,43.652608281983106,-79.36353412919158,['damaged'],['multiday'],2019-05-01T15:37:15.000Z,There has been an abandoned bike locked on a ring at King St E and Parliament for months now.  It as a milk crate attached to it which has now become a garbage can.  Should be very easy to find to remove.
+1047,43.67007349870631,-79.43115397523508,['not_provided'],['minutes'],2018-08-22T22:59:54.000Z,No bike parking here to park my bike while I am visiting a studio
+1459,43.677813099999995,-79.4420131,['full'],['hours'],2019-09-25T17:24:00.000Z,
+1487,44.345231,-78.7399962,['not_provided'],['hours'],2020-02-19T19:51:24.000Z,
+1489,43.65975379640178,-79.38525285501709,['full'],['minutes'],2020-03-26T09:14:55.000Z,
+1319,53.5424788,-113.2827474,['full'],['overnight'],2019-05-13T03:31:57.000Z,
+1320,53.5424424,-113.2827537,['full'],['overnight'],2019-05-13T03:32:46.000Z,
+1321,53.5422084,-113.4901951,['other'],['minutes'],2019-05-13T18:44:46.000Z,Bike parking rings here. 
+1327,53.5429649,-113.49587209999999,['other'],['overnight'],2019-05-13T18:57:10.000Z,A couple spots here. 
+1328,53.5445639,-113.48834549999998,['other'],['multiday'],2019-05-13T19:09:41.000Z,6 good rings here. 
+1231,43.6516765,-79.3683203,['full'],['hours'],2018-12-06T16:46:54.000Z,Sherbourne and king east
+1173,43.6580617,-79.3864974,['damaged'],['hours'],2018-10-08T16:22:54.000Z,The location is actually outside Jimmy’s Coffee Kensington Market 191 Baldwin Street. I can’t get the pinning function to work using the new iOS 12.0The ring is bent and it’s difficult to lock a bike at that angle especially if another bike is already parked there. It also look aesthetically unpleasing.
+1488,44.345231,-78.7399962,['not_provided'],['hours'],2020-02-19T19:51:24.000Z,
+1490,43.6580617,-79.3864974,"['not_provided', 'damaged', 'damaged', 'full']",['hours'],2020-04-18T06:17:39.000Z,
+1322,53.5432222,-113.49179049999998,['other'],['minutes'],2019-05-13T18:47:08.000Z,Good parking here. 
+1323,53.5424737,-113.49213689999999,['damaged'],['minutes'],2019-05-13T18:48:51.000Z,Ring is bent outside Kelly building. 
+1324,53.5421943,-113.49222859999998,['full'],['hours'],2019-05-13T18:50:38.000Z,Heavy traffic area. Could use more parking.
+1325,53.5426992,-113.4930205,['other'],['overnight'],2019-05-13T18:52:54.000Z,Good parking here. 
+1326,53.5430125,-113.49559970000001,['other'],['multiday'],2019-05-13T18:55:47.000Z,Solid rings here. 
+1329,43.631152866820294,-79.37628177783205,['other'],['multiday'],2028-05-10T23:06:14.000Z,I PARKEd in the water
+1510,43.6693858,-79.4344525,['full'],['multiday'],2020-07-06T22:55:36.000Z,2 bike posts for 6-8 bikes most multiday. Please install more parking.
+1529,43.7076053,-79.3898468,['not_provided'],['minutes'],2020-10-08T16:08:28.000Z,Bike parking is needed in front of shoppers
+1535,43.6580617,-79.3864974,"['not_provided', 'full', 'damaged']",['minutes'],2020-12-10T00:15:00.000Z,
+1376,43.66806318473492,-79.38752505038605,['full'],['minutes'],2019-06-28T13:36:27.000Z,35 Charles st w has lots of covered space the could put more bike parking
+1393,43.66913047935097,-79.33561970326014,['not_provided'],['minutes'],2019-07-19T17:00:00.000Z,Jones and Gerrard has no parking on three corners despite having destinations on all four. Pizza pizza has a tire only rack which is worse than nothing 
+1430,43.64985920922779,-79.43362242784934,['damaged'],['multiday'],2019-04-19T13:00:00.000Z,There are two bikes that have been abandoned here and have not moved in a significant amount of time. Both are in unridable condition and clearly unused 
+1460,43.654233063010786,-79.39976420956503,['damaged'],['hours'],2019-09-29T16:51:14.000Z,Two of the four post-and-rings in front of the Green P garage are unusably bent. 
+1481,43.65340871118211,-79.39020281086977,[],['multiday'],2019-12-28T14:14:14.000Z,Bike has been here since I moved in 3 1/2 years ago
+1354,53.5461808,-113.48697570000002,['not_provided'],['hours'],2019-05-29T21:25:57.000Z,
+1394,43.66913502428417,-79.33559585350059,['damaged'],['minutes'],2019-07-19T17:16:33.000Z,The eastern most ring on the north west corner of Jones and Gerrard is damaged and loose
+368,43.660007,-79.389566,['damaged'],['multiday'],2018-06-03T21:24:48.000Z,
+1431,43.64750646407951,-79.42011035122073,['full'],['hours'],2019-08-19T23:44:08.000Z,"Every time I try to park my bike on Ossington between Dundas and Queen, there are no spots available. Can the city add more posts so that people don't have to lock their bikes to trees and business fences?"
+1461,43.64713297214976,-79.37653402119167,['not_provided'],['hours'],2019-09-29T01:30:00.000Z,
+1491,43.67236733780847,-79.41811259765853,['damaged'],['minutes'],2020-04-26T12:23:31.000Z,2 bicycles have been abandoned in front of the 'queen's club' at 568 dupont street for this past winter and spring. they are taking up 2 bicycle ring parking spots and are an eyesore.
+1511,43.65402531421508,-79.387398622229,['other'],['minutes'],2020-07-15T13:53:46.000Z,
+1330,43.6484625,-79.39318109999999,['other'],['multiday'],2019-05-16T15:17:45.000Z,test
+1331,53.55141122437076,-113.47429038164063,['damaged'],['minutes'],2019-05-16T15:24:09.000Z,
+1332,43.66984328946546,-79.4320091225647,['not_provided'],['hours'],2019-05-20T14:22:31.000Z,"There are no bike posts on this stretch of Dupont!! I'm the member of an art studio in the area and travel there frequently on my bike. If the City could install some bikeposts, I would be very grateful!!"
+1530,43.6603246,-79.3592734,['other'],['minutes'],2020-10-15T17:35:59.000Z,
+1536,43.7005261,-79.2759554,['full'],['hours'],2020-12-08T19:00:38.000Z,Testing
+1349,43.6580617,-79.3864974,['damaged'],['hours'],2019-05-28T05:09:05.000Z,
+1352,43.6460723,-79.38907719999997,['not_provided'],['multiday'],2019-05-29T14:41:27.000Z,test
+1377,43.7033031,-79.3633906,['not_provided'],['minutes'],2019-06-28T17:37:49.000Z,
+1485,43.663911361771916,-79.418393098588,[],['hours'],2020-02-01T20:07:47.000Z,Right in front of Tim Hortons 
+1462,16.540906436689774,80.17494605927732,['not_provided'],['minutes'],2019-10-01T06:34:25.000Z,
+1492,43.6580617,-79.3864974,"['damaged', 'other', 'damaged']",['multiday'],2020-05-14T11:40:53.000Z,
+1350,43.6580617,-79.3864974,['full'],['hours'],2019-05-28T13:35:26.000Z,
+1512,43.66894823585361,-79.31777635983102,['not_provided'],['multiday'],2020-06-15T13:50:43.000Z,
+1531,43.7297164,-79.2490176,"['other', 'not_provided']",['hours'],2020-10-26T11:04:31.000Z,
+1395,43.6658775448547,-79.33434452791442,['damaged'],['hours'],2019-07-19T17:00:00.000Z,"Parking behind Jones library. One ring and post has no ring and several have loose rings. These are the very first design, should be replaced by newer design."
+1399,43.66371218428007,-79.34141483087768,['full'],['minutes'],2019-07-26T16:49:15.000Z,All bike parking is full! Would bw great to see on street bike parking corrals to free up sidewalk space.
+1432,43.64987254585947,-79.4335986204693,['damaged'],['multiday'],2019-04-19T13:00:00.000Z,Two bikes have been abandoned here on the North corner of Sheridan and Dundas. Both are in poor condition and unridable. Limited space is available. 
+381,43.6443272,-79.37817289999998,['other'],['hours'],2018-06-05T19:05:42.000Z,
+394,43.6688996,-79.38869569999997,['damaged'],['minutes'],2018-06-06T02:11:29.000Z,
+1513,43.66879656864393,-79.31773112704772,['not_provided'],['multiday'],2020-07-16T13:23:04.000Z,"There is a concrete median at this intersection, and I understand the area is due to be replaced with a park/plaza incorporating a bike rack of some kind.There are very few places to lock a bike along Dundas East, even though there is a well established bike lane.I also witnessed a cyclist who had nowhere to park a bike while visiting the police station across the street, which seemed odd to me.I expect a 9 Bike Wave style bike rack would be perfect in this location, both now and through construction/completion of the new park.Thanks!"
+1341,43.70624449272032,-79.36052288789978,['not_provided'],['hours'],2019-05-26T18:24:06.000Z,No where to park bikes even though this is a brand new mall with lots of residential streets nearby. 
+1043,43.660523701416764,-79.36051566868844,['damaged'],['hours'],2018-08-22T21:05:24.000Z,
+1088,43.664477962435946,-79.38714113147324,['damaged'],['minutes'],2018-09-04T18:17:00.000Z,"895 Bay Street. Address mistake on 910 Bay Street, should be 905 Bay Street, the two bicycles are less than 2 minutes apart, both abandoned and chained. "
+1333,43.6683005,-79.3178471,['not_provided'],['multiday'],2019-05-21T21:05:42.000Z,There is little to no bicycle parking along the entirety of Coxwell and along Dundas in the Beaches area. There are cyclist lanes on most of the roads around the area... but no where to lock a bike. Like... no where. 
+1334,43.74456909383079,-79.48659207601776,['not_provided'],['minutes'],2019-05-21T23:46:35.000Z,
+1335,43.670732,-79.37453069999998,['not_provided'],['minutes'],2019-05-23T00:36:11.000Z,test
+1340,43.70624449272032,-79.36052288789978,['not_provided'],['hours'],2019-05-26T18:24:06.000Z,No where to park bikes even though this is a brand new mall with lots of residential streets nearby. 
+1337,43.6580617,-79.3864974,['not_provided'],['minutes'],2019-05-24T01:43:59.000Z,
+1345,53.5406867,-113.4978112,['full'],['minutes'],2019-05-27T16:40:54.000Z,Parking full out front of Canadian Western Bank.
+1346,53.5409089,-113.49941519999999,['full'],['minutes'],2019-05-27T16:43:40.000Z,Full in front of Honeywell building. 
+1347,53.5407449,-113.50089960000003,['not_provided'],['hours'],2019-05-27T16:45:24.000Z,
+1344,53.5406116,-113.49737620000002,['not_provided'],['overnight'],2019-05-27T16:39:09.000Z,
+1343,53.5409235,-113.4959943,['not_provided'],['hours'],2019-05-27T16:37:43.000Z,No parking outside downtown EPL.
+1342,53.5408086,-113.49401080000001,['full'],['hours'],2019-05-27T16:35:22.000Z,Full parking outside Melcor building. 
+1338,43.650001,-79.3970046,['full'],['minutes'],2019-05-24T18:38:50.000Z,
+1339,43.650001,-79.3970046,['full'],['minutes'],2019-05-24T18:38:50.000Z,
+1348,53.5410884,-113.50087780000001,['not_provided'],['minutes'],2019-05-27T18:15:44.000Z,Just outside coffee bureau. 
+1396,43.604235272760285,-79.51818549612051,['not_provided'],['hours'],2019-07-21T19:08:26.000Z,Seems there is no parking at all in this area. Much-needed!
+1463,43.65671109342251,-79.37454815883865,['damaged'],['minutes'],2019-10-04T20:43:41.000Z,
+1493,43.707425471357574,-79.39771162594073,['not_provided'],['minutes'],2020-05-15T01:28:53.000Z,
+1357,43.69867119304567,-79.39484374813384,['not_provided'],['overnight'],2019-06-02T02:19:30.000Z,
+643,43.65251208133967,-79.39059400088638,"['damaged', 'damaged', 'full']",['hours'],2018-07-11T19:00:00.000Z,Other nearby ring and post was damaged and removed but never replaced last year. 
+369,43.6671187,-79.37266019999998,['not_provided'],['minutes'],2018-06-04T00:58:19.000Z,
+382,43.6485528,-79.39257809999998,['not_provided'],"['hours', 'minutes']",2018-06-05T21:18:07.000Z,
+408,43.6532888626403,-79.38394842534717,['full'],['hours'],2018-06-07T19:12:17.000Z,
+421,43.648739176563744,-79.38057863756069,['not_provided'],['hours'],2018-06-08T21:48:03.000Z,
+473,43.6809267,-79.4344112,['full'],['minutes'],2018-06-14T21:01:01.000Z,
+497,43.6580617,-79.3864974,['full'],['minutes'],2018-06-17T18:17:50.000Z,
+509,43.65383216004622,-79.38453980651428,['full'],['hours'],2018-06-15T00:09:00.000Z,
+370,43.668951738111154,-79.38904804948828,['not_provided'],['minutes'],2018-05-06T22:00:00.000Z,
+383,43.6485232,-79.39263399999999,"['not_provided', 'other']","['minutes', 'overnight']",2018-06-05T21:22:31.000Z,
+396,43.655683598486235,-79.40350042253726,['full'],['hours'],2018-06-06T13:59:41.000Z,
+409,43.65326754664542,-79.38399046220184,['full'],['hours'],2018-06-07T19:17:05.000Z,
+422,43.6535603,-79.38378899999998,['not_provided'],['minutes'],2018-06-09T01:29:33.000Z,
+448,43.6396042,-79.38059800000002,['other'],['hours'],2018-06-13T00:17:31.000Z,
+461,43.6707518,-79.37445559999998,"['not_provided', 'other']","['hours', 'minutes']",2018-06-13T23:14:04.000Z,
+474,43.6534719,-79.38379309999999,['damaged'],['minutes'],2018-06-14T21:17:52.000Z,
+606,43.6515155,-79.3730468,['not_provided'],['hours'],2018-07-01T16:49:22.000Z,
+613,43.6646401,-79.30587300000002,['not_provided'],['hours'],2018-07-03T20:25:35.000Z,On the MGT in the beach. No bike parking 
+650,43.66447250243945,-79.39085158700868,['damaged'],['hours'],2018-07-13T14:40:00.000Z,
+371,43.655705499496314,-79.38346459111023,['other'],['hours'],2018-06-04T00:30:00.000Z,
+384,43.651973958972526,-79.44962166085202,"['full', 'not_provided']",['hours'],2018-06-05T22:09:44.000Z,
+462,43.6707581,-79.37441130000002,['not_provided'],"['minutes', 'multiday']",2018-06-13T23:21:59.000Z,
+475,43.6534719,-79.38379309999999,['damaged'],['hours'],2018-06-14T21:21:46.000Z,
+532,43.647170499661954,-79.5127873889187,['not_provided'],['minutes'],2018-06-20T16:40:21.000Z,
+653,43.648356612889344,-79.38481642694893,['damaged'],['hours'],2018-07-13T13:00:00.000Z,"This bike has been abandoned all winter. It is on Pearl street, locked to a ""One Way"" street sign across from the Parking Garage into 150 King St W. "
+657,43.638895762477226,-79.41242441830434,"['not_provided', 'full']",['hours'],2018-07-13T21:23:28.000Z,
+463,43.6534719,-79.38379309999999,['full'],['hours'],2018-06-14T01:03:13.000Z,
+476,43.6660171,-79.40724720000003,['damaged'],['hours'],2018-06-14T21:26:05.000Z,
+489,43.6486442,-79.39346239999998,['not_provided'],['minutes'],2018-06-15T13:16:38.000Z,
+533,43.647170499661954,-79.5127873889187,['not_provided'],['minutes'],2018-06-20T16:40:21.000Z,
+589,43.6584186,-79.48162680000002,['full'],['hours'],2018-06-28T21:43:39.000Z,This is a test
+554,43.64830992103853,-79.39334988703001,['not_provided'],['hours'],2018-06-26T15:38:33.000Z,
+146,43.6621733,-79.425854,['full'],['hours'],2018-04-10T00:29:12.133Z,
+147,43.6621733,-79.425854,['full'],['hours'],2018-04-10T00:29:12.133Z,
+148,43.6580617,-79.3864974,['full'],['hours'],2018-04-10T23:45:59.941Z,
+149,43.6580617,-79.3864974,['not_provided'],"['hours', 'hours']",2018-04-10T23:45:59.941Z,
+150,43.6487204,-79.3936064,['not_provided'],['hours'],2018-04-10T23:54:07.233Z,
+153,43.64854243138875,-79.39336486593254,"['full', 'damaged', 'other', 'damaged']","['hours', 'multiday']",2018-04-11T00:01:08.719Z,
+154,43.64855232539347,-79.39337133815299,['damaged'],['hours'],2018-04-11T00:02:58.823Z,
+158,43.648557904801365,-79.39335447625483,['damaged'],['hours'],2018-04-11T00:05:33.212Z,
+159,43.6483784,-79.3937297,['not_provided'],"['hours', 'minutes', 'overnight', 'hours', 'multiday', 'multiday']",2018-04-11T00:04:31.800Z,
+164,43.648557904801365,-79.39335447625483,"['other', 'damaged', 'damaged', 'full', 'not_provided']",['hours'],2018-04-11T00:30:43.580Z,
+165,43.648538952265625,-79.39337119429518,['damaged'],"['hours', 'hours']",2018-04-11T00:30:43.580Z,
+167,43.648538952265625,-79.39337119429518,['damaged'],"['minutes', 'hours', 'overnight']",2018-04-11T00:30:43.580Z,
+170,43.6289467,-79.3944199,['not_provided'],"['minutes', 'hours']",2018-04-12T00:50:28.867Z,
+171,43.6580617,-79.3864974,['not_provided'],"['hours', 'minutes', 'overnight', 'multiday']",2018-04-12T00:56:27.950Z,
+172,43.6580617,-79.3864974,"['not_provided', 'full']","['hours', 'minutes']",2018-04-12T01:02:06.971Z,
+373,43.66001796160251,-79.3624411265298,['damaged'],['overnight'],2018-06-04T20:05:24.000Z,
+174,43.6535247,-79.3838003,['damaged'],['hours'],2018-04-12T22:32:42.270Z,
+175,43.6535247,-79.3838003,['other'],"['hours', 'multiday']",2018-04-12T22:32:42.270Z,
+176,43.6535247,-79.3838003,['other'],"['hours', 'multiday', 'overnight']",2018-04-12T22:32:42.270Z,
+179,43.7101378,-79.4734714,['damaged'],['overnight'],2018-04-19T00:23:35.990Z,
+180,43.7101378,-79.4734714,['damaged'],['overnight'],2018-04-19T00:23:35.990Z,
+412,43.6534997,-79.38357350000001,['not_provided'],['hours'],2018-06-07T19:42:19.000Z,
+183,43.6812518,-79.4355022,['not_provided'],['minutes'],2018-04-28T23:48:11.260Z,
+188,43.64704,-79.39456229999999,['not_provided'],['minutes'],2018-05-01T23:55:59.000Z,
+490,43.6486442,-79.39346239999998,['not_provided'],['minutes'],2018-06-15T13:16:38.000Z,
+501,43.6532669,-79.3707832,['damaged'],['hours'],2018-06-18T19:29:51.000Z,
+374,43.6690200627654,-79.48337461394567,['not_provided'],['minutes'],2018-06-04T21:16:07.000Z,
+400,43.6798974,-79.4334758,['not_provided'],['minutes'],2018-06-07T13:03:34.000Z,
+413,43.648786024167684,-79.3866816534291,['full'],['minutes'],2018-06-07T21:52:31.000Z,
+197,43.646468,-79.3888544,['full'],['hours'],2018-05-02T18:44:46.000Z,
+198,43.6580617,-79.3864974,['not_provided'],"['hours', 'minutes']",2018-05-02T21:03:48.000Z,
+439,43.64820070141476,-79.40453120688477,['not_provided'],['minutes'],2018-06-11T19:29:59.000Z,
+201,43.7659008,-79.41411049999999,"['not_provided', 'other']",['hours'],2018-05-04T00:28:27.000Z,
+202,43.7659008,-79.41411049999999,"['not_provided', 'other']",['hours'],2018-05-04T00:28:27.000Z,
+203,43.7659008,-79.41411049999999,"['not_provided', 'other']",['hours'],2018-05-04T00:28:27.000Z,
+204,43.7659008,-79.41411049999999,"['not_provided', 'other']",['hours'],2018-05-04T00:28:27.000Z,
+205,43.7659008,-79.41411049999999,"['not_provided', 'other']",['hours'],2018-05-04T00:28:27.000Z,
+206,43.7659008,-79.41411049999999,"['not_provided', 'other']",['hours'],2018-05-04T00:28:27.000Z,
+207,43.65753867,-79.39893487,['damaged'],['minutes'],2018-03-01T23:26:00.000Z,
+208,43.65753867,-79.39893487,['damaged'],['minutes'],2018-03-01T23:26:00.000Z,
+210,43.665914,-79.4074217,"['not_provided', 'full']",['hours'],2018-05-05T20:43:19.000Z,
+211,43.6658951,-79.40740389999999,"['not_provided', 'other']","['hours', 'minutes']",2018-05-05T20:46:50.000Z,
+465,43.67843127371832,-79.4090273224121,['full'],['overnight'],2018-06-14T01:05:27.000Z,
+213,43.665891640128905,-79.4073400303922,['damaged'],['minutes'],2018-05-05T22:45:10.000Z,
+215,43.6707617,-79.3743918,['not_provided'],"['hours', 'overnight']",2018-05-06T17:50:31.000Z,
+216,43.6707873,-79.3743935,['full'],"['hours', 'overnight', 'multiday']",2018-05-06T18:05:15.000Z,
+491,43.6663873,-79.35776709999999,['not_provided'],['hours'],2018-06-15T13:37:39.000Z,
+546,43.6584186,-79.48162680000002,['full'],['minutes'],2018-06-22T00:41:57.000Z,
+375,43.666707780087435,-79.37413697443776,['full'],['minutes'],2018-06-05T01:32:57.000Z,
+388,43.63974327433947,-79.38132956158677,"['not_provided', 'damaged']","['hours', 'minutes']",2018-06-06T00:30:22.000Z,
+221,43.665654,-79.4082491,['other'],['hours'],2018-05-07T13:08:07.000Z,
+401,43.6289467,-79.3944199,['not_provided'],['minutes'],2018-06-07T16:14:00.000Z,
+414,37.0948955447268,-95.6957248623047,['not_provided'],['minutes'],2018-06-08T00:06:41.000Z,
+225,43.789052999999996,-79.40849279999999,"['damaged', 'full']",['1-2hours'],2018-05-08T00:29:56.000Z,
+226,43.789052999999996,-79.40849279999999,"['damaged', 'full']",['1-2hours'],2018-05-08T00:29:56.000Z,
+227,43.789052999999996,-79.40849279999999,"['damaged', 'full']",['1-2hours'],2018-05-08T00:29:56.000Z,
+228,43.789052999999996,-79.40849279999999,"['damaged', 'full']",['1-2hours'],2018-05-08T00:29:56.000Z,
+525,43.66322505385988,-79.33064259107186,['full'],['hours'],2018-06-20T22:00:00.000Z,
+536,43.6382665,-79.42077790000002,['full'],['hours'],2018-06-20T23:22:58.000Z,
+235,43.6670327,-79.37265719999999,"['not_provided', 'damaged']","['>1hour', '1-2hours']",2018-05-08T01:51:46.000Z,
+239,43.6435410154422,-79.40296202070532,"['not_provided', 'damaged', 'abandoned', 'damaged', 'full']","['>1hour', '1-2hours', 'overnight+', '4-8hours']",2018-05-08T18:56:19.000Z,
+240,43.64338926790937,-79.40240336402488,['not_provided'],['>1hour'],2018-05-08T20:41:45.000Z,
+241,43.643297931171205,-79.40218614994886,['damaged'],['1-2hours'],2018-05-08T20:50:43.000Z,
+242,43.647075099999995,-79.3945402,"['damaged', 'full']",['overnight+'],2018-05-08T23:39:14.000Z,
+243,43.6470753,-79.3945324,['full'],['>1hour'],2018-05-08T23:39:26.000Z,
+244,43.6470753,-79.3945324,"['full', 'not_provided', 'damaged', 'damaged', 'abandoned']","['>1hour', '>1hour', '4-8hours', '1-2hours', 'overnight+']",2018-05-08T23:40:46.000Z,
+376,43.638718925379536,-79.36332613841421,"['other', 'not_provided', 'full', 'damaged', 'damaged']",['multiday'],2018-06-05T01:34:31.000Z,
+247,43.646972330681024,-79.39444835352619,['not_provided'],['>1hour'],2018-05-08T23:55:37.000Z,
+248,43.670671299132984,-79.37405949215096,"['not_provided', 'damaged']",['>1hour'],2018-05-09T02:56:02.000Z,
+249,43.6580617,-79.3864974,['not_provided'],['1-2hours'],2018-05-09T02:59:44.000Z,
+250,43.67129981242913,-79.37173781368693,['not_provided'],['>1hour'],2018-05-09T03:14:34.000Z,
+251,43.66265302456229,-79.38595513118321,['not_provided'],['>1hour'],2018-05-09T03:15:26.000Z,
+252,43.670779723414924,-79.3741375078763,['not_provided'],['>1hour'],2018-05-09T03:18:02.000Z,
+253,43.66954211741542,-79.38303981090343,['damaged'],['>1hour'],2018-05-09T03:24:14.000Z,
+254,43.67074707910373,-79.37404465558575,['not_provided'],['1-2hours'],2018-05-09T04:05:14.000Z,
+415,37.09024,-95.71289100000001,['full'],['minutes'],2018-06-08T00:08:35.000Z,
+257,43.67074720876507,-79.37419519362129,['not_provided'],['>1hour'],2018-05-09T12:15:48.000Z,
+261,43.69028409719613,-79.39467566524877,['not_provided'],['1-2hours'],2018-05-09T20:54:28.000Z,
+262,43.65089360409063,-79.39759910270948,['not_provided'],['1-2hours'],2018-05-10T16:29:24.000Z,
+263,43.65089360409063,-79.39759910270948,['not_provided'],['1-2hours'],2018-05-10T16:29:24.000Z,
+264,43.643777,-79.40231560000001,['not_provided'],['1-2hours'],2018-05-10T18:59:06.000Z,
+265,43.64285239590451,-79.40961466389012,['damaged'],['overnight+'],2018-05-10T19:01:45.000Z,
+266,43.66958621372134,-79.35763644675211,['damaged'],['1-2hours'],2018-05-10T22:22:58.000Z,
+269,43.61224439926035,-79.38925434700798,['damaged'],['>1hour'],2018-05-11T00:32:39.000Z,
+270,43.6838778,-79.44053200000002,['not_provided'],['4-8hours'],2018-05-11T16:48:57.000Z,
+271,43.6838778,-79.44053200000002,['not_provided'],['4-8hours'],2018-05-11T16:48:57.000Z,
+272,43.650449833580446,-79.42201994280992,['abandoned'],['4-8hours'],2018-04-30T14:22:00.000Z,
+273,43.650449833580446,-79.42201994280992,['abandoned'],['4-8hours'],2018-04-30T14:22:00.000Z,
+377,43.6527902,-79.3836637,['full'],['hours'],2018-06-05T13:16:37.000Z,
+276,43.64571805275958,-79.38929613098412,['full'],['4-8hours'],2018-05-14T13:19:15.000Z,
+416,43.64395091179595,-79.3889294365955,['not_provided'],['minutes'],2018-06-08T01:44:18.000Z,
+455,43.6397833,-79.37990059999998,['not_provided'],['hours'],2018-06-13T00:25:41.000Z,
+282,43.66490334727859,-79.39705819830243,"['full', 'not_provided']","['1-2hours', '1-2hours']",2018-05-15T23:39:19.000Z,
+283,43.66490334727859,-79.39705819830243,"['full', 'not_provided']","['1-2hours', '1-2hours']",2018-05-15T23:39:19.000Z,
+284,43.66490334727859,-79.39705819830243,"['full', 'not_provided']","['1-2hours', '1-2hours']",2018-05-15T23:39:19.000Z,
+285,43.66490334727859,-79.39705819830243,"['full', 'not_provided']","['1-2hours', '1-2hours']",2018-05-15T23:39:19.000Z,
+468,43.652319,-79.3894919,['not_provided'],['minutes'],2018-06-14T15:18:03.000Z,
+492,43.65201386558076,-79.37038984212836,['not_provided'],['multiday'],2018-06-15T17:08:48.000Z,
+504,43.6390673,-79.38121760000001,['full'],['minutes'],2018-08-17T22:33:19.000Z,
+292,43.6516375,-79.37725929999999,"['abandoned', 'damaged']",['overnight+'],2018-05-17T00:31:47.000Z,
+293,43.66131520142813,-79.3908230164551,['damaged'],['>1hour'],2018-05-17T22:35:11.000Z,
+296,43.64595798827279,-79.37206030633843,['damaged'],['4-8hours'],2018-05-15T11:55:00.000Z,
+300,43.6435484,-79.42191230000003,['damaged'],['1-2hours'],2018-05-18T22:41:03.000Z,
+378,43.66887813414046,-79.39403575765323,['not_provided'],['hours'],2018-06-05T14:11:04.000Z,
+391,43.638215366302134,-79.38028361881464,['not_provided'],"['hours', 'multiday']",2018-06-06T01:53:55.000Z,
+417,43.665696,-79.40836790000003,['damaged'],['minutes'],2018-06-08T12:51:53.000Z,
+309,43.63654697873816,-79.39909499031296,['abandoned'],['>1hour'],2018-05-24T13:58:00.000Z,
+469,43.6423639,-79.3837102,['not_provided'],['hours'],2018-06-14T15:23:03.000Z,
+505,43.600568256571776,-79.34861899975584,['damaged'],['minutes'],2016-12-07T00:52:37.000Z,
+316,43.644831237388686,-79.41639574208068,['not_provided'],['1-2hours'],2018-05-27T00:55:41.000Z,
+317,43.644831237388686,-79.41639574208068,['not_provided'],['1-2hours'],2018-05-27T00:55:41.000Z,
+328,43.68128573305258,-79.43537217758205,['damaged'],['>1hour'],2018-05-30T12:56:36.000Z,
+329,43.68128573305258,-79.43537217758205,['damaged'],['>1hour'],2018-05-30T12:56:36.000Z,
+583,43.6564062,-79.3833975,"['not_provided', 'full', 'damaged']",['hours'],2018-06-27T19:38:33.000Z,no pleasee
+330,43.68128573305258,-79.43537217758205,['damaged'],['>1hour'],2018-05-30T12:56:36.000Z,
+379,43.665906199999995,-79.40742920000002,['damaged'],['hours'],2018-06-05T14:49:00.000Z,
+392,43.638256155815824,-79.3802660705893,['not_provided'],['hours'],2018-06-06T01:57:40.000Z,
+418,43.6436035503172,-79.40400233476714,['full'],['hours'],2018-06-08T16:09:06.000Z,
+457,43.6398114,-79.38109589999999,['not_provided'],['hours'],2018-06-13T00:35:38.000Z,
+340,43.665893600000004,-79.4077595,['not_provided'],['hours'],2018-05-31T03:51:53.000Z,
+341,43.6711159,-79.41411049999999,['not_provided'],['hours'],2018-05-31T03:52:03.000Z,
+342,43.6659258,-79.40777020000002,"['not_provided', 'damaged']","['hours', 'multiday']",2018-05-31T03:52:42.000Z,
+343,43.6659417,-79.40742949999998,['not_provided'],"['hours', 'minutes']",2018-05-31T03:55:12.000Z,
+345,43.64847017164637,-79.3925161473698,"['full', 'damaged']","['hours', 'minutes']",2018-05-30T15:50:00.000Z,
+347,43.67086276595996,-79.38270983074949,"['not_provided', 'full', 'damaged', 'damaged', 'other']",['hours'],2018-05-31T22:54:33.000Z,
+348,43.63603755038281,-79.36223770302735,['other'],['minutes'],2019-02-10T17:00:00.000Z,
+349,43.6565725,-79.38179880000001,"['damaged', 'damaged']",['hours'],2020-02-03T00:00:00.000Z,
+350,43.682951733786375,-79.37282048623047,['not_provided'],['multiday'],2018-05-31T23:08:19.000Z,
+351,43.60114029393909,-79.3213885953125,['damaged'],['hours'],2018-07-22T17:23:00.000Z,
+352,43.63556290469961,-79.36410497817394,['other'],['multiday'],2018-05-31T23:27:02.000Z,
+353,43.67064133635398,-79.37419943737189,['not_provided'],['hours'],2018-05-31T23:46:39.000Z,
+354,43.6534719,-79.38379309999999,['full'],['hours'],2018-06-01T00:05:14.000Z,
+355,43.654684142584735,-79.42260772702696,"['not_provided', 'other']",['hours'],2018-06-01T01:58:20.000Z,
+356,43.585254240434665,-79.31718806181641,['damaged'],['hours'],2018-06-01T04:00:14.000Z,
+357,43.63175008881077,-79.38010190250247,['not_provided'],['hours'],2019-09-29T05:30:00.000Z,
+538,43.6710143,-79.3871866,['full'],['hours'],2018-06-21T15:34:14.000Z,
+548,43.6553141,-79.3987965,['damaged'],['minutes'],2018-06-23T23:21:34.000Z,
+646,43.63654312571555,-79.4260984585772,['damaged'],['minutes'],2018-07-12T13:40:00.000Z,Bike abandoned outside 219 Dufferin
+610,43.643841063053415,-79.448063167133,['damaged'],['hours'],2018-07-03T14:03:59.000Z,
+360,43.6465805,-79.38912549999998,['abandoned'],"['4-8hours', '4-8hours']",2018-06-01T13:41:59.000Z,
+361,43.685555292131355,-79.42192286694649,['not_provided'],['multiday'],2018-06-02T02:42:40.000Z,
+362,43.66888576062059,-79.40496338650814,['not_provided'],"['hours', 'minutes']",2018-06-02T15:47:51.000Z,
+363,43.6487603,-79.39703380000003,['other'],['overnight'],2018-06-02T18:14:39.000Z,
+364,43.6152856,-79.55911470000001,['not_provided'],['hours'],2018-06-02T18:28:00.000Z,
+365,43.67065804199803,-79.37424192241451,['damaged'],['overnight'],2018-06-03T17:31:02.000Z,
+366,43.6157884,-79.55489990000001,['not_provided'],['minutes'],2018-06-03T18:42:48.000Z,
+367,43.6157884,-79.55489990000001,['not_provided'],['minutes'],2018-06-03T18:42:48.000Z,
+380,43.67675209969129,-79.49448437734429,['not_provided'],['minutes'],2018-06-05T17:56:41.000Z,
+393,43.6382711,-79.3802819,['other'],['multiday'],2018-06-06T01:57:17.000Z,
+406,43.6540795,-79.38825079999998,['damaged'],['hours'],2018-06-07T19:09:15.000Z,
+419,43.6436035503172,-79.40400233476714,['full'],['hours'],2018-06-08T16:09:06.000Z,
+495,43.6800336,-79.43305120000002,['damaged'],['minutes'],2018-06-15T22:00:14.000Z,
+729,43.6580617,-79.3864974,"['full', 'damaged']",['hours'],2018-07-25T15:23:48.000Z,More bike parking needed at 1 Dundas. There are at least 3 abandoned bikes. 
+743,43.65550406011446,-79.45650841970678,['damaged'],['overnight'],2018-07-25T17:06:25.000Z,"The bike ring that you can see just behind the DHL truck was removed last year by a contractor that did a sidewalk cut. Despite completion of the work many months ago, the bike ring has completely disappeared."
+748,43.64653560265388,-79.38856803859142,['other'],['hours'],2018-07-25T19:18:24.000Z,"This lock needs to be removed. How do we get feedback on the status of our reported issues. Great app idea but people like me will stop using if we get no reassurance that our reports are being received, appreciated and acted on. Thanks for making the app available. ...and in advance for your feedback. Dylan.fedy@gmail.com"
+749,43.64238337875067,-79.38433207447258,['damaged'],['hours'],2018-07-25T19:40:09.000Z,
+755,43.656132807180235,-79.38154872436752,['damaged'],['hours'],2018-07-25T21:05:17.000Z,I have reported these bikes to 311 three times now over the last 2 months - they are taking up the spot of 4 bikes in an already under resourced area. Please remove ASAP. 
+900,43.65615634963522,-79.40993378846201,"['damaged', 'damaged']",['hours'],2018-07-31T14:52:05.000Z,Bike rink not bolted on at top of ringAbandoned bike left on ring. 
+792,43.65961699450812,-79.38222262938251,['damaged'],['minutes'],2018-07-26T19:19:49.000Z,
+780,43.6623025502255,-79.36582688836063,['damaged'],['minutes'],2018-07-26T12:43:21.000Z,
+603,43.6752458,-79.43327790000001,['not_provided'],['hours'],2018-06-30T01:52:23.000Z,
+791,43.67879252487212,-79.34447550858903,['damaged'],['hours'],2018-07-26T18:54:55.000Z,"This bike has been parked there since last year, needs to be removed, pieces start disappearing."
+797,43.65349964887682,-79.40186665616784,['full'],['hours'],2018-07-26T22:05:09.000Z,
+904,43.67102227097627,-79.41351772664319,['damaged'],['multiday'],2018-07-31T21:09:40.000Z,
+809,43.6704804,-79.38527060000001,['full'],['minutes'],2018-07-27T17:37:08.000Z,
+801,43.65783660101339,-79.39226414938202,['damaged'],['hours'],2018-07-27T14:49:28.000Z,"This bike lock has been broken for ages. You can completely remove the whole lock from out of the ground. Please fix, thanks!"
+805,43.65666654249433,-79.45257957335457,['damaged'],['minutes'],2018-07-27T16:51:20.000Z,Love this app! 
+810,43.668322212919115,-79.3423375107788,"['damaged', 'other']",['minutes'],2018-07-27T19:22:02.000Z,This parking rack is inadequate and does not allow you to lock your frame properly to a solid foundation. Instead it’s a great place for bike thieves. 
+811,43.668322212919115,-79.3423375107788,"['damaged', 'other']",['minutes'],2018-07-27T19:22:02.000Z,This parking rack is inadequate and does not allow you to lock your frame properly to a solid foundation. Instead it’s a great place for bike thieves. 
+817,43.66445874071122,-79.41453158545892,['damaged'],['minutes'],2018-07-28T05:04:30.000Z,
+824,43.668534483113596,-79.38892606423633,['not_provided'],['minutes'],2018-07-28T17:13:44.000Z,Why isn’t there a place to lock my bike next to the table I’m eating at?   They allow spandex in the restaurant!  Why aren’t you doing anything to change this??  Shame on you!!!  
+846,43.6456303,-79.38090540000002,['not_provided'],['hours'],2018-07-29T19:46:20.000Z,No bike parking anywhere at Union Station! Bikes have to use street signs.
+840,43.66312038307766,-79.38288178224792,['damaged'],['hours'],2018-07-29T14:49:27.000Z,"There are four ring/post bike stands at this location, the one on the east end is missing a nut on the top bolt, and the bottom of the ring has no bolt or nut. If someone locks their bike to the ring, a thief could easily slip out the single bolt and walk away with the bike. This may have been set up this way by a thief, who can just wait for any bike they like that is unwittingly locked to this unsecure post."
+849,43.66741420497498,-79.43871196289291,[],['minutes'],2018-07-28T18:30:00.000Z,
+850,43.66741420497498,-79.43871196289291,[],['minutes'],2018-07-28T18:30:00.000Z,
+853,43.6580617,-79.3864974,['other'],['hours'],2018-07-21T01:45:00.000Z,My $4300 bike was well locked up and then stolen while I was in watching a band play. Police say no locks are effective so expanding the current bike stands makes no sense to me. We need much more secure stands with integrated locking mechanism that could be monetized to best serve cyclists.
+1017,43.645516747958666,-79.36578013186289,['damaged'],['hours'],2018-08-16T21:05:37.000Z,Bike looks abandoned having fallen with completely rusted chain hanging off of groupset. 
+864,43.678053332909215,-79.32521428807536,['full'],['hours'],2018-07-30T13:15:38.000Z,The bike parking at monarch park is always full and the racks that are provided aren’t good for locking your frame. 
+862,43.65031539809586,-79.37857724150712,['damaged'],['hours'],2018-07-30T12:44:49.000Z,Abandoned bike here for several months at least.
+865,43.678053332909215,-79.32521428807536,['full'],['hours'],2018-07-30T13:15:38.000Z,The bike parking at monarch park is always full and the racks that are provided aren’t good for locking your frame. 
+884,43.76813912278083,-79.41432793979493,['full'],['hours'],2018-07-27T17:43:46.000Z,"Very little bike parking in area of Mel Lastman Sq, North York. This is what a weekday afternoon looks like outside the Central Library. Riders locking their bikes to nearby fences."
+885,43.63653608847079,-79.39870401125762,['damaged'],['minutes'],2018-07-30T22:07:28.000Z,Abandoned bikes
+889,43.65250410334363,-79.39060830949848,['damaged'],['minutes'],2018-07-31T00:04:12.000Z,
+925,43.64917049936961,-79.38552877678217,['damaged'],['hours'],2018-08-01T23:19:00.000Z,
+926,43.6472888,-79.39594369999998,['full'],['hours'],2018-08-02T14:59:02.000Z,
+927,43.7093211,-79.38890939999999,['full'],['overnight'],2018-08-02T15:35:20.000Z,
+929,43.6611536,-79.4305013,['not_provided'],['hours'],2018-08-02T16:32:39.000Z,There are on average 6-7 bikes on this fence and times at which there is no space on the fence for additional bike parking
+935,43.66630694878707,-79.34817024889969,['damaged'],['hours'],2018-08-02T23:51:44.000Z,728 Queen East - abandoned bike 
+942,43.66331303010197,-79.33070745265394,['full'],['hours'],2018-08-04T04:47:00.000Z,Not enough parking. People using parking pole and locking their rear wheel. 
+945,43.6485411,-79.3709589,['damaged'],['minutes'],2018-08-04T17:16:43.000Z,"South East side of the st Lawrence marker building, all functioning racks are full for the farmer's market."
+946,43.6511724010465,-79.4112117049732,"['other', 'damaged']",['minutes'],2018-07-06T00:23:41.000Z,"Bike abandoned. Been locked to tree, doing damage for months."
+947,43.6511724010465,-79.4112117049732,"['other', 'damaged']",['minutes'],2018-07-06T00:23:41.000Z,"Bike abandoned. Been locked to tree, doing damage for months."
+949,43.6815827,-79.42315910000002,['not_provided'],['overnight'],2018-08-07T02:05:42.000Z,
+972,43.6808003,-79.43516720000002,['not_provided'],['hours'],2018-08-09T22:09:10.000Z,
+976,43.651298,-79.37383010000002,['damaged'],['hours'],2018-08-10T14:26:27.000Z,
+1013,43.672194673779295,-79.39546134252777,['full'],['hours'],2018-08-15T23:00:00.000Z,
+1030,43.65948482907681,-79.38235968957565,['damaged'],['minutes'],2018-08-19T16:57:20.000Z,
+1032,43.672586562208565,-79.28802277822723,['damaged'],['minutes'],2018-08-19T22:31:05.000Z,In front of Xola. 
+1040,43.65041444518139,-79.37716075588298,['not_provided'],['minutes'],2018-08-21T17:00:54.000Z,
+1029,43.67765347841124,-79.44178456074212,['damaged'],['minutes'],2018-08-19T11:35:29.000Z,Intersection is Royal st and ossington and the map was right but the intersection summary was wrong
+1033,43.66625818137169,-79.40520454908517,['damaged'],['minutes'],2018-08-20T03:40:37.000Z,"Most northern ring and post, wheels stripped from this Norco. "
+875,43.617564,-79.55517789999999,['not_provided'],['minutes'],2018-07-30T18:11:51.000Z,The entire shopping plaza at North Queensway St. no bicycle parking especially Walmart has NADA no
+1016,43.64440505734858,-79.36948128165994,['damaged'],['minutes'],2018-08-16T21:04:14.000Z,Difficult to lock to bent post. 
+761,43.659194944148496,-79.442689678862,['damaged'],['minutes'],2018-07-07T14:00:00.000Z,It looks like there are two or three abandoned bicycles locked up to the city bicycle rack. Location is behind the east entrance to Lansdowne Station in the parking lot.
+1007,43.6452603,-79.3833371,['full'],['hours'],2018-08-15T12:54:34.000Z,There is a rack nearbye but is full and unilevel so sometimes hard to fit in with handlebars.The intersection is 123 front st. West
+802,43.6457801880385,-79.52255621005924,['damaged'],['hours'],2018-07-27T16:22:14.000Z,Love this app! 
+963,43.66726099901893,-79.41212314031225,['damaged'],['minutes'],2018-08-09T17:08:46.000Z,
+634,43.65872000687004,-79.4138782690186,['not_provided'],['hours'],2018-07-08T14:37:21.000Z,
+558,43.6584186,-79.48162680000002,['damaged'],['overnight'],2018-06-26T23:08:37.000Z,
+682,43.689558302173346,-79.32183473472787,['not_provided'],['hours'],2018-07-21T01:19:06.000Z,
+914,43.65612,-79.45228350000002,['damaged'],['hours'],2018-08-01T13:01:56.000Z,
+944,43.6485411,-79.3709589,['damaged'],['minutes'],2018-08-04T17:16:43.000Z,"South East side of the st Lawrence marker building, all functioning racks are full for the farmer's market."
+642,43.6757259,-79.4506278,['other'],['hours'],2018-07-10T12:58:42.000Z,
+924,43.65598144274755,-79.38184108515014,['full'],['minutes'],2018-08-01T21:29:00.000Z,Many racks but all were full!
+986,43.65313520415315,-79.39405050058593,['damaged'],['minutes'],2018-08-11T20:06:00.000Z,
+845,43.647820190567195,-79.35303979560672,['full'],['hours'],2018-07-29T19:11:19.000Z,
+701,43.6471602761668,-79.36180992368077,['full'],['hours'],2018-07-24T23:52:16.000Z,Test
+626,43.65871879986533,-79.42287485976448,['damaged'],['hours'],2018-07-05T17:45:12.000Z,There are several abandoned bikes at this location. None have been touched for months and all have rusty gears and chains. 
+1494,37.66538285187997,-122.42301622707569,"['damaged', 'not_provided']",['hours'],2020-05-15T01:50:25.000Z,Kisss my ass
+662,43.66873937823315,-79.33740389908695,['not_provided'],['hours'],2018-07-15T17:23:12.000Z,Location service not working on app. I'm at Grindr cafe and there should be a ring and post. Corner of Gerrard st e and Marjory
+648,43.655164723253826,-79.42010995886085,['damaged'],['hours'],2018-07-13T13:07:04.000Z,This bike has been abandoned for months
+706,43.6517064,-79.36367860000001,['damaged'],['multiday'],2018-07-24T23:57:31.000Z,i tried to submit another entry but it reloadef same photo
+639,43.66462968774236,-79.34155486594864,['full'],['hours'],2018-07-09T23:40:12.000Z,
+574,43.6804758,-79.43517989999998,['not_provided'],['hours'],2018-06-27T13:52:06.000Z,
+641,43.66463573559755,-79.34158813996487,['full'],['overnight'],2018-07-09T23:59:17.000Z,
+645,43.6548656034253,-79.42076530237426,['damaged'],['hours'],2018-07-12T17:17:22.000Z,Both of these bikes have been abandoned for months. 
+649,43.66447250243945,-79.39085158700868,['damaged'],['hours'],2018-07-13T14:40:00.000Z,
+747,43.64602675383181,-79.3874464013972,['other'],['hours'],2018-07-25T19:13:58.000Z,To operate the bike racks you need to first separate two steel pieces and then put your bike up right and then push back the steel pieces to put your lock through. Someone has used their new lock to lock together the two steel pieces even though there is not a bike being locked there. The lock is making the bike space unuseable and needs to be removed.
+783,43.6796422,-79.43547739999997,['damaged'],['minutes'],2018-07-26T13:10:08.000Z,observed.  was not parking myself
+825,43.668534483113596,-79.38892606423633,['not_provided'],['minutes'],2018-07-28T17:13:44.000Z,Why isn’t there a place to lock my bike next to the table I’m eating at?   They allow spandex in the restaurant!  Why aren’t you doing anything to change this??  Shame on you!!!  
+705,43.6517064,-79.36367860000001,['full'],['hours'],2018-07-24T23:56:31.000Z,weird reload same submission i think 
+905,43.6701729,-79.38774569999998,['full'],['minutes'],2018-07-31T21:12:13.000Z,
+918,43.6580617,-79.3864974,['full'],['hours'],2018-08-01T15:57:28.000Z,
+919,43.6490078,-79.38516090000002,['damaged'],['hours'],2018-08-01T18:06:18.000Z,Bike ring valdalized outside 181 University Ave.
+962,43.6645659,-79.32495690000002,['full'],['minutes'],2018-08-09T16:39:44.000Z,
+988,43.652452086513996,-79.39656820165436,['damaged'],['minutes'],2018-08-11T16:40:03.000Z,481 Dundas Street West there are 2 bicycles abandoned and chained to racks. the second one is 3 racks east of the first one.
+998,43.6665472,-79.34977100000003,['full'],['hours'],2018-08-14T12:36:14.000Z,Need more parking at Bloor Yonge station.
+1514,43.77658861422094,-79.42816045406424,"['damaged', 'damaged', 'full', 'not_provided', 'other']",['hours'],2020-07-17T22:53:08.000Z,
+1397,43.6443679365201,-79.52408399362793,['not_provided'],['hours'],2019-07-22T17:36:38.000Z,"I regularly have appointments at Physiofirst at Bloor and Islington, and have to lick my bike to this tree. Not at all ideal, for the bike or the tree!"
+1416,43.7072289,-79.3906786,['not_provided'],['minutes'],2019-08-05T14:59:57.000Z,
+1434,43.6417344,-79.42183740000002,['damaged'],['minutes'],2019-08-20T21:07:42.000Z,
+1464,43.66587888344838,-79.46848907509366,['not_provided'],['hours'],2019-10-05T16:56:56.000Z,These are wasted bollards at a popular intersection!
+1515,43.665140244468326,-79.4118389107727,['full'],['minutes'],2020-07-31T20:03:00.000Z,Need another couple rings or a bike corral here.
