@@ -2,6 +2,8 @@
 
 import os
 
+# Determine the folder of the top-level directory of this project
+BASEDIR = os.path.abspath(os.path.dirname(__file__))
 
 class BaseConfig:
     """Base configuration"""
@@ -21,11 +23,9 @@ class TestingConfig(BaseConfig):
     """Testing configuration"""
 
     TESTING = True
-    SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_TEST_URL")
-
+    SQLALCHEMY_DATABASE_URI = os.environ.get('TEST_DATABASE_URI')
 
 class ProductionConfig(BaseConfig):
     """Production configuration"""
 
-    pass
     SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL")

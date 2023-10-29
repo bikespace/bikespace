@@ -1,16 +1,19 @@
-BIKESPACE_API_DIR = bikespace_api
-BIKESPACE_API_FLY_TOML = $(BIKESPACE_API_DIR)/fly.toml
-BIKESPACE_FRONTEND_DIR = bikespace_frontend
+ROOT_PATH := $(abspath $(lastword $(MAKEFILE_LIST)))
+ROOT_DIR :=  $(dir $(ROOT_PATH))
+BIKESPACE_API_DIR = $(ROOT_DIR)/bikespace_api
+BIKESPACE_API_FLY_TOML = $(ROOT_DIR)/$(BIKESPACE_API_DIR)/fly.toml
+BIKESPACE_FRONTEND_DIR = $(ROOT_DIR)/bikespace_frontend
 BIKESPACE_FRONTEND_FLY_TOML = $(BIKESPACE_FRONTEND_DIR)/fly.toml
 BIKESPACE_DB_MIGRATIONS = $(BIKESPACE_API_DIR)/migrations
 MANAGE_PY = $(BIKESPACE_API_DIR)/manage.py
-PIP = $(VENV)/bin/pip
-PYTHON = $(VENV)/bin/python3
+PIP = $(ROOT_DIR)/$(VENV)/bin/pip
+PYTHON = $(ROOT_DIR)/$(VENV)/bin/python3
 PYTHON_VERSION = 3.9
 VENV = venv
 
 export APP_SETTINGS = bikespace_api.config.DevelopmentConfig
 export DATABASE_URL = postgresql://postgres:postgres@localhost:5432/bikespace_dev
+export TEST_DATABASE_URI = postgresql://postgres:postgres@localhost:5432/bikespace_test
 export FLASK_DEBUG = true
 export FLASK_RUN_PORT = 8000
 export GATSBY_BIKESPACE_API_URL = http://localhost:8000/api/v2
@@ -31,7 +34,19 @@ pip-freeze: $(BIKESPACE_API_DIR)/requirements.txt
 	$(PIP) freeze > $(BIKESPACE_API_DIR)/requirements.txt
 
 run-flask-app: setup-py
+	export APP_SETTINGS=bikespace_api.config.DevelopmentConfig && \
+	export DATABASE_URL=postgresql://postgres:postgres@localhost:5432/bikespace_dev && \
+	export FLASK_DEBUG=true && \
+	export FLASK_RUN_PORT=8000 && \
 	$(PYTHON) $(MANAGE_PY) run
+
+run-pytest: setup-py
+	export APP_SETTINGS=bikespace_api.config.TestingConfig && \
+	export TEST_DATABASE_URI=postgresql://postgres:postgres@localhost:5432/bikespace_test && \
+	cd $(BIKESPACE_API_DIR) && \
+	$(PYTHON) $(MANAGE_PY) recreate-db && \
+	$(PYTHON) $(MANAGE_PY) seed-db && \
+	$(PYTHON) -m pytest 
 
 lint-py:
 	$(PYTHON) -m black $(BIKESPACE_API_DIR)
