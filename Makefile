@@ -46,7 +46,7 @@ run-pytest: setup-py
 	cd $(BIKESPACE_API_DIR) && \
 	$(PYTHON) $(MANAGE_PY) recreate-db && \
 	$(PYTHON) $(MANAGE_PY) seed-db && \
-	$(PYTHON) -m pytest 
+	$(PYTHON) -m pytest --cov-report= --cov=bikespace_api
 
 lint-py:
 	$(PYTHON) -m black $(BIKESPACE_API_DIR)
