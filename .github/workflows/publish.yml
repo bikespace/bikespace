@@ -35,6 +35,8 @@ jobs:
           psql -U postgres -h 127.0.0.1 -d postgres -c "CREATE DATABASE bikespace_test"
       - name: Run pytest
         run: make run-pytest
+      - name: Coveralls
+        uses: coverallsapp/github-action@v2
 
   publish:
     name: Publish to Cloudflare Pages
