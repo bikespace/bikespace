@@ -1,4 +1,4 @@
-name: Publish
+name: Test and Preview
 on:
   pull_request:
     types: [opened, synchronize, edited, ready_for_review]
