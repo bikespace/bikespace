@@ -1,4 +1,5 @@
 # Bikespace 
+[![Coverage Status](https://coveralls.io/repos/github/bikespace/bikespace-v2/badge.svg?branch=main)](https://coveralls.io/github/bikespace/bikespace-v2?branch=main)
 
 This is the code repository for the BikeSpace application. We are running it on the Flask framework paired with a Postgres database.
 
@@ -56,15 +57,20 @@ Please when always working on a new feature checkout a new branch from the lates
 │   ├── bikespace_api
 │   ├── fly.toml
 │   ├── fly_release.sh
+│   ├── instance
 │   ├── manage.py
+│   ├── migrations
 │   └── requirements.txt
-└── bikespace_frontend
-    ├── Dockerfile
-    ├── README.md
-    ├── fly.toml
-    ├── gatsby-config.ts
-    ├── package-lock.json
-    ├── package.json
-    ├── src
-    └── tsconfig.json
+├── bikespace_frontend
+│   ├── Dockerfile
+│   ├── README.md
+│   ├── fly.toml
+│   ├── gatsby-config.ts
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── src
+│   └── tsconfig.json
+├── datasets
+│   ├── submissions-2018-2023.json
+│   └── v1_data_migration
 ```
