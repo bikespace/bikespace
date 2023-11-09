@@ -1,5 +1,7 @@
-name: Publish
-on: [push]
+name: Test and Preview
+on:
+  pull_request:
+    types: [opened, synchronize, edited, ready_for_review]
 jobs:
   apitest:
     name: API tests
