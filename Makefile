@@ -3,7 +3,6 @@ ROOT_DIR :=  $(dir $(ROOT_PATH))
 BIKESPACE_API_DIR = $(ROOT_DIR)/bikespace_api
 BIKESPACE_API_FLY_TOML = $(ROOT_DIR)/$(BIKESPACE_API_DIR)/fly.toml
 BIKESPACE_FRONTEND_DIR = $(ROOT_DIR)/bikespace_frontend
-BIKESPACE_FRONTEND_FLY_TOML = $(BIKESPACE_FRONTEND_DIR)/fly.toml
 BIKESPACE_DB_MIGRATIONS = $(BIKESPACE_API_DIR)/migrations
 MANAGE_PY = $(BIKESPACE_API_DIR)/manage.py
 PIP = $(ROOT_DIR)/$(VENV)/bin/pip
@@ -69,11 +68,8 @@ upgrade-db:
 db-stamp-heads:
 	$(PYTHON) $(MANAGE_PY) db stamp heads --directory $(BIKESPACE_DB_MIGRATIONS)
 
-fly-deploy-api: $(BIKESPACE_API_FLY_TOML)
+fly-deploy-api:
 	cd $(BIKESPACE_API_DIR) && flyctl deploy
-
-fly-deploy-frontend: $(BIKESPACE_FRONTEND_FLY_TOML)
-	cd $(BIKESPACE_FRONTEND_DIR) && flyctl deploy
 
 run-frontend:
 	cd $(BIKESPACE_FRONTEND_DIR) && npm install && npm run start
