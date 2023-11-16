@@ -4,6 +4,7 @@ from flask import Blueprint, jsonify, request
 from bikespace_api.api.models import Submission, IssueType, ParkingDuration
 from bikespace_api import db
 from sqlalchemy.exc import IntegrityError
+from sqlalchemy import desc
 import json
 from better_profanity import profanity
 
@@ -13,7 +14,7 @@ submissions_blueprint = Blueprint("submissions", __name__)
 @submissions_blueprint.route("/submissions", methods=["GET", "POST"])
 def get_answers():
     if request.method == "GET":
-        submissions = Submission.query.all()
+        submissions = Submission.query.order_by(desc(Submission.parking_time)).all()
         json_output = []
 
         for submission in submissions:
