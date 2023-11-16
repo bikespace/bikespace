@@ -10,6 +10,7 @@ from better_profanity import profanity
 
 submissions_blueprint = Blueprint("submissions", __name__)
 
+DEFAULT_PAGE_LIMIT = 10
 
 @submissions_blueprint.route("/submissions", methods=["GET", "POST"])
 def handle_submissions():
@@ -38,7 +39,11 @@ def get_submission_with_id(submission_id):
 
 
 def get_submissions(request):
-    submissions = Submission.query.order_by(desc(Submission.parking_time)).all()
+    page = request.args.get('page', 1, type=int)
+    limit = request.args.get('limit', DEFAULT_PAGE_LIMIT, type=int)
+
+    submissions = Submission.query.order_by(desc(Submission.parking_time)).paginate(page, limit, False).items
+
     json_output = []
 
     for submission in submissions:
