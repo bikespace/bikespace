@@ -123,7 +123,7 @@ return (
         <footer>
           <button className={`primary-btn-no-fill ${step == 0 ? "hide" : " "}`}
             onClick={() => handleStepChanged(-1)}>
-            Back
+            Close
           </button>
           <button className={`primary-btn ${step == orderedComponents.length - 1 ? "display-none" : " "}`}
             onClick={() => handleStepChanged(1)}>
