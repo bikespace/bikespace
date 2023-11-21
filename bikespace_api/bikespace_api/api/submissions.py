@@ -42,7 +42,8 @@ def get_submissions(request):
     offset = request.args.get('offset', 1, type=int)
     limit = request.args.get('limit', DEFAULT_OFFSET_LIMIT, type=int)
 
-    submissions = Submission.query.order_by(desc(Submission.parking_time)).paginate(offset, limit, False).items
+    pagination = Submission.query.order_by(desc(Submission.parking_time)).paginate(offset, limit, False)
+    submissions = pagination.items
 
     json_output = []
 
@@ -60,7 +61,19 @@ def get_submissions(request):
             "comments": submission.comments,
         }
         json_output.append(submission_json)
-    return jsonify(json_output)
+    
+    final_response = {
+        "submissions": json_output,
+        "pagination": {
+            "current_page": pagination.page,
+            "total_items": pagination.total,
+            "total_pages": pagination.pages,
+            "has_next": pagination.has_next,
+            "has_prev": pagination.has_prev
+        }
+    }
+
+    return jsonify(final_response)
 
 
 def post_submissions(request):
