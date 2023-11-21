@@ -121,10 +121,21 @@ return (
         </section>
 
         <footer>
-          <button className={`primary-btn-no-fill ${step == 0 ? "hide" : " "}`}
-            onClick={() => handleStepChanged(-1)}>
-            Close
-          </button>
+              {/* 'Back' button logic */}
+              {submissionStatus.status !== "success" && (
+              <button
+                  className={`primary-btn-no-fill ${step === 0 ? "hide" : ""}`}
+                  onClick={() => handleStepChanged(-1)}>
+                Back
+              </button>)}
+
+              {/* 'Close' button logic */}
+              {submissionStatus.status === "success" && (
+              <button
+                  className="primary-btn-no-fill"
+                  onClick={() => navigate('/')}>
+                  Close
+                </button>)}
           <button className={`primary-btn ${step == orderedComponents.length - 1 ? "display-none" : " "}`}
             onClick={() => handleStepChanged(1)}>
             Next
