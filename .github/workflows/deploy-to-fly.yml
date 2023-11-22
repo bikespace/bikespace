@@ -3,6 +3,8 @@ on:
   push:
     branches:
       - main
+    paths:
+      - bikespace_api/**
 jobs:
   apitest:
     name: API tests
