@@ -1,0 +1,56 @@
+name: Deploy to Fly.io
+on:
+  push:
+    branches:
+      - main
+jobs:
+  apitest:
+    name: API tests
+    runs-on: ubuntu-latest
+    # Service containers to run with `container-job`
+    services:
+      # Label used to access the service container
+      postgres:
+        # Docker Hub image
+        image: postgres
+        # Provide the password for postgres
+        env:
+          POSTGRES_PASSWORD: postgres
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup python
+        uses: actions/setup-python@v4
+        with:
+          python-version : '3.9.17'
+      - name: Setup app database
+        env:
+          PGPASSWORD: postgres
+        run: |
+          psql -U postgres -h 127.0.0.1 -d postgres -c "CREATE DATABASE bikespace_test"
+      - name: Run pytest
+        run: make run-pytest
+      - name: Coveralls
+        uses: coverallsapp/github-action@v2
+
+  deploy-to-fly:
+      name: Deploy to fly.io
+      needs: apitest
+      runs-on: ubuntu-latest
+      permissions:
+        contents: read
+        deployments: write
+      steps:
+        - uses: actions/checkout@v3
+        - uses: superfly/flyctl-actions/setup-flyctl@master
+        - run: flyctl deploy --remote-only
+          env:
+            FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}

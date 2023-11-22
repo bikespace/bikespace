@@ -70,3 +70,5 @@ jobs:
           projectName: bikespace-v2
           directory: bikespace_frontend/public
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+
+  
