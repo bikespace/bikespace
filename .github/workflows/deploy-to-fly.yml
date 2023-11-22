@@ -1,7 +1,8 @@
-name: Test and Preview
+name: Deploy to Fly.io
 on:
-  pull_request:
-    types: [opened, synchronize, edited, ready_for_review]
+  push:
+    branches:
+      - main
 jobs:
   apitest:
     name: API tests
@@ -40,46 +41,14 @@ jobs:
       - name: Coveralls
         uses: coverallsapp/github-action@v2
 
-  publish:
-    name: Publish to Cloudflare Pages
-    needs: apitest
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      deployments: write
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Setup node
-        uses: actions/setup-node@v3
-        with:
-          node-version: "v18.16.0"
-      - name: Create env file
-        env:
-          BIKESPACE_API_URL: ${{ vars.BIKESPACE_API_URL }}
-        run: |
-          touch bikespace_frontend/.env.production
-          echo GATSBY_BIKESPACE_API_URL=$BIKESPACE_API_URL >> bikespace_frontend/.env.production
-      - name: Build gatbsy static frontend
-        run: make build-frontend
-      - name: Publish to Cloudflare Pages
-        uses: cloudflare/pages-action@v1.0.0
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
-          projectName: bikespace-v2
-          directory: bikespace_frontend/public
-          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
-
   deploy-to-fly:
-    if: github.ref.name == 'main'
-    name: Deploy to fly.io
-    needs: apitest
-    runs-on: ubuntu-latest
-    permissions:
+      name: Deploy to fly.io
+      needs: apitest
+      runs-on: ubuntu-latest
+      permissions:
         contents: read
         deployments: write
-    steps:
+      steps:
         - uses: actions/checkout@v3
         - uses: superfly/flyctl-actions/setup-flyctl@master
         - run: flyctl deploy --remote-only

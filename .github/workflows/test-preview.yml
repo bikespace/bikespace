@@ -1,0 +1,74 @@
+name: Test and Preview
+on:
+  pull_request:
+    types: [opened, synchronize, edited, ready_for_review]
+jobs:
+  apitest:
+    name: API tests
+    runs-on: ubuntu-latest
+    # Service containers to run with `container-job`
+    services:
+      # Label used to access the service container
+      postgres:
+        # Docker Hub image
+        image: postgres
+        # Provide the password for postgres
+        env:
+          POSTGRES_PASSWORD: postgres
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup python
+        uses: actions/setup-python@v4
+        with:
+          python-version : '3.9.17'
+      - name: Setup app database
+        env:
+          PGPASSWORD: postgres
+        run: |
+          psql -U postgres -h 127.0.0.1 -d postgres -c "CREATE DATABASE bikespace_test"
+      - name: Run pytest
+        run: make run-pytest
+      - name: Coveralls
+        uses: coverallsapp/github-action@v2
+
+  publish:
+    name: Publish to Cloudflare Pages
+    needs: apitest
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      deployments: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: "v18.16.0"
+      - name: Create env file
+        env:
+          BIKESPACE_API_URL: ${{ vars.BIKESPACE_API_URL }}
+        run: |
+          touch bikespace_frontend/.env.production
+          echo GATSBY_BIKESPACE_API_URL=$BIKESPACE_API_URL >> bikespace_frontend/.env.production
+      - name: Build gatbsy static frontend
+        run: make build-frontend
+      - name: Publish to Cloudflare Pages
+        uses: cloudflare/pages-action@v1.0.0
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+          projectName: bikespace-v2
+          directory: bikespace_frontend/public
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+
+  
