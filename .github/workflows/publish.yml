@@ -70,3 +70,18 @@ jobs:
           projectName: bikespace-v2
           directory: bikespace_frontend/public
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+
+  deploy-to-fly:
+    if: github.ref.name == 'main'
+    name: Deploy to fly.io
+    needs: apitest
+    runs-on: ubuntu-latest
+    permissions:
+        contents: read
+        deployments: write
+    steps:
+        - uses: actions/checkout@v3
+        - uses: superfly/flyctl-actions/setup-flyctl@master
+        - run: flyctl deploy --remote-only
+          env:
+            FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
