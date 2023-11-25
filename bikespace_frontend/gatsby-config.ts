@@ -1,7 +1,7 @@
 import type { GatsbyConfig } from "gatsby";
 
 require("dotenv").config({
-    path: `.env.${process.env.NODE_ENV}`,
+  path: `.env.${process.env.NODE_ENV}`,
 })
 
 const config: GatsbyConfig = {
@@ -19,6 +19,10 @@ const config: GatsbyConfig = {
   plugins: ["gatsby-plugin-image", "gatsby-plugin-sitemap", {
     resolve: 'gatsby-plugin-manifest',
     options: {
+      name: 'BikeSpace',
+      short_name: `BikeSpace`,
+      start_url: `/`,
+      display: 'standalone',
       "icon": "src/images/bikespace_logo_sm.svg"
     }
   }, "gatsby-plugin-sharp", "gatsby-transformer-sharp", {
