@@ -14,7 +14,7 @@ module.exports = {
       ...paths,
     },
     testPathIgnorePatterns: [`node_modules`, `\\.cache`, `<rootDir>.*/public`],
-    transformIgnorePatterns: [`node_modules/(?!(gatsby|gatsby-script|gatsby-link)/)`],
+    transformIgnorePatterns: [`node_modules/(?!(gatsby|gatsby-script|gatsby-link|react-leaflet|@react-leaflet)/)`],
     globals: {
       __PATH_PREFIX__: ``,
     },
