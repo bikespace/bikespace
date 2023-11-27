@@ -42,7 +42,7 @@ def get_submissions(request):
     offset = request.args.get('offset', 1, type=int)
     limit = request.args.get('limit', DEFAULT_OFFSET_LIMIT, type=int)
 
-    pagination = Submission.query.order_by(desc(Submission.parking_time)).paginate(offset, limit, False)
+    pagination = Submission.query.order_by(desc(Submission.parking_time)).paginate(page=offset, per_page=limit, count=True)
     submissions = pagination.items
 
     json_output = []
