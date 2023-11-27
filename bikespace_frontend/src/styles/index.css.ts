@@ -28,7 +28,7 @@ export const logo = style({
 export const title = style({
     color: "white",
     fontSize: 40,
-    textShadow: "1px, 1px, 10px, black",
+    textShadow: "1px 1px 10px black",
 })
 
 export const button = style({
@@ -41,5 +41,5 @@ export const button = style({
     fontSize: 15,
     fontWeight: 600,
     cursor: "pointer",
-    boxShadow: "1px, 1px, 10px, black",
+    boxShadow: "1px 1px 10px black",
 })
