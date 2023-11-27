@@ -7,7 +7,7 @@ type BaseButtonProps = {
   value: string;
   active: boolean;
   name: string;
-  onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  onClick: (e: React.FormEvent<HTMLInputElement>) => void;
 };
 
 class BaseButton extends React.Component<BaseButtonProps> {
@@ -17,21 +17,22 @@ class BaseButton extends React.Component<BaseButtonProps> {
         {this.props.type === 'checkbox' &&
           <input
             type="checkbox"
+            data-value={this.props.value}
+            onChange={this.props.onClick}
             value={this.props.value}
             checked={this.props.active}
             id={`${this.props.name}_${this.props.value}`} />}
         {this.props.type === 'radio' &&
           <input
             type="radio"
+            data-value={this.props.value}
+            onChange={this.props.onClick}
             name={this.props.name}
             checked={this.props.active}
             id={`${this.props.name}_${this.props.value}`} />}
         <label htmlFor={`${this.props.name}_${this.props.value}`}>
-          <button
-            type="button"
-            className={`base-button ${this.props.active ? "active" : ""}`}
-            onClick={this.props.onClick}
-            data-value={this.props.value}
+          <div
+            className="base-button"
           >
             {this.props.children}
             <StaticImage
@@ -39,7 +40,7 @@ class BaseButton extends React.Component<BaseButtonProps> {
               src="../images/check.svg"
               alt="checkmark"
             />
-          </button>
+          </div>
         </label>
       </>
     );

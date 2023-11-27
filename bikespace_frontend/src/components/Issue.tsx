@@ -4,8 +4,7 @@ import BaseButton from "./BaseButton";
 
 const Issue = (props: { issues: IssueType[], onIssuesChanged: (issues: IssueType[]) => void }) => {
   const issues = props.issues
-  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
+  const handleClick = (e: React.FormEvent<HTMLInputElement>) => {
 
     let issueType: IssueType;
     switch (e.currentTarget.dataset.value) {

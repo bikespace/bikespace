@@ -21,8 +21,7 @@ const Time = (props: { parkingDuration: ParkingDuration, onParkingDurationChange
         props.onDateTimeChanged(chosenDateTime);
     };
 
-    const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault();
+    const handleClick = (e: React.FormEvent<HTMLInputElement>) => {
         let duration: ParkingDuration;
         switch (e.currentTarget.dataset.value) {
             case "minutes":
@@ -57,34 +56,36 @@ const Time = (props: { parkingDuration: ParkingDuration, onParkingDurationChange
             ></input>
             <fieldset>
                 <legend><h2>How long did you need to park?</h2></legend>
-                <BaseButton
-                    type="radio"
-                    name="time"
-                    active={parkingDuration.includes(ParkingDuration.Minutes)}
-                    value="minutes"
-                    onClick={handleClick}
-                >minutes</BaseButton>
-                <BaseButton
-                    type="radio"
-                    name="time"
-                    active={parkingDuration.includes(ParkingDuration.Hours)}
-                    value="hours"
-                    onClick={handleClick}
-                >hours</BaseButton>
-                <BaseButton
-                    type="radio"
-                    name="time"
-                    active={parkingDuration.includes(ParkingDuration.Overnight)}
-                    value="overnight"
-                    onClick={handleClick}
-                >overnight</BaseButton>
-                <BaseButton
-                    type="radio"
-                    name="time"
-                    active={parkingDuration.includes(ParkingDuration.MultiDay)}
-                    value="multiday"
-                    onClick={handleClick}
-                >multiday</BaseButton>
+                <div className="checkbox-group">
+                    <BaseButton
+                        type="radio"
+                        name="time"
+                        active={parkingDuration.includes(ParkingDuration.Minutes)}
+                        value="minutes"
+                        onClick={handleClick}
+                    >minutes</BaseButton>
+                    <BaseButton
+                        type="radio"
+                        name="time"
+                        active={parkingDuration.includes(ParkingDuration.Hours)}
+                        value="hours"
+                        onClick={handleClick}
+                    >hours</BaseButton>
+                    <BaseButton
+                        type="radio"
+                        name="time"
+                        active={parkingDuration.includes(ParkingDuration.Overnight)}
+                        value="overnight"
+                        onClick={handleClick}
+                    >overnight</BaseButton>
+                    <BaseButton
+                        type="radio"
+                        name="time"
+                        active={parkingDuration.includes(ParkingDuration.MultiDay)}
+                        value="multiday"
+                        onClick={handleClick}
+                    >multiday</BaseButton>
+                </div>
             </fieldset>
         </form>
     );

@@ -99,7 +99,7 @@
 	fieldset {
 		display: flex;
 		flex-direction: column;
-		gap: 20px;
+		gap: 10px;
 		margin: 0;
 		padding: 5px;
 		border: none;
@@ -128,10 +128,15 @@
 }
 
 #submission-time {
-	fieldset {
+	fieldset>.checkbox-group {
 		display: grid;
-		grid-template-columns: repeat(2, 1fr);
-		gap: 14px;
+		grid-template-columns: 0px 1fr 0px 1fr;
+		gap: 14px 0;
+
+		.base-button {
+			margin: 0 7px;
+			width: revert;
+		}
 	}
 
 	input[type="datetime-local"] {
