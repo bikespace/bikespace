@@ -36,6 +36,34 @@ h6 {
   }
 }
 
+fieldset {
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+input[type="checkbox"] {
+  display: none;
+  /* Add if not using autoprefixer */
+  -webkit-appearance: none;
+  appearance: none;
+  /* For iOS < 15 to remove gradient background */
+  background-color: #fff;
+  /* Not removed via appearance */
+  margin: 0;
+}
+
+input[type="radio"] {
+  display: none;
+  /* Add if not using autoprefixer */
+  -webkit-appearance: none;
+  appearance: none;
+  /* For iOS < 15 to remove gradient background */
+  background-color: #fff;
+  /* Not removed via appearance */
+  margin: 0;
+}
+
 .primary-btn-no-fill {
   background-color: white;
   color: $main-color;
@@ -49,8 +77,19 @@ h6 {
   &.hide {
     visibility: hidden;
   }
+
   &.display-none {
     display: none;
+  }
+}
+
+input[type="radio"]:checked+label .base-button,
+input[type="checkbox"]:checked+label .base-button {
+  background-color: $secondary-color;
+  color: white;
+
+  .check {
+    opacity: 1;
   }
 }
 
@@ -78,11 +117,11 @@ h6 {
     transform: translateY(-50%);
   }
 
-  &.active {
-    background-color: $secondary-color;
-    color: white;
-    .check {
-      opacity: 1;
-    }
+  &:focus {
+    box-shadow: 0 0 0px 4px $main-color ;
+  }
+
+  &:focus:active {
+    box-shadow: none;
   }
 }

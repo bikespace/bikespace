@@ -96,6 +96,15 @@
 }
 
 #submission-issue {
+	fieldset {
+		display: flex;
+		flex-direction: column;
+		gap: 20px;
+		margin: 0;
+		padding: 5px;
+		border: none;
+	}
+
 	ul {
 		padding: 5px;
 
@@ -119,17 +128,12 @@
 }
 
 #submission-time {
-	ul {
-		padding: 5px;
+	fieldset {
 		display: grid;
 		grid-template-columns: repeat(2, 1fr);
-
-		li {
-			list-style: none;
-			margin: 2px;
-			padding: 5px;
-		}
+		gap: 14px;
 	}
+
 	input[type="datetime-local"] {
 		width: 100%;
 		border: none;

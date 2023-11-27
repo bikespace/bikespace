@@ -2,7 +2,7 @@ import React from "react";
 import { IssueType } from "../interfaces/Submission";
 import BaseButton from "./BaseButton";
 
-const Issue = (props: {issues: IssueType[], onIssuesChanged: (issues: IssueType[]) => void}) => {
+const Issue = (props: { issues: IssueType[], onIssuesChanged: (issues: IssueType[]) => void }) => {
   const issues = props.issues
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -36,57 +36,59 @@ const Issue = (props: {issues: IssueType[], onIssuesChanged: (issues: IssueType[
   };
 
   return (
-    <div id="submission-issue">
-      <h2>What was the issue?</h2>
-      <h3>Choose at least one</h3>
-      <ul>
-        <li>
-          <BaseButton
-            active={issues.includes(IssueType.NotProvided)}
-            value="not_provided"
-            onClick={handleClick}
-          >
-            Bicycle parking is&nbsp;<strong>not provided</strong>
-          </BaseButton>
-        </li>
-        <li>
-          <BaseButton
-            active={issues.includes(IssueType.Full)}
-            value="full"
-            onClick={handleClick}
-          >
-            Bicycle parking is&nbsp;<strong>full</strong>
-          </BaseButton>
-        </li>
-        <li>
-          <BaseButton
-            active={issues.includes(IssueType.Damaged)}
-            value="damaged"
-            onClick={handleClick}
-          >
-            Bicycle parking is&nbsp;<strong>damaged</strong>
-          </BaseButton>
-        </li>
-        <li>
-          <BaseButton
-            active={issues.includes(IssueType.Abandoned)}
-            value="abandoned"
-            onClick={handleClick}
-          >
-            A bicycle is&nbsp;<strong>abandoned</strong>
-          </BaseButton>
-        </li>
-        <li>
-          <BaseButton
-            active={issues.includes(IssueType.Other)}
-            value="other"
-            onClick={handleClick}
-          >
-            Something else
-          </BaseButton>
-        </li>
-      </ul>
-    </div>
+    <form id="submission-issue">
+      <fieldset>
+        <legend>
+          <h2>What was the issue?</h2>
+          <h3>Choose at least one</h3>
+        </legend>
+        <BaseButton
+          type="checkbox"
+          name="issue"
+          active={issues.includes(IssueType.NotProvided)}
+          value="not_provided"
+          onClick={handleClick}
+        >
+          Bicycle parking is&nbsp;<strong>not provided</strong>
+        </BaseButton>
+        <BaseButton
+          type="checkbox"
+          name="issue"
+          active={issues.includes(IssueType.Full)}
+          value="full"
+          onClick={handleClick}
+        >
+          Bicycle parking is&nbsp;<strong>full</strong>
+        </BaseButton>
+        <BaseButton
+          type="checkbox"
+          name="issue"
+          active={issues.includes(IssueType.Damaged)}
+          value="damaged"
+          onClick={handleClick}
+        >
+          Bicycle parking is&nbsp;<strong>damaged</strong>
+        </BaseButton>
+        <BaseButton
+          type="checkbox"
+          name="issue"
+          active={issues.includes(IssueType.Abandoned)}
+          value="abandoned"
+          onClick={handleClick}
+        >
+          A bicycle is&nbsp;<strong>abandoned</strong>
+        </BaseButton>
+        <BaseButton
+          type="checkbox"
+          name="issue"
+          active={issues.includes(IssueType.Other)}
+          value="other"
+          onClick={handleClick}
+        >
+          Something else
+        </BaseButton>
+      </fieldset>
+    </form>
   );
 };
 export default Issue;
