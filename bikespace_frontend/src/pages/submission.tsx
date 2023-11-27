@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { navigate } from "gatsby";
+import { HeadProps, graphql, navigate } from "gatsby";
 import "../styles/submission.scss";
 import { StaticImage } from "gatsby-plugin-image";
 import SubmissionProgressBar from "../components/SubmissionProgressBar";
@@ -20,7 +20,7 @@ const SubmissionRoute = () => {
   const [dateTime, setDateTime] = useState<Date>(new Date());
   const [locationLoaded, setLocationLoaded] = useState(false);
   const [comments, setComments] = useState("");
-  const parkingTime = { date: dateTime, parkingDuration: parkingDuration}
+  const parkingTime = { date: dateTime, parkingDuration: parkingDuration }
   const submission = { issues: issues, location: location, parkingTime: parkingTime, comments: comments }
   useEffect(() => {
     navigator.geolocation.getCurrentPosition((position) => {
@@ -60,29 +60,29 @@ const SubmissionRoute = () => {
   });
   async function handleSubmit() {
     try {
-        const response = await fetch(`${process.env.GATSBY_BIKESPACE_API_URL}/submissions`, {
-            method: 'POST',
-            body: JSON.stringify(submissionPayload),
-            headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
-            },
-        });
-        if (!response.ok) {
-            throw new Error(`Error! status: ${response.status}`);
-        }
-        console.log("result is " + response.status);
-        if (response.status == 201) {
-            setSubmissionStatus({status: "success"});
-        }
-    } catch(error) {
-        if (error instanceof Error) {
-            console.log("Error message: ", error.message);
-            setSubmissionStatus({status: "error"})
-        } else {
-            console.log("unexpected error", error); 
-            setSubmissionStatus({status: "error"})
-        }
+      const response = await fetch(`${process.env.GATSBY_BIKESPACE_API_URL}/submissions`, {
+        method: 'POST',
+        body: JSON.stringify(submissionPayload),
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+      });
+      if (!response.ok) {
+        throw new Error(`Error! status: ${response.status}`);
+      }
+      console.log("result is " + response.status);
+      if (response.status == 201) {
+        setSubmissionStatus({ status: "success" });
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        console.log("Error message: ", error.message);
+        setSubmissionStatus({ status: "error" })
+      } else {
+        console.log("unexpected error", error);
+        setSubmissionStatus({ status: "error" })
+      }
     }
   }
 
@@ -98,57 +98,81 @@ const SubmissionRoute = () => {
         return <Comments comments={comments} onCommentsChanged={setComments} />;
       case Summary:
         return <Summary submision={submission} submissionStatus={submissionStatus} />;
-  }
-};
+    }
+  };
 
-return (
-  <div id="submission">
-    <header id="submission-header">
-      <StaticImage
-        className="header-logo"
-        src="../images/header-logo.svg"
-        alt="bike space logo"
-      />
-    </header>
-    <main>
-      <div id="main-content">
-        <header>
-          <SubmissionProgressBar step={step} />
-        </header>
+  return (
+    <div id="submission">
+      <header id="submission-header">
+        <StaticImage
+          className="header-logo"
+          src="../images/header-logo.svg"
+          alt="bike space logo"
+        />
+      </header>
+      <main>
+        <div id="main-content">
+          <header>
+            <SubmissionProgressBar step={step} />
+          </header>
 
-        <section id="main-content-body">
-          {ComponentToLoad()}
-        </section>
+          <section id="main-content-body">
+            {ComponentToLoad()}
+          </section>
 
-        <footer>
-              {/* 'Back' button logic */}
-              {submissionStatus.status !== "success" && (
+          <footer>
+            {/* 'Back' button logic */}
+            {submissionStatus.status !== "success" && (
               <button
-                  className={`primary-btn-no-fill ${step === 0 ? "hide" : ""}`}
-                  onClick={() => handleStepChanged(-1)}>
+                className={`primary-btn-no-fill ${step === 0 ? "hide" : ""}`}
+                onClick={() => handleStepChanged(-1)}>
                 Back
               </button>)}
 
-              {/* 'Close' button logic */}
-              {submissionStatus.status === "success" && (
+            {/* 'Close' button logic */}
+            {submissionStatus.status === "success" && (
               <button
-                  className="primary-btn-no-fill"
-                  onClick={() => navigate('/')}>
-                  Close
-                </button>)}
-          <button className={`primary-btn ${step == orderedComponents.length - 1 ? "display-none" : " "}`}
-            onClick={() => handleStepChanged(1)}>
-            Next
-          </button>
-          <button className={`primary-btn ${(step == orderedComponents.length - 1 && submissionStatus.status == "summary") ? "" : "display-none"}`}
-            onClick={() => handleSubmit()}>
-            Submit
-          </button>
-        </footer>
-      </div>
-    </main>
-  </div>
-);
+                className="primary-btn-no-fill"
+                onClick={() => navigate('/')}>
+                Close
+              </button>)}
+            <button className={`primary-btn ${step == orderedComponents.length - 1 ? "display-none" : " "}`}
+              onClick={() => handleStepChanged(1)}>
+              Next
+            </button>
+            <button className={`primary-btn ${(step == orderedComponents.length - 1 && submissionStatus.status == "summary") ? "" : "display-none"}`}
+              onClick={() => handleSubmit()}>
+              Submit
+            </button>
+          </footer>
+        </div>
+      </main>
+    </div>
+  );
 };
 
 export default SubmissionRoute;
+
+type DataProps = {
+  site: {
+    siteMetadata: {
+      title: string;
+    };
+  };
+};
+
+export function Head(props: HeadProps<DataProps>) {
+  return (
+    <title>{props.data.site.siteMetadata.title}</title>
+  )
+}
+
+export const query = graphql`
+    {
+        site {
+            siteMetadata {
+                title
+            }
+        }
+    }
+`;

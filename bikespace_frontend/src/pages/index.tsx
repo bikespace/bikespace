@@ -1,5 +1,5 @@
 import * as React from "react";
-import { graphql, PageProps, navigate } from "gatsby";
+import { graphql, PageProps, navigate, HeadProps } from "gatsby";
 import { button, title, logo, main, mainContent } from "../styles/index.css";
 import { StaticImage } from "gatsby-plugin-image";
 
@@ -35,6 +35,12 @@ const IndexRoute = ({ data: { site } }: PageProps<DataProps>) => {
 };
 
 export default IndexRoute;
+
+export function Head(props: HeadProps<DataProps>) {
+    return (
+        <title>{props.data.site.siteMetadata.title}</title>
+    )
+}
 
 export const query = graphql`
     {
