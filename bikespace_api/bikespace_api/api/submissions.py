@@ -10,6 +10,7 @@ from better_profanity import profanity
 
 submissions_blueprint = Blueprint("submissions", __name__)
 
+DEFAULT_OFFSET_LIMIT = 100
 
 @submissions_blueprint.route("/submissions", methods=["GET", "POST"])
 def handle_submissions():
@@ -38,7 +39,12 @@ def get_submission_with_id(submission_id):
 
 
 def get_submissions(request):
-    submissions = Submission.query.order_by(desc(Submission.parking_time)).all()
+    offset = request.args.get('offset', 1, type=int)
+    limit = request.args.get('limit', DEFAULT_OFFSET_LIMIT, type=int)
+
+    pagination = Submission.query.order_by(desc(Submission.parking_time)).paginate(page=offset, per_page=limit, count=True)
+    submissions = pagination.items
+
     json_output = []
 
     for submission in submissions:
@@ -55,7 +61,19 @@ def get_submissions(request):
             "comments": submission.comments,
         }
         json_output.append(submission_json)
-    return jsonify(json_output)
+    
+    final_response = {
+        "submissions": json_output,
+        "pagination": {
+            "current_page": pagination.page,
+            "total_items": pagination.total,
+            "total_pages": pagination.pages,
+            "has_next": pagination.has_next,
+            "has_prev": pagination.has_prev
+        }
+    }
+
+    return jsonify(final_response)
 
 
 def post_submissions(request):
