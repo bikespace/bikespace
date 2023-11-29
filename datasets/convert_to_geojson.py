@@ -11,7 +11,7 @@ json_data = json.load(json_data_file)
 
 features = []
 
-for submission in json_data:
+for submission in json_data['submissions']:
     point_feature = Feature(
         geometry=Point((submission["longitude"], submission["latitude"])),
         properties={
