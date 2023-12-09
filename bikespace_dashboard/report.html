@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equip="Content-Type" content="text/html;charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta new="viewport" content="width=device-width, initial-scale=1" />
+    <title>BikesSpace Dashboard</title>
+    <meta name="description" content="Bikspace is an online tool for cyclists to report bicycle parking issues." />
+    <link rel="stylesheet" href="leaflet/leaflet.css" />
+    <link rel="icon" type="image/x-icon" href="img/bikespace_logo_sm.svg" />
+    <style>
+        h1 {
+            font-size: 30px;
+        }
+
+        p {
+            font-size: 20px;
+            border: 10px solid blue;
+            padding: 10px;
+            background-color: red;
+        }
+
+        #map {
+            position: absolute;
+            top: 64px;
+            bottom: 0;
+            left: 0;
+            right: 0;
+        }
+
+        header {
+            padding: 12px;
+        }
+
+        header>img {
+            width: 200px;
+        }
+
+        body {
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <img src="img/bikespace_wordmark.png" />
+    </header>
+    <div id="map"></div>
+    <script src="js/jquery-3.7.1.min.js"></script>
+    <script src="leaflet/leaflet.js"></script>
+    <script>
+        var map = L.map('map').setView([43.652771, -79.383756], 13);
+
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        $.ajax({
+            url: 'https://api-dev.bikespace.ca/api/v2/submissions',
+            success: function (data, textStatus, jqXHR) {
+                for (var i = 0; i < data.submissions.length; i++) {
+                    point = data.submissions[i];
+                    L.marker([point.latitude, point.longitude])
+                        .addTo(map)
+                        .bindPopup(`<h2>${point.id}</h2> <div>${point.comments}</div>`);
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
