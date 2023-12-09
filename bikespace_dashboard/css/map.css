@@ -8,3 +8,47 @@
     right: 0;
     z-index: 1;
 }
+
+.leaflet-popup-content {
+    & .submission-id {
+        font-style: italic;
+    }
+
+    & .issue {
+        display: inline-block;
+        border: 2px solid;
+        border-radius: 4px;
+        margin: 2px 0px;
+        padding: 2px 4px;
+
+        &.issue-not-provided {
+            border-color: var(--color-secondary-red);
+            background-color: var(--color-secondary-red-light);
+        }
+
+        /* color mid-way between secondary-red and secondary-orange */
+        &.issue-full {
+            border-color: hsl(14, 92%, 57%);
+            background-color: hsl(14, 60%, 87%);
+        }
+
+        &.issue-damaged {
+            border-color: var(--color-secondary-orange);
+            background-color: var(--color-secondary-orange-light);
+        }
+
+        &.issue-abandoned {
+            border-color: var(--color-secondary-yellow);
+            background-color: var(--color-secondary-orange-yellow);
+        }
+
+        &.issue-other {
+            border-color: var(--color-secondary-med-grey);
+            background-color: var(--color-secondary-light-grey);
+        }
+    }
+};
+
+
+
+
