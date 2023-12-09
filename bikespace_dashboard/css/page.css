@@ -1,7 +1,7 @@
 @import "stylevars.css";
 
-* {
-    font-family: "Open Sans", Arial, Helvetica, sans-serif;
+body {
+    font-family: var(--body-font-stack);
 }
 
 h1 {

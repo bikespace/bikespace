@@ -24,5 +24,5 @@
   --color-secondary-med-grey: #2c3b42;
   --color-secondary-dark-grey: #1f2a2d;
 
-  --body-font: 
+  --body-font-stack: "Open Sans", Arial, Helvetica, sans-serif;
 }

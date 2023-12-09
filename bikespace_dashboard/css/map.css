@@ -10,6 +10,8 @@
 }
 
 .leaflet-popup-content {
+    font-family: var(--body-font-stack);
+
     & .submission-id {
         font-style: italic;
     }
