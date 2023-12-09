@@ -1,12 +1,11 @@
-h1 {
-    font-size: 30px;
+@import "stylevars.css";
+
+* {
+    font-family: "Open Sans", Arial, Helvetica, sans-serif;
 }
 
-p {
-    font-size: 20px;
-    border: 10px solid blue;
-    padding: 10px;
-    background-color: red;
+h1 {
+    font-size: 30px;
 }
 
 header {

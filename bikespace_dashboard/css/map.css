@@ -1,3 +1,5 @@
+@import "stylevars.css";
+
 #map {
     position: absolute;
     top: 64px;
