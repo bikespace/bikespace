@@ -22,7 +22,7 @@
     <script src="js/sidebar.js"></script>
     <script>
         $.ajax({
-            url: 'https://api-dev.bikespace.ca/api/v2/submissions',
+            url: 'https://api-dev.bikespace.ca/api/v2/submissions?limit=5000',
             success: function (data, textStatus, jqXHR) {
                 var shared_state = {
                     components: {}, // each component MUST define a init() and refresh() method
