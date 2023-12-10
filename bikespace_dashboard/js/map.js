@@ -9,6 +9,7 @@ var map = {
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(lmap);
+        var markers = L.markerClusterGroup();
 
         // build popup content
         const duration_descr = {
@@ -37,10 +38,23 @@ var map = {
                 `<p>${comments}</p>`,
                 `<p class="submission-id">ID: ${point.id}</p>`
             ].join("");
-            L.marker([point.latitude, point.longitude])
-                .addTo(lmap)
-                .bindPopup(content);
+            var marker = L.marker([point.latitude, point.longitude]);
+            marker.bindPopup(content);
+            markers.addLayer(marker);
         }
+        lmap.addLayer(markers);
+
+        // improve keyboard navigation
+        $(document).on("keydown", ".marker-cluster", function(e) {
+            if(e.key == "Enter" || e.key == " "){
+                 $(document.activeElement).trigger('click');
+            }
+        })
+        $(document).on("keydown", ".leaflet-marker-icon", function(e) {
+            if(e.key == " "){ // Enter already works
+                 $(document.activeElement).trigger('click');
+            }
+        })
 
     },
     refresh: function() {
