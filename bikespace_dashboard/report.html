@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="css/page.css" />
     <link rel="stylesheet" href="css/map.css" />
     <link rel="stylesheet" href="css/sidebar.css" />
+    <link rel="stylesheet" href="css/MarkerCluster.css" />
+    <link rel="stylesheet" href="css/MarkerCluster.Default.css" />
     <link rel="icon" type="image/x-icon" href="assets/bikespace_logo_sm.svg" />
 </head>
 <body>
@@ -18,6 +20,7 @@
     </header>
     <script src="js/jquery-3.7.1.min.js"></script>
     <script src="leaflet/leaflet.js"></script>
+    <script src="leaflet/leaflet.markercluster.js"></script>
     <script src="js/map.js"></script>
     <script src="js/sidebar.js"></script>
     <script>
@@ -37,7 +40,6 @@
                 };
                 map.init(shared_state);
                 sidebar.init(shared_state);
-                //shared_state.refresh();
             }
         });
     </script>
