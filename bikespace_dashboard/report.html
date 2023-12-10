@@ -4,17 +4,17 @@
     <meta http-equip="Content-Type" content="text/html;charset=utf-8" />
     <meta charset="utf-8" />
     <meta new="viewport" content="width=device-width, initial-scale=1" />
-    <title>BikesSpace Dashboard</title>
-    <meta name="description" content="Bikspace is an online tool for cyclists to report bicycle parking issues." />
+    <title>BikeSpace Dashboard</title>
+    <meta name="description" content="BikeSpace is an online tool for cyclists to report bicycle parking issues." />
     <link rel="stylesheet" href="leaflet/leaflet.css" />
     <link rel="stylesheet" href="css/page.css" />
     <link rel="stylesheet" href="css/map.css" />
     <link rel="stylesheet" href="css/sidebar.css" />
-    <link rel="icon" type="image/x-icon" href="img/bikespace_logo_sm.svg" />
+    <link rel="icon" type="image/x-icon" href="assets/bikespace_logo_sm.svg" />
 </head>
 <body>
     <header>
-        <img src="img/bikespace_wordmark.png" />
+        <img src="assets/bikespace_wordmark.png" alt="BikeSpace logo"/>
     </header>
     <script src="js/jquery-3.7.1.min.js"></script>
     <script src="leaflet/leaflet.js"></script>
@@ -22,7 +22,7 @@
     <script src="js/sidebar.js"></script>
     <script>
         $.ajax({
-            url: 'https://api-dev.bikespace.ca/api/v2/submissions',
+            url: 'https://api-dev.bikespace.ca/api/v2/submissions?limit=5000',
             success: function (data, textStatus, jqXHR) {
                 var shared_state = {
                     components: {}, // each component MUST define a init() and refresh() method

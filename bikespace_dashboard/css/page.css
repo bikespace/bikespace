@@ -1,12 +1,7 @@
+@import "stylevars.css";
+
 h1 {
     font-size: 30px;
-}
-
-p {
-    font-size: 20px;
-    border: 10px solid blue;
-    padding: 10px;
-    background-color: red;
 }
 
 header {
@@ -19,4 +14,5 @@ header>img {
 
 body {
     margin: 0;
+    font-family: var(--body-font-stack);
 }
