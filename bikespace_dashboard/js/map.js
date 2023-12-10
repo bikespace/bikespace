@@ -44,6 +44,18 @@ var map = {
         }
         lmap.addLayer(markers);
 
+        // improve keyboard navigation
+        $(document).on("keydown", ".marker-cluster", function(e) {
+            if(e.key == "Enter" || e.key == " "){
+                 $(document.activeElement).trigger('click');
+            }
+        })
+        $(document).on("keydown", ".leaflet-marker-icon", function(e) {
+            if(e.key == " "){ // Enter already works
+                 $(document.activeElement).trigger('click');
+            }
+        })
+
     },
     refresh: function() {
         console.log('sidebar refreshing');
