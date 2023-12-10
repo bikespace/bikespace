@@ -2,6 +2,9 @@ name: Test and Preview
 on:
   pull_request:
     types: [opened, synchronize, edited, ready_for_review]
+    paths:
+        - bikespace_api/**
+        - bikespace_frontend/**
 jobs:
   apitest:
     name: API tests
