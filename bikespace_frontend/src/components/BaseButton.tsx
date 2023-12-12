@@ -13,7 +13,7 @@ type BaseButtonProps = {
 class BaseButton extends React.Component<BaseButtonProps> {
   render(): React.ReactNode {
     return (
-      <>
+      <div className="input-container">
         {this.props.type === 'checkbox' &&
           <input
             type="checkbox"
@@ -42,7 +42,7 @@ class BaseButton extends React.Component<BaseButtonProps> {
             />
           </div>
         </label>
-      </>
+      </div>
     );
   }
 }

@@ -53,6 +53,14 @@
 				font-weight: normal;
 				color: #39393a;
 			}
+
+			.input-container {
+				display: flex;
+
+				label {
+					width: 100%;
+				}
+			}
 		}
 
 		footer {
@@ -99,7 +107,7 @@
 	fieldset {
 		display: flex;
 		flex-direction: column;
-		gap: 10px;
+		gap: 1rem;
 		margin: 0;
 		padding: 5px;
 		border: none;
@@ -130,7 +138,7 @@
 #submission-time {
 	fieldset>.checkbox-group {
 		display: grid;
-		grid-template-columns: 0px 1fr 0px 1fr;
+		grid-template-columns: 1fr 1fr;
 		gap: 14px 0;
 
 		.base-button {
