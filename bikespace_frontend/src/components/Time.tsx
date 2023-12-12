@@ -21,8 +21,7 @@ const Time = (props: { parkingDuration: ParkingDuration, onParkingDurationChange
         props.onDateTimeChanged(chosenDateTime);
     };
 
-    const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault();
+    const handleClick = (e: React.FormEvent<HTMLInputElement>) => {
         let duration: ParkingDuration;
         switch (e.currentTarget.dataset.value) {
             case "minutes":
@@ -45,46 +44,50 @@ const Time = (props: { parkingDuration: ParkingDuration, onParkingDurationChange
     };
 
     return (
-        <div id="submission-time">
-            <h2>When did this happen?</h2>
+        <form id="submission-time">
+            <label htmlFor="when">
+                <h2>When did this happen?</h2>
+            </label>
             <input
+                id="when"
                 type="datetime-local"
                 onChange={handleDateTime}
                 value={convertToDateTimeLocalString(dateTime)}
             ></input>
-
-            <h2>How long did you need to park?</h2>
-            <ul title="How long did you need to park?">
-                <li>
+            <fieldset>
+                <legend><h2>How long did you need to park?</h2></legend>
+                <div className="checkbox-group">
                     <BaseButton
+                        type="radio"
+                        name="time"
                         active={parkingDuration.includes(ParkingDuration.Minutes)}
                         value="minutes"
                         onClick={handleClick}
                     >minutes</BaseButton>
-                </li>
-                <li>
                     <BaseButton
+                        type="radio"
+                        name="time"
                         active={parkingDuration.includes(ParkingDuration.Hours)}
                         value="hours"
                         onClick={handleClick}
                     >hours</BaseButton>
-                </li>
-                <li>
                     <BaseButton
+                        type="radio"
+                        name="time"
                         active={parkingDuration.includes(ParkingDuration.Overnight)}
                         value="overnight"
                         onClick={handleClick}
                     >overnight</BaseButton>
-                </li>
-                <li>
                     <BaseButton
+                        type="radio"
+                        name="time"
                         active={parkingDuration.includes(ParkingDuration.MultiDay)}
                         value="multiday"
                         onClick={handleClick}
                     >multiday</BaseButton>
-                </li>
-            </ul>
-        </div>
+                </div>
+            </fieldset>
+        </form>
     );
 };
 
