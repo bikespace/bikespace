@@ -21,25 +21,19 @@
     <script src="js/jquery-3.7.1.min.js"></script>
     <script src="leaflet/leaflet.js"></script>
     <script src="leaflet/leaflet.markercluster.js"></script>
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js" charset="utf-8"></script>
+    <script src="js/app.js"></script>
     <script src="js/map.js"></script>
     <script src="js/sidebar.js"></script>
     <script>
         $.ajax({
             url: 'https://api-dev.bikespace.ca/api/v2/submissions?limit=5000',
             success: function (data, textStatus, jqXHR) {
-                var shared_state = {
-                    components: {}, // each component MUST define a init() and refresh() method
-                    data: data,
-                    L: L,
-                    map: map
-                };
-                shared_state.refresh = function() {
-                    for(const module of Object.values(shared_state.components)) {
-                        module.refresh();
-                    }
-                };
-                map.init(shared_state);
-                sidebar.init(shared_state);
+                let shared_state = new SharedState(data);
+                let sidebar = new Component("body", "sidebar", shared_state);
+                let summary_box = new SummaryBox("#sidebar", "summary-box", shared_state);
+                let issue_chart = new IssueChart("#sidebar", "issue-chart", shared_state);
+                let map = new Map("body", "map", shared_state);
             }
         });
     </script>

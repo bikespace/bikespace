@@ -6,6 +6,7 @@ h1 {
 
 header {
     padding: 12px;
+    box-shadow: 8px 0px 8px rgba(0,0,0,0.5); 
 }
 
 header>img {

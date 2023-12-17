@@ -14,6 +14,8 @@
   --color-primary-50p: hsl(137, 56%, 73%);
   --color-primary-20p: hsl(137, 57%, 89%);
   --color-primary-10p: hsl(135, 57%, 95%);
+  --color-primary-d20p: hsl(137, 68%, 36%);
+  --color-primary-d50p: hsl(137, 68%, 23%);
   --color-secondary-yellow: hsl(58, 88%, 57%);
   --color-secondary-yellow-light: hsl(58, 60%, 90%);
   --color-secondary-orange: hsl(38, 100%, 50%);
