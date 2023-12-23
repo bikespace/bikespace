@@ -1,3 +1,5 @@
+import { Component } from './main.js';
+
 class Map extends Component {
   constructor(parent, root_id, shared_state) {
     super(parent, root_id, shared_state);
@@ -56,3 +58,5 @@ class Map extends Component {
     })
   }
 }
+
+export { Map };

@@ -1,10 +1,10 @@
 @font-face {
   font-family: "Open Sans";
-  src: url(../assets/OpenSans-VariableFont_wdth,wght.ttf);
+  src: url(../../assets/OpenSans-VariableFont_wdth,wght.ttf);
 }
 @font-face {
   font-family: "Open Sans Italic";
-  src: url(../assets/OpenSans-Italic-VariableFont_wdth,wght.ttf);
+  src: url(../../assets/OpenSans-Italic-VariableFont_wdth,wght.ttf);
   font-style: italic;
 }
 

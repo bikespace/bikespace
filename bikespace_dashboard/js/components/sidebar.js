@@ -1,3 +1,5 @@
+import { Component } from './main.js';
+
 class SummaryBox extends Component {
   constructor(parent, root_id, shared_state) {
     super(parent, root_id, shared_state);
@@ -137,6 +139,8 @@ class IssueChart extends Component {
   }
 }
 
+export { SummaryBox, IssueChart };
+
 /**
  * Function to return values for a hsl CSS variable color
  * @param {string} key CSS variable name
@@ -168,9 +172,9 @@ function hslRange(start, finish, steps, increase = true) {
   } else {
     rel_finish_hue = finish.hue;
   }
-  hue_var = rel_finish_hue - start.hue;
-  hue_step = hue_var / (steps - 1);
-  colors = [start];
+  let hue_var = rel_finish_hue - start.hue;
+  let hue_step = hue_var / (steps - 1);
+  let colors = [start];
   for (let i = 1; i < steps - 1; increase ? i++ : i--) {
     colors.push({
       'hue': Math.round((start.hue + (i * hue_step))) % 360,
@@ -179,7 +183,7 @@ function hslRange(start, finish, steps, increase = true) {
     });
   }
   colors.push(finish);
-  color_strings = colors.map(
+  let color_strings = colors.map(
     (c) => `hsl(${c.hue}, ${c.saturation}%, ${c.lightness}%)`
     );
   return color_strings;

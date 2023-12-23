@@ -1,41 +1,16 @@
-/**
- * Shared state class - handles shared data, filtering, and refresh when filters are updated.
- */
-class SharedState {
-  constructor(data) {
-    this.components = {}
+import { SharedState, Component } from './components/main.js';
+import { Map } from './components/map.js'
+import { SummaryBox } from './components/sidebar.js';
+import { IssueChart } from './components/sidebar.js';
 
-    this.response_data = data.submissions;
-    // Data initially not filtered
-    this.display_data = data.submissions;
-    console.log("display data", this.display_data);
+
+$.ajax({
+  url: 'https://api-dev.bikespace.ca/api/v2/submissions?limit=5000',
+  success: function (data, textStatus, jqXHR) {
+      let shared_state = new SharedState(data);
+      let sidebar = new Component("body", "sidebar", shared_state);
+      let summary_box = new SummaryBox("#sidebar", "summary-box", shared_state);
+      let issue_chart = new IssueChart("#sidebar", "issue-chart", shared_state);
+      let map = new Map("body", "map", shared_state);
   }
-
-  refresh() {
-    for(const module of Object.values(this.components)) {
-      module.refresh();
-    }
-  }
-
-  set filters(f) {
-    this.filters = f;
-    this.refresh();
-  }
-}
-
-class Component {
-  /**
-   * Base class for graphs, map, etc. Registers component with shared_state.
-   * @param {string} parent JQuery selector for parent element
-   * @param {string} root_id tag id for root div
-   * @param {Object} shared_state 
-   */
-  constructor(parent, root_id, shared_state) {
-        // register component
-        this.root_key = root_id.replace("-", "_");
-        shared_state.components[this.root_key] = this;
-
-        // add to page
-        $(parent).append(`<div id="${root_id}"></div>`);
-  }
-}
+});
