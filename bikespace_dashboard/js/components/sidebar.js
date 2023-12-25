@@ -3,9 +3,12 @@ import { Component } from './main.js';
 class SummaryBox extends Component {
   constructor(parent, root_id, shared_state) {
     super(parent, root_id, shared_state);
+    this.build();
+  }
 
+  build() {
     // Calculate date range of entries
-    let submission_dates = shared_state.display_data.map((s) => new Date(s.parking_time));
+    let submission_dates = this.shared_state.display_data.map((s) => new Date(s.parking_time));
     let earliest_entry = submission_dates.reduce((p, c) => p < c ? p : c);
     let latest_entry = submission_dates.reduce((p, c) => p > c ? p : c);
 
@@ -17,13 +20,23 @@ class SummaryBox extends Component {
     };
 
     let content = [
-      `<div id="entry-count">${shared_state.display_data.length.toLocaleString('en-CA')}</div>`,
+      `<div class="flex">`,
+        `<div id="entry-count">${this.shared_state.display_data.length.toLocaleString('en-CA')}</div>`,
+        `<button class="clear-filter" type="button"><img src="assets/clear-filter.svg"/> Clear Filters</button>`,
+      `</div>`,
       `<div class="summary-desc">Total Reports</div>`,
       `<div class="summary-desc">${earliest_entry.toLocaleDateString('en-CA', date_options)} – ${latest_entry.toLocaleDateString('en-CA', date_options)}</div>`
     ].join("");
 
-    $(`#${root_id}`).append(content);
+    $(`#${this.root_id}`).empty().append(content);
 
+    $(`#${this.root_id} button.clear-filter`).on('click', (e) => {
+      this.shared_state.filters = {};
+    })
+  }
+
+  refresh() {
+    this.build();
   }
 }
   
@@ -32,55 +45,61 @@ class IssueChart extends Component {
     super(parent, root_id, shared_state);
 
     // Note: no option for spacing between y-axis labels and y-axis line in plotly js, have to add a trailing space
-    const issue_labels = {
+    this.issue_labels = {
       'not_provided': "No nearby parking ",
       'full': "Parking was full ",
-      'damaged': "Parking was broken ",
+      'damaged': "Parking was damaged ",
       'abandoned': "Abandoned bicycle ",
       'other': "Other issue "
     };
-
-    const issue_labels_lookup = Object.fromEntries(Object.entries(issue_labels).map(a => a.reverse()));
+    this.issue_labels_lookup = Object.fromEntries(Object.entries(this.issue_labels).map(a => a.reverse()));
 
     // summarize data
-    let issues = new Set(shared_state.display_data.reduce(
-      (a, b) => a.concat(b['issues']), [])
-      );
-    let data = [];
+    let issues = new Set(this.shared_state.display_data.reduce(
+      (a, b) => a.concat(b['issues']), []));
+    this.inputData = [];
     for (let issue of issues) {
-      data.push({
+      this.inputData.push({
         'type': issue,
-        'count': shared_state.display_data.reduce(
+        'count': this.shared_state.display_data.reduce(
           (a, b) => a + (b['issues'].includes(issue) ? 1 : 0), 0
           ),
-        'label': issue_labels[issue] ?? issue
+        'label': this.issue_labels[issue] ?? issue
       });
     }
 
-    // sort data ascending (shows descending in chart, bars are added bottom to top)
+    // sort data ascending (shows desc in chart, bars are added bottom to top)
     // this could be done with layout.yaxis.categoryorder in plotly js, but it messes up the color gradient
-    data.sort((a, b) => a.count - b.count);
+    this.inputData.sort((a, b) => a.count - b.count);
 
-    // generate colour palette
+    // generate and assign colour palette
     let palette = hslRange(
       cssVarHSL("--color-secondary-red"),
       cssVarHSL("--color-primary"),
-      data.length
+      this.inputData.length
     );
+    for (let i = 0; i < this.inputData.length; i++) {
+      this.inputData[i].color = palette.reverse()[i];
+    }
+
+    // set x axis range
+    const maxX = Math.max(...this.inputData.map((x) => x.count));
+    this.xAxisRange = [0, maxX];
 
     // Build chart components
-    let plot = document.getElementById('issue-chart');
+    this.plot = document.getElementById('issue-chart');
 
     let chart_data = [{
       type: 'bar',
       orientation: 'h', // horizontal
-      x: data.map((x) => x.count),
-      y: data.map((x) => x.type),
+      x: this.inputData.map((x) => x.count),
+      y: this.inputData.map((x) => x.type),
       marker: {
-        color: palette.reverse(), // Plotly adds bars bottom to top
+        color: this.inputData.map((x) => x.color)
       },
-      text: data.map((x) => x.count.toString()),
-      hoverinfo: "none" // remove hover labels
+      text: this.inputData.map((x) => x.count.toString()),
+      hoverinfo: "none", // remove hover labels
+      // selectedpoints: [3],
     }];
     
     let layout = {
@@ -92,22 +111,28 @@ class IssueChart extends Component {
         }
       },
       yaxis: {
-        labelalias: issue_labels, 
+        labelalias: this.issue_labels, 
         fixedrange: true // prevent user zoom
       },
       xaxis: {
         automargin: true,
-        fixedrange: true
+        fixedrange: true,
+        range: this.xAxisRange,
       },
       margin: {
         t: 30,
-        r: 4,
+        r: 20,
         b: 4,
-        l: 120
+        l: 130
       },
       width: 320 - 4 * 2,
       height: 200,
-      paper_bgcolor: "rgba(0,0,0,0)" // reset chart background to transparent to give more CSS control
+      paper_bgcolor: "rgba(0,0,0,0)", // reset chart background to transparent to give more CSS control
+      modebar: {
+        color: cssVarHSL("--color-primary-d50p", "string"),
+        activecolor: cssVarHSL("--color-primary", "string"),
+        bgcolor: "rgba(0,0,0,0)"
+      },
     };
 
     let config = {
@@ -124,19 +149,97 @@ class IssueChart extends Component {
       ]
     };
 
-    Plotly.newPlot(plot, chart_data, layout, config);
+    // generate plot on page
+    Plotly.newPlot(this.plot, chart_data, layout, config);
 
-    // dummy functions for use in filtering later
-    plot.on('plotly_click', function(data) {
-      console.log("bar click", data.points[0].y)
+    // clicking on the bar trace updates the shared filter
+    this.plot.on('plotly_click', (data) => {
+      const filter_issue = data.points[0].y;
+      const bar_index = this.plot.data[0].y.findIndex((x) => x == filter_issue);
+      this.toggleSelected(bar_index);
+      this.setFilter(filter_issue);
     });
 
-    $(`#${root_id} .ytick`).on('click', function(e){
-      let label_text = e.target.attributes['data-unformatted'].value;
-      console.log("label click", issue_labels_lookup[label_text]);
-    })
-
+    // clicking on the axis label updates the shared filter
+    this.addLabelClickHandler();
   }
+
+  refresh() {
+    this.updateCount();
+
+    // clear selection if no filter applied
+    if (!this.shared_state.filters.issues) {
+      this._selected = null;
+    }
+
+    // restyle arguments must be wrapped in arrays since they are applied element-wise against the trace(s) specified in the third parameter
+    Plotly.restyle(this.plot, {
+      'x': [this.inputData.map((x) => x.count)],
+      'text': [this.inputData.map((x) => x.count.toString())],
+      'selectedpoints': [this._selected === null ? null : [this._selected]],
+    }, [0]);
+
+    this.addLabelClickHandler();
+  }
+
+  /**
+   * Update chart inputData based on shared state display data
+   */
+  updateCount() {
+    this.inputData = this.inputData.map((r) => 
+      Object.assign(r, {'count': this.shared_state.display_data.reduce(
+        (a, b) => a + (b['issues'].includes(r.type) ? 1 : 0), 0
+      )})
+    )
+  }
+
+  /**
+   * Function to update or toggle this._selected
+   * @param {int} index Index number of bar trace clicked by user
+   */
+  toggleSelected(index) {
+    if (index === this._selected) {
+      this._selected = null;
+    } else {
+      this._selected = index;
+    }
+  }
+
+  /**
+   * Add click event handler for axis labels (has to be done manually, axis label not normally interactable with plotly js)
+   */
+  addLabelClickHandler() {
+    $(`#${this.root_id} .ytick`).on('click', (e) => {
+      const label_text = e.target.attributes['data-unformatted'].value;
+      const filter_issue = this.issue_labels_lookup[label_text];
+      // selectedpoints doesn't work with the category name
+      const bar_index = this.plot.data[0].y.findIndex((x) => x == filter_issue);
+      
+      this.toggleSelected(bar_index);
+      this.setFilter(filter_issue);
+    });
+  }
+
+  /**
+   * Set or toggle shared state filter on "issue" property
+   * @param {string} filter_issue 
+   */
+  setFilter(filter_issue) {
+    let filters = this.shared_state.filters;
+    // reset to no filter on toggle
+    if (filters?.issues?.contains == filter_issue) {
+      delete filters.issues;
+    } else {
+      filters.issues = {
+        'contains': filter_issue,
+        'test': function(issue_list) {
+          return issue_list.includes(filter_issue);
+        }
+      };
+    }
+    this.shared_state.filters = filters;
+  }
+
 }
 
 export { SummaryBox, IssueChart };
@@ -146,15 +249,19 @@ export { SummaryBox, IssueChart };
  * @param {string} key CSS variable name
  * @returns {Object} Object with attributes 'hue', 'saturation', and 'lightness'
  */
-function cssVarHSL(key) {
+function cssVarHSL(key, return_type = "object") {
   let hsl_str = getComputedStyle(document.documentElement, null).getPropertyValue(key);
   let pattern = /hsl\((?<hue>\d{1,3})\s?,\s?(?<saturation>\d{1,3})\%\s?,\s?(?<lightness>\d{1,3})\%\s?\)/;
   let match = pattern.exec(hsl_str);
-  return {
-    'hue': Number(match.groups.hue),
-    'saturation': Number(match.groups.saturation),
-    'lightness': Number(match.groups.lightness)
-  };
+  if (return_type == "string") {
+    return hsl_str;
+  } else {
+    return {
+      'hue': Number(match.groups.hue),
+      'saturation': Number(match.groups.saturation),
+      'lightness': Number(match.groups.lightness)
+    };
+  }
 }
 
 /**

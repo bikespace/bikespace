@@ -3,11 +3,30 @@ import { Component } from './main.js';
 class Map extends Component {
   constructor(parent, root_id, shared_state) {
     super(parent, root_id, shared_state);
-    var lmap = L.map('map').setView([43.652771, -79.383756], 13);
+    
+    this.lmap = L.map('map').setView([43.733399, -79.376221], 11);
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(lmap);
-    var markers = L.markerClusterGroup();
+    }).addTo(this.lmap);
+
+    this.markers = this.buildMarkers();
+    this.lmap.addLayer(this.markers);
+
+    // improve keyboard navigation
+    $(document).on("keydown", ".marker-cluster", function(e) {
+      if (e.key == "Enter" || e.key == " ") {
+        $(document.activeElement).trigger('click');
+      }
+    });
+    $(document).on("keydown", ".leaflet-marker-icon", function(e) {
+      if (e.key == " ") { // Enter already works
+        $(document.activeElement).trigger('click');
+      }
+    });
+  }
+
+  buildMarkers() {
+    let markers = L.markerClusterGroup();
 
     // build popup content
     const duration_descr = {
@@ -24,7 +43,7 @@ class Map extends Component {
       'other': `<div class="issue issue-other">Other issue</div>`
     };
 
-    for (let point of shared_state.display_data) {
+    for (let point of this.shared_state.display_data) {
       let issues = point.issues.map((x) => issue_tags[x] ?? `<div class="issue">${x}</div>`).join(" ");
       let parking_time = new Date(point.parking_time);
       let parking_time_desc = parking_time.toLocaleString("en-CA", {
@@ -43,19 +62,14 @@ class Map extends Component {
       marker.bindPopup(content);
       markers.addLayer(marker);
     }
-    lmap.addLayer(markers);
 
-    // improve keyboard navigation
-    $(document).on("keydown", ".marker-cluster", function(e) {
-      if (e.key == "Enter" || e.key == " ") {
-        $(document.activeElement).trigger('click');
-      }
-    })
-    $(document).on("keydown", ".leaflet-marker-icon", function(e) {
-      if (e.key == " ") { // Enter already works
-        $(document.activeElement).trigger('click');
-      }
-    })
+    return markers;
+  }
+
+  refresh() {
+    this.markers.remove();
+    this.markers = this.buildMarkers();
+    this.markers.addTo(this.lmap);
   }
 }
 
