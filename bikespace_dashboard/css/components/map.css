@@ -41,7 +41,7 @@
 
         &.issue-abandoned {
             border-color: var(--color-secondary-yellow);
-            background-color: var(--color-secondary-orange-yellow);
+            background-color: var(--color-secondary-yellow-light);
         }
 
         &.issue-other {

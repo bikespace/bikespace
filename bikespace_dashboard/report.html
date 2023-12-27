@@ -7,35 +7,25 @@
     <title>BikeSpace Dashboard</title>
     <meta name="description" content="BikeSpace is an online tool for cyclists to report bicycle parking issues." />
     <link rel="stylesheet" href="leaflet/leaflet.css" />
-    <link rel="stylesheet" href="css/page.css" />
-    <link rel="stylesheet" href="css/map.css" />
-    <link rel="stylesheet" href="css/sidebar.css" />
-    <link rel="stylesheet" href="css/MarkerCluster.css" />
-    <link rel="stylesheet" href="css/MarkerCluster.Default.css" />
+    <link rel="stylesheet" href="css/main.css" />
     <link rel="icon" type="image/x-icon" href="assets/bikespace_logo_sm.svg" />
 </head>
 <body>
     <header>
         <img src="assets/bikespace_wordmark.png" alt="BikeSpace logo"/>
     </header>
+    <noscript>
+        <h2>Please enable JavaScript to use this site</h2>
+        <p>This dashboard needs to have JavaScript enabled to render dynamic content. If you are not able to enable JavaScript on this device, some other options for accessing the BikeSpace data include:</p>
+        <ul>
+            <li>Archived copies on our GitHub page: <a href="https://github.com/bikespace/bikespace-v2/tree/main/datasets">bikespace-v2/datasets/</a> (may not be 100% up-to-date; select "raw" to see the unformatted data).</li>
+            <li>Via command line, e.g.: <pre>$ curl "https://api-dev.bikespace.ca/api/v2/submissions?limit=5000"</pre> See our GitHub page for <a href="https://github.com/bikespace/bikespace-v2/blob/main/bikespace_api/bikespace_api/static/bikespace-open-api.yaml">additional information about API parameters</a></li>
+        </ul>
+    </noscript>
     <script src="js/jquery-3.7.1.min.js"></script>
     <script src="leaflet/leaflet.js"></script>
     <script src="leaflet/leaflet.markercluster.js"></script>
     <script src="https://cdn.plot.ly/plotly-2.27.0.min.js" charset="utf-8"></script>
-    <script src="js/app.js"></script>
-    <script src="js/map.js"></script>
-    <script src="js/sidebar.js"></script>
-    <script>
-        $.ajax({
-            url: 'https://api-dev.bikespace.ca/api/v2/submissions?limit=5000',
-            success: function (data, textStatus, jqXHR) {
-                let shared_state = new SharedState(data);
-                let sidebar = new Component("body", "sidebar", shared_state);
-                let summary_box = new SummaryBox("#sidebar", "summary-box", shared_state);
-                let issue_chart = new IssueChart("#sidebar", "issue-chart", shared_state);
-                let map = new Map("body", "map", shared_state);
-            }
-        });
-    </script>
+    <script src="js/app.js" type="module"></script>
 </body>
 </html>
