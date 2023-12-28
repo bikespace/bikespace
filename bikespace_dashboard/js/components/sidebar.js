@@ -61,12 +61,10 @@ class IssueChart extends Component {
     for (let issue of issues) {
       this.inputData.push({
         'type': issue,
-        'count': this.shared_state.display_data.reduce(
-          (a, b) => a + (b['issues'].includes(issue) ? 1 : 0), 0
-          ),
         'label': this.issue_labels[issue] ?? issue
       });
     }
+    this.updateCount();
 
     // sort data ascending (shows desc in chart, bars are added bottom to top)
     // this could be done with layout.yaxis.categoryorder in plotly js, but it messes up the color gradient
@@ -87,7 +85,7 @@ class IssueChart extends Component {
     this.xAxisRange = [0, maxX];
 
     // Build chart components
-    this.plot = document.getElementById('issue-chart');
+    this.plot = document.getElementById(this.root_id);
 
     let chart_data = [{
       type: 'bar',
@@ -99,7 +97,6 @@ class IssueChart extends Component {
       },
       text: this.inputData.map((x) => x.count.toString()),
       hoverinfo: "none", // remove hover labels
-      // selectedpoints: [3],
     }];
     
     let layout = {
@@ -127,6 +124,7 @@ class IssueChart extends Component {
       },
       width: 320 - 4 * 2,
       height: 200,
+      dragmode: false,
       paper_bgcolor: "rgba(0,0,0,0)", // reset chart background to transparent to give more CSS control
       modebar: {
         color: cssVarHSL("--color-primary-d50p", "string"),
