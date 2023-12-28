@@ -23,8 +23,6 @@ class DayChart extends Component {
     // layout.xaxis.categoryorder doesn't work; can only do by value or label
     this.inputData.sort((a, b) => a.chart_order - b.chart_order);
 
-    console.log(this.inputData);
-
     // Build chart components
     this.plot = document.getElementById(this.root_id);
 
