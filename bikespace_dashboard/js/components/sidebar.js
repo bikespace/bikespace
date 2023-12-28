@@ -81,7 +81,7 @@ class IssueChart extends Component {
     }
 
     // set x axis range
-    const maxX = Math.max(...this.inputData.map((x) => x.count));
+    const maxX = Math.max(...this.inputData.map((r) => r.count));
     this.xAxisRange = [0, maxX];
 
     // Build chart components
@@ -90,12 +90,11 @@ class IssueChart extends Component {
     let chart_data = [{
       type: 'bar',
       orientation: 'h', // horizontal
-      x: this.inputData.map((x) => x.count),
-      y: this.inputData.map((x) => x.type),
+      x: this.inputData.map((r) => r.count),
+      y: this.inputData.map((r) => r.type),
       marker: {
-        color: this.inputData.map((x) => x.color)
+        color: this.inputData.map((r) => r.color)
       },
-      text: this.inputData.map((x) => x.count.toString()),
       hoverinfo: "none", // remove hover labels
     }];
     
@@ -172,8 +171,8 @@ class IssueChart extends Component {
 
     // restyle arguments must be wrapped in arrays since they are applied element-wise against the trace(s) specified in the third parameter
     Plotly.restyle(this.plot, {
-      'x': [this.inputData.map((x) => x.count)],
-      'text': [this.inputData.map((x) => x.count.toString())],
+      'x': [this.inputData.map((r) => r.count)],
+      'text': [this.inputData.map((r) => r.count.toString())],
       'selectedpoints': [this._selected === null ? null : [this._selected]],
     }, [0]);
 
