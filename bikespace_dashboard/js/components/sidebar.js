@@ -1,5 +1,30 @@
 import { Component } from './main.js';
 
+const defaults = {
+  layout: {
+    dragmode: false,
+    paper_bgcolor: "rgba(0,0,0,0)", // reset chart background to transparent to give more CSS control
+    modebar: {
+      color: cssVarHSL("--color-primary-d50p", "string"),
+      activecolor: cssVarHSL("--color-primary", "string"),
+      bgcolor: "rgba(0,0,0,0)",
+    },
+  },
+  config: {
+    displaylogo: false,
+    modeBarButtonsToRemove: [
+      'zoom2d',
+      'pan2d',
+      'select2d',
+      'lasso2d',
+      'zoomIn2d',
+      'zoomOut2d',
+      'autoScale2d',
+      'resetScale2d'
+    ],
+  },
+};
+
 class SummaryBox extends Component {
   constructor(parent, root_id, shared_state) {
     super(parent, root_id, shared_state);
@@ -128,28 +153,10 @@ class IssueChart extends Component {
       },
       width: 320 - 4 * 2,
       height: 200,
-      dragmode: false,
-      paper_bgcolor: "rgba(0,0,0,0)", // reset chart background to transparent to give more CSS control
-      modebar: {
-        color: cssVarHSL("--color-primary-d50p", "string"),
-        activecolor: cssVarHSL("--color-primary", "string"),
-        bgcolor: "rgba(0,0,0,0)"
-      },
+      ...defaults.layout,
     };
 
-    let config = {
-      displaylogo: false,
-      modeBarButtonsToRemove: [
-        'zoom2d',
-        'pan2d',
-        'select2d',
-        'lasso2d',
-        'zoomIn2d',
-        'zoomOut2d',
-        'autoScale2d',
-        'resetScale2d'
-      ]
-    };
+    let config = defaults.config;
 
     // generate plot on page
     Plotly.newPlot(this.plot, chart_data, layout, config);
@@ -310,28 +317,10 @@ class DayChart extends Component {
       },
       width: 320 - 4 * 2,
       height: 200,
-      dragmode: false,
-      paper_bgcolor: "rgba(0,0,0,0)", // reset chart background to transparent to give more CSS control
-      modebar: {
-        color: cssVarHSL("--color-primary-d50p", "string"),
-        activecolor: cssVarHSL("--color-primary", "string"),
-        bgcolor: "rgba(0,0,0,0)"
-      },
+      ...defaults.layout,
     };
 
-    let config = {
-      displaylogo: false,
-      modeBarButtonsToRemove: [
-        'zoom2d',
-        'pan2d',
-        'select2d',
-        'lasso2d',
-        'zoomIn2d',
-        'zoomOut2d',
-        'autoScale2d',
-        'resetScale2d'
-      ]
-    };
+    let config = defaults.config;
 
     // generate plot on page
     Plotly.newPlot(this.plot, chart_data, layout, config);
