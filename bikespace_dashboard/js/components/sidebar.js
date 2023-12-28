@@ -22,7 +22,7 @@ class SummaryBox extends Component {
     let content = [
       `<div class="flex">`,
         `<div id="entry-count">${this.shared_state.display_data.length.toLocaleString('en-CA')}</div>`,
-        `<button class="clear-filter" type="button"><img src="assets/clear-filter.svg"/> Clear Filters</button>`,
+        `<button class="clear-filter" type="button" hidden><img src="assets/clear-filter.svg"/> Clear Filters</button>`,
       `</div>`,
       `<div class="summary-desc">Total Reports</div>`,
       `<div class="summary-desc">${earliest_entry.toLocaleDateString('en-CA', date_options)} – ${latest_entry.toLocaleDateString('en-CA', date_options)}</div>`
@@ -33,6 +33,10 @@ class SummaryBox extends Component {
     $(`#${this.root_id} button.clear-filter`).on('click', (e) => {
       this.shared_state.filters = {};
     })
+    
+    if (Object.values(this.shared_state.filters).length > 0) {
+      $(`#${this.root_id} button.clear-filter`).removeAttr('hidden');
+    }
   }
 
   refresh() {
