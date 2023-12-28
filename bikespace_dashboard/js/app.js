@@ -1,6 +1,8 @@
 import { SharedState, Component } from './components/main.js';
 import { Map } from './components/map.js'
-import { SummaryBox, IssueChart, DayChart } from './components/sidebar.js';
+import { SummaryBox } from './components/sidebar/summary_box.js';
+import { IssueChart } from './components/sidebar/issue_chart.js';
+import { DayChart } from './components/sidebar/day_chart.js';
 
 
 $.ajax({
