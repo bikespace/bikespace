@@ -1,5 +1,6 @@
 /**
  * Shared state class - handles shared data, filtering, and refresh when filters are updated.
+ * Note: _display_data is currently not modified within this class, but may be in the future, e.g. to remove irrelevant (e.g. test, spam) entries.
  */
 class SharedState {
   constructor(data) {
@@ -28,8 +29,13 @@ class SharedState {
     this.refresh();
   }
 
-  get display_data() {
-    let filter_list = Object.entries(this._filters);
+  /**
+   * Can be called with custom filters object in case there are visuals where applying all the current filters is not desired
+   * @param {obj} filters 
+   * @returns filtered data
+   */
+  applyFilters(filters) {
+    let filter_list = Object.entries(filters);
     if (filter_list.length > 0) {
       let return_data = this._display_data;
       for (let [property, filter] of filter_list) {
@@ -39,6 +45,10 @@ class SharedState {
     } else {
       return this._display_data;
     }
+  }
+
+  get display_data() {
+    return this.applyFilters(this.filters);
   }
 
 }
