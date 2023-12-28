@@ -43,6 +43,10 @@
     font-family: var(--body-font-stack);
     font-size: 0.9rem;
 
+    &[hidden] {
+      display: none;
+    }
+
     &:hover {
       background-color: var(--color-primary-d70p);
       color: white;
