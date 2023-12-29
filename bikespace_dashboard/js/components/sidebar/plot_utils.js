@@ -26,6 +26,7 @@ const defaults = {
 /**
  * Function to return values for a hsl CSS variable color
  * @param {string} key CSS variable name
+ * @param {string=} return_type Type of value to return; default is "object", but can also be "string"
  * @returns {Object} Object with attributes 'hue', 'saturation', and 'lightness'
  */
 function cssVarHSL(key, return_type = "object") {

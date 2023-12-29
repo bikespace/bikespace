@@ -6,7 +6,7 @@ class DayChart extends Component {
     super(parent, root_id, shared_state);
 
     // summarize data
-    let days = [
+    const days = [
       {'index': 1, 'chart_order': 0, 'name': 'Monday'},
       {'index': 2, 'chart_order': 1, 'name': 'Tuesday'},
       {'index': 3, 'chart_order': 2, 'name': 'Wednesday'},
@@ -50,8 +50,8 @@ class DayChart extends Component {
         },
       },
       yaxis: {
-        fixedrange: true, // prevent user zoom
         automargin: true,
+        fixedrange: true, // prevent user zoom
       },
       xaxis: {
         automargin: true,
@@ -64,7 +64,7 @@ class DayChart extends Component {
         l: 20,
       },
       width: 320 - 4 * 2,
-      height: 200,
+      height: 160,
       ...defaults.layout,
     };
 
