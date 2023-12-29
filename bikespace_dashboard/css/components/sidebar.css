@@ -5,10 +5,13 @@
   left: 0; 
   top: 54px; 
   bottom: 0; 
-  width: 320px; 
+  width: calc(320px + 20px); /* 20px offset for sidebar scrollbar */
   background-color: var(--color-primary-20p); 
-  box-shadow: 0px 8px 8px rgba(0,0,0,0.5); 
+  box-shadow: 0px 8px 8px rgba(0,0,0,0.5);
+  overflow-y: auto;
+  overflow-x: hidden;
 }
+
 
 #summary-box {
   margin: 4px;
@@ -78,7 +81,7 @@
 
 
 
-#issue-chart, #day-chart {
+#issue-chart, #day-chart, #duration-tod-chart {
   margin: 4px;
   padding: 4px;
   border-radius: 4px; 
