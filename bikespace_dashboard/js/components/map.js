@@ -1,11 +1,16 @@
 import { Component } from './main.js';
 
+const tiles = {
+  'thunderforest_atlas': "https://tile.thunderforest.com/atlas/{z}/{x}/{y}.png?apikey=66ccf6226ef54ef38a6b97fe0b0e5d2e",
+  'openstreetmap': "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+};
+
 class Map extends Component {
   constructor(parent, root_id, shared_state) {
     super(parent, root_id, shared_state);
     
     this.lmap = L.map('map').setView([43.733399, -79.376221], 11);
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    L.tileLayer(tiles.thunderforest_atlas, {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(this.lmap);
 
