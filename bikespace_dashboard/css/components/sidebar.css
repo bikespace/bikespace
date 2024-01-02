@@ -97,3 +97,9 @@
     }
   }
 }
+
+#duration-tod-chart {
+  & .cursor-pointer {
+    cursor: default; /* show as non-interactive */
+  }
+}

@@ -1,11 +1,13 @@
 import { Component } from '../main.js';
 import { defaults, cssVarHSL, hslRange } from './plot_utils.js'
 
+// Note: "tod" = "Time of Day"
+
 class DurationTimeOfDayChart extends Component {
   constructor(parent, root_id, shared_state) {
     super(parent, root_id, shared_state);
 
-    // set categories
+    // set categories for x and y axes
     this._tod_bins = [
       {'chart_order': 0, 'label': '12–3', 'ampm': 'am', 'hours': [0,1,2]},
       {'chart_order': 1, 'label': '3–6', 'ampm': 'am', 'hours': [3,4,5]},
@@ -27,8 +29,6 @@ class DurationTimeOfDayChart extends Component {
     this.inputData = [];
     this.updateCount();
 
-    // sort data?
-
     // generate color scale
     // Tried including a yellow color stop in between green and orange, but too hard to distinguish from lower green values with accessibility tests
     let color_scale = [
@@ -41,21 +41,25 @@ class DurationTimeOfDayChart extends Component {
       `hsla(${x.color.hue}, ${x.color.saturation}%, ${x.color.lightness}%, ${x.alpha})`,
     ]);
 
-    console.log("color_scale", color_scale); // DEBUG
-
     // Build chart components
     this.plot = document.getElementById(this.root_id);
 
     let chart_data = [{
       type: 'heatmap',
-      z: this.inputData.map((r) => r.tods.map((c) => c.count > 0 ? c.count : null)),
-      x: this.inputData[0].tods.map((c) => c.label + (c.ampm === "pm" ? "&nbsp;" : "")),
-      y: this.inputData.map((r) => r.label),// duration
-      xgap: 1,
+      z: this.inputData.map(
+        (r) => r.tods.map((c) => c.count > 0 ? c.count : null)
+        ), // count of reports
+      x: this.inputData[0].tods.map( 
+        (c) => c.label + (c.ampm === "pm" ? "&nbsp;" : "")
+        ), // time of day
+      y: this.inputData.map((r) => r.label), // duration
+      xgap: 1, // space between heatmap tiles
       ygap: 1,
       showscale: false,
       colorscale: color_scale,
-      text: this.inputData.map((r) => r.tods.map((c) => c.label + " " + c.ampm)), // x labels for hovertemplate but with am/pm
+      text: this.inputData.map(
+        (r) => r.tods.map((c) => c.label + " " + c.ampm)
+        ), // x labels for hovertemplate but with am/pm
       hovertemplate: [
         `<b>%{z}</b> reports`,
         `parking for %{y}`,
@@ -72,23 +76,24 @@ class DurationTimeOfDayChart extends Component {
           l: 4
         },
       },
+      hoverlabel: { bgcolor: "white" },
       yaxis: {
         automargin: true,
         fixedrange: true, // prevent user zoom
-        ticks: "",
-        tickson: "boundaries",
+        ticks: "", // this setting uses "" instead of false
+        tickson: "boundaries", // location of gridlines
       },
       xaxis: {
         automargin: true,
         fixedrange: true,
-        tickangle: 0, // horizontal
-        tickfont: {size: 10},
+        tickangle: 0, // horizontal x labels
+        tickfont: { size: 10 },
         ticks: "",
         tickson: "boundaries",
-        minor: {showgrid: false},
+        minor: { showgrid: false },
         title: {
           text: "AM   /   PM",
-          font: {size: 10},
+          font: { size: 10 },
         },
       },
       shapes: [{ // shading under "am" in x axis
@@ -101,9 +106,8 @@ class DurationTimeOfDayChart extends Component {
         y0: 0,
         y1: -0.14,
         fillcolor: cssVarHSL("--color-secondary-light-grey", "string"),
-        line: {width: 0},
+        line: { width: 0 }, // no border
       }],
-      hoverlabel: { bgcolor: "#FFF" },
       margin: {
         t: 30,
         r: 20,
@@ -120,28 +124,37 @@ class DurationTimeOfDayChart extends Component {
     // generate plot on page
     Plotly.newPlot(this.plot, chart_data, layout, config);
 
-    // interaction
 
   }
 
   refresh() {
+    this.updateCount();
 
+    // if selection implemented later - clear selection if no filter applied
+
+    // restyle arguments must be wrapped in arrays since they are applied element-wise against the trace(s) specified in the third parameter
+    Plotly.restyle(this.plot, {
+      'z': [this.inputData.map(
+        (r) => r.tods.map((c) => c.count > 0 ? c.count : null)
+        )],
+      // selectedpoints: []
+    }, [0]);
+    this.addMaxLabel();
   }
 
   /**
    * Update chart inputData based on shared state display data
    */
   updateCount() {
+    // function to check whether report falls into specified duration and parking_time (time of day)
     const test = (dt_string, hours, pd_input, pd_match) => {
       let dt = new Date(dt_string);
       let hour_test = hours.includes(dt.getHours());
       let duration_test = pd_input === pd_match;
-      // if (hour_test && duration_test) {
-      //   console.log(dt.getHours(), hours, pd_input, pd_match);
-      // }
       return hour_test && duration_test;
     };
 
+    // count reports for each cross-category
     let rows = [];
     for (const duration of this._durations) {
       let cols = [];
@@ -156,15 +169,15 @@ class DurationTimeOfDayChart extends Component {
     }
     
     this.inputData = rows;
-    console.log("inputData", this.inputData); // DEBUG
   }
 
   /**
    * Function to update or toggle this._selected
-   * @param {int} index Index number of bar trace clicked by user
+   * @param {{row: number, column: number}} index Index number of bar trace clicked by user
    */
   toggleSelected(index) {
-    if (index === this._selected) {
+    const { row, column } = index;
+    if (row === this._selected?.row && column == this._selected?.column) {
       this._selected = null;
     } else {
       this._selected = index;
@@ -172,9 +185,36 @@ class DurationTimeOfDayChart extends Component {
   }
 
   setFilter() {
-
+    // currently not implemented
   }
 
+  addMaxLabel() {
+    const z = this.plot.data[0].z;
+    const max = Math.max(...z.flat());
+
+    // need to know location of max value(s) to add number annotation
+    const indexes_of_max = z.reduce((ra, rcv, rci) => {
+      let rmaxes = rcv.reduce((ca, ccv, cci) => {
+        if (ccv === max) ca.push([rci, cci]);
+        return ca;
+      }, []);
+      ra.push(...rmaxes);
+      return ra;
+    }, []);
+
+    // build annotations using r,c locations
+    const annotations = indexes_of_max.map(([row, column]) => ({
+      xref: "x",
+      yref: "y",
+      x: column,
+      y: row,
+      text: max,
+      showarrow: false,
+      font: { color: "white" },
+    }));
+
+    Plotly.relayout(this.plot, { annotations: annotations });
+  }
 }
 
 export { DurationTimeOfDayChart };
