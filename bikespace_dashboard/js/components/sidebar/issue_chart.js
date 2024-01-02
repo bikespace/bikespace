@@ -1,44 +1,5 @@
-import { Component } from './main.js';
-
-class SummaryBox extends Component {
-  constructor(parent, root_id, shared_state) {
-    super(parent, root_id, shared_state);
-    this.build();
-  }
-
-  build() {
-    // Calculate date range of entries
-    let submission_dates = this.shared_state.display_data.map((s) => new Date(s.parking_time));
-    let earliest_entry = submission_dates.reduce((p, c) => p < c ? p : c);
-    let latest_entry = submission_dates.reduce((p, c) => p > c ? p : c);
-
-    // Date formatting 
-    const date_options = {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    };
-
-    let content = [
-      `<div class="flex">`,
-        `<div id="entry-count">${this.shared_state.display_data.length.toLocaleString('en-CA')}</div>`,
-        `<button class="clear-filter" type="button"><img src="assets/clear-filter.svg"/> Clear Filters</button>`,
-      `</div>`,
-      `<div class="summary-desc">Total Reports</div>`,
-      `<div class="summary-desc">${earliest_entry.toLocaleDateString('en-CA', date_options)} – ${latest_entry.toLocaleDateString('en-CA', date_options)}</div>`
-    ].join("");
-
-    $(`#${this.root_id}`).empty().append(content);
-
-    $(`#${this.root_id} button.clear-filter`).on('click', (e) => {
-      this.shared_state.filters = {};
-    })
-  }
-
-  refresh() {
-    this.build();
-  }
-}
+import { Component } from '../main.js';
+import { defaults, cssVarHSL, hslRange } from './plot_utils.js'
   
 class IssueChart extends Component {
   constructor(parent, root_id, shared_state) {
@@ -61,12 +22,10 @@ class IssueChart extends Component {
     for (let issue of issues) {
       this.inputData.push({
         'type': issue,
-        'count': this.shared_state.display_data.reduce(
-          (a, b) => a + (b['issues'].includes(issue) ? 1 : 0), 0
-          ),
         'label': this.issue_labels[issue] ?? issue
       });
     }
+    this.updateCount();
 
     // sort data ascending (shows desc in chart, bars are added bottom to top)
     // this could be done with layout.yaxis.categoryorder in plotly js, but it messes up the color gradient
@@ -83,23 +42,22 @@ class IssueChart extends Component {
     }
 
     // set x axis range
-    const maxX = Math.max(...this.inputData.map((x) => x.count));
+    const maxX = Math.max(...this.inputData.map((r) => r.count));
     this.xAxisRange = [0, maxX];
 
     // Build chart components
-    this.plot = document.getElementById('issue-chart');
+    this.plot = document.getElementById(this.root_id);
 
     let chart_data = [{
       type: 'bar',
       orientation: 'h', // horizontal
-      x: this.inputData.map((x) => x.count),
-      y: this.inputData.map((x) => x.type),
+      x: this.inputData.map((r) => r.count),
+      y: this.inputData.map((r) => r.type),
       marker: {
-        color: this.inputData.map((x) => x.color)
+        color: this.inputData.map((r) => r.color)
       },
-      text: this.inputData.map((x) => x.count.toString()),
+      text: this.inputData.map((r) => r.count.toString()),
       hoverinfo: "none", // remove hover labels
-      // selectedpoints: [3],
     }];
     
     let layout = {
@@ -127,27 +85,10 @@ class IssueChart extends Component {
       },
       width: 320 - 4 * 2,
       height: 200,
-      paper_bgcolor: "rgba(0,0,0,0)", // reset chart background to transparent to give more CSS control
-      modebar: {
-        color: cssVarHSL("--color-primary-d50p", "string"),
-        activecolor: cssVarHSL("--color-primary", "string"),
-        bgcolor: "rgba(0,0,0,0)"
-      },
+      ...defaults.layout,
     };
 
-    let config = {
-      displaylogo: false,
-      modeBarButtonsToRemove: [
-        'zoom2d',
-        'pan2d',
-        'select2d',
-        'lasso2d',
-        'zoomIn2d',
-        'zoomOut2d',
-        'autoScale2d',
-        'resetScale2d'
-      ]
-    };
+    let config = defaults.config;
 
     // generate plot on page
     Plotly.newPlot(this.plot, chart_data, layout, config);
@@ -174,8 +115,8 @@ class IssueChart extends Component {
 
     // restyle arguments must be wrapped in arrays since they are applied element-wise against the trace(s) specified in the third parameter
     Plotly.restyle(this.plot, {
-      'x': [this.inputData.map((x) => x.count)],
-      'text': [this.inputData.map((x) => x.count.toString())],
+      'x': [this.inputData.map((r) => r.count)],
+      'text': [this.inputData.map((r) => r.count.toString())],
       'selectedpoints': [this._selected === null ? null : [this._selected]],
     }, [0]);
 
@@ -239,59 +180,6 @@ class IssueChart extends Component {
     }
     this.shared_state.filters = filters;
   }
-
 }
 
-export { SummaryBox, IssueChart };
-
-/**
- * Function to return values for a hsl CSS variable color
- * @param {string} key CSS variable name
- * @returns {Object} Object with attributes 'hue', 'saturation', and 'lightness'
- */
-function cssVarHSL(key, return_type = "object") {
-  let hsl_str = getComputedStyle(document.documentElement, null).getPropertyValue(key);
-  let pattern = /hsl\((?<hue>\d{1,3})\s?,\s?(?<saturation>\d{1,3})\%\s?,\s?(?<lightness>\d{1,3})\%\s?\)/;
-  let match = pattern.exec(hsl_str);
-  if (return_type == "string") {
-    return hsl_str;
-  } else {
-    return {
-      'hue': Number(match.groups.hue),
-      'saturation': Number(match.groups.saturation),
-      'lightness': Number(match.groups.lightness)
-    };
-  }
-}
-
-/**
- * Function to generate an array of colors from a start and finish color
- * @param {Object} start Object with attributes 'hue', 'saturation', and 'lightness'
- * @param {Object} finish Object with attributes 'hue', 'saturation', and 'lightness'
- * @param {number} steps Length of array to return, including start and finish entries
- * @param {boolean} [increase=True] Whether values go up from start to finish (True, default) or down (False)
- * @returns {Array} An array of hsl colors
- */
-function hslRange(start, finish, steps, increase = true) {
-  let rel_finish_hue
-  if (finish.hue < start.hue) {
-    rel_finish_hue = finish.hue + 360;
-  } else {
-    rel_finish_hue = finish.hue;
-  }
-  let hue_var = rel_finish_hue - start.hue;
-  let hue_step = hue_var / (steps - 1);
-  let colors = [start];
-  for (let i = 1; i < steps - 1; increase ? i++ : i--) {
-    colors.push({
-      'hue': Math.round((start.hue + (i * hue_step))) % 360,
-      'saturation': start.saturation,
-      'lightness': start.lightness
-    });
-  }
-  colors.push(finish);
-  let color_strings = colors.map(
-    (c) => `hsl(${c.hue}, ${c.saturation}%, ${c.lightness}%)`
-    );
-  return color_strings;
-}
+export { IssueChart };
