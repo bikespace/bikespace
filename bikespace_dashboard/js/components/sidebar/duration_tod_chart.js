@@ -124,6 +124,8 @@ class DurationTimeOfDayChart extends Component {
     // generate plot on page
     Plotly.newPlot(this.plot, chart_data, layout, config);
 
+    // add label to max value
+    this.addMaxLabel();
 
   }
 
