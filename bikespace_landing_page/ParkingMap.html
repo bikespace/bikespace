@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset='utf-8' />
+  <title>Display a map</title>
+  <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+  <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.49.0/mapbox-gl.js'></script>
+  <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.49.0/mapbox-gl.css' rel='stylesheet' />
+  <style>
+    body { margin:0; padding:0; }
+    #map { position:absolute; top:0; bottom:0; width:100%; }
+    .mapboxgl-popup-content h3 {
+      background: #25c252;
+      color: #fff;
+      margin: 0;
+      display: block;
+      padding: 10px;
+    }
+    .mapboxgl-popup-content h4 {
+      background: #fff;
+      margin: 0;
+      display: block;
+      padding-left: 10px;
+      padding-right: 10px;
+      padding-top: 5px;
+      padding-bottom: 5px;
+      color:#2c3b42;
+    }
+    .mapboxgl-popup-content {
+      padding: 0;
+    }
+    
+  </style>
+</head>
+<body>
+
+<div id='map'></div>
+<script>
+mapboxgl.accessToken = 'pk.eyJ1Ijoib2otcyIsImEiOiJjamw3OGk2ZGYxMGRpM2txa2pjdnk0cmRrIn0.yGkgnv2YDDnrqDL5MO58Nw';
+const map = new mapboxgl.Map({
+  container: 'map',
+  style: 'mapbox://styles/oj-s/cjn55n32z02il2tqw208pp8dh',
+  center: [-79.378, 43.658],
+  zoom: 13.0
+});
+
+map.on('click', function(e) {
+  var features = map.queryRenderedFeatures(e.point, {
+    layers: ['bikeparking2-0-existing']
+  });
+
+  if (!features.length) {
+    return;
+  }
+
+  var feature = features[0];
+
+  var popup = new mapboxgl.Popup({ offset: [0, -15] })
+    .setLngLat(feature.geometry.coordinates)
+    .setHTML('<h3>' + "Address: " + feature.properties.ADDRESSNUM + " " + feature.properties.ADDRESSSTR +'</h3><h4>' + "Road Side: " + feature.properties.SIDE + '</h4><h4>' + "Parking Type: " + feature.properties.ASSETTYPE + '</h4><h4>' + "Ward: " + feature.properties.WARD + '</h4>')
+    .setLngLat(feature.geometry.coordinates)
+    .addTo(map);
+});
+
+     map.on('mouseenter', 'bikeparking2-0-existing', function () {
+        map.getCanvas().style.cursor = 'pointer';
+    });
+
+       map.on('mouseleave', 'bikeparking2-0-existing', function () {
+        map.getCanvas().style.cursor = '';
+    });
+
+    map.addControl(new mapboxgl.NavigationControl());
+
+</script>
+
+</body>
+</html>

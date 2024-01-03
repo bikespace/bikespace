@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generator: Adobe Illustrator 21.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.1"
+   id="Layer_1"
+   x="0px"
+   y="0px"
+   viewBox="0 0 69.999818 69.998993"
+   xml:space="preserve"
+   sodipodi:docname="bikespace_logo_sm.svg"
+   width="69.999817"
+   height="69.998993"
+   inkscape:version="0.92.3 (3ce5693, 2018-03-11)"><metadata
+   id="metadata15"><rdf:RDF><cc:Work
+       rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
+         rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title></dc:title></cc:Work></rdf:RDF></metadata><defs
+   id="defs13" /><sodipodi:namedview
+   pagecolor="#ffffff"
+   bordercolor="#666666"
+   borderopacity="1"
+   objecttolerance="10"
+   gridtolerance="10"
+   guidetolerance="10"
+   inkscape:pageopacity="0"
+   inkscape:pageshadow="2"
+   inkscape:window-width="755"
+   inkscape:window-height="480"
+   id="namedview11"
+   showgrid="false"
+   inkscape:zoom="0.36875"
+   inkscape:cx="513.99398"
+   inkscape:cy="34.752307"
+   inkscape:window-x="57"
+   inkscape:window-y="24"
+   inkscape:window-maximized="0"
+   inkscape:current-layer="Layer_1" />
+<path
+   stroke-miterlimit="10"
+   d="M 36.102806,68.34163 C 16.834976,68.96977 1.0292263,53.16402 1.6573663,33.89619 2.2270763,16.41053 16.411346,2.2262504 33.897016,1.6565504 c 19.26782,-0.61354 35.07357,15.1922196 34.44543,34.4600396 -0.5697,17.47106 -14.75398,31.66994 -32.23964,32.22504 z"
+   id="path2"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#25c252;stroke-width:3.2786274;stroke-miterlimit:10" />
+<path
+   d="m 5.2947363,35.00639 c 0,16.40468 13.3077997,29.71248 29.7124797,29.71248 16.40467,0 29.69787,-13.3078 29.69787,-29.71248 0,-16.40468 -13.2932,-29.7124796 -29.69787,-29.7124796 -16.40468,0 -29.7124797,13.3077996 -29.7124797,29.7124796"
+   id="path4"
+   inkscape:connector-curvature="0"
+   style="fill:#25c252;stroke-width:0.14607905" />
+<path
+   d="m 48.198146,25.99331 c -2.74628,0 -5.34649,1.06638 -7.30395,2.99462 0,0 0,0 0,0 v 0 l -13.1179,13.59996 -0.0292,0.0292 c -1.59226,1.60687 -3.6958,2.48334 -5.93081,2.48334 -4.63071,0 -8.39955,-3.81266 -8.39955,-8.5018 0,-4.68913 3.76884,-8.5018 8.39955,-8.5018 3.87109,0 7.2017,2.70246 8.1366,6.38366 l 1.65069,-1.70913 c -1.53383,-3.97335 -5.3757,-6.77807 -9.78729,-6.77807 -5.78473,0 -10.50308,4.76218 -10.50308,10.60534 0,5.84316 4.71835,10.60534 10.50308,10.60534 2.74628,0 5.33188,-1.06638 7.30395,-2.99462 v 0 0 L 42.223526,30.624 v 0 l 0.0146,-0.0146 0.0292,-0.0292 c 1.59227,-1.60687 3.6958,-2.48335 5.93081,-2.48335 4.63071,0 8.39955,3.81267 8.39955,8.5018 0,4.68914 -3.76884,8.5018 -8.39955,8.5018 -3.87109,0 -7.20169,-2.70246 -8.1366,-6.38365 l -1.65069,1.70912 c 1.53383,3.97335 5.37571,6.76346 9.78729,6.76346 5.78473,0 10.50309,-4.76217 10.50309,-10.60534 0,-5.84316 -4.70375,-10.59073 -10.50309,-10.59073"
+   id="path6"
+   inkscape:connector-curvature="0"
+   style="fill:#ffffff;stroke-width:0.14607905" />
+<polygon
+   points="287.2,218.2 235.7,335.1 222.5,329.3 277.8,203.8 316.7,203.8 316.7,218.2 "
+   id="polygon8"
+   style="fill:#ffffff"
+   transform="matrix(0.14607905,0,0,0.14607905,-11.694254,-11.70969)" />
+</svg>
