@@ -20,6 +20,6 @@ jobs:
               with:
                 apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
                 accountId: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
-                projectName: bikespace-website
+                projectName: bikespace-landing-page
                 directory: ./bikespace_landing_page
                 gitHubToken: ${{ secrets.GITHUB_TOKEN }}
