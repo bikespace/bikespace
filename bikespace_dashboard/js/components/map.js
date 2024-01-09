@@ -2,8 +2,28 @@ import { Component } from './main.js';
 import { issue_attributes as ia } from './issue_attributes.js';
 
 const tiles = {
-  'thunderforest_atlas': "https://tile.thunderforest.com/atlas/{z}/{x}/{y}.png?apikey=66ccf6226ef54ef38a6b97fe0b0e5d2e",
-  'openstreetmap': "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+  thunderforest_atlas: {
+    url: "https://tile.thunderforest.com/atlas/{z}/{x}/{y}.png?apikey=66ccf6226ef54ef38a6b97fe0b0e5d2e",
+    attribution: [
+      '&copy; Maps ',
+      '<a href="https://www.thunderforest.com/">',
+        'Thunderforest',
+      '</a>, ',
+      '&copy; Data ',
+      '<a href="https://www.openstreetmap.org/copyright">',
+        'OpenStreetMap contributors',
+      '</a>',
+    ].join(""),
+  },
+  openstreetmap: {
+    url: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+    attribution: [
+      '&copy; ',
+      '<a href="https://www.openstreetmap.org/copyright">',
+        'OpenStreetMap contributors',
+      '</a>',
+    ].join(""),
+  },
 };
 
 class Map extends Component {
@@ -11,8 +31,8 @@ class Map extends Component {
     super(parent, root_id, shared_state);
     
     this.lmap = L.map('map').setView([43.733399, -79.376221], 11);
-    L.tileLayer(tiles.thunderforest_atlas, {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    L.tileLayer(tiles.thunderforest_atlas.url, {
+      attribution: tiles.thunderforest_atlas.attribution
     }).addTo(this.lmap);
 
     this.markers = this.buildMarkers();
@@ -52,49 +72,57 @@ class Map extends Component {
     }
 
     for (let point of this.shared_state.display_data) {
-      let issues = point.issues.map((x) => issue_tags[x] ?? `<div class="issue">${x}</div>`).join(" ");
+      point.issues.sort(
+        (a, b) => ia[a].render_priority - ia[b].render_priority
+        );
+      let issues = point.issues.map(
+        (x) => issue_tags[x] ?? `<div class="issue">${x}</div>`
+        ).join(" ");
       let parking_time = new Date(point.parking_time);
       let parking_time_desc = parking_time.toLocaleString("en-CA", {
         "dateStyle": "full",
         "timeStyle": "short"
       });
-      let comments = `<strong>Comments:</strong> ${point.comments ? point.comments : "<em>none</em>"}`;
+      let comments = `<strong>Comments:</strong> ${
+        point.comments ? point.comments : "<em>none</em>"
+      }`;
 
       let content = [
         `<div class="issue-list">`,
         `<strong>Issues:</strong> ${issues ? issues : "<em>none</em>"}`,
         `</div>`,
-        `<p>This person wanted to park ${duration_descr[point.parking_duration] ?? `<strong>${point.parking_duration}</strong>`} on <strong>${parking_time_desc}</strong></p>`,
+        `<p>This person wanted to park ${
+          duration_descr[point.parking_duration] ?? 
+          `<strong>${point.parking_duration}</strong>`
+        } on <strong>${parking_time_desc}</strong></p>`,
         `<p>${comments}</p>`,
         `<p class="submission-id">ID: ${point.id}</p>`
       ].join("");
 
-      // build custom markers
-      // @TODO use class inheritance instead like tutorial
-      const marker_defaults = {
-        shadowUrl: "./leaflet/images/marker-shadow.png",
-        iconSize:     [36, 36],
-        iconAnchor:   [18, 36], // half of width and full height
-        popupAnchor:  [0, -30], // nearly all the height, not sure why negative
-        shadowSize:   [41, 41], // from default
-        shadowAnchor: [12, 41], // more manual offset, bottom point of shadow is ~30% along x axis, not at (0, 0)
-      };
-      // @TODO tag list should also go in this order
-      // @TODO make marker color programmatic?
+      // set up custom markers
+      let BaseIcon = L.Icon.extend({
+        options: {
+          shadowUrl: "./leaflet/images/marker-shadow.png",
+          iconSize:     [36, 36],
+          iconAnchor:   [18, 36], // half of width and full height
+          popupAnchor:  [0, -30], // nearly all the height, not sure why negative
+          shadowSize:   [41, 41], // from default
+          shadowAnchor: [12, 41], // more manual offset, bottom point of shadow is ~30% along x axis, not at (0, 0)
+        }
+      });
 
-      // pick the relevant issue to display via marker
+      // pick the relevant issue to display via marker icon
       const marker_issue = point.issues.reduce(
-        (a, c) => ia[a]?.render_priority < ia[c]?.render_priority ? a : c,
+        (a, c) => (ia[a]?.render_priority < ia[c]?.render_priority) ? a : c,
         null);
       const custom_marker = ia[marker_issue ?? "other"];
+      let customIcon = new BaseIcon({iconUrl: custom_marker.icon});
 
-      let customIcon = L.icon({
-        iconUrl: custom_marker.icon,
-        ...marker_defaults,
-      })
-      // let customIcon = L.divIcon();
-
-      var marker = L.marker([point.latitude, point.longitude], {icon: customIcon});
+      // generate marker with icon and content
+      var marker = L.marker(
+        [point.latitude, point.longitude], 
+        {icon: customIcon}
+        );
       marker.bindPopup(content);
       markers.addLayer(marker);
     }
