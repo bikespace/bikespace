@@ -15,7 +15,7 @@ const orderedComponents = [Issue, Location, Time, Comments, Summary];
 
 const SubmissionRoute = () => {
   const [issues, setIssues] = useState<IssueType[]>([]);
-  var [location, setLocation] = useState<LocationLatLng>({
+  const [location, setLocation] = useState<LocationLatLng>({
     // default location is the City Hall
     latitude: 43.65322,
     longitude: -79.384452,
