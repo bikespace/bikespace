@@ -109,9 +109,10 @@ data/
 # misc
 test.py
 
-#swagger-ui 
+#swagger-ui
 swagger-ui/
 
 .env*
 
-.vscode/
+.vscode/*
+!.vscode/extensions.json

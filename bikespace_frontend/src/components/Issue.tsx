@@ -1,23 +1,25 @@
-import React from "react";
-import { IssueType } from "../interfaces/Submission";
-import BaseButton from "./BaseButton";
+import React from 'react';
+import {IssueType} from '../interfaces/Submission';
+import BaseButton from './BaseButton';
 
-const Issue = (props: { issues: IssueType[], onIssuesChanged: (issues: IssueType[]) => void }) => {
-  const issues = props.issues
+const Issue = (props: {
+  issues: IssueType[];
+  onIssuesChanged: (issues: IssueType[]) => void;
+}) => {
+  const issues = props.issues;
   const handleClick = (e: React.FormEvent<HTMLInputElement>) => {
-
     let issueType: IssueType;
     switch (e.currentTarget.dataset.value) {
-      case "not_provided":
+      case 'not_provided':
         issueType = IssueType.NotProvided;
         break;
-      case "full":
+      case 'full':
         issueType = IssueType.Full;
         break;
-      case "damaged":
+      case 'damaged':
         issueType = IssueType.Damaged;
         break;
-      case "abandoned":
+      case 'abandoned':
         issueType = IssueType.Abandoned;
         break;
       default:
@@ -27,9 +29,9 @@ const Issue = (props: { issues: IssueType[], onIssuesChanged: (issues: IssueType
 
     let newIssues: IssueType[];
     if (!issues.includes(issueType)) {
-      newIssues = [...issues, issueType]
+      newIssues = [...issues, issueType];
     } else {
-      newIssues = [...issues.filter((issue) => issue !== issueType)];
+      newIssues = [...issues.filter(issue => issue !== issueType)];
     }
     props.onIssuesChanged(newIssues);
   };

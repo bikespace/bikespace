@@ -1,4 +1,4 @@
-@import "variables";
+@import 'variables';
 
 body {
   overflow: hidden;
@@ -42,7 +42,7 @@ fieldset {
   border: none;
 }
 
-input[type="checkbox"] {
+input[type='checkbox'] {
   /* Add if not using autoprefixer */
   -webkit-appearance: none;
   appearance: none;
@@ -53,7 +53,7 @@ input[type="checkbox"] {
   width: 0;
 }
 
-input[type="radio"] {
+input[type='radio'] {
   /* Add if not using autoprefixer */
   -webkit-appearance: none;
   appearance: none;
@@ -83,8 +83,8 @@ input[type="radio"] {
   }
 }
 
-input[type="radio"]:checked+label .base-button,
-input[type="checkbox"]:checked+label .base-button {
+input[type='radio']:checked + label .base-button,
+input[type='checkbox']:checked + label .base-button {
   background-color: $secondary-color;
   color: white;
 
@@ -92,7 +92,6 @@ input[type="checkbox"]:checked+label .base-button {
     opacity: 1;
   }
 }
-
 
 .base-button {
   position: relative;
@@ -119,7 +118,7 @@ input[type="checkbox"]:checked+label .base-button {
 
   &:focus,
   &:focus-within {
-    box-shadow: 0 0 0px 4px $main-color ;
+    box-shadow: 0 0 0px 4px $main-color;
   }
 
   &:focus:active {
@@ -127,7 +126,7 @@ input[type="checkbox"]:checked+label .base-button {
   }
 }
 
-input[type="radio"]:focus+label .base-button,
-input[type="checkbox"]:focus+label .base-button {
-  box-shadow: 0 0 0px 4px $main-color ;
+input[type='radio']:focus + label .base-button,
+input[type='checkbox']:focus + label .base-button {
+  box-shadow: 0 0 0px 4px $main-color;
 }

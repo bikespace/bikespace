@@ -13,7 +13,13 @@
     "build": "gatsby build",
     "serve": "gatsby serve --host 0.0.0.0",
     "clean": "gatsby clean",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "lint": "gts lint",
+    "compile": "tsc",
+    "fix": "gts fix",
+    "prepare": "npm run compile",
+    "pretest": "npm run compile",
+    "posttest": "npm run lint"
   },
   "dependencies": {
     "@vanilla-extract/css": "^1.10.0",
@@ -39,6 +45,9 @@
     "@types/node": "^18.14.0",
     "@types/react": "^18.0.28",
     "@types/react-dom": "^18.0.11",
+    "@typescript-eslint/eslint-plugin": "^6.18.0",
+    "eslint-plugin-prettier": "^5.1.2",
+    "gts": "^5.2.0",
     "typescript": "^4.9.5"
   }
 }
