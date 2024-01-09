@@ -1,6 +1,6 @@
 # BikeSpace Dashboard
 
-Explore the live dashboard here: [dashboard.bikespace.ca/report](https://dashboard.bikespace.ca/report)
+Explore the live dashboard here: [dashboard.bikespace.ca/report](https://dashboard.bikespace.ca/)
 
 
 ## User Guide
@@ -19,7 +19,7 @@ If you would like to add a feature or contribute a bugfix, please feel free to s
 
 ### Structure
 
-The main page is `report.html` and the components of the dashboard (map, graphs, etc.) are loaded by `app.js`. The main stylesheet is `main.css`.
+The main page is `index.html` and the components of the dashboard (map, graphs, etc.) are loaded by `app.js`. The main stylesheet is `main.css`.
 
 The individual component files can be found in `/js/components/`, including `main.js`, which includes the two base classes used to implement the [observer pattern](https://en.wikipedia.org/wiki/Observer_pattern) to allow for cross-filtering between dashboard components: `Component` and `SharedState`.
 
