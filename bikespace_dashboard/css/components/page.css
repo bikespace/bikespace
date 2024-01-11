@@ -40,11 +40,12 @@ header {
             font-weight: 600;
 
             & li {
-                padding: 0 1rem;
+                margin: 0 0.4rem;
 
                 & a {
                     vertical-align: middle;
                     text-decoration: none;
+                    padding: 0.2rem 0.4rem;
 
                     &:visited {
                         color: var(--color-secondary-dark-grey);
