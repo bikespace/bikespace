@@ -4,10 +4,12 @@ import { render, screen } from "@testing-library/react"
 import Issue from "../src/components/Issue"
 import { IssueType } from "../src/interfaces/Submission";
 
-
-describe('Test test start page', () => {
-    test('button text should say Report a parking issue', () => {
-        const [issues, setIssues] = React.useState<IssueType[]>([]) 
-        render(<Issue issues={issues} onIssuesChanged={setIssues}/>);
-    })
+describe('Test Issues page component', () => {
+    const [issues, setIssues] = React.useState<IssueType[]>([]) ;
+    render(<Issue issues={issues} onIssuesChanged={setIssues}/>);
+    test('Issues page title should title should have correct text', () => {
+        expect(screen.getByRole('heading', {level: 2})).toHaveTextContent('What was the issue?');
+        expect(screen.getByRole('heading', {level: 3})).toHaveTextContent('Choose at least one');
+    });
+    //Need to add tests for the each of list of rendered issues
 })
