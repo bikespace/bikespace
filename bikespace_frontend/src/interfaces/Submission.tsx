@@ -1,9 +1,9 @@
 export enum IssueType {
-  NotProvided = "not_provided",
-  Full = "full",
-  Damaged = "damaged",
-  Abandoned = "abandoned",
-  Other = "other",
+  NotProvided = 'not_provided',
+  Full = 'full',
+  Damaged = 'damaged',
+  Abandoned = 'abandoned',
+  Other = 'other',
 }
 
 export interface LocationLatLng {
@@ -12,24 +12,24 @@ export interface LocationLatLng {
 }
 
 export enum ParkingDuration {
-    Minutes = "minutes",
-    Hours = "hours",
-    Overnight = "overnight",
-    MultiDay = "multiday"
+  Minutes = 'minutes',
+  Hours = 'hours',
+  Overnight = 'overnight',
+  MultiDay = 'multiday',
 }
 
 export interface ParkingTime {
-    date: Date;
-    parkingDuration: ParkingDuration;
+  date: Date;
+  parkingDuration: ParkingDuration;
 }
 
 export interface SubmissionStatus {
-    status: string;
+  status: string;
 }
 
 export default interface Submission {
-  issues: IssueType[],
-  location: LocationLatLng,
-  parkingTime: ParkingTime,
-  comments: String
+  issues: IssueType[];
+  location: LocationLatLng;
+  parkingTime: ParkingTime;
+  comments: String;
 }

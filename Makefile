@@ -73,6 +73,9 @@ fly-deploy-api:
 
 run-frontend:
 	cd $(BIKESPACE_FRONTEND_DIR) && npm install && npm run start
+	
+lint-frontend:
+	cd $(BIKESPACE_FRONTEND_DIR) && npm install && npm run lint
 
 build-frontend:
 	cd $(BIKESPACE_FRONTEND_DIR) && npm install && npm run build

@@ -63,6 +63,8 @@ jobs:
         run: |
           touch bikespace_frontend/.env.production
           echo GATSBY_BIKESPACE_API_URL=$BIKESPACE_API_URL >> bikespace_frontend/.env.production
+      - name: Check code style
+        run: make lint-frontend
       - name: Build gatbsy static frontend
         run: make build-frontend
       - name: Publish to Cloudflare Pages

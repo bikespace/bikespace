@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 type SubmissionProgressBarProps = {
   step: number;
@@ -13,11 +13,11 @@ class SubmissionProgressBar extends React.Component<SubmissionProgressBarProps> 
     return (
       <div id="submission-progress-bar">
         <div id="middle-line" />
-        <div className={`step ${this.isActive(0) ? "active" : ""}`} />
-        <div className={`step ${this.isActive(1) ? "active" : ""}`} />
-        <div className={`step ${this.isActive(2) ? "active" : ""}`} />
-        <div className={`step ${this.isActive(3) ? "active" : ""}`} />
-        <div className={`step ${this.isActive(4) ? "active" : ""}`} />
+        <div className={`step ${this.isActive(0) ? 'active' : ''}`} />
+        <div className={`step ${this.isActive(1) ? 'active' : ''}`} />
+        <div className={`step ${this.isActive(2) ? 'active' : ''}`} />
+        <div className={`step ${this.isActive(3) ? 'active' : ''}`} />
+        <div className={`step ${this.isActive(4) ? 'active' : ''}`} />
       </div>
     );
   }

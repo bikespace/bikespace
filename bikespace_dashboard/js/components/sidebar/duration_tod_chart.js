@@ -1,5 +1,5 @@
 import { Component } from '../main.js';
-import { defaults, cssVarHSL, hslRange } from './plot_utils.js'
+import { defaults, cssVarHSL } from './plot_utils.js'
 
 // Note: "tod" = "Time of Day"
 
