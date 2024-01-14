@@ -1,10 +1,10 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { render, screen } from "@testing-library/react";
 import Location from "../src/components/Location";
 import { LocationLatLng } from "../src/interfaces/Submission";
 
 describe('Test Location page componenet', () => {
-    const [location, setLocation] = React.useState<LocationLatLng>({
+    const [location, setLocation] = useState<LocationLatLng>({
         // default location is the City Hall
         latitude: 43.653220,
         longitude: -79.384452
