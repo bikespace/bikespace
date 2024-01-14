@@ -5,12 +5,59 @@ h1 {
 }
 
 header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
     padding: 12px;
     box-shadow: 8px 0px 8px rgba(0,0,0,0.5); 
-}
 
-header>img {
-    width: 200px;
+    & #bikespace-logo {
+        height: 30px;
+    }
+
+    & #github-logo {
+        height: 1.2rem;
+        padding-right: 0.3rem;
+    }
+
+    & nav {
+        margin-left: auto; /* horizontal align right */
+        align-items: center;
+
+        & ul, li, a {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+
+        & ul {
+            margin: 0;
+            padding: 0;
+
+            list-style-type: none;
+            color: var(--color-secondary-dark-grey);
+            font-weight: 600;
+
+            & li {
+                margin: 0 0.4rem;
+
+                & a {
+                    vertical-align: middle;
+                    text-decoration: none;
+                    padding: 0.2rem 0.4rem;
+
+                    &:visited {
+                        color: var(--color-secondary-dark-grey);
+                    }
+
+                    &:hover {
+                        color: var(--color-primary);
+                    }
+                }
+            }
+        }
+    }
 }
 
 body {

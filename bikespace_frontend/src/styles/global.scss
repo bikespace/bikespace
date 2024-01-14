@@ -17,6 +17,38 @@ h6 {
   margin: 0;
 }
 
+nav {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  padding-bottom: 1.8rem;
+  ul {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    padding: 0;
+    list-style-type: none;
+    color: white;
+    li {
+      white-space: nowrap;
+    }
+    a {
+      display: inline-block;
+      padding: 0.4rem;
+      margin: 0.4rem 1rem;
+      text-decoration: none;
+      color: white;
+      &:visited {
+        color: white;
+      }
+      &:hover {
+        color: $main-color;
+      }
+    }
+  }
+}
+
 .primary-btn {
   background-color: $main-color-bg;
   color: white;
