@@ -13,7 +13,12 @@ export const main = style({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  height: '100vh',
+  position: 'absolute',
+  bottom: 0,
+  top: 0,
+  left: 0,
+  right: 0,
+  // height: '100vh',
 });
 
 export const mainContent = style({
