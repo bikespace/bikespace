@@ -15,7 +15,7 @@ const IndexRoute = ({data: {site}}: PageProps<DataProps>) => {
   return (
     <main className={main}>
       <header>
-        <nav className={"main-nav"} aria-label="Main">
+        <nav className={'main-nav'} aria-label="Main">
           <ul>
             <li>
               <a href="https://bikespace.ca/">About BikeSpace</a>
@@ -25,12 +25,12 @@ const IndexRoute = ({data: {site}}: PageProps<DataProps>) => {
             </li>
             <li>
               <a href="https://github.com/bikespace/bikespace/tree/main/bikespace_frontend">
-              <StaticImage
-                height={20}
-                style={{marginRight: '0.3rem'}}
-                id="github-logo"
-                src="../images/github-mark-white.svg"
-                alt="Github Logo"
+                <StaticImage
+                  height={20}
+                  style={{marginRight: '0.3rem'}}
+                  id="github-logo"
+                  src="../images/github-mark-white.svg"
+                  alt="Github Logo"
                 />
                 Contribute
               </a>
