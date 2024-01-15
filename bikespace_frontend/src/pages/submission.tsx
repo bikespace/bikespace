@@ -125,11 +125,7 @@ const SubmissionRoute = () => {
       case Comments:
         return <Comments comments={comments} onCommentsChanged={setComments} />;
       case Summary:
-        return (
-          <Summary submision={submission} submissionStatus={submissionStatus} />
-        );
-      default:
-        throw new Error(`Invalid component to load at step ${step}`);
+        return <Summary submission={submission} submissionStatus={submissionStatus} />;
     }
   };
 
