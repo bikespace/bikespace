@@ -20,7 +20,7 @@
     "prepare": "npm run compile",
     "pretest": "npm run compile",
     "posttest": "npm run lint",
-    "test": "jest"
+    "test": "jest --coverage"
   },
   "dependencies": {
     "@vanilla-extract/css": "^1.10.0",
