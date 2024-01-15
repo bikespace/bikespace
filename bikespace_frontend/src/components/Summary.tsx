@@ -2,7 +2,10 @@ import React from 'react';
 import Submission from '../interfaces/Submission';
 import {SubmissionStatus} from '../interfaces/Submission';
 
-const Summary = (props: { submission: Submission, submissionStatus: SubmissionStatus }) => {
+const Summary = (props: {
+  submission: Submission;
+  submissionStatus: SubmissionStatus;
+}) => {
   const submission = props.submission;
   const submissionStatus = props.submissionStatus;
   if (submissionStatus.status === 'summary') {
