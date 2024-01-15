@@ -67,6 +67,8 @@ jobs:
         run: make lint-frontend
       - name: Build gatbsy static frontend
         run: make build-frontend
+      - name: Run Jest tests
+        run: make test-frontend
       - name: Publish to Cloudflare Pages
         uses: cloudflare/pages-action@v1.0.0
         with:
