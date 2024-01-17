@@ -1,11 +1,11 @@
 const defaults = {
   layout: {
     dragmode: false,
-    paper_bgcolor: "rgba(0,0,0,0)", // reset chart background to transparent to give more CSS control
+    paper_bgcolor: 'rgba(0,0,0,0)', // reset chart background to transparent to give more CSS control
     modebar: {
-      color: cssVarHSL("--color-primary-d50p", "string"),
-      activecolor: cssVarHSL("--color-primary", "string"),
-      bgcolor: "rgba(0,0,0,0)",
+      color: cssVarHSL('--color-primary-d50p', 'string'),
+      activecolor: cssVarHSL('--color-primary', 'string'),
+      bgcolor: 'rgba(0,0,0,0)',
     },
   },
   config: {
@@ -18,7 +18,7 @@ const defaults = {
       'zoomIn2d',
       'zoomOut2d',
       'autoScale2d',
-      'resetScale2d'
+      'resetScale2d',
     ],
   },
 };
@@ -29,17 +29,21 @@ const defaults = {
  * @param {string=} return_type Type of value to return; default is "object", but can also be "string"
  * @returns {Object} Object with attributes 'hue', 'saturation', and 'lightness'
  */
-function cssVarHSL(key, return_type = "object") {
-  let hsl_str = getComputedStyle(document.documentElement, null).getPropertyValue(key);
-  let pattern = /hsl\((?<hue>\d{1,3})\s?,\s?(?<saturation>\d{1,3})\%\s?,\s?(?<lightness>\d{1,3})\%\s?\)/;
+function cssVarHSL(key, return_type = 'object') {
+  let hsl_str = getComputedStyle(
+    document.documentElement,
+    null
+  ).getPropertyValue(key);
+  let pattern =
+    /hsl\((?<hue>\d{1,3})\s?,\s?(?<saturation>\d{1,3})\%\s?,\s?(?<lightness>\d{1,3})\%\s?\)/;
   let match = pattern.exec(hsl_str);
-  if (return_type == "string") {
+  if (return_type == 'string') {
     return hsl_str;
   } else {
     return {
-      'hue': Number(match.groups.hue),
-      'saturation': Number(match.groups.saturation),
-      'lightness': Number(match.groups.lightness)
+      hue: Number(match.groups.hue),
+      saturation: Number(match.groups.saturation),
+      lightness: Number(match.groups.lightness),
     };
   }
 }
@@ -53,7 +57,7 @@ function cssVarHSL(key, return_type = "object") {
  * @returns {Array} An array of hsl colors
  */
 function hslRange(start, finish, steps, increase = true) {
-  let rel_finish_hue
+  let rel_finish_hue;
   if (finish.hue < start.hue) {
     rel_finish_hue = finish.hue + 360;
   } else {
@@ -64,16 +68,16 @@ function hslRange(start, finish, steps, increase = true) {
   let colors = [start];
   for (let i = 1; i < steps - 1; increase ? i++ : i--) {
     colors.push({
-      'hue': Math.round((start.hue + (i * hue_step))) % 360,
-      'saturation': start.saturation,
-      'lightness': start.lightness
+      hue: Math.round(start.hue + i * hue_step) % 360,
+      saturation: start.saturation,
+      lightness: start.lightness,
     });
   }
   colors.push(finish);
   let color_strings = colors.map(
-    (c) => `hsl(${c.hue}, ${c.saturation}%, ${c.lightness}%)`
-    );
+    c => `hsl(${c.hue}, ${c.saturation}%, ${c.lightness}%)`
+  );
   return color_strings;
 }
 
-export { defaults, cssVarHSL, hslRange };
+export {defaults, cssVarHSL, hslRange};

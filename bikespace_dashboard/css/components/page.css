@@ -1,19 +1,19 @@
-@import "stylevars.css";
+@import 'stylevars.css';
 
 h1 {
-    font-size: 30px;
+  font-size: 30px;
 }
 
 header {
-    padding: 12px;
-    box-shadow: 8px 0px 8px rgba(0,0,0,0.5); 
+  padding: 12px;
+  box-shadow: 8px 0px 8px rgba(0, 0, 0, 0.5);
 }
 
-header>img {
-    width: 200px;
+header > img {
+  width: 200px;
 }
 
 body {
-    margin: 0;
-    font-family: var(--body-font-stack);
+  margin: 0;
+  font-family: var(--body-font-stack);
 }

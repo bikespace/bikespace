@@ -10,11 +10,11 @@ class SharedState {
     this.response_data = data.submissions;
     // Data initially not filtered
     this._display_data = data.submissions;
-    console.log("display data", this._display_data);
+    console.log('display data', this._display_data);
   }
 
   refresh() {
-    for(const module of Object.values(this.components)) {
+    for (const module of Object.values(this.components)) {
       module.refresh();
     }
   }
@@ -31,7 +31,7 @@ class SharedState {
 
   /**
    * Can be called with custom filters object in case there are visuals where applying all the current filters is not desired
-   * @param {obj} filters 
+   * @param {obj} filters
    * @returns filtered data
    */
   applyFilters(filters) {
@@ -39,7 +39,7 @@ class SharedState {
     if (filter_list.length > 0) {
       let return_data = this._display_data;
       for (let [property, filter] of filter_list) {
-        return_data = return_data.filter((r) => filter.test(r[property]));
+        return_data = return_data.filter(r => filter.test(r[property]));
       }
       return return_data;
     } else {
@@ -50,7 +50,6 @@ class SharedState {
   get display_data() {
     return this.applyFilters(this.filters);
   }
-
 }
 
 class Component {
@@ -58,17 +57,17 @@ class Component {
    * Base class for graphs, map, etc. Registers component with shared_state.
    * @param {string} parent JQuery selector for parent element
    * @param {string} root_id tag id for root div
-   * @param {Object} shared_state 
+   * @param {Object} shared_state
    */
   constructor(parent, root_id, shared_state) {
-        // register component
-        this.root_id = root_id;
-        this.shared_state = shared_state;
-        this.root_key = root_id.replace("-", "_");
-        shared_state.components[this.root_key] = this;
+    // register component
+    this.root_id = root_id;
+    this.shared_state = shared_state;
+    this.root_key = root_id.replace('-', '_');
+    shared_state.components[this.root_key] = this;
 
-        // add to page
-        $(parent).append(`<div id="${root_id}"></div>`);
+    // add to page
+    $(parent).append(`<div id="${root_id}"></div>`);
   }
 
   refresh() {
@@ -76,4 +75,4 @@ class Component {
   }
 }
 
-export { SharedState, Component };
+export {SharedState, Component};
