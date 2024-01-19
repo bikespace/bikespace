@@ -126,10 +126,13 @@ const SubmissionRoute = () => {
         return <Comments comments={comments} onCommentsChanged={setComments} />;
       case Summary:
         return (
-          <Summary submision={submission} submissionStatus={submissionStatus} />
+          <Summary
+            submission={submission}
+            submissionStatus={submissionStatus}
+          />
         );
       default:
-        throw new Error(`Invalid component to load at step ${step}`);
+        throw new Error('Undefined component set to load');
     }
   };
 

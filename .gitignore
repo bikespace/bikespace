@@ -116,3 +116,6 @@ swagger-ui/
 
 .vscode/*
 !.vscode/extensions.json
+.vscode/
+
+coverage/

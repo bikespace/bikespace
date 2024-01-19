@@ -1,3 +1,26 @@
 {
-  "extends": "./node_modules/gts/"
+  "extends": "./node_modules/gts/",
+  "env": {
+    "jest": true
+  },
+  "overrides": [
+    {
+      "files": [
+        "**/__tests__/**/*.[jt]s?(x)",
+        "**/?(*.)+(spec|test).[jt]s?(x)"
+      ],
+      "rules": {
+        "node/no-unpublished-import": "off",
+        "@typescript-eslint/no-unused-vars": "off"
+      }
+    }
+  ],
+  "ignorePatterns": [
+    "jest.config.js",
+    "jest-preprocess.js",
+    "gatsby-config.ts",
+    "loadershim.js",
+    "setup-test-env.js",
+    "**/__mocks__/**/*"
+  ]
 }

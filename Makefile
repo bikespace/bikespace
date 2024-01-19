@@ -83,4 +83,7 @@ build-frontend:
 serve-frontend:
 	cd $(BIKESPACE_FRONTEND_DIR) && npm install && npm run serve
 
+test-frontend:
+	cd $(BIKESPACE_FRONTEND_DIR) && npm install && npm run test
+
 .PHONY: setup-py clean pip-freeze run-flask-app lint-py seed-db recreate-db fly-deploy-api fly-deploy-frontend run-frontend build-frontend 
