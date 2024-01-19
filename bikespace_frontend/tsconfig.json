@@ -2,10 +2,7 @@
   "extends": "./node_modules/gts/tsconfig-google.json",
   "compilerOptions": {
     "target": "esnext",
-    "lib": [
-      "dom",
-      "esnext"
-    ],
+    "lib": ["dom", "esnext"],
     "jsx": "react",
     "module": "esnext",
     "rootDir": ".",
@@ -21,6 +18,7 @@
     "./src/**/*",
     "./gatsby-node.ts",
     "./gatsby-config.ts",
-    "./plugins/**/*"
+    "./plugins/**/*",
+    "./__tests__/**/*"
   ]
 }

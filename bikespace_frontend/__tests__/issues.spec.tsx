@@ -4,7 +4,6 @@ import {render, screen} from '@testing-library/react';
 import Issue from '../src/components/Issue';
 import {IssueType} from '../src/interfaces/Submission';
 import '@testing-library/jest-dom';
-import '@types/jest';
 
 describe('Test Issues page component', () => {
   const [issues, setIssues] = useState<IssueType[]>([]);

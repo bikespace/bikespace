@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import {render, screen} from '@testing-library/react';
 import Time from '../src/components/Time';
 import {ParkingDuration} from '../src/interfaces/Submission';
-import '@types/jest';
 
 describe('Test Time page component', () => {
   const [parkingDuration, setParkingDuration] = useState<ParkingDuration>(
@@ -14,6 +13,7 @@ describe('Test Time page component', () => {
       parkingDuration={parkingDuration}
       onParkingDurationChanged={setParkingDuration}
       dateTime={dateTime}
+      onDateTimeChanged={() => {}}
     />
   );
   test('time page title is rendered correctly', () => {

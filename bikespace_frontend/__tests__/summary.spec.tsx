@@ -8,7 +8,6 @@ import {
   SubmissionStatus,
 } from '../src/interfaces/Submission';
 import '@testing-library/jest-dom';
-import '@types/jest';
 
 describe('Test the Summary component page', () => {
   const [issues, setIssues] = useState<IssueType[]>([

@@ -14,7 +14,12 @@ module.exports = {
       '<rootDir>/__mocks__/file-mock.js',
     ...paths,
   },
-  testPathIgnorePatterns: ['node_modules', '\\.cache', '<rootDir>.*/public'],
+  testPathIgnorePatterns: [
+    'node_modules',
+    '\\.cache',
+    '<rootDir>.*/public',
+    'build',
+  ],
   transformIgnorePatterns: [
     'node_modules/(?!(gatsby|gatsby-script|gatsby-link|react-leaflet|@react-leaflet)/)',
   ],
