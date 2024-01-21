@@ -52,7 +52,11 @@
     });
 
     map.on('click', function(e) {
-      umami.track("parking-map-feature-click");
+      try {
+        umami.track("parking-map-feature-click");
+      } catch (error) {
+        console.log(`Analytics not active to track "parking-map-feature-click"`);
+      }
       var features = map.queryRenderedFeatures(e.point, {
         layers: ['bikeparking2-0-existing']
       });
