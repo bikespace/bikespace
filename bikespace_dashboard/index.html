@@ -9,15 +9,23 @@
     <link rel="stylesheet" href="leaflet/leaflet.css" />
     <link rel="stylesheet" href="css/main.css" />
     <link rel="icon" type="image/x-icon" href="assets/bikespace_logo_sm.svg" />
+    <script>
+        if (window.location.host === "dashboard.bikespace.ca") { 
+        let s = document.createElement("script");
+        s.src = "https://eu.umami.is/script.js";
+        s.dataset["websiteId"] = "77b33a3d-0b83-41f2-9b54-589d36903aed"
+        document.head.appendChild(s);
+}
+    </script>
 </head>
 <body>
     <header>
         <img src="assets/bikespace_wordmark.png" alt="BikeSpace logo" id="bikespace-logo" />
         <nav class="main-nav" aria-label="Main">
             <ul>
-                <li><a href="https://bikespace.ca/">About BikeSpace</a></li>
-                <li><a href="https://app.bikespace.ca/">Report Bike Parking Issue</a></li>
-                <li><a href="https://github.com/bikespace/bikespace/tree/main/bikespace_dashboard"><img src="./assets/github-mark.svg" alt="GitHub Logo" id="github-logo" />Contribute</a></li>
+                <li><a href="https://bikespace.ca/" data-umami-event="outbound-landing-page">About BikeSpace</a></li>
+                <li><a href="https://app.bikespace.ca/" data-umami-event="outbound-app">Report Bike Parking Issue</a></li>
+                <li><a href="https://github.com/bikespace/bikespace/tree/main/bikespace_dashboard" data-umami-event="outbound-github"><img src="./assets/github-mark.svg" alt="GitHub Logo" id="github-logo" />Contribute</a></li>
             </ul>
         </nav>
     </header>
