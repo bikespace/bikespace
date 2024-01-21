@@ -13,14 +13,6 @@
       type="image/svg" 
       href="img/bikespace_logo_sm.svg">
 
-    <!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-        })(window,document,'script','dataLayer','GTM-5Z4DS29');</script>
-    <!-- End Google Tag Manager -->
-
     <!-- Bootstrap core CSS -->
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
@@ -37,32 +29,36 @@
 
     <!-- Cookie Popup-->
     <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css" />
-<script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js"></script>
-<script>
-window.addEventListener("load", function(){
-window.cookieconsent.initialise({
-  "palette": {
-    "popup": {
-      "background": "#25c252",
-      "text": "#ffffff"
-    },
-    "button": {
-      "background": "transparent",
-      "text": "#ffffff",
-      "border": "#ffffff"
-    }
-  }
-})});
-</script>
-
+    <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js"></script>
+    <script>
+    window.addEventListener("load", function(){
+    window.cookieconsent.initialise({
+      "palette": {
+        "popup": {
+          "background": "#25c252",
+          "text": "#ffffff"
+        },
+        "button": {
+          "background": "transparent",
+          "text": "#ffffff",
+          "border": "#ffffff"
+        }
+      }
+    })});
+    </script>
+    
+    <!-- Umami Analytics -->
+    <script>
+      if (window.location.host === "bikespace.ca") { 
+        let s = document.createElement("script");
+        s.src = "https://eu.umami.is/script.js";
+        s.dataset["websiteId"] = "9ef6a85e-4ea7-41f8-b9ec-091a2c542ccd"
+        document.head.appendChild(s);
+      }
+    </script>
   </head>
 
   <body id="page-top">
-    <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5Z4DS29"
-    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    <!-- End Google Tag Manager (noscript) -->
-
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
       <div class="container">
@@ -73,25 +69,25 @@ window.cookieconsent.initialise({
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="#about_us">About Us</a>
+              <a class="nav-link js-scroll-trigger" href="#about_us" data-umami-event="nav-about-us">About Us</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link js-scroll-trigger" href="#our_mission">Our Mission</a>
+                <a class="nav-link js-scroll-trigger" href="#our_mission" data-umami-event="nav-our-mission">Our Mission</a>
               </li>
             <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="#build_evidence">Build Evidence</a>
+              <a class="nav-link js-scroll-trigger" href="#build_evidence" data-umami-event="nav-build-evidence">Build Evidence</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="#your_data">Your Data</a>
+              <a class="nav-link js-scroll-trigger" href="#your_data" data-umami-event="nav-your-data">Your Data</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link js-scroll-trigger" href="#find_parking">Find Parking</a>
+                <a class="nav-link js-scroll-trigger" href="#find_parking" data-umami-event="nav-find-parking">Find Parking</a>
               </li>
             <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="#why_now">Why Now</a>
+              <a class="nav-link js-scroll-trigger" href="#why_now" data-umami-event="nav-why-now">Why Now</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link js-scroll-trigger" href="#get_involved">Get Involved</a>
+                <a class="nav-link js-scroll-trigger" href="#get_involved" data-umami-event="nav-get-involved">Get Involved</a>
             </li>
             <!--<li class="nav-item">
                 <a class="nav-button" href="https://app.bikespace.ca">Web App</a>
@@ -110,10 +106,10 @@ window.cookieconsent.initialise({
            <h3 class="mb-5"><span id="highlight">Mapping where we need more and better bike parking in Toronto.</span></h3>
         </div>
           <div class="col-lg-8" style="padding-top: 1em;">
-            <a class="btn btn-primary btn-xl js-scroll-trigger" href="https://app.bikespace.ca">Report an issue</a>
+            <a class="btn btn-primary btn-xl js-scroll-trigger" href="https://app.bikespace.ca" data-umami-event="outbound-app-0">Report an issue</a>
           </div>
           <div class="col-lg-8" style="padding-top: 1em;">
-            <a class="btn btn-primary btn-xl js-scroll-trigger" href="https://dashboard.bikespace.ca">View the Dashboard</a>
+            <a class="btn btn-primary btn-xl js-scroll-trigger" href="https://dashboard.bikespace.ca" data-umami-event="outbound-dashboard-0">View the Dashboard</a>
           </div>
         </div>
       </div>
@@ -135,7 +131,7 @@ window.cookieconsent.initialise({
               <li>creating a data-driven picture to drive change.</li>
             </ul>
             <p class="mb-4">City planners, businesses and property managers all know there is a problem. They want to build simple and safe bike parking across the city but they need solid evidence of demand to invest smartly. Toronto needs a data-driven solution to bike parking—BikeSpace will produce that data and drive real change.</p>
-            <p class="mb-4">We invite you to <a href="https://app.bikespace.ca">try the BikeSpace web app</a> and tell us what you think! If you have feedback about the app, please feel free to share it using the <a href="https://github.com/bikespace/bikespace/issues">issues tab of our GitHub page</a>.</p>
+            <p class="mb-4">We invite you to <a href="https://app.bikespace.ca" data-umami-event="outbound-app-1">try the BikeSpace web app</a> and tell us what you think! If you have feedback about the app, please feel free to share it using the <a href="https://github.com/bikespace/bikespace/issues" data-umami-event="outbound-github-issues">issues tab of our GitHub page</a>.</p>
           </div>
         </div>
       </div>
@@ -230,9 +226,9 @@ window.cookieconsent.initialise({
         
             <p class="mb-4">In practice, all data collected will go through a 3 step process:</p>
               <ol class="mb-4">
-                <li>Any cyclist with access to the internet can <a href="https://app.bikespace.ca/">leave an anonymous report using the app</a>.</li>
-                <li>Anybody can explore the public data on our <a href="https://dashboard.bikespace.ca/report">interactive dashboard</a>.</li>
-                <li>An updated machine-readable dataset is accessible in real-time through <a href="https://api-dev.bikespace.ca/api/v2/docs">our API</a>.</li>
+                <li>Any cyclist with access to the internet can <a href="https://app.bikespace.ca/" data-umami-event="outbound-app-2">leave an anonymous report using the app</a>.</li>
+                <li>Anybody can explore the public data on our <a href="https://dashboard.bikespace.ca/" data-umami-event="outbound-dashboard-1">interactive dashboard</a>.</li>
+                <li>An updated machine-readable dataset is accessible in real-time through <a href="https://api-dev.bikespace.ca/api/v2/docs" data-umami-event="outbound-api">our API</a>.</li>
               </ol>
             <p class="mb-4">The app does not currently record any personally-identifiable information. We only collect high-quality data about bike parking issues to inform those who want to install bike parking. Your participation supports investment in smart, new cycling infrastructure.</p>
           </div>
@@ -255,7 +251,7 @@ window.cookieconsent.initialise({
             <div id="map">
               <iframe id="mapiframe" src="ParkingMap.html"></iframe>
             </div>
-            <p id="cityinfo">Bicycle parking data has been provided by the City of Toronto. <a href="https://www.toronto.ca/city-government/data-research-maps/open-data/open-data-catalogue/#">
+            <p id="cityinfo">Bicycle parking data has been provided by the City of Toronto. <a href="https://www.toronto.ca/city-government/data-research-maps/open-data/open-data-catalogue/#" data-umami-event="outbound-city-open-data">
                 Find out more.</a> </p>
           </div>
         </div>
@@ -289,7 +285,7 @@ window.cookieconsent.initialise({
         </div>
         <div class="row">
             <div class="col-lg-3 mx-auto text-center">
-              <a target="_blank" href="http://eepurl.com/dwQi35">
+              <a target="_blank" href="http://eepurl.com/dwQi35" data-umami-event="outbound-newsletter">
               <img class="sr-icons" src="img/icons/update_icon-01.png" height="56px">
               <h4 class="mb-3">Get updates</h4>
               </a>
@@ -305,14 +301,14 @@ window.cookieconsent.initialise({
             </div>
             -->
             <div class="col-lg-3 mx-auto text-center">
-                <a href="mailto:bikespaceto@gmail.com?subject=I want to promote BikeSpace&body=Hi BikeSpace team,%0D%0A%0D%0AI'm interested in promoting the BikeSpace web app to my community. Send me details for your community engagement toolkit when it's ready!%0D%0A%0D%0ALet me tell you a little about myself...">
+                <a href="mailto:bikespaceto@gmail.com?subject=I want to promote BikeSpace&body=Hi BikeSpace team,%0D%0A%0D%0AI'm interested in promoting the BikeSpace web app to my community. Send me details for your community engagement toolkit when it's ready!%0D%0A%0D%0ALet me tell you a little about myself..." data-umami-event="mailto-promote-bikespace">
                 <img class="sr-icons" src="img/icons/promote_bs_icon-01.png" height="56px">
                 <h4 class="mb-3">Promote BikeSpace</h4>
                 </a>
                 <p>If you already champion of cycling in your community you can lead adoption of the tool.</p>
             </div>
             <div class="col-lg-3 mx-auto text-center">
-                <a href="mailto:bikespaceto@gmail.com?subject=I want to join the BikeSpace team&body=Hi BikeSpace team,%0D%0A%0D%0AI'm really interested in your project and would like to help you build this tool to help make Toronto a more bike-friendly city!%0D%0A%0D%0ALet me tell you a little about myself and what I might contribute to the project...">
+                <a href="mailto:bikespaceto@gmail.com?subject=I want to join the BikeSpace team&body=Hi BikeSpace team,%0D%0A%0D%0AI'm really interested in your project and would like to help you build this tool to help make Toronto a more bike-friendly city!%0D%0A%0D%0ALet me tell you a little about myself and what I might contribute to the project..." data-umami-event="mailto-join-bikespace">
                 <img class="sr-icons" src="img/icons/join_us_icon-01.png" height="56px">
                 <h4 class="mb-3">Join our team</h4>
                 </a>
@@ -338,11 +334,11 @@ window.cookieconsent.initialise({
         <div class="container">
           <div class="row">
             <div class="col-lg-4 mx-auto">
-                <a href="mailto:bikespaceto@gmail.com">
+                <a href="mailto:bikespaceto@gmail.com" data-umami-event="mailto-contact-us">
                 <h5 class="text-white text-center">Contact Us</h5>
                 </a>
                 <br>
-                <a href="mailto:bikespaceto@gmail.com">
+                <a href="mailto:bikespaceto@gmail.com" data-umami-event="mailto-news-release">
                   <h5 class="text-white text-center">News Release</h5>
                 </a>
                 <!--<h5 class="text-white text-center">Have a question? Send us a message!</p>
@@ -364,7 +360,7 @@ window.cookieconsent.initialise({
             <div class="col-lg-4 mx-auto text-right">
               <div class="row">
               <div class="mx-auto text-center">
-              <a href="https://www.facebook.com/BikeSpaceTO">
+              <a href="https://www.facebook.com/BikeSpaceTO" data-umami-event="outbound-facebook">
                 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
                     <path fill="#ffffff" d="M17,2V2H17V6H15C14.31,6 14,6.81 14,7.5V10H14L17,10V14H14V22H10V14H7V10H10V6A4,4 0 0,1 14,2H17Z" />
                 </svg>
@@ -372,7 +368,7 @@ window.cookieconsent.initialise({
               </a>
               </div>
               <div class="mx-auto text-center">
-              <a href="https://twitter.com/BikeSpaceTO">
+              <a href="https://twitter.com/BikeSpaceTO" data-umami-event="outbound-twitter">
                 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
                     <path fill="#ffffff" d="M22.46,6C21.69,6.35 20.86,6.58 20,6.69C20.88,6.16 21.56,5.32 21.88,4.31C21.05,4.81 20.13,5.16 19.16,5.36C18.37,4.5 17.26,4 16,4C13.65,4 11.73,5.92 11.73,8.29C11.73,8.63 11.77,8.96 11.84,9.27C8.28,9.09 5.11,7.38 3,4.79C2.63,5.42 2.42,6.16 2.42,6.94C2.42,8.43 3.17,9.75 4.33,10.5C3.62,10.5 2.96,10.3 2.38,10C2.38,10 2.38,10 2.38,10.03C2.38,12.11 3.86,13.85 5.82,14.24C5.46,14.34 5.08,14.39 4.69,14.39C4.42,14.39 4.15,14.36 3.89,14.31C4.43,16 6,17.26 7.89,17.29C6.43,18.45 4.58,19.13 2.56,19.13C2.22,19.13 1.88,19.11 1.54,19.07C3.44,20.29 5.7,21 8.12,21C16,21 20.33,14.46 20.33,8.79C20.33,8.6 20.33,8.42 20.32,8.23C21.16,7.63 21.88,6.87 22.46,6Z" />
                 </svg>
@@ -381,7 +377,7 @@ window.cookieconsent.initialise({
               </div>
             
               <div class="mx-auto text-center">
-              <a href="https://bikespacetoblog.wordpress.com/">  
+              <a href="https://bikespacetoblog.wordpress.com/" data-umami-event="outbound-wordpress">  
                 <svg style="width:24px;height:24px" viewBox="0 0 48 48">
                     <path fill="#ffffff" d="M31 11c2.2 0 4-1.8 4-4s-1.8-4-4-4-4 1.8-4 4 1.8 4 4 4zM10 24C4.5 24 0 28.5 0 34s4.5 10 10 10 10-4.5 10-10-4.5-10-10-10zm0 17c-3.9 0-7-3.1-7-7s3.1-7 7-7 7 3.1 7 7-3.1 7-7 7zm11.6-19.9l4.7-4.8 1.5 1.5c2.5 2.6 6 4.1 10.1 4.1v-4c-3 0-5.5-1.1-7.3-2.9l-3.9-3.8c-.6-.7-1.6-1.2-2.7-1.2s-2.1.4-2.8 1.2l-5.5 5.5c-.7.7-1.2 1.7-1.2 2.8 0 1.1.5 2.1 1.2 2.9L22 28v10h4V25.5l-4.4-4.4zM38 24c-5.5 0-10 4.5-10 10s4.5 10 10 10 10-4.5 10-10-4.5-10-10-10zm0 17c-3.9 0-7-3.1-7-7s3.1-7 7-7 7 3.1 7 7-3.1 7-7 7z" />
                 </svg>
