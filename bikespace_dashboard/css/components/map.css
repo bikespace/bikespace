@@ -7,6 +7,29 @@
   left: calc(320px + 20px); /* 20px offset for sidebar scrollbar */
   right: 0;
   z-index: 1;
+
+  & .marker-cluster-small {
+    background-color: var(--color-primary-50p);
+    & div {
+      background-color: var(--color-primary-70p);
+    }
+  }
+
+  & .marker-cluster-medium {
+    background-color: var(--color-primary);
+    & div {
+      background-color: var(--color-primary-d20p);
+      color: white;
+    }
+  }
+
+  & .marker-cluster-large {
+    background-color: var(--color-primary-d20p);
+    & div {
+      background-color: var(--color-primary-d50p);
+      color: white;
+    }
+  }
 }
 
 .leaflet-popup-content {
@@ -28,10 +51,12 @@
       background-color: var(--color-secondary-red-light);
     }
 
-    /* color mid-way between secondary-red and secondary-orange */
-    &.issue-full {
-      border-color: hsl(14, 92%, 57%);
-      background-color: hsl(14, 60%, 87%);
+    & .issue {
+      display: inline-block;
+      border: 2px solid;
+      border-radius: 4px;
+      margin: 2px 0px;
+      padding: 2px 4px;
     }
 
     &.issue-damaged {

@@ -1,6 +1,6 @@
 # BikeSpace Dashboard
 
-Explore the live dashboard here: [dashboard.bikespace.ca/report](https://dashboard.bikespace.ca/)
+Explore the live dashboard here: [dashboard.bikespace.ca](https://dashboard.bikespace.ca/)
 
 ## User Guide
 

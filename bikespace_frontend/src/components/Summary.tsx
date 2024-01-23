@@ -3,10 +3,10 @@ import Submission from '../interfaces/Submission';
 import {SubmissionStatus} from '../interfaces/Submission';
 
 const Summary = (props: {
-  submision: Submission;
+  submission: Submission;
   submissionStatus: SubmissionStatus;
 }) => {
-  const submission = props.submision;
+  const submission = props.submission;
   const submissionStatus = props.submissionStatus;
   if (submissionStatus.status === 'summary') {
     return (

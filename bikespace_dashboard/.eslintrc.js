@@ -22,6 +22,7 @@ module.exports = {
     // leaflet
     L: true,
     Plotly: true,
+    umami: true,
   },
 
   overrides: [

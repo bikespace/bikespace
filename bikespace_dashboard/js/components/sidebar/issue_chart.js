@@ -1,18 +1,16 @@
 import {Component} from '../main.js';
-import {defaults, cssVarHSL, hslRange} from './plot_utils.js';
+import {defaults} from './plot_utils.js';
+import {issue_attributes as ia} from '../issue_attributes.js';
 
 class IssueChart extends Component {
   constructor(parent, root_id, shared_state) {
     super(parent, root_id, shared_state);
 
     // Note: no option for spacing between y-axis labels and y-axis line in plotly js, have to add a trailing space
-    this.issue_labels = {
-      not_provided: 'No nearby parking ',
-      full: 'Parking was full ',
-      damaged: 'Parking was damaged ',
-      abandoned: 'Abandoned bicycle ',
-      other: 'Other issue ',
-    };
+    this.issue_labels = {};
+    for (const entry of Object.values(ia)) {
+      this.issue_labels[entry.id] = ia[entry.id].label_short + ' ';
+    }
     this.issue_labels_lookup = Object.fromEntries(
       Object.entries(this.issue_labels).map(a => a.reverse())
     );
@@ -34,14 +32,9 @@ class IssueChart extends Component {
     // this could be done with layout.yaxis.categoryorder in plotly js, but it messes up the color gradient
     this.inputData.sort((a, b) => a.count - b.count);
 
-    // generate and assign colour palette
-    const palette = hslRange(
-      cssVarHSL('--color-secondary-red'),
-      cssVarHSL('--color-primary'),
-      this.inputData.length
-    );
-    for (let i = 0; i < this.inputData.length; i++) {
-      this.inputData[i].color = palette.reverse()[i];
+    // assign colors to inputData
+    for (const i in this.inputData) {
+      this.inputData[i].color = ia[this.inputData[i].type].color;
     }
 
     // set x axis range
@@ -86,7 +79,7 @@ class IssueChart extends Component {
         t: 30,
         r: 20,
         b: 4,
-        l: 130,
+        l: 120,
       },
       width: 320 - 4 * 2,
       height: 200,
@@ -190,6 +183,7 @@ class IssueChart extends Component {
         },
       };
     }
+    super.analytics_event(this.root_id, filters);
     this.shared_state.filters = filters;
   }
 }
