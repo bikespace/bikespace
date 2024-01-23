@@ -1,6 +1,13 @@
 import * as React from 'react';
 import {graphql, PageProps, navigate, HeadProps} from 'gatsby';
-import {button, title, logo, main, mainContent} from '../styles/index.css';
+import {
+  button,
+  title,
+  logo,
+  main,
+  mainContent,
+  footerNav,
+} from '../styles/index.css';
 import {StaticImage} from 'gatsby-plugin-image';
 
 type DataProps = {
@@ -14,8 +21,26 @@ type DataProps = {
 const IndexRoute = ({data: {site}}: PageProps<DataProps>) => {
   return (
     <main className={main}>
-      <header>
-        <nav className={'main-nav'} aria-label="Main">
+      <div className={mainContent}>
+        <h1 className={title}>{site.siteMetadata.title}</h1>
+        <StaticImage
+          className={logo}
+          src="../images/bikespace-logo.svg"
+          alt="BikeSpace Logo"
+          objectFit="contain"
+        />
+        <button
+          className={button}
+          onClick={() => {
+            navigate('/submission');
+          }}
+        >
+          Report a parking issue
+        </button>
+      </div>
+
+      <footer>
+        <nav className={footerNav} aria-label="Main">
           <ul>
             <li>
               <a href="https://bikespace.ca/">About BikeSpace</a>
@@ -37,23 +62,7 @@ const IndexRoute = ({data: {site}}: PageProps<DataProps>) => {
             </li>
           </ul>
         </nav>
-      </header>
-      <div className={mainContent}>
-        <h1 className={title}>{site.siteMetadata.title}</h1>
-        <StaticImage
-          className={logo}
-          src="../images/bikespace-logo.svg"
-          alt="BikeSpace Logo"
-        />
-        <button
-          className={button}
-          onClick={() => {
-            navigate('/submission');
-          }}
-        >
-          Report a parking issue
-        </button>
-      </div>
+      </footer>
     </main>
   );
 };
