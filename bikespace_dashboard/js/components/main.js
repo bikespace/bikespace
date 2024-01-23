@@ -74,6 +74,18 @@ class Component {
   refresh() {
     //pass
   }
+
+  analytics_event(event_name, data) {
+    try {
+      if (data !== undefined) {
+        umami.track(event_name, data);
+      } else {
+        umami.track(event_name);
+      }
+    } catch (error) {
+      console.log(`Analytics not active to track "${event_name}"`, data ?? null);
+    }
+  }
 }
 
 export { SharedState, Component };

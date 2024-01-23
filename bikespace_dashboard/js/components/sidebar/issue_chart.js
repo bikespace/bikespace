@@ -171,6 +171,7 @@ class IssueChart extends Component {
         }
       };
     }
+    super.analytics_event(this.root_id, filters);
     this.shared_state.filters = filters;
   }
 }

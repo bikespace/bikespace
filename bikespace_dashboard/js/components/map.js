@@ -30,6 +30,7 @@ class Map extends Component {
   constructor(parent, root_id, shared_state) {
     super(parent, root_id, shared_state);
     
+    // initialize map and zoom to City of Toronto
     this.lmap = L.map('map').setView([43.733399, -79.376221], 11);
     L.tileLayer(tiles.thunderforest_atlas.url, {
       attribution: tiles.thunderforest_atlas.attribution
@@ -49,12 +50,20 @@ class Map extends Component {
         $(document.activeElement).trigger('click');
       }
     });
+
+    // analytics
+    this.lmap.on('popupopen', (e) => {
+      super.analytics_event(`${this.root_id}_${e.type}`, {
+        submission_id: e.popup.submission_id,
+      });
+    });
   }
 
   buildMarkers() {
     let markers = L.markerClusterGroup();
 
-    // build popup content
+    // BUILD POPUP CONTENT
+    // pre-generate template for each issue type
     const duration_descr = {
       'minutes': "for <strong>less than an hour</strong>",
       'hours': "for <strong>several hours</strong>",
@@ -71,7 +80,9 @@ class Map extends Component {
       ].join("");
     }
 
+    // use templates to generate popup content
     for (let point of this.shared_state.display_data) {
+      // display issue chips in priority order
       point.issues.sort(
         (a, b) => ia[a].render_priority - ia[b].render_priority
         );
@@ -99,6 +110,7 @@ class Map extends Component {
         `<p class="submission-id">ID: ${point.id}</p>`
       ].join("");
 
+      // BUILD MARKERS
       // set up custom markers
       let BaseIcon = L.Icon.extend({
         options: {
@@ -111,7 +123,7 @@ class Map extends Component {
         }
       });
 
-      // pick the relevant issue to display via marker icon
+      // pick the marker icon based on highest priority issue
       const marker_issue = point.issues.reduce(
         (a, c) => (ia[a]?.render_priority < ia[c]?.render_priority) ? a : c,
         null);
@@ -119,12 +131,16 @@ class Map extends Component {
       let customIcon = new BaseIcon({iconUrl: custom_marker.icon});
 
       // generate marker with icon and content
-      var marker = L.marker(
+      let marker = L.marker(
         [point.latitude, point.longitude], 
         {icon: customIcon}
         );
       marker.bindPopup(content);
       markers.addLayer(marker);
+
+      // add ids for lookup during events
+      marker.submission_id = point.id;
+      marker.getPopup().submission_id = point.id;
     }
 
     return markers;
