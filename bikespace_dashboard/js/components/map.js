@@ -20,13 +20,13 @@ class Map extends Component {
     this.lmap.addLayer(this.markers);
 
     // improve keyboard navigation
-    $(document).on('keydown', '.marker-cluster', function (e) {
-      if (e.key == 'Enter' || e.key == ' ') {
+    $(document).on('keydown', '.marker-cluster', e => {
+      if (e.key === 'Enter' || e.key === ' ') {
         $(document.activeElement).trigger('click');
       }
     });
-    $(document).on('keydown', '.leaflet-marker-icon', function (e) {
-      if (e.key == ' ') {
+    $(document).on('keydown', '.leaflet-marker-icon', e => {
+      if (e.key === ' ') {
         // Enter already works
         $(document.activeElement).trigger('click');
       }
@@ -34,7 +34,7 @@ class Map extends Component {
   }
 
   buildMarkers() {
-    let markers = L.markerClusterGroup();
+    const markers = L.markerClusterGroup();
 
     // build popup content
     const duration_descr = {
@@ -44,27 +44,30 @@ class Map extends Component {
       multiday: 'for <strong>several days</strong>',
     };
     const issue_tags = {
-      not_provided: `<div class="issue issue-not-provided">Bicycle parking was not provided</div>`,
-      full: `<div class="issue issue-full">Bicycle parking was full</div>`,
-      damaged: `<div class="issue issue-damaged">Bicycle parking was damaged</div>`,
-      abandoned: `<div class="issue issue-abandoned">Parked bicycle was abandoned</div>`,
-      other: `<div class="issue issue-other">Other issue</div>`,
+      not_provided:
+        '<div class="issue issue-not-provided">Bicycle parking was not provided</div>',
+      full: '<div class="issue issue-full">Bicycle parking was full</div>',
+      damaged:
+        '<div class="issue issue-damaged">Bicycle parking was damaged</div>',
+      abandoned:
+        '<div class="issue issue-abandoned">Parked bicycle was abandoned</div>',
+      other: '<div class="issue issue-other">Other issue</div>',
     };
 
-    for (let point of this.shared_state.display_data) {
-      let issues = point.issues
+    for (const point of this.shared_state.display_data) {
+      const issues = point.issues
         .map(x => issue_tags[x] ?? `<div class="issue">${x}</div>`)
         .join(' ');
-      let parking_time = new Date(point.parking_time);
-      let parking_time_desc = parking_time.toLocaleString('en-CA', {
+      const parking_time = new Date(point.parking_time);
+      const parking_time_desc = parking_time.toLocaleString('en-CA', {
         dateStyle: 'full',
         timeStyle: 'short',
       });
-      let comments = `<strong>Comments:</strong> ${
+      const comments = `<strong>Comments:</strong> ${
         point.comments ? point.comments : '<em>none</em>'
       }`;
 
-      let content = [
+      const content = [
         `<div class="issue-list"><strong>Issues:</strong> ${
           issues ? issues : '<em>none</em>'
         }</div>`,
@@ -75,7 +78,7 @@ class Map extends Component {
         `<p>${comments}</p>`,
         `<p class="submission-id">ID: ${point.id}</p>`,
       ].join('');
-      var marker = L.marker([point.latitude, point.longitude]);
+      const marker = L.marker([point.latitude, point.longitude]);
       marker.bindPopup(content);
       markers.addLayer(marker);
     }

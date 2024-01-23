@@ -1,5 +1,5 @@
 import {Component} from '../main.js';
-import {defaults, cssVarHSL, hslRange} from './plot_utils.js';
+import {defaults, cssVarHSL} from './plot_utils.js';
 
 // Note: "tod" = "Time of Day"
 
@@ -44,7 +44,7 @@ class DurationTimeOfDayChart extends Component {
     // Build chart components
     this.plot = document.getElementById(this.root_id);
 
-    let chart_data = [
+    const chart_data = [
       {
         type: 'heatmap',
         z: this.inputData.map(r =>
@@ -60,15 +60,15 @@ class DurationTimeOfDayChart extends Component {
         colorscale: color_scale,
         text: this.inputData.map(r => r.tods.map(c => c.label + ' ' + c.ampm)), // x labels for hovertemplate but with am/pm
         hovertemplate: [
-          `<b>%{z}</b> reports`,
-          `parking for %{y}`,
-          `between %{text}`,
-          `<extra></extra>`, // hides optional second box
+          '<b>%{z}</b> reports',
+          'parking for %{y}',
+          'between %{text}',
+          '<extra></extra>', // hides optional second box
         ].join('<br>'),
       },
     ];
 
-    let layout = {
+    const layout = {
       title: {
         text: 'Demand Duration by Time of Day',
         x: 0,
@@ -122,7 +122,7 @@ class DurationTimeOfDayChart extends Component {
       ...defaults.layout,
     };
 
-    let config = defaults.config;
+    const config = defaults.config;
 
     // generate plot on page
     Plotly.newPlot(this.plot, chart_data, layout, config);
@@ -158,16 +158,16 @@ class DurationTimeOfDayChart extends Component {
   updateCount() {
     // function to check whether report falls into specified duration and parking_time (time of day)
     const test = (dt_string, hours, pd_input, pd_match) => {
-      let dt = new Date(dt_string);
-      let hour_test = hours.includes(dt.getHours());
-      let duration_test = pd_input === pd_match;
+      const dt = new Date(dt_string);
+      const hour_test = hours.includes(dt.getHours());
+      const duration_test = pd_input === pd_match;
       return hour_test && duration_test;
     };
 
     // count reports for each cross-category
-    let rows = [];
+    const rows = [];
     for (const duration of this._durations) {
-      let cols = [];
+      const cols = [];
       for (const tod of this._tod_bins) {
         cols.push(
           Object.assign(
@@ -202,7 +202,7 @@ class DurationTimeOfDayChart extends Component {
    */
   toggleSelected(index) {
     const {row, column} = index;
-    if (row === this._selected?.row && column == this._selected?.column) {
+    if (row === this._selected?.row && column === this._selected?.column) {
       this._selected = null;
     } else {
       this._selected = index;
@@ -219,7 +219,7 @@ class DurationTimeOfDayChart extends Component {
 
     // need to know location of max value(s) to add number annotation
     const indexes_of_max = z.reduce((ra, rcv, rci) => {
-      let rmaxes = rcv.reduce((ca, ccv, cci) => {
+      const rmaxes = rcv.reduce((ca, ccv, cci) => {
         if (ccv === max) ca.push([rci, cci]);
         return ca;
       }, []);

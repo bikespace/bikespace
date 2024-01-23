@@ -8,11 +8,11 @@ class SummaryBox extends Component {
 
   build() {
     // Calculate date range of entries
-    let submission_dates = this.shared_state.display_data.map(
+    const submission_dates = this.shared_state.display_data.map(
       s => new Date(s.parking_time)
     );
-    let earliest_entry = submission_dates.reduce((p, c) => (p < c ? p : c));
-    let latest_entry = submission_dates.reduce((p, c) => (p > c ? p : c));
+    const earliest_entry = submission_dates.reduce((p, c) => (p < c ? p : c));
+    const latest_entry = submission_dates.reduce((p, c) => (p > c ? p : c));
 
     // Date formatting
     const date_options = {
@@ -21,14 +21,14 @@ class SummaryBox extends Component {
       day: 'numeric',
     };
 
-    let content = [
-      `<div class="flex">`,
+    const content = [
+      '<div class="flex">',
       `<div id="entry-count">${this.shared_state.display_data.length.toLocaleString(
         'en-CA'
       )}</div>`,
-      `<button class="clear-filter" type="button" hidden><img src="assets/clear-filter.svg"/> Clear Filters</button>`,
-      `</div>`,
-      `<div class="summary-desc">Total Reports</div>`,
+      '<button class="clear-filter" type="button" hidden><img src="assets/clear-filter.svg"/> Clear Filters</button>',
+      '</div>',
+      '<div class="summary-desc">Total Reports</div>',
       `<div class="summary-desc">${earliest_entry.toLocaleDateString(
         'en-CA',
         date_options
@@ -37,7 +37,7 @@ class SummaryBox extends Component {
 
     $(`#${this.root_id}`).empty().append(content);
 
-    $(`#${this.root_id} button.clear-filter`).on('click', e => {
+    $(`#${this.root_id} button.clear-filter`).on('click', () => {
       this.shared_state.filters = {};
     });
 

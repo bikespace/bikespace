@@ -35,10 +35,10 @@ class SharedState {
    * @returns filtered data
    */
   applyFilters(filters) {
-    let filter_list = Object.entries(filters);
+    const filter_list = Object.entries(filters);
     if (filter_list.length > 0) {
       let return_data = this._display_data;
-      for (let [property, filter] of filter_list) {
+      for (const [property, filter] of filter_list) {
         return_data = return_data.filter(r => filter.test(r[property]));
       }
       return return_data;

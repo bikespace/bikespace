@@ -30,14 +30,14 @@ const defaults = {
  * @returns {Object} Object with attributes 'hue', 'saturation', and 'lightness'
  */
 function cssVarHSL(key, return_type = 'object') {
-  let hsl_str = getComputedStyle(
+  const hsl_str = getComputedStyle(
     document.documentElement,
     null
   ).getPropertyValue(key);
-  let pattern =
-    /hsl\((?<hue>\d{1,3})\s?,\s?(?<saturation>\d{1,3})\%\s?,\s?(?<lightness>\d{1,3})\%\s?\)/;
-  let match = pattern.exec(hsl_str);
-  if (return_type == 'string') {
+  const pattern =
+    /hsl\((?<hue>\d{1,3})\s?,\s?(?<saturation>\d{1,3})%\s?,\s?(?<lightness>\d{1,3})%\s?\)/;
+  const match = pattern.exec(hsl_str);
+  if (return_type === 'string') {
     return hsl_str;
   } else {
     return {
@@ -63,9 +63,9 @@ function hslRange(start, finish, steps, increase = true) {
   } else {
     rel_finish_hue = finish.hue;
   }
-  let hue_var = rel_finish_hue - start.hue;
-  let hue_step = hue_var / (steps - 1);
-  let colors = [start];
+  const hue_var = rel_finish_hue - start.hue;
+  const hue_step = hue_var / (steps - 1);
+  const colors = [start];
   for (let i = 1; i < steps - 1; increase ? i++ : i--) {
     colors.push({
       hue: Math.round(start.hue + i * hue_step) % 360,
@@ -74,7 +74,7 @@ function hslRange(start, finish, steps, increase = true) {
     });
   }
   colors.push(finish);
-  let color_strings = colors.map(
+  const color_strings = colors.map(
     c => `hsl(${c.hue}, ${c.saturation}%, ${c.lightness}%)`
   );
   return color_strings;

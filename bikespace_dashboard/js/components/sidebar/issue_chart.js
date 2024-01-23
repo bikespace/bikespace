@@ -18,11 +18,11 @@ class IssueChart extends Component {
     );
 
     // summarize data
-    let issues = new Set(
+    const issues = new Set(
       this.shared_state.display_data.reduce((a, b) => a.concat(b['issues']), [])
     );
     this.inputData = [];
-    for (let issue of issues) {
+    for (const issue of issues) {
       this.inputData.push({
         type: issue,
         label: this.issue_labels[issue] ?? issue,
@@ -35,7 +35,7 @@ class IssueChart extends Component {
     this.inputData.sort((a, b) => a.count - b.count);
 
     // generate and assign colour palette
-    let palette = hslRange(
+    const palette = hslRange(
       cssVarHSL('--color-secondary-red'),
       cssVarHSL('--color-primary'),
       this.inputData.length
@@ -51,7 +51,7 @@ class IssueChart extends Component {
     // Build chart components
     this.plot = document.getElementById(this.root_id);
 
-    let chart_data = [
+    const chart_data = [
       {
         type: 'bar',
         orientation: 'h', // horizontal
@@ -65,7 +65,7 @@ class IssueChart extends Component {
       },
     ];
 
-    let layout = {
+    const layout = {
       title: {
         text: 'Problem Type Frequency',
         x: 0,
@@ -93,7 +93,7 @@ class IssueChart extends Component {
       ...defaults.layout,
     };
 
-    let config = defaults.config;
+    const config = defaults.config;
 
     // generate plot on page
     Plotly.newPlot(this.plot, chart_data, layout, config);
@@ -101,7 +101,7 @@ class IssueChart extends Component {
     // clicking on the bar trace updates the shared filter
     this.plot.on('plotly_click', data => {
       const filter_issue = data.points[0].y;
-      const bar_index = this.plot.data[0].y.findIndex(x => x == filter_issue);
+      const bar_index = this.plot.data[0].y.findIndex(x => x === filter_issue);
       this.toggleSelected(bar_index);
       this.setFilter(filter_issue);
     });
@@ -166,7 +166,7 @@ class IssueChart extends Component {
       const label_text = e.target.attributes['data-unformatted'].value;
       const filter_issue = this.issue_labels_lookup[label_text];
       // selectedpoints doesn't work with the category name
-      const bar_index = this.plot.data[0].y.findIndex(x => x == filter_issue);
+      const bar_index = this.plot.data[0].y.findIndex(x => x === filter_issue);
 
       this.toggleSelected(bar_index);
       this.setFilter(filter_issue);
@@ -178,9 +178,9 @@ class IssueChart extends Component {
    * @param {string} filter_issue
    */
   setFilter(filter_issue) {
-    let filters = this.shared_state.filters;
+    const filters = this.shared_state.filters;
     // reset to no filter on toggle
-    if (filters?.issues?.contains == filter_issue) {
+    if (filters?.issues?.contains === filter_issue) {
       delete filters.issues;
     } else {
       filters.issues = {

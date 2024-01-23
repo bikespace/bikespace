@@ -7,17 +7,13 @@ import {DurationTimeOfDayChart} from './components/sidebar/duration_tod_chart.js
 
 $.ajax({
   url: 'https://api-dev.bikespace.ca/api/v2/submissions?limit=5000',
-  success: function (data, textStatus, jqXHR) {
+  success: function (data) {
     const shared_state = new SharedState(data);
-    const sidebar = new Component('body', 'sidebar', shared_state);
-    const summary_box = new SummaryBox('#sidebar', 'summary-box', shared_state);
-    const issue_chart = new IssueChart('#sidebar', 'issue-chart', shared_state);
-    const day_chart = new DayChart('#sidebar', 'day-chart', shared_state);
-    const duration_tod_chart = new DurationTimeOfDayChart(
-      '#sidebar',
-      'duration-tod-chart',
-      shared_state
-    );
-    const map = new Map('body', 'map', shared_state);
+    new Component('body', 'sidebar', shared_state);
+    new SummaryBox('#sidebar', 'summary-box', shared_state);
+    new IssueChart('#sidebar', 'issue-chart', shared_state);
+    new DayChart('#sidebar', 'day-chart', shared_state);
+    new DurationTimeOfDayChart('#sidebar', 'duration-tod-chart', shared_state);
+    new Map('body', 'map', shared_state);
   },
 });
