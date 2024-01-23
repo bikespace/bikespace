@@ -10,24 +10,36 @@ globalStyle('body', {
 });
 
 export const main = style({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
   position: 'absolute',
   bottom: 0,
   top: 0,
   left: 0,
   right: 0,
-  // height: '100vh',
+  overflowY: 'scroll',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  flex: '1 1 auto',
 });
 
 export const mainContent = style({
   display: 'flex',
   flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center',
+  textAlign: 'center',
+  gap: 25,
+  flexGrow: '1',
+});
+
+export const footerNav = style({
+  position: 'relative',
 });
 
 export const logo = style({
-  width: 200,
+  flex: '1 1 50px',
+  maxWidth: 200,
+  maxHeight: 200,
 });
 
 export const title = style({
@@ -37,7 +49,6 @@ export const title = style({
 });
 
 export const button = style({
-  marginTop: 60,
   padding: 15,
   borderRadius: 50,
 
