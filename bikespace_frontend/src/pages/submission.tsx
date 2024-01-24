@@ -1,4 +1,10 @@
-import React, {useState, useEffect} from 'react';
+import React, {
+  useState,
+  useEffect,
+  useMemo,
+  ReactNode,
+  useCallback,
+} from 'react';
 import {HeadProps, graphql, navigate} from 'gatsby';
 import '../styles/submission.scss';
 import {StaticImage} from 'gatsby-plugin-image';
@@ -10,8 +16,6 @@ import {
   ParkingDuration,
   SubmissionStatus,
 } from '../interfaces/Submission';
-
-const orderedComponents = [Issue, Location, Time, Comments, Summary];
 
 const SubmissionRoute = () => {
   const [issues, setIssues] = useState<IssueType[]>([]);
@@ -50,6 +54,37 @@ const SubmissionRoute = () => {
   }, []);
 
   const [step, setStep] = useState(0);
+
+  const [error, setError] = useState<string | null>(null);
+
+  const steps = useMemo(
+    () => [
+      {
+        component: Issue,
+        beforeNext: () => {
+          if (issues.length === 0) {
+            setError('Please select at least one issue');
+            return false;
+          }
+          return true;
+        },
+      },
+      {
+        component: Location,
+      },
+      {
+        component: Time,
+      },
+      {
+        component: Comments,
+      },
+      {
+        component: Summary,
+      },
+    ],
+    [issues]
+  );
+
   const handleStepChanged = (i: number) => {
     if (!locationLoaded) {
       return false;
@@ -57,8 +92,12 @@ const SubmissionRoute = () => {
 
     if (i === -1 && step > 0 && submissionStatus.status === 'summary') {
       setStep(step - 1);
-    } else if (i === 1 && step < orderedComponents.length - 1) {
-      setStep(step + 1);
+    } else if (i === 1 && step < steps.length - 1) {
+      const beforeNext = steps[step].beforeNext;
+      if ((typeof beforeNext === 'function' && beforeNext()) || !beforeNext) {
+        setStep(step + 1);
+        setError(null);
+      }
     } else if (i === -1 && step > 0 && submissionStatus.status !== 'summary') {
       navigate('/');
     }
@@ -107,8 +146,8 @@ const SubmissionRoute = () => {
     }
   }
 
-  const ComponentToLoad = () => {
-    switch (orderedComponents[step]) {
+  const ComponentToLoad = useCallback(() => {
+    switch (steps[step].component) {
       case Issue:
         return <Issue issues={issues} onIssuesChanged={setIssues} />;
       case Location:
@@ -134,7 +173,7 @@ const SubmissionRoute = () => {
       default:
         throw new Error('Undefined component set to load');
     }
-  };
+  }, [step]);
 
   return (
     <div id="submission">
@@ -153,6 +192,7 @@ const SubmissionRoute = () => {
 
           <section id="main-content-body">{ComponentToLoad()}</section>
 
+          {error && <p className="error-message">{error}</p>}
           <footer>
             {/* 'Back' button logic */}
             {submissionStatus.status !== 'success' && (
@@ -175,7 +215,7 @@ const SubmissionRoute = () => {
             )}
             <button
               className={`primary-btn ${
-                step === orderedComponents.length - 1 ? 'display-none' : ' '
+                step === steps.length - 1 ? 'display-none' : ' '
               }`}
               onClick={() => handleStepChanged(1)}
             >
@@ -183,7 +223,7 @@ const SubmissionRoute = () => {
             </button>
             <button
               className={`primary-btn ${
-                step === orderedComponents.length - 1 &&
+                step === steps.length - 1 &&
                 submissionStatus.status === 'summary'
                   ? ''
                   : 'display-none'
