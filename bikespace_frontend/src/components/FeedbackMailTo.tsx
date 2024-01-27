@@ -1,9 +1,9 @@
 import React from 'react';
 import {StaticImage} from 'gatsby-plugin-image';
 
-const feedback_to = 'bikespaceto@gmail.com';
-const feedback_subject = 'BikeSpace App Feedback';
-const feedback_body = `----------
+const feedbackTo = 'bikespaceto@gmail.com';
+const feedbackSubject = 'BikeSpace App Feedback';
+const feedbackBody = `----------
 Please describe your feedback about app.bikespace.ca below. We welcome both positive feedback (e.g. I found x feature useful) and constructive feedback (e.g. y is broken, I wish the app did z).
 
 Especially for constructive feedback, you can help us by letting us know:
@@ -18,15 +18,15 @@ Thank you for taking the time to help us make the app better!
 Hi BikeSpace team,
 
 `;
-const feedback_href = [
-  `mailto:${feedback_to}`,
-  `?subject=${encodeURIComponent(feedback_subject)}`,
-  `&body=${encodeURIComponent(feedback_body)}`,
+const feedbackHref = [
+  `mailto:${feedbackTo}`,
+  `?subject=${encodeURIComponent(feedbackSubject)}`,
+  `&body=${encodeURIComponent(feedbackBody)}`,
 ].join('');
 
 const FeedbackMailTo = () => {
   return (
-    <a href={feedback_href}>
+    <a href={feedbackHref}>
       <StaticImage
         height={20}
         style={{marginRight: '0.3rem'}}
