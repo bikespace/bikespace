@@ -1,67 +1,69 @@
-@import "stylevars.css";
+@import 'stylevars.css';
 
 h1 {
-    font-size: 30px;
+  font-size: 30px;
 }
 
 header {
-    display: flex;
-    flex-direction: row;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  padding: 12px;
+  box-shadow: 8px 0px 8px rgba(0, 0, 0, 0.5);
+
+  & #bikespace-logo {
+    height: 30px;
+  }
+
+  & #github-logo {
+    height: 1.2rem;
+    padding-right: 0.3rem;
+  }
+
+  & nav {
+    margin-left: auto; /* horizontal align right */
     align-items: center;
 
-    padding: 12px;
-    box-shadow: 8px 0px 8px rgba(0,0,0,0.5); 
-
-    & #bikespace-logo {
-        height: 30px;
+    & ul,
+    li,
+    a {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
     }
 
-    & #github-logo {
-        height: 1.2rem;
-        padding-right: 0.3rem;
-    }
+    & ul {
+      margin: 0;
+      padding: 0;
 
-    & nav {
-        margin-left: auto; /* horizontal align right */
-        align-items: center;
+      list-style-type: none;
+      color: var(--color-secondary-dark-grey);
+      font-weight: 600;
 
-        & ul, li, a {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-        }
+      & li {
+        margin: 0 0.4rem;
 
-        & ul {
-            margin: 0;
-            padding: 0;
+        & a {
+          vertical-align: middle;
+          text-decoration: none;
+          padding: 0.2rem 0.4rem;
+          color: var(--color-secondary-dark-grey);
 
-            list-style-type: none;
+          &:visited {
             color: var(--color-secondary-dark-grey);
-            font-weight: 600;
+          }
 
-            & li {
-                margin: 0 0.4rem;
-
-                & a {
-                    vertical-align: middle;
-                    text-decoration: none;
-                    padding: 0.2rem 0.4rem;
-                    color: var(--color-secondary-dark-grey);
-
-                    &:visited {
-                        color: var(--color-secondary-dark-grey);
-                    }
-
-                    &:hover {
-                        color: var(--color-primary);
-                    }
-                }
-            }
+          &:hover {
+            color: var(--color-primary);
+          }
         }
+      }
     }
+  }
 }
 
 body {
-    margin: 0;
-    font-family: var(--body-font-stack);
+  margin: 0;
+  font-family: var(--body-font-stack);
 }

@@ -1,5 +1,5 @@
-import { Component } from '../main.js';
-import { defaults, cssVarHSL } from './plot_utils.js'
+import {Component} from '../main.js';
+import {defaults, cssVarHSL} from './plot_utils.js';
 
 class DayChart extends Component {
   constructor(parent, root_id, shared_state) {
@@ -7,13 +7,13 @@ class DayChart extends Component {
 
     // summarize data
     const days = [
-      {'index': 1, 'chart_order': 0, 'name': 'Monday'},
-      {'index': 2, 'chart_order': 1, 'name': 'Tuesday'},
-      {'index': 3, 'chart_order': 2, 'name': 'Wednesday'},
-      {'index': 4, 'chart_order': 3, 'name': 'Thursday'},
-      {'index': 5, 'chart_order': 4, 'name': 'Friday'},
-      {'index': 6, 'chart_order': 5, 'name': 'Saturday'},
-      {'index': 0, 'chart_order': 6, 'name': 'Sunday'},
+      {index: 1, chart_order: 0, name: 'Monday'},
+      {index: 2, chart_order: 1, name: 'Tuesday'},
+      {index: 3, chart_order: 2, name: 'Wednesday'},
+      {index: 4, chart_order: 3, name: 'Thursday'},
+      {index: 5, chart_order: 4, name: 'Friday'},
+      {index: 6, chart_order: 5, name: 'Saturday'},
+      {index: 0, chart_order: 6, name: 'Sunday'},
     ];
 
     this.inputData = days;
@@ -26,22 +26,24 @@ class DayChart extends Component {
     // Build chart components
     this.plot = document.getElementById(this.root_id);
 
-    let chart_data = [{
-      type: 'bar',
-      x: this.inputData.map((r) => r.name.slice(0, 3)),
-      y: this.inputData.map((r) => r.count),
-      marker: {
-        color: cssVarHSL("--color-primary", "string")
+    const chart_data = [
+      {
+        type: 'bar',
+        x: this.inputData.map(r => r.name.slice(0, 3)),
+        y: this.inputData.map(r => r.count),
+        marker: {
+          color: cssVarHSL('--color-primary', 'string'),
+        },
+        text: this.inputData.map(r => r.count.toString()),
+        textposition: 'outside',
+        cliponaxis: false,
+        hoverinfo: 'none', // remove hover labels
       },
-      text: this.inputData.map((r) => r.count.toString()),
-      textposition: "outside",
-      cliponaxis: false,
-      hoverinfo: "none", // remove hover labels
-    }];
+    ];
 
-    let layout = {
+    const layout = {
       title: {
-        text: "Frequency by Day",
+        text: 'Frequency by Day',
         x: 0,
         // y: 1,
         pad: {
@@ -68,19 +70,18 @@ class DayChart extends Component {
       ...defaults.layout,
     };
 
-    let config = defaults.config;
+    const config = defaults.config;
 
     // generate plot on page
     Plotly.newPlot(this.plot, chart_data, layout, config);
 
     // clicking on the bar trace updates the shared filter
-    this.plot.on('plotly_click', (data) => {
+    this.plot.on('plotly_click', data => {
       const point_index = data.points[0].pointIndex;
-      const day_index = days.find((d) => d.chart_order === point_index).index;
+      const day_index = days.find(d => d.chart_order === point_index).index;
       this.toggleSelected(point_index);
       this.setFilter(day_index);
     });
-
   }
 
   refresh() {
@@ -92,11 +93,15 @@ class DayChart extends Component {
     }
 
     // restyle arguments must be wrapped in arrays since they are applied element-wise against the trace(s) specified in the third parameter
-    Plotly.restyle(this.plot, {
-      'y': [this.inputData.map((r) => r.count)],
-      'text': [this.inputData.map((r) => r.count.toString())],
-      'selectedpoints': [this._selected === null ? null : [this._selected]],
-    }, [0]);
+    Plotly.restyle(
+      this.plot,
+      {
+        y: [this.inputData.map(r => r.count)],
+        text: [this.inputData.map(r => r.count.toString())],
+        selectedpoints: [this._selected === null ? null : [this._selected]],
+      },
+      [0]
+    );
   }
 
   /**
@@ -104,16 +109,20 @@ class DayChart extends Component {
    */
   updateCount() {
     // Remove day filter for this chart, otherwise the other bars all go to zero
-    let filters = {...this.shared_state.filters}; // copy by values
+    const filters = {...this.shared_state.filters}; // copy by values
     if (filters?.parking_time) {
       delete filters.parking_time;
     }
-    let display_data_all_days = this.shared_state.applyFilters(filters);
+    const display_data_all_days = this.shared_state.applyFilters(filters);
 
-    this.inputData = this.inputData.map((r) => 
-      Object.assign(r, {'count': display_data_all_days.reduce(
-        (a, b) => a + (new Date(b['parking_time']).getDay() === r.index ? 1 : 0), 0
-        )})
+    this.inputData = this.inputData.map(r =>
+      Object.assign(r, {
+        count: display_data_all_days.reduce(
+          (a, b) =>
+            a + (new Date(b['parking_time']).getDay() === r.index ? 1 : 0),
+          0
+        ),
+      })
     );
   }
 
@@ -134,22 +143,21 @@ class DayChart extends Component {
    * @param {int} day_index
    */
   setFilter(day_index) {
-    let filters = this.shared_state.filters;
+    const filters = this.shared_state.filters;
     // reset to no filter on toggle
-    if (filters?.parking_time?.day_index == day_index) {
+    if (filters?.parking_time?.day_index === day_index) {
       delete filters.parking_time;
     } else {
       filters.parking_time = {
-        'day_index': day_index,
-        'test': function(time_str) {
+        day_index: day_index,
+        test: function (time_str) {
           return new Date(time_str).getDay() === day_index;
-        }
+        },
       };
     }
     super.analytics_event(this.root_id, filters);
     this.shared_state.filters = filters;
   }
-
 }
 
-export { DayChart };
+export {DayChart};
