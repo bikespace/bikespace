@@ -3,7 +3,14 @@ import {HeadProps, graphql, navigate} from 'gatsby';
 import '../styles/submission.scss';
 import {StaticImage} from 'gatsby-plugin-image';
 import SubmissionProgressBar from '../components/SubmissionProgressBar';
-import {Issue, Location, Time, Comments, Summary} from '../components/';
+import {
+  Issue,
+  Location,
+  Time,
+  Comments,
+  Summary,
+  FeedbackMailTo,
+} from '../components/';
 import {
   IssueType,
   LocationLatLng,
@@ -144,6 +151,7 @@ const SubmissionRoute = () => {
           src="../images/header-logo.svg"
           alt="bike space logo"
         />
+        <FeedbackMailTo />
       </header>
       <main>
         <div id="main-content">
