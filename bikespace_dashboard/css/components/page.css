@@ -16,11 +16,6 @@ header {
     height: 30px;
   }
 
-  & #github-logo {
-    height: 1.2rem;
-    padding-right: 0.3rem;
-  }
-
   & nav {
     margin-left: auto; /* horizontal align right */
     align-items: center;
@@ -59,6 +54,11 @@ header {
           }
         }
       }
+    }
+
+    & img {
+      height: 1.2rem;
+      padding-right: 0.3rem;
     }
   }
 }
