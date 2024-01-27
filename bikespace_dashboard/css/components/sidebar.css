@@ -1,24 +1,24 @@
-@import "stylevars.css";
+@import 'stylevars.css';
 
-#sidebar { 
-  position: absolute; z-index: 100; 
-  left: 0; 
-  top: 54px; 
-  bottom: 0; 
+#sidebar {
+  position: absolute;
+  z-index: 100;
+  left: 0;
+  top: 54px;
+  bottom: 0;
   width: calc(320px + 20px); /* 20px offset for sidebar scrollbar */
-  background-color: var(--color-primary-20p); 
-  box-shadow: 0px 8px 8px rgba(0,0,0,0.5);
+  background-color: var(--color-primary-20p);
+  box-shadow: 0px 8px 8px rgba(0, 0, 0, 0.5);
   overflow-y: auto;
   overflow-x: hidden;
 }
-
 
 #summary-box {
   margin: 4px;
   padding: 4px;
   padding-left: calc(4px * 2);
   padding-right: calc(4px * 2);
-  border-radius: 4px; 
+  border-radius: 4px;
   background-color: var(--color-primary-d50p);
   color: white;
 
@@ -60,7 +60,7 @@
     }
 
     &:focus {
-      box-shadow: 0 0 0 .2rem var(--color-primary-20p);
+      box-shadow: 0 0 0 0.2rem var(--color-primary-20p);
     }
 
     &:active {
@@ -79,19 +79,19 @@
   }
 }
 
-
-
-#issue-chart, #day-chart, #duration-tod-chart {
+#issue-chart,
+#day-chart,
+#duration-tod-chart {
   margin: 4px;
   padding: 4px;
-  border-radius: 4px; 
+  border-radius: 4px;
   background-color: white;
 }
 
 #issue-chart {
   & .ytick {
     pointer-events: all;
-    
+
     &:hover {
       cursor: pointer;
     }
