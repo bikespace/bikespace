@@ -52,14 +52,20 @@ class SharedState {
   }
 }
 
+/**
+ * @typedef {Object} ComponentOptions
+ * @property {String} [className=''] Additional class names for the component
+ */
+
 class Component {
   /**
    * Base class for graphs, map, etc. Registers component with shared_state.
    * @param {string} parent JQuery selector for parent element
    * @param {string} root_id tag id for root div
    * @param {Object} shared_state
+   * @param {ComponentOptions} [options = {}] Options for the component
    */
-  constructor(parent, root_id, shared_state) {
+  constructor(parent, root_id, shared_state, {className = ''} = {}) {
     // register component
     this.root_id = root_id;
     this.shared_state = shared_state;
@@ -67,7 +73,7 @@ class Component {
     shared_state.components[this.root_key] = this;
 
     // add to page
-    $(parent).append(`<div id="${root_id}"></div>`);
+    $(parent).append(`<div id="${root_id}" class="${className}"></div>`);
   }
 
   refresh() {

@@ -79,9 +79,7 @@
   }
 }
 
-#issue-chart,
-#day-chart,
-#duration-tod-chart {
+.sidebar-panel {
   margin: 4px;
   padding: 4px;
   border-radius: 4px;

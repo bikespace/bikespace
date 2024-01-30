@@ -27,8 +27,15 @@ const tiles = {
 };
 
 class Map extends Component {
-  constructor(parent, root_id, shared_state) {
-    super(parent, root_id, shared_state);
+  /**
+   * Base class for graphs, map, etc. Registers component with shared_state.
+   * @param {string} parent JQuery selector for parent element
+   * @param {string} root_id tag id for root div
+   * @param {Object} shared_state
+   * @param {import('./main.js').ComponentOptions} [options = {}] Options for the component
+   */
+  constructor(parent, root_id, shared_state, options = {}) {
+    super(parent, root_id, shared_state, options);
 
     // initialize map and zoom to City of Toronto
     this.lmap = L.map('map').setView([43.733399, -79.376221], 11);
