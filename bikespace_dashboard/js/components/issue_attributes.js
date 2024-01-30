@@ -49,4 +49,10 @@ const issue_attributes = {
   },
 };
 
-export {issue_attributes};
+const issueIdToLabel = (id, {long = false} = {}) => {
+  const issue = issue_attributes[id];
+  if (!issue) return 'Unknown Issue';
+  return long ? issue.label_long : issue.label_short;
+};
+
+export {issue_attributes, issueIdToLabel};

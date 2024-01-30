@@ -1,3 +1,4 @@
+import {makeIssueLabel, makeIssueLabelById} from '../issue_label.js';
 import {Component} from '../main.js';
 
 /**
@@ -35,7 +36,12 @@ class Submissions extends Component {
   }
 
   buildTitle() {
-    const title = $('<h2>Latest submissions</h2>');
+    const titleSection = $(`<div>
+      <h2>Latest submissions</h2>
+      ${this.isOverview ? '<a href="#view-all">View all</a>' : ''}
+    </div>`);
+
+    const title = $(titleSection.children('h2')[0]);
 
     const styleToCopy = $('.gtitle');
 
@@ -45,6 +51,7 @@ class Submissions extends Component {
     title.css('font-weight', styleToCopy.css('font-weight'));
     title.css('margin-bottom', '0');
     title.css('margin-left', `${styleToCopy.attr('x')}px`);
+    title.css('display', 'inline');
     return title;
   }
 
@@ -57,8 +64,12 @@ class Submissions extends Component {
     this.list = $('<div></div>');
     this.root.append(this.list);
 
-    const options = this.isOverview ? {limit: 20} : {};
+    const options = this.isOverview ? {limit: 5} : {};
     this.fillSubmissions(this.getLatestSubmissions(options));
+  }
+
+  issueIdsToLabels(issueIds) {
+    return issueIds.map(i => makeIssueLabelById(i, {long: false})).join('');
   }
 
   fillSubmissions(submissions) {
@@ -70,7 +81,10 @@ class Submissions extends Component {
         this.list.append(
           `<div class="submission-item">
             <h3>${submission.parking_time}</h3>
-            <p>Problems: ${submission.issues.join(', ')}</p>
+            <div class="problems">
+              ${this.issueIdsToLabels(submission.issues)}
+            </div>
+            ${submission.comments ? `<p>${submission.comments}` : ''}</p>
           </div>`
         );
       }

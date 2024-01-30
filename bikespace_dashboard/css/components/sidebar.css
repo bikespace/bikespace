@@ -112,8 +112,14 @@
 .submission-item {
   margin: 0 4px;
   padding: 0 4px;
-  border-bottom: 1px solid rgb(128, 128, 128);
+  border-bottom: 1px solid rgb(225, 225, 225);
   > h3 {
     font-size: medium;
+  }
+  > .problems {
+    > .issue {
+      display: inline-block;
+      font-size: smaller;
+    }
   }
 }
