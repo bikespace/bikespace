@@ -10,7 +10,6 @@ class SharedState {
     this.response_data = data.submissions;
     // Data initially not filtered
     this._display_data = data.submissions;
-    console.log('display data', this._display_data);
   }
 
   refresh() {

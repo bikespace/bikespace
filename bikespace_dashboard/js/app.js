@@ -25,6 +25,7 @@ $.ajax({
     });
     new Submissions('#sidebar', 'submissions', shared_state, {
       className: 'sidebar-panel',
+      isOverview: true,
     });
     new Map('body', 'map', shared_state);
   },

@@ -101,3 +101,19 @@
     cursor: default; /* show as non-interactive */
   }
 }
+
+.no-data {
+  text-align: center;
+  width: 100%;
+  display: block;
+  color: rgb(128, 128, 128);
+}
+
+.submission-item {
+  margin: 0 4px;
+  padding: 0 4px;
+  border-bottom: 1px solid rgb(128, 128, 128);
+  > h3 {
+    font-size: medium;
+  }
+}
