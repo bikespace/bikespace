@@ -15,16 +15,28 @@ $.ajax({
     // add sidebar panel nav
     new PanelNav('body', 'panels', shared_state);
     // add interactive content
-    new SummaryBox('#panels-section-data', 'summary-box', shared_state,);
-    new IssueChart('#panels-section-data', 'issue-chart', shared_state,);
-    new DayChart('#panels-section-data', 'day-chart', shared_state,);
+    new SummaryBox('#panels-section-data', 'summary-box', shared_state, {
+      className: 'sidebar-panel',
+    });
+    new IssueChart('#panels-section-data', 'issue-chart', shared_state, {
+      className: 'sidebar-panel',
+    });
+    new DayChart('#panels-section-data', 'day-chart', shared_state, {
+      className: 'sidebar-panel',
+    });
     new DurationTimeOfDayChart(
       '#panels-section-data',
       'duration-tod-chart',
       shared_state,
+      {className: 'sidebar-panel'},
     );
     // add filter controls
-    new DateFilterControl('#panels-section-filters', 'date-filter', shared_state)
+    new DateFilterControl(
+      '#panels-section-filters', 
+      'date-filter', 
+      shared_state,
+      {className: 'sidebar-panel'},
+    );
     // add map
     new Map('body', 'issue-map', shared_state);
   },

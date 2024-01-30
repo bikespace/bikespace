@@ -7,9 +7,10 @@ class PanelNav extends Component {
    * @param {string} parent JQuery selector for parent element
    * @param {string} root_id tag id for root div
    * @param {Object} shared_state
+   * @param {import('../../main.js').ComponentOptions} [options = {}] Options for the component
    */
-  constructor(parent, root_id, shared_state) {
-    super(parent, root_id, shared_state);
+  constructor(parent, root_id, shared_state, options = {}) {
+    super(parent, root_id, shared_state, options);
 
     // add content to page
     document.querySelector(`#${this.root_id}`).insertAdjacentHTML(

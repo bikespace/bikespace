@@ -137,9 +137,7 @@
   }
 }
 
-#issue-chart,
-#day-chart,
-#duration-tod-chart {
+.sidebar-panel {
   margin: var(--spacing-unit);
   padding: var(--spacing-unit);
   border-radius: var(--spacing-unit);
