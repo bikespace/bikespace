@@ -15,7 +15,7 @@ $.ajax({
     new IssueChart('#sidebar', 'issue-chart', shared_state);
     new DayChart('#sidebar', 'day-chart', shared_state);
     new DurationTimeOfDayChart('#sidebar', 'duration-tod-chart', shared_state);
-    new Map('body', 'map', shared_state);
+    new Map('body', 'issue-map', shared_state);
   },
 });
 
