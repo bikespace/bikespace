@@ -68,7 +68,8 @@ class Map extends Component {
   }
 
   buildMarkers() {
-    const markers = L.markerClusterGroup();
+    const marker_cluster_group = L.markerClusterGroup();
+    this.all_markers = [];
 
     // BUILD POPUP CONTENT
     // pre-generate template for each issue type
@@ -144,14 +145,15 @@ class Map extends Component {
         icon: customIcon,
       });
       marker.bindPopup(content);
-      markers.addLayer(marker);
+      this.all_markers.push(marker);
+      marker_cluster_group.addLayer(marker);
 
       // add ids for lookup during events
       marker.submission_id = point.id;
       marker.getPopup().submission_id = point.id;
     }
 
-    return markers;
+    return marker_cluster_group;
   }
 
   refresh() {

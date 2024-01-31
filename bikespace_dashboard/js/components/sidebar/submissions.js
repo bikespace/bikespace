@@ -66,6 +66,22 @@ class Submissions extends Component {
 
     const options = this.isOverview ? {limit: 5} : {};
     this.fillSubmissions(this.getLatestSubmissions(options));
+
+    // add event listeners to pan to item and open popup on click
+    const listing_items = document.querySelectorAll('.submission-item');
+    listing_items.forEach(item => {
+      item.addEventListener('click', () => {
+        const matching_marker = this.getMapMarkerByID(
+          item.dataset.submissionId
+        );
+        this.shared_state.components.issue_map.markers.zoomToShowLayer(
+          matching_marker,
+          () => {
+            matching_marker.openPopup();
+          }
+        );
+      });
+    });
   }
 
   issueIdsToLabels(issueIds) {
@@ -79,7 +95,7 @@ class Submissions extends Component {
     } else {
       for (const submission of submissions) {
         this.list.append(
-          `<div class="submission-item">
+          `<div class="submission-item" data-submission-id="${submission.id}">
             <h3>${submission.parking_time}</h3>
             <div class="problems">
               ${this.issueIdsToLabels(submission.issues)}
@@ -104,11 +120,27 @@ class Submissions extends Component {
       // throw new Error('Submission data was corrupted');
       return [];
     }
+    // sorting submissions by id desc as a proxy for submission date
+    submissions.sort((a, b) => b.id - a.id);
     if (typeof limit === 'number' && limit > 0) {
       return submissions.slice(0, limit);
     } else {
       return submissions;
     }
+  }
+
+  getMapMarkerByID(submission_id) {
+    // convert strings to numbers if needed
+    if (typeof submission_id !== 'number') {
+      try {
+        submission_id = Number(submission_id);
+      } catch (error) {
+        console.log('Wrong data type to look up marker by ID', error);
+      }
+    }
+    return this.shared_state.components.issue_map.all_markers.filter(
+      m => m.submission_id === submission_id
+    )[0];
   }
 
   refresh() {
