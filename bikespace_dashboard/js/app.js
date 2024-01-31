@@ -26,7 +26,6 @@ $.ajax({
     new Map('body', 'issue-map', shared_state);
     new Submissions('#sidebar', 'submissions', shared_state, {
       className: 'sidebar-panel',
-      isOverview: true,
     });
   },
 });

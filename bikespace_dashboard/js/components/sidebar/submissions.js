@@ -1,4 +1,4 @@
-import {makeIssueLabel, makeIssueLabelById} from '../issue_label.js';
+import {makeIssueLabelById} from '../issue_label.js';
 import {Component} from '../main.js';
 
 /**
@@ -15,7 +15,6 @@ import {Component} from '../main.js';
 /**
  *
  * @typedef {Object} _SCOnlyOptions
- * @property {boolean} [isOverview=false]
  *
  * @typedef {import('../main.js').ComponentOptions & _SCOnlyOptions} SubmissionsComponentOptions
  *
@@ -31,14 +30,23 @@ class Submissions extends Component {
    */
   constructor(parent, root_id, shared_state, options = {}) {
     super(parent, root_id, shared_state, options);
-    this.isOverview = options.isOverview;
+    window.addEventListener('hashchange', () => {
+      this.refresh();
+    });
     this.build();
   }
 
+  shouldViewAll() {
+    return location.hash === '#view-all';
+  }
+
   buildTitle() {
-    const titleSection = $(`<div>
+    const titleSection = $(`<div class='title-section ${
+      this.shouldViewAll() ? 'view-all' : ''
+    }'>
+      ${this.shouldViewAll() ? '<a href="#">&lsaquo;&lsaquo;</a>' : ''}
       <h2>Latest submissions</h2>
-      ${this.isOverview ? '<a href="#view-all">View all</a>' : ''}
+      ${this.shouldViewAll() ? '' : '<a href="#view-all">View all</a>'}
     </div>`);
 
     const title = $(titleSection.children('h2')[0]);
@@ -49,28 +57,40 @@ class Submissions extends Component {
     title.css('font-family', styleToCopy.css('font-family'));
     title.css('font-size', styleToCopy.css('font-size'));
     title.css('font-weight', styleToCopy.css('font-weight'));
-    title.css('margin-bottom', '0');
+    title.css('margin', '0');
     title.css('margin-left', `${styleToCopy.attr('x')}px`);
     title.css('display', 'inline');
-    return title;
+    return titleSection;
   }
 
-  build() {
-    this.root = $(`#${this.root_id}`);
+  applyFullView() {
+    this.root.css('position', 'absolute');
+    this.root.css('top', '0');
+    this.root.css('left', '0');
+    this.root.css('right', '0');
+    this.root.css('z-index', '10');
+  }
 
-    this.title = this.buildTitle();
-    this.root.empty().append(this.title);
+  applyOverview() {
+    const cssToReset = [
+      'position',
+      'top',
+      'left',
+      'right',
+      'bottom',
+      'z-index',
+    ];
+    for (const toReset of cssToReset) {
+      this.root.css(toReset, 'initial');
+    }
+  }
 
-    this.list = $('<div></div>');
-    this.root.append(this.list);
-
-    const options = this.isOverview ? {limit: 5} : {};
-    this.fillSubmissions(this.getLatestSubmissions(options));
-
+  enableClickToFocus() {
     // add event listeners to pan to item and open popup on click
     const listing_items = document.querySelectorAll('.submission-item');
     listing_items.forEach(item => {
-      item.addEventListener('click', () => {
+      item.addEventListener('click', e => {
+        e.preventDefault();
         const matching_marker = this.getMapMarkerByID(
           item.dataset.submissionId
         );
@@ -84,6 +104,29 @@ class Submissions extends Component {
     });
   }
 
+  build() {
+    this.root = $(`#${this.root_id}`);
+
+    if (this.shouldViewAll()) {
+      this.applyFullView();
+      this.root[0].scroll(0, 0);
+    } else {
+      this.applyOverview();
+    }
+
+    this.title = this.buildTitle();
+    this.root.empty().append(this.title);
+
+    this.list = $('<div></div>');
+    this.root.append(this.list);
+
+    const toDisplay = this.getLatestSubmissions(
+      this.shouldViewAll() ? {} : {limit: 5}
+    );
+    this.fillSubmissions(toDisplay);
+    this.enableClickToFocus();
+  }
+
   issueIdsToLabels(issueIds) {
     return issueIds.map(i => makeIssueLabelById(i, {long: false})).join('');
   }
@@ -94,15 +137,17 @@ class Submissions extends Component {
       this.list.append("<p class='no-data'>No submissions yet.<p>");
     } else {
       for (const submission of submissions) {
-        this.list.append(
-          `<div class="submission-item" data-submission-id="${submission.id}">
+        const html = `<a href='#' class="submission-item" data-submission-id="${
+          submission.id
+        }">
             <h3>${submission.parking_time}</h3>
             <div class="problems">
               ${this.issueIdsToLabels(submission.issues)}
             </div>
             ${submission.comments ? `<p>${submission.comments}` : ''}</p>
-          </div>`
-        );
+          </a>`;
+        console.log('html:', html);
+        this.list.append(html);
       }
     }
   }
@@ -115,10 +160,8 @@ class Submissions extends Component {
    */
   getLatestSubmissions({limit = null} = {}) {
     const submissions = this.shared_state.response_data;
-    console.log('submissions', submissions);
     if (!submissions[Symbol.iterator] || typeof submissions === 'string') {
-      // throw new Error('Submission data was corrupted');
-      return [];
+      throw new Error('Submission data was corrupted');
     }
     // sorting submissions by id desc as a proxy for submission date
     submissions.sort((a, b) => b.id - a.id);
@@ -130,16 +173,8 @@ class Submissions extends Component {
   }
 
   getMapMarkerByID(submission_id) {
-    // convert strings to numbers if needed
-    if (typeof submission_id !== 'number') {
-      try {
-        submission_id = Number(submission_id);
-      } catch (error) {
-        console.log('Wrong data type to look up marker by ID', error);
-      }
-    }
     return this.shared_state.components.issue_map.all_markers.filter(
-      m => m.submission_id === submission_id
+      m => `${m.submission_id}` === `${submission_id}`
     )[0];
   }
 

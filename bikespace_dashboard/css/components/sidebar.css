@@ -109,7 +109,29 @@
   color: rgb(128, 128, 128);
 }
 
+.title-section {
+  display: flex;
+  padding: 8px 0;
+  > h2 {
+    flex-grow: 1;
+  }
+  > a {
+    font-size: smaller;
+  }
+
+  &.view-all {
+    position: sticky;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 10;
+    background: white;
+    border-bottom: 1px solid rgb(225, 225, 225);
+  }
+}
+
 .submission-item {
+  display: block;
   margin: 0 4px;
   padding: 0 4px;
   border-bottom: 1px solid rgb(225, 225, 225);
