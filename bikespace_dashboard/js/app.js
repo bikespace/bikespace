@@ -23,10 +23,10 @@ $.ajax({
     new DurationTimeOfDayChart('#sidebar', 'duration-tod-chart', shared_state, {
       className: 'sidebar-panel',
     });
+    new Map('body', 'issue-map', shared_state);
     new Submissions('#sidebar', 'submissions', shared_state, {
       className: 'sidebar-panel',
       isOverview: true,
     });
-    new Map('body', 'map', shared_state);
   },
 });

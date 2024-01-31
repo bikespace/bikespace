@@ -38,7 +38,7 @@ class Map extends Component {
     super(parent, root_id, shared_state, options);
 
     // initialize map and zoom to City of Toronto
-    this.lmap = L.map('map').setView([43.733399, -79.376221], 11);
+    this.lmap = L.map('issue-map').setView([43.733399, -79.376221], 11);
     L.tileLayer(tiles.thunderforest_atlas.url, {
       attribution: tiles.thunderforest_atlas.attribution,
     }).addTo(this.lmap);
