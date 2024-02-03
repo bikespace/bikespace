@@ -347,17 +347,20 @@ header.masthead p {
 }
 
 .btn-primary {
+  color: white;
   background-color: var(--color-primary-d50p);
   border: 2px solid white;
+  box-shadow: 0rem 0.1rem 0.1rem 0.1rem var(--color-secondary-med-grey);
 }
 
 .btn-primary:hover, .btn-primary:focus, .btn-primary:active {
-  color: #fff;
   background-color: #21ad49 !important;
+  border: 2px solid white;
 }
 
 .btn-primary:active, .btn-primary:focus {
-  box-shadow: 0 0 0 0.2rem rgba(240, 95, 64, 0.5) !important;
+  box-shadow: 0 0 0 0.2rem white !important;
+  border: 2px solid var(--color-primary);
 }
 #maptitle {
   padding: 10px;
