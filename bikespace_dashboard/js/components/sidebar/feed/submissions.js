@@ -164,7 +164,7 @@ class Submissions extends Component {
    * @returns {Array[Submission]}
    */
   getLatestSubmissions({limit = null} = {}) {
-    const submissions = this.shared_state.response_data;
+    const submissions = this.shared_state.display_data;
     if (!submissions[Symbol.iterator] || typeof submissions === 'string') {
       throw new Error('Submission data was corrupted');
     }
