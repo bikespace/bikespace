@@ -87,7 +87,7 @@ ol {
 }
 
 .bg-green-image {
-  background-image: url("../img/bg_green.jpg");
+  background-image: url("../assets/images/bg_green.jpg");
 }
 
 .bg-green-band {
@@ -96,7 +96,7 @@ ol {
 }
 
 .bg-toronto-skyline {
-  background-image: url("../img/Toronto_Skyline.png");
+  background-image: url("../assets/images/Toronto_Skyline.png");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center bottom;
@@ -221,7 +221,7 @@ img::-moz-selection {
 header.masthead {
   padding-top: 10rem;
   padding-bottom: calc(10rem - 56px);
-  background-image: url("../img/bg_yellow.jpg");
+  background-image: url("../assets/images/bg_yellow.jpg");
   background-position: center center;
   -webkit-background-size: cover;
   -moz-background-size: cover;
@@ -347,8 +347,8 @@ header.masthead p {
 }
 
 .btn-primary {
-  background-color: #25C252;
-  border-color: #25C252;
+  background-color: var(--color-primary-d50p);
+  border: 2px solid white;
 }
 
 .btn-primary:hover, .btn-primary:focus, .btn-primary:active {
