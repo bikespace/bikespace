@@ -1,5 +1,5 @@
-import {makeIssueLabelById} from '../issue_label.js';
-import {Component} from '../main.js';
+import {makeIssueLabelById} from '../../issue_label.js';
+import {Component} from '../../main.js';
 
 /**
  * @typedef {Object} Submission
@@ -16,7 +16,7 @@ import {Component} from '../main.js';
  *
  * @typedef {Object} _SCOnlyOptions
  *
- * @typedef {import('../main.js').ComponentOptions & _SCOnlyOptions} SubmissionsComponentOptions
+ * @typedef {import('../../main.js').ComponentOptions & _SCOnlyOptions} SubmissionsComponentOptions
  *
  */
 

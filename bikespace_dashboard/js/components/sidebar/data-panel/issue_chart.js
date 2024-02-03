@@ -1,6 +1,6 @@
-import {Component} from '../main.js';
+import {Component} from '../../main.js';
 import {defaults} from './plot_utils.js';
-import {issue_attributes as ia} from '../issue_attributes.js';
+import {issue_attributes as ia} from '../../issue_attributes.js';
 
 class IssueChart extends Component {
   /**
@@ -8,7 +8,7 @@ class IssueChart extends Component {
    * @param {string} parent JQuery selector for parent element
    * @param {string} root_id tag id for root div
    * @param {Object} shared_state
-   * @param {import('../main.js').ComponentOptions} [options = {}] Options for the component
+   * @param {import('../../main.js').ComponentOptions} [options = {}] Options for the component
    */
   constructor(parent, root_id, shared_state, options = {}) {
     super(parent, root_id, shared_state, options);

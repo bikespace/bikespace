@@ -1,4 +1,4 @@
-import {Component} from '../main.js';
+import {Component} from '../../main.js';
 import {defaults, cssVarHSL} from './plot_utils.js';
 
 class DayChart extends Component {
@@ -7,7 +7,7 @@ class DayChart extends Component {
    * @param {string} parent JQuery selector for parent element
    * @param {string} root_id tag id for root div
    * @param {Object} shared_state
-   * @param {import('../main.js').ComponentOptions} [options = {}] Options for the component
+   * @param {import('../../main.js').ComponentOptions} [options = {}] Options for the component
    */
   constructor(parent, root_id, shared_state, options = {}) {
     super(parent, root_id, shared_state, options);
