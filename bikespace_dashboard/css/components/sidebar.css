@@ -1,6 +1,6 @@
 @import 'stylevars.css';
 
-#sidebar {
+#panels {
   position: absolute;
   z-index: 100;
   left: 0;
@@ -11,6 +11,20 @@
   box-shadow: 0px 8px 8px rgba(0, 0, 0, 0.5);
   overflow-y: auto;
   overflow-x: hidden;
+
+  & #panel-nav {
+    fieldset {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+    }
+    input {
+      /* appearance: none; */
+    }
+    label {
+      margin-right: 1rem;
+    }
+  }
 }
 
 #summary-box {
