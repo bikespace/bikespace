@@ -137,10 +137,15 @@ class Submissions extends Component {
       this.list.append("<p class='no-data'>No submissions yet.<p>");
     } else {
       for (const submission of submissions) {
+        const parking_time = new Date(submission.parking_time);
+        const parking_time_desc = parking_time.toLocaleString('en-CA', {
+          dateStyle: 'long',
+          timeStyle: 'short',
+        });
         const html = `<a href='#' class="submission-item" data-submission-id="${
           submission.id
         }">
-            <h3>${submission.parking_time}</h3>
+            <h3>${parking_time_desc}</h3>
             <div class="problems">
               ${this.issueIdsToLabels(submission.issues)}
             </div>
