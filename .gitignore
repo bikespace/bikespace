@@ -115,3 +115,5 @@ swagger-ui/
 .env*
 
 .vscode/
+
+bikespace_dashboard/node_modules/
