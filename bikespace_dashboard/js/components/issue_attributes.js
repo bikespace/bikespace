@@ -1,4 +1,4 @@
-import {cssVarHSL} from './sidebar/plot_utils.js';
+import {cssVarHSL} from './sidebar/data-panel/plot_utils.js';
 
 // for "render_priority", 0 is the highest priority and higher numbers are lower priority
 const issue_attributes = {

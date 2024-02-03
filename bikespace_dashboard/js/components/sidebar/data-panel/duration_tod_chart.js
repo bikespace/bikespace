@@ -1,9 +1,15 @@
-import {Component} from '../main.js';
+import {Component} from '../../main.js';
 import {defaults, cssVarHSL} from './plot_utils.js';
 
 // Note: "tod" = "Time of Day"
 
 class DurationTimeOfDayChart extends Component {
+  /**
+   * Base class for graphs, map, etc. Registers component with shared_state.
+   * @param {string} parent JQuery selector for parent element
+   * @param {string} root_id tag id for root div
+   * @param {Object} shared_state
+   */
   constructor(parent, root_id, shared_state) {
     super(parent, root_id, shared_state);
 
