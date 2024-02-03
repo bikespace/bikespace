@@ -33,4 +33,10 @@
   --color-secondary-blue-light: hsl(193, 60%, 90%);
 
   --body-font-stack: 'Open Sans', Arial, Helvetica, sans-serif;
+  --bold-weight: 600;
+
+  --spacing-unit: 4px;
+  --spacing-unit-double: calc(var(--spacing-unit) * 2);
+  --spacing-scrollbar-offset: 20px;
+  --border-unit: 2px;
 }
