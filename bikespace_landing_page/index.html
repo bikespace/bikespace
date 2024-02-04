@@ -250,19 +250,22 @@
                 </div>
             </div>
             <ul id="mapuse" hidden>
-              <li>Currently available parking is shown by a pink marker: <span id="marker">&#9679;</span></li>
+              <li>City of Toronto bicycle parking facilities (e.g. racks, ring and post) are shown by a pink marker: <span id="marker">&#9679;</span></li>
               <li>Click on any of markers to see detailed information including the address and type of parking available</li>
             </ul>
             <div id="map" hidden></div>
           </div>
-          <div class="col-lg-12 text-center mt-3">
+          <div class="col-lg-12 text-center mt-5">
             <h3>About the Data</h3>
             <p id="cityinfo">
-              Bicycle parking data has been provided by the City of Toronto. 
+              Map data is from the 
               <a href="https://www.toronto.ca/city-government/data-research-maps/open-data/open-data-catalogue/#" data-umami-event="outbound-city-open-data">
-                Find out more.
-              </a>
+                City of Toronto open data portal</a>.
             </p>
+            <div class="row">
+              <p class="col-lg-6 mx-auto text-left"><strong>Please note: data on this map may be incomplete or out of date.</strong> We are currently working on improving this parking map — <a href="#get_involved">let us know if you would like to help out</a>!</p>
+              <p class="col-lg-6 mx-auto text-left"><a href="https://www.opencyclemap.org/?zoom=11&lat=43.71768&lon=-79.37625&layers=B0000" data-umami-event="outbound-opencyclemap">OpenCycleMap.org</a> is another great resource which displays bicycle parking reported by OpenStreetMap users. (Make sure to zoom in and see the <a href="https://www.opencyclemap.org/docs/" data-umami-event="outbound-opencyclemap-key">map key</a> for more details!)</p>
+            </div>
           </div>
           <script>
             document.querySelector('#map-loader .btn').addEventListener('click', function (event) {
