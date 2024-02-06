@@ -1,17 +1,17 @@
 @font-face {
-  font-family: "Open Sans";
+  font-family: 'Open Sans';
   src: url(../../assets/OpenSans-VariableFont_wdth,wght.ttf);
   font-weight: 300 800;
 }
 @font-face {
-  font-family: "Open Sans Italic";
+  font-family: 'Open Sans Italic';
   src: url(../../assets/OpenSans-Italic-VariableFont_wdth,wght.ttf);
   font-style: italic;
   font-weight: 300 800;
 }
 
 :root {
-  --color-primary:     hsl(137, 68%, 45%);
+  --color-primary: hsl(137, 68%, 45%);
   --color-primary-70p: hsl(137, 56%, 62%);
   --color-primary-50p: hsl(137, 56%, 73%);
   --color-primary-20p: hsl(137, 57%, 89%);
@@ -21,6 +21,7 @@
   --color-primary-d70p: hsl(137, 68%, 14%);
   --color-secondary-yellow: hsl(58, 88%, 57%);
   --color-secondary-yellow-light: hsl(58, 60%, 90%);
+  --color-secondary-yellow-dark: hsl(58, 88%, 29%);
   --color-secondary-orange: hsl(38, 100%, 50%);
   --color-secondary-orange-light: hsl(38, 60%, 90%);
   --color-secondary-red: hsl(340, 86%, 50%);
@@ -28,6 +29,8 @@
   --color-secondary-light-grey: #d8e1e5;
   --color-secondary-med-grey: #2c3b42;
   --color-secondary-dark-grey: #1f2a2d;
+  --color-secondary-blue: hsl(193, 100%, 40%);
+  --color-secondary-blue-light: hsl(193, 60%, 90%);
 
-  --body-font-stack: "Open Sans", Arial, Helvetica, sans-serif;
+  --body-font-stack: 'Open Sans', Arial, Helvetica, sans-serif;
 }

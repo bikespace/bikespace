@@ -1,71 +1,147 @@
-import { Component } from './main.js';
+import {Component} from './main.js';
+import {issue_attributes as ia} from './issue_attributes.js';
 
 const tiles = {
-  'thunderforest_atlas': "https://tile.thunderforest.com/atlas/{z}/{x}/{y}.png?apikey=66ccf6226ef54ef38a6b97fe0b0e5d2e",
-  'openstreetmap': "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+  thunderforest_atlas: {
+    url: 'https://tile.thunderforest.com/atlas/{z}/{x}/{y}.png?apikey=66ccf6226ef54ef38a6b97fe0b0e5d2e',
+    attribution: [
+      '&copy; Maps ',
+      '<a href="https://www.thunderforest.com/">',
+      'Thunderforest',
+      '</a>, ',
+      '&copy; Data ',
+      '<a href="https://www.openstreetmap.org/copyright">',
+      'OpenStreetMap contributors',
+      '</a>',
+    ].join(''),
+  },
+  openstreetmap: {
+    url: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+    attribution: [
+      '&copy; ',
+      '<a href="https://www.openstreetmap.org/copyright">',
+      'OpenStreetMap contributors',
+      '</a>',
+    ].join(''),
+  },
 };
 
 class Map extends Component {
   constructor(parent, root_id, shared_state) {
     super(parent, root_id, shared_state);
-    
+
+    // initialize map and zoom to City of Toronto
     this.lmap = L.map('map').setView([43.733399, -79.376221], 11);
-    L.tileLayer(tiles.thunderforest_atlas, {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    L.tileLayer(tiles.thunderforest_atlas.url, {
+      attribution: tiles.thunderforest_atlas.attribution,
     }).addTo(this.lmap);
 
     this.markers = this.buildMarkers();
     this.lmap.addLayer(this.markers);
 
     // improve keyboard navigation
-    $(document).on("keydown", ".marker-cluster", function(e) {
-      if (e.key == "Enter" || e.key == " ") {
+    $(document).on('keydown', '.marker-cluster', e => {
+      if (e.key === 'Enter' || e.key === ' ') {
         $(document.activeElement).trigger('click');
       }
     });
-    $(document).on("keydown", ".leaflet-marker-icon", function(e) {
-      if (e.key == " ") { // Enter already works
+    $(document).on('keydown', '.leaflet-marker-icon', e => {
+      if (e.key === ' ') {
+        // Enter already works
         $(document.activeElement).trigger('click');
       }
+    });
+
+    // analytics
+    this.lmap.on('popupopen', e => {
+      super.analytics_event(`${this.root_id}_${e.type}`, {
+        submission_id: e.popup.submission_id,
+      });
     });
   }
 
   buildMarkers() {
-    let markers = L.markerClusterGroup();
+    const markers = L.markerClusterGroup();
 
-    // build popup content
+    // BUILD POPUP CONTENT
+    // pre-generate template for each issue type
     const duration_descr = {
-      'minutes': "for <strong>less than an hour</strong>",
-      'hours': "for <strong>several hours</strong>",
-      'overnight': "<strong>overnight</strong>",
-      'multiday': "for <strong>several days</strong>"
+      minutes: 'for <strong>less than an hour</strong>',
+      hours: 'for <strong>several hours</strong>',
+      overnight: '<strong>overnight</strong>',
+      multiday: 'for <strong>several days</strong>',
     };
-    const issue_tags = {
-      'not_provided': `<div class="issue issue-not-provided">Bicycle parking was not provided</div>`,
-      'full': `<div class="issue issue-full">Bicycle parking was full</div>`,
-      'damaged': `<div class="issue issue-damaged">Bicycle parking was damaged</div>`,
-      'abandoned': `<div class="issue issue-abandoned">Parked bicycle was abandoned</div>`,
-      'other': `<div class="issue issue-other">Other issue</div>`
-    };
+    const issue_tags = {};
+    for (const entry of Object.values(ia)) {
+      issue_tags[entry.id] = [
+        `<div class="issue issue-${entry.id.replace('_', '-')}" `,
+        `style="border-color:${entry.color};`,
+        `background-color:${entry.color_light};"`,
+        `>${entry.label_long}</div>`,
+      ].join('');
+    }
 
-    for (let point of this.shared_state.display_data) {
-      let issues = point.issues.map((x) => issue_tags[x] ?? `<div class="issue">${x}</div>`).join(" ");
-      let parking_time = new Date(point.parking_time);
-      let parking_time_desc = parking_time.toLocaleString("en-CA", {
-        "dateStyle": "full",
-        "timeStyle": "short"
+    // use templates to generate popup content
+    for (const point of this.shared_state.display_data) {
+      // display issue chips in priority order
+      point.issues.sort(
+        (a, b) => ia[a].render_priority - ia[b].render_priority
+      );
+      const issues = point.issues
+        .map(x => issue_tags[x] ?? `<div class="issue">${x}</div>`)
+        .join(' ');
+      const parking_time = new Date(point.parking_time);
+      const parking_time_desc = parking_time.toLocaleString('en-CA', {
+        dateStyle: 'full',
+        timeStyle: 'short',
       });
-      let comments = `<strong>Comments:</strong> ${point.comments ? point.comments : "<em>none</em>"}`;
+      const comments = `<strong>Comments:</strong> ${
+        point.comments ? point.comments : '<em>none</em>'
+      }`;
 
-      let content = [
-        `<div class="issue-list"><strong>Issues:</strong> ${issues ? issues : "<em>none</em>"}</div>`,
-        `<p>This person wanted to park ${duration_descr[point.parking_duration] ?? `<strong>${point.parking_duration}</strong>`} on <strong>${parking_time_desc}</strong></p>`,
+      const content = [
+        '<div class="issue-list">',
+        `<strong>Issues:</strong> ${issues ? issues : '<em>none</em>'}`,
+        '</div>',
+        `<p>This person wanted to park ${
+          duration_descr[point.parking_duration] ??
+          `<strong>${point.parking_duration}</strong>`
+        } on <strong>${parking_time_desc}</strong></p>`,
         `<p>${comments}</p>`,
-        `<p class="submission-id">ID: ${point.id}</p>`
-      ].join("");
-      var marker = L.marker([point.latitude, point.longitude]);
+        `<p class="submission-id">ID: ${point.id}</p>`,
+      ].join('');
+
+      // BUILD MARKERS
+      // set up custom markers
+      const BaseIcon = L.Icon.extend({
+        options: {
+          shadowUrl: './leaflet/images/marker-shadow.png',
+          iconSize: [36, 36],
+          iconAnchor: [18, 36], // half of width and full height
+          popupAnchor: [0, -30], // nearly all the height, not sure why negative
+          shadowSize: [41, 41], // from default
+          shadowAnchor: [12, 41], // more manual offset, bottom point of shadow is ~30% along x axis, not at (0, 0)
+        },
+      });
+
+      // pick the marker icon based on highest priority issue
+      const marker_issue = point.issues.reduce(
+        (a, c) => (ia[a]?.render_priority < ia[c]?.render_priority ? a : c),
+        null
+      );
+      const custom_marker = ia[marker_issue ?? 'other'];
+      const customIcon = new BaseIcon({iconUrl: custom_marker.icon});
+
+      // generate marker with icon and content
+      const marker = L.marker([point.latitude, point.longitude], {
+        icon: customIcon,
+      });
       marker.bindPopup(content);
       markers.addLayer(marker);
+
+      // add ids for lookup during events
+      marker.submission_id = point.id;
+      marker.getPopup().submission_id = point.id;
     }
 
     return markers;
@@ -78,4 +154,4 @@ class Map extends Component {
   }
 }
 
-export { Map };
+export {Map};

@@ -109,11 +109,13 @@ data/
 # misc
 test.py
 
-#swagger-ui 
+#swagger-ui
 swagger-ui/
 
 .env*
 
+.vscode/*
+!.vscode/extensions.json
 .vscode/
 
-bikespace_dashboard/node_modules/
+coverage/
