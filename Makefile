@@ -3,6 +3,7 @@ ROOT_DIR :=  $(dir $(ROOT_PATH))
 BIKESPACE_API_DIR = $(ROOT_DIR)/bikespace_api
 BIKESPACE_API_FLY_TOML = $(ROOT_DIR)/$(BIKESPACE_API_DIR)/fly.toml
 BIKESPACE_FRONTEND_DIR = $(ROOT_DIR)/bikespace_frontend
+BIKESPACE_DASHBOARD_DIR = $(ROOT_DIR)/bikespace_dashboard
 BIKESPACE_DB_MIGRATIONS = $(BIKESPACE_API_DIR)/migrations
 MANAGE_PY = $(BIKESPACE_API_DIR)/manage.py
 PIP = $(ROOT_DIR)/$(VENV)/bin/pip
@@ -73,11 +74,23 @@ fly-deploy-api:
 
 run-frontend:
 	cd $(BIKESPACE_FRONTEND_DIR) && npm install && npm run start
+	
+lint-frontend:
+	cd $(BIKESPACE_FRONTEND_DIR) && npm install && npm run lint
 
 build-frontend:
 	cd $(BIKESPACE_FRONTEND_DIR) && npm install && npm run build
 
 serve-frontend:
 	cd $(BIKESPACE_FRONTEND_DIR) && npm install && npm run serve
+	
+lint-dashboard:
+	cd $(BIKESPACE_DASHBOARD_DIR) && npm install && npm run lint
+
+lint-and-fix-dashboard:
+	cd $(BIKESPACE_DASHBOARD_DIR) && npm install && npm run fix
+
+test-frontend:
+	cd $(BIKESPACE_FRONTEND_DIR) && npm install && npm run test
 
 .PHONY: setup-py clean pip-freeze run-flask-app lint-py seed-db recreate-db fly-deploy-api fly-deploy-frontend run-frontend build-frontend 

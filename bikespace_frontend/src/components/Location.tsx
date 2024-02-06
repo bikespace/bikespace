@@ -1,22 +1,25 @@
-import React from "react";
-import { LocationLatLng } from "../interfaces/Submission";
-import 'leaflet/dist/leaflet.css'
-import { MapContainer, TileLayer, Marker, useMapEvent } from 'react-leaflet'
+import React from 'react';
+import {LocationLatLng} from '../interfaces/Submission';
+import 'leaflet/dist/leaflet.css';
+import {MapContainer, TileLayer, Marker, useMapEvent} from 'react-leaflet';
 
-function Location(props: {location: LocationLatLng, onLocationChanged: (location: LocationLatLng) => void}) {
+function Location(props: {
+  location: LocationLatLng;
+  onLocationChanged: (location: LocationLatLng) => void;
+}) {
   const handleLocationChanged = (location: LocationLatLng) => {
     props.onLocationChanged(location);
-  }
+  };
 
   const MapHandler = () => {
-    useMapEvent('click', (e) => {
+    useMapEvent('click', e => {
       handleLocationChanged({
         latitude: e.latlng.lat,
-        longitude: e.latlng.lng
-      })
-    })
+        longitude: e.latlng.lng,
+      });
+    });
     return null;
-  }
+  };
 
   return (
     <div id="submission-location">
@@ -28,7 +31,7 @@ function Location(props: {location: LocationLatLng, onLocationChanged: (location
           center={[props.location.latitude, props.location.longitude]}
           zoom={18}
           scrollWheelZoom={false}
-          style={{ height: '100%' }}
+          style={{height: '100%'}}
         >
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
