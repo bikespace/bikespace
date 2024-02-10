@@ -322,14 +322,29 @@
           </div>
           <div class="col-lg-8 mx-auto">
             <div class="cta-heading">
-              <a href="https://bikespaceto.beehiiv.com/subscribe">
+              <a href="https://buttondown.email/bikespace">
                 <img class="sr-icons" src="assets/icons/update_icon-01.png" height="56" alt="">
                 <h4 class="mb-3">Get updates</h4>
               </a>
             </div>
             <p>Join our newsletter for updates on the project and for opportunities to make a change:</p>
-            <div class="text-center">
-              <iframe src="https://embeds.beehiiv.com/602cbd09-6bc1-4694-8a6c-9fffe06a7157" data-test-id="beehiiv-embed" width="480" height="320" frameborder="0" scrolling="no" style="border-radius: 4px; border: 2px solid #e5e7eb; margin: 0; background-color: transparent; max-width: 100%;" title="Newsletter Sign-Up Form"></iframe>
+            <div class="buttondown-container">
+              <form
+                action="https://buttondown.email/api/emails/embed-subscribe/bikespace"
+                method="post"
+                target="popupwindow"
+                onsubmit="window.open('https://buttondown.email/bikespace', 'popupwindow')"
+                class="embeddable-buttondown-form"
+              >
+                <p><strong>Subscribe to the BikeSpace TO Newsletter</strong></p>
+                <div class="buttondown-inputs">
+                  <input type="email" name="email" id="bd-email" placeholder="Enter your email"/>
+                  <input type="submit" id="bd-submit" value="SUBSCRIBE" />
+                </div>
+                <p>
+                  <a class="buttondown-refer-link" href="https://buttondown.email/refer/bikespace" target="_blank">Powered by Buttondown.</a>
+                </p>
+              </form>
             </div>
           </div>
         </div>
