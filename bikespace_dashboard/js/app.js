@@ -1,10 +1,10 @@
 import {PanelNav} from './components/sidebar/panel_nav.js';
 import {SharedState, Component} from './components/main.js';
 import {Map} from './components/map.js';
-import {SummaryBox} from './components/sidebar/summary_box.js';
-import {IssueChart} from './components/sidebar/issue_chart.js';
-import {DayChart} from './components/sidebar/day_chart.js';
-import {DurationTimeOfDayChart} from './components/sidebar/duration_tod_chart.js';
+import {SummaryBox} from './components/sidebar/data-panel/summary_box.js';
+import {IssueChart} from './components/sidebar/data-panel/issue_chart.js';
+import {DayChart} from './components/sidebar/data-panel/day_chart.js';
+import {DurationTimeOfDayChart} from './components/sidebar/data-panel/duration_tod_chart.js';
 
 // Load data from BikeSpace API
 $.ajax({
@@ -23,7 +23,6 @@ $.ajax({
       shared_state,
     );
     new Map('body', 'issue-map', shared_state);
-    new Submissions('#panels-section-feed', 'submissions', shared_state);
   },
 });
 
