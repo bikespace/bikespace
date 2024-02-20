@@ -5,6 +5,7 @@ import {SummaryBox} from './components/sidebar/data-panel/summary_box.js';
 import {IssueChart} from './components/sidebar/data-panel/issue_chart.js';
 import {DayChart} from './components/sidebar/data-panel/day_chart.js';
 import {DurationTimeOfDayChart} from './components/sidebar/data-panel/duration_tod_chart.js';
+import { DateFilter } from './components/sidebar/filter-panel/date_filter.js';
 
 // Load data from BikeSpace API
 $.ajax({
@@ -22,6 +23,9 @@ $.ajax({
       'duration-tod-chart',
       shared_state,
     );
+    // add filter controls
+    new DateFilter('#panels-section-filters', 'date-filter', shared_state)
+    // add map
     new Map('body', 'issue-map', shared_state);
   },
 });
