@@ -115,7 +115,7 @@ class Map extends Component {
       // set up custom markers
       const BaseIcon = L.Icon.extend({
         options: {
-          shadowUrl: './leaflet/images/marker-shadow.png',
+          shadowUrl: './libraries/leaflet/images/marker-shadow.png',
           iconSize: [36, 36],
           iconAnchor: [18, 36], // half of width and full height
           popupAnchor: [0, -30], // nearly all the height, not sure why negative
