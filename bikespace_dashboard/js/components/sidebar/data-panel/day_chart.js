@@ -4,14 +4,13 @@ import {defaults, cssVarHSL} from './plot_utils.js';
 class DayChart extends Component {
 
   /**
-   * Base class for graphs, map, etc. Registers component with shared_state.
+   * Creates a chart that shows the number of reports per day
    * @param {string} parent JQuery selector for parent element
    * @param {string} root_id tag id for root div
    * @param {Object} shared_state
    */
   constructor(parent, root_id, shared_state) {
     super(parent, root_id, shared_state);
-
 
     // summarize data
     const days = [
@@ -135,7 +134,7 @@ class DayChart extends Component {
   }
 
   /**
-   * Function to update or toggle this._selected
+   * Update or toggle this._selected
    * @param {int} index Index number of bar trace clicked by user
    */
   toggleSelected(index) {

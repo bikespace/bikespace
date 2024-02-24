@@ -2,7 +2,7 @@ import {Component} from '../../main.js';
 
 class DateFilter extends Component {
   /**
-   * Base class for graphs, map, etc. Registers component with shared_state.
+   * Creates a date filter control with pre-set ranges
    * @param {string} parent JQuery selector for parent element
    * @param {string} root_id tag id for root div
    * @param {Object} shared_state
@@ -38,38 +38,38 @@ class DateFilter extends Component {
       "last_7_days": {
         "label": "Last 7 Days",
         "group": 1,
-        "min": prior_7_days.toISOString().slice(0,10),
-        "max": today.toISOString().slice(0,10),
+        "min": prior_7_days,
+        "max": today,
       },
       "last_30_days": {
         "label": "Last 30 Days",
         "group": 1,
-        "min": prior_30_days.toISOString().slice(0,10),
-        "max": today.toISOString().slice(0,10),
+        "min": prior_30_days,
+        "max": today,
       },
       "last_90_days": {
         "label": "Last 90 Days",
         "group": 1,
-        "min": prior_90_days.toISOString().slice(0,10),
-        "max": today.toISOString().slice(0,10),
+        "min": prior_90_days,
+        "max": today,
       },
       "last_12_months": {
         "label": "Last 12 Months",
         "group": 2,
-        "min": prior_12_months.toISOString().slice(0,10),
-        "max": today.toISOString().slice(0,10),
+        "min": prior_12_months,
+        "max": today,
       },
       "this_year": {
         "label": "This Year",
         "group": 2,
-        "min": `${today.getFullYear()}-01-01`,
-        "max": `${today.getFullYear()}-12-31`,
+        "min": new Date(`${today.getFullYear()}-01-01`),
+        "max": new Date(`${today.getFullYear()}-12-31`),
       },
       "last_year": {
         "label": "Last Year",
         "group": 2,
-        "min": `${today.getFullYear() - 1}-01-01`,
-        "max": `${today.getFullYear() - 1}-12-31`,
+        "min": new Date(`${today.getFullYear() - 1}-01-01`),
+        "max": new Date(`${today.getFullYear() - 1}-12-31`),
       },
       "custom_range": {
         "label": "Custom Range",
@@ -78,31 +78,18 @@ class DateFilter extends Component {
         "max": null,
       },
     };
+
+    this._selection = "all_dates";
+    this.updateDisplayRange();
     this.build();
   }
 
   build() {
-    // Calculate date range of displayed entries
-    const display_dates = this.shared_state.display_data.map(
-      s => new Date(s.parking_time)
-    );
-    const earliest_display = display_dates.reduce((p, c) => (p < c ? p : c));
-    const latest_display = display_dates.reduce((p, c) => (p > c ? p : c));
-
-    // Date formatting
-    const date_options = {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    };
-
     const content = [
       `<h3>Date(s):</h3>`,
-      `<div class="">${
-        earliest_display.toLocaleDateString('en-CA', date_options)
-      } – ${
-        latest_display.toLocaleDateString('en-CA', date_options)
-      }</div>`,
+      `<div id="filter-date-range-indicator" class="">`,
+        this.buildDateRangeIndicator(),
+      `</div>`,
       `<select name="date-range-select" id="filter-date-range-select">`,
         `<option value="all_dates">All Dates</option>`,
         `<hr />`,
@@ -123,7 +110,7 @@ class DateFilter extends Component {
             type="date" 
             id="filter-start-date" 
             name="start-date" 
-            value="${earliest_display.toISOString().slice(0,10)}"
+            value="${this.earliest_display.toISOString().slice(0,10)}"
             min="${this.earliest_all.toISOString().slice(0,10)}"
             max="${this.latest_all.toISOString().slice(0,10)}"
           />`,
@@ -134,7 +121,7 @@ class DateFilter extends Component {
             type="date" 
             id="filter-end-date" 
             name="end-date" 
-            value="${latest_display.toISOString().slice(0,10)}"
+            value="${this.latest_display.toISOString().slice(0,10)}"
             min="${this.earliest_all.toISOString().slice(0,10)}"
             max="${this.latest_all.toISOString().slice(0,10)}"
           />`,
@@ -143,25 +130,88 @@ class DateFilter extends Component {
     ].join('');
 
     $(`#${this.root_id}`).empty().append(content);
+
     $("#filter-date-range-select").on('change', (e) => {
-      const selection = e.target.value;
+      this._selection = e.target.value;
 
       // show or hide custom date picker
-      if (selection === "custom_range") {
+      if (this._selection === "custom_range") {
         $("#filter-date-input-group").show();
       } else {
         $("#filter-date-input-group").hide();
       }
 
-      console.log(this.date_range_options[selection]);
-      // TODO set filters etc.
+      const selected_range = this.date_range_options[this._selection];
+      console.log(selected_range);
+      this.setFilter(selected_range.min, selected_range.max);
 
     });
 
   }
 
+  /**
+   * Generates text indicating filter date range
+   * @returns {string}
+   */
+  buildDateRangeIndicator() {
+    const selected_range = this.date_range_options[this._selection];
+
+    // Date formatting
+    const date_options = {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    };
+
+    const rangeStart = (selected_range.min ?? this.earliest_display).toLocaleDateString('en-CA', date_options);
+    const rangeEnd = (selected_range.max ?? this.latest_display).toLocaleDateString('en-CA', date_options);
+
+    return `${rangeStart} – ${rangeEnd}`;
+  }
+
+  setFilter(startDate, endDate) {
+    const filters = this.shared_state.filters;
+
+    const startDateTest = (date) => {
+      if (startDate) {
+        return date >= startDate;
+      } else {
+        return true;
+      }
+    };
+    const endDateTest = (date) => {
+      if (endDate) {
+        return date <= endDate
+      } else {
+        return true;
+      }
+    }
+
+    filters.parking_time = {
+      test: function (dt_str) {
+        const parking_dt = new Date(dt_str);
+        return startDateTest(parking_dt) && endDateTest(parking_dt);
+      }
+    }
+    super.analytics_event(this.root_id, filters);
+    this.shared_state.filters = filters;
+  }
+
+
+  /**
+   * Update date range of displayed (globally filtered) entries
+   */
+  updateDisplayRange() {
+    const display_dates = this.shared_state.display_data.map(
+      s => new Date(s.parking_time)
+    );
+    this.earliest_display = display_dates.reduce((p, c) => (p < c ? p : c));
+    this.latest_display = display_dates.reduce((p, c) => (p > c ? p : c));
+  }
+
   refresh() {
-    this.build();
+    this.updateDisplayRange();
+    $("#filter-date-range-indicator").text(this.buildDateRangeIndicator());
   }
 }
 
