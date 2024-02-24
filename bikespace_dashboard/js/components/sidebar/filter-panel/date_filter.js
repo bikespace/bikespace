@@ -142,7 +142,7 @@ class DateFilter extends Component {
       }
 
       const selected_range = this.date_range_options[this._selection];
-      console.log(selected_range);
+      // console.log(selected_range);
       this.setFilter(selected_range.min, selected_range.max);
 
     });

@@ -1,4 +1,5 @@
 import {Component} from '../../main.js';
+import {DateTime} from "../../../../libraries/luxon.min.js";
 
 class SummaryBox extends Component {
   /**
@@ -15,7 +16,11 @@ class SummaryBox extends Component {
   build() {
     // Calculate date range of entries
     const submission_dates = this.shared_state.display_data.map(
-      s => new Date(s.parking_time)
+      s => DateTime.fromFormat(
+        s.parking_time,
+        "EEE, dd MMM yyyy hh:mm:ss z",
+        {zone: "America/Toronto"}
+      )
     );
     const earliest_entry = submission_dates.reduce((p, c) => (p < c ? p : c));
     const latest_entry = submission_dates.reduce((p, c) => (p > c ? p : c));
@@ -35,10 +40,13 @@ class SummaryBox extends Component {
       '<button class="clear-filter" type="button" hidden data-umami-event="clear-filters"><img src="assets/clear-filter.svg"/> Clear Filters</button>',
       '</div>',
       '<div class="summary-desc">Total Reports</div>',
-      `<div class="summary-desc">${earliest_entry.toLocaleDateString(
-        'en-CA',
-        date_options
-      )} – ${latest_entry.toLocaleDateString('en-CA', date_options)}</div>`,
+      `<div class="summary-desc">${earliest_entry.toLocaleString(
+        DateTime.DATE_FULL, 
+        {locale: 'en-CA'},
+      )} – ${latest_entry.toLocaleString(
+        DateTime.DATE_FULL, 
+        {locale: 'en-CA'},
+        )}</div>`,
     ].join('');
 
     $(`#${this.root_id}`).empty().append(content);

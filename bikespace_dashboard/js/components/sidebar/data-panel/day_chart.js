@@ -1,5 +1,6 @@
-import {Component} from '../../main.js';
+import {Component, WeekDayPeriodFilter} from '../../main.js';
 import {defaults, cssVarHSL} from './plot_utils.js';
+import {DateTime} from "../../../../libraries/luxon.min.js";
 
 class DayChart extends Component {
 
@@ -20,7 +21,7 @@ class DayChart extends Component {
       {index: 4, chart_order: 3, name: 'Thursday'},
       {index: 5, chart_order: 4, name: 'Friday'},
       {index: 6, chart_order: 5, name: 'Saturday'},
-      {index: 0, chart_order: 6, name: 'Sunday'},
+      {index: 7, chart_order: 6, name: 'Sunday'},
     ];
 
     this.inputData = days;
@@ -85,9 +86,10 @@ class DayChart extends Component {
     // clicking on the bar trace updates the shared filter
     this.plot.on('plotly_click', data => {
       const point_index = data.points[0].pointIndex;
-      const day_index = days.find(d => d.chart_order === point_index).index;
+      const day_name = days.find(d => d.chart_order === point_index)
+        .name.toLowerCase();
       this.toggleSelected(point_index);
-      this.setFilter(day_index);
+      this.setFilter(day_name);
     });
   }
 
@@ -95,7 +97,7 @@ class DayChart extends Component {
     this.updateCount();
 
     // clear selection if no filter applied
-    if (!this.shared_state.filters.parking_time) {
+    if (!this.shared_state.filters.weekday_period) {
       this._selected = null;
     }
 
@@ -117,16 +119,22 @@ class DayChart extends Component {
   updateCount() {
     // Remove day filter for this chart, otherwise the other bars all go to zero
     const filters = {...this.shared_state.filters}; // copy by values
-    if (filters?.parking_time) {
-      delete filters.parking_time;
+    if (filters?.weekday_period) {
+      delete filters.weekday_period;
     }
     const display_data_all_days = this.shared_state.applyFilters(filters);
 
     this.inputData = this.inputData.map(r =>
       Object.assign(r, {
         count: display_data_all_days.reduce(
-          (a, b) =>
-            a + (new Date(b['parking_time']).getDay() === r.index ? 1 : 0),
+          (a, b) => {
+            const bdt = DateTime.fromFormat(
+              b.parking_time,
+              "EEE, dd MMM yyyy hh:mm:ss z",
+              {zone: "America/Toronto"}
+            );
+            return a + (bdt.weekday === r.index ? 1 : 0)
+          },
           0
         ),
       })
@@ -147,20 +155,15 @@ class DayChart extends Component {
 
   /**
    * Set or toggle shared state filter on "parking_time" property
-   * @param {int} day_index
+   * @param {string} day_name
    */
-  setFilter(day_index) {
+  setFilter(day_name) {
     const filters = this.shared_state.filters;
     // reset to no filter on toggle
-    if (filters?.parking_time?.day_index === day_index) {
-      delete filters.parking_time;
+    if (filters?.weekday_period?.stateEquals([day_name])) {
+      delete filters.weekday_period;
     } else {
-      filters.parking_time = {
-        day_index: day_index,
-        test: function (time_str) {
-          return new Date(time_str).getDay() === day_index;
-        },
-      };
+      filters.weekday_period = new WeekDayPeriodFilter([day_name]);
     }
     super.analytics_event(this.root_id, filters);
     this.shared_state.filters = filters;

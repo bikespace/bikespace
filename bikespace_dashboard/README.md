@@ -41,9 +41,11 @@ CSS stylesheets for individual components can be found in `/css/components` and 
 
 **DRAFT TODO CLEANUP**
 
-State: most likely want a 'state' property that describes the UI state (e.g. for date chart/filter and issue chart/filter) --- or could infer state from the data? Inferring would be more complex, but less brittle to changes in the dataset.
+All subclass `ReportFilter` from `main.js` which exposes a 'state' property and a 'test()' function. 
 
-Date filter uniquely has combinable sub-sections:
+'state' property describes the UI state (e.g. for date chart/filter and issue chart/filter)
+
+parking_time can be affected by several different filter keys:
 
 - date_range, e.g. to implement filters such as "last 90 days" or "last year"
 - yearday_period, e.g. to implement filters such as "reports in winter"
@@ -52,6 +54,26 @@ Date filter uniquely has combinable sub-sections:
 
 (Some kind of note - if you want to see e.g. after sundown, do a jupyter notebook :P)
 
+latitude and longitude are filtered by the filter key "location"
+
+**Filter List and Examples**
+
+```
+comments (comments) ["search string 1", "search string 2"]
+id (id) ["id1", "id2"]
+issues (issues) ["issue1", "issue2"]
+location (latitude, longitude) [{
+  min_lat: 123,
+  min_long: 123,
+  max_lat: 123,
+  max_long: 123,
+}, ...]
+parking_duration (parking_duration) ["hours", "minutes"]
+date_range (parking_time) [{min_date: <Date>, max_date: <Date>}, ...]
+yearday_period (parking_time) [{min_day: 0, max_day: 5}, ...]
+weekday_period (parking_time) ["monday", "wednesday"]
+time_period (parking_time) [{min_time: <time>, max_time: <time>}]
+```
 
 ### Tools
 
