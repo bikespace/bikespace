@@ -1,10 +1,10 @@
-import {Component} from '../../main.js';
+import {Component, IssuesFilter} from '../../main.js';
 import {defaults} from './plot_utils.js';
 import {issue_attributes as ia} from '../../issue_attributes.js';
 
 class IssueChart extends Component {
   /**
-   * Base class for graphs, map, etc. Registers component with shared_state.
+   * Issue Chart Component
    * @param {string} parent JQuery selector for parent element
    * @param {string} root_id tag id for root div
    * @param {Object} shared_state
@@ -179,15 +179,10 @@ class IssueChart extends Component {
   setFilter(filter_issue) {
     const filters = this.shared_state.filters;
     // reset to no filter on toggle
-    if (filters?.issues?.contains === filter_issue) {
+    if (filters?.issues?.stateEquals([filter_issue])) {
       delete filters.issues;
     } else {
-      filters.issues = {
-        contains: filter_issue,
-        test: function (issue_list) {
-          return issue_list.includes(filter_issue);
-        },
-      };
+      filters.issues = new IssuesFilter([filter_issue]);
     }
     super.analytics_event(this.root_id, filters);
     this.shared_state.filters = filters;

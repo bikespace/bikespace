@@ -27,7 +27,6 @@ class SharedState {
 
   set filters(f) {
     this._filters = f;
-    console.log(f); // DEBUG
     this._display_data = this.applyFilters(this._filters);
     this.refresh();
   }
@@ -155,7 +154,7 @@ class WeekDayPeriodFilter extends ReportFilter {
    * Filter for weekday period (which days of the week to show)
    * @param {string[]} state Array of weekday names, e.g. ["saturday", "sunday"]
    */
-  constructor (state) {
+  constructor(state) {
     super(state);
     this._state = this._state.map(x => x.toLowerCase());
   }
@@ -167,8 +166,31 @@ class WeekDayPeriodFilter extends ReportFilter {
       "EEE, dd MMM yyyy hh:mm:ss z",
       {zone: "America/Toronto"}
     );
-    const inclWeekdays = this.state.map(x => this.#dayIndex[x]);
+    const inclWeekdays = this._state.map(x => this.#dayIndex[x]);
     return inclWeekdays.includes(dt.weekday);
+  }
+}
+
+class IssuesFilter extends ReportFilter {
+  filterKey = "issues";
+
+  /**
+   * Filter for issue types
+   * @param {string[]} state 
+   */
+  constructor(state) {
+    super(state);
+  }
+
+  /**
+   * Filter reports; keep all with at least one matching issue type
+   * @param {object} report 
+   * @returns {boolean}
+   */
+  test(report) {
+    return report.issues.some(
+      value => this._state.includes(value)
+      );
   }
 }
 
@@ -176,4 +198,5 @@ export {
   SharedState, 
   Component,
   WeekDayPeriodFilter,
+  IssuesFilter,
 };
