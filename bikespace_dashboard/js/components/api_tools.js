@@ -1,5 +1,7 @@
 import {cssVarHSL} from './sidebar/data-panel/plot_utils.js';
 
+const parking_time_date_format = "EEE, dd MMM yyyy hh:mm:ss z";
+
 // for "render_priority", 0 is the highest priority and higher numbers are lower priority
 const issue_attributes = {
   not_provided: {
@@ -49,4 +51,4 @@ const issue_attributes = {
   },
 };
 
-export {issue_attributes};
+export {parking_time_date_format, issue_attributes};

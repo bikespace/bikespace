@@ -1,5 +1,6 @@
 import {Component} from '../../main.js';
 import {DateTime} from "../../../../libraries/luxon.min.js";
+import { parking_time_date_format } from '../../api_tools.js';
 
 class SummaryBox extends Component {
   /**
@@ -18,19 +19,12 @@ class SummaryBox extends Component {
     const submission_dates = this.shared_state.display_data.map(
       s => DateTime.fromFormat(
         s.parking_time,
-        "EEE, dd MMM yyyy hh:mm:ss z",
+        parking_time_date_format,
         {zone: "America/Toronto"}
       )
     );
-    const earliest_entry = submission_dates.reduce((p, c) => (p < c ? p : c));
-    const latest_entry = submission_dates.reduce((p, c) => (p > c ? p : c));
-
-    // Date formatting
-    const date_options = {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    };
+    const earliest_entry = DateTime.min(...submission_dates);
+    const latest_entry = DateTime.max(...submission_dates);
 
     const content = [
       '<div class="flex">',

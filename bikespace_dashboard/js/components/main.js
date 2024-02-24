@@ -1,4 +1,5 @@
 import { DateTime } from "../../libraries/luxon.min.js";
+import {parking_time_date_format} from "../components/api_tools.js";
 
 /**
  * Shared state class - handles shared data, filtering, and refresh when filters are updated.
@@ -138,6 +139,53 @@ class ReportFilter {
   }
 }
 
+class IssuesFilter extends ReportFilter {
+  filterKey = "issues";
+
+  /**
+   * Filter for issue types
+   * @param {string[]} state 
+   */
+  constructor(state) {
+    super(state);
+  }
+
+  /**
+   * Filter reports; keep all with at least one matching issue type
+   * @param {object} report 
+   * @returns {boolean}
+   */
+  test(report) {
+    return report.issues.some(
+      value => this._state.includes(value)
+      );
+  }
+}
+
+class DateRangeFilter extends ReportFilter {
+  filterKey = "date_range";
+
+  /**
+   * Filter reports based on date range applied to parking_time
+   * @param {?<Interval>[]} state 
+   */
+  constructor(state) {
+    super(state);
+  }
+
+  test(report) {
+    const dt = DateTime.fromFormat(
+      report.parking_time,
+      parking_time_date_format,
+      {zone: "America/Toronto"}
+    );
+    for (const interval of this._state) {
+      if (interval.contains(dt)) return true;
+    }
+    return false;
+  }
+}
+
 class WeekDayPeriodFilter extends ReportFilter {
   filterKey = "weekday_period";
   #dayIndex = {
@@ -163,7 +211,7 @@ class WeekDayPeriodFilter extends ReportFilter {
     // Fri, 05 Jan 2024 09:22:06 GMT
     const dt = DateTime.fromFormat(
       report.parking_time,
-      "EEE, dd MMM yyyy hh:mm:ss z",
+      parking_time_date_format,
       {zone: "America/Toronto"}
     );
     const inclWeekdays = this._state.map(x => this.#dayIndex[x]);
@@ -171,32 +219,10 @@ class WeekDayPeriodFilter extends ReportFilter {
   }
 }
 
-class IssuesFilter extends ReportFilter {
-  filterKey = "issues";
-
-  /**
-   * Filter for issue types
-   * @param {string[]} state 
-   */
-  constructor(state) {
-    super(state);
-  }
-
-  /**
-   * Filter reports; keep all with at least one matching issue type
-   * @param {object} report 
-   * @returns {boolean}
-   */
-  test(report) {
-    return report.issues.some(
-      value => this._state.includes(value)
-      );
-  }
-}
-
 export {
   SharedState, 
   Component,
-  WeekDayPeriodFilter,
   IssuesFilter,
+  DateRangeFilter,
+  WeekDayPeriodFilter,
 };

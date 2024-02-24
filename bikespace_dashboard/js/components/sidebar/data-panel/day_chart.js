@@ -1,6 +1,7 @@
 import {Component, WeekDayPeriodFilter} from '../../main.js';
 import {defaults, cssVarHSL} from './plot_utils.js';
 import {DateTime} from "../../../../libraries/luxon.min.js";
+import { parking_time_date_format } from '../../api_tools.js';
 
 class DayChart extends Component {
 
@@ -130,7 +131,7 @@ class DayChart extends Component {
           (a, b) => {
             const bdt = DateTime.fromFormat(
               b.parking_time,
-              "EEE, dd MMM yyyy hh:mm:ss z",
+              parking_time_date_format,
               {zone: "America/Toronto"}
             );
             return a + (bdt.weekday === r.index ? 1 : 0)

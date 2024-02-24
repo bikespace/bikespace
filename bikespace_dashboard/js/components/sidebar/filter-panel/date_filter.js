@@ -1,6 +1,8 @@
-import {Component} from '../../main.js';
+import {Component, DateRangeFilter} from '../../main.js';
+import {DateTime, Interval} from '../../../../libraries/luxon.min.js';
+import {parking_time_date_format} from '../../api_tools.js';
 
-class DateFilter extends Component {
+class DateFilterControl extends Component {
   /**
    * Creates a date filter control with pre-set ranges
    * @param {string} parent JQuery selector for parent element
@@ -12,19 +14,15 @@ class DateFilter extends Component {
 
     // Calculate date range for all data
     const all_dates = this.shared_state.response_data.map(
-      s => new Date(s.parking_time)
+      s => DateTime.fromFormat(
+        s.parking_time,
+        parking_time_date_format,
+        {zone: "America/Toronto"}
+      )
     );
-    this.earliest_all = all_dates.reduce((p, c) => (p < c ? p : c));
-    this.latest_all = all_dates.reduce((p, c) => (p > c ? p : c));
-    const today = new Date();
-
-    const a_day = 24*60*60*1000;
-    const prior_7_days = new Date(today - 7 * a_day);
-    const prior_30_days = new Date(today - 30 * a_day);
-    const prior_90_days = new Date(today - 90 * a_day);
-    const prior_12_months = new Date(
-      new Date(today).setFullYear(today.getFullYear() - 1)
-      );
+    this.earliest_all = DateTime.min(...all_dates);
+    this.latest_all = DateTime.max(...all_dates);
+    const today = DateTime.now().setZone("America/Toronto");
 
     // TODO validate the date ranges make sense
 
@@ -32,50 +30,52 @@ class DateFilter extends Component {
       "all_dates": {
         "label": "All Dates",
         "group": 0,
-        "min": null,
-        "max": null,
+        "interval": null,
       },
       "last_7_days": {
         "label": "Last 7 Days",
         "group": 1,
-        "min": prior_7_days,
-        "max": today,
+        "interval": Interval.fromDateTimes(today.minus({days: 7 - 1}), today),
       },
       "last_30_days": {
         "label": "Last 30 Days",
         "group": 1,
-        "min": prior_30_days,
-        "max": today,
+        "interval": Interval.fromDateTimes(today.minus({days: 30 - 1}), today),
       },
       "last_90_days": {
         "label": "Last 90 Days",
         "group": 1,
-        "min": prior_90_days,
-        "max": today,
+        "interval": Interval.fromDateTimes(today.minus({days: 90 - 1}), today),
       },
+      // last 11 full months plus the current month which may be incomplete
       "last_12_months": {
         "label": "Last 12 Months",
         "group": 2,
-        "min": prior_12_months,
-        "max": today,
+        "interval": Interval.fromDateTimes(
+          today.minus({months: 12 - 1}).startOf("month"),
+          today.endOf("month"),
+          ),
       },
       "this_year": {
         "label": "This Year",
         "group": 2,
-        "min": new Date(`${today.getFullYear()}-01-01`),
-        "max": new Date(`${today.getFullYear()}-12-31`),
+        "interval": Interval.fromDateTimes(
+          today.startOf("year"),
+          today.endOf("year"),
+        ),
       },
       "last_year": {
         "label": "Last Year",
         "group": 2,
-        "min": new Date(`${today.getFullYear() - 1}-01-01`),
-        "max": new Date(`${today.getFullYear() - 1}-12-31`),
+        "interval": Interval.fromDateTimes(
+          today.minus({years: 1}).startOf("year"),
+          today.minus({years: 1}).endOf("year"),
+        ),
       },
       "custom_range": {
         "label": "Custom Range",
         "group": 3,
-        "min": null,
-        "max": null,
+        "interval": null,
       },
     };
 
@@ -110,9 +110,9 @@ class DateFilter extends Component {
             type="date" 
             id="filter-start-date" 
             name="start-date" 
-            value="${this.earliest_display.toISOString().slice(0,10)}"
-            min="${this.earliest_all.toISOString().slice(0,10)}"
-            max="${this.latest_all.toISOString().slice(0,10)}"
+            value="${this.earliest_display.toISODate()}"
+            min="${this.earliest_all.toISODate()}"
+            max="${this.latest_all.toISODate()}"
           />`,
         `</div>`,
         `<div class="date-input">`,
@@ -121,10 +121,13 @@ class DateFilter extends Component {
             type="date" 
             id="filter-end-date" 
             name="end-date" 
-            value="${this.latest_display.toISOString().slice(0,10)}"
-            min="${this.earliest_all.toISOString().slice(0,10)}"
-            max="${this.latest_all.toISOString().slice(0,10)}"
+            value="${this.latest_display.toISODate()}"
+            min="${this.earliest_all.toISODate()}"
+            max="${this.latest_all.toISODate()}"
           />`,
+        `</div>`,
+        `<div>`,
+          `<button id="filter-date-input-apply" type="button">Apply</button>`,
         `</div>`,
       `</div>`,
     ].join('');
@@ -137,14 +140,24 @@ class DateFilter extends Component {
       // show or hide custom date picker
       if (this._selection === "custom_range") {
         $("#filter-date-input-group").show();
+        return;
       } else {
         $("#filter-date-input-group").hide();
       }
 
       const selected_range = this.date_range_options[this._selection];
       // console.log(selected_range);
-      this.setFilter(selected_range.min, selected_range.max);
+      this.setFilter(selected_range.interval);
+    });
 
+    $("#filter-date-input-apply").on('click', (e) => {
+      const start_date = $("#filter-start-date").val();
+      const end_date = $("#filter-end-date").val();
+      const interval = Interval.fromDateTimes(
+        DateTime.fromISO(start_date, {zone: "America/Toronto"}),
+        DateTime.fromISO(end_date, {zone: "America/Toronto"}),
+      )
+      this.setFilter(interval);
     });
 
   }
@@ -155,43 +168,24 @@ class DateFilter extends Component {
    */
   buildDateRangeIndicator() {
     const selected_range = this.date_range_options[this._selection];
-
-    // Date formatting
-    const date_options = {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    };
-
-    const rangeStart = (selected_range.min ?? this.earliest_display).toLocaleDateString('en-CA', date_options);
-    const rangeEnd = (selected_range.max ?? this.latest_display).toLocaleDateString('en-CA', date_options);
+    const rangeStart = (selected_range.interval?.start ?? this.earliest_display)
+      .toLocaleString(DateTime.DATE_FULL, {locale: 'en-CA'});
+    const rangeEnd = (selected_range.interval?.end ?? this.latest_display)
+      .toLocaleString(DateTime.DATE_FULL, {locale: 'en-CA'});
 
     return `${rangeStart} – ${rangeEnd}`;
   }
 
-  setFilter(startDate, endDate) {
+  /**
+   * set filter for date range
+   * @param {<Interval>} interval 
+   */
+  setFilter(interval) {
     const filters = this.shared_state.filters;
-
-    const startDateTest = (date) => {
-      if (startDate) {
-        return date >= startDate;
-      } else {
-        return true;
-      }
-    };
-    const endDateTest = (date) => {
-      if (endDate) {
-        return date <= endDate
-      } else {
-        return true;
-      }
-    }
-
-    filters.parking_time = {
-      test: function (dt_str) {
-        const parking_dt = new Date(dt_str);
-        return startDateTest(parking_dt) && endDateTest(parking_dt);
-      }
+    if (interval) {
+      filters.date_range = new DateRangeFilter([interval]);
+    } else {
+      delete filters.date_range;
     }
     super.analytics_event(this.root_id, filters);
     this.shared_state.filters = filters;
@@ -203,10 +197,14 @@ class DateFilter extends Component {
    */
   updateDisplayRange() {
     const display_dates = this.shared_state.display_data.map(
-      s => new Date(s.parking_time)
+      s => DateTime.fromFormat(
+        s.parking_time,
+        parking_time_date_format,
+        {zone: "America/Toronto"}
+      )
     );
-    this.earliest_display = display_dates.reduce((p, c) => (p < c ? p : c));
-    this.latest_display = display_dates.reduce((p, c) => (p > c ? p : c));
+    this.earliest_display = DateTime.min(...display_dates);
+    this.latest_display = DateTime.max(...display_dates);
   }
 
   refresh() {
@@ -215,4 +213,4 @@ class DateFilter extends Component {
   }
 }
 
-export {DateFilter};
+export {DateFilterControl};

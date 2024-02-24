@@ -59,20 +59,20 @@ latitude and longitude are filtered by the filter key "location"
 **Filter List and Examples**
 
 ```
-comments (comments) ["search string 1", "search string 2"]
 id (id) ["id1", "id2"]
-issues (issues) ["issue1", "issue2"]
 location (latitude, longitude) [{
   min_lat: 123,
   min_long: 123,
   max_lat: 123,
   max_long: 123,
 }, ...]
+issues (issues) ["issue1", "issue2"]
 parking_duration (parking_duration) ["hours", "minutes"]
 date_range (parking_time) [{min_date: <Date>, max_date: <Date>}, ...]
 yearday_period (parking_time) [{min_day: 0, max_day: 5}, ...]
 weekday_period (parking_time) ["monday", "wednesday"]
 time_period (parking_time) [{min_time: <time>, max_time: <time>}]
+comments (comments) ["search string 1", "search string 2"]
 ```
 
 ### Tools

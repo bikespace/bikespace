@@ -1,5 +1,5 @@
 import {Component} from './main.js';
-import {issue_attributes as ia} from './issue_attributes.js';
+import {issue_attributes as ia} from './api_tools.js';
 
 const tiles = {
   thunderforest_atlas: {

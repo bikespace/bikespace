@@ -1,6 +1,6 @@
 import {Component, IssuesFilter} from '../../main.js';
 import {defaults} from './plot_utils.js';
-import {issue_attributes as ia} from '../../issue_attributes.js';
+import {issue_attributes as ia} from '../../api_tools.js';
 
 class IssueChart extends Component {
   /**
