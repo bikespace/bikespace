@@ -91,54 +91,56 @@ class DateFilterControl extends Component {
 
   build() {
     const content = [
-      `<h3>Date(s):</h3>`,
-      `<div id="filter-date-range-indicator" class="">`,
-        `${this.#earliestSelection.toLocaleString(
-          DateTime.DATE_FULL, {locale: 'en-CA'}
-        )} – ${this.#latestSelection.toLocaleString(
-          DateTime.DATE_FULL, {locale: 'en-CA'}
-        )}`,
-      `</div>`,
-      `<select name="date-range-select" id="filter-date-range-select">`,
-        `<option value="all_dates">All Dates</option>`,
-        `<hr />`,
-        `<option value="last_7_days">Last 7 days</option>`,
-        `<option value="last_30_days">Last 30 days</option>`,
-        `<option value="last_90_days">Last 90 days</option>`,
-        `<hr />`,
-        `<option value="last_12_months">Last 12 months</option>`,
-        `<option value="this_year">This Year</option>`,
-        `<option value="last_year">Last Year</option>`,
-        `<hr />`,
-        `<option value="custom_range">Custom Range</option>`,
-      `</select>`,
-      `<div class="date-input-group" id="filter-date-input-group" hidden>`,
-        `<div class="date-input">`,
-          `<label for="filter-start-date">Start date:</label>`,
-          `<input 
-            type="date" 
-            id="filter-start-date" 
-            name="start-date" 
-            value="${this.#earliestSelection.toISODate()}"
-            min="${this.#earliestAll.toISODate()}"
-            max="${this.#latestAll.toISODate()}"
-          />`,
+      `<details>`,
+        `<summary>Date Range</summary>`,
+        `<div id="filter-date-range-indicator" class="">`,
+          `${this.#earliestSelection.toLocaleString(
+            DateTime.DATE_FULL, {locale: 'en-CA'}
+          )} – ${this.#latestSelection.toLocaleString(
+            DateTime.DATE_FULL, {locale: 'en-CA'}
+          )}`,
         `</div>`,
-        `<div class="date-input">`,
-          `<label for="filter-end-date">End date:</label>`,
-          `<input 
-            type="date" 
-            id="filter-end-date" 
-            name="end-date" 
-            value="${this.#latestSelection.toISODate()}"
-            min="${this.#earliestAll.toISODate()}"
-            max="${this.#latestAll.toISODate()}"
-          />`,
+        `<select name="date-range-select" id="filter-date-range-select">`,
+          `<option value="all_dates">All Dates</option>`,
+          `<hr />`,
+          `<option value="last_7_days">Last 7 days</option>`,
+          `<option value="last_30_days">Last 30 days</option>`,
+          `<option value="last_90_days">Last 90 days</option>`,
+          `<hr />`,
+          `<option value="last_12_months">Last 12 months</option>`,
+          `<option value="this_year">This Year</option>`,
+          `<option value="last_year">Last Year</option>`,
+          `<hr />`,
+          `<option value="custom_range">Custom Range</option>`,
+        `</select>`,
+        `<div class="date-input-group" id="filter-date-input-group" hidden>`,
+          `<div class="date-input">`,
+            `<label for="filter-start-date">Start date:</label>`,
+            `<input 
+              type="date" 
+              id="filter-start-date" 
+              name="start-date" 
+              value="${this.#earliestSelection.toISODate()}"
+              min="${this.#earliestAll.toISODate()}"
+              max="${this.#latestAll.toISODate()}"
+            />`,
+          `</div>`,
+          `<div class="date-input">`,
+            `<label for="filter-end-date">End date:</label>`,
+            `<input 
+              type="date" 
+              id="filter-end-date" 
+              name="end-date" 
+              value="${this.#latestSelection.toISODate()}"
+              min="${this.#earliestAll.toISODate()}"
+              max="${this.#latestAll.toISODate()}"
+            />`,
+          `</div>`,
+          `<div>`,
+            `<button id="filter-date-input-apply" type="button">Apply</button>`,
+          `</div>`,
         `</div>`,
-        `<div>`,
-          `<button id="filter-date-input-apply" type="button">Apply</button>`,
-        `</div>`,
-      `</div>`,
+      `</details>`,
     ].join('');
 
     $(`#${this.root_id}`).empty().append(content);

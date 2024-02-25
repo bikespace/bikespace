@@ -81,7 +81,7 @@ Think about when making a component:
 
 - coordination (via state) with other Components that may affect the same filter
 - ensure that the global clear filter works
-- handling of cases when no data is returned
+- avoid errors for cases when no data is returned
 
 
 ### Tools
