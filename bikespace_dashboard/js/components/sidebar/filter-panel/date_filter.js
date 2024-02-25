@@ -3,6 +3,12 @@ import {DateTime, Interval} from '../../../../libraries/luxon.min.js';
 import {parking_time_date_format} from '../../api_tools.js';
 
 class DateFilterControl extends Component {
+  #earliestSelection;
+  #latestSelection;
+  #earliestAll;
+  #latestAll;
+  #selection;
+
   /**
    * Creates a date filter control with pre-set ranges
    * @param {string} parent JQuery selector for parent element
@@ -20,11 +26,11 @@ class DateFilterControl extends Component {
         {zone: "America/Toronto"}
       )
     );
-    this.earliest_all = DateTime.min(...all_dates);
-    this.latest_all = DateTime.max(...all_dates);
+    this.#earliestAll = DateTime.min(...all_dates);
+    this.#latestAll = DateTime.max(...all_dates);
+    this.#earliestSelection = this.#earliestAll;
+    this.#latestSelection = this.#latestAll;
     const today = DateTime.now().setZone("America/Toronto");
-
-    // TODO validate the date ranges make sense
 
     this.date_range_options = {
       "all_dates": {
@@ -79,8 +85,7 @@ class DateFilterControl extends Component {
       },
     };
 
-    this._selection = "all_dates";
-    this.updateDisplayRange();
+    this.#selection = "all_dates";
     this.build();
   }
 
@@ -88,7 +93,11 @@ class DateFilterControl extends Component {
     const content = [
       `<h3>Date(s):</h3>`,
       `<div id="filter-date-range-indicator" class="">`,
-        this.buildDateRangeIndicator(),
+        `${this.#earliestSelection.toLocaleString(
+          DateTime.DATE_FULL, {locale: 'en-CA'}
+        )} – ${this.#latestSelection.toLocaleString(
+          DateTime.DATE_FULL, {locale: 'en-CA'}
+        )}`,
       `</div>`,
       `<select name="date-range-select" id="filter-date-range-select">`,
         `<option value="all_dates">All Dates</option>`,
@@ -110,9 +119,9 @@ class DateFilterControl extends Component {
             type="date" 
             id="filter-start-date" 
             name="start-date" 
-            value="${this.earliest_display.toISODate()}"
-            min="${this.earliest_all.toISODate()}"
-            max="${this.latest_all.toISODate()}"
+            value="${this.#earliestSelection.toISODate()}"
+            min="${this.#earliestAll.toISODate()}"
+            max="${this.#latestAll.toISODate()}"
           />`,
         `</div>`,
         `<div class="date-input">`,
@@ -121,9 +130,9 @@ class DateFilterControl extends Component {
             type="date" 
             id="filter-end-date" 
             name="end-date" 
-            value="${this.latest_display.toISODate()}"
-            min="${this.earliest_all.toISODate()}"
-            max="${this.latest_all.toISODate()}"
+            value="${this.#latestSelection.toISODate()}"
+            min="${this.#earliestAll.toISODate()}"
+            max="${this.#latestAll.toISODate()}"
           />`,
         `</div>`,
         `<div>`,
@@ -135,18 +144,12 @@ class DateFilterControl extends Component {
     $(`#${this.root_id}`).empty().append(content);
 
     $("#filter-date-range-select").on('change', (e) => {
-      this._selection = e.target.value;
-
-      // show or hide custom date picker
-      if (this._selection === "custom_range") {
-        $("#filter-date-input-group").show();
-        return;
-      } else {
-        $("#filter-date-input-group").hide();
-      }
-
-      const selected_range = this.date_range_options[this._selection];
-      // console.log(selected_range);
+      this.#selection = e.target.value;
+      this.toggleCustomDatePicker();
+      
+      // update filter unless custom date picker opened
+      if (this.#selection === "custom_range") return;
+      const selected_range = this.date_range_options[this.#selection];
       this.setFilter(selected_range.interval);
     });
 
@@ -159,21 +162,32 @@ class DateFilterControl extends Component {
       )
       this.setFilter(interval);
     });
-
+  }
+  
+  /**
+   * Show or hide custom date picker
+   */
+  toggleCustomDatePicker() {
+    if (this.#selection === "custom_range") {
+      $("#filter-date-input-group").show();
+    } else {
+      $("#filter-date-input-group").hide();
+    }
   }
 
   /**
-   * Generates text indicating filter date range
-   * @returns {string}
+   * Update UI indicating selected range
    */
-  buildDateRangeIndicator() {
-    const selected_range = this.date_range_options[this._selection];
-    const rangeStart = (selected_range.interval?.start ?? this.earliest_display)
-      .toLocaleString(DateTime.DATE_FULL, {locale: 'en-CA'});
-    const rangeEnd = (selected_range.interval?.end ?? this.latest_display)
-      .toLocaleString(DateTime.DATE_FULL, {locale: 'en-CA'});
-
-    return `${rangeStart} – ${rangeEnd}`;
+  updateSelectedRangeUI() {
+    $("#filter-date-range-indicator").text(
+      `${this.#earliestSelection.toLocaleString(
+        DateTime.DATE_FULL, {locale: 'en-CA'}
+      )} – ${this.#latestSelection.toLocaleString(
+        DateTime.DATE_FULL, {locale: 'en-CA'}
+      )}`
+    );
+    $("#filter-start-date").val(this.#earliestSelection.toISODate());
+    $("#filter-end-date").val(this.#latestSelection.toISODate());
   }
 
   /**
@@ -184,32 +198,28 @@ class DateFilterControl extends Component {
     const filters = this.shared_state.filters;
     if (interval) {
       filters.date_range = new DateRangeFilter([interval]);
+      this.#earliestSelection = interval.start;
+      this.#latestSelection = interval.end;
     } else {
       delete filters.date_range;
+      this.#earliestSelection = this.#earliestAll;
+      this.#latestSelection = this.#latestAll;
+      this.#selection = "all_dates";
     }
     super.analytics_event(this.root_id, filters);
     this.shared_state.filters = filters;
   }
 
-
-  /**
-   * Update date range of displayed (globally filtered) entries
-   */
-  updateDisplayRange() {
-    const display_dates = this.shared_state.display_data.map(
-      s => DateTime.fromFormat(
-        s.parking_time,
-        parking_time_date_format,
-        {zone: "America/Toronto"}
-      )
-    );
-    this.earliest_display = DateTime.min(...display_dates);
-    this.latest_display = DateTime.max(...display_dates);
-  }
-
   refresh() {
-    this.updateDisplayRange();
-    $("#filter-date-range-indicator").text(this.buildDateRangeIndicator());
+    // handle global filter clear
+    if (!this.shared_state.filters.date_range) {
+      this.#earliestSelection = this.#earliestAll;
+      this.#latestSelection = this.#latestAll;
+      this.#selection = "all_dates";
+      $("#filter-date-range-select").val(this.#selection);
+      this.toggleCustomDatePicker();
+    }
+    this.updateSelectedRangeUI();
   }
 }
 
