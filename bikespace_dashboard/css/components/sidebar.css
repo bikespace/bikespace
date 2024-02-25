@@ -124,6 +124,12 @@
     font-size: 2rem;
     font-weight: var(--bold-weight);
     margin-right: 0.1rem;
+
+    & img {
+      vertical-align: bottom;
+      padding-bottom: 0.4rem;
+      height: 1.8rem;
+    }
   }
 
   & .summary-desc {

@@ -75,6 +75,15 @@ time_period (parking_time) [{min_time: <time>, max_time: <time>}]
 comments (comments) ["search string 1", "search string 2"]
 ```
 
+### Tips [DRAFT]
+
+Think about when making a component:
+
+- coordination (via state) with other Components that may affect the same filter
+- ensure that the global clear filter works
+- handling of cases when no data is returned
+
+
 ### Tools
 
 The dashboard runs entirely in the user's browser, and does not use any major frameworks except for JQuery. Other tools are used to help create components, e.g.:
