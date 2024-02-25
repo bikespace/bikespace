@@ -4,7 +4,7 @@ import { parking_time_date_format } from '../../api_tools.js';
 
 class SummaryBox extends Component {
   /**
-   * Base class for graphs, map, etc. Registers component with shared_state.
+   * Summary box showing total number of reports and earliest and latest report dates
    * @param {string} parent JQuery selector for parent element
    * @param {string} root_id tag id for root div
    * @param {Object} shared_state
@@ -27,13 +27,12 @@ class SummaryBox extends Component {
     const latest_entry = DateTime.max(...submission_dates);
 
     const content = [
-      '<div class="flex">',
-      `<div id="entry-count">${this.shared_state.display_data.length.toLocaleString(
-        'en-CA'
-      )}</div>`,
-      '<button class="clear-filter" type="button" hidden data-umami-event="clear-filters"><img src="assets/clear-filter.svg"/> Clear Filters</button>',
+      '<div>',
+        `<span id="entry-count">${
+          this.shared_state.display_data.length.toLocaleString('en-CA')
+        }</span>`,
+        '<span class="summary-desc"> Reports</span>',
       '</div>',
-      '<div class="summary-desc">Total Reports</div>',
       `<div class="summary-desc">${earliest_entry.toLocaleString(
         DateTime.DATE_FULL, 
         {locale: 'en-CA'},
@@ -44,14 +43,6 @@ class SummaryBox extends Component {
     ].join('');
 
     $(`#${this.root_id}`).empty().append(content);
-
-    $(`#${this.root_id} button.clear-filter`).on('click', () => {
-      this.shared_state.filters = {};
-    });
-
-    if (Object.values(this.shared_state.filters).length > 0) {
-      $(`#${this.root_id} button.clear-filter`).removeAttr('hidden');
-    }
   }
 
   refresh() {

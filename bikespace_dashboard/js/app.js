@@ -11,10 +11,10 @@ import {DateFilterControl} from './components/sidebar/filter-panel/date_filter.j
 $.ajax({
   url: 'https://api-dev.bikespace.ca/api/v2/submissions?limit=5000',
   success: function (data) {
-    // add sidebar panel nav
-    new PanelNav('body header', 'panels');
-    // add interactive content
     const shared_state = new SharedState(data)
+    // add sidebar panel nav
+    new PanelNav('body', 'panels', shared_state);
+    // add interactive content
     new SummaryBox('#panels-section-data', 'summary-box', shared_state,);
     new IssueChart('#panels-section-data', 'issue-chart', shared_state,);
     new DayChart('#panels-section-data', 'day-chart', shared_state,);
