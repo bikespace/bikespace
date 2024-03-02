@@ -1,9 +1,5 @@
 @import 'stylevars.css';
 
-h1 {
-  font-size: 30px;
-}
-
 header {
   display: flex;
   flex-direction: row;

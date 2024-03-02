@@ -21,41 +21,11 @@
   }
 
   & button.clear-filter {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 2rem;
     width: 100%;
     margin-top: var(--spacing-unit);
     background-color: white;
-    border: var(--border-unit) solid var(--color-primary-d50p);
-    border-radius: var(--spacing-unit);
-    padding-left: var(--spacing-unit-double);
-    padding-right: var(--spacing-unit-double);
-    font-family: var(--body-font-stack);
-    font-size: 0.9rem;
-
     &[hidden] {
       display: none;
-    }
-
-    &:hover {
-      background-color: var(--color-primary-10p);
-      border-color: var(--color-primary);
-      cursor: pointer;
-    }
-
-    &:focus {
-      box-shadow: 0 0 0 0.2rem var(--color-primary-20p);
-    }
-
-    &:active {
-      background-color: var(--color-primary-d50p);
-      border-color: var(--color-primary);
-      color: white;
-      & img {
-        filter: invert(1);
-      }
     }
 
     & img {
@@ -135,6 +105,10 @@
   & .summary-desc {
     font-size: 0.9rem;
   }
+
+  & img {
+    display: inline-block;
+  }
 }
 
 .sidebar-panel {
@@ -159,3 +133,26 @@
     cursor: default; /* show as non-interactive */
   }
 }
+
+#panels-section-filters {
+  & summary {
+    font-weight: var(--bold-weight);
+    color: var(--color-primary-d50p);
+  }
+
+  & .filter-section {
+    margin-bottom: var(--spacing-unit-double);
+  }
+
+  & .filter-section-item {
+    margin-bottom: var(--spacing-unit);
+  }
+}
+
+#date-filter {
+  .date-input {
+    display: grid;
+    grid-template-columns: 30% 70%;
+  }
+}
+
