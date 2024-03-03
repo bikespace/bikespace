@@ -44,18 +44,22 @@
   }
 
   #main-content {
+    margin: 0 auto;
+    padding: 16px 16px;
+    max-width: 640px;
     position: relative;
     display: flex;
     flex-direction: column;
     background-color: white;
     height: calc(100dvh - 90px);
-    padding: 17px;
-    padding-bottom: 24px;
+    border-radius: 4px;
 
     #main-content-body {
       position: relative;
-      overflow-y: scroll;
       flex-grow: 1;
+      width: 90%;
+      margin: 0 auto;
+      overflow-y: hidden;
 
       h2 {
         margin-bottom: 10px;
@@ -81,7 +85,9 @@
     }
 
     footer {
-      width: 100%;
+      width: 90%;
+      margin: 0 auto;
+      padding: 16px 0;
       min-height: 44px;
       display: flex;
       justify-content: space-between;
@@ -93,8 +99,9 @@
   position: relative;
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 18px;
+  width: 90%;
+  margin: 0 auto;
+  padding: 16px 0;
 
   #middle-line {
     position: absolute;
