@@ -1,6 +1,6 @@
 import {Component} from '../../main.js';
 import {DateTime} from "../../../../libraries/luxon.min.js";
-import { parking_time_date_format } from '../../api_tools.js';
+import {parking_time_date_format} from '../../api_tools.js';
 
 class SummaryBox extends Component {
   #entryCountDescription = "reports";

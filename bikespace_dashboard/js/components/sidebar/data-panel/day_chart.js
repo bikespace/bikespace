@@ -1,7 +1,7 @@
 import {Component, WeekDayPeriodFilter} from '../../main.js';
 import {defaults, cssVarHSL} from './plot_utils.js';
-import {DateTime} from "../../../../libraries/luxon.min.js";
-import { parking_time_date_format } from '../../api_tools.js';
+import {DateTime} from '../../../../libraries/luxon.min.js';
+import {parking_time_date_format} from '../../api_tools.js';
 
 class DayChart extends Component {
   /**
@@ -87,7 +87,8 @@ class DayChart extends Component {
     // clicking on the bar trace updates the shared filter
     this.plot.on('plotly_click', data => {
       const point_index = data.points[0].pointIndex;
-      const day_name = days.find(d => d.chart_order === point_index)
+      const day_name = days
+        .find(d => d.chart_order === point_index)
         .name.toLowerCase();
       this.toggleSelected(point_index);
       this.setFilter(day_name);
@@ -127,17 +128,14 @@ class DayChart extends Component {
 
     this.inputData = this.inputData.map(r =>
       Object.assign(r, {
-        count: display_data_all_days.reduce(
-          (a, b) => {
-            const bdt = DateTime.fromFormat(
-              b.parking_time,
-              parking_time_date_format,
-              {zone: "America/Toronto"}
-            );
-            return a + (bdt.weekday === r.index ? 1 : 0)
-          },
-          0
-        ),
+        count: display_data_all_days.reduce((a, b) => {
+          const bdt = DateTime.fromFormat(
+            b.parking_time,
+            parking_time_date_format,
+            {zone: 'America/Toronto'}
+          );
+          return a + (bdt.weekday === r.index ? 1 : 0);
+        }, 0),
       })
     );
   }

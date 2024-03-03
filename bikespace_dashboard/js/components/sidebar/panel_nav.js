@@ -1,7 +1,6 @@
-import { Component } from "../main.js";
+import {Component} from '../main.js';
 
 class PanelNav extends Component {
-
   /**
    * Panel navigation and filter clear button
    * @param {string} parent JQuery selector for parent element
@@ -15,38 +14,38 @@ class PanelNav extends Component {
     // add content to page
     document.querySelector(`#${this.root_id}`).insertAdjacentHTML(
       'afterbegin',
-        `<div id="${root_id}-header">
-          <nav id="${root_id}-nav" aria-label="Sidebar">
-            <fieldset>
-                <input type="radio" id="${root_id}-nav-data" name="${root_id}-nav" value="${root_id}-section-data" checked>
-                <label for="${root_id}-nav-data">Data</label>
-                <input type="radio" id="${root_id}-nav-filters" name="${root_id}-nav" value="${root_id}-section-filters">
-                <label for="${root_id}-nav-filters">Filters</label>
-                <input type="radio" id="${root_id}-nav-feed" name="${root_id}-nav" value="${root_id}-section-feed" hidden>
-                <label for="${root_id}-nav-feed" hidden>Feed</label>
-            </fieldset>
-          </nav>
-          <button class="clear-filter" 
-            type="button" 
-            hidden 
-            data-umami-event="clear-filters"
-          >
-            <img src="assets/clear-filter.svg"/> Clear Filters
-          </button>
-        </div>
-        <div id="${root_id}-sections">
-          <div id="${root_id}-section-data" 
-            class="${root_id}-section"
-          ></div>
-          <div id="${root_id}-section-filters" 
-            class="${root_id}-section" 
-            hidden
-          ></div>
-          <div id="${root_id}-section-feed" 
-            class="${root_id}-section" 
-            hidden
-          ></div>
-        </div>`
+      `<div id="${root_id}-header">
+        <nav id="${root_id}-nav" aria-label="Sidebar">
+          <fieldset>
+              <input type="radio" id="${root_id}-nav-data" name="${root_id}-nav" value="${root_id}-section-data" checked>
+              <label for="${root_id}-nav-data">Data</label>
+              <input type="radio" id="${root_id}-nav-filters" name="${root_id}-nav" value="${root_id}-section-filters">
+              <label for="${root_id}-nav-filters">Filters</label>
+              <input type="radio" id="${root_id}-nav-feed" name="${root_id}-nav" value="${root_id}-section-feed" hidden>
+              <label for="${root_id}-nav-feed" hidden>Feed</label>
+          </fieldset>
+        </nav>
+        <button class="clear-filter" 
+          type="button" 
+          hidden 
+          data-umami-event="clear-filters"
+        >
+          <img src="assets/clear-filter.svg"/> Clear Filters
+        </button>
+      </div>
+      <div id="${root_id}-sections">
+        <div id="${root_id}-section-data" 
+          class="${root_id}-section"
+        ></div>
+        <div id="${root_id}-section-filters" 
+          class="${root_id}-section" 
+          hidden
+        ></div>
+        <div id="${root_id}-section-feed" 
+          class="${root_id}-section" 
+          hidden
+        ></div>
+      </div>`
     );
     document
       .querySelector(`#${root_id}-nav`)

@@ -1,5 +1,5 @@
 import {PanelNav} from './components/sidebar/panel_nav.js';
-import {SharedState, Component} from './components/main.js';
+import {SharedState} from './components/main.js';
 import {Map} from './components/map.js';
 import {SummaryBox} from './components/sidebar/data-panel/summary_box.js';
 import {IssueChart} from './components/sidebar/data-panel/issue_chart.js';
@@ -11,7 +11,7 @@ import {DateFilterControl} from './components/sidebar/filter-panel/date_filter.j
 $.ajax({
   url: 'https://api-dev.bikespace.ca/api/v2/submissions?limit=5000',
   success: function (data) {
-    const shared_state = new SharedState(data)
+    const shared_state = new SharedState(data);
     // add sidebar panel nav
     new PanelNav('body', 'panels', shared_state);
     // add interactive content
@@ -28,14 +28,14 @@ $.ajax({
       '#panels-section-data',
       'duration-tod-chart',
       shared_state,
-      {className: 'sidebar-panel'},
+      {className: 'sidebar-panel'}
     );
     // add filter controls
     new DateFilterControl(
-      '#panels-section-filters', 
-      'date-filter', 
+      '#panels-section-filters',
+      'date-filter',
       shared_state,
-      {className: 'sidebar-panel'},
+      {className: 'sidebar-panel'}
     );
     // add map
     new Map('body', 'issue-map', shared_state);
