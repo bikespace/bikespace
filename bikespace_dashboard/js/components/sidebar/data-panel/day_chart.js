@@ -162,7 +162,9 @@ class DayChart extends Component {
     if (filters?.[WeekDayPeriodFilter.filterKey]?.stateEquals([day_name])) {
       delete filters[WeekDayPeriodFilter.filterKey];
     } else {
-      filters[WeekDayPeriodFilter.filterKey] = new WeekDayPeriodFilter([day_name]);
+      filters[WeekDayPeriodFilter.filterKey] = new WeekDayPeriodFilter([
+        day_name,
+      ]);
     }
     super.analytics_event(this.root_id, filters);
     this.shared_state.filters = filters;
