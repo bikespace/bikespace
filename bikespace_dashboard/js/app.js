@@ -32,6 +32,13 @@ $.ajax({
       {className: 'sidebar-panel'}
     );
     // add filter controls
+    new SummaryBox(
+      '#panels-section-filters',
+      'summary-box-filters',
+      shared_state,
+      {
+        className: 'sidebar-panel',
+    });
     new DateFilterControl(
       '#panels-section-filters',
       'date-filter',

@@ -96,7 +96,7 @@ class DateFilterControl extends Component {
         `<summary>Date Range</summary>`,
         `<div class="details-container">`,
           `<div class="filter-section">`,
-            `<div><strong>Showing:</strong></div>`,
+            `<div><strong>Showing between:</strong></div>`,
             `<div id="filter-date-range-indicator" class="">`,
               `${this.#earliestSelection.toLocaleString(
                 DateTime.DATE_FULL, {locale: 'en-CA'}
