@@ -33,6 +33,10 @@ h1 {
   font-size: 30px;
 }
 
+strong {
+  font-weight: var(--bold-weight);
+}
+
 button {
   display: flex;
   align-items: center;
@@ -70,11 +74,8 @@ select {
   display: block;
   width: 100%;
   height: 2rem;
-  padding: 
-    .375rem 
-    calc(var(--spacing-unit-double) + 1.5rem) 
-    .375rem 
-    var(--spacing-unit-double);
+  padding-right: calc(var(--spacing-unit-double) + 1.5rem);
+  padding-left: var(--spacing-unit-double);
   --bs-form-select-bg-img: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
   background-image: var(--bs-form-select-bg-img);
   background-repeat: no-repeat;
@@ -107,8 +108,4 @@ details[open] {
   & .details-container {
     margin: var(--spacing-unit);
   }
-}
-
-strong {
-  font-weight: var(--bold-weight);
 }

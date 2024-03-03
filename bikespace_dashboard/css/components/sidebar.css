@@ -23,7 +23,6 @@
   & button.clear-filter {
     width: 100%;
     margin-top: var(--spacing-unit);
-    background-color: white;
     &[hidden] {
       display: none;
     }
