@@ -1,4 +1,4 @@
-import { DateTime } from "../../libraries/luxon.min.js";
+import {DateTime} from "../../libraries/luxon.min.js";
 import {parking_time_date_format} from "../components/api_tools.js";
 
 /**
@@ -225,10 +225,32 @@ class WeekDayPeriodFilter extends ReportFilter {
   }
 }
 
+class ParkingDurationFilter extends ReportFilter {
+  filterKey = "parking_duration";
+
+  /**
+   * Filter for parking duration
+   * @param {string[]} state 
+   */
+  constructor(state) {
+    super(state);
+  }
+
+  /**
+   * Filter reports; keep all with a matching parking duration
+   * @param {object} report 
+   * @returns {boolean}
+   */
+  test(report) {
+    return this._state.includes(report['parking_duration']);
+  }
+}
+
 export {
   SharedState, 
   Component,
   IssuesFilter,
   DateRangeFilter,
   WeekDayPeriodFilter,
+  ParkingDurationFilter,
 };

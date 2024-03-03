@@ -6,6 +6,7 @@ import {IssueChart} from './components/sidebar/data-panel/issue_chart.js';
 import {DayChart} from './components/sidebar/data-panel/day_chart.js';
 import {DurationTimeOfDayChart} from './components/sidebar/data-panel/duration_tod_chart.js';
 import {DateFilterControl} from './components/sidebar/filter-panel/date_filter.js';
+import { ParkingDurationFilterControl } from './components/sidebar/filter-panel/parking_duration_filter.js';
 
 // Load data from BikeSpace API
 $.ajax({
@@ -34,6 +35,12 @@ $.ajax({
     new DateFilterControl(
       '#panels-section-filters',
       'date-filter',
+      shared_state,
+      {className: 'sidebar-panel'}
+    );
+    new ParkingDurationFilterControl(
+      '#panels-section-filters',
+      'parking-duration-filter',
       shared_state,
       {className: 'sidebar-panel'}
     );

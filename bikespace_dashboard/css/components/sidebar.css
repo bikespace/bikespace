@@ -155,3 +155,11 @@
   }
 }
 
+#parking-duration-filter {
+  & .parking-duration-types {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    column-gap: var(--spacing-unit);
+  }
+}
+
