@@ -1,21 +1,44 @@
-import {SharedState, Component} from './components/main.js';
+import {PanelNav} from './components/sidebar/panel_nav.js';
+import {SharedState} from './components/main.js';
 import {Map} from './components/map.js';
-import {SummaryBox} from './components/sidebar/summary_box.js';
-import {IssueChart} from './components/sidebar/issue_chart.js';
-import {DayChart} from './components/sidebar/day_chart.js';
-import {DurationTimeOfDayChart} from './components/sidebar/duration_tod_chart.js';
+import {SummaryBox} from './components/sidebar/data-panel/summary_box.js';
+import {IssueChart} from './components/sidebar/data-panel/issue_chart.js';
+import {DayChart} from './components/sidebar/data-panel/day_chart.js';
+import {DurationTimeOfDayChart} from './components/sidebar/data-panel/duration_tod_chart.js';
+import {DateFilterControl} from './components/sidebar/filter-panel/date_filter.js';
 
 // Load data from BikeSpace API
 $.ajax({
   url: 'https://api-dev.bikespace.ca/api/v2/submissions?limit=5000',
   success: function (data) {
     const shared_state = new SharedState(data);
-    new Component('body', 'sidebar', shared_state);
-    new SummaryBox('#sidebar', 'summary-box', shared_state);
-    new IssueChart('#sidebar', 'issue-chart', shared_state);
-    new DayChart('#sidebar', 'day-chart', shared_state);
-    new DurationTimeOfDayChart('#sidebar', 'duration-tod-chart', shared_state);
-    new Map('body', 'map', shared_state);
+    // add sidebar panel nav
+    new PanelNav('body', 'panels', shared_state);
+    // add interactive content
+    new SummaryBox('#panels-section-data', 'summary-box', shared_state, {
+      className: 'sidebar-panel',
+    });
+    new IssueChart('#panels-section-data', 'issue-chart', shared_state, {
+      className: 'sidebar-panel',
+    });
+    new DayChart('#panels-section-data', 'day-chart', shared_state, {
+      className: 'sidebar-panel',
+    });
+    new DurationTimeOfDayChart(
+      '#panels-section-data',
+      'duration-tod-chart',
+      shared_state,
+      {className: 'sidebar-panel'}
+    );
+    // add filter controls
+    new DateFilterControl(
+      '#panels-section-filters',
+      'date-filter',
+      shared_state,
+      {className: 'sidebar-panel'}
+    );
+    // add map
+    new Map('body', 'issue-map', shared_state);
   },
 });
 

@@ -1,6 +1,6 @@
 @import 'stylevars.css';
 
-#map {
+#issue-map {
   position: absolute;
   top: 54px;
   bottom: 0;

@@ -1,10 +1,17 @@
-import {Component} from '../main.js';
+import {Component, IssuesFilter} from '../../main.js';
 import {defaults} from './plot_utils.js';
-import {issue_attributes as ia} from '../issue_attributes.js';
+import {issue_attributes as ia} from '../../api_tools.js';
 
 class IssueChart extends Component {
-  constructor(parent, root_id, shared_state) {
-    super(parent, root_id, shared_state);
+  /**
+   * Issue Chart Component
+   * @param {string} parent JQuery selector for parent element
+   * @param {string} root_id tag id for root div
+   * @param {Object} shared_state
+   * @param {import('../../main.js').ComponentOptions} [options = {}] Options for the component
+   */
+  constructor(parent, root_id, shared_state, options = {}) {
+    super(parent, root_id, shared_state, options);
 
     // Note: no option for spacing between y-axis labels and y-axis line in plotly js, have to add a trailing space
     this.issue_labels = {};
@@ -173,15 +180,10 @@ class IssueChart extends Component {
   setFilter(filter_issue) {
     const filters = this.shared_state.filters;
     // reset to no filter on toggle
-    if (filters?.issues?.contains === filter_issue) {
+    if (filters?.issues?.stateEquals([filter_issue])) {
       delete filters.issues;
     } else {
-      filters.issues = {
-        contains: filter_issue,
-        test: function (issue_list) {
-          return issue_list.includes(filter_issue);
-        },
-      };
+      filters.issues = new IssuesFilter([filter_issue]);
     }
     super.analytics_event(this.root_id, filters);
     this.shared_state.filters = filters;

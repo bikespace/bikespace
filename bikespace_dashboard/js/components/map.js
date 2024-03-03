@@ -1,5 +1,5 @@
 import {Component} from './main.js';
-import {issue_attributes as ia} from './issue_attributes.js';
+import {issue_attributes as ia} from './api_tools.js';
 
 const tiles = {
   thunderforest_atlas: {
@@ -27,11 +27,18 @@ const tiles = {
 };
 
 class Map extends Component {
-  constructor(parent, root_id, shared_state) {
-    super(parent, root_id, shared_state);
+  /**
+   * Base class for graphs, map, etc. Registers component with shared_state.
+   * @param {string} parent JQuery selector for parent element
+   * @param {string} root_id tag id for root div
+   * @param {Object} shared_state
+   * @param {import('./main.js').ComponentOptions} [options = {}] Options for the component
+   */
+  constructor(parent, root_id, shared_state, options = {}) {
+    super(parent, root_id, shared_state, options);
 
     // initialize map and zoom to City of Toronto
-    this.lmap = L.map('map').setView([43.733399, -79.376221], 11);
+    this.lmap = L.map('issue-map').setView([43.733399, -79.376221], 11);
     L.tileLayer(tiles.thunderforest_atlas.url, {
       attribution: tiles.thunderforest_atlas.attribution,
     }).addTo(this.lmap);
@@ -115,7 +122,7 @@ class Map extends Component {
       // set up custom markers
       const BaseIcon = L.Icon.extend({
         options: {
-          shadowUrl: './leaflet/images/marker-shadow.png',
+          shadowUrl: './libraries/leaflet/images/marker-shadow.png',
           iconSize: [36, 36],
           iconAnchor: [18, 36], // half of width and full height
           popupAnchor: [0, -30], // nearly all the height, not sure why negative
