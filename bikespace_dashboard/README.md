@@ -4,7 +4,7 @@ Explore the live dashboard here: [dashboard.bikespace.ca](https://dashboard.bike
 
 ## User Guide
 
-Try clicking the charts to further filter the data shown on the map. Clicking on map clusters will show individual points, and clicking on individual points will bring up a tooltip showing the full details for that report.
+Try clicking the charts or using the Filter pane to further filter the data shown on the map. Clicking on map clusters will show individual points, and clicking on individual points will bring up a tooltip showing the full details for that report.
 
 ## Contributing Guide
 
@@ -14,11 +14,25 @@ If you would like to request a filter or report a bug with the dashboard, please
 
 If you would like to add a feature or contribute a bugfix, please feel free to submit a [pull request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests). Please also reach out for help and advice via the [BikeSpace Civic Tech TO slack channel](https://civictechto.slack.com/archives/C61CZLA5V) or at one of the [Civic Tech TO Meetups](https://www.meetup.com/civic-tech-toronto/).
 
+
+### Tools
+
+The dashboard runs entirely in the user's browser, and does not use any major frameworks except for JQuery. Other tools are used to help create components, e.g.:
+
+- Leaflet for the map
+- Plotly JS for charts
+- Luxon for datetime values
+
+The dashboard is deployed as a static page via CloudFlare (see repo Action `Deploy Dashboard`).
+
+To develop the dashboard locally, you just need a simple local web server, e.g. [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) for VS Code or you can use [python's http.server](https://docs.python.org/3/library/http.server.html) (search for "invoked directly" to skip to the relevant instructions).
+
+
 ### Structure
 
 The main page is `index.html` and the components of the dashboard (map, graphs, etc.) are loaded by `app.js`. The main stylesheet is `main.css`.
 
-The individual component files can be found in `/js/components/`, including `main.js`, which includes the two base classes used to implement the [observer pattern](https://en.wikipedia.org/wiki/Observer_pattern) to allow for cross-filtering between dashboard components: `Component` and `SharedState`.
+The individual component files can be found in `/js/components/`, including `main.js`, which includes the two base classes used to implement the [observer pattern](https://en.wikipedia.org/wiki/Observer_pattern) to allow for cross-filtering between dashboard components: `Component` and `SharedState`. `main.js` also includes the `ReportFilter` class and subclasses used by components to apply filters to the data shown.
 
 The functional parts of the dashboard (e.g. the map, charts, etc.) subclass `Component`, which does two things:
 
@@ -29,36 +43,25 @@ The data and its relevant filters for the dashboard are managed by `SharedState`
 
 - `response_data` - full unfiltered data from the BikeSpace API
 - `display_data` - user-filtered data shown by the various dashboard components
-- `filters` - dict of filters to be applied for `display_data`. Each filter should be labeled by the value it is applied to and should have a `test` property which is a function that takes the labeled value from a row of the data and returns true or false. **TODO link to description below.**
+- `filters` - dict of filters to be applied for `display_data`. Filters should be a subclass of `ReportFilter` imported from `main.js`.
 
 When a `Component` sets or updates the value of `SharedState.filters`, `SharedState` will apply those filters to `SharedState.display_data` and call `.update()` on each `Component` registered to it. The `.update()` method for a component will usually re-request `SharedState.display_data` and update the component's content on the page accordingly.
 
 Some components also use `SharedState.applyFilters()` to customize which filters are applied to the data used for rendering the component.
 
-CSS stylesheets for individual components can be found in `/css/components` and have a similar structure to the `/js` folder. Component stylesheets are imported via `main.css`.
+CSS stylesheets for individual components can be found in `/css/components` and have a similar structure to the `/js` folder. Component stylesheets are imported via `main.css`. `template.css` contains non-layout styling, `stylevars.css` is used for style variables (e.g. colours, fonts, spacing units), and all the other component sheets are for component-specific styling. `main.css` also imports [Modern Normalize](https://github.com/sindresorhus/modern-normalize) to help keep styling development more predictable across browsers.
 
-### Filters
+### More About Filters
 
-**DRAFT TODO CLEANUP**
+Filters are created by subclassing `ReportFilter` in `main.js`. Subclasses should take a "state" input (generally an arbitrary-length list of primitives or objects) and implement a "test" function that returns true or false for reports that should be included or excluded by that state.
 
-All subclass `ReportFilter` from `main.js` which exposes a 'state' property and a 'test()' function. 
+For example to filter "all reports on Tuesdays", a component would create the filter with `new WeekDayPeriodFilter(["tuesday"])`, where `WeekDayPeriodFilter` is a subclass of `ReportFilter`. The subclass itself implements a test function to return true if the report's parking_time value is on a Tuesday (in Toronto's timezone).
 
-'state' property describes the UI state (e.g. for date chart/filter and issue chart/filter)
-
-parking_time can be affected by several different filter keys:
-
-- date_range, e.g. to implement filters such as "last 90 days" or "last year"
-- yearday_period, e.g. to implement filters such as "reports in winter"
-- weekday_period, e.g. to implement filters such as "reports on weekends"
-- time_period, e.g. to implement filters such as "reports in the evening"
-
-(Some kind of note - if you want to see e.g. after sundown, do a jupyter notebook :P)
-
-latitude and longitude are filtered by the filter key "location"
-
-**Filter List and Examples**
+The intended list of filters is below:
 
 ```
+format: <filterKey> (<report value(s) used>) <example state>
+
 id (id) ["id1", "id2"]
 location (latitude, longitude) [{
   min_lat: 123,
@@ -68,29 +71,30 @@ location (latitude, longitude) [{
 }, ...]
 issues (issues) ["issue1", "issue2"]
 parking_duration (parking_duration) ["hours", "minutes"]
-date_range (parking_time) [{min_date: <Date>, max_date: <Date>}, ...]
+date_range (parking_time) [<luxon Interval>]
 yearday_period (parking_time) [{min_day: 0, max_day: 5}, ...]
 weekday_period (parking_time) ["monday", "wednesday"]
 time_period (parking_time) [{min_time: <time>, max_time: <time>}]
 comments (comments) ["search string 1", "search string 2"]
 ```
 
-### Tips [DRAFT]
+Most filters match 1:1 with one or more report values, but parking_time can be affected by several different overlapping filters:
 
-Think about when making a component:
+- date_range, e.g. to implement filters such as "last 90 days" or "last year"
+- yearday_period, e.g. to implement filters such as "reports in winter"
+- weekday_period, e.g. to implement filters such as "reports on weekends"
+- time_period, e.g. to implement filters such as "reports in the evening"
 
-- coordination (via state) with other Components that may affect the same filter
-- ensure that the global clear filter works
-- avoid errors for cases when no data is returned
+This system is pretty powerful, though there may still be cases where the dashboard is not the right tool, and a python script using a tool like [GeoPandas](https://geopandas.org/en/stable/docs.html) would be more appropriate, e.g.:
+
+* "All reports within 100m of Queen St W", e.g. using `geopandas.GeoDataFrame.buffer()`
+* "All reports after dusk" e.g. using some kind of external data source on dusk times throughout the year
 
 
-### Tools
+### Tips
 
-The dashboard runs entirely in the user's browser, and does not use any major frameworks except for JQuery. Other tools are used to help create components, e.g.:
+Some things to think about when writing components:
 
-- Leaflet for the map
-- Plotly JS for charts
-
-The dashboard is deployed as a static page via CloudFlare (see repo Action `Deploy Dashboard`).
-
-To develop the dashboard locally, you just need a simple local web server, e.g. [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) for VS Code or you can use [python's http.server](https://docs.python.org/3/library/http.server.html) (search for "invoked directly" to skip to the relevant instructions).
+- coordination (via state) with other components that may affect the same filter
+- ensure that the global clear filter works on the component
+- avoid creating errors in cases when no data is returned
