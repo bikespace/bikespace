@@ -99,7 +99,7 @@ class DayChart extends Component {
     this.updateCount();
 
     // clear selection if no filter applied
-    if (!this.shared_state.filters.weekday_period) {
+    if (!this.shared_state.filters[WeekDayPeriodFilter.filterKey]) {
       this._selected = null;
     }
 
@@ -121,8 +121,8 @@ class DayChart extends Component {
   updateCount() {
     // Remove day filter for this chart, otherwise the other bars all go to zero
     const filters = {...this.shared_state.filters}; // copy by values
-    if (filters?.weekday_period) {
-      delete filters.weekday_period;
+    if (filters?.[WeekDayPeriodFilter.filterKey]) {
+      delete filters[WeekDayPeriodFilter.filterKey];
     }
     const display_data_all_days = this.shared_state.applyFilters(filters);
 
@@ -159,10 +159,10 @@ class DayChart extends Component {
   setFilter(day_name) {
     const filters = this.shared_state.filters;
     // reset to no filter on toggle
-    if (filters?.weekday_period?.stateEquals([day_name])) {
-      delete filters.weekday_period;
+    if (filters?.[WeekDayPeriodFilter.filterKey]?.stateEquals([day_name])) {
+      delete filters[WeekDayPeriodFilter.filterKey];
     } else {
-      filters.weekday_period = new WeekDayPeriodFilter([day_name]);
+      filters[WeekDayPeriodFilter.filterKey] = new WeekDayPeriodFilter([day_name]);
     }
     super.analytics_event(this.root_id, filters);
     this.shared_state.filters = filters;

@@ -93,12 +93,12 @@ class ParkingDurationFilterControl extends Component {
   setFilter(state) {
     const filters = this.shared_state.filters;
     if (state) {
-      filters.parking_duration = new ParkingDurationFilter(state);
+      filters[ParkingDurationFilter.filterKey] = new ParkingDurationFilter(state);
       for (const duration of Object.values(pda)) {
         this.#selection[duration.id] = state.includes(duration.id);
       }
     } else {
-      delete filters.parking_duration;
+      delete filters[ParkingDurationFilter.filterKey];
       for (const duration of Object.values(pda)) {
         this.#selection[duration.id] = true;
       }
@@ -109,7 +109,7 @@ class ParkingDurationFilterControl extends Component {
 
   refresh() {
     // handle global filter clear
-    if (!this.shared_state.filters.parking_duration) {
+    if (!this.shared_state.filters[ParkingDurationFilter.filterKey]) {
       for (const duration of Object.values(pda)) {
         this.#selection[duration.id] = true;
       }
