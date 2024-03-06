@@ -1,73 +1,74 @@
-class PanelNav {
-  static Tabs = {
-    data: {name: 'Data'},
-    filters: {name: 'Filters'},
-    feed: {name: 'Feed'},
-  };
-  static DEFAULT_TAB = 'data';
-  static tabsMap(cb) {
-    return Object.entries(PanelNav.Tabs).map(([id, tabDesc]) =>
-      cb({...tabDesc, id})
-    );
-  }
+import {Component} from '../main.js';
 
-  makeTabHandle({id, name}) {
-    const root_id = this.root_id;
-    return `
-      <input type="radio" id="${root_id}-nav-${id}" name="${root_id}-nav" value="${root_id}-section-${id}" ${
-        id === PanelNav.DEFAULT_TAB ? 'checked' : ''
-      } data-panel-id="${id}">
-      <label for="${root_id}-nav-${id}">${name}</label>
-    `;
-  }
+class PanelNav extends Component {
+  /**
+   * Panel navigation and filter clear button
+   * @param {string} parent JQuery selector for parent element
+   * @param {string} root_id tag id for root div
+   * @param {Object} shared_state
+   * @param {import('../../main.js').ComponentOptions} [options = {}] Options for the component
+   */
+  constructor(parent, root_id, shared_state, options = {}) {
+    super(parent, root_id, shared_state, options);
 
-  makeTabContent({id}) {
-    const root_id = this.root_id;
-    return `
-      <div id="${root_id}-section-${id}" class="${root_id}-section" 
-        data-panel-id="${id}"
-        ${id === PanelNav.DEFAULT_TAB ? '' : 'hidden'}
-      ></div>
-    `;
-  }
-
-  switchTab(id) {
-    window.location.hash = id;
-    console.log(
-      'sections:',
-      document.querySelectorAll(`.${this.root_id}-section`)
-    );
-    for (const section of document.querySelectorAll(`.${this.root_id}-section`))
-      section.hidden = section.dataset.panelId !== id;
-  }
-
-  constructor(selector_prior_sibling, root_id) {
-    this.root_id = root_id;
-    console.log(
-      'hmmm',
-      PanelNav.tabsMap(this.makeTabContent.bind(this)).join('')
-    );
-
-    document.querySelector(selector_prior_sibling).insertAdjacentHTML(
-      'afterend',
-      `<div id="${root_id}" aria-label="Sidebar">
-        <nav id="${root_id}-nav">
+    // add content to page
+    document.querySelector(`#${this.root_id}`).insertAdjacentHTML(
+      'afterbegin',
+      `<div id="${root_id}-header">
+        <nav id="${root_id}-nav" aria-label="Sidebar">
           <fieldset>
-            ${PanelNav.tabsMap(this.makeTabHandle.bind(this)).join('')}
+              <input type="radio" id="${root_id}-nav-data" name="${root_id}-nav" value="${root_id}-section-data" checked>
+              <label for="${root_id}-nav-data">Data</label>
+              <input type="radio" id="${root_id}-nav-filters" name="${root_id}-nav" value="${root_id}-section-filters">
+              <label for="${root_id}-nav-filters">Filters</label>
+              <input type="radio" id="${root_id}-nav-feed" name="${root_id}-nav" value="${root_id}-section-feed" hidden>
+              <label for="${root_id}-nav-feed" hidden>Feed</label>
           </fieldset>
         </nav>
-        <div id="${root_id}-sections">
-          ${PanelNav.tabsMap(this.makeTabContent.bind(this)).join('')}
-        </div>
+        <button class="clear-filter" 
+          type="button" 
+          hidden 
+          data-umami-event="clear-filters"
+        >
+          <img src="assets/clear-filter.svg"/> Clear Filters
+        </button>
+      </div>
+      <div id="${root_id}-sections">
+        <div id="${root_id}-section-data" 
+          class="${root_id}-section"
+        ></div>
+        <div id="${root_id}-section-filters" 
+          class="${root_id}-section" 
+          hidden
+        ></div>
+        <div id="${root_id}-section-feed" 
+          class="${root_id}-section" 
+          hidden
+        ></div>
       </div>`
     );
     document
       .querySelector(`#${root_id}-nav`)
       .addEventListener('click', event => {
         if (event.target?.matches('input[type="radio"]')) {
-          this.switchTab(event.target.dataset.panelId);
+          document.querySelectorAll(`.${root_id}-section`).forEach(section => {
+            section.hidden = true;
+          });
+          document.getElementById(`${event.target.value}`).hidden = false;
         }
       });
+
+    $(`#${this.root_id} button.clear-filter`).on('click', () => {
+      this.shared_state.filters = {};
+    });
+  }
+
+  refresh() {
+    if (Object.values(this.shared_state.filters).length > 0) {
+      $(`#${this.root_id} button.clear-filter`).removeAttr('hidden');
+    } else {
+      $(`#${this.root_id} button.clear-filter`).attr('hidden', true);
+    }
   }
 }
 

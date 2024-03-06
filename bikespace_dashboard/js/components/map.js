@@ -1,5 +1,5 @@
 import {Component} from './main.js';
-import {issue_attributes as ia} from './issue_attributes.js';
+import {issue_attributes as ia} from './api_tools.js';
 
 const tiles = {
   thunderforest_atlas: {
@@ -123,7 +123,7 @@ class Map extends Component {
       // set up custom markers
       const BaseIcon = L.Icon.extend({
         options: {
-          shadowUrl: './leaflet/images/marker-shadow.png',
+          shadowUrl: './libraries/leaflet/images/marker-shadow.png',
           iconSize: [36, 36],
           iconAnchor: [18, 36], // half of width and full height
           popupAnchor: [0, -30], // nearly all the height, not sure why negative

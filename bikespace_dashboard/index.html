@@ -9,7 +9,7 @@
       name="description"
       content="BikeSpace is an online tool for cyclists to report bicycle parking issues."
     />
-    <link rel="stylesheet" href="leaflet/leaflet.css" />
+    <link rel="stylesheet" href="libraries/leaflet/leaflet.css" />
     <link rel="stylesheet" href="css/main.css" />
     <link rel="icon" type="image/x-icon" href="assets/bikespace_logo_sm.svg" />
     <script>
@@ -53,6 +53,17 @@
               />Contribute</a
             >
           </li>
+          <li>
+            <a
+              href="mailto:bikespaceto@gmail.com?subject=BikeSpace%20Dashboard%20Feedback"
+              data-umami-event="mailto-feedback"
+              id="mailto-feedback"
+              ><img
+              src="./assets/envelope-at.svg"
+              alt="Email Icon"
+            />Feedback</a
+            >
+          </li>
         </ul>
       </nav>
     </header>
@@ -85,13 +96,13 @@ $ curl "https://api-dev.bikespace.ca/api/v2/submissions?limit=5000"</pre
         </li>
       </ul>
     </noscript>
-    <script src="js/jquery-3.7.1.min.js"></script>
-    <script src="leaflet/leaflet.js"></script>
-    <script src="leaflet/leaflet.markercluster.js"></script>
+    <script src="libraries/jquery-3.7.1.min.js"></script>
     <script
-      src="https://cdn.plot.ly/plotly-2.27.0.min.js"
+      src="libraries/plotly-2.27.0.min.js"
       charset="utf-8"
     ></script>
+    <script src="libraries/leaflet/leaflet.js"></script>
+    <script src="libraries/leaflet/leaflet.markercluster.js"></script>
     <script src="js/app.js" type="module"></script>
   </body>
 </html>

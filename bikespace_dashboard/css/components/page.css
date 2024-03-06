@@ -1,9 +1,5 @@
 @import 'stylevars.css';
 
-h1 {
-  font-size: 30px;
-}
-
 header {
   display: flex;
   flex-direction: row;
@@ -14,11 +10,6 @@ header {
 
   & #bikespace-logo {
     height: 30px;
-  }
-
-  & #github-logo {
-    height: 1.2rem;
-    padding-right: 0.3rem;
   }
 
   & nav {
@@ -37,13 +28,17 @@ header {
       margin: 0;
       padding: 0;
 
-      list-style-type: none;
       color: var(--color-secondary-dark-grey);
       font-weight: 600;
 
       & li {
         margin: 0 0.4rem;
       }
+    }
+
+    & img {
+      height: 1.2rem;
+      padding-right: 0.3rem;
     }
   }
 }

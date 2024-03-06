@@ -9,44 +9,17 @@
 
     <title>BikeSpace - Toronto's Bike Parking App</title>
 
-    <link rel="icon" 
-      type="image/svg" 
-      href="img/bikespace_logo_sm.svg">
+    <link rel="icon" type="image/svg" href="assets/images/bikespace_logo_sm.svg">
 
     <!-- Bootstrap core CSS -->
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Custom fonts for this template -->
-    <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
-    <link href='https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
 
     <!-- Plugin CSS -->
     <link href="vendor/magnific-popup/magnific-popup.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="css/creative.min.css" rel="stylesheet">
+    <link href="css/creative.css" rel="stylesheet">
 
-    <!-- Cookie Popup-->
-    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css" />
-    <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js"></script>
-    <script>
-    window.addEventListener("load", function(){
-    window.cookieconsent.initialise({
-      "palette": {
-        "popup": {
-          "background": "#25c252",
-          "text": "#ffffff"
-        },
-        "button": {
-          "background": "transparent",
-          "text": "#ffffff",
-          "border": "#ffffff"
-        }
-      }
-    })});
-    </script>
-    
     <!-- Umami Analytics -->
     <script>
       if (window.location.host === "bikespace.ca") { 
@@ -62,7 +35,9 @@
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
       <div class="container">
-        <a href="#page-top"><img src="img/bikespace_wordmark.png" height="30px" ></a>
+        <a href="#page-top">
+          <img src="assets/images/bikespace_wordmark.png" height="30" alt="Bikespace Logo">
+        </a>
         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -72,8 +47,8 @@
               <a class="nav-link js-scroll-trigger" href="#about_us" data-umami-event="nav-about-us">About Us</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link js-scroll-trigger" href="#our_mission" data-umami-event="nav-our-mission">Our Mission</a>
-              </li>
+              <a class="nav-link js-scroll-trigger" href="#our_mission" data-umami-event="nav-our-mission">Our Mission</a>
+            </li>
             <li class="nav-item">
               <a class="nav-link js-scroll-trigger" href="#build_evidence" data-umami-event="nav-build-evidence">Build Evidence</a>
             </li>
@@ -81,20 +56,14 @@
               <a class="nav-link js-scroll-trigger" href="#your_data" data-umami-event="nav-your-data">Your Data</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link js-scroll-trigger" href="#find_parking" data-umami-event="nav-find-parking">Find Parking</a>
-              </li>
+              <a class="nav-link js-scroll-trigger" href="#find_parking" data-umami-event="nav-find-parking">Find Parking</a>
+            </li>
             <li class="nav-item">
               <a class="nav-link js-scroll-trigger" href="#why_now" data-umami-event="nav-why-now">Why Now</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link js-scroll-trigger" href="#get_involved" data-umami-event="nav-get-involved">Get Involved</a>
+              <a class="nav-link js-scroll-trigger" href="#get_involved" data-umami-event="nav-get-involved">Get Involved</a>
             </li>
-            <!--<li class="nav-item">
-                <a class="nav-button" href="https://app.bikespace.ca">Web App</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-button" href="https://dashboard.bikespace.ca">Dashboard</a>
-          </li>-->
           </ul>
         </div>
       </div>
@@ -103,14 +72,15 @@
     <header class="masthead text-white d-flex">
       <div class="container my-auto">
         <div class="col-lg-12">
-           <h3 class="mb-5"><span id="highlight">Mapping where we need more and better bike parking in Toronto.</span></h3>
+          <h3 class="mb-5">
+            <span id="highlight">Mapping where we need more and better bike parking in Toronto.</span>
+          </h3>
         </div>
-          <div class="col-lg-8" style="padding-top: 1em;">
-            <a class="btn btn-primary btn-xl js-scroll-trigger" href="https://app.bikespace.ca" data-umami-event="outbound-app-0">Report an issue</a>
-          </div>
-          <div class="col-lg-8" style="padding-top: 1em;">
-            <a class="btn btn-primary btn-xl js-scroll-trigger" href="https://dashboard.bikespace.ca" data-umami-event="outbound-dashboard">View the Dashboard</a>
-          </div>
+        <div class="col-lg-8" style="padding-top: 1em;">
+          <a class="btn btn-primary btn-xl js-scroll-trigger" href="https://app.bikespace.ca" data-umami-event="outbound-app-0">Report an issue</a>
+        </div>
+        <div class="col-lg-8" style="padding-top: 1em;">
+          <a class="btn btn-primary btn-xl js-scroll-trigger" href="https://dashboard.bikespace.ca" data-umami-event="outbound-dashboard-0">View the Dashboard</a>
         </div>
       </div>
     </header>
@@ -119,11 +89,11 @@
       <div class="container">
         <div class="row">
           <div class="col-lg-8 mx-auto">
-            <img class="mx-auto d-block" src="img/bikespace_logo_sm.svg" alt="BikeSpace logo"></img>
-            <h2 class="section-heading text-center">About <font color="#25C252">BikeSpace</font></h2>
+            <img class="mx-auto d-block" src="assets/images/bikespace_logo_sm.svg" alt="BikeSpace logo">
+            <h2 class="section-heading text-center">About BikeSpace</h2>
             <hr class="my-4">
             <p class="mb-4">Every cyclist has struggled to find space to park. There is simply not enough bike parking to meet demand. Bike racks are often full, requiring a cyclist to improvise using poor alternatives like sign posts or fences.  Too often racks are ancient wheel-benders, awkwardly located, or taken up by abandoned bikes.</p>
-            <p class="mb-4">BikeSpace is a community-built web app <a href="https://www.toronto.ca/services-payments/streets-parking-transportation/cycling-in-toronto/bikespace-app/">supported by the City of Toronto</a> and Cycle Toronto. It lets people report the issues they find when trying to park their bikes in the city. This simple web app is:</p>
+            <p class="mb-4">BikeSpace is a community-built web app originally started <a href="https://web.archive.org/web/20190624165253/https://www.toronto.ca/services-payments/streets-parking-transportation/cycling-in-toronto/bikespace-app/">with support from the City of Toronto</a> and Cycle Toronto. It lets people report the issues they find when trying to park their bikes in the city. This simple web app is:</p>
             <ul class="mb-4">
               <li>quick and easy to use,</li>
               <li>designed for mobile and desktop,</li>
@@ -131,7 +101,7 @@
               <li>creating a data-driven picture to drive change.</li>
             </ul>
             <p class="mb-4">City planners, businesses and property managers all know there is a problem. They want to build simple and safe bike parking across the city but they need solid evidence of demand to invest smartly. Toronto needs a data-driven solution to bike parking—BikeSpace will produce that data and drive real change.</p>
-            <p class="mb-4">We have recently released the public version of the web app and <a href="https://app.bikespace.ca" data-umami-event="outbound-app-1"> invite you to try it</a> and tell us what you think!</p>
+            <p class="mb-4">We invite you to <a href="https://app.bikespace.ca" data-umami-event="outbound-app-1">try the BikeSpace web app</a> and tell us what you think! If you have feedback about the app, please feel free to share it using the <a href="https://github.com/bikespace/bikespace/issues" data-umami-event="outbound-github-issues">issues tab of our GitHub page</a>.</p>
           </div>
         </div>
       </div>
@@ -150,30 +120,30 @@
         <div class="row">
           <div class="col-lg-3 col-md-6 text-center">
             <div class="service-box mt-5 mx-auto">
-              <img class="sr-icons" src="img/icons/community_icon-01.png" height="56px">
+              <img class="sr-icons" src="assets/icons/community_icon-01.png" height="56" alt="">
               <h3 class="mb-3">Community-Built</h3>
-              <p class="text-muted mb-0">BikeSpace is made entirely by a group of committed vounteers who want to improve their city.</p>
+              <p class="mb-0">BikeSpace is made entirely by a group of committed volunteers who want to improve their city.</p>
             </div>
           </div>
           <div class="col-lg-3 col-md-6 text-center">
             <div class="service-box mt-5 mx-auto">
-                <img class="sr-icons" src="img/icons/bike_Background-01.png" height="56px">
+              <img class="sr-icons" src="assets/icons/bike_Background-01.png" height="56" alt="">
               <h3 class="mb-3">Bike-Friendly</h3>
-              <p class="text-muted mb-0">We want cycling to be safe, fun and recognized as a valid form of transportation.</p>
+              <p class="mb-0">We want cycling to be safe, fun and recognized as a valid form of transportation.</p>
             </div>
           </div>
           <div class="col-lg-3 col-md-6 text-center">
             <div class="service-box mt-5 mx-auto">
-                <img class="sr-icons" src="img/icons/data_driven_icon-01.png" height="56px">
+              <img class="sr-icons" src="assets/icons/data_driven_icon-01.png" height="56" alt="">
               <h3 class="mb-3">Data-Driven</h3>
-              <p class="text-muted mb-0">We think that smart solutions need a basis in real evidence and high-quality data.</p>
+              <p class="mb-0">We think that smart solutions need a basis in real evidence and high-quality data.</p>
             </div>
           </div>
           <div class="col-lg-3 col-md-6 text-center">
             <div class="service-box mt-5 mx-auto">
-                <img class="sr-icons" src="img/icons/hopful_icon2-01.png" height="56px">
+              <img class="sr-icons" src="assets/icons/hopful_icon2-01.png" height="56" alt="">
               <h3 class="mb-3">Hopeful</h3>
-              <p class="text-muted mb-0">We love our city and believe we can help make Toronto a world-class city for cyclists!</p>
+              <p class="mb-0">We love our city and believe we can help make Toronto a world-class city for cyclists!</p>
             </div>
           </div>
         </div>
@@ -195,7 +165,6 @@
               <li>the type of issue encountered,</li>
               <li>the location of your parking problem,</li>
               <li>the date and time when encountered,</li>
-              <li>a photo for context (optional),</li>
               <li>a user comment (optional).</li>
             </ul>
           </div>
@@ -224,42 +193,80 @@
         </div>
         <div class="row">
           <div class="col-lg-6 mx-auto">
-        
             <p class="mb-4">In practice, all data collected will go through a 3 step process:</p>
-              <ol class="mb-4">
-                <li>Any cyclist with access to the internet can leave an anonymous report.</li>
-                <li>Anybody can explore our public data on our dynamic dashboard (coming soon).</li>
-                <li>An updated machine-readable dataset is accessible in real-time through our <a href="https://api-dev.bikespace.ca/api/v2/docs" data-umami-event="outbound-api">API</a>.</li>
-              </ol>
-            <p class="mb-4">We will not collect data on our users or create profiles of them. We only collect high-quality data about bike parking issues to inform those who want to install bike parking. Your participation supports investment in smart, new cycling infrastructure.Find out more by reading our <a href= "https://s3.us-east-2.amazonaws.com/bikespace-public-website/Documents/BikeSpace+Privacy+Policy.pdfBikeSpace">BikeSpace Privacy Policy.</a></p>
+            <ol class="mb-4">
+              <li>Any cyclist with access to the internet can <a href="https://app.bikespace.ca/" data-umami-event="outbound-app-2">leave an anonymous report using the app</a>.
+              </li>
+              <li>Anybody can explore the public data on our <a href="https://dashboard.bikespace.ca/" data-umami-event="outbound-dashboard-1">interactive dashboard</a>.
+              </li>
+              <li>An updated machine-readable dataset is accessible in real-time through <a href="https://api-dev.bikespace.ca/api/v2/docs" data-umami-event="outbound-api">our API</a>.
+              </li>
+            </ol>
+            <p class="mb-4">The app does not currently record any personally-identifiable information. We only collect high-quality data about bike parking issues to inform those who want to install bike parking. Your participation supports investment in smart, new cycling infrastructure.</p>
           </div>
           <div class="col-lg-6 mx-auto align-self-end">
-            <img src="img/desktop_dashboard.png" class="img-fluid">
+            <img src="assets/images/desktop_dashboard_2024-02.png" class="img-fluid" alt="">
           </div>
         </div>
       </div>
     </section>
-      <!-- Find Bike Parking -->
-  <section class="bg-primary_20" id="find_parking">
+    <!-- Find Bike Parking -->
+    <section class="bg-primary_20" id="find_parking">
       <div class="container">
         <div class="row">
           <div class="col-lg-12 text-center">
-            <h2 class="section-heading" id="maptitle">Use the map to find bicycle parking across Toronto</h2>
-            <ul id="mapuse">
-              <li>Currently available parking is shown by a pink marker <span id="marker">&#9679;</span></li>
-              <li>Click on any of markers to see detailed information including the address and type of parking available</li>
-            </ul>
-            <div id="map">
-              <iframe id="mapiframe" src="ParkingMap.html"></iframe>
+            <h2 class="section-heading" id="maptitle">
+              Use the map to find bicycle parking across Toronto
+            </h2>
+            <div id="map-loader">
+              <div class="map-loader-content">
+                <img src="assets/images/map-placeholder.jpg" alt="" width="100%" style="max-width: 700px;">
+                <a class="btn btn-primary btn-xl" href="#" data-umami-event="load-map">Explore the Parking Map</a>
+              </div>
             </div>
-            <p id="cityinfo">Bicycle parking data has been provided by the City of Toronto. <a href="https://www.toronto.ca/city-government/data-research-maps/open-data/open-data-catalogue/#" data-umami-event="outbound-city-open-data">
-                Find out more.</a> </p>
+            <ul id="mapuse" hidden>
+              <li>
+                City of Toronto bicycle parking facilities (e.g. racks, ring and post) are shown by a pink marker: 
+                <span id="marker">&#9679;</span>
+              </li>
+              <li>
+                Click on any of markers to see detailed information including the address and type of parking available
+              </li>
+            </ul>
+            <div id="map" hidden></div>
           </div>
         </div>
-    </section>
-    </div>
-    </div>
-    </div>
+        <div class="row">
+          <div class="col-lg-12 text-center mt-5">
+            <h3>About the Data</h3>
+            <p id="cityinfo">Map data is from the 
+              <a href="https://www.toronto.ca/city-government/data-research-maps/open-data/open-data-catalogue/#" data-umami-event="outbound-city-open-data">
+              City of Toronto open data portal</a>.
+            </p>
+          </div>
+        </div>
+        <div class="row">
+          <p class="col-lg-6 mx-auto text-left">
+            <strong>Please note: data on this map may be incomplete or out of date.</strong> We are currently working on improving this parking map — <a href="#get_involved">let us know if you would like to help out</a>!
+          </p>
+          <p class="col-lg-6 mx-auto text-left">
+            <a href="https://www.opencyclemap.org/?zoom=11&lat=43.71768&lon=-79.37625&layers=B0000" data-umami-event="outbound-opencyclemap">OpenCycleMap.org</a> is another great resource which displays bicycle parking reported by OpenStreetMap users. (Make sure to zoom in and see the <a href="https://www.opencyclemap.org/docs/" data-umami-event="outbound-opencyclemap-key">map key</a> for more details!)
+          </p>
+        </div>
+        <script>
+          document.querySelector('#map-loader .btn').addEventListener('click', function (event) {
+            event.preventDefault();
+            document.getElementById('map-loader').hidden = true;
+            document.getElementById('mapuse').hidden = false;
+            document.getElementById('map').hidden = false;
+            let mapIframe = document.createElement('iframe');
+            mapIframe.src = "ParkingMap.html";
+            mapIframe.title = "Bicycle Parking Map";
+            mapIframe.id = "mapiframe";
+            document.getElementById('map').append(mapIframe);
+          });
+        </script>
+      </div>
     </section>
     <!-- Time for Tool Section -->
     <section class="bg-toronto-skyline" id="why_now">
@@ -268,8 +275,9 @@
           <div class="col-lg-8 mx-auto">
             <h2 class="section-heading text-center">It's time we had our own tool</h2>
             <hr class="secondary my-4">
-            <p class="mb-4">At BikeSpace, we see that the time for Toronto to actively build a bike-friendly city has arrived. More and more people are cycling as their primary form of transit. The City of Toronto began a 10 Year Cycling Network Plan on June 9, 2016 which includes a commitment to develop a Bike Parking Strategy. Property owners are recognizing that building bike lockers gives them happier tenants. Businesses are realizing that new bike racks bring new customers. Safe cycling infrastructure creates healthier communities, less traffic congestion and less pollution.</p>
-            <p class="mb-4">Cyclists need their own platform designed for their needs to raise issues that affect them. By focusing on bike parking we concentrate our impact on a specific issue. Too often reporting tools try to be everything for everyone and end up improving nothing for no one. Even a tool for cyclists needs to be specific to be successful. There is a lot of work for us to do but the foundation of any bike-friendly city is convenient and secure parking.</p>
+            <p class="mb-4">At BikeSpace, we see that the time for Toronto to actively build a bike-friendly city has arrived, and we believe that parking safely is just as essential for cyclists as moving around safely. More and more people are cycling as their primary form of transit, which means the need for safe, convenient, and accessible bicycle parking continues to grow.</p>
+            <p class="mb-4">The City of Toronto has been developing a Bicycle Parking Strategy since the launch of the 2016 10-Year Cycling Network Plan. Property owners are recognizing that building bike lockers gives them happier tenants. Businesses are realizing that new bike racks bring in new customers and gives their employees more choice in how to get to work. Overall, safe cycling infrastructure creates healthier communities, less traffic congestion, and less pollution.</p>
+            <p class="mb-4">The goal of this platform is to empower cyclists and to give their voices greater power by making it easy to share and explore bicycle parking needs. By focusing on bike parking, we concentrate our impact on a specific issue. Too often reporting tools try to be everything for everyone and end up improving nothing for no one. Even a tool for cyclists needs to be specific to be successful. There is a lot of work for us to do but the foundation of any bike-friendly city is safe, convenient, and accessible parking.</p>
           </div>
         </div>
       </div>
@@ -280,117 +288,95 @@
         <div class="row">
           <div class="col-lg-8 mx-auto">
             <h2 class="section-heading text-center">Help us build BikeSpace</h2>
-            <hr class="my-4">    
-            <p class="mb-5">We are a small team passionate about making our city kinder and safer to cyclists. There are many ways you can assist us in our mission:</p>
+            <hr class="my-4">
+            <p class="mb-5">We are a small team of volunteers who are passionate about making our city kinder and safer to cyclists. There are many ways you can assist us in our mission:</p>
           </div>
         </div>
         <div class="row">
-            <div class="col-lg-3 mx-auto text-center">
-              <a target="_blank" href="http://eepurl.com/dwQi35" data-umami-event="outbound-newsletter">
-              <img class="sr-icons" src="img/icons/update_icon-01.png" height="56px">
-              <h4 class="mb-3">Get updates</h4>
-              </a>
-              <p>Join our newsletter for updates on the project and for opportunities to make a change.</p>
-            </div>
-            <!--
-            <div class="col-lg-3 mx-auto text-center">
-                <a target="_blank" href="https://goo.gl/forms/ae2ZAiP7FzzpbiST2">
-                <img class="sr-icons" src="img/icons/become_betatester_icon-01.png" height="56px">
-                <h4 class="mb-3">Become a beta tester</h4>
-                </a>
-                <p>We are hard at work but we need real cyclists who are willing to test our app out on the streets.</p>
-            </div>
-            -->
-            <div class="col-lg-3 mx-auto text-center">
-                <a href="mailto:bikespaceto@gmail.com?subject=I want to promote BikeSpace&body=Hi BikeSpace team,%0D%0A%0D%0AI'm interested in promoting the BikeSpace web app to my community. Send me details for your community engagement toolkit when it's ready!%0D%0A%0D%0ALet me tell you a little about myself..." data-umami-event="mailto-promote-bikespace">
-                <img class="sr-icons" src="img/icons/promote_bs_icon-01.png" height="56px">
+          <div class="col-lg-8 mx-auto">
+            <div class="cta-heading">
+              <a href="mailto:bikespaceto@gmail.com?subject=I want to promote BikeSpace&body=Hi BikeSpace team,%0D%0A%0D%0AI'm interested in promoting the BikeSpace web app to my community. Please send me some info!%0D%0A%0D%0ALet me tell you a little about myself..." data-umami-event="mailto-promote-bikespace">
+                <img class="sr-icons" src="assets/icons/promote_bs_icon-01.png" height="56" alt="">
                 <h4 class="mb-3">Promote BikeSpace</h4>
-                </a>
-                <p>If you already champion of cycling in your community you can lead adoption of the tool.</p>
+              </a>
             </div>
-            <div class="col-lg-3 mx-auto text-center">
-                <a href="mailto:bikespaceto@gmail.com?subject=I want to join the BikeSpace team&body=Hi BikeSpace team,%0D%0A%0D%0AI'm really interested in your project and would like to help you build this tool to help make Toronto a more bike-friendly city!%0D%0A%0D%0ALet me tell you a little about myself and what I might contribute to the project..." data-umami-event="mailto-join-bikespace">
-                <img class="sr-icons" src="img/icons/join_us_icon-01.png" height="56px">
+            <p>Do you know at least one other person who bikes? Help us get the word out!</p>
+          </div>
+          <div class="col-lg-8 mx-auto">
+            <div class="cta-heading">
+              <a href="mailto:bikespaceto@gmail.com?subject=I want to join the BikeSpace team&body=Hi BikeSpace team,%0D%0A%0D%0AI'm really interested in your project and would like to help you build this tool to help make Toronto a more bike-friendly city!%0D%0A%0D%0ALet me tell you a little about myself and what I might contribute to the project..." data-umami-event="mailto-join-bikespace">
+                <img class="sr-icons" src="assets/icons/join_us_icon-01.png" height="56" alt="">
                 <h4 class="mb-3">Join our team</h4>
-                </a>
-                <p>This is an exciting project built by a great people and we invite anybody who wants to help to join us!</p>
+              </a>
+            </div>
+            <p>This is an exciting project built by a great people and we invite anybody who wants to help to join us! </p>
+            <p>There are lots of great ways to get involved:</p>
+            <ul>
+              <li>Come talk to us at a <a href="https://www.meetup.com/civic-tech-toronto/">Civic Tech Toronto Meetup</a>
+              </li>
+              <li>Join our <a href="https://civictechto.slack.com/archives/C61CZLA5V">Slack Channel</a>
+              </li>
+              <li>Check out our project on <a href="https://github.com/bikespace/bikespace">GitHub</a>
+              </li>
+            </ul>
+          </div>
+          <div class="col-lg-8 mx-auto">
+            <div class="cta-heading">
+              <a href="https://buttondown.email/bikespace">
+                <img class="sr-icons" src="assets/icons/update_icon-01.png" height="56" alt="">
+                <h4 class="mb-3">Get updates</h4>
+              </a>
+            </div>
+            <p>Join our newsletter for updates on the project and for opportunities to make a change:</p>
+            <div class="buttondown-container">
+              <form
+                action="https://buttondown.email/api/emails/embed-subscribe/bikespace"
+                method="post"
+                target="popupwindow"
+                onsubmit="window.open('https://buttondown.email/bikespace', 'popupwindow')"
+                class="embeddable-buttondown-form"
+              >
+                <p><strong>Subscribe to the BikeSpace TO Newsletter</strong></p>
+                <div class="buttondown-inputs">
+                  <input type="email" name="email" id="bd-email" placeholder="Enter your email"/>
+                  <input type="submit" id="bd-submit" value="SUBSCRIBE" />
+                </div>
+                <p>
+                  <a class="buttondown-refer-link" href="https://buttondown.email/refer/bikespace" target="_blank">Powered by Buttondown.</a>
+                </p>
+              </form>
             </div>
           </div>
         </div>
       </div>
     </section>
-
-    <!-- Team Photo Section 
-    <section id="team photos">
+    <!-- Footer Section -->
+    <footer class="bg-primary">
       <div class="container">
-        <div class="row">
-          <div class="col-lg-8 mx-auto">
+        <div class="row align-items-center">
+          <div class="col-lg-4 mx-auto">
+            <a href="mailto:bikespaceto@gmail.com" data-umami-event="mailto-contact-us">
+              <h5 class="text-white text-center">Contact Us</h5>
+            </a>
+          </div>
+          <div class="col-lg-4 mx-auto text-center align-self-end">
+            <hr class="secondary my-4">
+            <p class="text-white mb-4">© BikeSpace</p>
+          </div>
+          <div class="col-lg-4 mx-auto text-right">
+            <div class="mx-auto text-center">
+              <a href="https://bikespacetoblog.wordpress.com/" data-umami-event="outbound-wordpress">
+                <svg style="width:24px;height:24px" viewBox="0 0 48 48" role="img">
+                  <title>bicycle icon</title>
+                  <path fill="#ffffff" d="M31 11c2.2 0 4-1.8 4-4s-1.8-4-4-4-4 1.8-4 4 1.8 4 4 4zM10 24C4.5 24 0 28.5 0 34s4.5 10 10 10 10-4.5 10-10-4.5-10-10-10zm0 17c-3.9 0-7-3.1-7-7s3.1-7 7-7 7 3.1 7 7-3.1 7-7 7zm11.6-19.9l4.7-4.8 1.5 1.5c2.5 2.6 6 4.1 10.1 4.1v-4c-3 0-5.5-1.1-7.3-2.9l-3.9-3.8c-.6-.7-1.6-1.2-2.7-1.2s-2.1.4-2.8 1.2l-5.5 5.5c-.7.7-1.2 1.7-1.2 2.8 0 1.1.5 2.1 1.2 2.9L22 28v10h4V25.5l-4.4-4.4zM38 24c-5.5 0-10 4.5-10 10s4.5 10 10 10 10-4.5 10-10-4.5-10-10-10zm0 17c-3.9 0-7-3.1-7-7s3.1-7 7-7 7 3.1 7 7-3.1 7-7 7z" />
+                </svg>
+                <h6 class="text-white">our blog</h6>
+              </a>
+            </div>
           </div>
         </div>
       </div>
-    </section>-->
-    
-    <!-- Footer Section -->
-    <section class="bg-primary" id="get_involved">
-        <div class="container">
-          <div class="row">
-            <div class="col-lg-4 mx-auto">
-                <a href="mailto:bikespaceto@gmail.com" data-umami-event="mailto-contact-us">
-                <h5 class="text-white text-center">Contact Us</h5>
-                </a>
-                <br>
-                <a href="mailto:bikespaceto@gmail.com" data-umami-event="mailto-news-release">
-                  <h5 class="text-white text-center">News Release</h5>
-                </a>
-                <!--<h5 class="text-white text-center">Have a question? Send us a message!</p>
-                <h6 class="text-white">
-                  <form action="mailto:bikespaceT0@gmail.com" method="get" enctype="text/plain">
-                    <p>Name: <input type="text" name="name" /></p>
-                    <p>Email: <input type="text" name="email" /></p>
-                    <p>Comments:<br />
-                    <textarea cols="30" rows="4" name="comments">Hi BikeSpace...</textarea></p>
-                    <p><input type="submit" name="submit" value="Send" />
-                    <input type="reset" name="reset" value="Clear Form" /></p>
-                  </form>
-                </h6>-->
-            </div>
-            <div class="col-lg-4 mx-auto text-center align-self-end">
-                <hr class="secondary my-4">
-                <p class="text-white mb-4">© BikeSpace</p>
-            </div>
-            <div class="col-lg-4 mx-auto text-right">
-              <div class="row">
-              <div class="mx-auto text-center">
-              <a href="https://www.facebook.com/BikeSpaceTO" data-umami-event="outbound-facebook">
-                <svg style="width:24px;height:24px" viewBox="0 0 24 24">
-                    <path fill="#ffffff" d="M17,2V2H17V6H15C14.31,6 14,6.81 14,7.5V10H14L17,10V14H14V22H10V14H7V10H10V6A4,4 0 0,1 14,2H17Z" />
-                </svg>
-                <h6 class="text-white">facebook</h6>
-              </a>
-              </div>
-              <div class="mx-auto text-center">
-              <a href="https://twitter.com/BikeSpaceTO" data-umami-event="outbound-twitter">
-                <svg style="width:24px;height:24px" viewBox="0 0 24 24">
-                    <path fill="#ffffff" d="M22.46,6C21.69,6.35 20.86,6.58 20,6.69C20.88,6.16 21.56,5.32 21.88,4.31C21.05,4.81 20.13,5.16 19.16,5.36C18.37,4.5 17.26,4 16,4C13.65,4 11.73,5.92 11.73,8.29C11.73,8.63 11.77,8.96 11.84,9.27C8.28,9.09 5.11,7.38 3,4.79C2.63,5.42 2.42,6.16 2.42,6.94C2.42,8.43 3.17,9.75 4.33,10.5C3.62,10.5 2.96,10.3 2.38,10C2.38,10 2.38,10 2.38,10.03C2.38,12.11 3.86,13.85 5.82,14.24C5.46,14.34 5.08,14.39 4.69,14.39C4.42,14.39 4.15,14.36 3.89,14.31C4.43,16 6,17.26 7.89,17.29C6.43,18.45 4.58,19.13 2.56,19.13C2.22,19.13 1.88,19.11 1.54,19.07C3.44,20.29 5.7,21 8.12,21C16,21 20.33,14.46 20.33,8.79C20.33,8.6 20.33,8.42 20.32,8.23C21.16,7.63 21.88,6.87 22.46,6Z" />
-                </svg>
-                <h6 class="text-white">twitter</h6>
-              </a>
-              </div>
-            
-              <div class="mx-auto text-center">
-              <a href="https://bikespacetoblog.wordpress.com/" data-umami-event="outbound-wordpress">  
-                <svg style="width:24px;height:24px" viewBox="0 0 48 48">
-                    <path fill="#ffffff" d="M31 11c2.2 0 4-1.8 4-4s-1.8-4-4-4-4 1.8-4 4 1.8 4 4 4zM10 24C4.5 24 0 28.5 0 34s4.5 10 10 10 10-4.5 10-10-4.5-10-10-10zm0 17c-3.9 0-7-3.1-7-7s3.1-7 7-7 7 3.1 7 7-3.1 7-7 7zm11.6-19.9l4.7-4.8 1.5 1.5c2.5 2.6 6 4.1 10.1 4.1v-4c-3 0-5.5-1.1-7.3-2.9l-3.9-3.8c-.6-.7-1.6-1.2-2.7-1.2s-2.1.4-2.8 1.2l-5.5 5.5c-.7.7-1.2 1.7-1.2 2.8 0 1.1.5 2.1 1.2 2.9L22 28v10h4V25.5l-4.4-4.4zM38 24c-5.5 0-10 4.5-10 10s4.5 10 10 10 10-4.5 10-10-4.5-10-10-10zm0 17c-3.9 0-7-3.1-7-7s3.1-7 7-7 7 3.1 7 7-3.1 7-7 7z" />
-                </svg>
-                <h6 class="text-white">our blog</h6>
-              </a>  
-              </div>
-              
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+    </footer>
 
     <!-- Bootstrap core JavaScript -->
     <script src="vendor/jquery/jquery.min.js"></script>
@@ -402,8 +388,7 @@
     <script src="vendor/magnific-popup/jquery.magnific-popup.min.js"></script>
 
     <!-- Custom scripts for this template -->
-    <script src="js/creative.min.js"></script>
+    <script src="js/creative.js"></script>
 
   </body>
-
 </html>
