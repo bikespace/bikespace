@@ -24,14 +24,6 @@ const ATTR_DATA_SUBMISSION_ID = 'data-submission-id';
 
 const PARAM_VIEW_ALL = 'view_all';
 
-const HASH_PATH_REGEX = /^#\/?([^?]+)\??/;
-
-const getCurrentTab = () => {
-  const currentTab = location.hash.match(HASH_PATH_REGEX, '')[1] || 'data';
-
-  return currentTab;
-};
-
 class Submissions extends Component {
   /**
    * Base class for graphs, map, etc. Registers component with shared_state.
@@ -49,9 +41,11 @@ class Submissions extends Component {
   }
 
   shouldViewAll() {
-    const hashParamStr = location.hash.replace(HASH_PATH_REGEX, '');
-    const hashParams = new URLSearchParams(hashParamStr);
-    return hashParams.get(PARAM_VIEW_ALL) === '1' && getCurrentTab() === 'feed';
+    const router = this.shared_state.router;
+    return (
+      router.params.get(PARAM_VIEW_ALL) === '1' &&
+      router.currentRoute.path === 'feed'
+    );
   }
 
   buildTitle() {

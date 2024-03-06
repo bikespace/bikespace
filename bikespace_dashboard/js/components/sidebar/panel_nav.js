@@ -1,6 +1,5 @@
+import HashRouter from '../hash_router.js';
 import {Component} from '../main.js';
-
-const HASH_PATH_REGEX = /^#\/?([^?]+)\??/;
 
 const SECTION_ID_REGEX = /^.+-section-([a-zA-Z0-9]+)/;
 
@@ -8,21 +7,38 @@ const sectionIdToTabId = sectionId => {
   return sectionId.match(SECTION_ID_REGEX)[1];
 };
 
-const DEFAULT_TAB = 'data';
+/** @type {import('../hash_router.js').Route[]} */
+const TABS = [
+  {
+    name: 'Data',
+    path: 'data',
+    default: true,
+  },
+  {
+    name: 'Filters',
+    path: 'filters',
+  },
+  {
+    name: 'Feed',
+    path: 'feed',
+  },
+];
 
 class PanelNav extends Component {
   /**
    * Panel navigation and filter clear button
    * @param {string} parent JQuery selector for parent element
    * @param {string} root_id tag id for root div
-   * @param {Object} shared_state
+   * @param {import('../main.js').SharedState} shared_state
    * @param {import('../../main.js').ComponentOptions} [options = {}] Options for the component
    */
   constructor(parent, root_id, shared_state, options = {}) {
     super(parent, root_id, shared_state, options);
 
-    window.addEventListener('hashchange', () => {
-      this.refresh();
+    shared_state.router = new HashRouter(TABS);
+
+    shared_state.router.onChange(() => {
+      this.maybeChangeTab();
     });
 
     // add content to page
@@ -31,15 +47,15 @@ class PanelNav extends Component {
       `<div id="${root_id}-header">
         <nav id="${root_id}-nav" aria-label="Sidebar">
           <fieldset>
-              <input type="radio" id="${root_id}-nav-data" name="${root_id}-nav" value="${root_id}-section-data">
-              <label for="${root_id}-nav-data">Data</label>
-              <input type="radio" id="${root_id}-nav-filters" name="${root_id}-nav" value="${root_id}-section-filters">
-              <label for="${root_id}-nav-filters">Filters</label>
-              <input type="radio" id="${root_id}-nav-feed" name="${root_id}-nav" value="${root_id}-section-feed">
-              <label for="${root_id}-nav-feed">Feed</label>
+            ${TABS.map(
+              t => `
+              <input type="radio" id="${root_id}-nav-${t.path}" name="${root_id}-nav" value="${root_id}-section-${t.path}">
+              <label for="${root_id}-nav-${t.path}">${t.name}</label>
+            `
+            ).join('')}
           </fieldset>
         </nav>
-        <button class="clear-filter" 
+        <button class="clear-filter"
           type="button" 
           hidden 
           data-umami-event="clear-filters"
@@ -48,24 +64,24 @@ class PanelNav extends Component {
         </button>
       </div>
       <div id="${root_id}-sections">
-        <div id="${root_id}-section-data" 
+      ${TABS.map(
+        t => `
+        <div id="${root_id}-section-${t.path}" 
           class="${root_id}-section"
-        ></div>
-        <div id="${root_id}-section-filters" 
-          class="${root_id}-section" 
-          hidden
-        ></div>
-        <div id="${root_id}-section-feed" 
-          class="${root_id}-section" 
-          hidden
-        ></div>
+          ${t.default ? '' : 'hidden'}
+          >
+        </div>
+      `
+      ).join('')}
       </div>`
     );
     document
       .querySelector(`#${root_id}-nav`)
       .addEventListener('click', event => {
         if (event.target?.matches('input[type="radio"]')) {
-          this.switchTab(sectionIdToTabId(event.target.value));
+          this.shared_state.router.navigate(
+            sectionIdToTabId(event.target.value)
+          );
         }
       });
 
@@ -76,17 +92,8 @@ class PanelNav extends Component {
     this.maybeChangeTab();
   }
 
-  getCurrentTab() {
-    const matches = location.hash.match(HASH_PATH_REGEX);
-    return (matches && matches[1]) || DEFAULT_TAB;
-  }
-
-  switchTab(id) {
-    window.location.hash = id;
-  }
-
   switchNavToCurrent() {
-    const currentTab = this.getCurrentTab();
+    const currentTab = this.shared_state.router.currentRoute.path;
     document
       .querySelectorAll(`#${this.root_id} input[type="radio"]`)
       .forEach(input => {
@@ -96,7 +103,7 @@ class PanelNav extends Component {
   }
 
   showCurrentTabContent() {
-    const currentTab = this.getCurrentTab();
+    const currentTab = this.shared_state.router.currentRoute.path;
     document.querySelectorAll(`.${this.root_id}-section`).forEach(section => {
       section.hidden = true;
     });
