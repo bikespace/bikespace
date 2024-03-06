@@ -146,7 +146,9 @@ class Submissions extends Component {
   fillSubmissions(submissions) {
     this.list.empty();
     if (submissions.length === 0) {
-      this.list.append("<p class='no-data'>No submissions yet.<p>");
+      this.list.append(
+        "<p class='no-data'>No submissions in selected range.<p>"
+      );
     } else {
       for (const submission of submissions) {
         const parking_time = new Date(submission.parking_time);
