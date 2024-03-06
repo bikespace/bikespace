@@ -18,8 +18,6 @@ $.ajax({
     USE_DEV ? DEV_BASE_URL : PROD_BASE_URL
   }/api/v2/submissions?limit=5000`,
   success: function (data) {
-    // add sidebar panel nav
-    new PanelNav('body header', 'panels');
     // add interactive content
     const shared_state = new SharedState(data);
     // add sidebar panel nav

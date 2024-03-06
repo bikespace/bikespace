@@ -1,5 +1,15 @@
 import {Component} from '../main.js';
 
+const HASH_PATH_REGEX = /^#\/?([^?]+)\??/;
+
+const SECTION_ID_REGEX = /^.+-section-([a-zA-Z0-9]+)/;
+
+const sectionIdToTabId = sectionId => {
+  return sectionId.match(SECTION_ID_REGEX)[1];
+};
+
+const DEFAULT_TAB = 'data';
+
 class PanelNav extends Component {
   /**
    * Panel navigation and filter clear button
@@ -11,18 +21,22 @@ class PanelNav extends Component {
   constructor(parent, root_id, shared_state, options = {}) {
     super(parent, root_id, shared_state, options);
 
+    window.addEventListener('hashchange', () => {
+      this.refresh();
+    });
+
     // add content to page
     document.querySelector(`#${this.root_id}`).insertAdjacentHTML(
       'afterbegin',
       `<div id="${root_id}-header">
         <nav id="${root_id}-nav" aria-label="Sidebar">
           <fieldset>
-              <input type="radio" id="${root_id}-nav-data" name="${root_id}-nav" value="${root_id}-section-data" checked>
+              <input type="radio" id="${root_id}-nav-data" name="${root_id}-nav" value="${root_id}-section-data">
               <label for="${root_id}-nav-data">Data</label>
               <input type="radio" id="${root_id}-nav-filters" name="${root_id}-nav" value="${root_id}-section-filters">
               <label for="${root_id}-nav-filters">Filters</label>
-              <input type="radio" id="${root_id}-nav-feed" name="${root_id}-nav" value="${root_id}-section-feed" hidden>
-              <label for="${root_id}-nav-feed" hidden>Feed</label>
+              <input type="radio" id="${root_id}-nav-feed" name="${root_id}-nav" value="${root_id}-section-feed">
+              <label for="${root_id}-nav-feed">Feed</label>
           </fieldset>
         </nav>
         <button class="clear-filter" 
@@ -51,19 +65,52 @@ class PanelNav extends Component {
       .querySelector(`#${root_id}-nav`)
       .addEventListener('click', event => {
         if (event.target?.matches('input[type="radio"]')) {
-          document.querySelectorAll(`.${root_id}-section`).forEach(section => {
-            section.hidden = true;
-          });
-          document.getElementById(`${event.target.value}`).hidden = false;
+          this.switchTab(sectionIdToTabId(event.target.value));
         }
       });
 
     $(`#${this.root_id} button.clear-filter`).on('click', () => {
       this.shared_state.filters = {};
     });
+
+    this.maybeChangeTab();
+  }
+
+  getCurrentTab() {
+    const matches = location.hash.match(HASH_PATH_REGEX);
+    return (matches && matches[1]) || DEFAULT_TAB;
+  }
+
+  switchTab(id) {
+    window.location.hash = id;
+  }
+
+  switchNavToCurrent() {
+    const currentTab = this.getCurrentTab();
+    document
+      .querySelectorAll(`#${this.root_id} input[type="radio"]`)
+      .forEach(input => {
+        input.checked = false;
+      });
+    document.getElementById(`${this.root_id}-nav-${currentTab}`).checked = true;
+  }
+
+  showCurrentTabContent() {
+    const currentTab = this.getCurrentTab();
+    document.querySelectorAll(`.${this.root_id}-section`).forEach(section => {
+      section.hidden = true;
+    });
+    document.getElementById(`${this.root_id}-section-${currentTab}`).hidden =
+      false;
+  }
+
+  maybeChangeTab() {
+    this.switchNavToCurrent();
+    this.showCurrentTabContent();
   }
 
   refresh() {
+    this.maybeChangeTab();
     if (Object.values(this.shared_state.filters).length > 0) {
       $(`#${this.root_id} button.clear-filter`).removeAttr('hidden');
     } else {

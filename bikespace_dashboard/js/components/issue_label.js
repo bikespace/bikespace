@@ -1,4 +1,4 @@
-import {issue_attributes} from './issue_attributes.js';
+import {issue_attributes} from './api_tools.js';
 
 const makeIssueLabelById = (id, {long = false} = {}) => {
   const issue = issue_attributes[id];

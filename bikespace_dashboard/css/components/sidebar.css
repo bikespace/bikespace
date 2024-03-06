@@ -233,7 +233,7 @@
     font-size: smaller;
   }
 
-  &.view-all {
+  &.view_all {
     position: sticky;
     top: 0;
     right: 0;

@@ -116,7 +116,7 @@ class Map extends Component {
           `<strong>${point.parking_duration}</strong>`
         } on <strong>${parking_time_desc}</strong></p>`,
         `<p>${comments}</p>`,
-        `<p class="submission-id">ID: ${point.id} (<a href='#view-all?id=${point.id}'>Open in sidebar</a>)</p>`,
+        `<p class="submission-id">ID: ${point.id} (<a href='#view_all?id=${point.id}'>Open in sidebar</a>)</p>`,
       ].join('');
 
       // BUILD MARKERS

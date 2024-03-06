@@ -22,13 +22,12 @@ import {Component} from '../../main.js';
 
 const ATTR_DATA_SUBMISSION_ID = 'data-submission-id';
 
-const PARAM_VIEW_ALL = 'view-all';
+const PARAM_VIEW_ALL = 'view_all';
 
 const HASH_PATH_REGEX = /^#\/?([^?]+)\??/;
 
 const getCurrentTab = () => {
-  const currentTab = location.hash.match(HASH_PATH_REGEX, '');
-  console.log('currentTab', currentTab ? currentTab[1] : 'data');
+  const currentTab = location.hash.match(HASH_PATH_REGEX, '')[1] || 'data';
 
   return currentTab;
 };
@@ -48,6 +47,7 @@ class Submissions extends Component {
     });
     this.build();
   }
+
   shouldViewAll() {
     const hashParamStr = location.hash.replace(HASH_PATH_REGEX, '');
     const hashParams = new URLSearchParams(hashParamStr);
@@ -56,11 +56,15 @@ class Submissions extends Component {
 
   buildTitle() {
     const titleSection = $(`<div class='title-section ${
-      this.shouldViewAll() ? 'view-all' : ''
+      this.shouldViewAll() ? PARAM_VIEW_ALL : ''
     }'>
-      ${this.shouldViewAll() ? '<a href="#">&lsaquo;&lsaquo;</a>' : ''}
+      ${this.shouldViewAll() ? '<a href="#feed">&lsaquo;&lsaquo;</a>' : ''}
       <h2>Latest submissions</h2>
-      ${this.shouldViewAll() ? '' : '<a href="#view-all">View all</a>'}
+      ${
+        this.shouldViewAll()
+          ? ''
+          : `<a href="#feed?${PARAM_VIEW_ALL}=1">View all</a>`
+      }
     </div>`);
 
     const title = $(titleSection.children('h2')[0]);
