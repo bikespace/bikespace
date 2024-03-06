@@ -80,7 +80,7 @@
   }
 }
 
-#summary-box {
+#summary-box, #summary-box-filters {
   margin: var(--spacing-unit);
   padding: var(--spacing-unit);
   padding-left: var(--spacing-unit-double);
@@ -155,3 +155,10 @@
   }
 }
 
+#parking-duration-filter {
+  & .parking-duration-types {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    column-gap: var(--spacing-unit);
+  }
+}

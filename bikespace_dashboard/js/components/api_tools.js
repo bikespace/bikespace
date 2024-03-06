@@ -51,4 +51,35 @@ const issue_attributes = {
   },
 };
 
-export {parking_time_date_format, issue_attributes};
+const parking_duration_attributes = {
+  minutes: {
+    id: 'minutes',
+    type: 'short-term',
+    description: 'less than an hour',
+    formatted_description: 'for <strong>less than an hour</strong>',
+  },
+  hours: {
+    id: 'hours',
+    type: 'short-term',
+    description: 'several hours',
+    formatted_description: 'for <strong>several hours</strong>',
+  },
+  overnight: {
+    id: 'overnight',
+    type: 'long-term',
+    description: 'overnight',
+    formatted_description: '<strong>overnight</strong>',
+  },
+  multiday: {
+    id: 'multiday',
+    type: 'long-term',
+    description: 'several days',
+    formatted_description: 'for <strong>several days</strong>',
+  },
+};
+
+export {
+  parking_time_date_format,
+  issue_attributes,
+  parking_duration_attributes,
+};

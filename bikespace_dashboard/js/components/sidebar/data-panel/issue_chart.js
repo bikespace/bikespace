@@ -114,7 +114,7 @@ class IssueChart extends Component {
     this.updateCount();
 
     // clear selection if no filter applied
-    if (!this.shared_state.filters.issues) {
+    if (!this.shared_state.filters[IssuesFilter.filterKey]) {
       this._selected = null;
     }
 
@@ -180,10 +180,10 @@ class IssueChart extends Component {
   setFilter(filter_issue) {
     const filters = this.shared_state.filters;
     // reset to no filter on toggle
-    if (filters?.issues?.stateEquals([filter_issue])) {
-      delete filters.issues;
+    if (filters?.[IssuesFilter.filterKey]?.stateEquals([filter_issue])) {
+      delete filters[IssuesFilter.filterKey];
     } else {
-      filters.issues = new IssuesFilter([filter_issue]);
+      filters[IssuesFilter.filterKey] = new IssuesFilter([filter_issue]);
     }
     super.analytics_event(this.root_id, filters);
     this.shared_state.filters = filters;
