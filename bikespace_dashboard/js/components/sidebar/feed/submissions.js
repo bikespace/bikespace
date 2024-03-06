@@ -20,6 +20,19 @@ import {Component} from '../../main.js';
  *
  */
 
+const ATTR_DATA_SUBMISSION_ID = 'data-submission-id';
+
+const PARAM_VIEW_ALL = 'view-all';
+
+const HASH_PATH_REGEX = /^#\/?([^?]+)\??/;
+
+const getCurrentTab = () => {
+  const currentTab = location.hash.match(HASH_PATH_REGEX, '');
+  console.log('currentTab', currentTab ? currentTab[1] : 'data');
+
+  return currentTab;
+};
+
 class Submissions extends Component {
   /**
    * Base class for graphs, map, etc. Registers component with shared_state.
@@ -35,9 +48,10 @@ class Submissions extends Component {
     });
     this.build();
   }
-
   shouldViewAll() {
-    return location.hash === '#view-all';
+    const hashParamStr = location.hash.replace(HASH_PATH_REGEX, '');
+    const hashParams = new URLSearchParams(hashParamStr);
+    return hashParams.get(PARAM_VIEW_ALL) === '1' && getCurrentTab() === 'feed';
   }
 
   buildTitle() {
@@ -142,7 +156,7 @@ class Submissions extends Component {
           dateStyle: 'long',
           timeStyle: 'short',
         });
-        const html = `<a href='#' class="submission-item" data-submission-id="${
+        const html = `<a href='#' class="submission-item" ${ATTR_DATA_SUBMISSION_ID}="${
           submission.id
         }">
             <h3>${parking_time_desc}</h3>
@@ -151,7 +165,6 @@ class Submissions extends Component {
             </div>
             ${submission.comments ? `<p>${submission.comments}` : ''}</p>
           </a>`;
-        console.log('html:', html);
         this.list.append(html);
       }
     }

@@ -7,13 +7,19 @@ import {DayChart} from './components/sidebar/data-panel/day_chart.js';
 import {DurationTimeOfDayChart} from './components/sidebar/data-panel/duration_tod_chart.js';
 import {Submissions} from './components/sidebar/feed/submissions.js';
 
+const USE_DEV = false;
+const DEV_BASE_URL = ''; // empty string = use current location as /api is proxied with the dev server to avoid CORS mess
+const PROD_BASE_URL = 'https://api-dev.bikespace.ca';
+
 $.ajax({
-  url: 'https://api-dev.bikespace.ca/api/v2/submissions?limit=5000',
+  url: `${
+    USE_DEV ? DEV_BASE_URL : PROD_BASE_URL
+  }/api/v2/submissions?limit=5000`,
   success: function (data) {
     // add sidebar panel nav
     new PanelNav('body header', 'panels');
     // add interactive content
-    const shared_state = new SharedState(data)
+    const shared_state = new SharedState(data);
     new SummaryBox('#panels-section-data', 'summary-box', shared_state, {
       className: 'sidebar-panel',
     });
