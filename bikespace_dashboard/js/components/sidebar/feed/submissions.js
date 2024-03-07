@@ -75,28 +75,10 @@ class Submissions extends Component {
 
   applyFullView() {
     this.root.addClass(PARAM_VIEW_ALL);
-    this.root.css('position', 'absolute');
-    this.root.css('top', '0');
-    this.root.css('left', '0');
-    this.root.css('right', '0');
-    this.root.css('bottom', '0');
-    this.root.css('z-index', '10');
-    this.root.css('overflow-y', 'hidden');
   }
 
   applyOverview() {
     this.root.removeClass(PARAM_VIEW_ALL);
-    const cssToReset = [
-      'position',
-      'top',
-      'left',
-      'right',
-      'bottom',
-      'z-index',
-    ];
-    for (const toReset of cssToReset) {
-      this.root.css(toReset, 'initial');
-    }
   }
 
   enableClickToFocus() {
@@ -201,6 +183,10 @@ class Submissions extends Component {
     this.build();
   }
 
+  /**
+   * Focus a submission in the submission list panel. Applies CSS class to an item to give the feel of it being focused and scroll to it.
+   * @param {Number} id ID of the submission to focus
+   */
   focusSubmission(id) {
     const currentlyFocused = document.querySelectorAll(
       '.submission-item.focused'

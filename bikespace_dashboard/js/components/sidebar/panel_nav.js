@@ -41,18 +41,30 @@ class PanelNav extends Component {
       this.maybeChangeTab();
     });
 
+    const tabNavsHTML = TABS.map(
+      t => `
+        <input type="radio" id="${root_id}-nav-${t.path}" name="${root_id}-nav" value="${root_id}-section-${t.path}">
+        <label for="${root_id}-nav-${t.path}">${t.name}</label>
+            `
+    ).join('');
+
+    const tabContentsHTML = TABS.map(
+      t => `
+        <div id="${root_id}-section-${t.path}" 
+          class="${root_id}-section"
+          ${t.default ? '' : 'hidden'}
+          >
+        </div>
+      `
+    ).join('');
+
     // add content to page
     document.querySelector(`#${this.root_id}`).insertAdjacentHTML(
       'afterbegin',
       `<div id="${root_id}-header">
         <nav id="${root_id}-nav" aria-label="Sidebar">
           <fieldset>
-            ${TABS.map(
-              t => `
-              <input type="radio" id="${root_id}-nav-${t.path}" name="${root_id}-nav" value="${root_id}-section-${t.path}">
-              <label for="${root_id}-nav-${t.path}">${t.name}</label>
-            `
-            ).join('')}
+            ${tabNavsHTML}
           </fieldset>
         </nav>
         <button class="clear-filter"
@@ -64,15 +76,7 @@ class PanelNav extends Component {
         </button>
       </div>
       <div id="${root_id}-sections">
-      ${TABS.map(
-        t => `
-        <div id="${root_id}-section-${t.path}" 
-          class="${root_id}-section"
-          ${t.default ? '' : 'hidden'}
-          >
-        </div>
-      `
-      ).join('')}
+        ${tabContentsHTML}
       </div>`
     );
     document
