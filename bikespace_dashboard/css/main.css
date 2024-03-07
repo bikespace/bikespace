@@ -5,5 +5,4 @@
 @import 'components/MarkerCluster.css';
 @import 'components/MarkerCluster.Default.css';
 @import 'components/sidebar.css';
-
-/* @import 'components/issue_label.css'; */
+@import 'components/issue_label.css';

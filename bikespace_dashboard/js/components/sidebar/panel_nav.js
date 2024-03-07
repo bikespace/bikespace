@@ -79,9 +79,9 @@ class PanelNav extends Component {
       .querySelector(`#${root_id}-nav`)
       .addEventListener('click', event => {
         if (event.target?.matches('input[type="radio"]')) {
-          this.shared_state.router.navigate(
-            sectionIdToTabId(event.target.value)
-          );
+          this.shared_state.router.push({
+            path: sectionIdToTabId(event.target.value),
+          });
         }
       });
 

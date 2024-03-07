@@ -63,7 +63,8 @@ class HashRouter {
    * @param {string} path Path to navigate to
    * @param {URLSearchParams} params
    */
-  navigate(path, params = null) {
+  push({path = null, params = null}) {
+    path = path || this.currentRoute.path;
     this._params = params || new URLSearchParams();
     const paramStr = this._params.toString();
     window.location.hash = path + (paramStr ? `?${paramStr}` : '');
@@ -80,7 +81,16 @@ class HashRouter {
    * @param {URLSearchParams} params Containing the params wished to be set
    */
   set params(params) {
-    this.navigate(this.currentRoute, params);
+    this.push({params});
+  }
+
+  setParam(name, value) {
+    this.params.set(name, value);
+    this.push({params: this.params});
+  }
+
+  getParam(name) {
+    return this.params.get(name);
   }
 
   /**

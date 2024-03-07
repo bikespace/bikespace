@@ -34,7 +34,7 @@ class Submissions extends Component {
    */
   constructor(parent, root_id, shared_state, options = {}) {
     super(parent, root_id, shared_state, options);
-    window.addEventListener('hashchange', () => {
+    this.shared_state.router.onChange(() => {
       this.refresh();
     });
     this.build();
@@ -49,9 +49,7 @@ class Submissions extends Component {
   }
 
   buildTitle() {
-    const titleSection = $(`<div class='title-section ${
-      this.shouldViewAll() ? PARAM_VIEW_ALL : ''
-    }'>
+    const titleSection = $(`<div class='title-section'>
       ${this.shouldViewAll() ? '<a href="#feed">&lsaquo;&lsaquo;</a>' : ''}
       <h2>Latest submissions</h2>
       ${
@@ -76,14 +74,18 @@ class Submissions extends Component {
   }
 
   applyFullView() {
+    this.root.addClass(PARAM_VIEW_ALL);
     this.root.css('position', 'absolute');
     this.root.css('top', '0');
     this.root.css('left', '0');
     this.root.css('right', '0');
+    this.root.css('bottom', '0');
     this.root.css('z-index', '10');
+    this.root.css('overflow-y', 'hidden');
   }
 
   applyOverview() {
+    this.root.removeClass(PARAM_VIEW_ALL);
     const cssToReset = [
       'position',
       'top',
@@ -103,22 +105,19 @@ class Submissions extends Component {
     listing_items.forEach(item => {
       item.addEventListener('click', e => {
         e.preventDefault();
-        const matching_marker = this.getMapMarkerByID(
+        this.shared_state.components.issue_map.zoomToSubmission(
           item.dataset.submissionId
         );
-        this.shared_state.components.issue_map.markers.zoomToShowLayer(
-          matching_marker,
-          () => {
-            matching_marker.openPopup();
-          }
-        );
+        this.shared_state.router.params = new URLSearchParams({
+          view_all: 1,
+          submission_id: item.dataset.submissionId,
+        });
       });
     });
   }
 
   build() {
     this.root = $(`#${this.root_id}`);
-
     if (this.shouldViewAll()) {
       this.applyFullView();
       this.root[0].scroll(0, 0);
@@ -129,14 +128,22 @@ class Submissions extends Component {
     this.title = this.buildTitle();
     this.root.empty().append(this.title);
 
-    this.list = $('<div></div>');
+    this.list = $('<div class="submission-list"></div>');
     this.root.append(this.list);
 
     const toDisplay = this.getLatestSubmissions(
       this.shouldViewAll() ? {} : {limit: 5}
     );
+
     this.fillSubmissions(toDisplay);
     this.enableClickToFocus();
+
+    const submissionId = parseInt(
+      this.shared_state.router.params.get('submission_id')
+    );
+    if (!isNaN(submissionId)) {
+      this.focusSubmission(submissionId);
+    }
   }
 
   issueIdsToLabels(issueIds) {
@@ -190,14 +197,22 @@ class Submissions extends Component {
     }
   }
 
-  getMapMarkerByID(submission_id) {
-    return this.shared_state.components.issue_map.all_markers.filter(
-      m => `${m.submission_id}` === `${submission_id}`
-    )[0];
-  }
-
   refresh() {
     this.build();
+  }
+
+  focusSubmission(id) {
+    const currentlyFocused = document.querySelectorAll(
+      '.submission-item.focused'
+    );
+    currentlyFocused.forEach(elem => elem.classList.remove('focused'));
+    const elem = document.querySelector(
+      `.submission-item[data-submission-id="${id}"]`
+    );
+    if (elem) {
+      elem.classList.add('focused');
+      elem.scrollIntoView();
+    }
   }
 }
 

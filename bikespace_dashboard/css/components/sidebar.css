@@ -223,6 +223,12 @@
   color: rgb(128, 128, 128);
 }
 
+#submissions.view_all {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
 .title-section {
   display: flex;
   padding: var(--spacing-unit-double) 0;
@@ -232,16 +238,11 @@
   & > a {
     font-size: smaller;
   }
+}
 
-  &.view_all {
-    position: sticky;
-    top: 0;
-    right: 0;
-    left: 0;
-    z-index: 10;
-    background: white;
-    border-bottom: 1px solid rgb(225, 225, 225);
-  }
+.submission-list {
+  height: 100%;
+  overflow-y: scroll;
 }
 
 .submission-item {
@@ -249,6 +250,9 @@
   margin: 0 var(--spacing-unit);
   padding: 0 var(--spacing-unit);
   border-bottom: var(--border-unit) solid var(--color-secondary-light-grey);
+  &.focused {
+    background: var(--color-secondary-light-grey);
+  }
   & > h3 {
     font-size: medium;
   }

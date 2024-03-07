@@ -65,6 +65,32 @@ class Map extends Component {
         submission_id: e.popup.submission_id,
       });
     });
+
+    this.shared_state.router.onChange(() => {
+      this.zoomToIdInParam();
+    });
+
+    this.zoomToIdInParam();
+  }
+
+  zoomToIdInParam() {
+    const submissionId = parseInt(
+      this.shared_state.router.params.get('submission_id')
+    );
+    if (!isNaN(submissionId)) {
+      this.zoomToSubmission(submissionId);
+    }
+  }
+
+  getMapMarkerByID(submission_id) {
+    return this.all_markers.filter(
+      m => `${m.submission_id}` === `${submission_id}`
+    )[0];
+  }
+
+  zoomToSubmission(id) {
+    const marker = this.getMapMarkerByID(id);
+    this.markers.zoomToShowLayer(marker, () => marker.openPopup());
   }
 
   buildMarkers() {
@@ -116,8 +142,24 @@ class Map extends Component {
           `<strong>${point.parking_duration}</strong>`
         } on <strong>${parking_time_desc}</strong></p>`,
         `<p>${comments}</p>`,
-        `<p class="submission-id">ID: ${point.id} (<a href='#view_all?id=${point.id}'>Open in sidebar</a>)</p>`,
+        `<p class="submission-id">ID: ${point.id} (<a href='#feed?view_all=1&submission_id=${point.id}'>Focus in sidebar</a>)</p>`,
       ].join('');
+
+      const contentElem = document.createElement('div');
+
+      contentElem.innerHTML = content;
+
+      const openInSideBarLink = contentElem.querySelector(
+        '& > .submission-id > a'
+      );
+
+      openInSideBarLink.addEventListener('click', () => {
+        this.shared_state.router.push({
+          path: 'feed',
+          params: new URLSearchParams({view_all: 1, submission_id: point.id}),
+        });
+        this.shared_state.components.submissions.focusSubmission(point.id);
+      });
 
       // BUILD MARKERS
       // set up custom markers
@@ -144,7 +186,7 @@ class Map extends Component {
       const marker = L.marker([point.latitude, point.longitude], {
         icon: customIcon,
       });
-      marker.bindPopup(content);
+      marker.bindPopup(contentElem);
       this.all_markers.push(marker);
       marker_cluster_group.addLayer(marker);
 
