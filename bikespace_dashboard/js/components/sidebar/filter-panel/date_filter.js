@@ -96,7 +96,7 @@ class DateFilterControl extends Component {
         `<summary>Date Range</summary>`,
         `<div class="details-container">`,
           `<div class="filter-section">`,
-            `<div><strong>Showing:</strong></div>`,
+            `<div><strong>Showing between:</strong></div>`,
             `<div id="filter-date-range-indicator" class="">`,
               `${this.#earliestSelection.toLocaleString(
                 DateTime.DATE_FULL, {locale: 'en-CA'}
@@ -212,11 +212,11 @@ class DateFilterControl extends Component {
   setFilter(interval) {
     const filters = this.shared_state.filters;
     if (interval) {
-      filters.date_range = new DateRangeFilter([interval]);
+      filters[DateRangeFilter.filterKey] = new DateRangeFilter([interval]);
       this.#earliestSelection = interval.start;
       this.#latestSelection = interval.end;
     } else {
-      delete filters.date_range;
+      delete filters[DateRangeFilter.filterKey];
       this.#earliestSelection = this.#earliestAll;
       this.#latestSelection = this.#latestAll;
       this.#selection = "all_dates";
@@ -227,7 +227,7 @@ class DateFilterControl extends Component {
 
   refresh() {
     // handle global filter clear
-    if (!this.shared_state.filters.date_range) {
+    if (!this.shared_state.filters[DateRangeFilter.filterKey]) {
       this.#earliestSelection = this.#earliestAll;
       this.#latestSelection = this.#latestAll;
       this.#selection = "all_dates";

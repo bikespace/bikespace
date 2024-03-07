@@ -57,4 +57,36 @@ const issueIdToLabel = (id, {long = false} = {}) => {
   return long ? issue.label_long : issue.label_short;
 };
 
-export {issue_attributes, issueIdToLabel, parking_time_date_format};
+const parking_duration_attributes = {
+  minutes: {
+    id: 'minutes',
+    type: 'short-term',
+    description: 'less than an hour',
+    formatted_description: 'for <strong>less than an hour</strong>',
+  },
+  hours: {
+    id: 'hours',
+    type: 'short-term',
+    description: 'several hours',
+    formatted_description: 'for <strong>several hours</strong>',
+  },
+  overnight: {
+    id: 'overnight',
+    type: 'long-term',
+    description: 'overnight',
+    formatted_description: '<strong>overnight</strong>',
+  },
+  multiday: {
+    id: 'multiday',
+    type: 'long-term',
+    description: 'several days',
+    formatted_description: 'for <strong>several days</strong>',
+  },
+};
+
+export {
+  issue_attributes,
+  issueIdToLabel,
+  parking_time_date_format,
+  parking_duration_attributes,
+};

@@ -11,6 +11,7 @@ const USE_DEV = false;
 const DEV_BASE_URL = ''; // empty string = use current location as /api is proxied with the dev server to avoid CORS mess
 const PROD_BASE_URL = 'https://api-dev.bikespace.ca';
 import {DateFilterControl} from './components/sidebar/filter-panel/date_filter.js';
+import {ParkingDurationFilterControl} from './components/sidebar/filter-panel/parking_duration_filter.js';
 
 // Load data from BikeSpace API
 $.ajax({
@@ -40,17 +41,30 @@ $.ajax({
         className: 'sidebar-panel',
       }
     );
-    new Map('body', 'issue-map', shared_state);
     new Submissions('#panels-section-feed', 'submissions', shared_state, {
       className: 'sidebar-panel',
     });
     // add filter controls
+    new SummaryBox(
+      '#panels-section-filters',
+      'summary-box-filters',
+      shared_state,
+      {className: 'sidebar-panel'}
+    );
     new DateFilterControl(
       '#panels-section-filters',
       'date-filter',
       shared_state,
       {className: 'sidebar-panel'}
     );
+    new ParkingDurationFilterControl(
+      '#panels-section-filters',
+      'parking-duration-filter',
+      shared_state,
+      {className: 'sidebar-panel'}
+    );
+    // add map
+    new Map('body', 'issue-map', shared_state);
   },
 });
 

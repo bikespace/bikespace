@@ -99,6 +99,10 @@ input[type="date"] {
   font-size: 0.9rem;
 }
 
+input[type="checkbox"] {
+  accent-color: var(--color-primary-d50p);
+}
+
 details[open] {
   & summary {
     border-bottom: 1px solid var(--color-secondary-light-grey);
