@@ -14,7 +14,6 @@ If you would like to request a filter or report a bug with the dashboard, please
 
 If you would like to add a feature or contribute a bugfix, please feel free to submit a [pull request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests). Please also reach out for help and advice via the [BikeSpace Civic Tech TO slack channel](https://civictechto.slack.com/archives/C61CZLA5V) or at one of the [Civic Tech TO Meetups](https://www.meetup.com/civic-tech-toronto/).
 
-
 ### Tools
 
 The dashboard runs entirely in the user's browser, and does not use any major frameworks except for JQuery. Other tools are used to help create components, e.g.:
@@ -26,7 +25,6 @@ The dashboard runs entirely in the user's browser, and does not use any major fr
 The dashboard is deployed as a static page via CloudFlare (see repo Action `Deploy Dashboard`).
 
 To develop the dashboard locally, you just need a simple local web server, e.g. [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) for VS Code or you can use [python's http.server](https://docs.python.org/3/library/http.server.html) (search for "invoked directly" to skip to the relevant instructions).
-
 
 ### Structure
 
@@ -48,6 +46,8 @@ The data and its relevant filters for the dashboard are managed by `SharedState`
 When a `Component` sets or updates the value of `SharedState.filters`, `SharedState` will apply those filters to `SharedState.display_data` and call `.update()` on each `Component` registered to it. The `.update()` method for a component will usually re-request `SharedState.display_data` and update the component's content on the page accordingly.
 
 Some components also use `SharedState.applyFilters()` to customize which filters are applied to the data used for rendering the component.
+
+Additionally, the dashboard uses hash component of the URL to decide what to show ("hash routing"). This lets user share some of the dashboard state with others. Given `window.location.hash`, the expected format is `#path?param=value`. Currently `path` maps to a tab found in the sidebar. The class `HashRouter`, accessible in `SharedState.router`, parses the hash url and exposes various methods to read and manipulate path and params.
 
 CSS stylesheets for individual components can be found in `/css/components` and have a similar structure to the `/js` folder. Component stylesheets are imported via `main.css`. `template.css` contains non-layout styling, `stylevars.css` is used for style variables (e.g. colours, fonts, spacing units), and all the other component sheets are for component-specific styling. `main.css` also imports [Modern Normalize](https://github.com/sindresorhus/modern-normalize) to help keep styling development more predictable across browsers.
 
@@ -87,9 +87,48 @@ Most filters match 1:1 with one or more report values, but parking_time can be a
 
 This system is pretty powerful, though there may still be cases where the dashboard is not the right tool, and a python script using a tool like [GeoPandas](https://geopandas.org/en/stable/docs.html) would be more appropriate, e.g.:
 
-* "All reports within 100m of Queen St W", e.g. using `geopandas.GeoDataFrame.buffer()`
-* "All reports after dusk" e.g. using some kind of external data source on dusk times throughout the year
+- "All reports within 100m of Queen St W", e.g. using `geopandas.GeoDataFrame.buffer()`
+- "All reports after dusk" e.g. using some kind of external data source on dusk times throughout the year
 
+### More About Hash Routing
+
+This goes over how `HashRouter` is used and the components that use hash routing.
+
+#### HashRouter usage
+
+##### Initialization
+
+The component `PanelNav` instantiates `HashRouter` by giving it the routes to use and then assign the instance to `shared_state.router`. It is always given a default path as fallback when the hash path is not as expected.
+
+##### onChange listener
+
+To listen for hash url change, component should pass a callback to the `.onChange` method. The first and only argument is the calling `HashRouter` instance.
+
+##### Getting paths and params
+
+See the `HashRouter` for details. All public methods have JSDoc attached.
+
+#### PanelNav
+
+`PanelNav` renders 3 tabs, `Data`, `Filter` and `Feed`. Each tab corresponds to a path.
+
+`PanelNav` listens to hash URL changes and displays the corresponding tab.
+
+When user clicks a tab, `PanelNav` does not call its internal method to render the corresponding tab. It calls `HashRouter.push` to change the hash url changes to `#tab` e.g. `#data` for the `Data` tab.
+
+#### Feed
+
+The feed listens to 2 params from the hash URL - `view_all` and `submission_id`. When `view_all` is `1` it displays all submissions as a scrollable list; when `submission_id` is a valid submission, it scrolls to and focuses the submission in the list.
+
+#### Map
+
+The map zooms to the submission marker and opens its info popup when the `Feed` tab is active and there is a submission id in the params.
+
+There is also a "Focus in sidebar" link in the marker popup. This sets the `submission_id` and forces the Feed to focus the submission by calling its `focusSubmission` method in case `submission_id` was already the target id and the submission was not in view.
+
+#### Filter
+
+Filter currently neither reads nor manipulates the hash url. It would be good if it does - people might want to share a filter.
 
 ### Tips
 
