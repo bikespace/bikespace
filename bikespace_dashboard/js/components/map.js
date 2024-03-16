@@ -133,25 +133,29 @@ class Map extends Component {
         point.comments ? point.comments : '<em>none</em>'
       }`;
 
-      const content = [
-        '<div class="issue-list">',
-        `<strong>Issues:</strong> ${issues ? issues : '<em>none</em>'}`,
-        '</div>',
-        `<p>This person wanted to park ${
+      const content = `
+        <div class="issue-list">
+          <strong>Issues:</strong> ${issues ? issues : '<em>none</em>'}
+        </div>
+        <p>This person wanted to park ${
           duration_descr[point.parking_duration] ??
           `<strong>${point.parking_duration}</strong>`
-        } on <strong>${parking_time_desc}</strong></p>`,
-        `<p>${comments}</p>`,
-        `<p class="submission-id">ID: ${point.id} (<a href='#feed?view_all=1&submission_id=${point.id}'>Focus in sidebar</a>)</p>`,
-      ].join('');
+        } on <strong>${parking_time_desc}</strong></p>
+        <p>${comments}</p>
+        <div class="flex-distribute">
+          <a class="open-in-sidebar a-button" 
+            href='#feed?view_all=1&submission_id=${point.id}'
+          >
+            Focus in Sidebar
+          </a>
+          <span class="submission-id">ID: ${point.id}</span>
+        </div>`;
 
       const contentElem = document.createElement('div');
 
       contentElem.innerHTML = content;
 
-      const openInSideBarLink = contentElem.querySelector(
-        '& > .submission-id > a'
-      );
+      const openInSideBarLink = contentElem.querySelector('a.open-in-sidebar');
 
       openInSideBarLink.addEventListener('click', () => {
         this.shared_state.router.push({

@@ -14,6 +14,11 @@ class SharedState {
     // Data initially not filtered
     this._display_data = data.submissions;
     this._router = null;
+
+    // show display data in development environment
+    if (window.location.host !== 'dashboard.bikespace.ca') {
+      console.log('display data', this._display_data);
+    }
   }
 
   refresh() {

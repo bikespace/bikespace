@@ -50,26 +50,19 @@ class Submissions extends Component {
 
   buildTitle() {
     const titleSection = $(`<div class='title-section'>
-      ${this.shouldViewAll() ? '<a href="#feed">&lsaquo;&lsaquo;</a>' : ''}
-      <h2>Latest submissions</h2>
+      ${
+        this.shouldViewAll()
+          ? '<a class="a-button" href="#feed">&#9666; Back</a>'
+          : ''
+      }
+      <h2>Latest Submissions</h2>
       ${
         this.shouldViewAll()
           ? ''
-          : `<a href="#feed?${PARAM_VIEW_ALL}=1">View all</a>`
+          : `<a class="a-button" href="#feed?${PARAM_VIEW_ALL}=1">View All</a>`
       }
     </div>`);
 
-    const title = $(titleSection.children('h2')[0]);
-
-    const styleToCopy = $('.gtitle');
-
-    title.css('color', styleToCopy.css('fill'));
-    title.css('font-family', styleToCopy.css('font-family'));
-    title.css('font-size', styleToCopy.css('font-size'));
-    title.css('font-weight', styleToCopy.css('font-weight'));
-    title.css('margin', '0');
-    title.css('margin-left', `${styleToCopy.attr('x')}px`);
-    title.css('display', 'inline');
     return titleSection;
   }
 
@@ -197,7 +190,7 @@ class Submissions extends Component {
     );
     if (elem) {
       elem.classList.add('focused');
-      elem.scrollIntoView();
+      elem.scrollIntoView({block: 'center'});
     }
   }
 }

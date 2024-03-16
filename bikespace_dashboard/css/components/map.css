@@ -38,4 +38,8 @@
   & .submission-id {
     font-style: italic;
   }
+
+  & .a-button {
+    color: var(--color-secondary-dark-grey);
+  }
 }

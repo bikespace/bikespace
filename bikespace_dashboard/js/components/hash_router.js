@@ -5,10 +5,9 @@
  * @property {boolean} [default=false] If the route is the default route
  */
 
+// regex and indexes for its capturing groups
 const HASH_PATH_REGEX = /^#\/?([^?]+)(\?.+)?$/;
-
 const PATH_INDEX = 1;
-
 const PARAMS_STR_INDEX = 2;
 
 class HashRouter {
@@ -35,13 +34,13 @@ class HashRouter {
   }
 
   resolvePath(path) {
-    return this._routes.find(r => r.path === path) || this.default;
+    return this._routes.find(r => r.path === path) ?? this.default;
   }
 
   refreshCurrent() {
-    const matches = window.location.hash.match(HASH_PATH_REGEX) || [];
+    const matches = window.location.hash.match(HASH_PATH_REGEX) ?? [];
     this._currentRoute = this.resolvePath(matches[PATH_INDEX]);
-    this._params = new URLSearchParams(matches[PARAMS_STR_INDEX] || '');
+    this._params = new URLSearchParams(matches[PARAMS_STR_INDEX] ?? '');
   }
 
   /**
@@ -64,8 +63,8 @@ class HashRouter {
    * @param {URLSearchParams} params
    */
   push({path = null, params = null}) {
-    path = path || this.currentRoute.path;
-    this._params = params || new URLSearchParams();
+    path = path ?? this.currentRoute.path;
+    this._params = params ?? new URLSearchParams();
     const paramStr = this._params.toString();
     window.location.hash = path + (paramStr ? `?${paramStr}` : '');
   }

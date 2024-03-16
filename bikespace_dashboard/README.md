@@ -4,13 +4,13 @@ Explore the live dashboard here: [dashboard.bikespace.ca](https://dashboard.bike
 
 ## User Guide
 
-Try clicking the charts or using the Filter pane to further filter the data shown on the map. Clicking on map clusters will show individual points, and clicking on individual points will bring up a tooltip showing the full details for that report.
+Try clicking the charts or using the Filter pane to further filter the data shown on the map. Clicking on map clusters will show individual points, and clicking on individual points will bring up a tooltip showing the full details for that report. The Feed tab shows all reports (or filtered reports if a filter is applied) in reverse chronological order.
 
 ## Contributing Guide
 
 The BikeSpace project is developed and maintained by volunteers from [Civic Tech Toronto](http://civictech.ca/).
 
-If you would like to request a filter or report a bug with the dashboard, please [open an issue](https://github.com/bikespace/bikespace-v2/issues) on this repository.
+If you would like to request a feature or report a bug with the dashboard, please [open an issue](https://github.com/bikespace/bikespace-v2/issues) on this repository.
 
 If you would like to add a feature or contribute a bugfix, please feel free to submit a [pull request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests). Please also reach out for help and advice via the [BikeSpace Civic Tech TO slack channel](https://civictechto.slack.com/archives/C61CZLA5V) or at one of the [Civic Tech TO Meetups](https://www.meetup.com/civic-tech-toronto/).
 
@@ -47,7 +47,7 @@ When a `Component` sets or updates the value of `SharedState.filters`, `SharedSt
 
 Some components also use `SharedState.applyFilters()` to customize which filters are applied to the data used for rendering the component.
 
-Additionally, the dashboard uses hash component of the URL to decide what to show ("hash routing"). This lets user share some of the dashboard state with others. Given `window.location.hash`, the expected format is `#path?param=value`. Currently `path` maps to a tab found in the sidebar. The class `HashRouter`, accessible in `SharedState.router`, parses the hash url and exposes various methods to read and manipulate path and params.
+Additionally, the dashboard uses hash component of the URL to decide what to show ("hash routing"). The hash component is the part of the url that comes after the [hash (number sign) character](https://en.wikipedia.org/wiki/Number_sign). This lets user share some of the dashboard state with others. Given `window.location.hash`, the expected format is `#path?param=value`. Currently `path` maps to a tab found in the sidebar. The class `HashRouter`, accessible in `SharedState.router`, parses the hash url and exposes various methods to read and manipulate path and params.
 
 CSS stylesheets for individual components can be found in `/css/components` and have a similar structure to the `/js` folder. Component stylesheets are imported via `main.css`. `template.css` contains non-layout styling, `stylevars.css` is used for style variables (e.g. colours, fonts, spacing units), and all the other component sheets are for component-specific styling. `main.css` also imports [Modern Normalize](https://github.com/sindresorhus/modern-normalize) to help keep styling development more predictable across browsers.
 
@@ -110,7 +110,7 @@ See the `HashRouter` for details. All public methods have JSDoc attached.
 
 #### PanelNav
 
-`PanelNav` renders 3 tabs, `Data`, `Filter` and `Feed`. Each tab corresponds to a path.
+`PanelNav` renders three tabs, `Data`, `Filter` and `Feed`. Each tab corresponds to a path.
 
 `PanelNav` listens to hash URL changes and displays the corresponding tab.
 
@@ -118,7 +118,7 @@ When user clicks a tab, `PanelNav` does not call its internal method to render t
 
 #### Feed
 
-The feed listens to 2 params from the hash URL - `view_all` and `submission_id`. When `view_all` is `1` it displays all submissions as a scrollable list; when `submission_id` is a valid submission, it scrolls to and focuses the submission in the list.
+The feed listens to two params from the hash URL - `view_all` and `submission_id`. When `view_all` is `1` it displays all submissions as a scrollable list; when `submission_id` is a valid submission, it scrolls to and focuses the submission in the list.
 
 #### Map
 
@@ -128,12 +128,15 @@ There is also a "Focus in sidebar" link in the marker popup. This sets the `subm
 
 #### Filter
 
-Filter currently neither reads nor manipulates the hash url. It would be good if it does - people might want to share a filter.
+Filters currently do not read or manipulate the hash url. This may be added as a feature in the future.
 
-### Tips
+### Development Tips
 
 Some things to think about when writing components:
 
 - coordination (via state) with other components that may affect the same filter
 - ensure that the global clear filter works on the component
 - avoid creating errors in cases when no data is returned
+- whether the component needs to interact with the Hash Router
+- ensure that any key interactions are included in analytics using `Component.prototype.analytics_event` or the proper [data attributes in links or buttons](https://umami.is/docs/track-events).
+- [accessibilty (A11y) testing](https://developer.mozilla.org/en-US/docs/Web/Accessibility), e.g. in the interaction options offered and colour selection

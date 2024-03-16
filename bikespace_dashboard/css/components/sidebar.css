@@ -80,6 +80,9 @@
   }
 }
 
+
+/* DATA TAB */
+
 #summary-box, 
 #summary-box-filters {
   margin: var(--spacing-unit);
@@ -134,63 +137,8 @@
   }
 }
 
-.no-data {
-  text-align: center;
-  width: 100%;
-  display: block;
-  color: rgb(128, 128, 128);
-}
 
-#submissions.view_all {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  position: absolute;
-  inset: 0;
-  z-index: 10;
-  overflow-y: hidden;
-}
-
-.title-section {
-  display: flex;
-  padding: var(--spacing-unit-double) 0;
-  & > h2 {
-    flex-grow: 1;
-  }
-  & > a {
-    font-size: smaller;
-  }
-}
-
-.submission-list {
-  height: 100%;
-  overflow-y: scroll;
-}
-
-.submission-item {
-  display: block;
-  margin: 0 var(--spacing-unit);
-  padding: 0 var(--spacing-unit);
-  border-bottom: var(--border-unit) solid var(--color-secondary-light-grey);
-  &.focused {
-    background: var(--color-secondary-light-grey);
-  }
-  & > h3 {
-    font-size: medium;
-  }
-  & > .problems {
-    & > .issue {
-      display: inline-block;
-      font-size: smaller;
-    }
-  }
-  &:hover {
-    color: var(--color-secondary-dark-grey);
-  }
-  &:hover h3 {
-    color: var(--color-primary);
-  }
-}
+/* FILTERS TAB */
 
 #panels-section-filters {
   & summary {
@@ -219,5 +167,69 @@
     display: grid;
     grid-template-columns: 50% 50%;
     column-gap: var(--spacing-unit);
+  }
+}
+
+
+/* FEED TAB */
+
+.no-data {
+  text-align: center;
+  width: 100%;
+  display: block;
+  color: rgb(128, 128, 128);
+}
+
+/* #submissions.view_all {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: absolute; 
+  inset: 0;
+  z-index: 10;
+  overflow-y: hidden;
+} */
+
+.title-section {
+  display: flex;
+  gap: var(--spacing-unit-double);
+  margin: var(--spacing-unit);
+  padding: var(--spacing-unit-double) var(--spacing-unit);
+
+  & > h2 {
+    flex-grow: 1;
+    font-weight: var(--bold-weight);
+    font-size: 1.1rem;
+    color: var(--color-primary-d50p);
+  }
+
+  & > a {
+    font-size: smaller;
+  }
+}
+
+.submission-item {
+  display: block;
+  margin: var(--spacing-unit);
+  padding: var(--spacing-unit);
+  padding-bottom: var(--spacing-unit-double);
+  border-bottom: var(--border-unit) solid var(--color-secondary-light-grey);
+  &.focused {
+    background: var(--color-secondary-light-grey);
+  }
+  & > h3 {
+    font-size: medium;
+  }
+  & > .problems {
+    & > .issue {
+      display: inline-block;
+      font-size: smaller;
+    }
+  }
+  &:hover {
+    color: var(--color-secondary-dark-grey);
+  }
+  &:hover h3 {
+    color: var(--color-primary);
   }
 }
