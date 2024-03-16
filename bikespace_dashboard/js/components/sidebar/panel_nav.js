@@ -1,15 +1,62 @@
+import HashRouter from '../hash_router.js';
 import {Component} from '../main.js';
+
+const SECTION_ID_REGEX = /^.+-section-([a-zA-Z0-9]+)/;
+
+const sectionIdToTabId = sectionId => {
+  return sectionId.match(SECTION_ID_REGEX)[1];
+};
+
+/** @type {import('../hash_router.js').Route[]} */
+const TABS = [
+  {
+    name: 'Data',
+    path: 'data',
+    default: true,
+  },
+  {
+    name: 'Filters',
+    path: 'filters',
+  },
+  {
+    name: 'Feed',
+    path: 'feed',
+  },
+];
 
 class PanelNav extends Component {
   /**
    * Panel navigation and filter clear button
    * @param {string} parent JQuery selector for parent element
    * @param {string} root_id tag id for root div
-   * @param {Object} shared_state
+   * @param {import('../main.js').SharedState} shared_state
    * @param {import('../../main.js').ComponentOptions} [options = {}] Options for the component
    */
   constructor(parent, root_id, shared_state, options = {}) {
     super(parent, root_id, shared_state, options);
+
+    shared_state.router = new HashRouter(TABS);
+
+    shared_state.router.onChange(() => {
+      this.maybeChangeTab();
+    });
+
+    const tabNavsHTML = TABS.map(
+      t => `
+        <input type="radio" id="${root_id}-nav-${t.path}" name="${root_id}-nav" value="${root_id}-section-${t.path}">
+        <label for="${root_id}-nav-${t.path}">${t.name}</label>
+            `
+    ).join('');
+
+    const tabContentsHTML = TABS.map(
+      t => `
+        <div id="${root_id}-section-${t.path}" 
+          class="${root_id}-section"
+          ${t.default ? '' : 'hidden'}
+          >
+        </div>
+      `
+    ).join('');
 
     // add content to page
     document.querySelector(`#${this.root_id}`).insertAdjacentHTML(
@@ -17,15 +64,10 @@ class PanelNav extends Component {
       `<div id="${root_id}-header">
         <nav id="${root_id}-nav" aria-label="Sidebar">
           <fieldset>
-              <input type="radio" id="${root_id}-nav-data" name="${root_id}-nav" value="${root_id}-section-data" checked>
-              <label for="${root_id}-nav-data">Data</label>
-              <input type="radio" id="${root_id}-nav-filters" name="${root_id}-nav" value="${root_id}-section-filters">
-              <label for="${root_id}-nav-filters">Filters</label>
-              <input type="radio" id="${root_id}-nav-feed" name="${root_id}-nav" value="${root_id}-section-feed" hidden>
-              <label for="${root_id}-nav-feed" hidden>Feed</label>
+            ${tabNavsHTML}
           </fieldset>
         </nav>
-        <button class="clear-filter" 
+        <button class="clear-filter"
           type="button" 
           hidden 
           data-umami-event="clear-filters"
@@ -34,36 +76,52 @@ class PanelNav extends Component {
         </button>
       </div>
       <div id="${root_id}-sections">
-        <div id="${root_id}-section-data" 
-          class="${root_id}-section"
-        ></div>
-        <div id="${root_id}-section-filters" 
-          class="${root_id}-section" 
-          hidden
-        ></div>
-        <div id="${root_id}-section-feed" 
-          class="${root_id}-section" 
-          hidden
-        ></div>
+        ${tabContentsHTML}
       </div>`
     );
     document
       .querySelector(`#${root_id}-nav`)
       .addEventListener('click', event => {
         if (event.target?.matches('input[type="radio"]')) {
-          document.querySelectorAll(`.${root_id}-section`).forEach(section => {
-            section.hidden = true;
+          this.shared_state.router.push({
+            path: sectionIdToTabId(event.target.value),
           });
-          document.getElementById(`${event.target.value}`).hidden = false;
         }
       });
 
     $(`#${this.root_id} button.clear-filter`).on('click', () => {
       this.shared_state.filters = {};
     });
+
+    this.maybeChangeTab();
+  }
+
+  switchNavToCurrent() {
+    const currentTab = this.shared_state.router.currentRoute.path;
+    document
+      .querySelectorAll(`#${this.root_id} input[type="radio"]`)
+      .forEach(input => {
+        input.checked = false;
+      });
+    document.getElementById(`${this.root_id}-nav-${currentTab}`).checked = true;
+  }
+
+  showCurrentTabContent() {
+    const currentTab = this.shared_state.router.currentRoute.path;
+    document.querySelectorAll(`.${this.root_id}-section`).forEach(section => {
+      section.hidden = true;
+    });
+    document.getElementById(`${this.root_id}-section-${currentTab}`).hidden =
+      false;
+  }
+
+  maybeChangeTab() {
+    this.switchNavToCurrent();
+    this.showCurrentTabContent();
   }
 
   refresh() {
+    this.maybeChangeTab();
     if (Object.values(this.shared_state.filters).length > 0) {
       $(`#${this.root_id} button.clear-filter`).removeAttr('hidden');
     } else {

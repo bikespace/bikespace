@@ -1,5 +1,5 @@
-import {DateTime} from "../../libraries/luxon.min.js";
-import {parking_time_date_format} from "../components/api_tools.js";
+import {DateTime} from '../../libraries/luxon.min.js';
+import {parking_time_date_format} from '../components/api_tools.js';
 
 /**
  * Shared state class - handles shared data, filtering, and refresh when filters are updated.
@@ -13,7 +13,12 @@ class SharedState {
     this.response_data = data.submissions;
     // Data initially not filtered
     this._display_data = data.submissions;
-    console.log('display data', this._display_data);
+    this._router = null;
+
+    // show display data in development environment
+    if (window.location.host !== 'dashboard.bikespace.ca') {
+      console.log('display data', this._display_data);
+    }
   }
 
   refresh() {
@@ -30,6 +35,20 @@ class SharedState {
     this._filters = f;
     this._display_data = this.applyFilters(this._filters);
     this.refresh();
+  }
+
+  /**
+   * @returns {import('./hash_router.js').default}
+   */
+  get router() {
+    return this._router;
+  }
+
+  /**
+   * @params {import('./hash_router.js').default}
+   */
+  set router(router) {
+    this._router = router;
   }
 
   /**
@@ -65,7 +84,7 @@ class Component {
    * Base class for graphs, map, etc. Registers component with shared_state.
    * @param {string} parent JQuery selector for parent element
    * @param {string} root_id tag id for root div
-   * @param {Object} shared_state
+   * @param {SharedState} shared_state
    * @param {ComponentOptions} [options = {}] Options for the component
    */
   constructor(parent, root_id, shared_state, {className = ''} = {}) {
@@ -108,7 +127,7 @@ class ReportFilter {
    */
   constructor(state) {
     if (!(state instanceof Array)) {
-      throw new Error("ReportFilter state must be an Array");
+      throw new Error('ReportFilter state must be an Array');
     }
     this._state = state;
   }
@@ -124,7 +143,7 @@ class ReportFilter {
   stateEquals(otherState) {
     if (!(otherState instanceof Array)) return false;
     if (this._state.length !== otherState.length) return false;
-    for (let i=0; i < this._state.length; i++) {
+    for (let i = 0; i < this._state.length; i++) {
       if (!this.deepEquals(this._state[i], otherState[i])) return false;
     }
     return true;
@@ -132,7 +151,7 @@ class ReportFilter {
 
   deepEquals(x1, x2) {
     if (typeof x1 !== typeof x2) return false;
-    if (typeof x1 === "object") {
+    if (typeof x1 === 'object') {
       if (Object.keys(x1).length !== Object.keys(x2).length) return false;
       for (const key1 of Object.keys(x1)) {
         if (!(key1 in x2)) return false;
@@ -146,11 +165,11 @@ class ReportFilter {
 }
 
 class IssuesFilter extends ReportFilter {
-  static filterKey = "issues";
+  static filterKey = 'issues';
 
   /**
    * Filter for issue types
-   * @param {string[]} state 
+   * @param {string[]} state
    */
   constructor(state) {
     super(state);
@@ -158,22 +177,20 @@ class IssuesFilter extends ReportFilter {
 
   /**
    * Filter reports; keep all with at least one matching issue type
-   * @param {object} report 
+   * @param {object} report
    * @returns {boolean}
    */
   test(report) {
-    return report.issues.some(
-      value => this._state.includes(value)
-      );
+    return report.issues.some(value => this._state.includes(value));
   }
 }
 
 class DateRangeFilter extends ReportFilter {
-  static filterKey = "date_range";
+  static filterKey = 'date_range';
 
   /**
    * Filter reports based on date range applied to parking_time
-   * @param {?<Interval>[]} state 
+   * @param {?<Interval>[]} state
    */
   constructor(state) {
     super(state);
@@ -183,7 +200,7 @@ class DateRangeFilter extends ReportFilter {
     const dt = DateTime.fromFormat(
       report.parking_time,
       parking_time_date_format,
-      {zone: "America/Toronto"}
+      {zone: 'America/Toronto'}
     );
     for (const interval of this._state) {
       if (interval.contains(dt)) return true;
@@ -193,15 +210,15 @@ class DateRangeFilter extends ReportFilter {
 }
 
 class WeekDayPeriodFilter extends ReportFilter {
-  static filterKey = "weekday_period";
+  static filterKey = 'weekday_period';
   #dayIndex = {
-    'monday': 1,
-    'tuesday': 2,
-    'wednesday': 3,
-    'thursday': 4,
-    'friday': 5,
-    'saturday': 6,
-    'sunday': 7,
+    monday: 1,
+    tuesday: 2,
+    wednesday: 3,
+    thursday: 4,
+    friday: 5,
+    saturday: 6,
+    sunday: 7,
   };
 
   /**
@@ -218,7 +235,7 @@ class WeekDayPeriodFilter extends ReportFilter {
     const dt = DateTime.fromFormat(
       report.parking_time,
       parking_time_date_format,
-      {zone: "America/Toronto"}
+      {zone: 'America/Toronto'}
     );
     const inclWeekdays = this._state.map(x => this.#dayIndex[x]);
     return inclWeekdays.includes(dt.weekday);
@@ -226,11 +243,11 @@ class WeekDayPeriodFilter extends ReportFilter {
 }
 
 class ParkingDurationFilter extends ReportFilter {
-  static filterKey = "parking_duration";
+  static filterKey = 'parking_duration';
 
   /**
    * Filter for parking duration
-   * @param {string[]} state 
+   * @param {string[]} state
    */
   constructor(state) {
     super(state);
@@ -238,7 +255,7 @@ class ParkingDurationFilter extends ReportFilter {
 
   /**
    * Filter reports; keep all with a matching parking duration
-   * @param {object} report 
+   * @param {object} report
    * @returns {boolean}
    */
   test(report) {
@@ -247,7 +264,7 @@ class ParkingDurationFilter extends ReportFilter {
 }
 
 export {
-  SharedState, 
+  SharedState,
   Component,
   IssuesFilter,
   DateRangeFilter,

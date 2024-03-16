@@ -37,7 +37,7 @@ strong {
   font-weight: var(--bold-weight);
 }
 
-button {
+button, .a-button {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -49,6 +49,7 @@ button {
   padding-right: var(--spacing-unit-double);
   font-family: var(--body-font-stack);
   font-size: 0.9rem;
+  color: var(--color-secondary-dark-grey);
 
   &:hover {
     background-color: var(--color-primary-10p);
@@ -112,4 +113,11 @@ details[open] {
   & .details-container {
     margin: var(--spacing-unit);
   }
+}
+
+/* generic layouts */
+.flex-distribute {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }

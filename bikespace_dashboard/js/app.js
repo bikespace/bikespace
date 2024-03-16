@@ -5,13 +5,21 @@ import {SummaryBox} from './components/sidebar/data-panel/summary_box.js';
 import {IssueChart} from './components/sidebar/data-panel/issue_chart.js';
 import {DayChart} from './components/sidebar/data-panel/day_chart.js';
 import {DurationTimeOfDayChart} from './components/sidebar/data-panel/duration_tod_chart.js';
+import {Submissions} from './components/sidebar/feed/submissions.js';
+
+const USE_DEV = false;
+const DEV_BASE_URL = ''; // empty string = use current location as /api is proxied with the dev server to avoid CORS mess
+const PROD_BASE_URL = 'https://api-dev.bikespace.ca';
 import {DateFilterControl} from './components/sidebar/filter-panel/date_filter.js';
 import {ParkingDurationFilterControl} from './components/sidebar/filter-panel/parking_duration_filter.js';
 
 // Load data from BikeSpace API
 $.ajax({
-  url: 'https://api-dev.bikespace.ca/api/v2/submissions?limit=5000',
+  url: `${
+    USE_DEV ? DEV_BASE_URL : PROD_BASE_URL
+  }/api/v2/submissions?limit=5000`,
   success: function (data) {
+    // add interactive content
     const shared_state = new SharedState(data);
     // add sidebar panel nav
     new PanelNav('body', 'panels', shared_state);
@@ -29,8 +37,13 @@ $.ajax({
       '#panels-section-data',
       'duration-tod-chart',
       shared_state,
-      {className: 'sidebar-panel'}
+      {
+        className: 'sidebar-panel',
+      }
     );
+    new Submissions('#panels-section-feed', 'submissions', shared_state, {
+      className: 'sidebar-panel',
+    });
     // add filter controls
     new SummaryBox(
       '#panels-section-filters',
