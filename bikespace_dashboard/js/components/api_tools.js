@@ -51,6 +51,12 @@ const issue_attributes = {
   },
 };
 
+const issueIdToLabel = (id, {long = false} = {}) => {
+  const issue = issue_attributes[id];
+  if (!issue) return 'Unknown Issue';
+  return long ? issue.label_long : issue.label_short;
+};
+
 const parking_duration_attributes = {
   minutes: {
     id: 'minutes',
@@ -79,7 +85,8 @@ const parking_duration_attributes = {
 };
 
 export {
-  parking_time_date_format,
   issue_attributes,
+  issueIdToLabel,
+  parking_time_date_format,
   parking_duration_attributes,
 };

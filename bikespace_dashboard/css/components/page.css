@@ -33,21 +33,6 @@ header {
 
       & li {
         margin: 0 0.4rem;
-
-        & a {
-          vertical-align: middle;
-          text-decoration: none;
-          padding: 0.2rem 0.4rem;
-          color: var(--color-secondary-dark-grey);
-
-          &:visited {
-            color: var(--color-secondary-dark-grey);
-          }
-
-          &:hover {
-            color: var(--color-primary);
-          }
-        }
       }
     }
 
@@ -61,4 +46,19 @@ header {
 body {
   margin: 0;
   font-family: var(--body-font-stack);
+}
+
+a {
+  vertical-align: middle;
+  text-decoration: none;
+  padding: 0.2rem 0.4rem;
+  color: var(--color-secondary-dark-grey);
+
+  &:visited {
+    color: var(--color-secondary-dark-grey);
+  }
+
+  &:hover {
+    color: var(--color-primary);
+  }
 }

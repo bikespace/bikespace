@@ -65,10 +65,37 @@ class Map extends Component {
         submission_id: e.popup.submission_id,
       });
     });
+
+    this.shared_state.router.onChange(() => {
+      this.zoomToIdInParam();
+    });
+
+    this.zoomToIdInParam();
+  }
+
+  zoomToIdInParam() {
+    const submissionId = parseInt(
+      this.shared_state.router.params.get('submission_id')
+    );
+    if (!isNaN(submissionId)) {
+      this.zoomToSubmission(submissionId);
+    }
+  }
+
+  getMapMarkerByID(submission_id) {
+    return this.all_markers.filter(
+      m => `${m.submission_id}` === `${submission_id}`
+    )[0];
+  }
+
+  zoomToSubmission(id) {
+    const marker = this.getMapMarkerByID(id);
+    this.markers.zoomToShowLayer(marker, () => marker.openPopup());
   }
 
   buildMarkers() {
-    const markers = L.markerClusterGroup();
+    const marker_cluster_group = L.markerClusterGroup();
+    this.all_markers = [];
 
     // BUILD POPUP CONTENT
     // pre-generate template for each issue type
@@ -106,17 +133,37 @@ class Map extends Component {
         point.comments ? point.comments : '<em>none</em>'
       }`;
 
-      const content = [
-        '<div class="issue-list">',
-        `<strong>Issues:</strong> ${issues ? issues : '<em>none</em>'}`,
-        '</div>',
-        `<p>This person wanted to park ${
+      const content = `
+        <div class="issue-list">
+          <strong>Issues:</strong> ${issues ? issues : '<em>none</em>'}
+        </div>
+        <p>This person wanted to park ${
           duration_descr[point.parking_duration] ??
           `<strong>${point.parking_duration}</strong>`
-        } on <strong>${parking_time_desc}</strong></p>`,
-        `<p>${comments}</p>`,
-        `<p class="submission-id">ID: ${point.id}</p>`,
-      ].join('');
+        } on <strong>${parking_time_desc}</strong></p>
+        <p>${comments}</p>
+        <div class="flex-distribute">
+          <a class="open-in-sidebar a-button" 
+            href='#feed?view_all=1&submission_id=${point.id}'
+          >
+            Focus in Sidebar
+          </a>
+          <span class="submission-id">ID: ${point.id}</span>
+        </div>`;
+
+      const contentElem = document.createElement('div');
+
+      contentElem.innerHTML = content;
+
+      const openInSideBarLink = contentElem.querySelector('a.open-in-sidebar');
+
+      openInSideBarLink.addEventListener('click', () => {
+        this.shared_state.router.push({
+          path: 'feed',
+          params: new URLSearchParams({view_all: 1, submission_id: point.id}),
+        });
+        this.shared_state.components.submissions.focusSubmission(point.id);
+      });
 
       // BUILD MARKERS
       // set up custom markers
@@ -143,15 +190,16 @@ class Map extends Component {
       const marker = L.marker([point.latitude, point.longitude], {
         icon: customIcon,
       });
-      marker.bindPopup(content);
-      markers.addLayer(marker);
+      marker.bindPopup(contentElem);
+      this.all_markers.push(marker);
+      marker_cluster_group.addLayer(marker);
 
       // add ids for lookup during events
       marker.submission_id = point.id;
       marker.getPopup().submission_id = point.id;
     }
 
-    return markers;
+    return marker_cluster_group;
   }
 
   refresh() {

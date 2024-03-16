@@ -1,7 +1,8 @@
-@import "components/stylevars.css";
-@import "components/template.css";
-@import "components/page.css";
-@import "components/map.css";
-@import "components/MarkerCluster.css";
-@import "components/MarkerCluster.Default.css";
-@import "components/sidebar.css";
+@import 'components/stylevars.css';
+@import 'components/template.css';
+@import 'components/page.css';
+@import 'components/map.css';
+@import 'components/MarkerCluster.css';
+@import 'components/MarkerCluster.Default.css';
+@import 'components/sidebar.css';
+@import 'components/issue_label.css';
