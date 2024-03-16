@@ -145,6 +145,8 @@ class Map extends Component {
         <div class="flex-distribute">
           <a class="open-in-sidebar a-button" 
             href='#feed?view_all=1&submission_id=${point.id}'
+            data-umami-event="issue-map_open_in_sidebar"
+            data-umami-event-id="${point.id}"
           >
             Focus in Sidebar
           </a>
