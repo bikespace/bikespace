@@ -191,6 +191,9 @@ class Submissions extends Component {
     if (elem) {
       elem.classList.add('focused');
       elem.scrollIntoView({block: 'center'});
+      super.analytics_event(`${this.root_id}_focus_submission`, {
+        submission_id: id,
+      });
     }
   }
 }
