@@ -1,7 +1,7 @@
 alembic==1.9.4
 bcrypt==4.0.1
 better-profanity==0.7.0
-black==23.1.0
+black==24.3.0
 blinker==1.5
 certifi==2023.7.22
 charset-normalizer==3.3.0
