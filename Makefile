@@ -9,6 +9,9 @@ MANAGE_PY = $(BIKESPACE_API_DIR)/manage.py
 PIP = $(ROOT_DIR)/$(VENV)/bin/pip
 PYTHON = $(ROOT_DIR)/$(VENV)/bin/python3
 PYTHON_VERSION = 3.9
+MIN_PYTHON_VERSION = 3.9.6
+CURR_PYTHON_VERSION := $(shell python3 -c 'import platform; print(platform.python_version())')
+LOWEST_PYTHON_VERSION := $(shell printf '%s\n' $(MIN_PYTHON_VERSION) $(CURR_PYTHON_VERSION) | sort -V | head -n1)
 VENV = venv
 
 export APP_SETTINGS = bikespace_api.config.DevelopmentConfig
@@ -20,12 +23,20 @@ export GATSBY_BIKESPACE_API_URL = http://localhost:8000/api/v2
 
 setup-py: $(VENV)
 
+.PHONY: check-python-version
+check-python-version: 
+ifeq ($(LOWEST_PYTHON_VERSION), $(MIN_PYTHON_VERSION))
+	@echo "Installed Python version is equal or greater than $(MIN_PYTHON_VERSION)"
+else
+	$(error "Installed Python version $(CURR_PYTHON_VERSION) is less than the required minimum version of $(MIN_PYTHON_VERSION)")
+endif
+
 clean:
 	rm -rf $(VENV)
 	cd $(BIKESPACE_FRONTEND_DIR) && npm run clean && rm -rf node_modules
 
-$(VENV): $(BIKESPACE_API_DIR)/requirements.txt
-	python$(PYTHON_VERSION) -m venv $(VENV)
+$(VENV): check-python-version $(BIKESPACE_API_DIR)/requirements.txt
+	python3 -m venv $(VENV)
 	. $(VENV)/bin/activate
 	$(PIP) install -r $(BIKESPACE_API_DIR)/requirements.txt
 	touch $(VENV)
