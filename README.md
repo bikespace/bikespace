@@ -1,5 +1,5 @@
 # Bikespace 
-[![Coverage Status](https://coveralls.io/repos/github/bikespace/bikespace-v2/badge.svg?branch=main)](https://coveralls.io/github/bikespace/bikespace-v2?branch=main)
+[![Coverage Status](https://coveralls.io/repos/github/bikespace/bikespace/badge.svg?branch=main)](https://coveralls.io/github/bikespace/bikespace?branch=main)
 
 ## About Us
 
