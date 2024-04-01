@@ -4,5 +4,5 @@
 @import 'components/map.css';
 @import 'components/MarkerCluster.css';
 @import 'components/MarkerCluster.Default.css';
-@import 'components/sidebar.css';
+@import 'components/sidebar/main.css';
 @import 'components/issue_label.css';

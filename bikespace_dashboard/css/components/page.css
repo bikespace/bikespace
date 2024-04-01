@@ -8,15 +8,15 @@ header {
   padding: 12px;
   box-shadow: 8px 0px 8px rgba(0, 0, 0, 0.5);
 
-  & #bikespace-logo {
+  #bikespace-logo {
     height: 30px;
   }
 
-  & nav {
+  nav {
     margin-left: auto; /* horizontal align right */
     align-items: center;
 
-    & ul,
+    ul,
     li,
     a {
       display: flex;
@@ -24,19 +24,19 @@ header {
       align-items: center;
     }
 
-    & ul {
+    ul {
       margin: 0;
       padding: 0;
 
       color: var(--color-secondary-dark-grey);
       font-weight: 600;
 
-      & li {
+      li {
         margin: 0 0.4rem;
       }
     }
 
-    & img {
+    img {
       height: 1.2rem;
       padding-right: 0.3rem;
     }

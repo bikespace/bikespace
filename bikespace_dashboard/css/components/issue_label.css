@@ -10,7 +10,7 @@
     background-color: var(--color-secondary-red-light);
   }
 
-  & .issue {
+  .issue {
     display: inline-block;
     border: 2px solid;
     border-radius: 4px;

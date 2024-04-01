@@ -1,43 +1,36 @@
 @import 'stylevars.css';
 
 #panels {
-  position: absolute;
-  z-index: 100;
-  left: 0;
-  top: 54px;
-  bottom: 0;
   width: calc(320px + var(--spacing-scrollbar-offset));
   background-color: var(--color-primary-20p);
   box-shadow: 0px 8px 8px rgba(0, 0, 0, 0.5);
   overflow-y: auto;
   overflow-x: hidden;
 
-  & #panels-header {
-    position: sticky;
-    top: 0px;
+  #panels-header {
     margin: var(--spacing-unit);
     padding: var(--spacing-unit) 0;
     background-color: var(--color-primary-20p);
   }
 
-  & button.clear-filter {
+  button.clear-filter {
     width: 100%;
     margin-top: var(--spacing-unit);
     &[hidden] {
       display: none;
     }
 
-    & img {
+    img {
       height: 1rem;
       width: 1rem;
       margin-right: var(--spacing-unit);
     }
   }
 
-  & #panels-nav {
+  #panels-nav {
     font-weight: var(--bold-weight);
-    
-    & fieldset {
+
+    fieldset {
       display: flex;
       flex-direction: row;
       align-items: center;
@@ -49,13 +42,13 @@
       border-radius: calc(var(--spacing-unit) * 1.5);
       background-color: white;
     }
-    & input[type='radio'] {
+    input[type='radio'] {
       /* hide and limit interaction to labels only */
       position: fixed;
       opacity: 0;
       pointer-events: none;
     }
-    & input[type='radio']:checked + label {
+    input[type='radio']:checked + label {
       background-color: var(--color-primary-d50p);
       border: var(--border-unit) solid var(--color-primary-d50p);
       color: white;
@@ -63,10 +56,10 @@
         border: var(--border-unit) solid var(--color-primary);
       }
     }
-    & input[type='radio']:focus + label {
+    input[type='radio']:focus + label {
       border: var(--border-unit) solid var(--color-primary);
     }
-    & label {
+    label {
       padding: var(--spacing-unit) var(--spacing-unit-double);
       border: var(--border-unit) solid white;
       border-radius: var(--spacing-unit);
@@ -80,10 +73,9 @@
   }
 }
 
-
 /* DATA TAB */
 
-#summary-box, 
+#summary-box,
 #summary-box-filters {
   margin: var(--spacing-unit);
   padding: var(--spacing-unit);
@@ -93,23 +85,23 @@
   background-color: var(--color-primary-d50p);
   color: white;
 
-  & #entry-count {
+  #entry-count {
     font-size: 2rem;
     font-weight: var(--bold-weight);
     margin-right: 0.1rem;
 
-    & img {
+    img {
       vertical-align: bottom;
       padding-bottom: 0.4rem;
       height: 1.8rem;
     }
   }
 
-  & .summary-desc {
+  .summary-desc {
     font-size: 0.9rem;
   }
 
-  & img {
+  img {
     display: inline-block;
   }
 }
@@ -122,7 +114,7 @@
 }
 
 #issue-chart {
-  & .ytick {
+  .ytick {
     pointer-events: all;
 
     &:hover {
@@ -132,25 +124,24 @@
 }
 
 #duration-tod-chart {
-  & .cursor-pointer {
+  .cursor-pointer {
     cursor: default; /* show as non-interactive */
   }
 }
 
-
 /* FILTERS TAB */
 
 #panels-section-filters {
-  & summary {
+  summary {
     font-weight: var(--bold-weight);
     color: var(--color-primary-d50p);
   }
 
-  & .filter-section {
+  .filter-section {
     margin-bottom: var(--spacing-unit-double);
   }
 
-  & .filter-section-item {
+  .filter-section-item {
     margin-bottom: var(--spacing-unit);
   }
 }
@@ -163,13 +154,12 @@
 }
 
 #parking-duration-filter {
-  & .parking-duration-types {
+  .parking-duration-types {
     display: grid;
     grid-template-columns: 50% 50%;
     column-gap: var(--spacing-unit);
   }
 }
-
 
 /* FEED TAB */
 
@@ -196,14 +186,14 @@
   margin: var(--spacing-unit);
   padding: var(--spacing-unit-double) var(--spacing-unit);
 
-  & > h2 {
+  > h2 {
     flex-grow: 1;
     font-weight: var(--bold-weight);
     font-size: 1.1rem;
     color: var(--color-primary-d50p);
   }
 
-  & > a {
+  > a {
     font-size: smaller;
   }
 }
@@ -217,11 +207,11 @@
   &.focused {
     background: var(--color-secondary-light-grey);
   }
-  & > h3 {
+  > h3 {
     font-size: medium;
   }
-  & > .problems {
-    & > .issue {
+  > .problems {
+    > .issue {
       display: inline-block;
       font-size: smaller;
     }

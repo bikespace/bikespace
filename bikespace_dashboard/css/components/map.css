@@ -8,24 +8,24 @@
   right: 0;
   z-index: 1;
 
-  & .marker-cluster-small {
+  .marker-cluster-small {
     background-color: var(--color-primary-50p);
-    & div {
+    div {
       background-color: var(--color-primary-70p);
     }
   }
 
-  & .marker-cluster-medium {
+  .marker-cluster-medium {
     background-color: var(--color-primary);
-    & div {
+    div {
       background-color: var(--color-primary-d20p);
       color: white;
     }
   }
 
-  & .marker-cluster-large {
+  .marker-cluster-large {
     background-color: var(--color-primary-d20p);
-    & div {
+    div {
       background-color: var(--color-primary-d50p);
       color: white;
     }
@@ -35,11 +35,11 @@
 .leaflet-popup-content {
   font-family: var(--body-font-stack);
 
-  & .submission-id {
+  .submission-id {
     font-style: italic;
   }
 
-  & .a-button {
+  .a-button {
     color: var(--color-secondary-dark-grey);
   }
 }
