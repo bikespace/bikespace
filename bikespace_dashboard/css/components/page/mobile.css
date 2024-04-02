@@ -1,0 +1,37 @@
+@import '../stylevars.css';
+
+:root {
+  --height-panel-closed: 80px;
+  --height-panel-open: calc(100% - 100px);
+  --top-drawer-closed: calc(100% - var(--height-panel-closed));
+  --top-drawer-open: calc(100% - var(--height-panel-open));
+}
+
+@media (max-width: 767px) {
+
+  body {
+    display: flex;
+    flex-direction: column;
+
+    >#panels {
+      max-height: 100%;
+      position: absolute;
+      inset: 0;
+      z-index: 10;
+      box-shadow: 0 0 5px 5px var(--color-box-shadow);
+      top: var(--top-drawer-open);
+      transition: top .2s linear 0s;
+
+      &.closed {
+        top: var(--top-drawer-closed);
+      }
+
+    }
+
+    >#issue-map {
+      position: relative;
+      z-index: 1;
+      height: calc(100% - var(--height-panel-closed));
+    }
+  }
+}

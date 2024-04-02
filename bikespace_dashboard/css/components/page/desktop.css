@@ -1,0 +1,27 @@
+@media (min-width: 768px) and (max-resolution: 1dppx),
+(min-width: 1536px) and (min-resolution: 2dppx) {
+
+  body {
+    display: unset;
+
+    #issue-map {
+      position: absolute;
+      top: 54px;
+      bottom: 0;
+      /* 20px offset for sidebar scrollbar */
+      left: calc(320px + 20px);
+      right: 0;
+      z-index: 1;
+    }
+
+    #panels {
+      position: absolute;
+      z-index: 100;
+      left: 0;
+      top: 54px;
+      bottom: 0;
+      width: calc(320px + var(--spacing-scrollbar-offset));
+    }
+  }
+
+}

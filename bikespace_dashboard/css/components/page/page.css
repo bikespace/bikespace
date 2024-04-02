@@ -13,7 +13,8 @@ header {
   }
 
   nav {
-    margin-left: auto; /* horizontal align right */
+    margin-left: auto;
+    /* horizontal align right */
     align-items: center;
 
     ul,
@@ -43,9 +44,13 @@ header {
   }
 }
 
+html,
 body {
   margin: 0;
   font-family: var(--body-font-stack);
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
 }
 
 a {

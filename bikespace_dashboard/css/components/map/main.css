@@ -1,15 +1,9 @@
 @import 'stylevars.css';
 
 #issue-map {
-  position: absolute;
-  top: 54px;
-  bottom: 0;
-  left: calc(320px + 20px); /* 20px offset for sidebar scrollbar */
-  right: 0;
-  z-index: 1;
-
   .marker-cluster-small {
     background-color: var(--color-primary-50p);
+
     div {
       background-color: var(--color-primary-70p);
     }
@@ -17,6 +11,7 @@
 
   .marker-cluster-medium {
     background-color: var(--color-primary);
+
     div {
       background-color: var(--color-primary-d20p);
       color: white;
@@ -25,6 +20,7 @@
 
   .marker-cluster-large {
     background-color: var(--color-primary-d20p);
+
     div {
       background-color: var(--color-primary-d50p);
       color: white;

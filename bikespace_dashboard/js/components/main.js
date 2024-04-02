@@ -98,6 +98,10 @@ class Component {
     $(parent).append(`<div id="${root_id}" class="${className}"></div>`);
   }
 
+  getRootElem() {
+    return document.getElementById(this.root_id);
+  }
+
   refresh() {
     //pass
   }

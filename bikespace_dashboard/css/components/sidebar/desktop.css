@@ -1,14 +1,15 @@
-@media only screen and (min-width: 768px) {
-  #panels {
-    position: absolute;
-    z-index: 100;
-    left: 0;
-    top: 54px;
-    bottom: 0;
-  }
+@media (min-width: 768px) {
 
-  #panels-header {
-    position: sticky;
-    top: 0px;
+  #panels {
+    #panels-header {
+      position: sticky;
+      top: 0px;
+    }
+
+    >.drawer-handle {
+      display: none;
+    }
+
+    &.closed>.drawer-handle {}
   }
 }

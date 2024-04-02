@@ -25,6 +25,8 @@ const TABS = [
 ];
 
 class PanelNav extends Component {
+  static CLASS_CLOSED = 'closed';
+
   /**
    * Panel navigation and filter clear button
    * @param {string} parent JQuery selector for parent element
@@ -59,8 +61,14 @@ class PanelNav extends Component {
     ).join('');
 
     // add content to page
-    document.querySelector(`#${this.root_id}`).insertAdjacentHTML(
-      'afterbegin',
+    const root_elem = document.querySelector(`#${this.root_id}`);
+    this.drawerHandle = this.makeDrawerHandle();
+    const {defaultClosed = true} = options;
+    defaultClosed ? this.close() : this.open();
+
+    root_elem.insertAdjacentElement('beforeend', this.drawerHandle);
+    root_elem.insertAdjacentHTML(
+      'beforeend',
       `<div id="${root_id}-header">
         <nav id="${root_id}-nav" aria-label="Sidebar">
           <fieldset>
@@ -94,6 +102,37 @@ class PanelNav extends Component {
     });
 
     this.maybeChangeTab();
+  }
+
+  isClosed() {
+    return this.getRootElem().classList.contains(PanelNav.CLASS_CLOSED);
+  }
+
+  toggle() {
+    this.setIsHandleClosed(!this.isClosed());
+  }
+
+  close() {
+    this.setIsHandleClosed(true);
+  }
+
+  open() {
+    this.setIsHandleClosed(false);
+  }
+
+  setIsHandleClosed(isClosed) {
+    if (isClosed) this.getRootElem().classList.add(PanelNav.CLASS_CLOSED);
+    else this.getRootElem().classList.remove(PanelNav.CLASS_CLOSED);
+    this.drawerHandle.ariaPressed = !isClosed;
+  }
+
+  makeDrawerHandle() {
+    const handleButton = document.createElement('button');
+    handleButton.classList.add('drawer-handle');
+    handleButton.addEventListener('click', () => {
+      this.toggle();
+    });
+    return handleButton;
   }
 
   switchNavToCurrent() {

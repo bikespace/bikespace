@@ -3,6 +3,7 @@
   src: url(../../assets/OpenSans-VariableFont_wdth,wght.ttf);
   font-weight: 300 800;
 }
+
 @font-face {
   font-family: 'Open Sans Italic';
   src: url(../../assets/OpenSans-Italic-VariableFont_wdth,wght.ttf);
@@ -27,6 +28,7 @@
   --color-secondary-red: hsl(340, 86%, 50%);
   --color-secondary-red-light: hsl(340, 60%, 90%);
   --color-secondary-light-grey: #d8e1e5;
+  --color-secondary-med-light-grey: #b3b3b3;
   --color-secondary-med-grey: #2c3b42;
   --color-secondary-dark-grey: #1f2a2d;
   --color-secondary-blue: hsl(193, 100%, 40%);
@@ -36,7 +38,15 @@
   --bold-weight: 600;
 
   --spacing-unit: 4px;
-  --spacing-unit-double: calc(var(--spacing-unit) * 2);
+  --spacing-1x: var(--spacing-unit);
+  --spacing-2x: calc(var(--spacing-unit) * 2);
+  --spacing-4x: calc(var(--spacing-unit) * 4);
+  --spacing-8x: calc(var(--spacing-unit) * 8);
+
+  --spacing-unit-double: var(--spacing-unit-2x);
   --spacing-scrollbar-offset: 20px;
   --border-unit: 2px;
+
+  --color-box-shadow: rgba(0, 0, 0, 0.3);
+
 }
