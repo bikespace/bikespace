@@ -1,6 +1,8 @@
 import {DateTime} from '../../libraries/luxon.min.js';
 import {parking_time_date_format} from '../components/api_tools.js';
 
+const elementIdToComponentKey = id => id.replace('-', '_');
+
 /**
  * Shared state class - handles shared data, filtering, and refresh when filters are updated.
  * Note: _display_data is currently not modified within this class, but may be in the future, e.g. to remove irrelevant (e.g. test, spam) entries.
@@ -19,6 +21,20 @@ class SharedState {
     if (window.location.host !== 'dashboard.bikespace.ca') {
       console.log('display data', this._display_data);
     }
+  }
+
+  registerComponent(component) {
+    const key = elementIdToComponentKey(component.root_id);
+    this.components[key] = component;
+    return key;
+  }
+
+  getComponentByKey(key) {
+    return this.components[key];
+  }
+
+  getComponentByElemId(elementId) {
+    return this.components[elementIdToComponentKey(elementId)];
   }
 
   refresh() {
@@ -91,8 +107,7 @@ class Component {
     // register component
     this.root_id = root_id;
     this.shared_state = shared_state;
-    this.root_key = root_id.replace('-', '_');
-    shared_state.components[this.root_key] = this;
+    this.root_key = shared_state.registerComponent(this);
 
     // add to page
     $(parent).append(`<div id="${root_id}" class="${className}"></div>`);

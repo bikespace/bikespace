@@ -16,10 +16,6 @@
       margin: 0;
       padding: calc((var(--height-panel-handle) - var(--height-panel-handle-bar)) / 2) 0;
 
-      &:hover::before {
-        background-color: var(--color-primary);
-      }
-
       &::before {
         display: block;
         content: '';
@@ -33,14 +29,10 @@
     }
 
     &.closed {
-      overflow-y: hidden;
-
       &>.drawer-handle::before {
         background-color: var(--color-secondary-med-light-grey);
       }
     }
-
-    &.closed
   }
 
 

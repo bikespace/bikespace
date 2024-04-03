@@ -164,7 +164,9 @@ class Map extends Component {
           path: 'feed',
           params: new URLSearchParams({view_all: 1, submission_id: point.id}),
         });
-        this.shared_state.components.submissions.focusSubmission(point.id);
+        this.shared_state
+          .getComponentByElemId('submissions')
+          .focusSubmission(point.id);
       });
 
       // BUILD MARKERS

@@ -188,6 +188,7 @@ class Submissions extends Component {
     const elem = document.querySelector(
       `.submission-item[data-submission-id="${id}"]`
     );
+    this.shared_state.getComponentByElemId('panels').open();
     if (elem) {
       elem.classList.add('focused');
       elem.scrollIntoView({block: 'center'});
