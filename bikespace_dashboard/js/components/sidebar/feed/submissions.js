@@ -191,7 +191,7 @@ class Submissions extends Component {
     this.shared_state.getComponentByElemId('panels').open();
     if (elem) {
       elem.classList.add('focused');
-      elem.scrollIntoView({block: 'center'});
+      elem.scrollIntoView({block: 'start'});
       super.analytics_event(`${this.root_id}_focus_submission`, {
         submission_id: id,
       });
