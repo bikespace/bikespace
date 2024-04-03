@@ -46,6 +46,14 @@ class Map extends Component {
     this.markers = this.buildMarkers();
     this.lmap.addLayer(this.markers);
 
+    const invalidateLmapObserver = new ResizeObserver(() => {
+      // put this at the end of the queue so the invalidation is executed after everything else has resized.
+      setTimeout(() => this.lmap.invalidateSize(), 0);
+    });
+
+    // invalidate map size upon root elem resize
+    invalidateLmapObserver.observe(this.getRootElem());
+
     // improve keyboard navigation
     $(document).on('keydown', '.marker-cluster', e => {
       if (e.key === 'Enter' || e.key === ' ') {
