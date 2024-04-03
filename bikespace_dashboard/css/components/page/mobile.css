@@ -1,10 +1,18 @@
 @import '../stylevars.css';
 
 :root {
-  --height-visible-map: 250px;
+  /* preferred visible area of map.
+   * taller screens takes advantage of this when the panel is open
+   * to show a bigger map
+   */
+  --height-visible-map: 450px;
   --height-panel-closed: 80px;
   --height-panel-open: calc(100% - var(--height-visible-map));
-  --min-height-panel-open: 250px;
+  /* 
+   * Set a minimum height when panel is open.
+   * shorter screen displays a larger panel (when open) in compromise of a smaller / even completely-hidden map
+   */
+  --min-height-panel-open: 350px;
 }
 
 @media (max-width: 1023px) {
