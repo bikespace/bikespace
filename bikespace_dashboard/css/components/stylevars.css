@@ -43,7 +43,7 @@
   --spacing-4x: calc(var(--spacing-unit) * 4);
   --spacing-8x: calc(var(--spacing-unit) * 8);
 
-  --spacing-unit-double: var(--spacing-unit-2x);
+  --spacing-unit-double: var(--spacing-2x);
   --spacing-scrollbar-offset: 20px;
   --border-unit: 2px;
 

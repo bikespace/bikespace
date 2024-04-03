@@ -1,4 +1,3 @@
-@media (min-width: 768px) and (max-resolution: 1dppx),
-(min-width: 1536px) and (min-resolution: 2ddpx) {
+@media (min-width: 1024px) {
   #issue-map {}
 }

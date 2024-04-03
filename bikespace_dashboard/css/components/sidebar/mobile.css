@@ -5,7 +5,7 @@
   --height-panel-handle-bar: 6px;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 1023px) {
   #panels {
     >button.drawer-handle {
       all: unset;

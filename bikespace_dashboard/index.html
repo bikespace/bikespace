@@ -23,27 +23,26 @@
   </head>
   <body>
     <header>
-      <a href="#" title="Dashboard Home">
-        <img
-          src="assets/bikespace_wordmark.png"
-          alt="BikeSpace logo"
-          id="bikespace-logo"
-        />
+      <a href="#" id="nav-toggle">
+        <img src="./assets/hamburger-menu.svg" alt="Menu icon" />
       </a>
       <nav class="main-nav" aria-label="Main">
+        <a href="#" title="Dashboard Home" id="bikespace-logo">
+          <img src="assets/bikespace_wordmark.png" alt="BikeSpace logo" />
+        </a>
         <ul>
-          <li>
-            <a
-              href="https://bikespace.ca/"
-              data-umami-event="outbound-landing-page"
-              >About BikeSpace</a
-            >
-          </li>
           <li>
             <a
               href="https://app.bikespace.ca/submission/"
               data-umami-event="outbound-app"
               >Report Bike Parking Issue</a
+            >
+          </li>
+          <li>
+            <a
+              href="https://bikespace.ca/"
+              data-umami-event="outbound-landing-page"
+              >About BikeSpace</a
             >
           </li>
           <li>
@@ -70,6 +69,11 @@
           </li>
         </ul>
       </nav>
+      <div
+        id="nav-backdrop"
+        role="button"
+        aria-roledescription="Dismiss Navigation Menu"
+      ></div>
     </header>
     <noscript>
       <h2>Please enable JavaScript to use this site</h2>

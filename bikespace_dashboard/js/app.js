@@ -13,6 +13,51 @@ const PROD_BASE_URL = 'https://api-dev.bikespace.ca';
 import {DateFilterControl} from './components/sidebar/filter-panel/date_filter.js';
 import {ParkingDurationFilterControl} from './components/sidebar/filter-panel/parking_duration_filter.js';
 
+// Header logic
+const getHeader = () => {
+  const header = document.querySelector('body>header');
+  if (!header) throw new Error('Unexpected: Found no header in the page');
+  return header;
+};
+
+const getNavToggle = () => {
+  const toggle = getHeader().querySelector('&>#nav-toggle');
+  if (!toggle) throw new Error('Unexpected: Found no nav toggle in the page');
+  return toggle;
+};
+
+const getNavMenu = () => {
+  const navMenu = getHeader().querySelector('&>nav');
+  if (!navMenu) throw new Error('Unexpected: Found no nav toggle in the page');
+  return navMenu;
+};
+
+const getNavBackdrop = () => {
+  const navBackdrop = getHeader().querySelector('&>#nav-backdrop');
+  if (!navBackdrop)
+    throw new Error('Unexpected: Found no nav backdrop in the page');
+  return navBackdrop;
+};
+
+const initCollapsibleMenu = () => {
+  const navToggle = getNavToggle();
+  navToggle.addEventListener('click', () => {
+    getNavMenu().classList.toggle('open');
+  });
+  const navBackdrop = getNavBackdrop();
+  navBackdrop.addEventListener('click', () => {
+    getNavMenu().classList.remove('open');
+  });
+};
+
+const initHeader = () => {
+  initCollapsibleMenu();
+};
+
+window.addEventListener('DOMContentLoaded', () => {
+  initHeader();
+});
+
 // Load data from BikeSpace API
 $.ajax({
   url: `${

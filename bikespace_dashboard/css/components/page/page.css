@@ -1,21 +1,28 @@
 @import 'stylevars.css';
 
 header {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-
   padding: 12px;
   box-shadow: 8px 0px 8px rgba(0, 0, 0, 0.5);
 
-  #bikespace-logo {
-    height: 30px;
+
+  #nav-backdrop {
+    display: none;
   }
 
   nav {
-    margin-left: auto;
+    display: flex;
+    flex-direction: row;
     /* horizontal align right */
     align-items: center;
+    width: 100%;
+
+    #bikespace-logo {
+      flex-grow: 1;
+
+      &>img {
+        height: 30px;
+      }
+    }
 
     ul,
     li,
