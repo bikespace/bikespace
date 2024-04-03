@@ -16,8 +16,8 @@
 
   >#panels-sections {
     flex-grow: 1;
+    overflow: hidden;
 
-    &,
     &>* {
       overflow-y: scroll;
       overflow-x: hidden;
