@@ -26,6 +26,9 @@ const tiles = {
   },
 };
 
+const ICON_SIZE_NORMAL = 36;
+const ICON_SIZE_LARGER = 36 * 1.5;
+
 class Map extends Component {
   /**
    * Base class for graphs, map, etc. Registers component with shared_state.
@@ -78,7 +81,12 @@ class Map extends Component {
       this.zoomToIdInParam();
     });
 
-    this.zoomToIdInParam();
+    this.lmap.invalidateSize();
+    setTimeout(() => {
+      this.zoomToIdInParam();
+    }, 0);
+
+    this._zoomedToMarker = null;
   }
 
   zoomToIdInParam() {
@@ -96,8 +104,31 @@ class Map extends Component {
     )[0];
   }
 
+  setIconSize(icon, size) {
+    icon.options.iconSize = L.point(size, size);
+    icon.options.iconAnchor = L.point(size / 2, size);
+  }
+
+  clearZoomedToStyles() {
+    if (this._zoomedToMarker) {
+      const icon = this._zoomedToMarker.getIcon();
+      this.setIconSize(icon, ICON_SIZE_NORMAL);
+      this._zoomedToMarker.setIcon(icon);
+    }
+  }
+
+  applyZoomedToStyles(marker) {
+    this.setIconSize(marker.getIcon(), ICON_SIZE_LARGER);
+    marker.setIcon(marker.getIcon());
+  }
+
   zoomToSubmission(id) {
     const marker = this.getMapMarkerByID(id);
+
+    this.clearZoomedToStyles();
+    this.applyZoomedToStyles(marker);
+    this._zoomedToMarker = marker;
+
     this.markers.zoomToShowLayer(marker, () => marker.openPopup());
   }
 
@@ -168,13 +199,7 @@ class Map extends Component {
       const openInSideBarLink = contentElem.querySelector('a.open-in-sidebar');
 
       openInSideBarLink.addEventListener('click', () => {
-        this.shared_state.router.push({
-          path: 'feed',
-          params: new URLSearchParams({view_all: 1, submission_id: point.id}),
-        });
-        this.shared_state
-          .getComponentByElemId('submissions')
-          .focusSubmission(point.id);
+        this.shared_state.focusSubmission(point.id);
       });
 
       // BUILD MARKERS
@@ -182,8 +207,8 @@ class Map extends Component {
       const BaseIcon = L.Icon.extend({
         options: {
           shadowUrl: './libraries/leaflet/images/marker-shadow.png',
-          iconSize: [36, 36],
-          iconAnchor: [18, 36], // half of width and full height
+          iconSize: [ICON_SIZE_NORMAL, ICON_SIZE_NORMAL],
+          iconAnchor: [ICON_SIZE_NORMAL / 2, ICON_SIZE_NORMAL], // half of width and full height
           popupAnchor: [0, -30], // nearly all the height, not sure why negative
           shadowSize: [41, 41], // from default
           shadowAnchor: [12, 41], // more manual offset, bottom point of shadow is ~30% along x axis, not at (0, 0)
@@ -196,13 +221,18 @@ class Map extends Component {
         null
       );
       const custom_marker = ia[marker_issue ?? 'other'];
-      const customIcon = new BaseIcon({iconUrl: custom_marker.icon});
+      const customIcon = new BaseIcon({
+        iconUrl: custom_marker.icon,
+      });
 
       // generate marker with icon and content
       const marker = L.marker([point.latitude, point.longitude], {
         icon: customIcon,
       });
       marker.bindPopup(contentElem);
+      marker.on('click', () => {
+        this.shared_state.focusSubmission(point.id);
+      });
       this.all_markers.push(marker);
       marker_cluster_group.addLayer(marker);
 

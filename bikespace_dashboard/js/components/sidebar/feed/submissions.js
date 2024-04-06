@@ -80,9 +80,9 @@ class Submissions extends Component {
     listing_items.forEach(item => {
       item.addEventListener('click', e => {
         e.preventDefault();
-        this.shared_state.components.issue_map.zoomToSubmission(
-          item.dataset.submissionId
-        );
+        this.shared_state
+          .getComponentByElemId('issue-map')
+          .zoomToSubmission(item.dataset.submissionId);
         this.shared_state.router.params = new URLSearchParams({
           view_all: 1,
           submission_id: item.dataset.submissionId,
@@ -191,7 +191,7 @@ class Submissions extends Component {
     this.shared_state.getComponentByElemId('panels').open();
     if (elem) {
       elem.classList.add('focused');
-      elem.scrollIntoView({block: 'start'});
+      elem.scrollIntoView(true);
       super.analytics_event(`${this.root_id}_focus_submission`, {
         submission_id: id,
       });

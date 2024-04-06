@@ -5,7 +5,7 @@
    * taller screens takes advantage of this when the panel is open
    * to show a bigger map
    */
-  --height-visible-map: 450px;
+  --height-visible-map: 350px;
   --height-panel-closed: 80px;
   --height-panel-open: calc(100% - var(--height-visible-map));
   /* 
@@ -27,6 +27,7 @@
       z-index: 10;
       box-shadow: 0 0 5px 5px var(--color-box-shadow);
       height: max(var(--min-height-panel-open), var(--height-panel-open));
+      max-height: 100%;
       transition: height .2s linear 0s;
 
       &.closed {
