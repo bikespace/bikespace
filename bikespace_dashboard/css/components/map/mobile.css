@@ -1,4 +1,4 @@
-@media (max-width: 1023px) {
+@media (max-width: 1023px) and (min-height: 500px) {
   .leaflet-popup {
     display: none;
   }
