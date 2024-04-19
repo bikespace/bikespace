@@ -1,4 +1,4 @@
-@import 'stylevars.css';
+@import '../stylevars.css';
 
 #panels {
   background-color: var(--color-primary-20p);

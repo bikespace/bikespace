@@ -1,5 +1,14 @@
-@import 'stylevars.css';
+@import '../stylevars.css';
 
+/* LAYOUT */
+/* Don't show pop-ups on mobile; no change for desktop */
+@media (max-width: 1023px) and (min-height: 500px) {
+  .leaflet-popup {
+    display: none;
+  }
+}
+
+/* MARKER CLUSTERS */
 #issue-map {
   .marker-cluster-small {
     background-color: var(--color-primary-50p);
@@ -28,6 +37,7 @@
   }
 }
 
+/* MAP POP-UPS */
 .leaflet-popup-content {
   font-family: var(--body-font-stack);
 

@@ -1,4 +1,4 @@
-@import 'stylevars.css';
+@import '../stylevars.css';
 
 header {
   padding: 12px;
