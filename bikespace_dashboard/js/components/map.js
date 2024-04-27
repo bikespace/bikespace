@@ -49,11 +49,17 @@ class Map extends Component {
     this.markers = this.buildMarkers();
     this.lmap.addLayer(this.markers);
 
+    // ensure popup close resets ui on mobile
+    this.lmap.on('popupclose', () => {
+      this.clearZoomedToStyles();
+      this._zoomedToMarker = null;
+    });
+
+    // map resizing
     const invalidateLmapObserver = new ResizeObserver(() => {
       // put this at the end of the queue so the invalidation is executed after everything else has resized.
       setTimeout(() => this.lmap.invalidateSize(), 0);
     });
-
     // invalidate map size upon root elem resize
     invalidateLmapObserver.observe(this.getRootElem());
 
@@ -81,6 +87,7 @@ class Map extends Component {
       this.zoomToIdInParam();
     });
 
+    // zoom to marker if specified in url hash when map is loaded
     this.lmap.invalidateSize();
     setTimeout(() => {
       this.zoomToIdInParam();
@@ -193,11 +200,9 @@ class Map extends Component {
         </div>`;
 
       const contentElem = document.createElement('div');
-
       contentElem.innerHTML = content;
 
       const openInSideBarLink = contentElem.querySelector('a.open-in-sidebar');
-
       openInSideBarLink.addEventListener('click', () => {
         this.shared_state.focusSubmission(point.id);
       });
