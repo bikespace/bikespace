@@ -61,9 +61,7 @@ body {
 }
 
 a {
-  vertical-align: middle;
   text-decoration: none;
-  padding: 0.2rem 0.4rem;
   color: var(--color-secondary-dark-grey);
 
   &:visited {
@@ -73,4 +71,8 @@ a {
   &:hover {
     color: var(--color-primary);
   }
+}
+
+.leaflet-control a:hover {
+  color: unset;
 }

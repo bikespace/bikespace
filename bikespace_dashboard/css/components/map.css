@@ -2,7 +2,7 @@
 
 /* LAYOUT */
 /* Don't show pop-ups on mobile; no change for desktop */
-@media (max-width: 1023px) and (min-height: 500px) {
+@media (width < 1024px) and (min-height: 500px) {
   .leaflet-popup {
     display: none;
   }

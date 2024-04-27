@@ -15,7 +15,7 @@
   --min-height-panel-open: 350px;
 }
 
-@media (max-width: 1023px) {
+@media (width < 1024px) {
 
   body {
     display: flex;
