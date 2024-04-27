@@ -181,10 +181,7 @@ class Submissions extends Component {
    * @param {Number} id ID of the submission to focus
    */
   focusSubmission(id) {
-    const currentlyFocused = document.querySelectorAll(
-      '.submission-item.focused'
-    );
-    currentlyFocused.forEach(elem => elem.classList.remove('focused'));
+    this.unFocusSubmissions();
     const elem = document.querySelector(
       `.submission-item[data-submission-id="${id}"]`
     );
@@ -196,6 +193,13 @@ class Submissions extends Component {
         submission_id: id,
       });
     }
+  }
+
+  unFocusSubmissions() {
+    const currentlyFocused = document.querySelectorAll(
+      '.submission-item.focused'
+    );
+    currentlyFocused.forEach(elem => elem.classList.remove('focused'));
   }
 }
 

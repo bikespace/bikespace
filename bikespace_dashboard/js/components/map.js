@@ -51,6 +51,9 @@ class Map extends Component {
 
     // ensure popup close resets ui on mobile
     this.lmap.on('popupclose', () => {
+      this.shared_state
+        .getComponentByElemId('submissions')
+        .unFocusSubmissions();
       this.clearZoomedToStyles();
       this._zoomedToMarker = null;
     });
