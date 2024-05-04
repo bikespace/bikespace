@@ -29,13 +29,13 @@ class SharedState {
     return key;
   }
 
-  getComponentByKey(key) {
-    return this.components[key];
-  }
+  // getComponentByKey(key) {
+  //   return this.components[key];
+  // }
 
-  getComponentByElemId(elementId) {
-    return this.components[elementIdToComponentKey(elementId)];
-  }
+  // getComponentByElemId(elementId) {
+  //   return this.components[elementIdToComponentKey(elementId)];
+  // }
 
   refresh() {
     for (const module of Object.values(this.components)) {

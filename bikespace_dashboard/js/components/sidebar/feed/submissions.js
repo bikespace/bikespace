@@ -58,7 +58,6 @@ class Submissions extends Component {
     );
     if (elem) {
       this.#unFocusSubmissions();
-      this.shared_state.getComponentByElemId('panels').open();
       elem.classList.add('focused');
       elem.scrollIntoView(true);
     }

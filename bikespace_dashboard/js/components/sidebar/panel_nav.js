@@ -39,6 +39,7 @@ class PanelNav extends Component {
 
     shared_state.router = new HashRouter(TABS);
 
+    // set callback that responds to router changes
     shared_state.router.onChange(() => {
       this.maybeChangeTab();
     });
@@ -109,7 +110,7 @@ class PanelNav extends Component {
   }
 
   toggle() {
-    this.setIsHandleClosed(!this.isClosed());
+    this.isClosed() ? this.open() : this.close();
   }
 
   close() {
@@ -135,6 +136,9 @@ class PanelNav extends Component {
     return handleButton;
   }
 
+  /**
+   * Update the panel nav buttons to match the hash router path
+   */
   switchNavToCurrent() {
     const currentTab = this.shared_state.router.currentRoute.path;
     document
@@ -145,6 +149,9 @@ class PanelNav extends Component {
     document.getElementById(`${this.root_id}-nav-${currentTab}`).checked = true;
   }
 
+  /**
+   * Unhide content for the currently active tab
+   */
   showCurrentTabContent() {
     const currentTab = this.shared_state.router.currentRoute.path;
     document.querySelectorAll(`.${this.root_id}-section`).forEach(section => {
@@ -157,6 +164,10 @@ class PanelNav extends Component {
   maybeChangeTab() {
     this.switchNavToCurrent();
     this.showCurrentTabContent();
+    const submissionId = this.shared_state.router.params.get('submission_id');
+    if (submissionId) {
+      this.open();
+    }
   }
 
   refresh() {
