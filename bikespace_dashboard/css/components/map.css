@@ -1,7 +1,8 @@
-@import '../stylevars.css';
+@import 'stylevars.css';
 
 /* LAYOUT */
 /* Don't show pop-ups on mobile; no change for desktop */
+/* If you change these breakpoints, please also change in map.js */
 @media (width < 1024px) and (min-height: 500px) {
   .leaflet-popup {
     display: none;

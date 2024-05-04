@@ -23,15 +23,6 @@ class SharedState {
     }
   }
 
-  focusSubmission(submissionId) {
-    this.router.push({
-      path: 'feed',
-      params: new URLSearchParams({view_all: 1, submission_id: submissionId}),
-    });
-    this.getComponentByElemId('submissions').focusSubmission(submissionId);
-    this.getComponentByElemId('issue-map').zoomToSubmission(submissionId);
-  }
-
   registerComponent(component) {
     const key = elementIdToComponentKey(component.root_id);
     this.components[key] = component;

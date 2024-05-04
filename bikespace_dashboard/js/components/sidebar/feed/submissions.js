@@ -21,8 +21,8 @@ import {Component} from '../../main.js';
  */
 
 const ATTR_DATA_SUBMISSION_ID = 'data-submission-id';
-
 const PARAM_VIEW_ALL = 'view_all';
+const OVERVIEW_DISPLAY_LIMIT = 5;
 
 class Submissions extends Component {
   /**
@@ -34,13 +34,48 @@ class Submissions extends Component {
    */
   constructor(parent, root_id, shared_state, options = {}) {
     super(parent, root_id, shared_state, options);
+
+    // set callback that responds to router changes
     this.shared_state.router.onChange(() => {
       this.refresh();
     });
-    this.build();
+
+    this.#build();
   }
 
-  shouldViewAll() {
+  refresh() {
+    this.#build();
+  }
+
+  /**
+   * Focus a submission in the submission list panel. 
+   * - Applies CSS class to an item to give the feel of it being focused and scroll to it.
+   * @param {Number} id ID of the submission to focus
+   */
+  #focusSubmission(id) {
+    const elem = document.querySelector(
+      `.submission-item[data-submission-id="${id}"]`
+    );
+    if (elem) {
+      this.#unFocusSubmissions();
+      this.shared_state.getComponentByElemId('panels').open();
+      elem.classList.add('focused');
+      elem.scrollIntoView(true);
+    }
+  }
+
+  #unFocusSubmissions() {
+    const currentlyFocused = document.querySelectorAll(
+      '.submission-item.focused'
+    );
+    currentlyFocused.forEach(elem => elem.classList.remove('focused'));
+  }
+
+  /**
+   * Checks to see whether the url hash path is `#feed` and if the `view_all` param is 1
+   * @returns {boolean}
+   */
+  #shouldViewAll() {
     const router = this.shared_state.router;
     return (
       router.params.get(PARAM_VIEW_ALL) === '1' &&
@@ -48,16 +83,16 @@ class Submissions extends Component {
     );
   }
 
-  buildTitle() {
+  #buildTitle() {
     const titleSection = $(`<div class='title-section'>
       ${
-        this.shouldViewAll()
+        this.#shouldViewAll()
           ? '<a class="a-button" href="#feed">&#9666; Back</a>'
           : ''
       }
       <h2>Latest Submissions</h2>
       ${
-        this.shouldViewAll()
+        this.#shouldViewAll()
           ? ''
           : `<a class="a-button" href="#feed?${PARAM_VIEW_ALL}=1">View All</a>`
       }
@@ -66,66 +101,69 @@ class Submissions extends Component {
     return titleSection;
   }
 
-  applyFullView() {
+  #applyFullView() {
     this.root.addClass(PARAM_VIEW_ALL);
   }
 
-  applyOverview() {
+  #applyOverview() {
     this.root.removeClass(PARAM_VIEW_ALL);
   }
 
-  enableClickToFocus() {
-    // add event listeners to pan to item and open popup on click
+  /**
+   * Adds event listeners to update hash router when a report in the feed is clicked
+   */
+  #enableClickToFocus() {
     const listing_items = document.querySelectorAll('.submission-item');
     listing_items.forEach(item => {
       item.addEventListener('click', e => {
         e.preventDefault();
-        this.shared_state
-          .getComponentByElemId('issue-map')
-          .zoomToSubmission(item.dataset.submissionId);
         this.shared_state.router.params = new URLSearchParams({
           view_all: 1,
+          submission_id: item.dataset.submissionId,
+        });
+        super.analytics_event(`${this.root_id}_focus_submission`, {
           submission_id: item.dataset.submissionId,
         });
       });
     });
   }
 
-  build() {
+  #build() {
     this.root = $(`#${this.root_id}`);
-    if (this.shouldViewAll()) {
-      this.applyFullView();
-      this.root[0].scroll(0, 0);
-    } else {
-      this.applyOverview();
-    }
 
-    this.title = this.buildTitle();
+    this.title = this.#buildTitle();
     this.root.empty().append(this.title);
 
     this.list = $('<div class="submission-list"></div>');
     this.root.append(this.list);
 
-    const toDisplay = this.getLatestSubmissions(
-      this.shouldViewAll() ? {} : {limit: 5}
+    const toDisplay = this.#getLatestSubmissions(
+      this.#shouldViewAll() ? {} : {limit: OVERVIEW_DISPLAY_LIMIT}
     );
 
-    this.fillSubmissions(toDisplay);
-    this.enableClickToFocus();
+    this.#fillSubmissions(toDisplay);
+    this.#enableClickToFocus();
 
     const submissionId = parseInt(
       this.shared_state.router.params.get('submission_id')
     );
-    if (!isNaN(submissionId)) {
-      this.focusSubmission(submissionId);
+
+    if (this.#shouldViewAll() && !isNaN(submissionId)) {
+      this.#applyFullView();
+      this.#focusSubmission(submissionId);
+    } else if (this.#shouldViewAll()) {
+      this.#applyFullView();
+      // this.root[0].scroll(0, 0);
+    } else {
+      this.#applyOverview();
     }
   }
 
-  issueIdsToLabels(issueIds) {
+  #issueIdsToLabels(issueIds) {
     return issueIds.map(i => makeIssueLabelById(i, {long: false})).join('');
   }
 
-  fillSubmissions(submissions) {
+  #fillSubmissions(submissions) {
     this.list.empty();
     if (submissions.length === 0) {
       this.list.append(
@@ -143,7 +181,7 @@ class Submissions extends Component {
         }">
             <h3>${parking_time_desc}</h3>
             <div class="problems">
-              ${this.issueIdsToLabels(submission.issues)}
+              ${this.#issueIdsToLabels(submission.issues)}
             </div>
             ${submission.comments ? `<p>${submission.comments}` : ''}</p>
           </a>`;
@@ -158,7 +196,7 @@ class Submissions extends Component {
    * @param {number | null} options.limit Number of submissions
    * @returns {Array[Submission]}
    */
-  getLatestSubmissions({limit = null} = {}) {
+  #getLatestSubmissions({limit = null} = {}) {
     const submissions = this.shared_state.display_data;
     if (!submissions[Symbol.iterator] || typeof submissions === 'string') {
       throw new Error('Submission data was corrupted');
@@ -170,36 +208,6 @@ class Submissions extends Component {
     } else {
       return submissions;
     }
-  }
-
-  refresh() {
-    this.build();
-  }
-
-  /**
-   * Focus a submission in the submission list panel. Applies CSS class to an item to give the feel of it being focused and scroll to it.
-   * @param {Number} id ID of the submission to focus
-   */
-  focusSubmission(id) {
-    this.unFocusSubmissions();
-    const elem = document.querySelector(
-      `.submission-item[data-submission-id="${id}"]`
-    );
-    this.shared_state.getComponentByElemId('panels').open();
-    if (elem) {
-      elem.classList.add('focused');
-      elem.scrollIntoView(true);
-      super.analytics_event(`${this.root_id}_focus_submission`, {
-        submission_id: id,
-      });
-    }
-  }
-
-  unFocusSubmissions() {
-    const currentlyFocused = document.querySelectorAll(
-      '.submission-item.focused'
-    );
-    currentlyFocused.forEach(elem => elem.classList.remove('focused'));
   }
 }
 
