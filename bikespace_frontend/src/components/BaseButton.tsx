@@ -22,6 +22,7 @@ class BaseButton extends React.Component<BaseButtonProps> {
             value={this.props.value}
             checked={this.props.active}
             id={`${this.props.name}_${this.props.value}`}
+            data-umami-event={`${this.props.name}_${this.props.value}`}
           />
         )}
         {this.props.type === 'radio' && (
@@ -32,6 +33,7 @@ class BaseButton extends React.Component<BaseButtonProps> {
             name={this.props.name}
             checked={this.props.active}
             id={`${this.props.name}_${this.props.value}`}
+            data-umami-event={`${this.props.name}_${this.props.value}`}
           />
         )}
         <label htmlFor={`${this.props.name}_${this.props.value}`}>
