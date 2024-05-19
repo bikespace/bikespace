@@ -119,3 +119,6 @@ swagger-ui/
 .vscode/
 
 coverage/
+
+# Data reports
+/datasets/analysis-for-city/thumbnails/
