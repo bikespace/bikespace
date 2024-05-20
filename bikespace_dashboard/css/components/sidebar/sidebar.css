@@ -245,6 +245,12 @@
 
   >h3 {
     font-size: medium;
+    font-weight: bold;
+  }
+
+  >p {
+    margin-bottom: var(--spacing-unit);
+    font-size: 0.9rem;
   }
 
   >.problems {
@@ -252,6 +258,11 @@
       display: inline-block;
       font-size: smaller;
     }
+  }
+
+  & .submission-id {
+    font-style: italic;
+    text-align: right;
   }
 
   &:hover {
