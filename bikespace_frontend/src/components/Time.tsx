@@ -58,6 +58,7 @@ const Time = (props: {
         type="datetime-local"
         onChange={handleDateTime}
         value={convertToDateTimeLocalString(dateTime)}
+        data-umami-event="date-time-dropdown"
       ></input>
       <fieldset>
         <legend>

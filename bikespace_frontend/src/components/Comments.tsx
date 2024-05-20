@@ -19,6 +19,7 @@ const Comments = (props: {
         value={comments}
         rows={10}
         cols={33}
+        data-umami-event="comments-text-box"
       ></textarea>
     </div>
   );

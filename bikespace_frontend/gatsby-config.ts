@@ -56,7 +56,7 @@ const config: GatsbyConfig = {
         autoTrack: true,
         respectDoNotTrack: true,
         dataCache: false,
-        // dataDomains: "example.com,example2.com",
+        dataDomains: "app.bikespace.ca",
       },
     },
   ],

@@ -167,6 +167,7 @@ const SubmissionRoute = () => {
               <button
                 className={`primary-btn-no-fill ${step === 0 ? 'hide' : ''}`}
                 onClick={() => handleStepChanged(-1)}
+                data-umami-event={`back-button-from-${orderedComponents[step].name}`}
               >
                 Back
               </button>
@@ -177,6 +178,7 @@ const SubmissionRoute = () => {
               <button
                 className="primary-btn-no-fill"
                 onClick={() => navigate('/')}
+                data-umami-event="close-button"
               >
                 Close
               </button>
@@ -186,6 +188,7 @@ const SubmissionRoute = () => {
                 step === orderedComponents.length - 1 ? 'display-none' : ' '
               }`}
               onClick={() => handleStepChanged(1)}
+              data-umami-event={`next-button-from-${orderedComponents[step].name}`}
             >
               Next
             </button>
@@ -197,6 +200,7 @@ const SubmissionRoute = () => {
                   : 'display-none'
               }`}
               onClick={() => handleSubmit()}
+              data-umami-event="submit-issue-button"
             >
               Submit
             </button>
