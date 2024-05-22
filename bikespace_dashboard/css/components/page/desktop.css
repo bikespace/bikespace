@@ -1,6 +1,22 @@
+@import '../stylevars.css';
+
+
 @media (min-width: 1024px) {
+  :root {
+    --sidebar-width: calc(320px + var(--spacing-scrollbar-offset));
+    --header-height: 54px;
+  }
+
   body {
+    position: relative;
+
     header {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      height: var(--header-height);
+
       >#nav-toggle {
         display: none;
       }
@@ -10,10 +26,10 @@
 
     #issue-map {
       position: absolute;
-      top: 54px;
+      top: var(--header-height);
       bottom: 0;
       /* 20px offset for sidebar scrollbar */
-      left: calc(320px + 20px);
+      left: var(--sidebar-width);
       right: 0;
       z-index: 1;
     }
@@ -22,9 +38,9 @@
       position: absolute;
       z-index: 100;
       left: 0;
-      top: 54px;
+      top: var(--header-height);
       bottom: 0;
-      width: calc(320px + var(--spacing-scrollbar-offset));
+      width: var(--sidebar-width);
     }
   }
 
