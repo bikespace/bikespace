@@ -32,6 +32,7 @@ const FeedbackMailTo = () => {
         style={{marginRight: '0.3rem'}}
         src="../images/envelope-at.svg"
         alt="Email Icon"
+        data-umami-event="mail-to-button"
       />
       Feedback
     </a>

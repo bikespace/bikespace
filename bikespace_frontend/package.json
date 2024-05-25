@@ -36,6 +36,7 @@
     "gatsby-plugin-sass": "^6.8.0",
     "gatsby-plugin-sharp": "^5.7.0",
     "gatsby-plugin-sitemap": "^6.7.0",
+    "gatsby-plugin-umami": "^0.1.5",
     "gatsby-plugin-vanilla-extract": "^4.0.1",
     "gatsby-source-filesystem": "^5.7.0",
     "gatsby-transformer-sharp": "^5.7.0",
