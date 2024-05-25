@@ -1,7 +1,7 @@
 @import "fonts.css";
 
 :root {
-  --color-primary:     hsl(137, 68%, 45%);
+  --color-primary: hsl(137, 68%, 45%);
   --color-primary-70p: hsl(137, 56%, 62%);
   --color-primary-50p: hsl(137, 56%, 73%);
   --color-primary-20p: hsl(137, 57%, 89%);

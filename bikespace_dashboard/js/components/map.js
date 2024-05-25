@@ -26,7 +26,16 @@ const tiles = {
   },
 };
 
+const DEFAULT_TILES = tiles.thunderforest_atlas;
+const ICON_SIZE_NORMAL = 36;
+const ICON_SIZE_LARGER = 36 * 1.5;
+const STARTING_LATLNG = [43.733399, -79.376221]; // city of toronto
+const STARTING_ZOOM = 11;
+const MOBILE_BREAKPOINTS = "(width < 1024px) and (min-height: 500px)";
+
 class Map extends Component {
+  #zoomedToMarker = null;
+
   /**
    * Base class for graphs, map, etc. Registers component with shared_state.
    * @param {string} parent JQuery selector for parent element
@@ -37,14 +46,22 @@ class Map extends Component {
   constructor(parent, root_id, shared_state, options = {}) {
     super(parent, root_id, shared_state, options);
 
-    // initialize map and zoom to City of Toronto
-    this.lmap = L.map('issue-map').setView([43.733399, -79.376221], 11);
-    L.tileLayer(tiles.thunderforest_atlas.url, {
-      attribution: tiles.thunderforest_atlas.attribution,
+    // initialize map and zoom to starting location
+    this.lmap = L.map('issue-map').setView(STARTING_LATLNG, STARTING_ZOOM);
+    L.tileLayer(DEFAULT_TILES.url, {
+      attribution: DEFAULT_TILES.attribution,
     }).addTo(this.lmap);
-
-    this.markers = this.buildMarkers();
+    
+    this.markers = this.#buildMarkers();
     this.lmap.addLayer(this.markers);
+
+    // map resizing
+    const invalidateLmapObserver = new ResizeObserver(() => {
+      // put this at the end of the queue so the invalidation is executed after everything else has resized.
+      setTimeout(() => this.lmap.invalidateSize(), 0);
+    });
+    // invalidate map size upon root elem resize
+    invalidateLmapObserver.observe(this.getRootElem());
 
     // improve keyboard navigation
     $(document).on('keydown', '.marker-cluster', e => {
@@ -59,41 +76,85 @@ class Map extends Component {
       }
     });
 
-    // analytics
+    // popup open actions
     this.lmap.on('popupopen', e => {
+      // analytics
       super.analytics_event(`${this.root_id}_${e.type}`, {
         submission_id: e.popup.submission_id,
       });
     });
 
-    this.shared_state.router.onChange(() => {
-      this.zoomToIdInParam();
+    // map click unfocuses submission via hash router
+    this.lmap.on('click', (e) => {
+      setTimeout(() => {
+        this.shared_state.router.params.delete('submission_id');
+        this.shared_state.router.params = this.shared_state.router.params;
+      }, 0);
     });
 
-    this.zoomToIdInParam();
+    // set callback that responds to router changes
+    this.shared_state.router.onChange(() => {
+      this.#refreshFocusedMarker();
+    });
+
+    // zoom to marker if specified in url hash when map is loaded
+    this.lmap.invalidateSize();
+    setTimeout(() => {
+      this.#refreshFocusedMarker();
+    }, 0);
+
   }
 
-  zoomToIdInParam() {
+  refresh() {
+    this.markers.remove();
+    this.markers = this.#buildMarkers();
+    this.markers.addTo(this.lmap);
+  }
+
+  #refreshFocusedMarker() {
+    this.#clearZoomedToStyles();
     const submissionId = parseInt(
       this.shared_state.router.params.get('submission_id')
     );
     if (!isNaN(submissionId)) {
-      this.zoomToSubmission(submissionId);
+      this.#zoomToSubmission(submissionId);
     }
+    this.#zoomedToMarker = this.#getMapMarkerByID(submissionId) ?? null;
   }
 
-  getMapMarkerByID(submission_id) {
+  #getMapMarkerByID(submission_id) {
     return this.all_markers.filter(
       m => `${m.submission_id}` === `${submission_id}`
     )[0];
   }
 
-  zoomToSubmission(id) {
-    const marker = this.getMapMarkerByID(id);
+  #setIconSize(icon, size) {
+    icon.options.iconSize = L.point(size, size);
+    icon.options.iconAnchor = L.point(size / 2, size);
+    icon.options.popupAnchor = L.point(0, -size * 0.8);
+  }
+
+  #clearZoomedToStyles() {
+    if (this.#zoomedToMarker) {
+      const icon = this.#zoomedToMarker.getIcon();
+      this.#setIconSize(icon, ICON_SIZE_NORMAL);
+      this.#zoomedToMarker.setIcon(icon);
+    }
+  }
+
+  #applyZoomedToStyles(marker) {
+    this.#setIconSize(marker.getIcon(), ICON_SIZE_LARGER);
+    marker.setIcon(marker.getIcon());
+  }
+
+  #zoomToSubmission(id) {
+    const marker = this.#getMapMarkerByID(id);
+    this.#applyZoomedToStyles(marker);
+    this.#zoomedToMarker = marker;
     this.markers.zoomToShowLayer(marker, () => marker.openPopup());
   }
 
-  buildMarkers() {
+  #buildMarkers() {
     const marker_cluster_group = L.markerClusterGroup();
     this.all_markers = [];
 
@@ -154,17 +215,17 @@ class Map extends Component {
         </div>`;
 
       const contentElem = document.createElement('div');
-
       contentElem.innerHTML = content;
 
       const openInSideBarLink = contentElem.querySelector('a.open-in-sidebar');
-
       openInSideBarLink.addEventListener('click', () => {
         this.shared_state.router.push({
-          path: 'feed',
-          params: new URLSearchParams({view_all: 1, submission_id: point.id}),
+          path: "feed",
+          params: new URLSearchParams({
+            view_all: 1,
+            submission_id: point.id,
+          }),
         });
-        this.shared_state.components.submissions.focusSubmission(point.id);
       });
 
       // BUILD MARKERS
@@ -172,9 +233,9 @@ class Map extends Component {
       const BaseIcon = L.Icon.extend({
         options: {
           shadowUrl: './libraries/leaflet/images/marker-shadow.png',
-          iconSize: [36, 36],
-          iconAnchor: [18, 36], // half of width and full height
-          popupAnchor: [0, -30], // nearly all the height, not sure why negative
+          iconSize: [ICON_SIZE_NORMAL, ICON_SIZE_NORMAL],
+          iconAnchor: [ICON_SIZE_NORMAL / 2, ICON_SIZE_NORMAL], // half of width and full height
+          popupAnchor: [0, -ICON_SIZE_NORMAL * 0.8], // nearly all the height, not sure why negative
           shadowSize: [41, 41], // from default
           shadowAnchor: [12, 41], // more manual offset, bottom point of shadow is ~30% along x axis, not at (0, 0)
         },
@@ -186,13 +247,31 @@ class Map extends Component {
         null
       );
       const custom_marker = ia[marker_issue ?? 'other'];
-      const customIcon = new BaseIcon({iconUrl: custom_marker.icon});
+      const customIcon = new BaseIcon({
+        iconUrl: custom_marker.icon,
+      });
 
       // generate marker with icon and content
       const marker = L.marker([point.latitude, point.longitude], {
         icon: customIcon,
       });
       marker.bindPopup(contentElem);
+      // focus in sidebar if in mobile view
+      marker.on('click', (e) => {
+        if (window.matchMedia(MOBILE_BREAKPOINTS).matches) {
+          this.shared_state.router.push({
+            path: "feed",
+            params: new URLSearchParams({
+              view_all: 1,
+              submission_id: point.id,
+            }),
+          });
+        } else {
+          // unfocus previous selection if desktop marker click
+          this.shared_state.router.params.delete('submission_id');
+          this.shared_state.router.params = this.shared_state.router.params;
+        }
+      });
       this.all_markers.push(marker);
       marker_cluster_group.addLayer(marker);
 
@@ -202,12 +281,6 @@ class Map extends Component {
     }
 
     return marker_cluster_group;
-  }
-
-  refresh() {
-    this.markers.remove();
-    this.markers = this.buildMarkers();
-    this.markers.addTo(this.lmap);
   }
 }
 

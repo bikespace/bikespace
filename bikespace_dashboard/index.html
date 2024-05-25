@@ -3,7 +3,7 @@
   <head>
     <meta http-equip="Content-Type" content="text/html;charset=utf-8" />
     <meta charset="utf-8" />
-    <meta new="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>BikeSpace Dashboard</title>
     <meta
       name="description"
@@ -23,25 +23,26 @@
   </head>
   <body>
     <header>
-      <a href="#" title="Dashboard Home">
-        <img
-          src="assets/bikespace_wordmark.png"
-          alt="BikeSpace logo"
-          id="bikespace-logo"
-        />
+      <a href="#" id="nav-toggle">
+        <img src="./assets/hamburger-menu.svg" alt="Menu icon" />
       </a>
       <nav class="main-nav" aria-label="Main">
+        <a href="#" title="Dashboard Home" id="bikespace-logo">
+          <img src="assets/bikespace_wordmark.png" alt="BikeSpace logo" />
+        </a>
         <ul>
+          <li>
+            <a
+              href="https://app.bikespace.ca/submission/"
+              data-umami-event="outbound-app"
+              >Report Bike Parking Issue</a
+            >
+          </li>
           <li>
             <a
               href="https://bikespace.ca/"
               data-umami-event="outbound-landing-page"
               >About BikeSpace</a
-            >
-          </li>
-          <li>
-            <a href="https://app.bikespace.ca/submission/" data-umami-event="outbound-app"
-              >Report Bike Parking Issue</a
             >
           </li>
           <li>
@@ -61,13 +62,18 @@
               data-umami-event="mailto-feedback"
               id="mailto-feedback"
               ><img
-              src="./assets/envelope-at.svg"
-              alt="Email Icon"
-            />Feedback</a
+                src="./assets/envelope-at.svg"
+                alt="Email Icon"
+              />Feedback</a
             >
           </li>
         </ul>
       </nav>
+      <div
+        id="nav-backdrop"
+        role="button"
+        aria-roledescription="Dismiss Navigation Menu"
+      ></div>
     </header>
     <noscript>
       <h2>Please enable JavaScript to use this site</h2>
@@ -99,10 +105,7 @@ $ curl "https://api-dev.bikespace.ca/api/v2/submissions?limit=5000" -o "bikespac
       </ul>
     </noscript>
     <script src="libraries/jquery-3.7.1.min.js"></script>
-    <script
-      src="libraries/plotly-2.27.0.min.js"
-      charset="utf-8"
-    ></script>
+    <script src="libraries/plotly-2.27.0.min.js" charset="utf-8"></script>
     <script src="libraries/leaflet/leaflet.js"></script>
     <script src="libraries/leaflet/leaflet.markercluster.js"></script>
     <script src="js/app.js" type="module"></script>
