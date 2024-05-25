@@ -206,9 +206,9 @@ class Submissions extends Component {
               <span>${parking_time.weekdayLong} • ${parking_time_time}</span>
               <span class="submission-id">ID: ${submission.id}</span>
             </p>
-            <p class="problems">
+            <div class="problems">
               ${this.#issueIdsToLabels(submission.issues)}
-            </p>
+            </div>
             <p><strong>Wanted to park for:</strong> ${
               pda[submission.parking_duration]?.description ?? 'unknown'
             }</p>

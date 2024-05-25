@@ -247,7 +247,7 @@
     font-weight: bold;
   }
 
-  >p {
+  >p, >.problems {
     margin-bottom: var(--spacing-unit);
     font-size: 0.9rem;
   }
@@ -255,7 +255,6 @@
   >.problems {
     >.issue {
       display: inline-block;
-      font-size: smaller;
     }
   }
 
