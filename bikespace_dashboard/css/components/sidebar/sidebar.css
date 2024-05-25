@@ -238,6 +238,11 @@
   padding-bottom: var(--spacing-unit-double);
   border-bottom: var(--border-unit) solid var(--color-secondary-light-grey);
 
+  /* This is a bugfix since the default overflow-y: clip behaviour doesn't otherwise let you scroll the content down all the way */
+  &:last-child {
+    margin-bottom: 4rem;
+  }
+
   &.focused {
     background: var(--color-secondary-light-grey);
   }
