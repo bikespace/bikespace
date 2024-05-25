@@ -24,11 +24,11 @@
     }
 
     #panels-section-feed {
-      overflow-y: hidden;
+      overflow-y: clip;
 
       >#submissions {
         height: 100%;
-        overflow-y: hidden;
+        overflow-y: clip;
 
         >.submission-list {
           height: 100%;
