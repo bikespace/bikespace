@@ -35,7 +35,6 @@ const MOBILE_BREAKPOINTS = "(width < 1024px) and (min-height: 500px)";
 
 class Map extends Component {
   #zoomedToMarker = null;
-  #currentPopUpID = null;
 
   /**
    * Base class for graphs, map, etc. Registers component with shared_state.
@@ -79,7 +78,6 @@ class Map extends Component {
 
     // popup open actions
     this.lmap.on('popupopen', e => {
-      this.#currentPopUpID = e.popup.submission_id;
       // analytics
       super.analytics_event(`${this.root_id}_${e.type}`, {
         submission_id: e.popup.submission_id,
@@ -87,13 +85,10 @@ class Map extends Component {
     });
 
     // map click unfocuses submission via hash router
-    this.lmap.on('popupclose', (e) => {
+    this.lmap.on('click', (e) => {
       setTimeout(() => {
-        // skip popupclose events triggered by new popupopen
-        if (this.#currentPopUpID === e.popup.submission_id) {
-          this.shared_state.router.params.delete('submission_id');
-          this.shared_state.router.params = this.shared_state.router.params;
-        }
+        this.shared_state.router.params.delete('submission_id');
+        this.shared_state.router.params = this.shared_state.router.params;
       }, 0);
     });
 
