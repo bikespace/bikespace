@@ -51,6 +51,7 @@ class Map extends Component {
     L.tileLayer(DEFAULT_TILES.url, {
       attribution: DEFAULT_TILES.attribution,
     }).addTo(this.lmap);
+    L.control.locate({flyTo: true}).addTo(this.lmap);
     
     this.markers = this.#buildMarkers();
     this.lmap.addLayer(this.markers);
