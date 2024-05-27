@@ -192,7 +192,8 @@ class Submissions extends Component {
           {zone: "America/Toronto"}
         );
         const parking_time_desc = parking_time.toLocaleString(
-          DateTime.DATE_FULL, {locale: 'en-CA'}
+          {weekday: 'long', month: 'long', day: 'numeric', year: 'numeric'}, 
+          {locale: 'en-CA'},
         );
         const parking_time_time = parking_time.toLocaleString(
           DateTime.TIME_SIMPLE, {locale: 'en-CA'}
@@ -203,7 +204,11 @@ class Submissions extends Component {
           >
             <h3>${parking_time_desc}</h3>
             <p class="flex-distribute">
-              <span>${parking_time.weekdayLong} • ${parking_time_time}</span>
+              <span>${
+                this.#toSentenceCase(parking_time.toRelativeCalendar())
+              } • ${
+                parking_time_time
+              }</span>
               <span class="submission-id">ID: ${submission.id}</span>
             </p>
             <div class="problems">
@@ -234,13 +239,32 @@ class Submissions extends Component {
     if (!submissions[Symbol.iterator] || typeof submissions === 'string') {
       throw new Error('Submission data was corrupted');
     }
-    // sorting submissions by id desc as a proxy for submission date
-    submissions.sort((a, b) => b.id - a.id);
+
+    // parse parking_time into DateTime
+    const submissions_dt = submissions.map((s) => {
+      s['parking_time_dt'] = DateTime.fromFormat(
+        s.parking_time,
+        parking_time_date_format,
+        {zone: "America/Toronto"}
+      );
+      return s;
+    });
+
+    // sorting submissions by reported date of issue
+    submissions_dt.sort((a, b) => b.parking_time_dt - a.parking_time_dt);
     if (typeof limit === 'number' && limit > 0) {
-      return submissions.slice(0, limit);
+      return submissions_dt.slice(0, limit);
     } else {
-      return submissions;
+      return submissions_dt;
     }
+  }
+
+  #toSentenceCase(string) {
+    if (typeof string !== 'string') return string;
+    if (/[a-z]/.test(string[0])) {
+      return string[0].toUpperCase() + string.slice(1);
+    }
+    return string;
   }
 }
 
