@@ -75,6 +75,10 @@ class Map extends Component {
         },
       })
       .addTo(this.lmap);
+    this.lmap.on('locationfound', () => {
+      // combined with locationerror, we can count how many of the users request GPS location
+      this.analytics_event('locationfound');
+    });
 
     this.markers = this.#buildMarkers();
     this.lmap.addLayer(this.markers);
