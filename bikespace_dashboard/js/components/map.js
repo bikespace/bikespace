@@ -38,8 +38,9 @@ const CUSTOM_GEO_ERROR_MESSAGES = {
   // ref: https://github.com/Leaflet/Leaflet/blob/00e0534cd9aa723d10a652146311efd9ce990b46/src/map/Map.js#L632
   0: 'GPS is not supported in your browser.',
   [GeolocationPositionError.PERMISSION_DENIED]: 'Please allow location access.',
+  // happens when: location is disabled at OS-level / when GPS has other errors
   [GeolocationPositionError.POSITION_UNAVAILABLE]:
-    'Error with your GPS. You might want to restart it or try another device.',
+    'Had trouble locating you. Please turn on / restart your GPS or try another device.',
   [GeolocationPositionError.TIMEOUT]:
     'It took too long to locate you. Please try again.',
 };
@@ -69,6 +70,7 @@ class Map extends Component {
           const message =
             CUSTOM_GEO_ERROR_MESSAGES[err.code] ||
             'Unknown error while trying to locate you';
+          this.analytics_event('locationerror', {code: err.code, message});
           alert(message);
         },
       })
