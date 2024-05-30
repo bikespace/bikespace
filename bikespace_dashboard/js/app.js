@@ -6,6 +6,7 @@ import {IssueChart} from './components/sidebar/data-panel/issue_chart.js';
 import {DayChart} from './components/sidebar/data-panel/day_chart.js';
 import {DurationTimeOfDayChart} from './components/sidebar/data-panel/duration_tod_chart.js';
 import {Submissions} from './components/sidebar/feed/submissions.js';
+import '../libraries/leaflet-locatecontrol/L.Control.Locate.min.js';
 
 const USE_DEV = false;
 const DEV_BASE_URL = ''; // empty string = use current location as /api is proxied with the dev server to avoid CORS mess

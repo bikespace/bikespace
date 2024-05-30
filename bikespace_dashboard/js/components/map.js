@@ -1,5 +1,5 @@
-import {Component} from './main.js';
 import {issue_attributes as ia} from './api_tools.js';
+import {Component} from './main.js';
 
 const tiles = {
   thunderforest_atlas: {
@@ -31,7 +31,19 @@ const ICON_SIZE_NORMAL = 36;
 const ICON_SIZE_LARGER = 36 * 1.5;
 const STARTING_LATLNG = [43.733399, -79.376221]; // city of toronto
 const STARTING_ZOOM = 11;
-const MOBILE_BREAKPOINTS = "(width < 1024px) and (min-height: 500px)";
+const MOBILE_BREAKPOINTS = '(width < 1024px) and (min-height: 500px)';
+
+const CUSTOM_GEO_ERROR_MESSAGES = {
+  // leaflet internally uses 0 to denote missing Geolocation API
+  // ref: https://github.com/Leaflet/Leaflet/blob/00e0534cd9aa723d10a652146311efd9ce990b46/src/map/Map.js#L632
+  0: 'GPS is not supported in your browser.',
+  [GeolocationPositionError.PERMISSION_DENIED]: 'Please allow location access.',
+  // happens when: location is disabled at OS-level / when GPS has other errors
+  [GeolocationPositionError.POSITION_UNAVAILABLE]:
+    'Had trouble locating you. Please turn on / restart your GPS or try another device.',
+  [GeolocationPositionError.TIMEOUT]:
+    'It took too long to locate you. Please try again.',
+};
 
 class Map extends Component {
   #zoomedToMarker = null;
@@ -51,7 +63,23 @@ class Map extends Component {
     L.tileLayer(DEFAULT_TILES.url, {
       attribution: DEFAULT_TILES.attribution,
     }).addTo(this.lmap);
-    
+    L.control
+      .locate({
+        flyTo: true,
+        onLocationError: err => {
+          const message =
+            CUSTOM_GEO_ERROR_MESSAGES[err.code] ||
+            'Unknown error while trying to locate you';
+          this.analytics_event('locationerror', {code: err.code, message});
+          alert(message);
+        },
+      })
+      .addTo(this.lmap);
+    this.lmap.on('locationfound', () => {
+      // combined with locationerror, we can count how many of the users request GPS location
+      this.analytics_event('locationfound');
+    });
+
     this.markers = this.#buildMarkers();
     this.lmap.addLayer(this.markers);
 
@@ -85,7 +113,7 @@ class Map extends Component {
     });
 
     // map click unfocuses submission via hash router
-    this.lmap.on('click', (e) => {
+    this.lmap.on('click', e => {
       setTimeout(() => {
         this.shared_state.router.params.delete('submission_id');
         this.shared_state.router.params = this.shared_state.router.params;
@@ -102,7 +130,6 @@ class Map extends Component {
     setTimeout(() => {
       this.#refreshFocusedMarker();
     }, 0);
-
   }
 
   refresh() {
@@ -220,7 +247,7 @@ class Map extends Component {
       const openInSideBarLink = contentElem.querySelector('a.open-in-sidebar');
       openInSideBarLink.addEventListener('click', () => {
         this.shared_state.router.push({
-          path: "feed",
+          path: 'feed',
           params: new URLSearchParams({
             view_all: 1,
             submission_id: point.id,
@@ -257,10 +284,10 @@ class Map extends Component {
       });
       marker.bindPopup(contentElem);
       // focus in sidebar if in mobile view
-      marker.on('click', (e) => {
+      marker.on('click', e => {
         if (window.matchMedia(MOBILE_BREAKPOINTS).matches) {
           this.shared_state.router.push({
-            path: "feed",
+            path: 'feed',
             params: new URLSearchParams({
               view_all: 1,
               submission_id: point.id,
