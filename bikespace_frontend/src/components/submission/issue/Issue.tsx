@@ -1,6 +1,6 @@
 import React from 'react';
 import {IssueType} from '@/interfaces/Submission';
-import {BaseButton} from '../base-button/BaseButton';
+import {BaseButton} from '../base-button';
 
 export const Issue = (props: {
   issues: IssueType[];
