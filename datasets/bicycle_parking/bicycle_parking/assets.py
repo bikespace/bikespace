@@ -18,20 +18,22 @@ def street_furniture_bicycle_parking(
   context: AssetExecutionContext,
   toronto_open_data: TorontoOpenDataResource,
 ) -> MaterializeResult:
-  response, metadata = toronto_open_data.request(
+  gdf: gpd.GeoDataFrame
+  metadata: dict
+  gdf, metadata = toronto_open_data.request_gdf(
     dataset_name="street-furniture-bicycle-parking",
     resource_name="282ec79d-983e-4b4a-a8b6-e67574a1c6dd",
   ).values()
 
-  data_raw = response.json()
-
   os.makedirs("data", exist_ok=True)
-  with open("data/street_furniture_bicycle_parking.json", "w") as f:
-    json.dump(data_raw, f)
-  
+  with open("data/street_furniture_bicycle_parking.geojson", "w") as f:
+    f.write(gdf.to_json(na='drop', drop_id=True, indent=2))
+
   return MaterializeResult(metadata={
-    "num_records": len(data_raw['features']),
+    "num_records": len(gdf),
     "last_updated": MetadataValue.timestamp(
       datetime.fromisoformat(metadata['last_modified'] + "+00:00")
     ),
+    "preview": MetadataValue.md(gdf.head().to_markdown()),
+    "crs": str(gdf.crs), 
   })
