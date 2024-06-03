@@ -3,38 +3,7 @@
 
 #submission {
   position: relative;
-
-  #submission-header {
-    position: sticky;
-    top: 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: white;
-    height: 50px;
-    padding: 0 1rem;
-
-    .header-logo img {
-      width: 147px;
-    }
-
-    a {
-      text-decoration: none;
-      font-weight: bold;
-      color: #39393a;
-      display: flex;
-      align-items: center;
-
-      :hover {
-        color: $main-color;
-      }
-
-      :visited {
-        color: #39393a;
-      }
-    }
-  }
-
+  
   main {
     position: relative;
     padding: 20px;

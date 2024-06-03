@@ -3,7 +3,7 @@ import {StaticImage} from 'gatsby-plugin-image';
 
 import {FeedbackMailTo} from '../feedback-mail-to/FeedbackMailTo';
 
-import styles from './submission-header.module.scss';
+import * as styles from './submission-header.module.scss';
 
 export function SubmissionHeader() {
   return (

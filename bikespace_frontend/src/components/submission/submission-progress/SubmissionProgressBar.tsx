@@ -1,24 +1,21 @@
 import React from 'react';
 
+import * as styles from './submission-progress-bar.module.scss';
+
 type SubmissionProgressBarProps = {
   step: number;
 };
 
-export class SubmissionProgressBar extends React.Component<SubmissionProgressBarProps> {
-  isActive(step: number): boolean {
-    return this.props.step === step;
-  }
-
-  render(): React.ReactNode {
-    return (
-      <div id="submission-progress-bar">
-        <div id="middle-line" />
-        <div className={`step ${this.isActive(0) ? 'active' : ''}`} />
-        <div className={`step ${this.isActive(1) ? 'active' : ''}`} />
-        <div className={`step ${this.isActive(2) ? 'active' : ''}`} />
-        <div className={`step ${this.isActive(3) ? 'active' : ''}`} />
-        <div className={`step ${this.isActive(4) ? 'active' : ''}`} />
-      </div>
-    );
-  }
+export function SubmissionProgressBar({step}: SubmissionProgressBarProps) {
+  return (
+    <div className={styles.progressBar}>
+      <div className={styles.middleLine} />
+      {[0, 1, 2, 3, 4].map(s => (
+        <div
+          key={s}
+          className={`${styles.step} ${s === step ? styles.active : ''}`}
+        />
+      ))}
+    </div>
+  );
 }
