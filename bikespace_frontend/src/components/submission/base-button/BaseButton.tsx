@@ -15,7 +15,7 @@ type BaseButtonProps = {
 export class BaseButton extends React.Component<BaseButtonProps> {
   render(): React.ReactNode {
     return (
-      <div className="input-container">
+      <div className={styles.inputContainer}>
         {this.props.type === 'checkbox' && (
           <input
             type="checkbox"
@@ -42,8 +42,8 @@ export class BaseButton extends React.Component<BaseButtonProps> {
           <div className={styles.baseButton}>
             {this.props.children}
             <StaticImage
-              className="check"
-              src="../images/check.svg"
+              className={styles.check}
+              src="../../../images/check.svg"
               alt="checkmark"
             />
           </div>

@@ -1,5 +1,13 @@
 @import '@styles/variables';
 
+.inputContainer {
+  display: flex;
+
+  label {
+    width: 100%;
+  }
+}
+
 .baseButton {
   position: relative;
   display: flex;

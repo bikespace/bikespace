@@ -1,6 +1,6 @@
 import React from 'react';
 import {IssueType} from '@/interfaces/Submission';
-import {BaseButton} from '@/components/shared/base-button';
+import {BaseButton} from '../base-button';
 
 import * as styles from './issue.module.scss';
 

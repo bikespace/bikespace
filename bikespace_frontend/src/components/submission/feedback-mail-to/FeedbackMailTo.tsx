@@ -30,7 +30,7 @@ export const FeedbackMailTo = () => {
       <StaticImage
         height={20}
         style={{marginRight: '0.3rem'}}
-        src="../images/envelope-at.svg"
+        src="../../../images/envelope-at.svg"
         alt="Email Icon"
         data-umami-event="mail-to-button"
       />

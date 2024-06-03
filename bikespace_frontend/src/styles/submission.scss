@@ -7,7 +7,7 @@
   main {
     position: relative;
     padding: 20px;
-    background-image: url(../images/bikespace-background-desktop.jpeg);
+    background-image: url('@/images/bikespace-background-desktop.jpeg');
     background-size: cover;
     background-position: center;
   }
@@ -42,14 +42,6 @@
         font-size: 1rem;
         font-weight: normal;
         color: #39393a;
-      }
-
-      .input-container {
-        display: flex;
-
-        label {
-          width: 100%;
-        }
       }
     }
 
