@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Comments = (props: {
+export const Comments = (props: {
   comments: string;
   onCommentsChanged: (comments: string) => void;
 }) => {
@@ -24,5 +24,3 @@ const Comments = (props: {
     </div>
   );
 };
-
-export default Comments;

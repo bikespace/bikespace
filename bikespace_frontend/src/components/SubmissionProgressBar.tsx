@@ -4,7 +4,7 @@ type SubmissionProgressBarProps = {
   step: number;
 };
 
-class SubmissionProgressBar extends React.Component<SubmissionProgressBarProps> {
+export class SubmissionProgressBar extends React.Component<SubmissionProgressBarProps> {
   isActive(step: number): boolean {
     return this.props.step === step;
   }
@@ -22,5 +22,3 @@ class SubmissionProgressBar extends React.Component<SubmissionProgressBarProps> 
     );
   }
 }
-
-export default SubmissionProgressBar;

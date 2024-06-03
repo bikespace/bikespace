@@ -3,7 +3,7 @@ import {LocationLatLng} from '../interfaces/Submission';
 import 'leaflet/dist/leaflet.css';
 import {MapContainer, TileLayer, Marker, useMapEvent} from 'react-leaflet';
 
-function Location(props: {
+export function Location(props: {
   location: LocationLatLng;
   onLocationChanged: (location: LocationLatLng) => void;
 }) {
@@ -46,5 +46,3 @@ function Location(props: {
     </div>
   );
 }
-
-export default Location;

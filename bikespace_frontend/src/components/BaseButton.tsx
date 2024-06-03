@@ -10,7 +10,7 @@ type BaseButtonProps = {
   onClick: (e: React.FormEvent<HTMLInputElement>) => void;
 };
 
-class BaseButton extends React.Component<BaseButtonProps> {
+export class BaseButton extends React.Component<BaseButtonProps> {
   render(): React.ReactNode {
     return (
       <div className="input-container">
@@ -50,5 +50,3 @@ class BaseButton extends React.Component<BaseButtonProps> {
     );
   }
 }
-
-export default BaseButton;

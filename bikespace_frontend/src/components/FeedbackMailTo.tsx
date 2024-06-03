@@ -24,7 +24,7 @@ const feedbackHref = [
   `&body=${encodeURIComponent(feedbackBody)}`,
 ].join('');
 
-const FeedbackMailTo = () => {
+export const FeedbackMailTo = () => {
   return (
     <a href={feedbackHref}>
       <StaticImage
@@ -38,5 +38,3 @@ const FeedbackMailTo = () => {
     </a>
   );
 };
-
-export default FeedbackMailTo;

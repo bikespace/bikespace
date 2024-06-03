@@ -1,8 +1,8 @@
 import React from 'react';
 import {ParkingDuration} from '../interfaces/Submission';
-import BaseButton from './BaseButton';
+import {BaseButton} from './BaseButton';
 
-const Time = (props: {
+export const Time = (props: {
   parkingDuration: ParkingDuration;
   onParkingDurationChanged: (parkingDuration: ParkingDuration) => void;
   dateTime: Date;
@@ -106,5 +106,3 @@ const Time = (props: {
     </form>
   );
 };
-
-export default Time;

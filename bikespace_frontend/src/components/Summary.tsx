@@ -2,7 +2,7 @@ import React from 'react';
 import Submission from '../interfaces/Submission';
 import {SubmissionStatus} from '../interfaces/Submission';
 
-const Summary = (props: {
+export const Summary = (props: {
   submission: Submission;
   submissionStatus: SubmissionStatus;
 }) => {
@@ -63,5 +63,3 @@ const Summary = (props: {
     );
   }
 };
-
-export default Summary;

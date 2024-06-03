@@ -1,8 +1,8 @@
 import React from 'react';
 import {IssueType} from '../interfaces/Submission';
-import BaseButton from './BaseButton';
+import {BaseButton} from './BaseButton';
 
-const Issue = (props: {
+export const Issue = (props: {
   issues: IssueType[];
   onIssuesChanged: (issues: IssueType[]) => void;
 }) => {
@@ -92,4 +92,3 @@ const Issue = (props: {
     </form>
   );
 };
-export default Issue;
