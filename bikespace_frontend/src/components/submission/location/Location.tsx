@@ -1,5 +1,5 @@
 import React from 'react';
-import {LocationLatLng} from '../interfaces/Submission';
+import {LocationLatLng} from '@/interfaces/Submission';
 import 'leaflet/dist/leaflet.css';
 import {MapContainer, TileLayer, Marker, useMapEvent} from 'react-leaflet';
 

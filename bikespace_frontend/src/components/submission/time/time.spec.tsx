@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {render, screen} from '@testing-library/react';
 import {Time} from './Time';
-import {ParkingDuration} from '../../../interfaces/Submission';
+import {ParkingDuration} from '@/interfaces/Submission';
 
 describe('Test Time page component', () => {
   const [parkingDuration, setParkingDuration] = useState<ParkingDuration>(

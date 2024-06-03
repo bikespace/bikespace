@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 
 import {render, screen} from '@testing-library/react';
 import {Issue} from './Issue';
-import {IssueType} from '../../../interfaces/Submission';
+import {IssueType} from '@/interfaces/Submission';
 import '@testing-library/jest-dom';
 
 describe('Test Issues page component', () => {

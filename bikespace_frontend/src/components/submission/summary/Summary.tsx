@@ -1,6 +1,5 @@
 import React from 'react';
-import Submission from '../interfaces/Submission';
-import {SubmissionStatus} from '../interfaces/Submission';
+import Submission, {SubmissionStatus} from '@/interfaces/Submission';
 
 export const Summary = (props: {
   submission: Submission;

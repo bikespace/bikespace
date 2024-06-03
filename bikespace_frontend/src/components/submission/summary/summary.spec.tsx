@@ -6,7 +6,7 @@ import {
   LocationLatLng,
   ParkingDuration,
   SubmissionStatus,
-} from '../../../interfaces/Submission';
+} from '@/interfaces/Submission';
 import '@testing-library/jest-dom';
 
 describe('Test the Summary component page', () => {

@@ -1,6 +1,6 @@
 import React from 'react';
-import {ParkingDuration} from '../interfaces/Submission';
-import {BaseButton} from '../BaseButton/BaseButton';
+import {ParkingDuration} from '@/interfaces/Submission';
+import {BaseButton} from '../base-button/BaseButton';
 
 export const Time = (props: {
   parkingDuration: ParkingDuration;

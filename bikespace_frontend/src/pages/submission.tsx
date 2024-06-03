@@ -16,7 +16,7 @@ import {
   LocationLatLng,
   ParkingDuration,
   SubmissionStatus,
-} from '../interfaces/Submission';
+} from '@/interfaces/Submission';
 
 const orderedComponents = [Issue, Location, Time, Comments, Summary];
 
