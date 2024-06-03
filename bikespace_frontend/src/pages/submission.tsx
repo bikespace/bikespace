@@ -1,22 +1,24 @@
 import React, {useState, useEffect} from 'react';
 import {HeadProps, graphql, navigate} from 'gatsby';
-import '../styles/submission.scss';
-import {StaticImage} from 'gatsby-plugin-image';
-import {
-  Issue,
-  Location,
-  Time,
-  Comments,
-  Summary,
-  FeedbackMailTo,
-  SubmissionProgressBar,
-} from '../components/submission';
+
 import {
   IssueType,
   LocationLatLng,
   ParkingDuration,
   SubmissionStatus,
 } from '@/interfaces/Submission';
+
+import {
+  Issue,
+  Location,
+  Time,
+  Comments,
+  Summary,
+  SubmissionProgressBar,
+  SubmissionHeader,
+} from '../components/submission';
+
+import '../styles/submission.scss';
 
 const orderedComponents = [Issue, Location, Time, Comments, Summary];
 
@@ -145,14 +147,7 @@ const SubmissionRoute = () => {
 
   return (
     <div id="submission">
-      <header id="submission-header">
-        <StaticImage
-          className="header-logo"
-          src="../images/header-logo.svg"
-          alt="bike space logo"
-        />
-        <FeedbackMailTo />
-      </header>
+      <SubmissionHeader />
       <main>
         <div id="main-content">
           <header>

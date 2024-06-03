@@ -5,3 +5,4 @@ export {Comments} from './comments/Comments';
 export {Summary} from './summary/Summary';
 export {FeedbackMailTo} from './feedback-mail-to/FeedbackMailTo';
 export {SubmissionProgressBar} from './submission-progress/SubmissionProgressBar';
+export {SubmissionHeader} from './submission-header/SubmissionHeader';
