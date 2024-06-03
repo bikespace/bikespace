@@ -3,6 +3,8 @@ import {LocationLatLng} from '@/interfaces/Submission';
 import 'leaflet/dist/leaflet.css';
 import {MapContainer, TileLayer, Marker, useMapEvent} from 'react-leaflet';
 
+import * as styles from './location.module.scss';
+
 export function Location(props: {
   location: LocationLatLng;
   onLocationChanged: (location: LocationLatLng) => void;
@@ -22,11 +24,11 @@ export function Location(props: {
   };
 
   return (
-    <div id="submission-location">
+    <div className={styles.location}>
       <h2>Where was the problem?</h2>
       <h3>Pin the location</h3>
 
-      <section id="outer-map-container">
+      <section className={styles.outerMapContainer}>
         <MapContainer
           center={[props.location.latitude, props.location.longitude]}
           zoom={18}

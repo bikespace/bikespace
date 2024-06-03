@@ -1,6 +1,8 @@
 import React from 'react';
 import {ParkingDuration} from '@/interfaces/Submission';
-import {BaseButton} from '../base-button';
+import {BaseButton} from '@/components/shared/base-button';
+
+import * as styles from './time.module.scss';
 
 export const Time = (props: {
   parkingDuration: ParkingDuration;
@@ -49,7 +51,7 @@ export const Time = (props: {
   };
 
   return (
-    <form id="submission-time">
+    <form className={styles.submissionTime}>
       <label htmlFor="when">
         <h2>When did this happen?</h2>
       </label>
@@ -64,7 +66,7 @@ export const Time = (props: {
         <legend>
           <h2>How long did you need to park?</h2>
         </legend>
-        <div className="checkbox-group">
+        <div className={styles.checkboxGroup}>
           <BaseButton
             type="radio"
             name="time"

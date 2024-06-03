@@ -150,9 +150,7 @@ const SubmissionRoute = () => {
       <SubmissionHeader />
       <main>
         <div id="main-content">
-          <header>
-            <SubmissionProgressBar step={step} />
-          </header>
+          <SubmissionProgressBar step={step} />
 
           <section id="main-content-body">{ComponentToLoad()}</section>
 

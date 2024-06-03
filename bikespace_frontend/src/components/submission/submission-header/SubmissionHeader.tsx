@@ -10,7 +10,7 @@ export function SubmissionHeader() {
     <header className={styles.header}>
       <StaticImage
         className="header-logo"
-        src="../images/header-logo.svg"
+        src="@/images/header-logo.svg"
         alt="bike space logo"
       />
       <FeedbackMailTo />

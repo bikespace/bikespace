@@ -1,5 +1,7 @@
 import React from 'react';
 
+import * as styles from './comments.module.scss';
+
 export const Comments = (props: {
   comments: string;
   onCommentsChanged: (comments: string) => void;
@@ -11,7 +13,7 @@ export const Comments = (props: {
     props.onCommentsChanged(commentText);
   };
   return (
-    <div id="submission-comments">
+    <div className={styles.submissionComments}>
       <h1>Comments</h1>
       <h3>Any additional comments you want to add...</h3>
       <textarea
@@ -20,7 +22,7 @@ export const Comments = (props: {
         rows={10}
         cols={33}
         data-umami-event="comments-text-box"
-      ></textarea>
+      />
     </div>
   );
 };

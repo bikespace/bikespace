@@ -1,6 +1,8 @@
 import React from 'react';
 import {StaticImage} from 'gatsby-plugin-image';
 
+import * as styles from './base-button.module.scss';
+
 type BaseButtonProps = {
   type: string;
   children: React.ReactNode;
@@ -37,7 +39,7 @@ export class BaseButton extends React.Component<BaseButtonProps> {
           />
         )}
         <label htmlFor={`${this.props.name}_${this.props.value}`}>
-          <div className="base-button">
+          <div className={styles.baseButton}>
             {this.props.children}
             <StaticImage
               className="check"

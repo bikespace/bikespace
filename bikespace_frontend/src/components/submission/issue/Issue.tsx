@@ -1,6 +1,8 @@
 import React from 'react';
 import {IssueType} from '@/interfaces/Submission';
-import {BaseButton} from '../base-button';
+import {BaseButton} from '@/components/shared/base-button';
+
+import * as styles from './issue.module.scss';
 
 export const Issue = (props: {
   issues: IssueType[];
@@ -37,7 +39,7 @@ export const Issue = (props: {
   };
 
   return (
-    <form id="submission-issue">
+    <form className={styles.submissionIssue}>
       <fieldset>
         <legend>
           <h2>What was the issue?</h2>
