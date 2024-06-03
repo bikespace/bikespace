@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {render, screen} from '@testing-library/react';
-import Time from '../src/components/Time';
+import {Time} from '../src/components';
 import {ParkingDuration} from '../src/interfaces/Submission';
 
 describe('Test Time page component', () => {

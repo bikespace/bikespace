@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 
 import {render, screen} from '@testing-library/react';
-import Issue from '../src/components/Issue';
+import {Issue} from '../src/components';
 import {IssueType} from '../src/interfaces/Submission';
 import '@testing-library/jest-dom';
 

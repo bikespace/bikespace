@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {render, screen} from '@testing-library/react';
-import Location from '../src/components/Location';
+import {Location} from '../src/components';
 import {LocationLatLng} from '../src/interfaces/Submission';
 import '@testing-library/jest-dom';
 
