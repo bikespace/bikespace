@@ -2,7 +2,6 @@ import React, {useState, useEffect} from 'react';
 import {HeadProps, graphql, navigate} from 'gatsby';
 import '../styles/submission.scss';
 import {StaticImage} from 'gatsby-plugin-image';
-import SubmissionProgressBar from '../components/SubmissionProgressBar';
 import {
   Issue,
   Location,
@@ -10,7 +9,8 @@ import {
   Comments,
   Summary,
   FeedbackMailTo,
-} from '../components/';
+  SubmissionProgressBar,
+} from '../components/submission';
 import {
   IssueType,
   LocationLatLng,
