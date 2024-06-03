@@ -10,7 +10,7 @@ import {
   Summary,
   FeedbackMailTo,
   SubmissionProgressBar,
-} from '../components';
+} from '../components/submission';
 import {
   IssueType,
   LocationLatLng,

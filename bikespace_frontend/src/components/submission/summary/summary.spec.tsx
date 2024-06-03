@@ -1,12 +1,12 @@
 import React, {useState} from 'react';
 import {render, screen} from '@testing-library/react';
-import {Summary} from '../src/components';
+import {Summary} from './Summary';
 import {
   IssueType,
   LocationLatLng,
   ParkingDuration,
   SubmissionStatus,
-} from '../src/interfaces/Submission';
+} from '../../../interfaces/Submission';
 import '@testing-library/jest-dom';
 
 describe('Test the Summary component page', () => {
