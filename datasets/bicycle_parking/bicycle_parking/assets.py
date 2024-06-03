@@ -4,6 +4,8 @@ from datetime import datetime, timezone
 
 from dagster import (
   asset, 
+  asset_check,
+  AssetCheckResult,
   AssetExecutionContext, 
   MaterializeResult, 
   MetadataValue
@@ -37,3 +39,24 @@ def street_furniture_bicycle_parking(
     "preview": MetadataValue.md(gdf.head().to_markdown()),
     "crs": str(gdf.crs), 
   })
+
+@asset_check(asset=street_furniture_bicycle_parking)
+def necessary_columns_exist():
+  gdf = gpd.read_file("data/street_furniture_bicycle_parking.geojson")
+  test = pd.Series([
+    'ID', 
+    'ADDRESSNUMBERTEXT', 
+    'ADDRESSSTREET',  
+    'FRONTINGSTREET', 
+    'SIDE', 
+    'FROMSTREET', 
+    'DIRECTION', 
+    'SITEID', 
+    'WARD', 
+    'BIA', 
+    'ASSETTYPE', 
+    'STATUS', 
+    'SDE_STATE_ID', 
+    'geometry'
+  ]).isin(gdf.columns).all()
+  return AssetCheckResult(passed=bool(test))
