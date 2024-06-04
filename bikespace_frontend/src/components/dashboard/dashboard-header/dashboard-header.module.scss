@@ -1,0 +1,137 @@
+@import '@styles/variables';
+
+.header {
+  padding: 12px;
+  box-shadow: 8px 0px 8px rgba(0, 0, 0, 0.5);
+
+  .navBackdrop {
+    display: none;
+  }
+
+  .mainNav {
+    display: flex;
+    flex-direction: row;
+    /* horizontal align right */
+    align-items: center;
+    width: 100%;
+
+    .bikespaceLogo {
+      flex-grow: 1;
+
+      img {
+        height: 30px;
+      }
+    }
+
+    ul,
+    li,
+    a {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+    }
+
+    ul {
+      margin: 0;
+      padding: 0;
+
+      color: $color-secondary-dark-grey;
+      font-weight: 600;
+
+      li {
+        margin: 0 0.4rem;
+      }
+    }
+
+    img {
+      height: 1.2rem;
+      padding-right: 0.3rem;
+    }
+  }
+}
+
+@media (min-width: 1024px) {
+  $header-height: 54px;
+
+  .header {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: $header-height;
+  
+    .navToggle {
+      display: none;
+    }
+  }
+}
+
+@media (width < 1024px) {
+  $nav-width: 250px;
+
+  .header {
+    z-index: 200;
+    position: fixed;
+    top: $spacing-4x;
+    right: $spacing-4x;
+    height: 40px;
+    width: 40px;
+    box-shadow: unset;
+    background-color: white;
+    border-radius: $border-unit;
+    padding: 0;
+
+    .navToggle {
+      z-index: 202;
+      height: 100%;
+      display: block;
+      padding: $spacing-2x;
+
+      img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+      }
+    }
+
+    .mainNav {
+      visibility: hidden;
+      display: block;
+      position: fixed;
+      background-color: white;
+      padding: $spacing-2x;
+      height: 100%;
+      z-index: 202;
+      width: $nav-width;
+      top: 0;
+      bottom: 0;
+      right: calc(0px - $nav-width);
+      transition: visibility .2s, right .2s linear;
+
+      .bikespaceLogo {
+        margin-bottom: $spacing-4x;
+      }
+
+      ul {
+        display: flex;
+        flex-direction: column;
+      }
+
+      &.open {
+        visibility: visible;
+        right: 0;
+      }
+
+      .navBackdrop {
+        z-index: 200;
+        position: fixed;
+        display: none;
+        inset: 0;
+
+        &.open {
+          display: block;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,12 @@
+@media (min-width: 1024px) {
+  .dashboardPage {
+    position: relative;
+  }
+}
+
+@media (width < 1024px) {
+  .dashboardPage {
+    display: flex;
+    flex-direction: column;
+  }
+}
