@@ -1,10 +1,11 @@
 @import '@styles/variables';
 
 .submissionTime {
-  fieldset > .checkbox-group {
+  fieldset > .checkboxGroup {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 14px 0;
+    gap: 14px 14px;
+    margin: 0px 7px;
   }
 
   input[type='datetime-local'] {

@@ -33,3 +33,12 @@ export default interface Submission {
   parkingTime: ParkingTime;
   comments: String;
 }
+
+export interface SubmissionPayload {
+  latitude: number;
+  longitude: number;
+  issues: IssueType[];
+  parking_time: Date;
+  parking_duration: ParkingDuration;
+  comments: String;
+}

@@ -49,25 +49,6 @@ nav {
   }
 }
 
-.primary-btn {
-  background-color: $main-color-bg;
-  color: white;
-  border: none;
-  height: 42px;
-  border-radius: 21px;
-  padding: 10px 25px;
-  font-size: 1.2rem;
-  cursor: pointer;
-
-  &.hide {
-    visibility: hidden;
-  }
-
-  &.display-none {
-    display: none;
-  }
-}
-
 fieldset {
   margin: 0;
   padding: 0;
@@ -94,23 +75,4 @@ input[type='radio'] {
   /* Not removed via appearance */
   margin: 0;
   width: 0;
-}
-
-.primary-btn-no-fill {
-  background-color: white;
-  color: $main-color;
-  border: none;
-  height: 42px;
-  border-radius: 21px;
-  padding: 10px 25px;
-  font-size: 1.2rem;
-  cursor: pointer;
-
-  &.hide {
-    visibility: hidden;
-  }
-
-  &.display-none {
-    display: none;
-  }
 }
