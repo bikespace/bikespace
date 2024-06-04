@@ -75,7 +75,9 @@ export function SubmissionFormController({
       {/* 'Back' button logic */}
       {submissionStatus.status !== 'success' && (
         <button
-          className={`${styles.primaryBtnNoFill} ${step === 0 ? 'hide' : ''}`}
+          className={`${styles.primaryBtnNoFill} ${
+            step === 0 ? styles.hide : ''
+          }`}
           onClick={() => handleStepChanged(-1)}
           data-umami-event={`back-button-from-${formOrder[step]}`}
         >
