@@ -1,0 +1,50 @@
+.main {
+  position: absolute;
+  bottom: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex: 1 1 auto;
+}
+
+.mainContent {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: 25px;
+  flex-grow: 1;
+}
+
+.footerNav {
+  position: relative;
+}
+
+.logo {
+  flex: 1 1 50px;
+  max-width: 200px;
+  max-height: 200px;
+}
+
+.title {
+  color: white;
+  font-size: 40px;
+  text-shadow: 1px 1px 10px black;
+}
+
+.button {
+  padding: 15px;
+  border-radius: 50px;
+
+  background-color: green;
+  color: white;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 1px 1px 10px black;
+}
