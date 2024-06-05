@@ -1,5 +1,6 @@
 import React from 'react';
-import {StaticImage} from 'gatsby-plugin-image';
+
+import mailToIcon from '@/assets/icons/envelope-at.svg';
 
 const feedbackTo = 'bikespaceto@gmail.com';
 const feedbackSubject = 'BikeSpace App Feedback';
@@ -27,10 +28,10 @@ const feedbackHref = [
 export const FeedbackMailTo = () => {
   return (
     <a href={feedbackHref}>
-      <StaticImage
+      <img
         height={20}
         style={{marginRight: '0.3rem'}}
-        src="../../../images/envelope-at.svg"
+        src={mailToIcon}
         alt="Email Icon"
         data-umami-event="mail-to-button"
       />

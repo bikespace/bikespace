@@ -1,6 +1,6 @@
 import React from 'react';
 
-import mailtoIcon from '@/images/envelope-at.svg';
+import mailtoIcon from '@/assets/icons/envelope-at.svg';
 
 export function FeedbackLink() {
   const feedbackTo = 'bikespaceto@gmail.com';

@@ -1,6 +1,8 @@
 import React from 'react';
 import {navigate} from 'gatsby';
-import {StaticImage} from 'gatsby-plugin-image';
+
+import bikespaceLogo from '@/assets/icons/bikespace-logo.svg';
+import githubLogo from '@/assets/icons/github-mark-white.svg';
 
 import * as styles from './index-page.module.scss';
 
@@ -13,12 +15,7 @@ export function IndexPage({title}: IndexPageProps) {
     <main className={styles.main}>
       <div className={styles.mainContent}>
         <h1 className={styles.title}>{title}</h1>
-        <StaticImage
-          className={styles.logo}
-          src="../../../images/bikespace-logo.svg"
-          alt="BikeSpace Logo"
-          objectFit="contain"
-        />
+        <img className={styles.logo} src={bikespaceLogo} alt="BikeSpace Logo" />
         <button
           className={styles.button}
           onClick={() => {
@@ -54,11 +51,11 @@ export function IndexPage({title}: IndexPageProps) {
                 href="https://github.com/bikespace/bikespace/tree/main/bikespace_frontend"
                 data-umami-event="footer-outbound-bikespace-github"
               >
-                <StaticImage
+                <img
                   height={20}
                   style={{marginRight: '0.3rem'}}
                   id="github-logo"
-                  src="../../../images/github-mark-white.svg"
+                  src={githubLogo}
                   alt="Github Logo"
                 />
                 Contribute

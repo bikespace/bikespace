@@ -4,9 +4,9 @@ import {FeedbackLink} from '../feedback-link/FeedbackLink';
 
 import * as styles from './dashboard-header.module.scss';
 
-import hamburgerMenu from '@/images/hamburger-menu.svg';
-import bikespaceLogo from '@/images/bikespace_wordmark.png';
-import githubLogo from '@/images/github-mark.svg';
+import hamburgerMenu from '@/assets/icons/hamburger-menu.svg';
+import bikespaceLogo from '@/assets/icons/bikespace_wordmark.png';
+import githubLogo from '@/assets/icons/github-mark.svg';
 
 export function DashboardHeader() {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
