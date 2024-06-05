@@ -1,16 +1,10 @@
 .main {
-  position: absolute;
-  bottom: 0;
-  top: 0;
-  left: 0;
-  right: 0;
-  overflow-y: scroll;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  flex: 1 1 auto;
   background-color: #5f5b6b;
   font-size: 18px;
+  min-height: 100vh;
 }
 
 .mainContent {
