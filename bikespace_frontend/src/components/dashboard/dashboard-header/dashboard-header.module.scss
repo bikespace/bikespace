@@ -1,10 +1,16 @@
 @import '@styles/variables';
 
+body {
+  background-color: $color-box-shadow;
+}
+
 .header {
   padding: 12px;
   box-shadow: 8px 0px 8px rgba(0, 0, 0, 0.5);
-
-  .navBackdrop {
+  height: 54px;
+  background-color: white;
+  
+  .navToggle, .navBackdrop {
     display: none;
   }
 
@@ -23,11 +29,8 @@
       }
     }
 
-    ul,
-    li,
-    a {
+    ul, li {
       display: flex;
-      flex-direction: row;
       align-items: center;
     }
 
@@ -37,43 +40,30 @@
 
       color: $color-secondary-dark-grey;
       font-weight: 600;
+    }
 
-      li {
-        margin: 0 0.4rem;
+    li {
+      gap: 0.4rem;
+
+      a {
+        img {
+          height: 1.4rem;
+          width: auto;
+          margin-right: 0.3rem;
+        }
       }
     }
-
-    img {
-      height: 1.2rem;
-      padding-right: 0.3rem;
-    }
   }
 }
 
-@media (min-width: 1024px) {
-  $header-height: 54px;
-
-  .header {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    height: $header-height;
-  
-    .navToggle {
-      display: none;
-    }
-  }
-}
-
-@media (width < 1024px) {
+@media (max-width: 1024px) {
   $nav-width: 250px;
 
   .header {
-    z-index: 200;
+    z-index: 2;
     position: fixed;
-    top: $spacing-4x;
-    right: $spacing-4x;
+    top: $spacing-4;
+    right: $spacing-4;
     height: 40px;
     width: 40px;
     box-shadow: unset;
@@ -82,10 +72,10 @@
     padding: 0;
 
     .navToggle {
-      z-index: 202;
+      z-index: 3;
       height: 100%;
       display: block;
-      padding: $spacing-2x;
+      padding: $spacing-2;
 
       img {
         max-width: 100%;
@@ -99,7 +89,7 @@
       display: block;
       position: fixed;
       background-color: white;
-      padding: $spacing-2x;
+      padding: $spacing-2;
       height: 100%;
       z-index: 202;
       width: $nav-width;
@@ -109,7 +99,7 @@
       transition: visibility .2s, right .2s linear;
 
       .bikespaceLogo {
-        margin-bottom: $spacing-4x;
+        margin-bottom: $spacing-3;
       }
 
       ul {

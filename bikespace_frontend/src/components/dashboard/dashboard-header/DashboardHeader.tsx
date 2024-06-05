@@ -1,22 +1,33 @@
-import React from 'react';
-import {StaticImage} from 'gatsby-plugin-image';
+import React, {useState} from 'react';
 
 import {FeedbackLink} from '../feedback-link/FeedbackLink';
 
 import * as styles from './dashboard-header.module.scss';
 
+import hamburgerMenu from '@/images/hamburger-menu.svg';
+import bikespaceLogo from '@/images/bikespace_wordmark.png';
+import githubLogo from '@/images/github-mark.svg';
+
 export function DashboardHeader() {
+  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+
   return (
     <header className={styles.header}>
-      <a href="#" className={styles.navToggle}>
-        <StaticImage src="../../../images/hamburger-menu.svg" alt="Menu icon" />
-      </a>
-      <nav className={styles.mainNav} aria-label="Main">
+      <div
+        role="button"
+        className={styles.navToggle}
+        onClick={() => {
+          setIsMenuOpen(true);
+        }}
+      >
+        <img src={hamburgerMenu} alt="Menu icon" />
+      </div>
+      <nav
+        className={`${styles.mainNav} ${isMenuOpen ? styles.open : ''}`}
+        aria-label="Main"
+      >
         <a href="#" title="Dashboard Home" className={styles.bikespaceLogo}>
-          <StaticImage
-            src="../../../images/bikespace_wordmark.png"
-            alt="BikeSpace logo"
-          />
+          <img src={bikespaceLogo} alt="BikeSpace logo" />
         </a>
         <ul>
           <li>
@@ -40,11 +51,7 @@ export function DashboardHeader() {
               href="https://github.com/bikespace/bikespace/tree/main/bikespace_dashboard"
               data-umami-event="outbound-github"
             >
-              <StaticImage
-                src="../../../images/github-mark.svg"
-                alt="GitHub Logo"
-                id="github-logo"
-              />
+              <img src={githubLogo} alt="GitHub Logo" id="github-logo" />
               Contribute
             </a>
           </li>
@@ -54,10 +61,13 @@ export function DashboardHeader() {
         </ul>
       </nav>
       <div
-        className={styles.navBackdrop}
+        className={`${styles.navBackdrop} ${isMenuOpen ? styles.open : ''}`}
         role="button"
         aria-roledescription="Dismiss Navigation Menu"
-      ></div>
+        onClick={() => {
+          setIsMenuOpen(false);
+        }}
+      />
     </header>
   );
 }

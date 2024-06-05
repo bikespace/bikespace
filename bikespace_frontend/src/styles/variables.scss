@@ -30,12 +30,11 @@ $body-font-stack: 'Open Sans', Arial, Helvetica, sans-serif;
 $bold-weight: 600;
 
 $spacing-unit: 4px;
-$spacing-1x: var(--spacing-unit);
-$spacing-2x: calc(var(--spacing-unit) * 2);
-$spacing-4x: calc(var(--spacing-unit) * 4);
-$spacing-8x: calc(var(--spacing-unit) * 8);
+$spacing-1: $spacing-unit;
+$spacing-2: calc($spacing-unit * 2);
+$spacing-3: calc($spacing-unit * 4);
+$spacing-4: calc($spacing-unit * 8);
 
-$spacing-unit-double: var(--spacing-2x);
 $spacing-scrollbar-offset: 20px;
 $border-unit: 2px;
 
