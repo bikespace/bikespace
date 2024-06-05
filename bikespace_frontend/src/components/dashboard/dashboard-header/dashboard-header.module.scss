@@ -29,21 +29,21 @@ body {
       }
     }
 
-    ul, li {
+    ul, a {
       display: flex;
       align-items: center;
     }
 
     ul {
+      gap: 0.4rem;
       margin: 0;
       padding: 0;
-
       color: $color-secondary-dark-grey;
       font-weight: 600;
     }
 
     li {
-      gap: 0.4rem;
+      
 
       a {
         img {
