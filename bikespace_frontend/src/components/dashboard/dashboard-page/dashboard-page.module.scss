@@ -1,7 +1,10 @@
 @import '@styles/variables';
 
 .dashboardPage {
+  display: flex;
+  flex-direction: column;
   font-family: 'Open Sans';
+  height: 100vh;
 
   a {
     text-decoration: none;
@@ -15,11 +18,8 @@
       color: $color-primary;
     }
   }
-}
 
-@media (width < 1024px) {
-  .dashboardPage {
-    display: flex;
-    flex-direction: column;
+  .main {
+    flex-grow: 1;
   }
 }

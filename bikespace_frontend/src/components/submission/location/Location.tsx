@@ -1,6 +1,8 @@
 import React from 'react';
 import {LocationLatLng} from '@/interfaces/Submission';
-import {MapContainer, TileLayer, Marker, useMapEvent} from 'react-leaflet';
+import {MapContainer, TileLayer, Marker} from 'react-leaflet';
+
+import {MapHandler} from '@/components/shared';
 
 import * as styles from './location.module.scss';
 
@@ -8,20 +10,6 @@ export function Location(props: {
   location: LocationLatLng;
   onLocationChanged: (location: LocationLatLng) => void;
 }) {
-  const handleLocationChanged = (location: LocationLatLng) => {
-    props.onLocationChanged(location);
-  };
-
-  const MapHandler = () => {
-    useMapEvent('click', e => {
-      handleLocationChanged({
-        latitude: e.latlng.lat,
-        longitude: e.latlng.lng,
-      });
-    });
-    return null;
-  };
-
   return (
     <div className={styles.location}>
       <h2>Where was the problem?</h2>
@@ -41,7 +29,14 @@ export function Location(props: {
           <Marker
             position={[props.location.latitude, props.location.longitude]}
           />
-          <MapHandler />
+          <MapHandler
+            onClick={e => {
+              props.onLocationChanged({
+                latitude: e.latlng.lat,
+                longitude: e.latlng.lng,
+              });
+            }}
+          />
         </MapContainer>
       </section>
     </div>
