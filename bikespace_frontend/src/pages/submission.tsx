@@ -19,6 +19,7 @@ import {
 } from '../interfaces/Submission';
 
 const orderedComponents = [Issue, Location, Time, Comments, Summary];
+const orderedComponentsLabel = ["issue", "location", "time", "comments", "summary"];
 
 const SubmissionRoute = () => {
   const [issues, setIssues] = useState<IssueType[]>([]);
@@ -167,7 +168,7 @@ const SubmissionRoute = () => {
               <button
                 className={`primary-btn-no-fill ${step === 0 ? 'hide' : ''}`}
                 onClick={() => handleStepChanged(-1)}
-                data-umami-event={`back-button-from-${orderedComponents[step].name}`}
+                data-umami-event={`back-button-from-${orderedComponentsLabel[step]}`}
               >
                 Back
               </button>
@@ -188,7 +189,7 @@ const SubmissionRoute = () => {
                 step === orderedComponents.length - 1 ? 'display-none' : ' '
               }`}
               onClick={() => handleStepChanged(1)}
-              data-umami-event={`next-button-from-${orderedComponents[step].name}`}
+              data-umami-event={`next-button-from-${orderedComponentsLabel[step]}`}
             >
               Next
             </button>
