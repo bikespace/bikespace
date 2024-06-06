@@ -1,6 +1,8 @@
 import React, {useEffect} from 'react';
-import {useMap, MapContainer, TileLayer, Marker} from 'react-leaflet';
+import {useMap, MapContainer, TileLayer} from 'react-leaflet';
 import MarkerClusterGroup from 'react-leaflet-cluster';
+
+import {MapMarker} from '../map-marker';
 
 import {SubmissionApiPayload} from '@/interfaces/Submission';
 
@@ -30,10 +32,7 @@ export function Map({submissions}: MapProps) {
         <MapHandler />
         <MarkerClusterGroup chunkedLoading>
           {submissions.map(submission => (
-            <Marker
-              key={submission.id}
-              position={[submission.latitude, submission.longitude]}
-            />
+            <MapMarker key={submission.id} submission={submission} />
           ))}
         </MarkerClusterGroup>
       </MapContainer>
