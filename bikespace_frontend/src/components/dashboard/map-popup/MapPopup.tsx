@@ -3,6 +3,8 @@ import {Popup} from 'react-leaflet';
 import {SubmissionApiPayload} from '@/interfaces/Submission';
 import {Link} from 'gatsby';
 
+import {issuePriority} from '@/data/api-data-attributes';
+
 import * as styles from './map-popup.module.scss';
 
 interface MapPopupProps {
@@ -20,19 +22,21 @@ export function MapPopup({submission}: MapPopupProps) {
   return (
     <Popup>
       <div className={styles.popup}>
-        <strong>Issues:</strong>{' '}
+        <strong>Issues:</strong>
         {issues ? (
-          <p>
-            {issues.map(issue =>
-              popupIssueAttrs[issue] ? (
-                <div className={`${styles.issue} ${styles[issue]}`}>
-                  {popupIssueAttrs[issue].labelLong}
-                </div>
-              ) : (
-                <div className="issue">{issue}</div>
-              )
-            )}
-          </p>
+          <div className={styles.issues}>
+            {issues
+              .sort((a, b) => issuePriority[a] - issuePriority[b])
+              .map(issue =>
+                popupIssueAttrs[issue] ? (
+                  <div className={`${styles.issue} ${styles[issue]}`}>
+                    {popupIssueAttrs[issue].labelLong}
+                  </div>
+                ) : (
+                  <div className={styles.issue}>{issue}</div>
+                )
+              )}
+          </div>
         ) : (
           <em>none</em>
         )}
@@ -43,19 +47,19 @@ export function MapPopup({submission}: MapPopupProps) {
         <strong>{formattedParkingTime}</strong>
       </p>
       <p>
-        <strong>Comments:</strong>{' '}
-        {comments ? <p>{comments}</p> : <em>none</em>}
+        <strong>Comments: </strong>
+        {comments ? comments : <em>none</em>}
       </p>
-      <div className="flex-distribute">
+      <div className={styles.popupFooter}>
         <Link
-          className="open-in-sidebar a-button"
+          className={styles.sidebarButton}
           to={`/dashboard?view_all=1&submission_id=${id}`}
           data-umami-event="issue-map_open_in_sidebar"
           data-umami-event-id={id}
         >
           Focus in Sidebar
         </Link>
-        <span className="submission-id">ID: {id}</span>
+        <span className={styles.submissionId}>ID: {id}</span>
       </div>
     </Popup>
   );

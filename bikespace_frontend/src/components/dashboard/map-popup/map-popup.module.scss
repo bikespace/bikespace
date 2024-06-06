@@ -1,0 +1,85 @@
+@import '@styles/variables';
+
+.popup {
+  font-family: $body-font-stack;
+}
+
+.submissionId {
+  font-style: italic;
+}
+
+.sidebarButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 2rem;
+  background-color: white;
+  border: $border-unit solid $color-primary-d50p;
+  border-radius: $spacing-1;
+  padding-left: $spacing-2;
+  padding-right: $spacing-2;
+  font-family: $body-font-stack;
+  font-size: 0.9rem;
+  color: $color-secondary-dark-grey;
+
+  &:hover {
+    background-color: $color-primary-10p;
+    border-color: $color-primary;
+    cursor: pointer;
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 0.2rem $color-primary-20p;
+  }
+
+  &:active {
+    background-color: $color-primary-d50p;
+    border-color: $color-primary;
+    color: $color-primary;
+  }
+}
+
+.issues {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+
+  .issue {
+    display: inline-block;
+    border: 2px solid;
+    border-radius: 4px;
+    margin: 2px 0px;
+    padding: 2px 4px;
+  
+    &.not_provided {
+      border-color: $color-secondary-red;
+      background-color: $color-secondary-red-light;
+    }
+  
+    &.damaged {
+      border-color: $color-secondary-orange;
+      background-color: $color-secondary-orange-light;
+    }
+  
+    &.abandoned {
+      border-color: $color-secondary-yellow;
+      background-color: $color-secondary-yellow-light;
+    }
+  
+    &.other {
+      border-color: $color-secondary-med-grey;
+      background-color: $color-secondary-light-grey;
+    }
+  
+    &.full {
+      border-color: $color-secondary-orange;
+      background-color: $color-secondary-orange-light;
+    }
+  }
+}
+
+.popupFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

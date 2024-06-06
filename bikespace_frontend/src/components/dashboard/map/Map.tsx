@@ -18,7 +18,7 @@ export function Map({submissions}: MapProps) {
       <MapContainer
         center={[43.733399, -79.376221]}
         zoom={11}
-        scrollWheelZoom={false}
+        scrollWheelZoom
         style={{height: '100%'}}
       >
         <TileLayer
@@ -63,6 +63,10 @@ const MapHandler = () => {
         // this.analytics_event('locationerror', {code: err.code, message});
         alertErrorMessage(message);
       });
+  }, []);
+
+  useEffect(() => {
+    map.invalidateSize();
   }, []);
 
   return null;
