@@ -7,7 +7,7 @@ export default function DashboardRoute() {
   const [submissions, setSubmissions] = useState<SubmissionApiPayload[]>([]);
 
   useEffect(() => {
-    fetch('https://api-dev.bikespace.ca/api/v2/submissions')
+    fetch('https://api-dev.bikespace.ca/api/v2/submissions?limit=5000')
       .then(res => res.json())
       .then(data => {
         setSubmissions(data.submissions);

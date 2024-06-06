@@ -1,10 +1,14 @@
 import React from 'react';
 import {Marker} from 'react-leaflet';
 import {Icon} from 'leaflet';
+import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 
 import {IssueType, SubmissionApiPayload} from '@/interfaces/Submission';
 
-import markerShadow from 'leaflet/dist/images/marker-shadow.png';
+import {issuePriority} from '@/data/api-data-attributes';
+
+import {MapPopup} from '../map-popup';
+
 import notProvidedIcon from '@/assets/icons/icon_not_provided.svg';
 import abandonedIcon from '@/assets/icons/icon_abandoned.svg';
 import fullIcon from '@/assets/icons/icon_full.svg';
@@ -16,15 +20,12 @@ interface MapMarkerProps {
 }
 
 export function MapMarker({submission}: MapMarkerProps) {
-  const markerIssue = submission.issues.reduce((a: IssueType | null, c) => {
+  const priorityIssue = submission.issues.reduce((a: IssueType | null, c) => {
     if (a === null) return c;
 
-    return markerIssueAttrs[a].renderPriority <
-      markerIssueAttrs[c]?.renderPriority
-      ? a
-      : c;
+    return issuePriority[a] < issuePriority[c] ? a : c;
   }, null);
-  const customMarker = markerIssueAttrs[markerIssue ?? 'other'];
+  const customMarker = markerIssueAttrs[priorityIssue ?? 'other'];
 
   return (
     <Marker
@@ -41,45 +42,27 @@ export function MapMarker({submission}: MapMarkerProps) {
           iconUrl: customMarker.icon,
         })
       }
-    />
+    >
+      <MapPopup submission={submission} />
+    </Marker>
   );
 }
 
 // for "renderPriority", 0 is the highest priority and higher numbers are lower priority
 const markerIssueAttrs = {
   not_provided: {
-    id: 'not_provided',
     icon: notProvidedIcon,
-    renderPriority: 0,
-    labelShort: 'No nearby parking',
-    labelLong: 'Bicycle parking was not provided nearby',
   },
   damaged: {
-    id: 'damaged',
     icon: damagedIcon,
-    renderPriority: 1,
-    labelShort: 'Parking damaged',
-    labelLong: 'Bicycle parking was damaged',
   },
   abandoned: {
-    id: 'abandoned',
     icon: abandonedIcon,
-    renderPriority: 2,
-    labelShort: 'Abandoned bicycle',
-    labelLong: 'Parked bicycle was abandoned',
   },
   other: {
-    id: 'other',
     icon: otherIcon,
-    renderPriority: 3,
-    labelShort: 'Other issue',
-    labelLong: 'Other issue',
   },
   full: {
-    id: 'full',
     icon: fullIcon,
-    renderPriority: 4,
-    labelShort: 'Parking full',
-    labelLong: 'Bicycle parking was full',
   },
 };
