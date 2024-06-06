@@ -119,6 +119,7 @@ swagger-ui/
 .vscode/
 
 coverage/
+*.lcov
 
 # Data reports
 /datasets/analysis-for-city/thumbnails/
