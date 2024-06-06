@@ -1,10 +1,13 @@
 import React, {useEffect} from 'react';
 import {useMap, MapContainer, TileLayer} from 'react-leaflet';
 import MarkerClusterGroup from 'react-leaflet-cluster';
+import {useWindowSize} from '@uidotdev/usehooks';
 
 import {MapMarker} from '../map-marker';
 
 import {SubmissionApiPayload} from '@/interfaces/Submission';
+
+import {LocateControl} from '@/components/shared/locate-control';
 
 import * as styles from './map.module.scss';
 
@@ -21,6 +24,7 @@ export function Map({submissions}: MapProps) {
         scrollWheelZoom
         style={{height: '100%'}}
       >
+        <LocateControl />
         <TileLayer
           attribution='&copy; Maps <a href="https://www.thunderforest.com/">Thunderforest</a>, &copy; Data <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>'
           url="https://tile.thunderforest.com/atlas/{z}/{x}/{y}.png?apikey=66ccf6226ef54ef38a6b97fe0b0e5d2e"
@@ -42,6 +46,8 @@ export function Map({submissions}: MapProps) {
 
 const MapHandler = () => {
   const map = useMap();
+
+  const window = useWindowSize();
 
   useEffect(() => {
     const alertErrorMessage = (message: string) => {
@@ -67,7 +73,7 @@ const MapHandler = () => {
 
   useEffect(() => {
     map.invalidateSize();
-  }, []);
+  }, [window]);
 
   return null;
 };
