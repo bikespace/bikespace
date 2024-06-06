@@ -26,7 +26,7 @@ const config: GatsbyConfig = {
         short_name: 'BikeSpace',
         start_url: '/',
         display: 'standalone',
-        icon: 'src/images/bikespace_logo_sm.svg',
+        icon: 'src/assets/icons/bikespace_logo_sm.svg',
       },
     },
     'gatsby-plugin-sharp',
@@ -34,10 +34,10 @@ const config: GatsbyConfig = {
     {
       resolve: 'gatsby-source-filesystem',
       options: {
-        name: 'images',
-        path: './src/images/',
+        name: 'assets',
+        path: './src/assets/',
       },
-      __key: 'images',
+      __key: 'assets',
     },
     'gatsby-plugin-vanilla-extract',
     'gatsby-plugin-sass',

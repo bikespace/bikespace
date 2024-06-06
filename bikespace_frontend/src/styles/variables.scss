@@ -2,3 +2,40 @@ $main-color: #31c057;
 $main-color-bg: #22873d;
 $secondary-color: #2c3b42;
 $gray-color: #9b9b9b;
+
+// Dashboard CSS variables
+$color-primary: hsl(137, 68%, 45%);
+$color-primary-70p: hsl(137, 56%, 62%);
+$color-primary-50p: hsl(137, 56%, 73%);
+$color-primary-20p: hsl(137, 57%, 89%);
+$color-primary-10p: hsl(135, 57%, 95%);
+$color-primary-d20p: hsl(137, 68%, 36%);
+$color-primary-d50p: hsl(137, 68%, 23%);
+$color-primary-d70p: hsl(137, 68%, 14%);
+$color-secondary-yellow: hsl(58, 88%, 57%);
+$color-secondary-yellow-light: hsl(58, 60%, 90%);
+$color-secondary-yellow-dark: hsl(58, 88%, 29%);
+$color-secondary-orange: hsl(38, 100%, 50%);
+$color-secondary-orange-light: hsl(38, 60%, 90%);
+$color-secondary-red: hsl(340, 86%, 50%);
+$color-secondary-red-light: hsl(340, 60%, 90%);
+$color-secondary-light-grey: #d8e1e5;
+$color-secondary-med-light-grey: #b3b3b3;
+$color-secondary-med-grey: #2c3b42;
+$color-secondary-dark-grey: #1f2a2d;
+$color-secondary-blue: hsl(193, 100%, 40%);
+$color-secondary-blue-light: hsl(193, 60%, 90%);
+
+$body-font-stack: 'Open Sans', Arial, Helvetica, sans-serif;
+$bold-weight: 600;
+
+$spacing-unit: 4px;
+$spacing-1: $spacing-unit;
+$spacing-2: calc($spacing-unit * 2);
+$spacing-3: calc($spacing-unit * 4);
+$spacing-4: calc($spacing-unit * 8);
+
+$spacing-scrollbar-offset: 20px;
+$border-unit: 2px;
+
+$color-box-shadow: rgba(0, 0, 0, 0.3);

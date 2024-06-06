@@ -11,7 +11,11 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
-    "paths": {},
+    "baseUrl": "./src",
+    "paths": {
+      "@/*": ["./*"],
+      "@styles/*": ["./styles/*"]
+    },
     "skipLibCheck": true
   },
   "include": [
@@ -19,6 +23,7 @@
     "./gatsby-node.ts",
     "./gatsby-config.ts",
     "./plugins/**/*",
-    "./__tests__/**/*"
+    "./__tests__/**/*",
+    "./src/types/*"
   ]
 }
