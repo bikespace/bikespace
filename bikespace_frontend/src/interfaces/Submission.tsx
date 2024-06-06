@@ -42,3 +42,7 @@ export interface SubmissionPayload {
   parking_duration: ParkingDuration;
   comments: String;
 }
+
+export interface SubmissionApiPayload extends SubmissionPayload {
+  id: number;
+}

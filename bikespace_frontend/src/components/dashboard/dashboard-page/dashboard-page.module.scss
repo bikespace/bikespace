@@ -1,6 +1,7 @@
 @import '@styles/variables';
 
 .dashboardPage {
+  position: relative;
   display: flex;
   flex-direction: column;
   font-family: 'Open Sans';

@@ -56,7 +56,7 @@
   $nav-width: 250px;
 
   .header {
-    z-index: 2;
+    z-index: 200;
     position: fixed;
     top: $spacing-4;
     right: $spacing-4;
@@ -68,7 +68,7 @@
     padding: 0;
 
     .navToggle {
-      z-index: 3;
+      z-index: 201;
       height: 100%;
       display: block;
       padding: $spacing-2;

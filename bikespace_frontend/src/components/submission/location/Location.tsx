@@ -1,8 +1,8 @@
 import React from 'react';
 import {LocationLatLng} from '@/interfaces/Submission';
 import {MapContainer, TileLayer, Marker} from 'react-leaflet';
-
-import {MapHandler} from '@/components/shared';
+import {LeafletMouseEventHandlerFn} from 'leaflet';
+import {useMapEvent} from 'react-leaflet';
 
 import * as styles from './location.module.scss';
 
@@ -42,3 +42,13 @@ export function Location(props: {
     </div>
   );
 }
+
+interface MapHandlerProps {
+  onClick: LeafletMouseEventHandlerFn;
+}
+
+const MapHandler = ({onClick}: MapHandlerProps) => {
+  useMapEvent('click', onClick);
+
+  return null;
+};
