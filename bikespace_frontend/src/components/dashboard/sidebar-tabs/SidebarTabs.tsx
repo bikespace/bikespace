@@ -1,16 +1,14 @@
 import React from 'react';
 
-import {DashboardContext} from '../context';
+import {TabContext} from '../context';
 
 import * as styles from './sidebar-tabs.module.scss';
 
 export function SidebarTabs() {
   return (
-    <DashboardContext.Consumer>
-      {state => {
-        if (!state) return null;
-
-        const {tabState} = state;
+    <TabContext.Consumer>
+      {tabState => {
+        if (!tabState) return null;
 
         return (
           <nav className={styles.tabs}>
@@ -29,7 +27,7 @@ export function SidebarTabs() {
           </nav>
         );
       }}
-    </DashboardContext.Consumer>
+    </TabContext.Consumer>
   );
 }
 

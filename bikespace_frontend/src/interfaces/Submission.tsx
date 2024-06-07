@@ -43,6 +43,20 @@ export interface SubmissionPayload {
   comments: String;
 }
 
-export interface SubmissionApiPayload extends SubmissionPayload {
+export interface SubmissionApiPayload {
   id: number;
+  latitude: number;
+  longitude: number;
+  issues: IssueType[];
+  parking_time: Date;
+  parking_duration: ParkingDuration;
+  comments: String;
+}
+
+export interface SubmissionFilters {
+  dateRange: {
+    from: Date;
+    to: Date;
+  } | null;
+  parkingDuration: ParkingDuration | null;
 }

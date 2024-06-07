@@ -24,16 +24,13 @@
 
     &:hover, &:focus {
       border: $border-unit solid $color-primary;
+      background-color: $color-primary-20p;
     }
   
     &.active {
       background-color: $color-primary-d50p;
       border: $border-unit solid $color-primary-d50p;
       color: white;
-
-      &:hover {
-        border: $border-unit solid $color-primary;
-      }
     }
 
     span {
