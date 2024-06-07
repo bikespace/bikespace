@@ -50,10 +50,6 @@ const MapHandler = () => {
   const window = useWindowSize();
 
   useEffect(() => {
-    const alertErrorMessage = (message: string) => {
-      alert(message);
-    };
-
     map
       .locate()
       .on('locationfound', e => {
@@ -67,7 +63,7 @@ const MapHandler = () => {
           CUSTOM_GEO_ERROR_MESSAGES[code] ||
           'Unknown error while trying to locate you';
         // this.analytics_event('locationerror', {code: err.code, message});
-        alertErrorMessage(message);
+        console.log(message);
       });
   }, []);
 

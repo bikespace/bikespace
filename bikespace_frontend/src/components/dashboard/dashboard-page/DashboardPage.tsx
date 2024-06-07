@@ -2,7 +2,13 @@ import React, {useState, useEffect} from 'react';
 
 import {SubmissionApiPayload, SubmissionFilters} from '@/interfaces/Submission';
 
-import {SubmissionFiltersContext, TabContext} from '../context';
+import {
+  SubmissionFiltersContext,
+  SubmissionsContext,
+  TabContext,
+  SubmissionsDateRangeContext,
+  SubmissionsDateRangeContextData,
+} from '../context';
 
 import {DashboardHeader} from '../dashboard-header';
 import {Map} from '../map';
@@ -17,14 +23,34 @@ interface DashboardPageProps {
 
 export function DashboardPage({submissions}: DashboardPageProps) {
   const [tab, setTab] = useState<string>('data');
-  const [filters, setFilters] = useState<SubmissionFilters | null>(null);
+  const [filters, setFilters] = useState<SubmissionFilters>({
+    dateRange: null,
+    parkingDuration: null,
+  });
+  const [submissionsDateRange, setSubmissionsDateRange] =
+    useState<SubmissionsDateRangeContextData>({
+      first: null,
+      last: null,
+    });
   const [filteredSubmissions, setFilteredSubmissions] =
     useState<SubmissionApiPayload[]>(submissions);
 
   useEffect(() => {
-    if (!filters) return setFilteredSubmissions(submissions);
+    const submissionDates = submissions.map(
+      submission => new Date(submission.parking_time)
+    );
+
+    submissionDates.sort((a, b) => a.getTime() - b.getTime());
+
+    setSubmissionsDateRange({
+      first: submissionDates[0],
+      last: submissionDates[submissionDates.length - 1],
+    });
 
     const {dateRange, parkingDuration} = filters;
+
+    if (dateRange === null && parkingDuration === null)
+      return setFilteredSubmissions(submissions);
 
     if (dateRange && parkingDuration)
       return setFilteredSubmissions(
@@ -55,17 +81,21 @@ export function DashboardPage({submissions}: DashboardPageProps) {
   }, [submissions, filters]);
 
   return (
-    <TabContext.Provider value={{tab, setTab}}>
-      <SubmissionFiltersContext.Provider value={{filters, setFilters}}>
-        <div className={styles.dashboardPage}>
-          <DashboardHeader />
-          <main className={styles.main}>
-            <Sidebar submissions={filteredSubmissions} />
-            <Map submissions={filteredSubmissions} />
-          </main>
-          <Noscript />
-        </div>
-      </SubmissionFiltersContext.Provider>
-    </TabContext.Provider>
+    <SubmissionsDateRangeContext.Provider value={submissionsDateRange}>
+      <SubmissionsContext.Provider value={filteredSubmissions}>
+        <TabContext.Provider value={{tab, setTab}}>
+          <SubmissionFiltersContext.Provider value={{filters, setFilters}}>
+            <div className={styles.dashboardPage}>
+              <DashboardHeader />
+              <main className={styles.main}>
+                <Sidebar />
+                <Map submissions={filteredSubmissions} />
+              </main>
+              <Noscript />
+            </div>
+          </SubmissionFiltersContext.Provider>
+        </TabContext.Provider>
+      </SubmissionsContext.Provider>
+    </SubmissionsDateRangeContext.Provider>
   );
 }

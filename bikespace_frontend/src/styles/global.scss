@@ -29,6 +29,10 @@ fieldset {
 button {
   border: none;
   background-color: transparent;
+
+  &:hover {
+    cursor: pointer;
+  }
 }
 
 input[type='checkbox'] {

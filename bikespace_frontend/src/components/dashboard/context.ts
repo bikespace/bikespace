@@ -1,6 +1,6 @@
 import React, {createContext} from 'react';
 
-import {SubmissionFilters} from '@/interfaces/Submission';
+import {SubmissionApiPayload, SubmissionFilters} from '@/interfaces/Submission';
 
 type TabContextData = {
   tab: string;
@@ -10,9 +10,22 @@ type TabContextData = {
 export const TabContext = createContext<TabContextData>(null);
 
 type SubmissionFiltersContextData = {
-  filters: SubmissionFilters | null;
-  setFilters: React.Dispatch<React.SetStateAction<SubmissionFilters | null>>;
+  filters: SubmissionFilters;
+  setFilters: React.Dispatch<React.SetStateAction<SubmissionFilters>>;
 } | null;
 
 export const SubmissionFiltersContext =
   createContext<SubmissionFiltersContextData>(null);
+
+export const SubmissionsContext = createContext<SubmissionApiPayload[]>([]);
+
+export type SubmissionsDateRangeContextData = {
+  first: Date | null;
+  last: Date | null;
+};
+
+export const SubmissionsDateRangeContext =
+  createContext<SubmissionsDateRangeContextData>({
+    first: null,
+    last: null,
+  });

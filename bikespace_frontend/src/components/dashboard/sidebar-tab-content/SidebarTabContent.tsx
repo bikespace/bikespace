@@ -1,29 +1,24 @@
-import React from 'react';
+import React, {useContext} from 'react';
 
-import {SubmissionApiPayload} from '@/interfaces/Submission';
-
-import {TabContext} from '../context';
+import {TabContext, SubmissionsContext} from '../context';
 
 import {ReportSummary} from '../report-summary';
 
 import * as styles from './sidebar-tab-content.module.scss';
+import {DateRangeFilter} from '../date-range-filter';
 
-interface SidebarTabContentProps {
-  submissions: SubmissionApiPayload[];
-}
+export function SidebarTabContent() {
+  const tabContext = useContext(TabContext);
+  const submissions = useContext(SubmissionsContext);
 
-export function SidebarTabContent({submissions}: SidebarTabContentProps) {
   return (
     <div className={styles.tabContent}>
-      <TabContext.Consumer>
-        {tabContext => (
-          <div>
-            {tabContext?.tab !== 'feed' && (
-              <ReportSummary submissions={submissions} />
-            )}
-          </div>
-        )}
-      </TabContext.Consumer>
+      {tabContext?.tab !== 'feed' && <ReportSummary />}
+      {submissions.length > 0 && tabContext?.tab === 'filters' && (
+        <>
+          <DateRangeFilter />
+        </>
+      )}
     </div>
   );
 }

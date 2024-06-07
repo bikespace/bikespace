@@ -29,11 +29,16 @@ export function MapPopup({submission}: MapPopupProps) {
               .sort((a, b) => issuePriority[a] - issuePriority[b])
               .map(issue =>
                 popupIssueAttrs[issue] ? (
-                  <div className={`${styles.issue} ${styles[issue]}`}>
+                  <div
+                    className={`${styles.issue} ${styles[issue]}`}
+                    key={issue}
+                  >
                     {popupIssueAttrs[issue].labelLong}
                   </div>
                 ) : (
-                  <div className={styles.issue}>{issue}</div>
+                  <div className={styles.issue} key={issue}>
+                    {issue}
+                  </div>
                 )
               )}
           </div>

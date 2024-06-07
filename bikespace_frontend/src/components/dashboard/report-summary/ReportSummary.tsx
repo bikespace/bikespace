@@ -1,62 +1,58 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {DateTime} from 'luxon';
 
-import {SubmissionApiPayload} from '@/interfaces/Submission';
-
-import {SubmissionFiltersContext} from '../context';
+import {
+  SubmissionFiltersContext,
+  SubmissionsContext,
+  SubmissionsDateRangeContext,
+} from '../context';
 
 import warningIcon from '@/assets/icons/exclamation-triangle.svg';
 
 import * as styles from './report-summary.module.scss';
 
-interface ReportSummaryProps {
-  submissions: SubmissionApiPayload[];
-}
+export function ReportSummary() {
+  const submissions = useContext(SubmissionsContext);
+  const filtersContext = useContext(SubmissionFiltersContext);
+  const submissionsDateRange = useContext(SubmissionsDateRangeContext);
 
-export function ReportSummary({submissions}: ReportSummaryProps) {
-  const submissionDates = submissions.map(
-    submission => new Date(submission.parking_time)
-  );
-
-  submissionDates.sort((a, b) => a.getTime() - b.getTime());
-
-  const earliestEntry = DateTime.fromJSDate(submissionDates[0]).toLocaleString(
-    DateTime.DATE_FULL,
-    {locale: 'en-CA'}
-  );
+  const earliestEntry = DateTime.fromJSDate(
+    filtersContext?.filters.dateRange?.from || submissionsDateRange.first!
+  ).toLocaleString(DateTime.DATE_FULL, {locale: 'en-CA'});
   const latestEntry = DateTime.fromJSDate(
-    submissionDates[submissionDates.length - 1]
+    filtersContext?.filters.dateRange?.to || submissionsDateRange.last!
   ).toLocaleString(DateTime.DATE_FULL, {locale: 'en-CA'});
 
   return (
-    <SubmissionFiltersContext.Consumer>
-      {filtersContext => (
-        <div className={styles.summary}>
-          <div>
-            {submissions.length > 0 ? (
-              <span className={styles.entryCount}>
-                {submissions.length.toLocaleString('en-CA')}
-              </span>
-            ) : (
-              <img
-                className={styles.warningIcon}
-                src={warningIcon}
-                alt="warning icon"
-              />
-            )}
-            <span>
-              {submissions.length > 0
-                ? ` reports ${filtersContext?.filters ? ' (filtered)' : ''}`
-                : 'No reports match filter criteria'}
-            </span>
-          </div>
-          <div>
-            {submissions.length > 0
-              ? `${earliestEntry} - ${latestEntry}`
-              : 'Date Range N/A'}
-          </div>
-        </div>
-      )}
-    </SubmissionFiltersContext.Consumer>
+    <div className={styles.summary}>
+      <div>
+        {submissions.length > 0 ? (
+          <span className={styles.entryCount}>
+            {submissions.length.toLocaleString('en-CA')}
+          </span>
+        ) : (
+          <img
+            className={styles.warningIcon}
+            src={warningIcon}
+            alt="warning icon"
+          />
+        )}
+        <span>
+          {submissions.length > 0
+            ? ` reports ${
+                filtersContext?.filters.dateRange === null &&
+                filtersContext?.filters.parkingDuration === null
+                  ? ' (filtered)'
+                  : ''
+              }`
+            : 'No reports match filter criteria'}
+        </span>
+      </div>
+      <div>
+        {submissions.length > 0
+          ? `${earliestEntry} - ${latestEntry}`
+          : 'Date Range N/A'}
+      </div>
+    </div>
   );
 }
