@@ -5,7 +5,7 @@ import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 
 import {IssueType, SubmissionApiPayload} from '@/interfaces/Submission';
 
-import {issuePriority} from '@/data/api-data-attributes';
+import {issuePriority} from '@/utils/api-data-attributes';
 
 import {MapPopup} from '../map-popup';
 
