@@ -22,6 +22,11 @@ fieldset {
   border: none;
 }
 
+button {
+  border: none;
+  background-color: transparent;
+}
+
 input[type='checkbox'] {
   /* Add if not using autoprefixer */
   -webkit-appearance: none;

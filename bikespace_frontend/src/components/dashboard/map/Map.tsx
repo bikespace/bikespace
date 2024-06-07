@@ -7,7 +7,7 @@ import {MapMarker} from '../map-marker';
 
 import {SubmissionApiPayload} from '@/interfaces/Submission';
 
-import {LocateControl} from '@/components/shared/locate-control';
+import {LocateControl} from '../locate-control';
 
 import * as styles from './map.module.scss';
 

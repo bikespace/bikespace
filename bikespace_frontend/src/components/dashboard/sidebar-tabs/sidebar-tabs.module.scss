@@ -1,0 +1,44 @@
+@import '@styles/variables';
+
+.tabs {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: $spacing-unit;
+  padding: 0;
+  margin: 0;
+  border: $border-unit solid $color-primary-d50p;
+  border-radius: calc($spacing-unit * 1.5);
+  background-color: white;
+  color: black;
+  
+
+  .tab {
+    background-color: white;
+    padding: $spacing-unit $spacing-2;
+    border: $border-unit solid white;
+    border-radius: $spacing-unit;
+    flex: auto;
+    text-align: center;
+
+    &:hover, &:focus {
+      border: $border-unit solid $color-primary;
+    }
+  
+    &.active {
+      background-color: $color-primary-d50p;
+      border: $border-unit solid $color-primary-d50p;
+      color: white;
+
+      &:hover {
+        border: $border-unit solid $color-primary;
+      }
+    }
+
+    span {
+      font-size: 16px;
+      font-weight: $bold-weight;
+    }
+  }
+}

@@ -20,7 +20,18 @@
     }
   }
 
+  button {
+    font-family: 'Open Sans';
+  }
+
   .main {
     flex-grow: 1;
+    display: flex;
+  }
+}
+
+@media (max-width: 1024px) {
+  .main {
+    flex-direction: column-reverse;
   }
 }

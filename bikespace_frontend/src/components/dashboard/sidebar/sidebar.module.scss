@@ -1,0 +1,64 @@
+@import '@styles/variables';
+
+.sidebar {
+  background-color: $color-primary-20p;
+  box-shadow: 0px 8px 8px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+
+  .sidebarContent {
+    margin: $spacing-unit;
+    padding: $spacing-unit 0;
+
+    &.closed {
+      display: none;
+    }
+  }
+}
+
+@media (min-width: 1024px) {
+  .sidebar {
+    width: 340px;
+  }
+
+  .drawerHandle {
+    display: none;
+  }
+}
+
+$height-panel-handle: 16px;
+$height-panel-handle-bar: 6px;
+
+@media (max-width: 1024px) {
+  .sidebar {
+    width: 100%;
+
+    .drawerHandle {
+      all: unset;
+      cursor: pointer;
+      display: block;
+      height: $height-panel-handle;
+      width: 100%;
+      margin: 0;
+      padding: calc(($height-panel-handle - $height-panel-handle-bar) / 2) 0;
+
+      &::before {
+        display: block;
+        content: '';
+        height: $height-panel-handle-bar;
+        width: 100px;
+        margin: auto;
+        border-radius: calc($height-panel-handle-bar / 2);
+        background-color: $color-primary;
+      }
+
+    }
+
+    &.closed {
+      &.drawerHandle::before {
+        background-color: $color-secondary-med-light-grey;
+      }
+    }
+  }
+}
