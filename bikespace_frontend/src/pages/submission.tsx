@@ -19,7 +19,13 @@ import {
 } from '../interfaces/Submission';
 
 const orderedComponents = [Issue, Location, Time, Comments, Summary];
-const orderedComponentsLabel = ["issue", "location", "time", "comments", "summary"];
+const orderedComponentsLabel = [
+  'issue',
+  'location',
+  'time',
+  'comments',
+  'summary',
+];
 
 const SubmissionRoute = () => {
   const [issues, setIssues] = useState<IssueType[]>([]);
