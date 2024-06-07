@@ -6,7 +6,6 @@ export const onCreateWebpackConfig = ({actions}: CreateWebpackConfigArgs) => {
     resolve: {
       alias: {
         '@': path.resolve(__dirname, 'src'),
-        '@styles': path.resolve(__dirname, 'src/styles'),
       },
     },
   });
