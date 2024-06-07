@@ -6,6 +6,7 @@
   flex-direction: column;
   font-family: 'Open Sans';
   height: 100vh;
+  overflow: hidden;
 
   a {
     text-decoration: none;
@@ -27,6 +28,7 @@
   .main {
     flex-grow: 1;
     display: flex;
+    overflow: hidden;
   }
 }
 

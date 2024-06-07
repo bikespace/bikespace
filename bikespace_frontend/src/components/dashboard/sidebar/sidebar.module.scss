@@ -6,11 +6,15 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
+  overflow-y: hidden;
 
   .sidebarContent {
     margin: $spacing-unit;
-    padding: $spacing-unit 0;
+    margin-bottom: 0px;
+    padding-top: 4px;
+    overflow-y: hidden;
+    display: flex;
+    flex-direction: column;
 
     &.closed {
       display: none;
