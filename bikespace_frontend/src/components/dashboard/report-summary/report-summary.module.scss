@@ -1,0 +1,22 @@
+@import '@styles/variables';
+
+.summary {
+  padding: 4px 8px;
+  border-radius: $spacing-unit;
+  background-color: $color-primary-d50p;
+  color: white;
+  font-size: 0.9rem;
+
+  .entryCount {
+    font-size: 2rem;
+    font-weight: $bold-weight;
+    margin-right: 0.1rem;
+  }
+
+  .warningIcon {
+    display: inline-block;
+    vertical-align: bottom;
+    padding-bottom: 0.4rem;
+    height: 1.8rem;
+  }
+}

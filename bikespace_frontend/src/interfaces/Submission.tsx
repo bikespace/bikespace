@@ -48,7 +48,7 @@ export interface SubmissionApiPayload {
   latitude: number;
   longitude: number;
   issues: IssueType[];
-  parking_time: Date;
+  parking_time: string;
   parking_duration: ParkingDuration;
   comments: String;
 }

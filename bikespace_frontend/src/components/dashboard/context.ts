@@ -10,8 +10,8 @@ type TabContextData = {
 export const TabContext = createContext<TabContextData>(null);
 
 type SubmissionFiltersContextData = {
-  filters: SubmissionFilters;
-  setFilters: React.Dispatch<React.SetStateAction<SubmissionFilters>>;
+  filters: SubmissionFilters | null;
+  setFilters: React.Dispatch<React.SetStateAction<SubmissionFilters | null>>;
 } | null;
 
 export const SubmissionFiltersContext =

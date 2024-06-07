@@ -7,18 +7,18 @@ import * as styles from './sidebar-tabs.module.scss';
 export function SidebarTabs() {
   return (
     <TabContext.Consumer>
-      {tabState => {
-        if (!tabState) return null;
+      {tabContext => {
+        if (!tabContext) return null;
 
         return (
           <nav className={styles.tabs}>
             {tabs.map(tab => (
               <button
                 className={`${styles.tab} ${
-                  tab.name === tabState.tab ? styles.active : ''
+                  tab.name === tabContext.tab ? styles.active : ''
                 }`}
                 onClick={() => {
-                  tabState.setTab(tab.name);
+                  tabContext.setTab(tab.name);
                 }}
               >
                 <span>{tab.label}</span>

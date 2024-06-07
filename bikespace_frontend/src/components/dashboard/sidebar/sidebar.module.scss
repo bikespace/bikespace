@@ -6,6 +6,7 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
 
   .sidebarContent {
     margin: $spacing-unit;

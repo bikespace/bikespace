@@ -1,10 +1,17 @@
 import React, {useState} from 'react';
 
+import {SubmissionApiPayload} from '@/interfaces/Submission';
+
 import {SidebarTabs} from '../sidebar-tabs';
+import {SidebarTabContent} from '../sidebar-tab-content';
 
 import * as styles from './sidebar.module.scss';
 
-export function Sidebar() {
+interface SidebarProps {
+  submissions: SubmissionApiPayload[];
+}
+
+export function Sidebar({submissions}: SidebarProps) {
   const [open, setOpen] = useState<boolean>(true);
 
   return (
@@ -17,6 +24,7 @@ export function Sidebar() {
       />
       <div className={`${styles.sidebarContent} ${open ? '' : styles.closed}`}>
         <SidebarTabs />
+        <SidebarTabContent submissions={submissions} />
       </div>
     </div>
   );

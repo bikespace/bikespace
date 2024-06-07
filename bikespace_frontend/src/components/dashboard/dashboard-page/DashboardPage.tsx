@@ -17,26 +17,22 @@ interface DashboardPageProps {
 
 export function DashboardPage({submissions}: DashboardPageProps) {
   const [tab, setTab] = useState<string>('data');
-  const [filters, setFilters] = useState<SubmissionFilters>({
-    dateRange: null,
-    parkingDuration: null,
-  });
+  const [filters, setFilters] = useState<SubmissionFilters | null>(null);
   const [filteredSubmissions, setFilteredSubmissions] =
     useState<SubmissionApiPayload[]>(submissions);
 
   useEffect(() => {
-    const {dateRange, parkingDuration} = filters;
+    if (!filters) return setFilteredSubmissions(submissions);
 
-    if (!dateRange && !parkingDuration)
-      return setFilteredSubmissions(submissions);
+    const {dateRange, parkingDuration} = filters;
 
     if (dateRange && parkingDuration)
       return setFilteredSubmissions(
         submissions
           .filter(
             submission =>
-              submission.parking_time >= dateRange.from &&
-              submission.parking_time <= dateRange.to
+              new Date(submission.parking_time) >= dateRange.from &&
+              new Date(submission.parking_time) <= dateRange.to
           )
           .filter(submission => submission.parking_duration === parkingDuration)
       );
@@ -45,8 +41,8 @@ export function DashboardPage({submissions}: DashboardPageProps) {
       return setFilteredSubmissions(
         submissions.filter(
           submission =>
-            submission.parking_time >= dateRange.from &&
-            submission.parking_time <= dateRange.to
+            new Date(submission.parking_time) >= dateRange.from &&
+            new Date(submission.parking_time) <= dateRange.to
         )
       );
 
@@ -64,7 +60,7 @@ export function DashboardPage({submissions}: DashboardPageProps) {
         <div className={styles.dashboardPage}>
           <DashboardHeader />
           <main className={styles.main}>
-            <Sidebar />
+            <Sidebar submissions={filteredSubmissions} />
             <Map submissions={filteredSubmissions} />
           </main>
           <Noscript />
