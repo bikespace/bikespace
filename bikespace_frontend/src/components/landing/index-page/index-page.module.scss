@@ -18,7 +18,22 @@
 }
 
 .footerNav {
+  list-style-type: none;
+  padding: 0;
   position: relative;
+
+  ul {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+  }
+
+  a {
+    color: white;
+    display: inline-block;
+    margin: 0.4rem 1rem;
+    padding: 0.4rem;
+  }
 }
 
 .logo {
