@@ -89,6 +89,9 @@ run-frontend:
 lint-frontend:
 	cd $(BIKESPACE_FRONTEND_DIR) && npm install && npm run lint
 
+lint-and-fix-frontend:
+	cd $(BIKESPACE_FRONTEND_DIR) && npm install && npm run fix
+
 build-frontend:
 	cd $(BIKESPACE_FRONTEND_DIR) && npm install && npm run build
 
