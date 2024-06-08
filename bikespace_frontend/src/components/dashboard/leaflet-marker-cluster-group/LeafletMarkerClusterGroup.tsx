@@ -13,6 +13,8 @@ import L, {
 } from 'leaflet';
 import type {PropsWithChildren} from 'react';
 
+import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
+
 export interface MarkerCluster extends Marker {
   /*
    * Recursively retrieve all child markers of this cluster.
