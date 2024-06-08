@@ -6,6 +6,8 @@ import {
   SubmissionFiltersContext,
 } from '../context';
 
+import {SidebarButton} from '../sidebar-button';
+
 import * as styles from './filter-date-range-custom.module.scss';
 
 export function FilterDateRangeCustom() {
@@ -65,7 +67,7 @@ export function FilterDateRangeCustom() {
           }}
         />
       </div>
-      <button
+      <SidebarButton
         type="button"
         onClick={() => {
           filters?.setFilters(prev => ({
@@ -78,7 +80,7 @@ export function FilterDateRangeCustom() {
         }}
       >
         Apply
-      </button>
+      </SidebarButton>
     </div>
   );
 }
