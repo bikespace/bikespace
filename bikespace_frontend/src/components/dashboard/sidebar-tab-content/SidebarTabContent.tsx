@@ -1,24 +1,28 @@
 import React, {useContext} from 'react';
 
-import {TabContext, SubmissionsContext} from '../context';
+import {TabContext} from '../context';
 
-import {ReportSummary} from '../report-summary';
+import {SidebarContentFilters} from '../sidebar-content-filter';
+import {SidebarContentData} from '../sidebar-content-data';
+import {SidebarContentFeed} from '../sidebar-content-feed';
 
 import * as styles from './sidebar-tab-content.module.scss';
-import {DateRangeFilter} from '../date-range-filter';
 
 export function SidebarTabContent() {
   const tabContext = useContext(TabContext);
-  const submissions = useContext(SubmissionsContext);
 
-  return (
-    <div className={styles.tabContent}>
-      {tabContext?.tab !== 'feed' && <ReportSummary />}
-      {submissions.length > 0 && tabContext?.tab === 'filters' && (
-        <>
-          <DateRangeFilter />
-        </>
-      )}
-    </div>
-  );
+  const renderContent = () => {
+    switch (tabContext?.tab) {
+      case 'data':
+        return <SidebarContentData />;
+      case 'filters':
+        return <SidebarContentFilters />;
+      case 'feed':
+        return <SidebarContentFeed />;
+      default:
+        return <SidebarContentData />;
+    }
+  };
+
+  return <div className={styles.tabContent}>{renderContent()}</div>;
 }

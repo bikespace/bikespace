@@ -15,7 +15,7 @@ import {CustomDateRangeFilter} from '../custom-date-range-filter';
 
 import * as styles from './date-range-filter.module.scss';
 
-export function DateRangeFilter() {
+export function FilterDateRange() {
   const submissionFilters = useContext(SubmissionFiltersContext);
   const submissionsDateRange = useContext(SubmissionsDateRangeContext);
 
