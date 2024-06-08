@@ -2,6 +2,7 @@ import React, {useContext} from 'react';
 
 import {TabContext} from '../context';
 
+import {ClearFiltersButton} from '../clear-filters-button';
 import {SidebarContentFilters} from '../sidebar-content-filter';
 import {SidebarContentData} from '../sidebar-content-data';
 import {SidebarContentFeed} from '../sidebar-content-feed';
@@ -24,5 +25,10 @@ export function SidebarTabContent() {
     }
   };
 
-  return <div className={styles.tabContent}>{renderContent()}</div>;
+  return (
+    <div className={styles.tabContent}>
+      <ClearFiltersButton />
+      {renderContent()}
+    </div>
+  );
 }
