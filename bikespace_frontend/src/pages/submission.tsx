@@ -18,13 +18,12 @@ import {
   SubmissionStatus,
 } from '../interfaces/Submission';
 
-const orderedComponents = [Issue, Location, Time, Comments, Summary];
-const orderedComponentsLabel = [
-  'issue',
-  'location',
-  'time',
-  'comments',
-  'summary',
+const orderedComponents = [
+  {component: Issue, label: 'issue'},
+  {component: Location, label: 'location'},
+  {component: Time, label: 'time'},
+  {component: Comments, label: 'comments'},
+  {component: Summary, label: 'summary'},
 ];
 
 const SubmissionRoute = () => {
@@ -122,7 +121,7 @@ const SubmissionRoute = () => {
   }
 
   const ComponentToLoad = () => {
-    switch (orderedComponents[step]) {
+    switch (orderedComponents[step].component) {
       case Issue:
         return <Issue issues={issues} onIssuesChanged={setIssues} />;
       case Location:
@@ -174,7 +173,7 @@ const SubmissionRoute = () => {
               <button
                 className={`primary-btn-no-fill ${step === 0 ? 'hide' : ''}`}
                 onClick={() => handleStepChanged(-1)}
-                data-umami-event={`back-button-from-${orderedComponentsLabel[step]}`}
+                data-umami-event={`back-button-from-${orderedComponents[step].label}`}
               >
                 Back
               </button>
@@ -195,7 +194,7 @@ const SubmissionRoute = () => {
                 step === orderedComponents.length - 1 ? 'display-none' : ' '
               }`}
               onClick={() => handleStepChanged(1)}
-              data-umami-event={`next-button-from-${orderedComponentsLabel[step]}`}
+              data-umami-event={`next-button-from-${orderedComponents[step].label}`}
             >
               Next
             </button>
