@@ -8,7 +8,7 @@ export function SidebarButton({
   ...props
 }: React.ButtonHTMLAttributes<HTMLButtonElement>) {
   return (
-    <button className={`${styles.primaryBtn} ${className}`} {...props}>
+    <button {...props} className={`${styles.primaryBtn} ${className}`}>
       {children}
     </button>
   );

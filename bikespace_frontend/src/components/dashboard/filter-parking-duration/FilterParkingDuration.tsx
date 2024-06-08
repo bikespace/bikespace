@@ -1,4 +1,8 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
+
+import {SubmissionFiltersContext} from '../context';
+
+import {ParkingDuration} from '@/interfaces/Submission';
 
 import {FilterSection} from '../filter-section';
 import {SidebarButton} from '../sidebar-button';
@@ -11,8 +15,32 @@ enum DurationCategory {
 }
 
 export function FilterParkingDuration() {
+  const filters = useContext(SubmissionFiltersContext);
+
   const [durationCategory, setDurationCategory] =
     useState<DurationCategory | null>(null);
+
+  useEffect(() => {
+    switch (durationCategory) {
+      case DurationCategory.Short:
+        filters?.setFilters(prev => ({
+          ...prev,
+          parkingDuration: [ParkingDuration.Minutes, ParkingDuration.Hours],
+        }));
+        break;
+      case DurationCategory.Long:
+        filters?.setFilters(prev => ({
+          ...prev,
+          parkingDuration: [
+            ParkingDuration.Overnight,
+            ParkingDuration.MultiDay,
+          ],
+        }));
+        break;
+      default:
+        return;
+    }
+  }, [durationCategory]);
 
   return (
     <FilterSection title="Parking Duration">
@@ -21,11 +49,33 @@ export function FilterParkingDuration() {
           <SidebarButton
             key={value}
             onClick={() => {
-              setDurationCategory(prev => (prev === value ? null : value));
+              setDurationCategory(value);
             }}
           >
             {label}
           </SidebarButton>
+        ))}
+      </div>
+      <div className={styles.durationCheckboxes}>
+        {durationCheckboxes.map(({label, value}) => (
+          <div key={value}>
+            <input
+              type="checkbox"
+              id={`filter-parking-duration-${value}`}
+              name={value}
+              className="filter-parking-duration-input"
+              checked={filters?.filters.parkingDuration?.includes(value)}
+              onClick={() => {
+                filters?.setFilters(prev => ({
+                  ...prev,
+                  parkingDuration: prev.parkingDuration?.includes(value)
+                    ? prev.parkingDuration.filter(v => v !== value)
+                    : [...(prev.parkingDuration || []), value],
+                }));
+              }}
+            />
+            <label htmlFor={`filter-parking-duration-${value}`}>{label}</label>
+          </div>
         ))}
       </div>
     </FilterSection>
@@ -40,5 +90,24 @@ const durationButtons = [
   {
     value: DurationCategory.Long,
     label: 'Long-Term',
+  },
+];
+
+const durationCheckboxes = [
+  {
+    value: ParkingDuration.Minutes,
+    label: 'less than an hour',
+  },
+  {
+    value: ParkingDuration.Hours,
+    label: 'several hours',
+  },
+  {
+    value: ParkingDuration.Overnight,
+    label: 'overnight',
+  },
+  {
+    value: ParkingDuration.MultiDay,
+    label: 'several days',
   },
 ];

@@ -1,6 +1,17 @@
 @import '@/styles/variables';
 
 .categoryButtons {
+  width: 100%;
   display: flex;
   gap: 4px;
+  
+  button {
+    flex-grow: 1;
+  }
+}
+
+.durationCheckboxes {
+  input[type='checkbox'] {
+    accent-color: $color-primary-d50p;
+  }
 }

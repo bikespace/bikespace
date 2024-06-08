@@ -58,5 +58,5 @@ export interface SubmissionFilters {
     from: Date;
     to: Date;
   } | null;
-  parkingDuration: ParkingDuration | null;
+  parkingDuration: ParkingDuration[] | null;
 }

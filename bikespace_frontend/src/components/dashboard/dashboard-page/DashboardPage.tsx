@@ -35,6 +35,7 @@ export function DashboardPage({submissions}: DashboardPageProps) {
   const [filteredSubmissions, setFilteredSubmissions] =
     useState<SubmissionApiPayload[]>(submissions);
 
+  // Filter submissions effect
   useEffect(() => {
     const submissionDates = submissions.map(
       submission => new Date(submission.parking_time)
@@ -60,7 +61,9 @@ export function DashboardPage({submissions}: DashboardPageProps) {
               new Date(submission.parking_time) >= dateRange.from &&
               new Date(submission.parking_time) <= dateRange.to
           )
-          .filter(submission => submission.parking_duration === parkingDuration)
+          .filter(submission =>
+            parkingDuration.includes(submission.parking_duration)
+          )
       );
 
     if (dateRange)
@@ -74,8 +77,8 @@ export function DashboardPage({submissions}: DashboardPageProps) {
 
     if (parkingDuration)
       return setFilteredSubmissions(
-        submissions.filter(
-          submission => submission.parking_duration === parkingDuration
+        submissions.filter(submission =>
+          parkingDuration.includes(submission.parking_duration)
         )
       );
   }, [submissions, filters]);
