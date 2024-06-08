@@ -58,7 +58,7 @@ jobs:
           run: make test-frontend
   publish:
     name: Publish to Cloudflare Pages
-    needs: apitest
+    needs: test-frontend
     runs-on: ubuntu-latest
     permissions:
       contents: read
