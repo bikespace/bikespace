@@ -1,16 +1,24 @@
 @import '@/styles/variables';
 
 .filterSection {
+  border-radius: 4px;
+  background-color: white;
+  padding: 4px;
+
   summary {
     border-bottom: 1px solid $color-secondary-light-grey;
     padding-bottom: $spacing-unit;
     margin-bottom: $spacing-unit;
     font-weight: $bold-weight;
     color: $color-primary-d50p;
+    margin-bottom: 4px;
   }
 
   .sectionContent{
     margin: $spacing-unit;
     margin-bottom: $spacing-2;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
   }
 }

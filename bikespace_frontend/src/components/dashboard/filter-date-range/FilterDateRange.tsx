@@ -11,7 +11,7 @@ import {
 } from '../context';
 
 import {FilterSection} from '../filter-section';
-import {CustomDateRangeFilter} from '../custom-date-range-filter';
+import {FilterDateRangeCustom} from '../filter-date-range-custom';
 
 import * as styles from './filter-date-range.module.scss';
 
@@ -43,11 +43,11 @@ export function FilterDateRange() {
 
   return (
     <FilterSection title="Date Range">
-      <div>
+      <div className={styles.dateRange}>
         <div>
           <strong>Showing between:</strong>
         </div>
-        <div className={styles.dateRange}>
+        <div>
           {`${DateTime.fromJSDate(
             dateRange?.from || submissionsDateRange.first!
           ).toLocaleString(DateTime.DATE_FULL, {
@@ -57,7 +57,7 @@ export function FilterDateRange() {
           ).toLocaleString(DateTime.DATE_FULL, {locale: 'en-CA'})}`}
         </div>
       </div>
-      <div>
+      <div className={styles.dateRangeSelect}>
         <label htmlFor="filter-date-range-select">
           <strong>Select:</strong>
         </label>
@@ -80,7 +80,7 @@ export function FilterDateRange() {
         </select>
       </div>
       <div hidden={selectedRange !== FixedDateRange.CustomRange}>
-        <CustomDateRangeFilter />
+        <FilterDateRangeCustom />
       </div>
     </FilterSection>
   );

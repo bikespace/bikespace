@@ -6,7 +6,9 @@ import {
   SubmissionFiltersContext,
 } from '../context';
 
-export function CustomDateRangeFilter() {
+import * as styles from './filter-date-range-custom.module.scss';
+
+export function FilterDateRangeCustom() {
   const submissionsDateRange = useContext(SubmissionsDateRangeContext);
   const filters = useContext(SubmissionFiltersContext);
 
@@ -24,8 +26,8 @@ export function CustomDateRangeFilter() {
   const isoLast = DateTime.fromJSDate(last!).toISODate();
 
   return (
-    <div>
-      <div className="date-input filter-section-item">
+    <div className={styles.dateRangeCustom}>
+      <div className={styles.dateInput}>
         <label htmlFor="filter-start-date">Start date:</label>
         <input
           type="date"
@@ -44,7 +46,7 @@ export function CustomDateRangeFilter() {
           }}
         />
       </div>
-      <div className="date-input filter-section-item">
+      <div className={styles.dateInput}>
         <label htmlFor="filter-end-date">End date:</label>
         <input
           type="date"
@@ -64,7 +66,6 @@ export function CustomDateRangeFilter() {
         />
       </div>
       <button
-        id="filter-date-input-apply"
         type="button"
         onClick={() => {
           filters?.setFilters(prev => ({
