@@ -1,6 +1,10 @@
 @import '@/styles/variables';
 
 .dateRangeCustom {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
   .dateInput {
     display: grid;
     grid-template-columns: 30% 70%;
@@ -18,6 +22,7 @@
   }
 
   button {
+    align-self: flex-start;
     display: flex;
     align-items: center;
     justify-content: center;
