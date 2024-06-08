@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import {useMap, MapContainer, TileLayer} from 'react-leaflet';
-import MarkerClusterGroup from 'react-leaflet-cluster';
+import {LeafletMarkerClusterGroup} from '@/components/shared';
 import {useWindowSize} from '@uidotdev/usehooks';
 
 import {MapMarker} from '../map-marker';
@@ -34,11 +34,11 @@ export function Map({submissions}: MapProps) {
           url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
         <MapHandler />
-        <MarkerClusterGroup chunkedLoading>
+        <LeafletMarkerClusterGroup chunkedLoading>
           {submissions.map(submission => (
             <MapMarker key={submission.id} submission={submission} />
           ))}
-        </MarkerClusterGroup>
+        </LeafletMarkerClusterGroup>
       </MapContainer>
     </div>
   );
