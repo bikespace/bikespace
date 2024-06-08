@@ -28,12 +28,12 @@ export function MapPopup({submission}: MapPopupProps) {
             {issues
               .sort((a, b) => issuePriority[a] - issuePriority[b])
               .map(issue =>
-                popupIssueAttrs[issue] ? (
+                popupIssueLabels[issue] ? (
                   <div
                     className={`${styles.issue} ${styles[issue]}`}
                     key={issue}
                   >
-                    {popupIssueAttrs[issue].labelLong}
+                    {popupIssueLabels[issue]}
                   </div>
                 ) : (
                   <div className={styles.issue} key={issue}>
@@ -77,25 +77,10 @@ const durationDescription = {
   multiday: 'several days',
 };
 
-const popupIssueAttrs = {
-  not_provided: {
-    labelShort: 'No nearby parking',
-    labelLong: 'Bicycle parking was not provided nearby',
-  },
-  damaged: {
-    labelShort: 'Parking damaged',
-    labelLong: 'Bicycle parking was damaged',
-  },
-  abandoned: {
-    labelShort: 'Abandoned bicycle',
-    labelLong: 'Parked bicycle was abandoned',
-  },
-  other: {
-    labelShort: 'Other issue',
-    labelLong: 'Other issue',
-  },
-  full: {
-    labelShort: 'Parking full',
-    labelLong: 'Bicycle parking was full',
-  },
+const popupIssueLabels = {
+  not_provided: 'Bicycle parking was full',
+  damaged: 'Bicycle parking was damaged',
+  abandoned: 'Parked bicycle was abandoned',
+  other: 'Other issue',
+  full: 'Bicycle parking was full',
 };

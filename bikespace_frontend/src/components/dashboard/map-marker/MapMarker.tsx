@@ -25,7 +25,7 @@ export function MapMarker({submission}: MapMarkerProps) {
 
     return issuePriority[a] < issuePriority[c] ? a : c;
   }, null);
-  const customMarker = markerIssueAttrs[priorityIssue ?? 'other'];
+  const customMarker = markerIssueIcons[priorityIssue ?? 'other'];
 
   return (
     <Marker
@@ -39,7 +39,7 @@ export function MapMarker({submission}: MapMarkerProps) {
           popupAnchor: [0, -36 * 0.8],
           shadowSize: [41, 41],
           shadowAnchor: [12, 41],
-          iconUrl: customMarker.icon,
+          iconUrl: customMarker,
         })
       }
     >
@@ -49,20 +49,10 @@ export function MapMarker({submission}: MapMarkerProps) {
 }
 
 // for "renderPriority", 0 is the highest priority and higher numbers are lower priority
-const markerIssueAttrs = {
-  not_provided: {
-    icon: notProvidedIcon,
-  },
-  damaged: {
-    icon: damagedIcon,
-  },
-  abandoned: {
-    icon: abandonedIcon,
-  },
-  other: {
-    icon: otherIcon,
-  },
-  full: {
-    icon: fullIcon,
-  },
+const markerIssueIcons = {
+  not_provided: notProvidedIcon,
+  damaged: damagedIcon,
+  abandoned: abandonedIcon,
+  other: otherIcon,
+  full: fullIcon,
 };
