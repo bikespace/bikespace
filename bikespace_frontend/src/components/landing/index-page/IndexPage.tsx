@@ -1,5 +1,5 @@
 import React from 'react';
-import {navigate} from 'gatsby';
+import {Link} from 'gatsby';
 
 import bikespaceLogo from '@/assets/icons/bikespace-logo.svg';
 import githubLogo from '@/assets/icons/github-mark-white.svg';
@@ -16,15 +16,13 @@ export function IndexPage({title}: IndexPageProps) {
       <div className={styles.mainContent}>
         <h1 className={styles.title}>{title}</h1>
         <img className={styles.logo} src={bikespaceLogo} alt="BikeSpace Logo" />
-        <button
+        <Link
           className={styles.button}
-          onClick={() => {
-            navigate('/submission');
-          }}
+          to="/submission"
           data-umami-event="report-parking-issue-button"
         >
           Report a parking issue
-        </button>
+        </Link>
       </div>
 
       <footer>
