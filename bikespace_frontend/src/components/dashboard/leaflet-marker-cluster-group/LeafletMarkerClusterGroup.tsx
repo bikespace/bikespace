@@ -1,4 +1,5 @@
 import {createPathComponent} from '@react-leaflet/core';
+import 'leaflet.markercluster';
 import L, {
   type LayerOptions,
   type PolylineOptions,
@@ -10,7 +11,6 @@ import L, {
   type LatLngBounds,
   type LeafletEventHandlerFn,
 } from 'leaflet';
-import 'leaflet.markercluster';
 import type {PropsWithChildren} from 'react';
 
 export interface MarkerCluster extends Marker {

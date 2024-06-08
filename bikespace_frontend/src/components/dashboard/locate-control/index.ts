@@ -1,1 +1,0 @@
-export {LocateControl} from './LocateControl';
