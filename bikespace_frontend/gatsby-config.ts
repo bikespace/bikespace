@@ -31,6 +31,7 @@ const config: GatsbyConfig = {
     },
     'gatsby-plugin-sharp',
     'gatsby-transformer-sharp',
+    'gatsby-plugin-mdx',
     {
       resolve: 'gatsby-source-filesystem',
       options: {
@@ -39,6 +40,14 @@ const config: GatsbyConfig = {
       },
       __key: 'assets',
     },
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        name: `content`,
+        path: `./src/content`,
+      },
+    },
+    'gatsby-transformer-remark',
     'gatsby-plugin-vanilla-extract',
     'gatsby-plugin-sass',
     {
