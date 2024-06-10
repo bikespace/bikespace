@@ -46,9 +46,11 @@
     "leaflet.locatecontrol": "^0.81.1",
     "leaflet.markercluster": "^1.5.3",
     "luxon": "^3.4.4",
+    "plotly.js-dist-min": "^2.33.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-leaflet": "^4.2.1"
+    "react-leaflet": "^4.2.1",
+    "react-plotly.js": "^2.6.0"
   },
   "devDependencies": {
     "@babel/preset-typescript": "^7.23.3",
@@ -61,8 +63,10 @@
     "@types/leaflet.markercluster": "^1.5.4",
     "@types/luxon": "^3.4.2",
     "@types/node": "^18.14.0",
+    "@types/plotly.js-dist-min": "^2.3.4",
     "@types/react": "^18.0.28",
     "@types/react-dom": "^18.0.11",
+    "@types/react-plotly.js": "^2.6.3",
     "@typescript-eslint/eslint-plugin": "^6.18.0",
     "babel-jest": "^29.7.0",
     "babel-preset-gatsby": "^3.12.1",
