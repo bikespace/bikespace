@@ -5,7 +5,7 @@ info:
   description: BikeSpace API
 
 servers:
-  - url: http://127.0.0.1/api/v2
+  - url: /api/v2
   - url: https://api-dev.bikespace.ca/api/v2
 
 paths:
