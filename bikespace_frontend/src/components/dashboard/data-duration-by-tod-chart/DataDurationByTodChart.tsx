@@ -22,7 +22,7 @@ export function DataDurationByTodChart({
   useEffect(() => {
     const countData: number[][] = [];
 
-    for (const duration of parkingDurations) {
+    for (const duration of Object.values(ParkingDuration)) {
       countData.push(
         intervals.map(
           interval =>
@@ -49,7 +49,7 @@ export function DataDurationByTodChart({
       dArray.forEach((_, j) => {
         annts.push({
           x: `${intervals[j].start}-${intervals[j].end}`,
-          y: parkingDurations[i],
+          y: Object.values(ParkingDuration)[i],
           text: data[i][j].toString(),
           showarrow: false,
           font: {color: 'white'},
@@ -60,7 +60,7 @@ export function DataDurationByTodChart({
     setAnnotations(annts);
   }, [data]);
 
-  console.log(data);
+  console.log(Object.values(ParkingDuration), data);
 
   return (
     <Plot
@@ -69,7 +69,7 @@ export function DataDurationByTodChart({
         {
           type: 'heatmap',
           x: intervals.map(b => `${b.start}-${b.end}`),
-          y: parkingDurations,
+          y: Object.values(ParkingDuration),
           z: data,
           xgap: 1, // space between heatmap tiles
           ygap: 1,
@@ -92,18 +92,17 @@ export function DataDurationByTodChart({
           pad: {l: 4},
         },
         yaxis: {
-          type: 'category',
           //@ts-expect-error labelalias attribute is present
           labelalias: durationLabels,
           automargin: true,
           fixedrange: true, // prevent user zoom
           ticks: '',
           showgrid: false,
-          categoryorder: 'array', // order by custom array
-          categoryarray: parkingDurations, // y-axis ordering array
+          // TODO: FIX HEATMAP Y-AXIS ORDERING BUG - BUGGY AF!!!
+          categoryorder: 'array', // ordering
+          categoryarray: Object.values(ParkingDuration),
         },
         xaxis: {
-          type: 'category',
           automargin: true,
           fixedrange: true,
           tickangle: 0,
@@ -167,17 +166,9 @@ const intervals = Interval.fromDateTimes(
     end: i.end?.hour,
   }));
 
-// parking duration order
-const parkingDurations = [
-  ParkingDuration.Minutes,
-  ParkingDuration.Hours,
-  ParkingDuration.Overnight,
-  ParkingDuration.MultiDay,
-];
-
 const durationLabels = {
-  [ParkingDuration.Minutes]: 'Hours ',
   [ParkingDuration.Hours]: 'Minutes ',
+  [ParkingDuration.Minutes]: 'Hours ',
   [ParkingDuration.Overnight]: 'Overnight ',
   [ParkingDuration.MultiDay]: 'Days ',
 };
