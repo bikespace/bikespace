@@ -22,7 +22,7 @@ export function DataDurationByTodChart({
   useEffect(() => {
     const countData: number[][] = [];
 
-    for (const duration of Object.values(ParkingDuration)) {
+    for (const duration of parkingDurations) {
       countData.push(
         intervals.map(
           interval =>
@@ -49,7 +49,7 @@ export function DataDurationByTodChart({
       dArray.forEach((_, j) => {
         annts.push({
           x: `${intervals[j].start}-${intervals[j].end}`,
-          y: Object.values(ParkingDuration)[i],
+          y: parkingDurations[i],
           text: data[i][j].toString(),
           showarrow: false,
           font: {color: 'white'},
@@ -60,8 +60,6 @@ export function DataDurationByTodChart({
     setAnnotations(annts);
   }, [data]);
 
-  console.log(Object.values(ParkingDuration), data);
-
   return (
     <Plot
       className={className}
@@ -69,7 +67,7 @@ export function DataDurationByTodChart({
         {
           type: 'heatmap',
           x: intervals.map(b => `${b.start}-${b.end}`),
-          y: Object.values(ParkingDuration),
+          y: parkingDurations,
           z: data,
           xgap: 1, // space between heatmap tiles
           ygap: 1,
@@ -100,7 +98,7 @@ export function DataDurationByTodChart({
           showgrid: false,
           // TODO: FIX HEATMAP Y-AXIS ORDERING BUG - BUGGY AF!!!
           categoryorder: 'array', // ordering
-          categoryarray: Object.values(ParkingDuration),
+          categoryarray: parkingDurations,
         },
         xaxis: {
           automargin: true,
@@ -165,6 +163,8 @@ const intervals = Interval.fromDateTimes(
     start: i.start?.hour,
     end: i.end?.hour,
   }));
+
+const parkingDurations = Object.values(ParkingDuration);
 
 const durationLabels = {
   [ParkingDuration.Hours]: 'Minutes ',
