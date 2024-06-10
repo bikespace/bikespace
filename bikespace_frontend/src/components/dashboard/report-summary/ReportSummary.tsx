@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useState, useEffect} from 'react';
 import {DateTime} from 'luxon';
 
 import {
@@ -16,12 +16,28 @@ export function ReportSummary() {
   const {filters} = useContext(SubmissionFiltersContext)!;
   const {first, last} = useContext(SubmissionsDateRangeContext)!;
 
-  const earliestEntry = DateTime.fromJSDate(
-    filters.dateRange?.from || first!
-  ).toLocaleString(DateTime.DATE_FULL, {locale: 'en-CA'});
-  const latestEntry = DateTime.fromJSDate(
-    filters.dateRange?.to || last!
-  ).toLocaleString(DateTime.DATE_FULL, {locale: 'en-CA'});
+  const [dateRange, setDateRange] = useState({
+    from: first!,
+    to: last!,
+  });
+
+  useEffect(() => {
+    if (submissions.length === 0) return;
+
+    setDateRange({
+      from: new Date(submissions[0].parking_time),
+      to: new Date(submissions[submissions.length - 1].parking_time),
+    });
+  }, [submissions]);
+
+  const earliestEntry = DateTime.fromJSDate(dateRange.from).toLocaleString(
+    DateTime.DATE_FULL,
+    {locale: 'en-CA'}
+  );
+  const latestEntry = DateTime.fromJSDate(dateRange.to).toLocaleString(
+    DateTime.DATE_FULL,
+    {locale: 'en-CA'}
+  );
 
   return (
     <div className={styles.summary}>

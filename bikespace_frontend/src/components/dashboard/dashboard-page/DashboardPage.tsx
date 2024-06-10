@@ -39,21 +39,26 @@ export function DashboardPage({submissions}: DashboardPageProps) {
 
   // Filter submissions effect
   useEffect(() => {
-    const submissionDates = submissions.map(
-      submission => new Date(submission.parking_time)
+    if (submissions.length === 0) return;
+
+    const sortedSubmissions = [...submissions];
+
+    sortedSubmissions.sort(
+      (a, b) =>
+        new Date(a.parking_time).getTime() - new Date(b.parking_time).getTime()
     );
 
-    submissionDates.sort((a, b) => a.getTime() - b.getTime());
-
     setSubmissionsDateRange({
-      first: submissionDates[0],
-      last: submissionDates[submissionDates.length - 1],
+      first: new Date(sortedSubmissions[0].parking_time),
+      last: new Date(
+        sortedSubmissions[sortedSubmissions.length - 1].parking_time
+      ),
     });
 
     const {dateRange, parkingDuration, issue, day} = filters;
 
     setFilteredSubmissions(
-      submissions.filter(
+      sortedSubmissions.filter(
         submission =>
           (dateRange
             ? new Date(submission.parking_time) >= dateRange.from &&
