@@ -15,7 +15,7 @@ enum DurationCategory {
 }
 
 export function FilterParkingDuration() {
-  const filters = useContext(SubmissionFiltersContext);
+  const {filters, setFilters} = useContext(SubmissionFiltersContext)!;
 
   const [durationCategory, setDurationCategory] =
     useState<DurationCategory | null>(null);
@@ -23,13 +23,13 @@ export function FilterParkingDuration() {
   useEffect(() => {
     switch (durationCategory) {
       case DurationCategory.Short:
-        filters?.setFilters(prev => ({
+        setFilters(prev => ({
           ...prev,
           parkingDuration: [ParkingDuration.Minutes, ParkingDuration.Hours],
         }));
         break;
       case DurationCategory.Long:
-        filters?.setFilters(prev => ({
+        setFilters(prev => ({
           ...prev,
           parkingDuration: [
             ParkingDuration.Overnight,
@@ -64,9 +64,9 @@ export function FilterParkingDuration() {
               id={`filter-parking-duration-${value}`}
               name={value}
               className="filter-parking-duration-input"
-              checked={filters?.filters.parkingDuration?.includes(value)}
+              checked={filters.parkingDuration?.includes(value)}
               onClick={() => {
-                filters?.setFilters(prev => ({
+                setFilters(prev => ({
                   ...prev,
                   parkingDuration: prev.parkingDuration?.includes(value)
                     ? prev.parkingDuration.filter(v => v !== value)

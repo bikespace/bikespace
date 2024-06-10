@@ -59,4 +59,5 @@ export interface SubmissionFilters {
     to: Date;
   } | null;
   parkingDuration: ParkingDuration[] | null;
+  issue: IssueType | null;
 }

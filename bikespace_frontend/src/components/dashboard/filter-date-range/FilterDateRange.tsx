@@ -16,13 +16,12 @@ import {FilterDateRangeCustom} from '../filter-date-range-custom';
 import * as styles from './filter-date-range.module.scss';
 
 export function FilterDateRange() {
-  const submissionFilters = useContext(SubmissionFiltersContext);
-  const submissionsDateRange = useContext(SubmissionsDateRangeContext);
+  const {filters, setFilters} = useContext(SubmissionFiltersContext)!;
+  const {first, last} = useContext(SubmissionsDateRangeContext)!;
 
   const [dateRange, setDateRange] = useState<{from: Date; to: Date} | null>({
-    from:
-      submissionFilters?.filters.dateRange?.from || submissionsDateRange.first!,
-    to: submissionFilters?.filters.dateRange?.to || submissionsDateRange.last!,
+    from: filters.dateRange?.from || first!,
+    to: filters.dateRange?.to || last!,
   });
   const [selectedRange, setSelectedRange] = useState<FixedDateRange>(
     FixedDateRange.AllDates
@@ -35,7 +34,7 @@ export function FilterDateRange() {
   }, [selectedRange]);
 
   useEffect(() => {
-    submissionFilters?.setFilters(prev => ({
+    setFilters(prev => ({
       ...prev,
       dateRange,
     }));
@@ -48,13 +47,15 @@ export function FilterDateRange() {
           <strong>Showing between:</strong>
         </div>
         <div>
-          {`${DateTime.fromJSDate(
-            dateRange?.from || submissionsDateRange.first!
-          ).toLocaleString(DateTime.DATE_FULL, {
-            locale: 'en-CA',
-          })} - ${DateTime.fromJSDate(
-            dateRange?.to || submissionsDateRange.last!
-          ).toLocaleString(DateTime.DATE_FULL, {locale: 'en-CA'})}`}
+          {`${DateTime.fromJSDate(dateRange?.from || first!).toLocaleString(
+            DateTime.DATE_FULL,
+            {
+              locale: 'en-CA',
+            }
+          )} - ${DateTime.fromJSDate(dateRange?.to || last!).toLocaleString(
+            DateTime.DATE_FULL,
+            {locale: 'en-CA'}
+          )}`}
         </div>
       </div>
       <div className={styles.dateRangeSelect}>

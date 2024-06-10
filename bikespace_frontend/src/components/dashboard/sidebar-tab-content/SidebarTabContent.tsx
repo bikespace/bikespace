@@ -10,10 +10,10 @@ import {SidebarContentFeed} from '../sidebar-content-feed';
 import * as styles from './sidebar-tab-content.module.scss';
 
 export function SidebarTabContent() {
-  const tabContext = useContext(TabContext);
+  const {tab} = useContext(TabContext)!;
 
   const renderContent = () => {
-    switch (tabContext?.tab) {
+    switch (tab) {
       case 'data':
         return <SidebarContentData />;
       case 'filters':

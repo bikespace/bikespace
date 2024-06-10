@@ -9,14 +9,10 @@ import clearFilterIcon from '@/assets/icons/clear-filter.svg';
 import * as styles from './clear-filters-button.module.scss';
 
 export function ClearFiltersButton() {
-  const filtersContext = useContext(SubmissionFiltersContext);
-
-  if (!filtersContext) return null;
-
   const {
     filters: {dateRange, parkingDuration},
     setFilters,
-  } = filtersContext;
+  } = useContext(SubmissionFiltersContext)!;
 
   if (
     (!parkingDuration || parkingDuration.length === 0) &&
@@ -31,6 +27,7 @@ export function ClearFiltersButton() {
         setFilters({
           dateRange: null,
           parkingDuration: null,
+          issue: null,
         });
       }}
     >

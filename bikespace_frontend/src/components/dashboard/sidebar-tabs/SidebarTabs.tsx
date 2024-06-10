@@ -20,21 +20,19 @@ const tabs = [
 ];
 
 export function SidebarTabs() {
-  const tabContext = useContext(TabContext);
+  const {tab, setTab} = useContext(TabContext)!;
 
   return (
     <nav className={styles.tabs}>
-      {tabs.map(tab => (
+      {tabs.map(t => (
         <button
-          key={tab.name}
-          className={`${styles.tab} ${
-            tab.name === tabContext?.tab ? styles.active : ''
-          }`}
+          key={t.name}
+          className={`${styles.tab} ${t.name === tab ? styles.active : ''}`}
           onClick={() => {
-            tabContext?.setTab(tab.name);
+            setTab(t.name);
           }}
         >
-          <span>{tab.label}</span>
+          <span>{t.label}</span>
         </button>
       ))}
     </nav>

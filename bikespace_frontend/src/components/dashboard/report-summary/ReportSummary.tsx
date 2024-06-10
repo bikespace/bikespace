@@ -13,14 +13,14 @@ import * as styles from './report-summary.module.scss';
 
 export function ReportSummary() {
   const submissions = useContext(SubmissionsContext);
-  const filtersContext = useContext(SubmissionFiltersContext);
-  const submissionsDateRange = useContext(SubmissionsDateRangeContext);
+  const {filters} = useContext(SubmissionFiltersContext)!;
+  const {first, last} = useContext(SubmissionsDateRangeContext)!;
 
   const earliestEntry = DateTime.fromJSDate(
-    filtersContext?.filters.dateRange?.from || submissionsDateRange.first!
+    filters.dateRange?.from || first!
   ).toLocaleString(DateTime.DATE_FULL, {locale: 'en-CA'});
   const latestEntry = DateTime.fromJSDate(
-    filtersContext?.filters.dateRange?.to || submissionsDateRange.last!
+    filters.dateRange?.to || last!
   ).toLocaleString(DateTime.DATE_FULL, {locale: 'en-CA'});
 
   return (
@@ -40,8 +40,7 @@ export function ReportSummary() {
         <span>
           {submissions.length > 0
             ? ` reports ${
-                filtersContext?.filters.dateRange === null &&
-                filtersContext?.filters.parkingDuration === null
+                filters.dateRange === null && filters.parkingDuration === null
                   ? ' (filtered)'
                   : ''
               }`

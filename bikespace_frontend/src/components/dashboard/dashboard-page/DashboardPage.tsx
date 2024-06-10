@@ -26,6 +26,7 @@ export function DashboardPage({submissions}: DashboardPageProps) {
   const [filters, setFilters] = useState<SubmissionFilters>({
     dateRange: null,
     parkingDuration: null,
+    issue: null,
   });
   const [submissionsDateRange, setSubmissionsDateRange] =
     useState<SubmissionsDateRangeContextData>({
@@ -48,39 +49,21 @@ export function DashboardPage({submissions}: DashboardPageProps) {
       last: submissionDates[submissionDates.length - 1],
     });
 
-    const {dateRange, parkingDuration} = filters;
+    const {dateRange, parkingDuration, issue} = filters;
 
-    if (dateRange === null && parkingDuration === null)
-      return setFilteredSubmissions(submissions);
-
-    if (dateRange && parkingDuration)
-      return setFilteredSubmissions(
-        submissions
-          .filter(
-            submission =>
-              new Date(submission.parking_time) >= dateRange.from &&
+    setFilteredSubmissions(
+      submissions.filter(
+        submission =>
+          (dateRange
+            ? new Date(submission.parking_time) >= dateRange.from &&
               new Date(submission.parking_time) <= dateRange.to
-          )
-          .filter(submission =>
-            parkingDuration.includes(submission.parking_duration)
-          )
-      );
-
-    if (dateRange)
-      return setFilteredSubmissions(
-        submissions.filter(
-          submission =>
-            new Date(submission.parking_time) >= dateRange.from &&
-            new Date(submission.parking_time) <= dateRange.to
-        )
-      );
-
-    if (parkingDuration)
-      return setFilteredSubmissions(
-        submissions.filter(submission =>
-          parkingDuration.includes(submission.parking_duration)
-        )
-      );
+            : true) &&
+          (parkingDuration && parkingDuration.length > 0
+            ? parkingDuration.includes(submission.parking_duration)
+            : true) &&
+          (issue ? submission.issues.includes(issue) : true)
+      )
+    );
   }, [submissions, filters]);
 
   return (
