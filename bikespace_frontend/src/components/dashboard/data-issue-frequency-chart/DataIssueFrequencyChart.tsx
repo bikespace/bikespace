@@ -12,7 +12,6 @@ import * as styles from './data-issue-frequency-chart.module.scss';
 
 type InputData = {
   type: IssueType;
-  label: string;
   count: number;
   color: string;
 };
@@ -21,7 +20,7 @@ export function DataIssueFrequencyChart({
   className,
 }: Pick<PlotParams, 'className'>) {
   const submissions = useContext(SubmissionsContext);
-  const {filters, setFilters} = useContext(SubmissionFiltersContext)!;
+  const {setFilters} = useContext(SubmissionFiltersContext)!;
 
   const [issue, setIssue] = useState<IssueType | null>(null);
   const [data, setData] = useState<InputData[]>([]);
@@ -29,16 +28,15 @@ export function DataIssueFrequencyChart({
   useEffect(() => {
     const inputData = Object.values(IssueType).map(i => ({
       type: i,
-      label: `${issueLabels[i]} `,
       count: submissions.filter(submission => submission.issues.includes(i))
         .length,
-      color: styles[!filters.issue || filters.issue === i ? i : `${i}_light`],
+      color: styles[!issue || issue === i ? i : `${i}_light`],
     }));
 
-    if (filters.issue === null) inputData.sort((a, b) => a.count - b.count);
+    if (issue === null) inputData.sort((a, b) => a.count - b.count);
 
     setData(inputData);
-  }, [submissions, filters.issue]);
+  }, [submissions, issue]);
 
   useEffect(() => {
     setFilters(prev => ({
@@ -101,9 +99,9 @@ export function DataIssueFrequencyChart({
 }
 
 const issueLabels = {
-  [IssueType.NotProvided]: 'No nearby parking',
-  [IssueType.Damaged]: 'Parking damaged',
-  [IssueType.Abandoned]: 'Abandoned bicycle',
-  [IssueType.Other]: 'Other issue',
-  [IssueType.Full]: 'Parking full',
+  [IssueType.NotProvided]: 'No nearby parking ',
+  [IssueType.Damaged]: 'Parking damaged ',
+  [IssueType.Abandoned]: 'Abandoned bicycle ',
+  [IssueType.Other]: 'Other issue ',
+  [IssueType.Full]: 'Parking full ',
 };

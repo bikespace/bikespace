@@ -58,6 +58,17 @@ export interface SubmissionFilters {
     from: Date;
     to: Date;
   } | null;
-  parkingDuration: ParkingDuration[] | null;
+  parkingDuration: ParkingDuration[];
   issue: IssueType | null;
+  day: Day | null;
+}
+
+export enum Day {
+  Monday = 0,
+  Tuesday = 1,
+  Wednesday = 2,
+  Thursday = 3,
+  Friday = 4,
+  Saturday = 5,
+  Sunday = 6,
 }

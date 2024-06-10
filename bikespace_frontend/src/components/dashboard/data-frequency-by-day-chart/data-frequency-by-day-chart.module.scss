@@ -1,0 +1,11 @@
+@import '@/styles/variables';
+
+$colors: (
+  'barColor': $color-primary,
+);
+
+:export {
+  @each $color, $value in $colors {
+    #{unquote($color)}: $value;
+  }
+}

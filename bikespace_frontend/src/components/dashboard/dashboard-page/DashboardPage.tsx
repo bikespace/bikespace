@@ -25,8 +25,9 @@ export function DashboardPage({submissions}: DashboardPageProps) {
   const [tab, setTab] = useState<string>('data');
   const [filters, setFilters] = useState<SubmissionFilters>({
     dateRange: null,
-    parkingDuration: null,
+    parkingDuration: [],
     issue: null,
+    day: null,
   });
   const [submissionsDateRange, setSubmissionsDateRange] =
     useState<SubmissionsDateRangeContextData>({
@@ -49,7 +50,7 @@ export function DashboardPage({submissions}: DashboardPageProps) {
       last: submissionDates[submissionDates.length - 1],
     });
 
-    const {dateRange, parkingDuration, issue} = filters;
+    const {dateRange, parkingDuration, issue, day} = filters;
 
     setFilteredSubmissions(
       submissions.filter(
@@ -58,10 +59,13 @@ export function DashboardPage({submissions}: DashboardPageProps) {
             ? new Date(submission.parking_time) >= dateRange.from &&
               new Date(submission.parking_time) <= dateRange.to
             : true) &&
-          (parkingDuration && parkingDuration.length > 0
+          (parkingDuration.length > 0
             ? parkingDuration.includes(submission.parking_duration)
             : true) &&
-          (issue ? submission.issues.includes(issue) : true)
+          (issue ? submission.issues.includes(issue) : true) &&
+          (day !== null
+            ? new Date(submission.parking_time).getDay() === day
+            : true)
       )
     );
   }, [submissions, filters]);
