@@ -15,10 +15,6 @@
     overflow-y: hidden;
     display: flex;
     flex-direction: column;
-
-    &.closed {
-      display: none;
-    }
   }
 }
 
@@ -57,12 +53,11 @@ $height-panel-handle-bar: 6px;
         border-radius: calc($height-panel-handle-bar / 2);
         background-color: $color-primary;
       }
-
     }
 
-    &.closed {
-      &.drawerHandle::before {
-        background-color: $color-secondary-med-light-grey;
+    .sidebarContent {
+      &.closed {
+        display: none;
       }
     }
   }
