@@ -5,7 +5,7 @@ import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 
 import {IssueType, SubmissionApiPayload} from '@/interfaces/Submission';
 
-import {issuePriority} from '@/utils/api-data-attributes';
+import {issuePriority} from '@/config/bikespace-api';
 
 import {MapPopup} from '../map-popup';
 

@@ -3,7 +3,7 @@ import {Popup} from 'react-leaflet';
 import {SubmissionApiPayload} from '@/interfaces/Submission';
 import {Link} from 'gatsby';
 
-import {issuePriority} from '@/utils/api-data-attributes';
+import {issuePriority} from '@/config/bikespace-api';
 
 import * as styles from './map-popup.module.scss';
 
