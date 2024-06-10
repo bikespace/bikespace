@@ -1,27 +1,35 @@
-import React, {useContext, useState} from 'react';
-import Plotly from 'plotly.js-dist-min';
-import createPlotlyComponent from 'react-plotly.js/factory';
+import React, {useContext, useState, useEffect} from 'react';
+
+import {Plot, config} from '@/config/plotly';
 
 import {IssueType} from '@/interfaces/Submission';
 
-import {SubmissionsContext} from '../context';
+import {SubmissionFiltersContext, SubmissionsContext} from '../context';
 
-const Plot = createPlotlyComponent(Plotly);
+import * as styles from './data-issue-frequency-chart.module.scss';
 
 export function DataIssueFrequencyChart() {
   const submissions = useContext(SubmissionsContext);
+  const {setFilters} = useContext(SubmissionFiltersContext)!;
 
   const [issue, setIssue] = useState<IssueType | null>(null);
 
-  const data = Object.values(IssueType).map(issue => ({
-    type: issue,
-    label: `${issueLabels[issue]} `,
-    count: submissions.filter(submission => submission.issues.includes(issue))
+  const data = Object.values(IssueType).map(i => ({
+    type: i,
+    label: `${issueLabels[i]} `,
+    count: submissions.filter(submission => submission.issues.includes(i))
       .length,
-    color: '',
+    color: styles[!issue || issue === i ? i : `${i}_light`],
   }));
 
   data.sort((a, b) => a.count - b.count);
+
+  useEffect(() => {
+    setFilters(prev => ({
+      ...prev,
+      issue,
+    }));
+  }, [issue]);
 
   return (
     <Plot
@@ -31,9 +39,7 @@ export function DataIssueFrequencyChart() {
           orientation: 'h', // horizontal
           x: data.map(d => d.count),
           y: data.map(d => d.type),
-          marker: {
-            color: data.map(d => d.color),
-          },
+          marker: {color: data.map(d => d.color)},
           text: data.map(d => d.count.toString()),
           hoverinfo: 'none', // remove hover labels
         },
@@ -63,6 +69,7 @@ export function DataIssueFrequencyChart() {
         width: 320 - 4 * 2,
         height: 200,
       }}
+      config={config}
     />
   );
 }
