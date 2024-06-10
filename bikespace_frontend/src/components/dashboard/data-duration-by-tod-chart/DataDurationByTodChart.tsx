@@ -32,7 +32,7 @@ export function DataDurationByTodChart({
               return (
                 submission.parking_duration === duration &&
                 parkingHour >= interval.start! &&
-                parkingHour < interval.end!
+                parkingHour < (interval.end! === 0 ? 24 : interval.end!)
               );
             }).length
         )
@@ -52,7 +52,7 @@ export function DataDurationByTodChart({
           y: parkingDurations[i],
           text: data[i][j].toString(),
           showarrow: false,
-          font: {color: 'black'},
+          font: {color: 'white'},
         });
       });
     });
@@ -128,12 +128,6 @@ export function DataDurationByTodChart({
           },
         ],
         annotations,
-        margin: {
-          t: 30,
-          r: 20,
-          b: 4,
-          l: 20,
-        },
         height: 160,
       }}
       config={config}
@@ -170,6 +164,8 @@ const parkingDurations = [
   ParkingDuration.Overnight,
   ParkingDuration.MultiDay,
 ];
+
+console.log(intervals, parkingDurations);
 
 const durationLabels = {
   [ParkingDuration.Minutes]: 'Hours ',

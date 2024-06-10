@@ -84,12 +84,6 @@ export function DataIssueFrequencyChart({
           fixedrange: true,
           range: [0, Math.max(...data.map(d => d.count))],
         },
-        margin: {
-          t: 30,
-          r: 20,
-          b: 4,
-          l: 120,
-        },
         height: 200,
       }}
       config={config}
