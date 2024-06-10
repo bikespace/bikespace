@@ -16,13 +16,12 @@ import {FilterDateRangeCustom} from '../filter-date-range-custom';
 import * as styles from './filter-date-range.module.scss';
 
 export function FilterDateRange() {
-  const {filters, setFilters} = useContext(SubmissionFiltersContext)!;
+  const {setFilters} = useContext(SubmissionFiltersContext)!;
   const {first, last} = useContext(SubmissionsDateRangeContext)!;
 
-  const [dateRange, setDateRange] = useState<{from: Date; to: Date} | null>({
-    from: filters.dateRange?.from || first!,
-    to: filters.dateRange?.to || last!,
-  });
+  const [dateRange, setDateRange] = useState<{from: Date; to: Date} | null>(
+    null
+  );
   const [selectedRange, setSelectedRange] = useState<FixedDateRange>(
     FixedDateRange.AllDates
   );
