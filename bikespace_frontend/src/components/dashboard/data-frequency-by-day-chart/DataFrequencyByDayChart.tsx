@@ -85,6 +85,12 @@ export function DataFrequencyByDayChart({
           fixedrange: true,
           tickmode: 'linear',
         },
+        margin: {
+          t: 30,
+          r: 20,
+          b: 4,
+          l: 20,
+        },
         height: 160,
       }}
       config={config}

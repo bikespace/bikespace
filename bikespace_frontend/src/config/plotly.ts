@@ -8,12 +8,6 @@ export const layout = {
     activecolor: 'hsl(137, 68%, 45%)',
     bgcolor: 'transparent',
   },
-  margin: {
-    t: 30,
-    r: 20,
-    b: 4,
-    l: 20,
-  },
 } as Plotly.Layout;
 
 export const config = {

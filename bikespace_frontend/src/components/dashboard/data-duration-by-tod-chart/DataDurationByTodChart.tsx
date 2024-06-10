@@ -60,6 +60,8 @@ export function DataDurationByTodChart({
     setAnnotations(annts);
   }, [data]);
 
+  console.log(data);
+
   return (
     <Plot
       className={className}
@@ -90,6 +92,7 @@ export function DataDurationByTodChart({
           pad: {l: 4},
         },
         yaxis: {
+          type: 'category',
           //@ts-expect-error labelalias attribute is present
           labelalias: durationLabels,
           automargin: true,
@@ -97,9 +100,10 @@ export function DataDurationByTodChart({
           ticks: '',
           showgrid: false,
           categoryorder: 'array', // order by custom array
-          categoryarray: parkingDurations, // custom y-axis order
+          categoryarray: parkingDurations, // y-axis ordering array
         },
         xaxis: {
+          type: 'category',
           automargin: true,
           fixedrange: true,
           tickangle: 0,
@@ -128,6 +132,12 @@ export function DataDurationByTodChart({
           },
         ],
         annotations,
+        margin: {
+          t: 30,
+          r: 20,
+          b: 4,
+          l: 20,
+        },
         height: 160,
       }}
       config={config}
@@ -164,8 +174,6 @@ const parkingDurations = [
   ParkingDuration.Overnight,
   ParkingDuration.MultiDay,
 ];
-
-console.log(intervals, parkingDurations);
 
 const durationLabels = {
   [ParkingDuration.Minutes]: 'Hours ',
