@@ -1,17 +1,14 @@
 import Plotly from 'plotly.js-dist-min';
-import createPlotlyComponent from 'react-plotly.js/factory';
-
-export const Plot = createPlotlyComponent(Plotly);
 
 export const layout = {
   dragmode: false,
-  paper_bgcolor: 'black', // reset chart background to transparent to give more CSS control
+  paper_bgcolor: 'transparent', // reset chart background to transparent to give more CSS control
   modebar: {
     color: 'hsl(137, 56%, 73%)',
     activecolor: 'hsl(137, 68%, 45%)',
-    bgcolor: 'black',
+    bgcolor: 'transparent',
   },
-};
+} as Plotly.Layout;
 
 export const config = {
   displaylogo: false,

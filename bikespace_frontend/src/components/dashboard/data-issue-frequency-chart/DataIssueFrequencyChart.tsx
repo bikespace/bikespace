@@ -1,6 +1,8 @@
 import React, {useContext, useState, useEffect} from 'react';
+import Plot, {PlotParams} from 'react-plotly.js';
+import {PlotMouseEvent} from 'plotly.js-dist-min';
 
-import {Plot, config} from '@/config/plotly';
+import {layout, config} from '@/config/plotly';
 
 import {IssueType} from '@/interfaces/Submission';
 
@@ -8,21 +10,35 @@ import {SubmissionFiltersContext, SubmissionsContext} from '../context';
 
 import * as styles from './data-issue-frequency-chart.module.scss';
 
-export function DataIssueFrequencyChart() {
+type InputData = {
+  type: IssueType;
+  label: string;
+  count: number;
+  color: string;
+};
+
+export function DataIssueFrequencyChart({
+  className,
+}: Pick<PlotParams, 'className'>) {
   const submissions = useContext(SubmissionsContext);
-  const {setFilters} = useContext(SubmissionFiltersContext)!;
+  const {filters, setFilters} = useContext(SubmissionFiltersContext)!;
 
   const [issue, setIssue] = useState<IssueType | null>(null);
+  const [data, setData] = useState<InputData[]>([]);
 
-  const data = Object.values(IssueType).map(i => ({
-    type: i,
-    label: `${issueLabels[i]} `,
-    count: submissions.filter(submission => submission.issues.includes(i))
-      .length,
-    color: styles[!issue || issue === i ? i : `${i}_light`],
-  }));
+  useEffect(() => {
+    const inputData = Object.values(IssueType).map(i => ({
+      type: i,
+      label: `${issueLabels[i]} `,
+      count: submissions.filter(submission => submission.issues.includes(i))
+        .length,
+      color: styles[!filters.issue || filters.issue === i ? i : `${i}_light`],
+    }));
 
-  data.sort((a, b) => a.count - b.count);
+    if (filters.issue === null) inputData.sort((a, b) => a.count - b.count);
+
+    setData(inputData);
+  }, [submissions, filters.issue]);
 
   useEffect(() => {
     setFilters(prev => ({
@@ -31,8 +47,17 @@ export function DataIssueFrequencyChart() {
     }));
   }, [issue]);
 
+  const handleClick = (e: PlotMouseEvent) => {
+    const point = e.points[0];
+
+    if (!point) return;
+
+    setIssue(prev => (prev === point.y ? null : (point.y as IssueType)));
+  };
+
   return (
     <Plot
+      className={className}
       data={[
         {
           type: 'bar',
@@ -45,14 +70,15 @@ export function DataIssueFrequencyChart() {
         },
       ]}
       layout={{
+        ...layout,
         title: {
           text: 'Problem Type Frequency',
           x: 0,
           pad: {l: 4},
         },
         yaxis: {
-          // @ts-expect-error labelalias key present
-          labelalias: data.map(d => d.label),
+          //@ts-expect-error labelalias attribute is present
+          labelalias: issueLabels,
           fixedrange: true, // prevent user zoom
         },
         xaxis: {
@@ -66,10 +92,10 @@ export function DataIssueFrequencyChart() {
           b: 4,
           l: 120,
         },
-        width: 320 - 4 * 2,
         height: 200,
       }}
       config={config}
+      onClick={handleClick}
     />
   );
 }
