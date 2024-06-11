@@ -5,6 +5,8 @@ import {Link} from 'gatsby';
 
 import {issuePriority} from '@/config/bikespace-api';
 
+import {IssueBadge} from '../issue-badge';
+
 import * as styles from './map-popup.module.scss';
 
 interface MapPopupProps {
@@ -27,20 +29,9 @@ export function MapPopup({submission}: MapPopupProps) {
           <div className={styles.issues}>
             {issues
               .sort((a, b) => issuePriority[a] - issuePriority[b])
-              .map(issue =>
-                popupIssueLabels[issue] ? (
-                  <div
-                    className={`${styles.issue} ${styles[issue]}`}
-                    key={issue}
-                  >
-                    {popupIssueLabels[issue]}
-                  </div>
-                ) : (
-                  <div className={styles.issue} key={issue}>
-                    {issue}
-                  </div>
-                )
-              )}
+              .map(issue => (
+                <IssueBadge issue={issue} key={issue} />
+              ))}
           </div>
         ) : (
           <em>none</em>
@@ -75,12 +66,4 @@ const durationDescription = {
   hours: 'several hours',
   overnight: 'overnight',
   multiday: 'several days',
-};
-
-const popupIssueLabels = {
-  not_provided: 'Bicycle parking was full',
-  damaged: 'Bicycle parking was damaged',
-  abandoned: 'Parked bicycle was abandoned',
-  other: 'Other issue',
-  full: 'Bicycle parking was full',
 };

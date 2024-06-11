@@ -45,14 +45,14 @@ export function DashboardPage({submissions}: DashboardPageProps) {
 
     sortedSubmissions.sort(
       (a, b) =>
-        new Date(a.parking_time).getTime() - new Date(b.parking_time).getTime()
+        new Date(b.parking_time).getTime() - new Date(a.parking_time).getTime()
     );
 
     setSubmissionsDateRange({
-      first: new Date(sortedSubmissions[0].parking_time),
-      last: new Date(
+      first: new Date(
         sortedSubmissions[sortedSubmissions.length - 1].parking_time
       ),
+      last: new Date(sortedSubmissions[0].parking_time),
     });
 
     const {dateRange, parkingDuration, issue, day} = filters;

@@ -1,0 +1,1 @@
+export {IssueBadge} from './IssueBadge';

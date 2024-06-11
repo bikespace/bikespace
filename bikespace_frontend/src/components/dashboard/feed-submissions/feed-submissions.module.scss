@@ -1,0 +1,30 @@
+@import '@/styles/variables';
+
+.feed {
+  border-radius: 4px;
+  background-color: white;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+
+  .header {
+    display: flex;
+    align-items: center4;
+    gap: $spacing-2;
+    margin: $spacing-unit;
+    padding: $spacing-unit;
+
+    h2 {
+      flex-grow: 1;
+      font-weight: $bold-weight;
+      font-size: 1.1rem;
+      color: $color-primary-d50p;
+    }
+  }
+
+  .list {
+    flex-grow: 1;
+    overflow-y: scroll;
+    padding: 4px;
+  }
+}

@@ -1,0 +1,41 @@
+@import '@/styles/variables';
+
+.item {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: $spacing-unit;
+  padding-bottom: $spacing-2;
+  border-bottom: $border-unit solid $color-secondary-light-grey;
+  text-align: left;
+  font-size: 0.9rem;
+
+  h3 {
+    font-size: medium;
+  }
+
+  .subHeader {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .submissionId {
+      font-style: italic;
+    }
+  }
+
+  .issues {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-wrap: wrap;
+  }
+
+  &:hover {
+    h3 {
+      color: $color-primary;
+    }
+  }
+}

@@ -43,39 +43,6 @@
   display: flex;
   gap: 4px;
   flex-wrap: wrap;
-
-  .issue {
-    display: inline-block;
-    border: 2px solid;
-    border-radius: 4px;
-    margin: 2px 0px;
-    padding: 2px 4px;
-  
-    &.not_provided {
-      border-color: $color-secondary-red;
-      background-color: $color-secondary-red-light;
-    }
-  
-    &.damaged {
-      border-color: $color-secondary-orange;
-      background-color: $color-secondary-orange-light;
-    }
-  
-    &.abandoned {
-      border-color: $color-secondary-yellow;
-      background-color: $color-secondary-yellow-light;
-    }
-  
-    &.other {
-      border-color: $color-secondary-med-grey;
-      background-color: $color-secondary-light-grey;
-    }
-  
-    &.full {
-      border-color: $color-secondary-orange;
-      background-color: $color-secondary-orange-light;
-    }
-  }
 }
 
 .popupFooter {
