@@ -65,7 +65,7 @@ export function FilterParkingDuration() {
               name={value}
               className="filter-parking-duration-input"
               checked={filters.parkingDuration?.includes(value)}
-              onClick={() => {
+              onChange={() => {
                 setFilters(prev => ({
                   ...prev,
                   parkingDuration: prev.parkingDuration?.includes(value)
