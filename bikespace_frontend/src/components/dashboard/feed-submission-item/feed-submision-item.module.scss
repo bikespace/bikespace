@@ -38,4 +38,8 @@
       color: $color-primary;
     }
   }
+
+  &.focused {
+    background: $color-secondary-light-grey;
+  }
 }

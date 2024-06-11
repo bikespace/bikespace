@@ -6,6 +6,8 @@ import {FeedSubmissionItem} from '../feed-submission-item';
 
 import * as styles from './feed-submissions.module.scss';
 
+// TODO: instead of limiting number of submissions by default, should implement pagination
+
 export function FeedSubmissions() {
   const submissions = useContext(SubmissionsContext);
 

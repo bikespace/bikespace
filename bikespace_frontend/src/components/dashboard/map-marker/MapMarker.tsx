@@ -1,9 +1,11 @@
-import React from 'react';
-import {Marker} from 'react-leaflet';
-import {Icon} from 'leaflet';
+import React, {useContext, useEffect, useRef} from 'react';
+import {Marker, useMap} from 'react-leaflet';
+import {Icon, LatLngTuple} from 'leaflet';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 
 import {IssueType, SubmissionApiPayload} from '@/interfaces/Submission';
+
+import {FocusedSubmissionIdContext} from '../context';
 
 import {issuePriority} from '@/config/bikespace-api';
 
@@ -20,6 +22,23 @@ interface MapMarkerProps {
 }
 
 export function MapMarker({submission}: MapMarkerProps) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const markerRef = useRef<any>(null);
+
+  const position: LatLngTuple = [submission.latitude, submission.longitude];
+
+  const map = useMap();
+
+  const {focus} = useContext(FocusedSubmissionIdContext)!;
+
+  useEffect(() => {
+    if (focus !== submission.id) return;
+
+    map.flyTo(position, 18, {duration: 0.5});
+    // TODO: FIX THIS BUG
+    markerRef.current?.openPopup();
+  }, [focus, markerRef.current]);
+
   const priorityIssue = submission.issues.reduce((a: IssueType | null, c) => {
     if (a === null) return c;
 
@@ -30,7 +49,7 @@ export function MapMarker({submission}: MapMarkerProps) {
   return (
     <Marker
       key={submission.id}
-      position={[submission.latitude, submission.longitude]}
+      position={position}
       icon={
         new Icon({
           shadowUrl: markerShadow,
@@ -42,6 +61,7 @@ export function MapMarker({submission}: MapMarkerProps) {
           iconUrl: customMarker,
         })
       }
+      ref={markerRef}
     >
       <MapPopup submission={submission} />
     </Marker>

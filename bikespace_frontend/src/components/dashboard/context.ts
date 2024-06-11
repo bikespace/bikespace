@@ -29,3 +29,11 @@ export const SubmissionsDateRangeContext =
     first: null,
     last: null,
   });
+
+type FocusedSubmissionIdContextData = {
+  focus: number | null;
+  setFocus: React.Dispatch<React.SetStateAction<number | null>>;
+} | null;
+
+export const FocusedSubmissionIdContext =
+  createContext<FocusedSubmissionIdContextData | null>(null);

@@ -1,11 +1,10 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {useMap, MapContainer, TileLayer} from 'react-leaflet';
 import {useWindowSize} from '@uidotdev/usehooks';
 
-import {MapMarker} from '../map-marker';
-
 import {SubmissionApiPayload} from '@/interfaces/Submission';
 
+import {MapMarker} from '../map-marker';
 import {LeafletLocateControl} from '../leaflet-locate-control';
 import {LeafletMarkerClusterGroup} from '../leaflet-marker-cluster-group';
 
@@ -16,6 +15,8 @@ interface MapProps {
 }
 
 export function Map({submissions}: MapProps) {
+  const mapRef = useRef(null);
+
   return (
     <div className={styles.map}>
       <MapContainer
@@ -23,6 +24,7 @@ export function Map({submissions}: MapProps) {
         zoom={11}
         scrollWheelZoom
         style={{height: '100%'}}
+        ref={mapRef}
       >
         <LeafletLocateControl />
         <TileLayer

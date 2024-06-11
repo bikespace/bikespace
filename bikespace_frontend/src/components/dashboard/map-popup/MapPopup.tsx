@@ -1,9 +1,10 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {Popup} from 'react-leaflet';
 import {SubmissionApiPayload} from '@/interfaces/Submission';
-import {Link} from 'gatsby';
 
 import {issuePriority} from '@/config/bikespace-api';
+
+import {FocusedSubmissionIdContext, TabContext} from '../context';
 
 import {IssueBadge} from '../issue-badge';
 
@@ -14,6 +15,9 @@ interface MapPopupProps {
 }
 
 export function MapPopup({submission}: MapPopupProps) {
+  const {setFocus} = useContext(FocusedSubmissionIdContext)!;
+  const {setTab} = useContext(TabContext)!;
+
   const {issues, id, comments, parking_duration, parking_time} = submission;
 
   const formattedParkingTime = new Date(parking_time).toLocaleString('en-CA', {
@@ -47,14 +51,17 @@ export function MapPopup({submission}: MapPopupProps) {
         {comments ? comments : <em>none</em>}
       </p>
       <div className={styles.popupFooter}>
-        <Link
+        <button
           className={styles.sidebarButton}
-          to={`/dashboard?view_all=1&submission_id=${id}`}
+          onClick={() => {
+            setTab('feed');
+            setFocus(id);
+          }}
           data-umami-event="issue-map_open_in_sidebar"
           data-umami-event-id={id}
         >
           Focus in Sidebar
-        </Link>
+        </button>
         <span className={styles.submissionId}>ID: {id}</span>
       </div>
     </Popup>

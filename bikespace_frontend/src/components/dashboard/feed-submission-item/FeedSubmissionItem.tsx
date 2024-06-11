@@ -1,7 +1,9 @@
-import React from 'react';
+import React, {useContext, useEffect, useRef} from 'react';
 import {DateTime} from 'luxon';
 
 import {SubmissionApiPayload, ParkingDuration} from '@/interfaces/Submission';
+
+import {FocusedSubmissionIdContext} from '../context';
 
 import {IssueBadge} from '../issue-badge';
 
@@ -12,16 +14,28 @@ interface FeedSubmissionItemProps {
 }
 
 export function FeedSubmissionItem({submission}: FeedSubmissionItemProps) {
-  const {issues, parking_time, parking_duration, comments} = submission;
+  const {focus, setFocus} = useContext(FocusedSubmissionIdContext)!;
+
+  const {id, issues, parking_time, parking_duration, comments} = submission;
 
   const parkingTime = new Date(parking_time);
 
-  const handleClick = () => {
-    console.log('TODO: focus to map pin');
-  };
+  const buttonRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (focus !== id) return;
+
+    buttonRef.current?.scrollIntoView();
+  }, [focus]);
 
   return (
-    <button className={styles.item} onClick={handleClick}>
+    <button
+      ref={buttonRef}
+      className={`${styles.item} ${focus === id ? styles.focused : ''}`}
+      onClick={() => {
+        setFocus(id);
+      }}
+    >
       <h3>
         {DateTime.fromJSDate(parkingTime).toLocaleString(
           {weekday: 'long', month: 'long', day: 'numeric', year: 'numeric'},
