@@ -23,6 +23,5 @@
     "./gatsby-config.ts",
     "./plugins/**/*",
     "./__tests__/**/*",
-    "./src/types/*"
   ]
 }
