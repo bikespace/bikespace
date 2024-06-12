@@ -59,6 +59,14 @@ run-pytest: setup-py
 	$(PYTHON) $(MANAGE_PY) seed-db && \
 	$(PYTHON) -m pytest --cov=bikespace_api --cov-report lcov
 
+run-pytest-terminal: setup-py
+	export APP_SETTINGS=bikespace_api.config.TestingConfig && \
+	export TEST_DATABASE_URI=postgresql://postgres:postgres@localhost:5432/bikespace_test && \
+	cd $(BIKESPACE_API_DIR) && \
+	$(PYTHON) $(MANAGE_PY) recreate-db && \
+	$(PYTHON) $(MANAGE_PY) seed-db && \
+	$(PYTHON) -m pytest --cov=bikespace_api --cov-report term
+
 lint-py:
 	$(PYTHON) -m black $(BIKESPACE_API_DIR)
 
