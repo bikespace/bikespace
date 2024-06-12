@@ -1,4 +1,4 @@
-import React, {useContext, useState, useEffect} from 'react';
+import React, {useContext, useState, useEffect, useMemo} from 'react';
 import Plot, {PlotParams} from 'react-plotly.js';
 import {Annotations} from 'plotly.js-dist-min';
 import {DateTime, Interval} from 'luxon';
@@ -16,33 +16,24 @@ export function DataDurationByTodChart({
 }: Pick<PlotParams, 'className'>) {
   const submissions = useContext(SubmissionsContext);
 
-  const [data, setData] = useState<number[][]>([]);
-  const [annotations, setAnnotations] = useState<Partial<Annotations>[]>([]);
+  const data = useMemo<number[][]>(() => {
+    return parkingDurations.map(duration => {
+      return intervals.map(
+        interval =>
+          submissions.filter(submission => {
+            const parkingHour = new Date(submission.parking_time).getHours();
 
-  useEffect(() => {
-    const countData: number[][] = [];
-
-    for (const duration of parkingDurations) {
-      countData.push(
-        intervals.map(
-          interval =>
-            submissions.filter(submission => {
-              const parkingHour = new Date(submission.parking_time).getHours();
-
-              return (
-                submission.parking_duration === duration &&
-                parkingHour >= interval.start! &&
-                parkingHour < (interval.end! === 0 ? 24 : interval.end!)
-              );
-            }).length
-        )
+            return (
+              submission.parking_duration === duration &&
+              parkingHour >= interval.start! &&
+              parkingHour < (interval.end! === 0 ? 24 : interval.end!)
+            );
+          }).length
       );
-    }
-
-    setData(countData);
+    });
   }, [submissions]);
 
-  useEffect(() => {
+  const annotations = useMemo<Partial<Annotations>[]>(() => {
     const annts: Partial<Annotations>[] = [];
 
     data.forEach((dArray, i) => {
@@ -56,8 +47,7 @@ export function DataDurationByTodChart({
         });
       });
     });
-
-    setAnnotations(annts);
+    return annts;
   }, [data]);
 
   return (
