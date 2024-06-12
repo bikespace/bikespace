@@ -1,5 +1,6 @@
-import React, {useContext, useEffect, useRef} from 'react';
-import {Marker, useMap} from 'react-leaflet';
+import React, {useContext, useEffect, useRef, Ref} from 'react';
+import {Marker, PopupProps, useMap} from 'react-leaflet';
+import {Popup as LeafletPopup, Marker as LeafletMarker, popup} from 'leaflet';
 import {Icon, LatLngTuple} from 'leaflet';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 
@@ -22,8 +23,9 @@ interface MapMarkerProps {
 }
 
 export function MapMarker({submission}: MapMarkerProps) {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const markerRef = useRef<any>(null);
+  // popupRef for calling openPopup() upon focus change
+  // `Popup` from 'react-leaflet' forwards `Popup` from 'leaflet'
+  const popupRef = useRef<LeafletPopup>(null);
 
   const position: LatLngTuple = [submission.latitude, submission.longitude];
 
@@ -35,9 +37,16 @@ export function MapMarker({submission}: MapMarkerProps) {
     if (focus !== submission.id) return;
 
     map.flyTo(position, 18, {duration: 0.5});
-    // TODO: FIX THIS BUG
-    markerRef.current?.openPopup();
-  }, [focus, markerRef.current]);
+    // put openPopup to the end of the event loop job queue so openPopup()
+    // is queued after all the calls flyTo() triggers
+    // i.e. this minimize the chance of popup from opening during the flyTo() changes
+    // also map.openPopup() works most of the time while marker.openPopup() does not
+    setTimeout(() => {
+      if (popupRef.current !== null) {
+        map.openPopup(popupRef.current);
+      }
+    }, 0);
+  }, [focus, popupRef.current]);
 
   const priorityIssue = submission.issues.reduce((a: IssueType | null, c) => {
     if (a === null) return c;
@@ -61,9 +70,8 @@ export function MapMarker({submission}: MapMarkerProps) {
           iconUrl: customMarker,
         })
       }
-      ref={markerRef}
     >
-      <MapPopup submission={submission} />
+      <MapPopup submission={submission} ref={popupRef} />
     </Marker>
   );
 }
