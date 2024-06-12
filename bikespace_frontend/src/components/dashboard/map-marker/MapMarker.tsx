@@ -76,7 +76,6 @@ export function MapMarker({submission}: MapMarkerProps) {
   );
 }
 
-// for "renderPriority", 0 is the highest priority and higher numbers are lower priority
 const markerIssueIcons = {
   not_provided: notProvidedIcon,
   damaged: damagedIcon,

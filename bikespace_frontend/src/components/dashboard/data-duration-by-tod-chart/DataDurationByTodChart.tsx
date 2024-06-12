@@ -1,4 +1,4 @@
-import React, {useContext, useState, useEffect, useMemo} from 'react';
+import React, {useContext, useMemo} from 'react';
 import Plot, {PlotParams} from 'react-plotly.js';
 import {Annotations} from 'plotly.js-dist-min';
 import {DateTime, Interval} from 'luxon';
