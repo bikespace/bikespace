@@ -164,7 +164,8 @@ const intervals = Interval.fromDateTimes(
     end: i.end?.hour,
   }));
 
-const parkingDurations = Object.values(ParkingDuration);
+// reverse parking duration because minute comes first but plotly would have displayed it at the bottom but we want it on top
+const parkingDurations = Object.values(ParkingDuration).reverse();
 
 const durationLabels = {
   [ParkingDuration.Hours]: 'Hours ',
