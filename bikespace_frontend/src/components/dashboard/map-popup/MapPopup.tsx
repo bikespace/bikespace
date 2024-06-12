@@ -1,5 +1,5 @@
-import React, {ComponentProps, Ref, forwardRef, useContext} from 'react';
-import {Popup, PopupProps} from 'react-leaflet';
+import React, {forwardRef, useContext} from 'react';
+import {Popup} from 'react-leaflet';
 import {Popup as LeafletPopup} from 'leaflet';
 import {SubmissionApiPayload} from '@/interfaces/Submission';
 

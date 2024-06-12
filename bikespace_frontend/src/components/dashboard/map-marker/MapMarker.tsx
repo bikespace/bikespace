@@ -1,6 +1,6 @@
-import React, {useContext, useEffect, useRef, Ref} from 'react';
-import {Marker, PopupProps, useMap} from 'react-leaflet';
-import {Popup as LeafletPopup, Marker as LeafletMarker, popup} from 'leaflet';
+import React, {useContext, useEffect, useRef} from 'react';
+import {Marker, useMap} from 'react-leaflet';
+import {Popup as LeafletPopup} from 'leaflet';
 import {Icon, LatLngTuple} from 'leaflet';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 
