@@ -158,8 +158,8 @@ const intervals = Interval.fromDateTimes(
 const parkingDurations = Object.values(ParkingDuration).reverse();
 
 const durationLabels = {
-  [ParkingDuration.Minutes]: 'Minutes ',
   [ParkingDuration.Hours]: 'Hours ',
+  [ParkingDuration.Minutes]: 'Minutes ',
   [ParkingDuration.Overnight]: 'Overnight ',
   [ParkingDuration.MultiDay]: 'Days ',
 };
