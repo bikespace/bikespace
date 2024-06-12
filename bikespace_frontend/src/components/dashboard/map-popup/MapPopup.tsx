@@ -1,5 +1,6 @@
-import React, {useContext} from 'react';
-import {Popup} from 'react-leaflet';
+import React, {ComponentProps, Ref, forwardRef, useContext} from 'react';
+import {Popup, PopupProps} from 'react-leaflet';
+import {Popup as LeafletPopup} from 'leaflet';
 import {SubmissionApiPayload} from '@/interfaces/Submission';
 
 import {issuePriority} from '@/config/bikespace-api';
@@ -14,59 +15,64 @@ interface MapPopupProps {
   submission: SubmissionApiPayload;
 }
 
-export function MapPopup({submission}: MapPopupProps) {
-  const {setFocus} = useContext(FocusedSubmissionIdContext)!;
-  const {setTab} = useContext(TabContext)!;
+export const MapPopup = forwardRef<LeafletPopup, MapPopupProps>(
+  ({submission}: MapPopupProps, ref) => {
+    const {setFocus} = useContext(FocusedSubmissionIdContext)!;
+    const {setTab} = useContext(TabContext)!;
 
-  const {issues, id, comments, parking_duration, parking_time} = submission;
+    const {issues, id, comments, parking_duration, parking_time} = submission;
 
-  const formattedParkingTime = new Date(parking_time).toLocaleString('en-CA', {
-    dateStyle: 'full',
-    timeStyle: 'short',
-  });
+    const formattedParkingTime = new Date(parking_time).toLocaleString(
+      'en-CA',
+      {
+        dateStyle: 'full',
+        timeStyle: 'short',
+      }
+    );
 
-  return (
-    <Popup>
-      <div className={styles.popup}>
-        <strong>Issues:</strong>
-        {issues ? (
-          <div className={styles.issues}>
-            {issues
-              .sort((a, b) => issuePriority[a] - issuePriority[b])
-              .map(issue => (
-                <IssueBadge issue={issue} key={issue} />
-              ))}
-          </div>
-        ) : (
-          <em>none</em>
-        )}
-      </div>
-      <p>
-        This person wanted to park for{' '}
-        <strong>{durationDescription[parking_duration]}</strong> on{' '}
-        <strong>{formattedParkingTime}</strong>
-      </p>
-      <p>
-        <strong>Comments: </strong>
-        {comments ? comments : <em>none</em>}
-      </p>
-      <div className={styles.popupFooter}>
-        <button
-          className={styles.sidebarButton}
-          onClick={() => {
-            setTab('feed');
-            setFocus(id);
-          }}
-          data-umami-event="issue-map_open_in_sidebar"
-          data-umami-event-id={id}
-        >
-          Focus in Sidebar
-        </button>
-        <span className={styles.submissionId}>ID: {id}</span>
-      </div>
-    </Popup>
-  );
-}
+    return (
+      <Popup ref={ref}>
+        <div className={styles.popup}>
+          <strong>Issues:</strong>
+          {issues ? (
+            <div className={styles.issues}>
+              {issues
+                .sort((a, b) => issuePriority[a] - issuePriority[b])
+                .map(issue => (
+                  <IssueBadge issue={issue} key={issue} />
+                ))}
+            </div>
+          ) : (
+            <em>none</em>
+          )}
+        </div>
+        <p>
+          This person wanted to park for{' '}
+          <strong>{durationDescription[parking_duration]}</strong> on{' '}
+          <strong>{formattedParkingTime}</strong>
+        </p>
+        <p>
+          <strong>Comments: </strong>
+          {comments ? comments : <em>none</em>}
+        </p>
+        <div className={styles.popupFooter}>
+          <button
+            className={styles.sidebarButton}
+            onClick={() => {
+              setTab('feed');
+              setFocus(id);
+            }}
+            data-umami-event="issue-map_open_in_sidebar"
+            data-umami-event-id={id}
+          >
+            Focus in Sidebar
+          </button>
+          <span className={styles.submissionId}>ID: {id}</span>
+        </div>
+      </Popup>
+    );
+  }
+);
 
 const durationDescription = {
   minutes: 'less than an hour',
