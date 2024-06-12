@@ -5,37 +5,37 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  gap: $spacing-unit;
+  gap: 4px;
   padding: 0;
   margin: 0;
-  border: $border-unit solid $color-primary-d50p;
-  border-radius: calc($spacing-unit * 1.5);
+  border: 2px solid $color-primary-d50p;
+  border-radius: calc(4px * 1.5);
   background-color: white;
   color: black;
   
 
   .tab {
     background-color: white;
-    padding: $spacing-unit $spacing-2;
-    border: $border-unit solid white;
-    border-radius: $spacing-unit;
+    padding: 4px 8px;
+    border: 2px solid white;
+    border-radius: 4px;
     flex: auto;
     text-align: center;
 
     &:hover, &:focus {
-      border: $border-unit solid $color-primary;
+      border-color: $color-primary;
       background-color: $color-primary-20p;
     }
   
     &.active {
       background-color: $color-primary-d50p;
-      border: $border-unit solid $color-primary-d50p;
+      border-color: $color-primary-d50p;
       color: white;
     }
 
     span {
       font-size: 16px;
-      font-weight: $bold-weight;
+      font-weight: 600;
     }
   }
 }

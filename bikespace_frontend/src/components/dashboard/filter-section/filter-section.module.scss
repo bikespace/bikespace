@@ -6,20 +6,20 @@
   padding: 4px;
 
   summary {
-    font-weight: $bold-weight;
+    font-weight: 600;
     color: $color-primary-d50p;
     border-bottom: none;
   }
 
   &[open] summary {
     border-bottom: 1px solid $color-secondary-light-grey;
-    padding-bottom: $spacing-unit;
-    margin-bottom: $spacing-unit;
+    padding-bottom: 4px;
+    margin-bottom: 4px;
   }
 
   .sectionContent{
-    margin: $spacing-unit;
-    margin-bottom: $spacing-2;
+    margin: 4px;
+    margin-bottom: 8px;
     display: flex;
     flex-direction: column;
     gap: 4px;

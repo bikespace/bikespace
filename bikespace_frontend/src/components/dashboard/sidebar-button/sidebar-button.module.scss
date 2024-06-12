@@ -6,10 +6,9 @@
   justify-content: center;
   height: 2rem;
   background-color: white;
-  border: $border-unit solid $color-primary-d50p;
-  border-radius: $spacing-unit;
-  padding-left: $spacing-2;
-  padding-right: $spacing-2;
+  border: 2px solid $color-primary-d50p;
+  border-radius: 4px;
+  padding: 0px 8px;
   font-family: $body-font-stack;
   font-size: 0.9rem;
   color: $color-secondary-dark-grey;

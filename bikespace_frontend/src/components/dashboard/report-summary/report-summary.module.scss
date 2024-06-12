@@ -2,14 +2,14 @@
 
 .summary {
   padding: 4px 8px;
-  border-radius: $spacing-unit;
+  border-radius: 4px;
   background-color: $color-primary-d50p;
   color: white;
   font-size: 0.9rem;
 
   .entryCount {
     font-size: 2rem;
-    font-weight: $bold-weight;
+    font-weight: 600;
     margin-right: 0.1rem;
   }
 

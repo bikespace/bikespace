@@ -10,13 +10,13 @@
   .header {
     display: flex;
     align-items: center4;
-    gap: $spacing-2;
-    margin: $spacing-unit;
-    padding: $spacing-unit;
+    gap: 8px;
+    margin: 4px;
+    padding: 4px;
 
     h2 {
       flex-grow: 1;
-      font-weight: $bold-weight;
+      font-weight: 600;
       font-size: 1.1rem;
       color: $color-primary-d50p;
     }
