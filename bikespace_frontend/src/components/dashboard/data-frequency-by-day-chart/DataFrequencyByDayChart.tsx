@@ -8,6 +8,8 @@ import {Day} from '@/interfaces/Submission';
 
 import {SubmissionFiltersContext, SubmissionsContext} from '../context';
 
+import {LazyPlot} from '../lazy-plot';
+
 import * as styles from './data-frequency-by-day-chart.module.scss';
 
 type InputData = {
@@ -53,7 +55,7 @@ export function DataFrequencyByDayChart({
   };
 
   return (
-    <Plot
+    <LazyPlot
       className={className}
       data={[
         {

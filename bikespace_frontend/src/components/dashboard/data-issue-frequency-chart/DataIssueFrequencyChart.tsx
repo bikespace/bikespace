@@ -8,6 +8,8 @@ import {IssueType} from '@/interfaces/Submission';
 
 import {SubmissionFiltersContext, SubmissionsContext} from '../context';
 
+import {LazyPlot} from '../lazy-plot';
+
 import * as styles from './data-issue-frequency-chart.module.scss';
 
 type InputData = {
@@ -54,7 +56,7 @@ export function DataIssueFrequencyChart({
   };
 
   return (
-    <Plot
+    <LazyPlot
       className={className}
       data={[
         {
