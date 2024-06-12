@@ -86,7 +86,6 @@ export function DataDurationByTodChart({
           fixedrange: true, // prevent user zoom
           ticks: '',
           showgrid: false,
-          // TODO: FIX HEATMAP Y-AXIS ORDERING BUG - BUGGY AF!!!
           categoryorder: 'array', // ordering
           categoryarray: parkingDurations,
         },
