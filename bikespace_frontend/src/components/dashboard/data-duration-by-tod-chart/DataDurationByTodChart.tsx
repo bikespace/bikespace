@@ -9,6 +9,8 @@ import {ParkingDuration} from '@/interfaces/Submission';
 
 import {SubmissionsContext} from '../context';
 
+import {LazyPlot} from '../lazy-plot';
+
 import * as styles from './data-duration-by-tod-chart.module.scss';
 
 export function DataDurationByTodChart({
@@ -51,7 +53,7 @@ export function DataDurationByTodChart({
   }, [data]);
 
   return (
-    <Plot
+    <LazyPlot
       className={className}
       data={[
         {
