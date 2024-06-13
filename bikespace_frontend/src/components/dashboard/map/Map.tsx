@@ -14,6 +14,21 @@ interface MapProps {
   submissions: SubmissionApiPayload[];
 }
 
+const tileLayers = {
+  osm: (
+    <TileLayer
+      attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>'
+      url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
+    />
+  ),
+  thunderforest: (
+    <TileLayer
+      attribution='&copy; Maps <a href="https://www.thunderforest.com/">Thunderforest</a>, &copy; Data <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>'
+      url="https://tile.thunderforest.com/atlas/{z}/{x}/{y}.png?apikey=66ccf6226ef54ef38a6b97fe0b0e5d2e"
+    />
+  ),
+};
+
 export function Map({submissions}: MapProps) {
   const mapRef = useRef(null);
 
@@ -27,14 +42,7 @@ export function Map({submissions}: MapProps) {
         ref={mapRef}
       >
         <LeafletLocateControl />
-        <TileLayer
-          attribution='&copy; Maps <a href="https://www.thunderforest.com/">Thunderforest</a>, &copy; Data <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>'
-          url="https://tile.thunderforest.com/atlas/{z}/{x}/{y}.png?apikey=66ccf6226ef54ef38a6b97fe0b0e5d2e"
-        />
-        <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>'
-          url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
+        {tileLayers.thunderforest}
         <MapHandler />
         <LeafletMarkerClusterGroup chunkedLoading>
           {submissions.map(submission => (
