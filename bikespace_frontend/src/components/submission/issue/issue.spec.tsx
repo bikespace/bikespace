@@ -7,8 +7,8 @@ import '@testing-library/jest-dom';
 
 describe('Test Issues page component', () => {
   const [issues, setIssues] = useState<IssueType[]>([]);
-  render(<Issue issues={issues} onIssuesChanged={setIssues} />);
-  test('Issues page title should title should have correct text', () => {
+  test('Issues page title should should have correct text', () => {
+    render(<Issue issues={issues} onIssuesChanged={setIssues} />);
     expect(screen.getByRole('heading', {level: 2})).toHaveTextContent(
       'What was the issue?'
     );
@@ -16,5 +16,10 @@ describe('Test Issues page component', () => {
       'Choose at least one'
     );
   });
-  //Need to add tests for the each of list of rendered issues
+  test('Issues page shows all the issue types', () => {
+    render(<Issue issues={issues} onIssuesChanged={setIssues} />);
+    expect(
+      screen.getAllByRole('checkbox').map(c => c.getAttribute('value'))
+    ).toEqual(expect.arrayContaining(Object.values(IssueType)));
+  });
 });

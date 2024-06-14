@@ -4,9 +4,9 @@ import {Location} from './Location';
 import {LocationLatLng} from '@/interfaces/Submission';
 import '@testing-library/jest-dom';
 
-describe('Test Location page componenet', () => {
+describe('Test Location page component', () => {
   const [location, setLocation] = useState<LocationLatLng>({
-    // default location is the City Hall
+    // default location is Toronto City Hall
     latitude: 43.65322,
     longitude: -79.384452,
   });

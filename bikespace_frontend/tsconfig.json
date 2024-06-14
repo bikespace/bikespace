@@ -22,6 +22,6 @@
     "./gatsby-node.ts",
     "./gatsby-config.ts",
     "./plugins/**/*",
-    "./__tests__/**/*",
+    "./__tests__/**/*"
   ]
 }
