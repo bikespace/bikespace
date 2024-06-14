@@ -4,12 +4,21 @@ The API service is a python Flask application paired with a Postgres database.
 ## Prerequisites
 
 To develop the API locally you'll require the following things:
- - Python version 3.9.6 or greater
- - Postgres database running on the default port 5432, version 15 or greater
+ - Python version 3.12.0 or greater
+ - Postgres database running on port 5432, version 15 or greater
 
 ## Database
 
 To successfully run the API locally we require a Postgres database running along side the Flask application. You will have to install Postgres on your system and run the set-up steps noted below. Once set up, ensure that Postgres is running in port `5432` with an empty database `bikespace_dev` with default credentials of `postgres:postgres` (i.e. username and password are both `postgres`).
+
+Setting up the database:
+```shell
+#recreates an empty database
+make recreate-db
+
+#seed the database with test data
+make seed-db
+```
 
 ## Running the API service
 

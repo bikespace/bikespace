@@ -10,6 +10,7 @@ import json
 app = create_app()
 cli = FlaskGroup(create_app=create_app)
 
+
 @cli.command()
 def recreate_db():
     db.drop_all()
@@ -21,13 +22,34 @@ def recreate_db():
 def seed_db():
     """Seeds the database"""
     db.session.add(
-        Submission(43.6532, -79.3832, [IssueType.ABANDONDED], ParkingDuration.MINUTES, datetime.now(), "comments1")
+        Submission(
+            43.6532,
+            -79.3832,
+            [IssueType.ABANDONDED],
+            ParkingDuration.MINUTES,
+            datetime.now(),
+            "comments1",
+        )
     )
     db.session.add(
-        Submission(43.6532, -79.3832, [IssueType.NOT_PROVIDED,IssueType.DAMAGED], ParkingDuration.HOURS, datetime.now(), "comments2")
+        Submission(
+            43.6532,
+            -79.3832,
+            [IssueType.NOT_PROVIDED, IssueType.DAMAGED],
+            ParkingDuration.HOURS,
+            datetime.now(),
+            "comments2",
+        )
     )
     db.session.add(
-        Submission(43.6532, -79.3832, [IssueType.NOT_PROVIDED,IssueType.FULL,IssueType.ABANDONDED], ParkingDuration.MULTIDAY, datetime.now(), "comments2")
+        Submission(
+            43.6532,
+            -79.3832,
+            [IssueType.NOT_PROVIDED, IssueType.FULL, IssueType.ABANDONDED],
+            ParkingDuration.MULTIDAY,
+            datetime.now(),
+            "comments2",
+        )
     )
     db.session.commit()
 
