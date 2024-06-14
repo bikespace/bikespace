@@ -4,7 +4,7 @@ The API service is a python Flask application paired with a Postgres database.
 ## Prerequisites
 
 To develop the API locally you'll require the following things:
- - Python version 3.12.2 or greater
+ - Python version 3.12.0 or greater
  - Postgres database running on port 5432, version 15 or greater
 
 ## Database
