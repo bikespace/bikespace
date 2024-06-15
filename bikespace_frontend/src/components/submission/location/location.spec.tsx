@@ -10,8 +10,8 @@ describe('Test Location page component', () => {
     latitude: 43.65322,
     longitude: -79.384452,
   });
-  render(<Location location={location} onLocationChanged={setLocation} />);
   test('Location page title should be rendered properly', () => {
+    render(<Location location={location} onLocationChanged={setLocation} />);
     expect(screen.getByRole('heading', {level: 2})).toHaveTextContent(
       'Where was the problem?'
     );

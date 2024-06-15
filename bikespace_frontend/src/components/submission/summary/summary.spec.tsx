@@ -34,10 +34,10 @@ describe('Test the Summary component page', () => {
   const [submissionStatus, setSubmissionStatus] = useState<SubmissionStatus>({
     status: 'summary',
   });
-  render(
-    <Summary submission={submission} submissionStatus={submissionStatus} />
-  );
   test('summary text should render correctly', () => {
+    render(
+      <Summary submission={submission} submissionStatus={submissionStatus} />
+    );
     expect(screen.getByRole('heading', {level: 1})).toHaveTextContent(
       'Summary'
     );

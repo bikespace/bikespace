@@ -8,15 +8,15 @@ describe('Test Time page component', () => {
     ParkingDuration.Minutes
   );
   const [dateTime, setDateTime] = useState<Date>(new Date());
-  render(
-    <Time
-      parkingDuration={parkingDuration}
-      onParkingDurationChanged={setParkingDuration}
-      dateTime={dateTime}
-      onDateTimeChanged={() => {}}
-    />
-  );
   test('time page title is rendered correctly', () => {
+    render(
+      <Time
+        parkingDuration={parkingDuration}
+        onParkingDurationChanged={setParkingDuration}
+        dateTime={dateTime}
+        onDateTimeChanged={() => {}}
+      />
+    );
     expect(
       screen.getByRole('heading', {
         name: /when did this happen\?/i,
