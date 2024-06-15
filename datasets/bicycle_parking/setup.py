@@ -5,7 +5,7 @@ setup(
     packages=find_packages(exclude=["bicycle_parking_tests"]),
     install_requires=[
         "dagster",
-        "dagster-cloud"
+        "geopandas"
     ],
     extras_require={"dev": ["dagster-webserver", "pytest"]},
 )
