@@ -6,6 +6,7 @@ from dagster import (
   asset, 
   asset_check,
   AssetCheckResult,
+  AssetCheckSeverity,
   AssetExecutionContext, 
   MaterializeResult, 
   MetadataValue
@@ -52,8 +53,33 @@ def street_furniture_bicycle_parking(
     "crs": str(gdf.crs), 
   })
 
+@asset_check(asset=street_furniture_bicycle_parking, blocking=True)
+def validate_sfbp_blocking():
+  gdf = gpd.read_file("data/street_furniture_bicycle_parking.geojson")
+  schema = pa.DataFrameSchema(
+    {
+      # REQUIRED FIELDS
+      "ID": pa.Column(str, unique=True), 
+      "ASSETTYPE": pa.Column(str, nullable=True, 
+        checks=pa.Check.isin(
+          ["Ring", "Rack", "Art Stand", "Shelter", "Other"],
+          ignore_na=True,
+        ),
+      ), 
+      "STATUS": pa.Column(str,
+        checks=pa.Check.isin(["Existing", "Temporarily Removed"]),
+      ),
+      "geometry": pa.Column("geometry"),
+    },
+  )
+  test = type(schema.validate(gdf)) == gpd.GeoDataFrame
+  return AssetCheckResult(
+    passed=bool(test),
+    severity=AssetCheckSeverity.ERROR,
+  )
+
 @asset_check(asset=street_furniture_bicycle_parking)
-def validate_sfbp():
+def validate_sfbp_info():
   gdf = gpd.read_file("data/street_furniture_bicycle_parking.geojson")
   schema = pa.DataFrameSchema(
     {
@@ -94,7 +120,10 @@ def validate_sfbp():
     strict=True,
   )
   test = type(schema.validate(gdf)) == gpd.GeoDataFrame
-  return AssetCheckResult(passed=bool(test))
+  return AssetCheckResult(
+    passed=bool(test),
+    severity=AssetCheckSeverity.WARN,
+  )
 
 
 @asset
@@ -124,8 +153,30 @@ def bicycle_parking_high_capacity_outdoor(
     "crs": str(gdf.crs), 
   })
 
+@asset_check(asset=bicycle_parking_high_capacity_outdoor, blocking=True)
+def validate_bphco_blocking():
+  gdf = gpd.read_file("data/bicycle_parking_high_capacity_outdoor.geojson")
+  schema = pa.DataFrameSchema(
+    {
+      # REQUIRED FIELDS
+      "ID": pa.Column(str, coerce=True, unique=True),
+      "PARKING_TYPE": pa.Column(str, 
+        checks=pa.Check.isin(
+          ["Bike Rack", "Angled Bike Rack", "Bike Corral", "Bike Shelter"]
+        ),
+      ),
+      "BICYCLE_CAPACITY": pa.Column("int32"),
+      "geometry": pa.Column("geometry"),
+    }
+  )
+  test = type(schema.validate(gdf)) == gpd.GeoDataFrame
+  return AssetCheckResult(
+    passed=bool(test),
+    severity=AssetCheckSeverity.ERROR,
+  )
+
 @asset_check(asset=bicycle_parking_high_capacity_outdoor)
-def validate_bphco():
+def validate_bphco_info():
   gdf = gpd.read_file("data/bicycle_parking_high_capacity_outdoor.geojson")
   schema = pa.DataFrameSchema(
     {
@@ -158,6 +209,9 @@ def validate_bphco():
       "geometry": pa.Column("geometry"),
 
       # OTHER FIELDS
+      "_id": optional_int32,
+      # OBJECTID is not a primary key - inconsistent between updates
+      "OBJECTID": optional_int32,
       "ADDRESS_POINT_ID": optional_int32,
       "ADDRESS_NUMBER": optional_string,
       "LINEAR_NAME_FULL": optional_string,
@@ -175,10 +229,14 @@ def validate_bphco():
       "BY_LAW": pa.Column(str, required=False,
         checks=pa.Check.isin(["N/A", "NO", "Y"]),
       ),
-    }
+    },
+    strict=True,
   )
   test = type(schema.validate(gdf)) == gpd.GeoDataFrame
-  return AssetCheckResult(passed=bool(test))
+  return AssetCheckResult(
+    passed=bool(test),
+    severity=AssetCheckSeverity.WARN,
+  )
 
 
 @asset
@@ -256,6 +314,9 @@ def validate_bpr():
       "geometry": pa.Column("geometry"),
 
       # OTHER FIELDS
+      "_id": optional_int32,
+      # OBJECTID is not a primary key - inconsistent between updates
+      "OBJECTID": optional_string,
       "ADDRESS_POINT_ID": optional_int32,
       "ADDRESS_NUMBER": optional_string,
       "LINEAR_NAME_FULL": optional_string,
@@ -275,10 +336,14 @@ def validate_bpr():
         checks=pa.Check.isin(["No", "Yes"]),
       ),
       "SURFACE": optional_nullable_string,
-    }
+    },
+    strict=True,
   )
   test = type(schema.validate(gdf)) == gpd.GeoDataFrame
-  return AssetCheckResult(passed=bool(test))
+  return AssetCheckResult(
+    passed=bool(test),
+    severity=AssetCheckSeverity.WARN,
+  )
 
 
 @asset
@@ -361,6 +426,9 @@ def validate_bpbsi():
       "geometry": pa.Column("geometry"),
 
       # OTHER FIELDS
+      "_id": optional_int32,
+      # OBJECTID is not a primary key - inconsistent between updates
+      "OBJECTID": optional_string,
       "ADDRESS_POINT_ID": optional_int32,
       "GENERAL_USE_CODE": optional_int32,
       "CENTRELINE_ID": optional_int32,
@@ -368,7 +436,11 @@ def validate_bpbsi():
       "HI_NUM": optional_int32,
       "LINEAR_NAME_ID": optional_int32,
       "MI_PRINX": optional_int32,
-    }
+    },
+    strict=True,
   )
   test = type(schema.validate(gdf)) == gpd.GeoDataFrame
-  return AssetCheckResult(passed=bool(test))
+  return AssetCheckResult(
+    passed=bool(test),
+    severity=AssetCheckSeverity.WARN,
+  )
