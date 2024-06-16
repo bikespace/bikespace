@@ -103,6 +103,9 @@ venv.bak/
 # mypy
 .mypy_cache/
 
+# dagster
+datasets/bicycle_parking/bicycle_parking/dev_home
+
 data/
 .DS_Store
 

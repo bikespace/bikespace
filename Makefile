@@ -104,4 +104,16 @@ lint-and-fix-dashboard:
 test-frontend:
 	cd $(BIKESPACE_FRONTEND_DIR) && npm install && npm run test
 
-.PHONY: setup-py clean pip-freeze run-flask-app lint-py seed-db recreate-db fly-deploy-api fly-deploy-frontend run-frontend build-frontend 
+setup-dagster:
+	cd $(ROOT_DIR)/datasets/bicycle_parking && \
+	python -m venv .venv && \
+	. .venv/bin/activate && \
+	pip install -e ".[dev]" && \
+	export DAGSTER_HOME=$(ROOT_DIR)/datasets/bicycle_parking/dev_home
+
+run-dagster:
+	cd $(ROOT_DIR)/datasets/bicycle_parking && \
+	. .venv/bin/activate && \
+	dagster dev
+
+.PHONY: setup-py clean pip-freeze run-flask-app lint-py seed-db recreate-db fly-deploy-api fly-deploy-frontend run-frontend build-frontend setup-dagster run-dagster
