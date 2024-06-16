@@ -57,6 +57,7 @@ const config: GatsbyConfig = {
             resolve: `gatsby-remark-images`,
             options: {
               backgroundColor: 'transparent', // required to display blurred image on first load
+              linkImagesToOriginal: false,
             },
           },
         ],

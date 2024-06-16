@@ -1,6 +1,10 @@
 import * as React from 'react';
 import {graphql} from 'gatsby';
 
+import { PageHeader } from '@/components/md-page/page-header/PageHeader';
+
+import * as styles from '@/components/md-page/page.module.scss';
+
 type PageData = {
   markdownRemark: {
     frontmatter: {
@@ -20,13 +24,11 @@ export default function PageTemplate({
   const {frontmatter, html} = markdownRemark;
   return (
     <>
-      <nav>
-        This will be a navbar (it will be at the top when it's styled correctly)
-      </nav>
-      <main>
+      <PageHeader />
+      <main className={styles.pageMain}>
         <div dangerouslySetInnerHTML={{__html: html}} />
       </main>
-      <footer>This will be a footer</footer>
+      <footer className={styles.pageFooter}>This will be a footer</footer>
     </>
   );
 }
