@@ -4,6 +4,7 @@ import requests
 from requests import Response
 from dagster import ConfigurableResource
 import geopandas as gpd
+import pandas as pd
 
 gpd.options.io_engine = "pyogrio"
 
@@ -15,15 +16,19 @@ class TODResponse(TypedDict):
     metadata: dict
 
 class TorontoOpenDataResource(ConfigurableResource):
-  def request_gdf(self, dataset_name, resource_name) -> TODResponse:
+  def request_gdf(self, dataset_name, resource_id) -> TODResponse:
     meta_params = {"id": dataset_name}
     meta_all = requests.get(PACKAGE_URL, params=meta_params).json()
     [meta_resource] = [
       rs for rs 
       in meta_all['result']['resources'] 
-      if rs['id'] == resource_name
+      if rs['id'] == resource_id
     ]
-    gdf: gpd.GeoDataFrame = gpd.read_file(meta_resource['url']).convert_dtypes()
+    gdf: gpd.GeoDataFrame = (gpd
+      .read_file(meta_resource['url'])
+      .replace("None", pd.NA)
+      .convert_dtypes()
+    )
     return {
        "gdf": gdf,
        "metadata": meta_resource,
