@@ -5,7 +5,10 @@ setup(
     packages=find_packages(exclude=["bicycle_parking_tests"]),
     install_requires=[
         "dagster",
-        "geopandas"
+        "geopandas",
+        "pandera",
+        "pandera[geopandas]",
+        "pyogrio",
     ],
     extras_require={"dev": ["dagster-webserver", "pytest"]},
 )

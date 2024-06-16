@@ -5,6 +5,8 @@ from requests import Response
 from dagster import ConfigurableResource
 import geopandas as gpd
 
+gpd.options.io_engine = "pyogrio"
+
 BASE_URL = "https://ckan0.cf.opendata.inter.prod-toronto.ca"
 PACKAGE_URL = BASE_URL + "/api/3/action/package_show"
 
@@ -21,7 +23,7 @@ class TorontoOpenDataResource(ConfigurableResource):
       in meta_all['result']['resources'] 
       if rs['id'] == resource_name
     ]
-    gdf: gpd.GeoDataFrame = gpd.read_file(meta_resource['url'])
+    gdf: gpd.GeoDataFrame = gpd.read_file(meta_resource['url']).convert_dtypes()
     return {
        "gdf": gdf,
        "metadata": meta_resource,

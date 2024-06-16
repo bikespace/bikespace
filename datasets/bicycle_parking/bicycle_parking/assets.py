@@ -12,8 +12,11 @@ from dagster import (
 )
 import geopandas as gpd
 import pandas as pd
+import pandera as pa
 
 from .resources.toronto_open_data import TorontoOpenDataResource
+
+gpd.options.io_engine = "pyogrio"
 
 @asset
 def street_furniture_bicycle_parking(
@@ -41,22 +44,27 @@ def street_furniture_bicycle_parking(
   })
 
 @asset_check(asset=street_furniture_bicycle_parking)
-def necessary_columns_exist():
+def validate_dataframe():
   gdf = gpd.read_file("data/street_furniture_bicycle_parking.geojson")
-  test = pd.Series([
-    'ID', 
-    'ADDRESSNUMBERTEXT', 
-    'ADDRESSSTREET',  
-    'FRONTINGSTREET', 
-    'SIDE', 
-    'FROMSTREET', 
-    'DIRECTION', 
-    'SITEID', 
-    'WARD', 
-    'BIA', 
-    'ASSETTYPE', 
-    'STATUS', 
-    'SDE_STATE_ID', 
-    'geometry'
-  ]).isin(gdf.columns).all()
+  schema = pa.DataFrameSchema(
+    {
+      "ID": pa.Column(str), 
+      "ADDRESSNUMBERTEXT": pa.Column(str), 
+      "ADDRESSSTREET": pa.Column(str),  
+      "FRONTINGSTREET": pa.Column(str), 
+      "SIDE": pa.Column(str), 
+      "FROMSTREET": pa.Column(str), 
+      "DIRECTION": pa.Column(str), 
+      "SITEID": pa.Column(str), 
+      "WARD": pa.Column(str), 
+      "BIA": pa.Column(str), 
+      "ASSETTYPE": pa.Column(str), 
+      "STATUS": pa.Column(str),
+      "SDE_STATE_ID": pa.Column("int32"), 
+      "geometry": pa.Column("geometry"),
+    }
+  )
+  test = type(schema.validate(gdf)) == gpd.GeoDataFrame
   return AssetCheckResult(passed=bool(test))
+
+
