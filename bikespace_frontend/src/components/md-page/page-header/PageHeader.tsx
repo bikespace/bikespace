@@ -15,7 +15,7 @@ export function PageHeader() {
   }) as React.RefObject<HTMLDivElement>;
 
   return (
-    <header className={styles.header}>
+    <header className={styles.header} ref={clickAwayRef}>
       <Link to="/" title="Home" className={styles.bikespaceLogo}>
         <img src={bikespaceLogo} alt="BikeSpace logo" />
       </Link>
@@ -25,7 +25,6 @@ export function PageHeader() {
         onClick={() => {
           setIsMenuOpen(!isMenuOpen);
         }}
-        ref={clickAwayRef}
       >
         <img src={hamburgerMenu} alt="Menu icon" />
       </div>
