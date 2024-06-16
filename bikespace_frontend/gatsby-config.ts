@@ -32,12 +32,35 @@ const config: GatsbyConfig = {
     'gatsby-plugin-sharp',
     'gatsby-transformer-sharp',
     {
+      resolve: 'gatsby-plugin-mdx',
+    },
+    {
       resolve: 'gatsby-source-filesystem',
       options: {
         name: 'assets',
         path: './src/assets/',
       },
       __key: 'assets',
+    },
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        name: `content`,
+        path: `./src/content`,
+      },
+    },
+    {
+      resolve: 'gatsby-transformer-remark',
+      options: {
+        plugins: [
+          {
+            resolve: `gatsby-remark-images`,
+            options: {
+              backgroundColor: 'transparent', // required to display blurred image on first load
+            },
+          },
+        ],
+      },
     },
     'gatsby-plugin-vanilla-extract',
     'gatsby-plugin-sass',
@@ -50,13 +73,13 @@ const config: GatsbyConfig = {
     {
       resolve: `gatsby-plugin-umami`,
       options: {
-        websiteId: "d56aa43e-3009-4f6d-9975-c82af706c3be",
-        srcUrl: "https://us.umami.is/script.js",
+        websiteId: 'd56aa43e-3009-4f6d-9975-c82af706c3be',
+        srcUrl: 'https://us.umami.is/script.js',
         includeInDevelopment: true,
         autoTrack: true,
         respectDoNotTrack: true,
         dataCache: false,
-        dataDomains: "app.bikespace.ca",
+        dataDomains: 'app.bikespace.ca',
       },
     },
   ],
