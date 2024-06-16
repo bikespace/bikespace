@@ -8,6 +8,8 @@ title: "BikeSpace - Toronto's Bike Parking App"
 
 Some content
 
+![Bikespace intro image](./bikespace-intro.png)
+
 <a href='/submission'>Report your parking issue</a>
 <a href='/dashboard'>View the collected data</a>
 
