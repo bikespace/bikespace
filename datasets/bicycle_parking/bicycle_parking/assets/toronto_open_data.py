@@ -14,7 +14,7 @@ import geopandas as gpd
 import pandas as pd
 import pandera as pa
 
-from .resources.toronto_open_data import TorontoOpenDataResource
+from ..resources.toronto_open_data import TorontoOpenDataResource
 
 gpd.options.io_engine = "pyogrio"
 
@@ -66,5 +66,3 @@ def validate_dataframe():
   )
   test = type(schema.validate(gdf)) == gpd.GeoDataFrame
   return AssetCheckResult(passed=bool(test))
-
-
