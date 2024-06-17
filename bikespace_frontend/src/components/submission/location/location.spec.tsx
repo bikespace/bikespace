@@ -1,8 +1,10 @@
 import React, {useState} from 'react';
 import {render, screen} from '@testing-library/react';
-import {Location} from './Location';
-import {LocationLatLng} from '@/interfaces/Submission';
 import '@testing-library/jest-dom';
+
+import {LocationLatLng} from '@/interfaces/Submission';
+
+import {Location} from './Location';
 
 describe('Test Location page component', () => {
   const [location, setLocation] = useState<LocationLatLng>({

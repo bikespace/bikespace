@@ -1,13 +1,15 @@
 import React, {useState} from 'react';
 import {render, screen} from '@testing-library/react';
-import {Time} from './Time';
+
 import {ParkingDuration} from '@/interfaces/Submission';
+
+import {Time} from './Time';
 
 describe('Test Time page component', () => {
   const [parkingDuration, setParkingDuration] = useState<ParkingDuration>(
     ParkingDuration.Minutes
   );
-  const [dateTime, setDateTime] = useState<Date>(new Date());
+  const [dateTime] = useState<Date>(new Date());
   test('time page title is rendered correctly', () => {
     render(
       <Time

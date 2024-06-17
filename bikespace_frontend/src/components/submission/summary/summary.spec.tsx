@@ -1,13 +1,15 @@
 import React, {useState} from 'react';
 import {render, screen} from '@testing-library/react';
-import {Summary} from './Summary';
+import '@testing-library/jest-dom';
+
 import {
   IssueType,
   LocationLatLng,
   ParkingDuration,
   SubmissionStatus,
 } from '@/interfaces/Submission';
-import '@testing-library/jest-dom';
+
+import {Summary} from './Summary';
 
 describe('Test the Summary component page', () => {
   const [issues, setIssues] = useState<IssueType[]>([

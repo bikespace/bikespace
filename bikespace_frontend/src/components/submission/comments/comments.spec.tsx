@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
 import {render, screen} from '@testing-library/react';
-import {Comments} from './Comments';
 import '@testing-library/jest-dom';
+
+import {Comments} from './Comments';
 
 describe('Test the Comments component', () => {
   const [comments, setComments] = useState('');
