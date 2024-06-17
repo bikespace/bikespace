@@ -60,4 +60,15 @@ describe('Summary', () => {
       'Success'
     );
   });
+
+  test('error status should render correct message', () => {
+    render(
+      <Summary
+        submission={submission}
+        submissionStatus={{status: SubmissionStatus.Error}}
+      />
+    );
+
+    expect(screen.getByRole('heading', {level: 1})).toHaveTextContent('Oops');
+  });
 });
