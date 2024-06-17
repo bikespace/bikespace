@@ -1,13 +1,34 @@
 import React from 'react';
-import {render, screen} from '@testing-library/react';
+import {render, screen, fireEvent} from '@testing-library/react';
 import '@testing-library/jest-dom';
+
+import {SidebarTab} from '../context';
 
 import {SidebarTabs} from './SidebarTabs';
 
-describe('renders tabs correctly', () => {
-  render(<SidebarTabs />);
+const tabContext = {
+  tab: SidebarTab.Data,
+  setTab: jest.fn(),
+};
 
-  const element = screen.getByText(/Data/);
+describe('SidebarTabs', () => {
+  beforeEach(() => {
+    jest.spyOn(React, 'useContext').mockReturnValue(tabContext);
 
-  expect(element).toBeInTheDocument();
+    render(<SidebarTabs />);
+  });
+
+  test('should render tabs properly', () => {
+    for (const label of ['Data', 'Filters', 'Feed']) {
+      const element = screen.getByText(new RegExp(label));
+
+      expect(element).toBeInTheDocument();
+    }
+  });
+
+  test('should update tab state when clicked', () => {
+    fireEvent.click(screen.getByText('Filters'));
+
+    expect(tabContext.setTab).toHaveBeenCalledWith(SidebarTab.Filters);
+  });
 });
