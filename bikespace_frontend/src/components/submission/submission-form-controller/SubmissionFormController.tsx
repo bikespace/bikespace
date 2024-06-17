@@ -1,7 +1,11 @@
 import React from 'react';
 import {navigate} from 'gatsby';
 
-import {SubmissionPayload} from '@/interfaces/Submission';
+import {
+  SubmissionPayload,
+  SubmissionStatus,
+  SubmissionResponsePayload,
+} from '@/interfaces/Submission';
 
 import * as styles from './submission-form-controller.module.scss';
 
@@ -11,7 +15,9 @@ interface SubmissionFormControllerProps {
   step: number;
   setStep: React.Dispatch<React.SetStateAction<number>>;
   submissionStatus: {status: string};
-  setSubmissionStatus: React.Dispatch<React.SetStateAction<{status: string}>>;
+  setSubmissionStatus: React.Dispatch<
+    React.SetStateAction<SubmissionResponsePayload>
+  >;
   formOrder: string[];
 }
 
@@ -37,20 +43,21 @@ export function SubmissionFormController({
           },
         }
       );
+
       if (!response.ok) {
         throw new Error(`Error! status: ${response.status}`);
       }
-      console.log('result is ' + response.status);
+
       if (response.status === 201) {
-        setSubmissionStatus({status: 'success'});
+        setSubmissionStatus({status: SubmissionStatus.Success});
       }
     } catch (error) {
       if (error instanceof Error) {
         console.log('Error message: ', error.message);
-        setSubmissionStatus({status: 'error'});
+        setSubmissionStatus({status: SubmissionStatus.Error});
       } else {
         console.log('unexpected error', error);
-        setSubmissionStatus({status: 'error'});
+        setSubmissionStatus({status: SubmissionStatus.Error});
       }
     }
   }

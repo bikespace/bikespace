@@ -1,13 +1,18 @@
 import React from 'react';
-import Submission, {SubmissionStatus} from '@/interfaces/Submission';
+import {
+  Submission,
+  SubmissionStatus,
+  SubmissionResponsePayload,
+} from '@/interfaces/Submission';
 
 export const Summary = (props: {
   submission: Submission;
-  submissionStatus: SubmissionStatus;
+  submissionStatus: SubmissionResponsePayload;
 }) => {
   const submission = props.submission;
-  const submissionStatus = props.submissionStatus;
-  if (submissionStatus.status === 'summary') {
+  const {status} = props.submissionStatus;
+
+  if (status === SubmissionStatus.Summary) {
     return (
       <div id="submission-summary">
         <h1>Summary</h1>
@@ -32,7 +37,7 @@ export const Summary = (props: {
         </div>
       </div>
     );
-  } else if (submissionStatus.status === 'success') {
+  } else if (status === SubmissionStatus.Success) {
     return (
       <div id="submission-summary">
         <h1>Success</h1>
@@ -40,7 +45,7 @@ export const Summary = (props: {
         <p>Thank You!</p>
       </div>
     );
-  } else if (submissionStatus.status === 'error') {
+  } else if (status === SubmissionStatus.Error) {
     return (
       <div id="submission-summary">
         <h1>Oops</h1>
@@ -56,7 +61,7 @@ export const Summary = (props: {
         <h1>Oops!</h1>
         <p>
           Something went wrong beyond our expectations. Please try again later,
-          and report this bug to the developers :(
+          and report this bug to the developers :
         </p>
       </div>
     );

@@ -6,6 +6,7 @@ import {
   ParkingDuration,
   SubmissionPayload,
   SubmissionStatus,
+  SubmissionResponsePayload,
 } from '@/interfaces/Submission';
 
 import {
@@ -39,13 +40,16 @@ export function SubmissionForm() {
   const [dateTime, setDateTime] = useState<Date>(new Date());
   const [locationLoaded, setLocationLoaded] = useState(false);
   const [comments, setComments] = useState('');
+
   const parkingTime = {date: dateTime, parkingDuration: parkingDuration};
+
   const submission = {
     issues: issues,
     location: location,
     parkingTime: parkingTime,
     comments: comments,
   };
+
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
       position => {
@@ -71,9 +75,10 @@ export function SubmissionForm() {
     parking_duration: submission.parkingTime.parkingDuration,
     comments: submission.comments,
   };
-  const [submissionStatus, setSubmissionStatus] = useState<SubmissionStatus>({
-    status: 'summary',
-  });
+  const [submissionStatus, setSubmissionStatus] =
+    useState<SubmissionResponsePayload>({
+      status: SubmissionStatus.Summary,
+    });
 
   return (
     <div className={styles.mainContent}>

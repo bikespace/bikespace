@@ -23,11 +23,17 @@ export interface ParkingTime {
   parkingDuration: ParkingDuration;
 }
 
-export interface SubmissionStatus {
-  status: string;
+export interface SubmissionResponsePayload {
+  status: SubmissionStatus;
 }
 
-export default interface Submission {
+export enum SubmissionStatus {
+  Summary = 'summary',
+  Success = 'success',
+  Error = 'error',
+}
+
+export interface Submission {
   issues: IssueType[];
   location: LocationLatLng;
   parkingTime: ParkingTime;

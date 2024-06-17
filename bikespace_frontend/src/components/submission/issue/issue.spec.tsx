@@ -6,8 +6,9 @@ import {IssueType} from '@/interfaces/Submission';
 
 import {Issue} from './Issue';
 
-describe('Test Issues page component', () => {
+describe('Issues', () => {
   const [issues, setIssues] = useState<IssueType[]>([]);
+
   test('Issues page title should should have correct text', () => {
     render(<Issue issues={issues} onIssuesChanged={setIssues} />);
     expect(screen.getByRole('heading', {level: 2})).toHaveTextContent(
@@ -17,6 +18,7 @@ describe('Test Issues page component', () => {
       'Choose at least one'
     );
   });
+
   test('Issues page shows all the issue types', () => {
     render(<Issue issues={issues} onIssuesChanged={setIssues} />);
     expect(

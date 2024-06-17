@@ -5,7 +5,7 @@ import {ParkingDuration} from '@/interfaces/Submission';
 
 import {Time} from './Time';
 
-describe('Test Time page component', () => {
+describe('Time', () => {
   const [parkingDuration, setParkingDuration] = useState<ParkingDuration>(
     ParkingDuration.Minutes
   );

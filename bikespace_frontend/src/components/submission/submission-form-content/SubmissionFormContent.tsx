@@ -4,6 +4,7 @@ import {
   IssueType,
   LocationLatLng,
   ParkingDuration,
+  SubmissionResponsePayload,
 } from '@/interfaces/Submission';
 
 import {
@@ -27,7 +28,7 @@ interface SubmissionFormContentProps {
   setDateTime: React.Dispatch<React.SetStateAction<Date>>;
   comments: string;
   setComments: React.Dispatch<React.SetStateAction<string>>;
-  submissionStatus: {status: string};
+  submissionStatus: SubmissionResponsePayload;
 }
 
 export function SubmissionFormContent({

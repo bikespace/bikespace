@@ -4,8 +4,9 @@ import '@testing-library/jest-dom';
 
 import {Comments} from './Comments';
 
-describe('Test the Comments component', () => {
+describe('Comments', () => {
   const [comments, setComments] = useState('');
+
   test('Comments title should be rendered correctly', () => {
     render(<Comments comments={comments} onCommentsChanged={setComments} />);
     expect(screen.getByRole('heading', {level: 1})).toHaveTextContent(
