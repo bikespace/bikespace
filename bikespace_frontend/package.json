@@ -61,6 +61,7 @@
   },
   "devDependencies": {
     "@babel/preset-typescript": "^7.23.3",
+    "@faker-js/faker": "^8.4.1",
     "@jest/globals": "^29.7.0",
     "@testing-library/jest-dom": "^6.1.4",
     "@testing-library/react": "^14.1.2",
