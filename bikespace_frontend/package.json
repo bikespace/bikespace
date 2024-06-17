@@ -50,6 +50,7 @@
     "leaflet.locatecontrol": "^0.81.1",
     "leaflet.markercluster": "^1.5.3",
     "luxon": "^3.4.4",
+    "node": "18.20.3",
     "plotly.js-dist-min": "^2.33.0",
     "punycode": "^2.3.1",
     "react": "^18.2.0",
@@ -85,5 +86,8 @@
     "jest-environment-jsdom": "^29.7.0",
     "ts-jest": "^29.1.1",
     "typescript": "^4.9.5"
+  },
+  "optionalDependencies": {
+    "@parcel/watcher-darwin-arm64": "^2.4.2-alpha.0"
   }
 }

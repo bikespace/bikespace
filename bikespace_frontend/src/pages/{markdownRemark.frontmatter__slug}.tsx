@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {graphql} from 'gatsby';
 
-import { PageHeader } from '@/components/md-page/page-header/PageHeader';
+import {PageHeader} from '@/components/md-page/page-header/PageHeader';
 
 import * as styles from '@/components/md-page/page.module.scss';
 
@@ -21,7 +21,7 @@ export default function PageTemplate({
   data: PageData;
 }) {
   const {markdownRemark} = data; // data.markdownRemark holds your post data
-  const {frontmatter, html} = markdownRemark;
+  const {html} = markdownRemark;
   return (
     <>
       <PageHeader />
