@@ -10,7 +10,7 @@ export enum SidebarTab {
 
 type TabContextData = {
   tab: SidebarTab;
-  setTab: React.Dispatch<React.SetStateAction<string>>;
+  setTab: React.Dispatch<React.SetStateAction<SidebarTab>>;
 };
 
 export const TabContext = createContext<TabContextData>({

@@ -9,6 +9,7 @@ import {
   SubmissionsDateRangeContext,
   type SubmissionsDateRangeContextData,
   FocusedSubmissionIdContext,
+  SidebarTab,
 } from '../context';
 
 import {DashboardHeader} from '../dashboard-header';
@@ -23,7 +24,7 @@ interface DashboardPageProps {
 }
 
 export function DashboardPage({submissions}: DashboardPageProps) {
-  const [tab, setTab] = useState<string>('data');
+  const [tab, setTab] = useState<SidebarTab>(SidebarTab.Data);
 
   const [filters, setFilters] = useState<SubmissionFilters>({
     dateRange: null,
