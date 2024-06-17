@@ -17,8 +17,8 @@ interface MapPopupProps {
 
 export const MapPopup = forwardRef<LeafletPopup, MapPopupProps>(
   ({submission}: MapPopupProps, ref) => {
-    const {setFocus} = useContext(FocusedSubmissionIdContext)!;
-    const {setTab} = useContext(TabContext)!;
+    const {setFocus} = useContext(FocusedSubmissionIdContext);
+    const {setTab} = useContext(TabContext);
 
     const {issues, id, comments, parking_duration, parking_time} = submission;
 

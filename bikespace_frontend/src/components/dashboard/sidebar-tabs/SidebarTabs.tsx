@@ -1,26 +1,26 @@
 import React, {useContext} from 'react';
 
-import {TabContext} from '../context';
+import {TabContext, SidebarTab} from '../context';
 
 import * as styles from './sidebar-tabs.module.scss';
 
 const tabs = [
   {
     label: 'Data',
-    name: 'data',
+    name: SidebarTab.Data,
   },
   {
     label: 'Filters',
-    name: 'filters',
+    name: SidebarTab.Filters,
   },
   {
     label: 'Feed',
-    name: 'feed',
+    name: SidebarTab.Feed,
   },
 ];
 
 export function SidebarTabs() {
-  const {tab, setTab} = useContext(TabContext)!;
+  const {tab, setTab} = useContext(TabContext);
 
   return (
     <nav className={styles.tabs}>

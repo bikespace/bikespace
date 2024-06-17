@@ -12,7 +12,7 @@ export function ClearFiltersButton() {
   const {
     filters: {dateRange, parkingDuration, issue, day},
     setFilters,
-  } = useContext(SubmissionFiltersContext)!;
+  } = useContext(SubmissionFiltersContext);
 
   if (
     parkingDuration.length === 0 &&

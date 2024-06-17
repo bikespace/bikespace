@@ -16,8 +16,8 @@ import {FilterDateRangeCustom} from '../filter-date-range-custom';
 import * as styles from './filter-date-range.module.scss';
 
 export function FilterDateRange() {
-  const {setFilters} = useContext(SubmissionFiltersContext)!;
-  const {first, last} = useContext(SubmissionsDateRangeContext)!;
+  const {setFilters} = useContext(SubmissionFiltersContext);
+  const {first, last} = useContext(SubmissionsDateRangeContext);
 
   const [dateRange, setDateRange] = useState<{from: Date; to: Date} | null>(
     null

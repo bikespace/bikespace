@@ -14,7 +14,7 @@ interface FeedSubmissionItemProps {
 }
 
 export function FeedSubmissionItem({submission}: FeedSubmissionItemProps) {
-  const {focus, setFocus} = useContext(FocusedSubmissionIdContext)!;
+  const {focus, setFocus} = useContext(FocusedSubmissionIdContext);
 
   const {id, issues, parking_time, parking_duration, comments} = submission;
 

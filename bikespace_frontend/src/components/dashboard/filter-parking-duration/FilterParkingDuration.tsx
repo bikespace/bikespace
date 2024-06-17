@@ -15,7 +15,7 @@ enum DurationCategory {
 }
 
 export function FilterParkingDuration() {
-  const {filters, setFilters} = useContext(SubmissionFiltersContext)!;
+  const {filters, setFilters} = useContext(SubmissionFiltersContext);
 
   const [durationCategory, setDurationCategory] =
     useState<DurationCategory | null>(null);

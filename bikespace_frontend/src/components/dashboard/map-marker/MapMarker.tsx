@@ -31,7 +31,7 @@ export function MapMarker({submission}: MapMarkerProps) {
 
   const map = useMap();
 
-  const {focus} = useContext(FocusedSubmissionIdContext)!;
+  const {focus} = useContext(FocusedSubmissionIdContext);
 
   useEffect(() => {
     if (focus !== submission.id) return;

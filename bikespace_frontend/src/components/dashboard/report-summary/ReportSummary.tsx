@@ -13,8 +13,8 @@ import * as styles from './report-summary.module.scss';
 
 export function ReportSummary() {
   const submissions = useContext(SubmissionsContext);
-  const {filters} = useContext(SubmissionFiltersContext)!;
-  const {first, last} = useContext(SubmissionsDateRangeContext)!;
+  const {filters} = useContext(SubmissionFiltersContext);
+  const {first, last} = useContext(SubmissionsDateRangeContext);
 
   const [dateRange, setDateRange] = useState({
     from: first!,
