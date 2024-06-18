@@ -10,24 +10,7 @@ export const Issue = (props: {
 }) => {
   const issues = props.issues;
   const handleClick = (e: React.FormEvent<HTMLInputElement>) => {
-    let issueType: IssueType;
-    switch (e.currentTarget.dataset.value) {
-      case 'not_provided':
-        issueType = IssueType.NotProvided;
-        break;
-      case 'full':
-        issueType = IssueType.Full;
-        break;
-      case 'damaged':
-        issueType = IssueType.Damaged;
-        break;
-      case 'abandoned':
-        issueType = IssueType.Abandoned;
-        break;
-      default:
-        issueType = IssueType.Other;
-        break;
-    }
+    const issueType = e.currentTarget.dataset.value as IssueType;
 
     let newIssues: IssueType[];
     if (!issues.includes(issueType)) {
