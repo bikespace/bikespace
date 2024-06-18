@@ -24,7 +24,7 @@ export interface ParkingTime {
 }
 
 export interface SubmissionResponsePayload {
-  status: SubmissionStatus;
+  status: string;
 }
 
 export enum SubmissionStatus {

@@ -48,7 +48,7 @@ export const Summary = (props: {
   } else if (status === SubmissionStatus.Error) {
     return (
       <div id="submission-summary">
-        <h1>Oops</h1>
+        <h1>Oops!</h1>
         <p>
           Something went wrong on our end processing your submission, please try
           again later!

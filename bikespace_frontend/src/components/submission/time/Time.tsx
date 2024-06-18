@@ -29,25 +29,9 @@ export const Time = (props: {
   };
 
   const handleClick = (e: React.FormEvent<HTMLInputElement>) => {
-    let duration: ParkingDuration;
-    switch (e.currentTarget.dataset.value) {
-      case 'minutes':
-        duration = ParkingDuration.Minutes;
-        break;
-      case 'hours':
-        duration = ParkingDuration.Hours;
-        break;
-      case 'overnight':
-        duration = ParkingDuration.Overnight;
-        break;
-      case 'multiday':
-        duration = ParkingDuration.MultiDay;
-        break;
-      default:
-        duration = ParkingDuration.Overnight;
-        break;
-    }
-    props.onParkingDurationChanged(duration);
+    props.onParkingDurationChanged(
+      e.currentTarget.dataset.value as ParkingDuration
+    );
   };
 
   return (
@@ -61,7 +45,7 @@ export const Time = (props: {
         onChange={handleDateTime}
         value={convertToDateTimeLocalString(dateTime)}
         data-umami-event="date-time-dropdown"
-      ></input>
+      />
       <fieldset>
         <legend>
           <h2>How long did you need to park?</h2>

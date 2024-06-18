@@ -29,7 +29,7 @@ describe('Summary', () => {
     faker.seed(123);
   });
 
-  test('summary text should render correctly', () => {
+  test('Summary text should render correctly', () => {
     render(
       <Summary
         submission={submission}
@@ -47,7 +47,7 @@ describe('Summary', () => {
     expect(screen.getByText(/Comments:/i));
   });
 
-  test('success status should render correct message', () => {
+  test('Success response status should render correct message', () => {
     render(
       <Summary
         submission={submission}
@@ -60,7 +60,7 @@ describe('Summary', () => {
     );
   });
 
-  test('error status should render correct message', () => {
+  test('Error response status should render correct message', () => {
     render(
       <Summary
         submission={submission}
@@ -68,6 +68,16 @@ describe('Summary', () => {
       />
     );
 
-    expect(screen.getByRole('heading', {level: 1})).toHaveTextContent('Oops');
+    expect(
+      screen.getByText(
+        /Something went wrong on our end processing your submission/
+      )
+    );
+  });
+
+  test('Unexpected response status should render correct message', () => {
+    render(<Summary submission={submission} submissionStatus={{status: ''}} />);
+
+    expect(screen.getByText(/Something went wrong beyond our expectations/));
   });
 });
