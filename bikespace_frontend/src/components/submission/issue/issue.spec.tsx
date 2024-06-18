@@ -33,21 +33,29 @@ describe('Issues', () => {
     expect(onIssuesChanged).toHaveBeenCalledTimes(1);
   });
 
-  test('Checkbox is unchecked when issue is absent from state array', () => {
-    render(<Issue issues={[]} onIssuesChanged={jest.fn()} />);
+  test('Checking empty checkbox should add issue to array', () => {
+    const onIssuesChanged = jest.fn();
+
+    render(<Issue issues={[]} onIssuesChanged={onIssuesChanged} />);
 
     const checkbox = screen.getAllByRole('checkbox')[0];
-
-    expect(checkbox).not.toBeChecked();
+    fireEvent.click(checkbox);
+    expect(onIssuesChanged).toHaveBeenCalledWith([IssueType.NotProvided]);
   });
 
-  test('Checkbox is checked when issue is present in state array', async () => {
+  test('Checking checked checkbox should remove issue to array', async () => {
+    const onIssuesChanged = jest.fn();
+
     render(
-      <Issue issues={Object.values(IssueType)} onIssuesChanged={jest.fn()} />
+      <Issue
+        issues={[IssueType.NotProvided]}
+        onIssuesChanged={onIssuesChanged}
+      />
     );
 
     const checkbox = screen.getAllByRole('checkbox')[0];
+    fireEvent.click(checkbox);
 
-    expect(checkbox).toBeChecked();
+    expect(onIssuesChanged).toHaveBeenCalledWith([]);
   });
 });
