@@ -1,18 +1,21 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {render, screen} from '@testing-library/react';
-
-import {LocationLatLng} from '@/interfaces/Submission';
+import {faker} from '@faker-js/faker';
 
 import {Location} from './Location';
 
 describe('Test Location page component', () => {
-  const [location, setLocation] = useState<LocationLatLng>({
-    // default location is Toronto City Hall
-    latitude: 43.65322,
-    longitude: -79.384452,
-  });
-  test('Location page title should be rendered properly', () => {
-    render(<Location location={location} onLocationChanged={setLocation} />);
+  test('Title should be rendered properly', () => {
+    render(
+      <Location
+        location={{
+          latitude: faker.location.latitude(),
+          longitude: faker.location.longitude(),
+        }}
+        handler={<></>}
+      />
+    );
+
     expect(screen.getByRole('heading', {level: 2})).toHaveTextContent(
       'Where was the problem?'
     );
@@ -20,5 +23,4 @@ describe('Test Location page component', () => {
       'Pin the location'
     );
   });
-  // Add more tests for the compenents regarding the map
 });

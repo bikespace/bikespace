@@ -9,16 +9,14 @@ import {
   SubmissionResponsePayload,
 } from '@/interfaces/Submission';
 
-import {
-  Issue,
-  Location,
-  Time,
-  Comments,
-  Summary,
-  SubmissionProgressBar,
-  SubmissionFormController,
-  SubmissionFormContent,
-} from '@/components/submission';
+import {Issue} from '../issue';
+import {Location} from '../location';
+import {Time} from '../time';
+import {Comments} from '../comments';
+import {Summary} from '../summary';
+import {SubmissionProgressBar} from '../submission-progress-bar';
+import {SubmissionFormController} from '../submission-form-controller';
+import {SubmissionFormContent} from '../submission-form-content';
 
 import * as styles from './submission-form.module.scss';
 

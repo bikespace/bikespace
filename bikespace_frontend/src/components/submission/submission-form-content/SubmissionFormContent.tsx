@@ -7,13 +7,12 @@ import {
   SubmissionResponsePayload,
 } from '@/interfaces/Submission';
 
-import {
-  Issue,
-  Location,
-  Time,
-  Comments,
-  Summary,
-} from '@/components/submission';
+import {Issue} from '../issue';
+import {Location} from '../location';
+import {MapHandler} from '../map-handler';
+import {Time} from '../time';
+import {Comments} from '../comments';
+import {Summary} from '../summary';
 
 interface SubmissionFormContentProps {
   formOrder: string[];
@@ -50,7 +49,12 @@ export function SubmissionFormContent({
     case Issue.name:
       return <Issue issues={issues} onIssuesChanged={setIssues} />;
     case Location.name:
-      return <Location location={location} onLocationChanged={setLocation} />;
+      return (
+        <Location
+          location={location}
+          handler={<MapHandler onLocationChanged={setLocation} />}
+        />
+      );
     case Time.name:
       return (
         <Time
