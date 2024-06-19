@@ -1,5 +1,5 @@
 import React, {useContext, useMemo} from 'react';
-import Plot, {PlotParams} from 'react-plotly.js';
+import {PlotParams} from 'react-plotly.js';
 import {Annotations} from 'plotly.js-dist-min';
 import {DateTime, Interval} from 'luxon';
 
@@ -36,20 +36,17 @@ export function DataDurationByTodChart({
   }, [submissions]);
 
   const annotations = useMemo<Partial<Annotations>[]>(() => {
-    const annts: Partial<Annotations>[] = [];
-
-    data.forEach((dArray, i) => {
-      dArray.forEach((_, j) => {
-        annts.push({
+    return data
+      .map((dArray, i) => {
+        return dArray.map((_, j) => ({
           x: `${intervals[j].start}-${intervals[j].end}`,
           y: parkingDurations[i],
           text: data[i][j].toString(),
           showarrow: false,
           font: {color: 'white'},
-        });
-      });
-    });
-    return annts;
+        }));
+      })
+      .flat();
   }, [data]);
 
   return (
