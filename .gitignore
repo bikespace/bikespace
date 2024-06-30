@@ -125,3 +125,5 @@ coverage/
 
 # Data reports
 /datasets/analysis-for-city/thumbnails/
+
+datasets/bicycle_parking/bicycle_parking/dev_home
