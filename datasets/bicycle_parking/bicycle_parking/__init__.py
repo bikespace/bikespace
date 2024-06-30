@@ -6,6 +6,7 @@ from dagster import (
 
 from . import assets
 from .resources.toronto_open_data import TorontoOpenDataResource
+from .resources.openstreetmap import OpenStreetMapResource
 
 all_assets = load_assets_from_package_module(assets)
 all_asset_checks = load_asset_checks_from_package_module(assets)
@@ -15,5 +16,6 @@ defs = Definitions(
     asset_checks=all_asset_checks,
     resources={
       "toronto_open_data": TorontoOpenDataResource(),
+      "openstreetmap": OpenStreetMapResource(),
     },
 )

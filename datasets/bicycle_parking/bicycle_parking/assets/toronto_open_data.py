@@ -19,7 +19,7 @@ from ..resources.toronto_open_data import (
   TorontoOpenDataResource, 
   WARD_INFO,
   BIKE_STATION_INFO,
-  )
+)
 
 gpd.options.io_engine = "pyogrio"
 
