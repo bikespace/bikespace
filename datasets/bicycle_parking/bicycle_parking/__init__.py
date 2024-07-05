@@ -5,6 +5,7 @@ from dagster import (
 )
 
 from . import assets
+from .resources.filesystem_io import LocalIOManager
 from .resources.toronto_open_data import TorontoOpenDataResource
 from .resources.openstreetmap import OpenStreetMapResource
 
@@ -15,6 +16,7 @@ defs = Definitions(
     assets=all_assets,
     asset_checks=all_asset_checks,
     resources={
+      "io_manager": LocalIOManager(path_prefix=["data"]),
       "toronto_open_data": TorontoOpenDataResource(),
       "openstreetmap": OpenStreetMapResource(),
     },
