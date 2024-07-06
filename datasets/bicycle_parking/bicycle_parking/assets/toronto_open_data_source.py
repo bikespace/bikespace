@@ -21,6 +21,7 @@ from ..resources.toronto_open_data import (
   BIKE_STATION_INFO,
 )
 
+GROUP_NAME = "city_source"
 
 # type shorthands
 optional_string = pa.Column(str, required=False)
@@ -28,7 +29,8 @@ optional_nullable_string = pa.Column(str, nullable=True, required=False)
 optional_int32 = pa.Column("int32", required=False)
 
 @asset(
-  description="""City of Toronto bicycle parking data from the "Street Furniture - Bicycle Parking" dataset. See: https://open.toronto.ca/dataset/street-furniture-bicycle-parking/"""
+  description="""City of Toronto bicycle parking data from the "Street Furniture - Bicycle Parking" dataset. See: https://open.toronto.ca/dataset/street-furniture-bicycle-parking/""",
+  group_name=GROUP_NAME,
 )
 def street_furniture_bicycle_parking(
   context: AssetExecutionContext,
@@ -128,7 +130,8 @@ def validate_sfbp_info(gdf: gpd.GeoDataFrame = street_furniture_bicycle_parking)
 
 
 @asset(
-  description="""City of Toronto bicycle parking data from the "Bicycle Parking - High Capacity (Outdoor)" dataset. See https://open.toronto.ca/dataset/bicycle-parking-high-capacity-outdoor/"""
+  description="""City of Toronto bicycle parking data from the "Bicycle Parking - High Capacity (Outdoor)" dataset. See https://open.toronto.ca/dataset/bicycle-parking-high-capacity-outdoor/""",
+  group_name=GROUP_NAME,
 )
 def bicycle_parking_high_capacity_outdoor(
   context: AssetExecutionContext,
@@ -247,7 +250,8 @@ def validate_bphco_info(gdf: gpd.GeoDataFrame = bicycle_parking_high_capacity_ou
 
 
 @asset(
-  description="""City of Toronto bicycle parking data from the "Bicycle Parking Racks" dataset. See: https://open.toronto.ca/dataset/bicycle-parking-racks/"""
+  description="""City of Toronto bicycle parking data from the "Bicycle Parking Racks" dataset. See: https://open.toronto.ca/dataset/bicycle-parking-racks/""",
+  group_name=GROUP_NAME,
 )
 def bicycle_parking_racks(
   context: AssetExecutionContext,
@@ -357,7 +361,8 @@ def validate_bpr(gdf: gpd.GeoDataFrame = bicycle_parking_racks) -> AssetCheckRes
 
 
 @asset(
-  description="""City of Toronto bicycle parking data from the "Bicycle Parking - Bike Stations (Indoor)" dataset. Some out-of-date station information is overwritten using information copied from https://www.toronto.ca/services-payments/streets-parking-transportation/cycling-in-toronto/bicycle-parking/bicycle-parking-stations/ (last checked 2024-06). See: https://open.toronto.ca/dataset/bicycle-parking-bike-stations-indoor/"""
+  description="""City of Toronto bicycle parking data from the "Bicycle Parking - Bike Stations (Indoor)" dataset. Some out-of-date station information is overwritten using information copied from https://www.toronto.ca/services-payments/streets-parking-transportation/cycling-in-toronto/bicycle-parking/bicycle-parking-stations/ (last checked 2024-06). See: https://open.toronto.ca/dataset/bicycle-parking-bike-stations-indoor/""",
+  group_name=GROUP_NAME,
 )
 def bicycle_parking_bike_stations_indoor(
   context: AssetExecutionContext,

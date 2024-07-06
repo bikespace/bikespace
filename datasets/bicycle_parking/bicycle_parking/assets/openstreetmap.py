@@ -21,9 +21,12 @@ from ..resources.openstreetmap import (
 )
 
 gpd.options.io_engine = "pyogrio"
+GROUP_NAME = "osm_source"
+
 
 @asset(
-  description="""Data from OpenStreetMap: nodes, ways, and relations with the tag "amenity"="bicycle_parking" within the City of Toronto. Returns centrepoint for ways (and relations, if any); does not return full geometry."""
+  description="""Data from OpenStreetMap: nodes, ways, and relations with the tag "amenity"="bicycle_parking" within the City of Toronto. Returns centrepoint for ways (and relations, if any); does not return full geometry.""",
+  group_name=GROUP_NAME,
 )
 def osm_bicycle_parking(
   context: AssetExecutionContext,

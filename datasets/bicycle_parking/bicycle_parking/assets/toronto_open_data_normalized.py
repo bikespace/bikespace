@@ -24,9 +24,12 @@ from .toronto_open_data_source import (
 )
 from ..resources.toronto_open_data import WARD_INFO
 
+GROUP_NAME = "city_normalized"
+
 
 @asset(
-  description="""Normalized to filter out bicycle parking objects which are not currently installed, with data converted to OpenStreetMap schema, and with MultiPoint converted to Point."""
+  description="""Normalized to filter out bicycle parking objects which are not currently installed, with data converted to OpenStreetMap schema, and with MultiPoint converted to Point.""",
+  group_name=GROUP_NAME,
 )
 def street_furniture_bicycle_parking_normalized(
   context: AssetExecutionContext,
@@ -106,7 +109,8 @@ def street_furniture_bicycle_parking_normalized(
 
 
 @asset(
-  description="""Normalized with data converted to OpenStreetMap schema and MultiPoint converted to Point."""
+  description="""Normalized with data converted to OpenStreetMap schema and MultiPoint converted to Point.""",
+  group_name=GROUP_NAME,
 )
 def bicycle_parking_high_capacity_outdoor_normalized(
   context: AssetExecutionContext,
