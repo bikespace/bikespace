@@ -34,35 +34,41 @@ class TorontoOpenDataResource(ConfigurableResource):
        "metadata": meta_resource,
     }
 
+
+TORONTO_WARDS = [
+  {"number": "01", "name": "Etobicoke North"},
+  {"number": "02", "name": "Etobicoke Centre"},
+  {"number": "03", "name": "Etobicoke-Lakeshore"},
+  {"number": "04", "name": "Parkdale-High Park"},
+  {"number": "05", "name": "York South-Weston"},
+  {"number": "06", "name": "York Centre"},
+  {"number": "07", "name": "Humber River-Black Creek"},
+  {"number": "08", "name": "Eglinton-Lawrence"},
+  {"number": "09", "name": "Davenport"},
+  {"number": "10", "name": "Spadina-Fort York"},
+  {"number": "11", "name": "University-Rosedale"},
+  {"number": "12", "name": "Toronto-St. Paul's"},
+  {"number": "13", "name": "Toronto Centre"},
+  {"number": "14", "name": "Toronto-Danforth"},
+  {"number": "15", "name": "Don Valley West"},
+  {"number": "16", "name": "Don Valley East"},
+  {"number": "17", "name": "Don Valley North"},
+  {"number": "18", "name": "Willowdale"},
+  {"number": "19", "name": "Beaches-East York"},
+  {"number": "20", "name": "Scarborough Southwest"},
+  {"number": "21", "name": "Scarborough Centre"},
+  {"number": "22", "name": "Scarborough-Agincourt"},
+  {"number": "23", "name": "Scarborough North"},
+  {"number": "24", "name": "Scarborough-Guildwood"},
+  {"number": "25", "name": "Scarborough-Rouge Park"},
+]
+
 WARD_INFO = {
    "street_furniture_bicycle_parking": {
-      "names": {
-        "01": "Etobicoke North",
-        "02": "Etobicoke Centre",
-        "03": "Etobicoke-Lakeshore",
-        "04": "Parkdale-High Park",
-        "05": "York South-Weston",
-        "06": "York Centre",
-        "07": "Humber River-Black Creek",
-        "08": "Eglinton-Lawrence",
-        "09": "Davenport",
-        "10": "Spadina-Fort York",
-        "11": "University-Rosedale",
-        "12": "Toronto-St. Paul’s",
-        "13": "Toronto Centre",
-        "14": "Toronto-Danforth",
-        "15": "Don Valley West",
-        "16": "Don Valley East",
-        "17": "Don Valley North",
-        "18": "Willowdale",
-        "19": "Beaches-East York",
-        "20": "Scarborough Southwest",
-        "21": "Scarborough Centre",
-        "22": "Scarborough-Agincourt",
-        "23": "Scarborough North",
-        "24": "Scarborough-Guildwood",
-        "25": "Scarborough-Rouge Park"
-      },
+      "lookup": {ward["number"]: ward["name"] for ward in TORONTO_WARDS},
+   },
+   "bicycle_parking_high_capacity_outdoor": {
+      "lookup": {ward["name"]: ward["number"] for ward in TORONTO_WARDS},
    },
    "bicycle_parking_racks": {
       "pattern": r"\s*?(?P<ward_name>.+?)\s*?\(\s*?\d+(?P<ward_number>\d{2})\s*?\)",

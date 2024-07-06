@@ -87,7 +87,7 @@ def validate_sfbp_info(gdf: gpd.GeoDataFrame = street_furniture_bicycle_parking)
       ), 
       "WARD": pa.Column(str, nullable=True,
         checks=pa.Check.isin(list(
-          WARD_INFO["street_furniture_bicycle_parking"]["names"].keys()
+          WARD_INFO["street_furniture_bicycle_parking"]["lookup"].keys()
         )),
       ), 
       "BIA": pa.Column(str, nullable=True), 
@@ -191,7 +191,11 @@ def validate_bphco_info(gdf: gpd.GeoDataFrame = bicycle_parking_high_capacity_ou
           "former Toronto"
         ]),
       ),
-      "WARD": pa.Column(str),
+      "WARD": pa.Column(str, nullable=True,
+        checks=pa.Check.isin(list(
+          WARD_INFO["bicycle_parking_high_capacity_outdoor"]["lookup"].keys()
+        )),
+      ),
       "PLACE_NAME": pa.Column(str, nullable=True),
       "PARKING_TYPE": pa.Column(str, 
         checks=pa.Check.isin(

@@ -62,7 +62,7 @@ def street_furniture_bicycle_parking_normalized(
     return "yes" if assettype == "Shelter" else "no"
 
   def get_ward_name(ward_number):
-    WARD_INFO["street_furniture_bicycle_parking"].get(ward_number, None)
+    WARD_INFO["street_furniture_bicycle_parking"]["lookup"].get(ward_number, None)
 
   gdf_normalized = (
     gdf_filtered
