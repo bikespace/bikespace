@@ -10,5 +10,11 @@ setup(
         "pandera[geopandas]",
         "pyogrio",
     ],
-    extras_require={"dev": ["dagster-webserver", "pytest"]},
+    extras_require={
+        "dev": [
+            "dagster-webserver",
+            "pytest",
+            "black",
+        ]
+    },
 )

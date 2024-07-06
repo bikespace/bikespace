@@ -116,4 +116,14 @@ run-dagster:
 	. .venv/bin/activate && \
 	dagster dev
 
-.PHONY: setup-py clean pip-freeze run-flask-app lint-py seed-db recreate-db fly-deploy-api fly-deploy-frontend run-frontend build-frontend setup-dagster run-dagster
+lint-dagster-preview:
+	cd $(ROOT_DIR)/datasets/bicycle_parking && \
+	. .venv/bin/activate && \
+	python -m black . --diff --color
+
+lint-dagster:
+	cd $(ROOT_DIR)/datasets/bicycle_parking && \
+	. .venv/bin/activate && \
+	python -m black .
+
+.PHONY: setup-py clean pip-freeze run-flask-app lint-py seed-db recreate-db fly-deploy-api fly-deploy-frontend run-frontend build-frontend setup-dagster run-dagster, lint-dagster-preview, lint-dagster

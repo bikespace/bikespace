@@ -1,7 +1,7 @@
 from dagster import (
-  Definitions, 
-  load_assets_from_package_module, 
-  load_asset_checks_from_package_module,
+    Definitions,
+    load_assets_from_package_module,
+    load_asset_checks_from_package_module,
 )
 
 from . import assets
@@ -16,8 +16,8 @@ defs = Definitions(
     assets=all_assets,
     asset_checks=all_asset_checks,
     resources={
-      "io_manager": LocalIOManager(path_prefix=["data"]),
-      "toronto_open_data": TorontoOpenDataResource(),
-      "openstreetmap": OpenStreetMapResource(),
+        "io_manager": LocalIOManager(path_prefix=["data"]),
+        "toronto_open_data": TorontoOpenDataResource(),
+        "openstreetmap": OpenStreetMapResource(),
     },
 )
