@@ -1,6 +1,7 @@
 import os
 import json
 from datetime import datetime, timezone
+import re
 
 from dagster import (
   asset, 
@@ -22,7 +23,7 @@ from .toronto_open_data_source import (
   bicycle_parking_racks,
   bicycle_parking_bike_stations_indoor,
 )
-from ..resources.toronto_open_data import WARD_INFO
+from ..resources.toronto_open_data import WARD_INFO, ABOUT_SEASONAL
 
 GROUP_NAME = "city_normalized"
 
@@ -191,3 +192,87 @@ def bicycle_parking_high_capacity_outdoor_normalized(
       "crs": str(gdf_normalized.crs), 
     },
   )
+
+@asset(
+  description="""Normalized to filter out bicycle parking objects which are not currently installed, with data converted to OpenStreetMap schema, and with MultiPoint converted to Point.""",
+  group_name=GROUP_NAME,
+)
+def bicycle_parking_racks_normalized(
+  context: AssetExecutionContext,
+  bicycle_parking_racks,
+) -> Output:
+  gdf: gpd.GeoDataFrame = bicycle_parking_racks
+  original_cols = gdf.columns.drop("geometry")
+  previous = context.instance.get_latest_materialization_event(AssetKey("bicycle_parking_racks")).asset_materialization
+
+  # filter
+  gdf_filtered = gdf[gdf['STATUS'] == "Installed"]
+
+  # normalize
+  def get_covered(sheltered):
+    try:
+      return sheltered.strip().lower()
+    except:
+      return None
+
+  def get_description(row):
+    values = [
+      "Notes: " + row["NOTES"] if row["NOTES"] != None else "",
+      "Location: " + row["LOCATION"]  if row["LOCATION"] != None else "",
+      ABOUT_SEASONAL if row["SEASONAL"] == "Yes" else "",
+    ]
+    return "\n\n".join(x.strip() for x in values if x.strip())
+    
+  def get_ward_name(ward_str):
+    match = re.search(
+      WARD_INFO["bicycle_parking_racks"]["pattern"],
+      ward_str
+    )
+    return match.group('ward_name') if match else None
+
+  def get_ward_number(ward_str):
+    match = re.search(
+      WARD_INFO["bicycle_parking_racks"]["pattern"],
+      ward_str
+    )
+    return match.group('ward_number') if match else None
+
+  gdf_normalized = (
+    gdf_filtered
+    .assign(**{
+      "amenity": "bicycle_parking",
+      "bicycle_parking": "rack",
+      "capacity": gdf_filtered["CAPACITY"],
+      "operator": "City of Toronto",
+      "covered": gdf_filtered["SHELTERED"].apply(get_covered),
+      "access": "yes",
+      "fee": "no",
+      "description": gdf_filtered[["NOTES", "LOCATION", "SEASONAL"]].apply(get_description, axis=1),
+      "seasonal": gdf_filtered["SEASONAL"].str.lower(),
+      "ref:open.toronto.ca:bicycle-parking-racks:objectid": gdf["OBJECTID"],
+      "meta_borough": gdf_filtered["MUNICIPALITY"].str.title(),
+      "meta_status": gdf_filtered["STATUS"],
+      "meta_ward_name": gdf_filtered["WARD_NAME"].apply(get_ward_name),
+      "meta_ward_number": gdf_filtered["WARD_NAME"].apply(get_ward_number),
+      "meta_source_provider": "City of Toronto",
+      "meta_source_dataset_name": "Bicycle Parking Racks",
+      "meta_source_dataset_url": f"https://open.toronto.ca/dataset/bicycle-parking-racks/",
+      "meta_source_dataset_last_updated": datetime.fromtimestamp(
+        previous.metadata["last_updated"].value,
+        tz=timezone.utc,
+        ).isoformat(),
+    })
+    .drop(original_cols, axis=1)
+    # convert multipoint with one coordinate pair to single point
+    .explode(index_parts=False)
+  )
+
+  return Output(
+    gdf_normalized,
+    metadata={
+      "num_records": len(gdf_normalized),
+      "preview": MetadataValue.md(gdf_normalized.head().to_markdown()),
+      "crs": str(gdf_normalized.crs), 
+    },
+  )
+

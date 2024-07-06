@@ -107,3 +107,5 @@ BIKE_STATION_INFO = {
     "capacity": 68,
   },
 }
+
+ABOUT_SEASONAL = """Seasonality: "[seasonal parking is] typically removed before plowing season (starting December 1), and re-installed in the springtime" source: https://www.toronto.ca/services-payments/streets-parking-transportation/cycling-in-toronto/bicycle-parking/"""
