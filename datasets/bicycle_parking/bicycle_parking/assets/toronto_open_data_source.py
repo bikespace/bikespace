@@ -8,7 +8,6 @@ from dagster import (
   AssetCheckResult,
   AssetCheckSeverity,
   AssetExecutionContext, 
-  MaterializeResult, 
   MetadataValue,
   Output,
 )
@@ -22,14 +21,15 @@ from ..resources.toronto_open_data import (
   BIKE_STATION_INFO,
 )
 
-gpd.options.io_engine = "pyogrio"
 
 # type shorthands
 optional_string = pa.Column(str, required=False)
 optional_nullable_string = pa.Column(str, nullable=True, required=False)
 optional_int32 = pa.Column("int32", required=False)
 
-@asset
+@asset(
+  description="""City of Toronto bicycle parking data from the "Street Furniture - Bicycle Parking" dataset. See: https://open.toronto.ca/dataset/street-furniture-bicycle-parking/"""
+)
 def street_furniture_bicycle_parking(
   context: AssetExecutionContext,
   toronto_open_data: TorontoOpenDataResource,
@@ -54,7 +54,7 @@ def street_furniture_bicycle_parking(
   )
 
 @asset_check(asset=street_furniture_bicycle_parking, blocking=True)
-def validate_sfbp_blocking(gdf=street_furniture_bicycle_parking):
+def validate_sfbp_blocking(gdf: gpd.GeoDataFrame = street_furniture_bicycle_parking) -> AssetCheckResult:
   schema = pa.DataFrameSchema(
     {
       # REQUIRED FIELDS
@@ -78,7 +78,7 @@ def validate_sfbp_blocking(gdf=street_furniture_bicycle_parking):
   )
 
 @asset_check(asset=street_furniture_bicycle_parking)
-def validate_sfbp_info(gdf=street_furniture_bicycle_parking):
+def validate_sfbp_info(gdf: gpd.GeoDataFrame = street_furniture_bicycle_parking) -> AssetCheckResult:
   schema = pa.DataFrameSchema(
     {
       # REQUIRED FIELDS
@@ -124,11 +124,13 @@ def validate_sfbp_info(gdf=street_furniture_bicycle_parking):
   )
 
 
-@asset
+@asset(
+  description="""City of Toronto bicycle parking data from the "Bicycle Parking - High Capacity (Outdoor)" dataset. See https://open.toronto.ca/dataset/bicycle-parking-high-capacity-outdoor/"""
+)
 def bicycle_parking_high_capacity_outdoor(
   context: AssetExecutionContext,
   toronto_open_data: TorontoOpenDataResource,
-) -> MaterializeResult:
+) -> Output:
   gdf: gpd.GeoDataFrame
   metadata: dict
   gdf, metadata = toronto_open_data.request_gdf(
@@ -138,22 +140,20 @@ def bicycle_parking_high_capacity_outdoor(
 
   gdf = gdf.astype({"ID": str, "SIZE_M": float})
 
-  os.makedirs("data", exist_ok=True)
-  with open("data/bicycle_parking_high_capacity_outdoor.geojson", "w") as f:
-    f.write(gdf.to_json(na='drop', drop_id=True, indent=2))
-
-  return MaterializeResult(metadata={
-    "num_records": len(gdf),
-    "last_updated": MetadataValue.timestamp(
-      datetime.fromisoformat(metadata['last_modified'] + "+00:00")
-    ),
-    "preview": MetadataValue.md(gdf.head().to_markdown()),
-    "crs": str(gdf.crs), 
-  })
+  return Output(
+    gdf,
+    metadata={
+      "num_records": len(gdf),
+      "last_updated": MetadataValue.timestamp(
+        datetime.fromisoformat(metadata['last_modified'] + "+00:00")
+      ),
+      "preview": MetadataValue.md(gdf.head().to_markdown()),
+      "crs": str(gdf.crs), 
+    },
+  )
 
 @asset_check(asset=bicycle_parking_high_capacity_outdoor, blocking=True)
-def validate_bphco_blocking():
-  gdf = gpd.read_file("data/bicycle_parking_high_capacity_outdoor.geojson")
+def validate_bphco_blocking(gdf: gpd.GeoDataFrame = bicycle_parking_high_capacity_outdoor) -> AssetCheckResult:
   schema = pa.DataFrameSchema(
     {
       # REQUIRED FIELDS
@@ -174,8 +174,7 @@ def validate_bphco_blocking():
   )
 
 @asset_check(asset=bicycle_parking_high_capacity_outdoor)
-def validate_bphco_info():
-  gdf = gpd.read_file("data/bicycle_parking_high_capacity_outdoor.geojson")
+def validate_bphco_info(gdf: gpd.GeoDataFrame = bicycle_parking_high_capacity_outdoor) -> AssetCheckResult:
   schema = pa.DataFrameSchema(
     {
       # REQUIRED FIELDS
@@ -237,11 +236,13 @@ def validate_bphco_info():
   )
 
 
-@asset
+@asset(
+  description="""City of Toronto bicycle parking data from the "Bicycle Parking Racks" dataset. See: https://open.toronto.ca/dataset/bicycle-parking-racks/"""
+)
 def bicycle_parking_racks(
   context: AssetExecutionContext,
   toronto_open_data: TorontoOpenDataResource,
-) -> MaterializeResult:
+) -> Output:
   gdf: gpd.GeoDataFrame
   metadata: dict
   gdf, metadata = toronto_open_data.request_gdf(
@@ -252,22 +253,20 @@ def bicycle_parking_racks(
   gdf = gdf.astype({"OBJECTID": str})
   gdf = gdf.replace(" ", pd.NA).replace("", pd.NA)
 
-  os.makedirs("data", exist_ok=True)
-  with open("data/bicycle_parking_racks.geojson", "w") as f:
-    f.write(gdf.to_json(na='drop', drop_id=True, indent=2))
-
-  return MaterializeResult(metadata={
-    "num_records": len(gdf),
-    "last_updated": MetadataValue.timestamp(
-      datetime.fromisoformat(metadata['last_modified'] + "+00:00")
-    ),
-    "preview": MetadataValue.md(gdf.head().to_markdown()),
-    "crs": str(gdf.crs), 
-  })
+  return Output(
+    gdf,
+    metadata={
+      "num_records": len(gdf),
+      "last_updated": MetadataValue.timestamp(
+        datetime.fromisoformat(metadata['last_modified'] + "+00:00")
+      ),
+      "preview": MetadataValue.md(gdf.head().to_markdown()),
+      "crs": str(gdf.crs), 
+    },
+  )
 
 @asset_check(asset=bicycle_parking_racks)
-def validate_bpr():
-  gdf = gpd.read_file("data/bicycle_parking_racks.geojson")
+def validate_bpr(gdf: gpd.GeoDataFrame = bicycle_parking_racks) -> AssetCheckResult:
   schema = pa.DataFrameSchema(
     {
       # REQUIRED FIELDS
@@ -344,11 +343,13 @@ def validate_bpr():
   )
 
 
-@asset
+@asset(
+  description="""City of Toronto bicycle parking data from the "Bicycle Parking - Bike Stations (Indoor)" dataset. Some out-of-date station information is overwritten using information copied from https://www.toronto.ca/services-payments/streets-parking-transportation/cycling-in-toronto/bicycle-parking/bicycle-parking-stations/ (last checked 2024-06). See: https://open.toronto.ca/dataset/bicycle-parking-bike-stations-indoor/"""
+)
 def bicycle_parking_bike_stations_indoor(
   context: AssetExecutionContext,
   toronto_open_data: TorontoOpenDataResource,
-) -> MaterializeResult:
+) -> Output:
   gdf: gpd.GeoDataFrame
   metadata: dict
   gdf, metadata = toronto_open_data.request_gdf(
@@ -358,22 +359,20 @@ def bicycle_parking_bike_stations_indoor(
 
   gdf = gdf.astype({"ID": str})
 
-  os.makedirs("data", exist_ok=True)
-  with open("data/bicycle_parking_bike_stations_indoor.geojson", "w") as f:
-    f.write(gdf.to_json(na='drop', drop_id=True, indent=2))
-
-  return MaterializeResult(metadata={
-    "num_records": len(gdf),
-    "last_updated": MetadataValue.timestamp(
-      datetime.fromisoformat(metadata['last_modified'] + "+00:00")
-    ),
-    "preview": MetadataValue.md(gdf.head().to_markdown()),
-    "crs": str(gdf.crs), 
-  })
+  return Output(
+    gdf,
+    metadata={
+      "num_records": len(gdf),
+      "last_updated": MetadataValue.timestamp(
+        datetime.fromisoformat(metadata['last_modified'] + "+00:00")
+      ),
+      "preview": MetadataValue.md(gdf.head().to_markdown()),
+      "crs": str(gdf.crs), 
+    },
+  )
 
 @asset_check(asset=bicycle_parking_bike_stations_indoor)
-def validate_bpbsi():
-  gdf = gpd.read_file("data/bicycle_parking_bike_stations_indoor.geojson")
+def validate_bpbsi(gdf: gpd.GeoDataFrame = bicycle_parking_bike_stations_indoor) -> AssetCheckResult:
   schema = pa.DataFrameSchema(
     {
       # REQUIRED FIELDS

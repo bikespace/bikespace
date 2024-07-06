@@ -1,6 +1,8 @@
 from dagster import ConfigurableIOManager, InputContext, OutputContext
 import geopandas as gpd
 
+gpd.options.io_engine = "pyogrio"
+
 class LocalIOManager(ConfigurableIOManager):
   # specifies an optional string list input, via config system
   path_prefix: list[str] = []

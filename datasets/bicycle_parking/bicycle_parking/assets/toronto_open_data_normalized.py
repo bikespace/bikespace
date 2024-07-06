@@ -9,8 +9,8 @@ from dagster import (
   AssetCheckSeverity,
   AssetKey,
   AssetExecutionContext, 
-  MaterializeResult, 
-  MetadataValue
+  MetadataValue,
+  Output,
 )
 import geopandas as gpd
 import pandas as pd
@@ -21,13 +21,15 @@ from .toronto_open_data_source import (
 )
 from ..resources.toronto_open_data import WARD_INFO
 
-gpd.options.io_engine = "pyogrio"
 
-@asset(deps=[street_furniture_bicycle_parking])
+@asset(
+  description="""Normalized to filter out bicycle parking objects which are not currently installed and with data converted to OpenStreetMap schema."""
+)
 def street_furniture_bicycle_parking_normalized(
   context: AssetExecutionContext,
-) -> MaterializeResult:
-  gdf = gpd.read_file("data/street_furniture_bicycle_parking.geojson")
+  street_furniture_bicycle_parking,
+) -> Output:
+  gdf = street_furniture_bicycle_parking
   previous = context.instance.get_latest_materialization_event(AssetKey("street_furniture_bicycle_parking")).asset_materialization
 
   # filter
@@ -88,12 +90,11 @@ def street_furniture_bicycle_parking_normalized(
     .drop(original_cols, axis=1)
   )
 
-  os.makedirs("data", exist_ok=True)
-  with open("data/street_furniture_bicycle_parking_normalized.geojson", "w") as f:
-    f.write(gdf_normalized.to_json(na='drop', drop_id=True, indent=2))
-  
-  return MaterializeResult(metadata={
-    "num_records": len(gdf_normalized),
-    "preview": MetadataValue.md(gdf_normalized.head().to_markdown()),
-    "crs": str(gdf_normalized.crs), 
-  })
+  return Output(
+    gdf_normalized,
+    metadata={
+      "num_records": len(gdf_normalized),
+      "preview": MetadataValue.md(gdf_normalized.head().to_markdown()),
+      "crs": str(gdf_normalized.crs), 
+    },
+  )
