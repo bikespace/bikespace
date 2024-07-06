@@ -108,12 +108,12 @@ setup-dagster:
 	cd $(ROOT_DIR)/datasets/bicycle_parking && \
 	python -m venv .venv && \
 	. .venv/bin/activate && \
-	pip install -e ".[dev]" && \
-	export DAGSTER_HOME=$(ROOT_DIR)/datasets/bicycle_parking/dev_home
+	pip install -e ".[dev]"
 
 run-dagster:
 	cd $(ROOT_DIR)/datasets/bicycle_parking && \
 	. .venv/bin/activate && \
+	export DAGSTER_HOME=$(ROOT_DIR)/datasets/bicycle_parking/bicycle_parking/dev_home && \
 	dagster dev
 
 lint-dagster-preview:
