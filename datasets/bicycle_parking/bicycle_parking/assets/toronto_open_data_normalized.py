@@ -26,13 +26,13 @@ from ..resources.toronto_open_data import WARD_INFO
 
 
 @asset(
-  description="""Normalized to filter out bicycle parking objects which are not currently installed and with data converted to OpenStreetMap schema."""
+  description="""Normalized to filter out bicycle parking objects which are not currently installed, with data converted to OpenStreetMap schema, and with MultiPoint converted to Point."""
 )
 def street_furniture_bicycle_parking_normalized(
   context: AssetExecutionContext,
   street_furniture_bicycle_parking,
 ) -> Output:
-  gdf = street_furniture_bicycle_parking
+  gdf: gpd.GeoDataFrame = street_furniture_bicycle_parking
   original_cols = gdf.columns.drop("geometry")
   previous = context.instance.get_latest_materialization_event(AssetKey("street_furniture_bicycle_parking")).asset_materialization
 
@@ -91,6 +91,8 @@ def street_furniture_bicycle_parking_normalized(
         ).isoformat(),
     })
     .drop(original_cols, axis=1)
+    # convert multipoint with one coordinate pair to single point
+    .explode(index_parts=False)
   )
 
   return Output(
@@ -104,13 +106,13 @@ def street_furniture_bicycle_parking_normalized(
 
 
 @asset(
-  description="""Normalized with data converted to OpenStreetMap schema."""
+  description="""Normalized with data converted to OpenStreetMap schema and MultiPoint converted to Point."""
 )
 def bicycle_parking_high_capacity_outdoor_normalized(
   context: AssetExecutionContext,
   bicycle_parking_high_capacity_outdoor,
 ) -> Output:
-  gdf = bicycle_parking_high_capacity_outdoor
+  gdf: gpd.GeoDataFrame = bicycle_parking_high_capacity_outdoor
   original_cols = gdf.columns.drop("geometry")
   previous = context.instance.get_latest_materialization_event(AssetKey("bicycle_parking_high_capacity_outdoor")).asset_materialization
 
@@ -173,6 +175,8 @@ def bicycle_parking_high_capacity_outdoor_normalized(
         ).isoformat(),
     })
     .drop(original_cols, axis=1)
+    # convert multipoint with one coordinate pair to single point
+    .explode(index_parts=False)
   )
 
   return Output(

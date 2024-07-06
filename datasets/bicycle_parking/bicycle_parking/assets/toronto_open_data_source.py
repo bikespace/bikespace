@@ -68,7 +68,10 @@ def validate_sfbp_blocking(gdf: gpd.GeoDataFrame = street_furniture_bicycle_park
       "STATUS": pa.Column(str,
         checks=pa.Check.isin(["Existing", "Temporarily Removed"]),
       ),
-      "geometry": pa.Column("geometry"),
+      "geometry": pa.Column("geometry",
+        # check that there is only one coordinate pair per MultiPoint
+        checks=pa.Check(lambda s: s.apply(lambda x: len(x.geoms) == 1)),
+      ),
     },
   )
   test = type(schema.validate(gdf)) == gpd.GeoDataFrame
@@ -164,7 +167,10 @@ def validate_bphco_blocking(gdf: gpd.GeoDataFrame = bicycle_parking_high_capacit
         ),
       ),
       "BICYCLE_CAPACITY": pa.Column("int32"),
-      "geometry": pa.Column("geometry"),
+      "geometry": pa.Column("geometry",
+        # check that there is only one coordinate pair per MultiPoint
+        checks=pa.Check(lambda s: s.apply(lambda x: len(x.geoms) == 1)),
+      ),
     }
   )
   test = type(schema.validate(gdf)) == gpd.GeoDataFrame
@@ -312,7 +318,10 @@ def validate_bpr(gdf: gpd.GeoDataFrame = bicycle_parking_racks) -> AssetCheckRes
           'Bike Corral'
         ]),
       ),
-      "geometry": pa.Column("geometry"),
+      "geometry": pa.Column("geometry",
+        # check that there is only one coordinate pair per MultiPoint
+        checks=pa.Check(lambda s: s.apply(lambda x: len(x.geoms) == 1)),
+      ),
 
       # OTHER FIELDS
       "_id": optional_int32,
@@ -424,7 +433,10 @@ def validate_bpbsi(gdf: gpd.GeoDataFrame = bicycle_parking_bike_stations_indoor)
         checks=pa.Check.isin(["No", "Yes"]),
       ),
       "YR_INSTALL": pa.Column("int32"),
-      "geometry": pa.Column("geometry"),
+      "geometry": pa.Column("geometry",
+        # check that there is only one coordinate pair per MultiPoint
+        checks=pa.Check(lambda s: s.apply(lambda x: len(x.geoms) == 1)),
+      ),
 
       # OTHER FIELDS
       "_id": optional_int32,
