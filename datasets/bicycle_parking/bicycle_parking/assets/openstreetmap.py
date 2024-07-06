@@ -48,6 +48,8 @@ def osm_bicycle_parking(
     gdf,
     metadata={
       "num_records": len(gdf),
+      "num_features_no_type": len(gdf) - len(gdf["bicycle_parking"].dropna()),
+      "num_features_no_capacity": len(gdf) - len(gdf["capacity"].dropna()),
       "api_last_updated": MetadataValue.timestamp(
         datetime.fromisoformat(data['osm3s']['timestamp_osm_base'])
       ),
