@@ -10,6 +10,9 @@ gpd.options.io_engine = "pyogrio"
 
 BASE_URL = "https://ckan0.cf.opendata.inter.prod-toronto.ca"
 PACKAGE_URL = BASE_URL + "/api/3/action/package_show"
+LICENSE_DESCRIPTION = "Open Government License - Toronto"
+LICENSE_URL = "https://open.toronto.ca/open-data-license/"
+CREDIT = "City of Toronto"
 
 
 class TODResponse(TypedDict):

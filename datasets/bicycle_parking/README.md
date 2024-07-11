@@ -2,7 +2,11 @@
 
 This is a [Dagster](https://dagster.io/) project scaffolded with [`dagster project scaffold`](https://docs.dagster.io/getting-started/create-new-project).
 
-## Getting started
+### Make Commands
+
+TODO - should replace instructions below
+
+### Getting started
 
 First, install your Dagster code location as a Python package. By using the --editable flag, pip will install your Python package in ["editable mode"](https://pip.pypa.io/en/latest/topics/local-project-installs/#editable-installs) so that as you develop, local code changes will automatically apply.
 
@@ -20,13 +24,13 @@ Open http://localhost:3000 with your browser to see the project.
 
 You can start writing assets in `bicycle_parking/assets.py`. The assets are automatically loaded into the Dagster code location as you define them.
 
-## Development
+### Development
 
-### Adding new Python dependencies
+#### Adding new Python dependencies
 
 You can specify new Python dependencies in `setup.py`.
 
-### Unit testing
+#### Unit testing
 
 Tests are in the `bicycle_parking_tests` directory and you can run tests using `pytest`:
 
@@ -34,14 +38,29 @@ Tests are in the `bicycle_parking_tests` directory and you can run tests using `
 pytest bicycle_parking_tests
 ```
 
-### Schedules and sensors
 
-If you want to enable Dagster [Schedules](https://docs.dagster.io/concepts/partitions-schedules-sensors/schedules) or [Sensors](https://docs.dagster.io/concepts/partitions-schedules-sensors/sensors) for your jobs, the [Dagster Daemon](https://docs.dagster.io/deployment/dagster-daemon) process must be running. This is done automatically when you run `dagster dev`.
+## OpenStreetMap Data Fields
 
-Once your Dagster Daemon is running, you can start turning on schedules and sensors for your jobs.
+### Important Fields
 
-## Deploy on Dagster Cloud
+[**bicycle_parking**](https://wiki.openstreetmap.org/wiki/Key:bicycle_parking): indicates which type of bicycle parking a feature is. Common values:
 
-The easiest way to deploy your Dagster project is to use Dagster Cloud.
+- bollard: ring and post
+- stands: can lean your bicycle against, e.g. a hoop
+- rack: a bike rack where you can lock your wheel and frame
+- wall_loops: "Wheelbender" racks where you can only lock your wheel
+- lockers, shed, building: secure bicycle parking
 
-Check out the [Dagster Cloud Documentation](https://docs.dagster.cloud) to learn more.
+Less common: 'two-tier', 'safe_loops', 'ground_slots', 'anchors', 'handlebar_holder', 'crossbar', 'lean_and_stick'
+
+Use with caution: 'post_hoop', 'wide_stands'
+
+Incorrect: 'wave',  'hoops'
+
+### Other Fields
+
+[**area**](https://wiki.openstreetmap.org/wiki/Area): indicates that the original geometry is a filled polygon
+
+
+
+

@@ -5,6 +5,10 @@ import requests
 
 CRS = "EPSG:4326"
 API_URL = r"http://overpass-api.de/api/interpreter"
+LICENSE_DESCRIPTION = "Open Data Commons Open Database License"
+LICENSE_URL = "https://opendatacommons.org/licenses/odbl/"
+CREDIT = "OpenStreetMap"
+COPYRIGHT_URL = "https://www.openstreetmap.org/copyright"
 
 
 class OpenStreetMapResource(ConfigurableResource):
