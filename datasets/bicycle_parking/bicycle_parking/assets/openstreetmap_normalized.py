@@ -20,35 +20,34 @@ from .openstreetmap_source import osm_bicycle_parking
 
 GROUP_NAME = "osm_normalized"
 
+
 @asset(
     description="""Normalized to...""",
     group_name=GROUP_NAME,
 )
 def osm_bicycle_parking_normalized(
-  context: AssetExecutionContext,
-  osm_bicycle_parking,
+    context: AssetExecutionContext,
+    osm_bicycle_parking,
 ) -> Output:
-  gdf: gpd.GeoDataFrame = osm_bicycle_parking
-  previous = context.instance.get_latest_materialization_event(
-    AssetKey("osm_bicycle_parking")
-  ).asset_materialization
+    gdf: gpd.GeoDataFrame = osm_bicycle_parking
+    previous = context.instance.get_latest_materialization_event(
+        AssetKey("osm_bicycle_parking")
+    ).asset_materialization
 
-  # no filter
-  gdf_filtered = gdf
+    # no filter
+    gdf_filtered = gdf
 
-  gdf_normalized = (
-    gdf_filtered.assign(
+    gdf_normalized = gdf_filtered.assign(
         **{
-          "meta_source_provider": "OpenStreetMap",
-          "meta_source_dataset_last_updated": datetime.fromtimestamp(
-              previous.metadata["last_updated"].value,
-              tz=timezone.utc,
-          ).isoformat(),
+            "meta_source_provider": "OpenStreetMap",
+            "meta_source_dataset_last_updated": datetime.fromtimestamp(
+                previous.metadata["last_updated"].value,
+                tz=timezone.utc,
+            ).isoformat(),
         }
-      )
     )
-  
-  return Output(
+
+    return Output(
         gdf_normalized,
         metadata={
             "num_records": len(gdf_normalized),
@@ -56,5 +55,3 @@ def osm_bicycle_parking_normalized(
             "crs": str(gdf_normalized.crs),
         },
     )
-
-
