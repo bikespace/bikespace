@@ -16,12 +16,11 @@ import {FilterDateRangeCustom} from '../filter-date-range-custom';
 import * as styles from './filter-date-range.module.scss';
 
 export function FilterDateRange() {
-  const {setFilters} = useContext(SubmissionFiltersContext);
+  const {filters, setFilters} = useContext(SubmissionFiltersContext);
   const {first, last} = useContext(SubmissionsDateRangeContext);
 
-  const [dateRange, setDateRange] = useState<{from: Date; to: Date} | null>(
-    null
-  );
+  const {dateRange} = filters;
+
   const [selectedRange, setSelectedRange] = useState<FixedDateRange>(
     FixedDateRange.AllDates
   );
@@ -29,19 +28,21 @@ export function FilterDateRange() {
   useEffect(() => {
     if (selectedRange === FixedDateRange.CustomRange) return;
 
-    setDateRange(getDateRangeFromFixedRange(selectedRange));
+    setFilters(prev => ({
+      ...prev,
+      dateRange: getDateRangeFromFixedRange(selectedRange),
+    }));
   }, [selectedRange]);
 
   useEffect(() => {
-    setFilters(prev => ({
-      ...prev,
-      dateRange,
-    }));
+    if (dateRange) return;
+
+    setSelectedRange(FixedDateRange.AllDates);
   }, [dateRange]);
 
   return (
     <FilterSection title="Date Range">
-      <div className={styles.dateRange}>
+      <div>
         <div>
           <strong>Showing between:</strong>
         </div>
@@ -64,6 +65,7 @@ export function FilterDateRange() {
         <select
           name="dateRange"
           id="filter-date-range-select"
+          value={selectedRange}
           onChange={e => {
             setSelectedRange(e.currentTarget.value as FixedDateRange);
           }}
