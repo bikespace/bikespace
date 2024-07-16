@@ -1,5 +1,5 @@
 import React, {useContext, useState, useEffect} from 'react';
-import Plot, {PlotParams} from 'react-plotly.js';
+import {PlotParams} from 'react-plotly.js';
 import {PlotMouseEvent} from 'plotly.js-dist-min';
 
 import {layout, config} from '@/config/plotly';
@@ -30,14 +30,14 @@ export function DataIssueFrequencyChart({
   const [data, setData] = useState<InputData[]>([]);
 
   useEffect(() => {
-    const inputData = Object.values(IssueType).map(i => ({
+    const issues = Object.keys(issueLabels) as IssueType[];
+
+    const inputData = issues.map(i => ({
       type: i,
       count: submissions.filter(submission => submission.issues.includes(i))
         .length,
       color: styles[!issue || issue === i ? i : `${i}_light`],
     }));
-
-    if (issue === null) inputData.sort((a, b) => a.count - b.count);
 
     setData(inputData);
   }, [submissions, issue]);
@@ -108,7 +108,7 @@ export function DataIssueFrequencyChart({
 const issueLabels = {
   [IssueType.NotProvided]: 'No nearby parking ',
   [IssueType.Damaged]: 'Parking damaged ',
+  [IssueType.Full]: 'Parking full ',
   [IssueType.Abandoned]: 'Abandoned bicycle ',
   [IssueType.Other]: 'Other issue ',
-  [IssueType.Full]: 'Parking full ',
-};
+} satisfies {[key in IssueType]: string};
