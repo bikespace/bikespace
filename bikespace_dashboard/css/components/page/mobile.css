@@ -1,0 +1,114 @@
+@import '../stylevars.css';
+
+:root {
+  /* preferred visible area of map.
+   * taller screens takes advantage of this when the panel is open
+   * to show a bigger map
+   */
+  --height-visible-map: 350px;
+  --height-panel-closed: 80px;
+  --height-panel-open: calc(100% - var(--height-visible-map));
+  /* 
+   * Set a minimum height when panel is open.
+   * shorter screen displays a larger panel (when open) in compromise of a smaller / even completely-hidden map
+   */
+  --min-height-panel-open: 350px;
+}
+
+@media (width < 1024px) {
+
+  body {
+    display: flex;
+    flex-direction: column;
+
+    >#panels {
+      position: relative;
+      order: 2;
+      z-index: 10;
+      box-shadow: 0 0 5px 5px var(--color-box-shadow);
+      height: max(var(--min-height-panel-open), var(--height-panel-open));
+      max-height: 100%;
+      transition: height .2s linear 0s;
+
+      &.closed {
+        height: var(--height-panel-closed);
+      }
+    }
+
+    >#issue-map {
+      position: relative;
+      z-index: 1;
+      order: 1;
+      flex-grow: 1;
+    }
+  }
+
+  header {
+    z-index: 200;
+    position: fixed;
+    top: var(--spacing-4x);
+    right: var(--spacing-4x);
+    height: 40px;
+    width: 40px;
+    box-shadow: unset;
+    background-color: white;
+    border-radius: var(--border-unit);
+    padding: 0;
+
+    >#nav-toggle {
+      z-index: 202;
+      height: 100%;
+      display: block;
+      padding: var(--spacing-2x);
+
+      >img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+      }
+    }
+
+    nav {
+      --nav-width: 250px;
+      visibility: hidden;
+      display: block;
+      position: fixed;
+      background-color: white;
+      padding: var(--spacing-2x);
+      height: 100%;
+      z-index: 202;
+      width: var(--nav-width);
+      top: 0;
+      bottom: 0;
+      right: calc(0px - var(--nav-width));
+      transition: visibility .2s, right .2s linear;
+
+      #bikespace-logo {
+        margin-bottom: var(--spacing-4x);
+      }
+
+      ul {
+        display: flex;
+        flex-direction: column;
+      }
+
+      &.open {
+        visibility: visible;
+        right: 0;
+      }
+
+      &+#nav-backdrop {
+        z-index: 200;
+        position: fixed;
+        display: none;
+        inset: 0;
+      }
+
+      &.open+#nav-backdrop {
+        display: block;
+      }
+    }
+
+
+  }
+}

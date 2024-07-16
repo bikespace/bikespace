@@ -43,17 +43,17 @@ The data and its relevant filters for the dashboard are managed by `SharedState`
 - `display_data` - user-filtered data shown by the various dashboard components
 - `filters` - dict of filters to be applied for `display_data`. Filters should be a subclass of `ReportFilter` imported from `main.js`.
 
-When a `Component` sets or updates the value of `SharedState.filters`, `SharedState` will apply those filters to `SharedState.display_data` and call `.update()` on each `Component` registered to it. The `.update()` method for a component will usually re-request `SharedState.display_data` and update the component's content on the page accordingly.
+When a `Component` sets or updates the value of `SharedState.filters`, `SharedState` will apply those filters to `SharedState.display_data` and call `.refresh()` on each `Component` registered to it. The `.refresh()` method for a component will usually re-request `SharedState.display_data` and update the component's content on the page accordingly.
 
 Some components also use `SharedState.applyFilters()` to customize which filters are applied to the data used for rendering the component.
 
-Additionally, the dashboard uses hash component of the URL to decide what to show ("hash routing"). The hash component is the part of the url that comes after the [hash (number sign) character](https://en.wikipedia.org/wiki/Number_sign). This lets user share some of the dashboard state with others. Given `window.location.hash`, the expected format is `#path?param=value`. Currently `path` maps to a tab found in the sidebar. The class `HashRouter`, accessible in `SharedState.router`, parses the hash url and exposes various methods to read and manipulate path and params.
+Additionally, the dashboard uses hash component of the URL to manage application state ("hash routing"). The hash component is the part of the url that comes after the [hash (number sign) character](https://en.wikipedia.org/wiki/Number_sign). This lets components change the state of the application without having to directly update the state of the other components. Given `window.location.hash`, the expected format is `#path?param=value`. Currently `path` maps to a tab found in the sidebar. The class `HashRouter`, accessible in `SharedState.router`, parses the hash url and exposes various methods to read and manipulate path and params.
 
 CSS stylesheets for individual components can be found in `/css/components` and have a similar structure to the `/js` folder. Component stylesheets are imported via `main.css`. `template.css` contains non-layout styling, `stylevars.css` is used for style variables (e.g. colours, fonts, spacing units), and all the other component sheets are for component-specific styling. `main.css` also imports [Modern Normalize](https://github.com/sindresorhus/modern-normalize) to help keep styling development more predictable across browsers.
 
 ### More About Filters
 
-Filters are created by subclassing `ReportFilter` in `main.js`. Subclasses should take a "state" input (generally an arbitrary-length list of primitives or objects) and implement a "test" function that returns true or false for reports that should be included or excluded by that state.
+Filters are created by sub-classing `ReportFilter` in `main.js`. Subclasses should take a "state" input (generally an arbitrary-length list of primitives or objects) and implement a "test" function that returns true or false for reports that should be included or excluded by that state.
 
 For example to filter "all reports on Tuesdays", a component would create the filter with `new WeekDayPeriodFilter(["tuesday"])`, where `WeekDayPeriodFilter` is a subclass of `ReportFilter`. The subclass itself implements a test function to return true if the report's parking_time value is on a Tuesday (in Toronto's timezone).
 
@@ -124,7 +124,9 @@ The feed listens to two params from the hash URL - `view_all` and `submission_id
 
 The map zooms to the submission marker and opens its info popup when the `Feed` tab is active and there is a submission id in the params.
 
-There is also a "Focus in sidebar" link in the marker popup. This sets the `submission_id` and forces the Feed to focus the submission by calling its `focusSubmission` method in case `submission_id` was already the target id and the submission was not in view.
+There is also a "Focus in sidebar" link in the marker popup. This updates the hash router to indicate that the app should show the report corresponding with that marker in the `Feed` tab.
+
+On mobile, marker details are always shown by updating the hash router so that the details are focused in the `Feed`, since there is not enough space to show the marker popup.
 
 #### Filter
 
@@ -139,4 +141,4 @@ Some things to think about when writing components:
 - avoid creating errors in cases when no data is returned
 - whether the component needs to interact with the Hash Router
 - ensure that any key interactions are included in analytics using `Component.prototype.analytics_event` or the proper [data attributes in links or buttons](https://umami.is/docs/track-events).
-- [accessibilty (A11y) testing](https://developer.mozilla.org/en-US/docs/Web/Accessibility), e.g. in the interaction options offered and colour selection
+- [accessibility (A11y) testing](https://developer.mozilla.org/en-US/docs/Web/Accessibility), e.g. in the interaction options offered and colour selection

@@ -1,0 +1,15 @@
+@media (min-width: 1024px) {
+
+  #panels {
+    #panels-header {
+      position: sticky;
+      top: 0px;
+    }
+
+    >.drawer-handle {
+      display: none;
+    }
+
+    &.closed>.drawer-handle {}
+  }
+}

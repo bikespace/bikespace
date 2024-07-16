@@ -10,14 +10,6 @@
     background-color: var(--color-secondary-red-light);
   }
 
-  & .issue {
-    display: inline-block;
-    border: 2px solid;
-    border-radius: 4px;
-    margin: 2px 0px;
-    padding: 2px 4px;
-  }
-
   &.issue-damaged {
     border-color: var(--color-secondary-orange);
     background-color: var(--color-secondary-orange-light);

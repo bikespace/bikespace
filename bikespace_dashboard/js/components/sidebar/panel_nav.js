@@ -25,6 +25,8 @@ const TABS = [
 ];
 
 class PanelNav extends Component {
+  static CLASS_CLOSED = 'closed';
+
   /**
    * Panel navigation and filter clear button
    * @param {string} parent JQuery selector for parent element
@@ -37,6 +39,7 @@ class PanelNav extends Component {
 
     shared_state.router = new HashRouter(TABS);
 
+    // set callback that responds to router changes
     shared_state.router.onChange(() => {
       this.maybeChangeTab();
     });
@@ -59,8 +62,14 @@ class PanelNav extends Component {
     ).join('');
 
     // add content to page
-    document.querySelector(`#${this.root_id}`).insertAdjacentHTML(
-      'afterbegin',
+    const root_elem = document.querySelector(`#${this.root_id}`);
+    this.drawerHandle = this.makeDrawerHandle();
+    const {defaultClosed = true} = options;
+    defaultClosed ? this.close() : this.open();
+
+    root_elem.insertAdjacentElement('beforeend', this.drawerHandle);
+    root_elem.insertAdjacentHTML(
+      'beforeend',
       `<div id="${root_id}-header">
         <nav id="${root_id}-nav" aria-label="Sidebar">
           <fieldset>
@@ -96,6 +105,40 @@ class PanelNav extends Component {
     this.maybeChangeTab();
   }
 
+  isClosed() {
+    return this.getRootElem().classList.contains(PanelNav.CLASS_CLOSED);
+  }
+
+  toggle() {
+    this.isClosed() ? this.open() : this.close();
+  }
+
+  close() {
+    this.setIsHandleClosed(true);
+  }
+
+  open() {
+    this.setIsHandleClosed(false);
+  }
+
+  setIsHandleClosed(isClosed) {
+    if (isClosed) this.getRootElem().classList.add(PanelNav.CLASS_CLOSED);
+    else this.getRootElem().classList.remove(PanelNav.CLASS_CLOSED);
+    this.drawerHandle.ariaPressed = !isClosed;
+  }
+
+  makeDrawerHandle() {
+    const handleButton = document.createElement('button');
+    handleButton.classList.add('drawer-handle');
+    handleButton.addEventListener('click', () => {
+      this.toggle();
+    });
+    return handleButton;
+  }
+
+  /**
+   * Update the panel nav buttons to match the hash router path
+   */
   switchNavToCurrent() {
     const currentTab = this.shared_state.router.currentRoute.path;
     document
@@ -106,6 +149,9 @@ class PanelNav extends Component {
     document.getElementById(`${this.root_id}-nav-${currentTab}`).checked = true;
   }
 
+  /**
+   * Unhide content for the currently active tab
+   */
   showCurrentTabContent() {
     const currentTab = this.shared_state.router.currentRoute.path;
     document.querySelectorAll(`.${this.root_id}-section`).forEach(section => {
@@ -118,6 +164,10 @@ class PanelNav extends Component {
   maybeChangeTab() {
     this.switchNavToCurrent();
     this.showCurrentTabContent();
+    const submissionId = this.shared_state.router.params.get('submission_id');
+    if (submissionId) {
+      this.open();
+    }
   }
 
   refresh() {

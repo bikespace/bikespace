@@ -34,6 +34,7 @@ const IndexRoute = ({data: {site}}: PageProps<DataProps>) => {
           onClick={() => {
             navigate('/submission');
           }}
+          data-umami-event="report-parking-issue-button"
         >
           Report a parking issue
         </button>
@@ -43,13 +44,26 @@ const IndexRoute = ({data: {site}}: PageProps<DataProps>) => {
         <nav className={footerNav} aria-label="Main">
           <ul>
             <li>
-              <a href="https://bikespace.ca/">About BikeSpace</a>
+              <a
+                href="https://bikespace.ca/"
+                data-umami-event="footer-about-us"
+              >
+                About BikeSpace
+              </a>
             </li>
             <li>
-              <a href="https://dashboard.bikespace.ca/">Explore the Data</a>
+              <a
+                href="https://dashboard.bikespace.ca/"
+                data-umami-event="footer-outbound-bikespace-dashboard"
+              >
+                Explore the Data
+              </a>
             </li>
             <li>
-              <a href="https://github.com/bikespace/bikespace/tree/main/bikespace_frontend">
+              <a
+                href="https://github.com/bikespace/bikespace/tree/main/bikespace_frontend"
+                data-umami-event="footer-outbound-bikespace-github"
+              >
                 <StaticImage
                   height={20}
                   style={{marginRight: '0.3rem'}}

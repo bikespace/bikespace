@@ -1,5 +1,11 @@
 import {makeIssueLabelById} from '../../issue_label.js';
 import {Component} from '../../main.js';
+import {
+  parking_duration_attributes as pda, 
+  issue_attributes as ia,
+  parking_time_date_format
+} from '../../api_tools.js';
+import {DateTime} from '../../../../libraries/luxon.min.js';
 
 /**
  * @typedef {Object} Submission
@@ -21,8 +27,8 @@ import {Component} from '../../main.js';
  */
 
 const ATTR_DATA_SUBMISSION_ID = 'data-submission-id';
-
 const PARAM_VIEW_ALL = 'view_all';
+const OVERVIEW_DISPLAY_LIMIT = 5;
 
 class Submissions extends Component {
   /**
@@ -34,13 +40,47 @@ class Submissions extends Component {
    */
   constructor(parent, root_id, shared_state, options = {}) {
     super(parent, root_id, shared_state, options);
+
+    // set callback that responds to router changes
     this.shared_state.router.onChange(() => {
       this.refresh();
     });
-    this.build();
+
+    this.#build();
   }
 
-  shouldViewAll() {
+  refresh() {
+    this.#build();
+  }
+
+  /**
+   * Focus a submission in the submission list panel. 
+   * - Applies CSS class to an item to give the feel of it being focused and scroll to it.
+   * @param {Number} id ID of the submission to focus
+   */
+  #focusSubmission(id) {
+    const elem = document.querySelector(
+      `.submission-item[data-submission-id="${id}"]`
+    );
+    if (elem) {
+      this.#unFocusSubmissions();
+      elem.classList.add('focused');
+      elem.scrollIntoView(true);
+    }
+  }
+
+  #unFocusSubmissions() {
+    const currentlyFocused = document.querySelectorAll(
+      '.submission-item.focused'
+    );
+    currentlyFocused.forEach(elem => elem.classList.remove('focused'));
+  }
+
+  /**
+   * Checks to see whether the url hash path is `#feed` and if the `view_all` param is 1
+   * @returns {boolean}
+   */
+  #shouldViewAll() {
     const router = this.shared_state.router;
     return (
       router.params.get(PARAM_VIEW_ALL) === '1' &&
@@ -48,16 +88,16 @@ class Submissions extends Component {
     );
   }
 
-  buildTitle() {
+  #buildTitle() {
     const titleSection = $(`<div class='title-section'>
       ${
-        this.shouldViewAll()
+        this.#shouldViewAll()
           ? '<a class="a-button" href="#feed">&#9666; Back</a>'
           : ''
       }
       <h2>Latest Submissions</h2>
       ${
-        this.shouldViewAll()
+        this.#shouldViewAll()
           ? ''
           : `<a class="a-button" href="#feed?${PARAM_VIEW_ALL}=1">View All</a>`
       }
@@ -66,66 +106,79 @@ class Submissions extends Component {
     return titleSection;
   }
 
-  applyFullView() {
+  #applyFullView() {
     this.root.addClass(PARAM_VIEW_ALL);
   }
 
-  applyOverview() {
+  #applyOverview() {
     this.root.removeClass(PARAM_VIEW_ALL);
   }
 
-  enableClickToFocus() {
-    // add event listeners to pan to item and open popup on click
+  /**
+   * Adds event listeners to update hash router when a report in the feed is clicked
+   */
+  #enableClickToFocus() {
     const listing_items = document.querySelectorAll('.submission-item');
     listing_items.forEach(item => {
       item.addEventListener('click', e => {
         e.preventDefault();
-        this.shared_state.components.issue_map.zoomToSubmission(
-          item.dataset.submissionId
-        );
         this.shared_state.router.params = new URLSearchParams({
           view_all: 1,
+          submission_id: item.dataset.submissionId,
+        });
+        super.analytics_event(`${this.root_id}_focus_submission`, {
           submission_id: item.dataset.submissionId,
         });
       });
     });
   }
 
-  build() {
+  #build() {
     this.root = $(`#${this.root_id}`);
-    if (this.shouldViewAll()) {
-      this.applyFullView();
-      this.root[0].scroll(0, 0);
-    } else {
-      this.applyOverview();
-    }
 
-    this.title = this.buildTitle();
+    this.title = this.#buildTitle();
     this.root.empty().append(this.title);
 
     this.list = $('<div class="submission-list"></div>');
     this.root.append(this.list);
 
-    const toDisplay = this.getLatestSubmissions(
-      this.shouldViewAll() ? {} : {limit: 5}
+    const toDisplay = this.#getLatestSubmissions(
+      this.#shouldViewAll() ? {} : {limit: OVERVIEW_DISPLAY_LIMIT}
     );
 
-    this.fillSubmissions(toDisplay);
-    this.enableClickToFocus();
+    this.#fillSubmissions(toDisplay);
+    this.#enableClickToFocus();
 
     const submissionId = parseInt(
       this.shared_state.router.params.get('submission_id')
     );
-    if (!isNaN(submissionId)) {
-      this.focusSubmission(submissionId);
+
+    if (this.#shouldViewAll() && !isNaN(submissionId)) {
+      this.#applyFullView();
+      this.#focusSubmission(submissionId);
+    } else if (this.#shouldViewAll()) {
+      this.#applyFullView();
+      // this.root[0].scroll(0, 0);
+    } else {
+      this.#applyOverview();
     }
   }
 
-  issueIdsToLabels(issueIds) {
-    return issueIds.map(i => makeIssueLabelById(i, {long: false})).join('');
+  /**
+   * Sorts issues by render priority, then formats them as HTML. 
+   * @param {string[]} issueIds 
+   * @returns {string} formatted HTML for issues list
+   * @requires issue_label.makeIssueLabel
+   * @requires api_tools.issue_attributes
+   */
+  #issueIdsToLabels(issueIds) {
+    return issueIds
+      .sort((a, b) => ia[a].render_priority - ia[b].render_priority)
+      .map(i => makeIssueLabelById(i, {long: false}))
+      .join('');
   }
 
-  fillSubmissions(submissions) {
+  #fillSubmissions(submissions) {
     this.list.empty();
     if (submissions.length === 0) {
       this.list.append(
@@ -133,19 +186,42 @@ class Submissions extends Component {
       );
     } else {
       for (const submission of submissions) {
-        const parking_time = new Date(submission.parking_time);
-        const parking_time_desc = parking_time.toLocaleString('en-CA', {
-          dateStyle: 'long',
-          timeStyle: 'short',
-        });
-        const html = `<a href='#' class="submission-item" ${ATTR_DATA_SUBMISSION_ID}="${
-          submission.id
-        }">
+        const parking_time = DateTime.fromFormat(
+          submission.parking_time,
+          parking_time_date_format,
+          {zone: "America/Toronto"}
+        );
+        const parking_time_desc = parking_time.toLocaleString(
+          {weekday: 'long', month: 'long', day: 'numeric', year: 'numeric'}, 
+          {locale: 'en-CA'},
+        );
+        const parking_time_time = parking_time.toLocaleString(
+          DateTime.TIME_SIMPLE, {locale: 'en-CA'}
+        );
+        const html = `
+          <a href='#' class="submission-item" 
+            ${ATTR_DATA_SUBMISSION_ID}="${submission.id}"
+          >
             <h3>${parking_time_desc}</h3>
+            <p class="flex-distribute">
+              <span>${
+                this.#toSentenceCase(parking_time.toRelativeCalendar())
+              } • ${
+                parking_time_time
+              }</span>
+              <span class="submission-id">ID: ${submission.id}</span>
+            </p>
             <div class="problems">
-              ${this.issueIdsToLabels(submission.issues)}
+              ${this.#issueIdsToLabels(submission.issues)}
             </div>
-            ${submission.comments ? `<p>${submission.comments}` : ''}</p>
+            <p><strong>Wanted to park for:</strong> ${
+              pda[submission.parking_duration]?.description ?? 'unknown'
+            }</p>
+            ${
+              submission.comments 
+              ? `<p><strong>Comments:</strong> ${submission.comments}</p>` 
+              : ''
+            }
           </a>`;
         this.list.append(html);
       }
@@ -158,43 +234,37 @@ class Submissions extends Component {
    * @param {number | null} options.limit Number of submissions
    * @returns {Array[Submission]}
    */
-  getLatestSubmissions({limit = null} = {}) {
+  #getLatestSubmissions({limit = null} = {}) {
     const submissions = this.shared_state.display_data;
     if (!submissions[Symbol.iterator] || typeof submissions === 'string') {
       throw new Error('Submission data was corrupted');
     }
-    // sorting submissions by id desc as a proxy for submission date
-    submissions.sort((a, b) => b.id - a.id);
+
+    // parse parking_time into DateTime
+    const submissions_dt = submissions.map((s) => {
+      s['parking_time_dt'] = DateTime.fromFormat(
+        s.parking_time,
+        parking_time_date_format,
+        {zone: "America/Toronto"}
+      );
+      return s;
+    });
+
+    // sorting submissions by reported date of issue
+    submissions_dt.sort((a, b) => b.parking_time_dt - a.parking_time_dt);
     if (typeof limit === 'number' && limit > 0) {
-      return submissions.slice(0, limit);
+      return submissions_dt.slice(0, limit);
     } else {
-      return submissions;
+      return submissions_dt;
     }
   }
 
-  refresh() {
-    this.build();
-  }
-
-  /**
-   * Focus a submission in the submission list panel. Applies CSS class to an item to give the feel of it being focused and scroll to it.
-   * @param {Number} id ID of the submission to focus
-   */
-  focusSubmission(id) {
-    const currentlyFocused = document.querySelectorAll(
-      '.submission-item.focused'
-    );
-    currentlyFocused.forEach(elem => elem.classList.remove('focused'));
-    const elem = document.querySelector(
-      `.submission-item[data-submission-id="${id}"]`
-    );
-    if (elem) {
-      elem.classList.add('focused');
-      elem.scrollIntoView({block: 'center'});
-      super.analytics_event(`${this.root_id}_focus_submission`, {
-        submission_id: id,
-      });
+  #toSentenceCase(string) {
+    if (typeof string !== 'string') return string;
+    if (/[a-z]/.test(string[0])) {
+      return string[0].toUpperCase() + string.slice(1);
     }
+    return string;
   }
 }
 

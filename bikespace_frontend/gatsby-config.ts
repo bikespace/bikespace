@@ -47,6 +47,18 @@ const config: GatsbyConfig = {
         linkStyles: true, // (default: true) Enable/disable loading stylesheets via CDN
       },
     },
+    {
+      resolve: `gatsby-plugin-umami`,
+      options: {
+        websiteId: "d56aa43e-3009-4f6d-9975-c82af706c3be",
+        srcUrl: "https://us.umami.is/script.js",
+        includeInDevelopment: true,
+        autoTrack: true,
+        respectDoNotTrack: true,
+        dataCache: false,
+        dataDomains: "app.bikespace.ca",
+      },
+    },
   ],
 };
 
