@@ -21,7 +21,7 @@ export function DataFrequencyByDayChart({
   className,
 }: Pick<PlotParams, 'className'>) {
   const submissions = useContext(SubmissionsContext);
-  const {filters, setFilters} = useContext(SubmissionFiltersContext)!;
+  const {filters, setFilters} = useContext(SubmissionFiltersContext);
 
   const [day, setDay] = useState<Day | null>(null);
   const [data, setData] = useState<InputData[]>([]);

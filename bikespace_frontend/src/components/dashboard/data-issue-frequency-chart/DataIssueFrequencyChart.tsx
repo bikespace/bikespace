@@ -22,7 +22,7 @@ export function DataIssueFrequencyChart({
   className,
 }: Pick<PlotParams, 'className'>) {
   const submissions = useContext(SubmissionsContext);
-  const {setFilters} = useContext(SubmissionFiltersContext)!;
+  const {setFilters} = useContext(SubmissionFiltersContext);
 
   const [issue, setIssue] = useState<IssueType | null>(null);
   const [data, setData] = useState<InputData[]>([]);

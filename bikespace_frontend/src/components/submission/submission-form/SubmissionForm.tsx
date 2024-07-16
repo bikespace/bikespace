@@ -6,18 +6,17 @@ import {
   ParkingDuration,
   SubmissionPayload,
   SubmissionStatus,
+  SubmissionResponsePayload,
 } from '@/interfaces/Submission';
 
-import {
-  Issue,
-  Location,
-  Time,
-  Comments,
-  Summary,
-  SubmissionProgressBar,
-  SubmissionFormController,
-  SubmissionFormContent,
-} from '@/components/submission';
+import {Issue} from '../issue';
+import {Location} from '../location';
+import {Time} from '../time';
+import {Comments} from '../comments';
+import {Summary} from '../summary';
+import {SubmissionProgressBar} from '../submission-progress-bar';
+import {SubmissionFormController} from '../submission-form-controller';
+import {SubmissionFormContent} from '../submission-form-content';
 
 import * as styles from './submission-form.module.scss';
 
@@ -39,13 +38,16 @@ export function SubmissionForm() {
   const [dateTime, setDateTime] = useState<Date>(new Date());
   const [locationLoaded, setLocationLoaded] = useState(false);
   const [comments, setComments] = useState('');
+
   const parkingTime = {date: dateTime, parkingDuration: parkingDuration};
+
   const submission = {
     issues: issues,
     location: location,
     parkingTime: parkingTime,
     comments: comments,
   };
+
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
       position => {
@@ -71,9 +73,10 @@ export function SubmissionForm() {
     parking_duration: submission.parkingTime.parkingDuration,
     comments: submission.comments,
   };
-  const [submissionStatus, setSubmissionStatus] = useState<SubmissionStatus>({
-    status: 'summary',
-  });
+  const [submissionStatus, setSubmissionStatus] =
+    useState<SubmissionResponsePayload>({
+      status: SubmissionStatus.Summary,
+    });
 
   return (
     <div className={styles.mainContent}>

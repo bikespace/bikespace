@@ -5,7 +5,7 @@ import * as styles from './base-button.module.scss';
 import checkIcon from '@/assets/icons/check.svg';
 
 type BaseButtonProps = {
-  type: string;
+  type: 'checkbox' | 'radio';
   children: React.ReactNode;
   value: string;
   active: boolean;

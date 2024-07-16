@@ -1,5 +1,6 @@
 const {compilerOptions} = require('./tsconfig.json');
 const {pathsToModuleNameMapper} = require('ts-jest');
+
 const paths = pathsToModuleNameMapper(compilerOptions.paths, {
   prefix: '<rootDir>/',
 });
@@ -32,5 +33,5 @@ module.exports = {
   },
   setupFiles: ['<rootDir>/loadershim.js'],
   testEnvironment: 'jsdom',
-  setupFilesAfterEnv: ['<rootDir>/setup-test-env.js'],
+  setupFilesAfterEnv: ['<rootDir>/setup-jest.js'],
 };

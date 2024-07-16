@@ -2,20 +2,37 @@ import React, {createContext} from 'react';
 
 import {SubmissionApiPayload, SubmissionFilters} from '@/interfaces/Submission';
 
-type TabContextData = {
-  tab: string;
-  setTab: React.Dispatch<React.SetStateAction<string>>;
-} | null;
+export enum SidebarTab {
+  Data = 'data',
+  Filters = 'filters',
+  Feed = 'feed',
+}
 
-export const TabContext = createContext<TabContextData>(null);
+type TabContextData = {
+  tab: SidebarTab;
+  setTab: React.Dispatch<React.SetStateAction<SidebarTab>>;
+};
+
+export const TabContext = createContext<TabContextData>({
+  tab: SidebarTab.Data,
+  setTab: () => {},
+});
 
 type SubmissionFiltersContextData = {
   filters: SubmissionFilters;
   setFilters: React.Dispatch<React.SetStateAction<SubmissionFilters>>;
-} | null;
+};
 
 export const SubmissionFiltersContext =
-  createContext<SubmissionFiltersContextData>(null);
+  createContext<SubmissionFiltersContextData>({
+    filters: {
+      parkingDuration: [],
+      dateRange: null,
+      day: null,
+      issue: null,
+    },
+    setFilters: () => {},
+  });
 
 export const SubmissionsContext = createContext<SubmissionApiPayload[]>([]);
 
@@ -33,7 +50,10 @@ export const SubmissionsDateRangeContext =
 type FocusedSubmissionIdContextData = {
   focus: number | null;
   setFocus: React.Dispatch<React.SetStateAction<number | null>>;
-} | null;
+};
 
 export const FocusedSubmissionIdContext =
-  createContext<FocusedSubmissionIdContextData | null>(null);
+  createContext<FocusedSubmissionIdContextData>({
+    focus: null,
+    setFocus: () => {},
+  });

@@ -11,8 +11,8 @@ import {SidebarButton} from '../sidebar-button';
 import * as styles from './filter-date-range-custom.module.scss';
 
 export function FilterDateRangeCustom() {
-  const {first, last} = useContext(SubmissionsDateRangeContext)!;
-  const {setFilters} = useContext(SubmissionFiltersContext)!;
+  const {first, last} = useContext(SubmissionsDateRangeContext);
+  const {setFilters} = useContext(SubmissionFiltersContext);
 
   const [dateRange, setDateRange] = useState<{
     from: Date | null;

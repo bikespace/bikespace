@@ -1,50 +1,83 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {render, screen} from '@testing-library/react';
-import {Summary} from './Summary';
+import {faker} from '@faker-js/faker';
+
 import {
   IssueType,
-  LocationLatLng,
+  Submission,
   ParkingDuration,
   SubmissionStatus,
 } from '@/interfaces/Submission';
-import '@testing-library/jest-dom';
 
-describe('Test the Summary component page', () => {
-  const [issues, setIssues] = useState<IssueType[]>([
-    IssueType.Abandoned,
-    IssueType.Damaged,
-  ]);
-  const [location, setLocation] = useState<LocationLatLng>({
-    // default location is the City Hall
-    latitude: 43.65322,
-    longitude: -79.384452,
+import {Summary} from './Summary';
+
+const submission = {
+  issues: faker.helpers.arrayElements(Object.values(IssueType)),
+  location: {
+    latitude: faker.location.latitude(),
+    longitude: faker.location.longitude(),
+  },
+  parkingTime: {
+    date: new Date(),
+    parkingDuration: faker.helpers.arrayElement(Object.values(ParkingDuration)),
+  },
+  comments: faker.lorem.paragraph(),
+} satisfies Submission;
+
+describe('Summary', () => {
+  beforeEach(() => {
+    faker.seed(123);
   });
-  const [parkingDuration, setParkingDuration] = useState<ParkingDuration>(
-    ParkingDuration.Minutes
-  );
-  const [dateTime, setDateTime] = useState<Date>(new Date());
-  const [comments, setComments] = useState('comments');
-  const parkingTime = {date: dateTime, parkingDuration: parkingDuration};
-  const submission = {
-    issues: issues,
-    location: location,
-    parkingTime: parkingTime,
-    comments: comments,
-  };
-  const [submissionStatus, setSubmissionStatus] = useState<SubmissionStatus>({
-    status: 'summary',
-  });
-  test('summary text should render correctly', () => {
+
+  test('Summary text should render correctly', () => {
     render(
-      <Summary submission={submission} submissionStatus={submissionStatus} />
+      <Summary
+        submission={submission}
+        submissionStatus={{status: SubmissionStatus.Summary}}
+      />
     );
+
     expect(screen.getByRole('heading', {level: 1})).toHaveTextContent(
       'Summary'
     );
-    expect(screen.getByText(/issues:/i));
-    expect(screen.getByText(/location:/i));
+    expect(screen.getByText(/Issues:/i));
+    expect(screen.getByText(/Location:/i));
     expect(screen.getByText(/Time:/i));
     expect(screen.getByText(/Parking duration needed:/i));
     expect(screen.getByText(/Comments:/i));
+  });
+
+  test('Success response status should render correct message', () => {
+    render(
+      <Summary
+        submission={submission}
+        submissionStatus={{status: SubmissionStatus.Success}}
+      />
+    );
+
+    expect(screen.getByRole('heading', {level: 1})).toHaveTextContent(
+      'Success'
+    );
+  });
+
+  test('Error response status should render correct message', () => {
+    render(
+      <Summary
+        submission={submission}
+        submissionStatus={{status: SubmissionStatus.Error}}
+      />
+    );
+
+    expect(
+      screen.getByText(
+        /Something went wrong on our end processing your submission/
+      )
+    );
+  });
+
+  test('Unexpected response status should render correct message', () => {
+    render(<Summary submission={submission} submissionStatus={{status: ''}} />);
+
+    expect(screen.getByText(/Something went wrong beyond our expectations/));
   });
 });

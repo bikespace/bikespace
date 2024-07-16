@@ -1,6 +1,6 @@
 import React, {useContext} from 'react';
 
-import {TabContext} from '../context';
+import {TabContext, SidebarTab} from '../context';
 
 import {ClearFiltersButton} from '../clear-filters-button';
 import {SidebarContentFilters} from '../sidebar-content-filter';
@@ -10,15 +10,15 @@ import {SidebarContentFeed} from '../sidebar-content-feed';
 import * as styles from './sidebar-tab-content.module.scss';
 
 export function SidebarTabContent() {
-  const {tab} = useContext(TabContext)!;
+  const {tab} = useContext(TabContext);
 
   const renderContent = () => {
     switch (tab) {
-      case 'data':
+      case SidebarTab.Data:
         return <SidebarContentData />;
-      case 'filters':
+      case SidebarTab.Filters:
         return <SidebarContentFilters />;
-      case 'feed':
+      case SidebarTab.Feed:
         return <SidebarContentFeed />;
       default:
         return <SidebarContentData />;

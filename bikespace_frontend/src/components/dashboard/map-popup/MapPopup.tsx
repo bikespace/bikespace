@@ -5,7 +5,7 @@ import {SubmissionApiPayload} from '@/interfaces/Submission';
 
 import {issuePriority} from '@/config/bikespace-api';
 
-import {FocusedSubmissionIdContext, TabContext} from '../context';
+import {FocusedSubmissionIdContext, SidebarTab, TabContext} from '../context';
 
 import {IssueBadge} from '../issue-badge';
 
@@ -17,8 +17,8 @@ interface MapPopupProps {
 
 export const MapPopup = forwardRef<LeafletPopup, MapPopupProps>(
   ({submission}: MapPopupProps, ref) => {
-    const {setFocus} = useContext(FocusedSubmissionIdContext)!;
-    const {setTab} = useContext(TabContext)!;
+    const {setFocus} = useContext(FocusedSubmissionIdContext);
+    const {setTab} = useContext(TabContext);
 
     const {issues, id, comments, parking_duration, parking_time} = submission;
 
@@ -59,7 +59,7 @@ export const MapPopup = forwardRef<LeafletPopup, MapPopupProps>(
           <button
             className={styles.sidebarButton}
             onClick={() => {
-              setTab('feed');
+              setTab(SidebarTab.Feed);
               setFocus(id);
             }}
             data-umami-event="issue-map_open_in_sidebar"
