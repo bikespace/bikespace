@@ -28,6 +28,7 @@ export function DashboardPage({submissions}: DashboardPageProps) {
 
   const [filters, setFilters] = useState<SubmissionFilters>({
     dateRange: null,
+    dateRangeInterval: null,
     parkingDuration: [],
     issue: null,
     day: null,
