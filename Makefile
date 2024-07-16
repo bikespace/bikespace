@@ -8,8 +8,8 @@ BIKESPACE_DB_MIGRATIONS = $(BIKESPACE_API_DIR)/migrations
 MANAGE_PY = $(BIKESPACE_API_DIR)/manage.py
 PIP = $(ROOT_DIR)/$(VENV)/bin/pip
 PYTHON = $(ROOT_DIR)/$(VENV)/bin/python3
-PYTHON_VERSION = 3.9
-MIN_PYTHON_VERSION = 3.9.6
+PYTHON_VERSION = 3.12.0
+MIN_PYTHON_VERSION = 3.12.0
 CURR_PYTHON_VERSION := $(shell python3 -c 'import platform; print(platform.python_version())')
 LOWEST_PYTHON_VERSION := $(shell printf '%s\n' $(MIN_PYTHON_VERSION) $(CURR_PYTHON_VERSION) | sort -V | head -n1)
 VENV = venv
@@ -59,6 +59,14 @@ run-pytest: setup-py
 	$(PYTHON) $(MANAGE_PY) seed-db && \
 	$(PYTHON) -m pytest --cov=bikespace_api --cov-report lcov
 
+run-pytest-terminal: setup-py
+	export APP_SETTINGS=bikespace_api.config.TestingConfig && \
+	export TEST_DATABASE_URI=postgresql://postgres:postgres@localhost:5432/bikespace_test && \
+	cd $(BIKESPACE_API_DIR) && \
+	$(PYTHON) $(MANAGE_PY) recreate-db && \
+	$(PYTHON) $(MANAGE_PY) seed-db && \
+	$(PYTHON) -m pytest --cov=bikespace_api --cov-report term
+
 lint-py:
 	$(PYTHON) -m black $(BIKESPACE_API_DIR)
 
@@ -88,6 +96,9 @@ run-frontend:
 	
 lint-frontend:
 	cd $(BIKESPACE_FRONTEND_DIR) && npm install && npm run lint
+
+lint-and-fix-frontend:
+	cd $(BIKESPACE_FRONTEND_DIR) && npm install && npm run fix
 
 build-frontend:
 	cd $(BIKESPACE_FRONTEND_DIR) && npm install && npm run build

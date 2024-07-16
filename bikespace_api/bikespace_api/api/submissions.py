@@ -12,6 +12,7 @@ submissions_blueprint = Blueprint("submissions", __name__)
 
 DEFAULT_OFFSET_LIMIT = 100
 
+
 @submissions_blueprint.route("/submissions", methods=["GET", "POST"])
 def handle_submissions():
     if request.method == "GET":
@@ -39,10 +40,12 @@ def get_submission_with_id(submission_id):
 
 
 def get_submissions(request):
-    offset = request.args.get('offset', 1, type=int)
-    limit = request.args.get('limit', DEFAULT_OFFSET_LIMIT, type=int)
+    offset = request.args.get("offset", 1, type=int)
+    limit = request.args.get("limit", DEFAULT_OFFSET_LIMIT, type=int)
 
-    pagination = Submission.query.order_by(desc(Submission.parking_time)).paginate(page=offset, per_page=limit, count=True)
+    pagination = Submission.query.order_by(desc(Submission.parking_time)).paginate(
+        page=offset, per_page=limit, count=True
+    )
     submissions = pagination.items
 
     json_output = []
@@ -61,7 +64,7 @@ def get_submissions(request):
             "comments": submission.comments,
         }
         json_output.append(submission_json)
-    
+
     final_response = {
         "submissions": json_output,
         "pagination": {
@@ -69,8 +72,8 @@ def get_submissions(request):
             "total_items": pagination.total,
             "total_pages": pagination.pages,
             "has_next": pagination.has_next,
-            "has_prev": pagination.has_prev
-        }
+            "has_prev": pagination.has_prev,
+        },
     }
 
     return jsonify(final_response)

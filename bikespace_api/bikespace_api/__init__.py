@@ -31,7 +31,7 @@ def create_app(script_info=None):
     app.register_blueprint(submissions_blueprint, url_prefix="/api/v2")
     app.register_blueprint(docs_blueprint, url_prefix="/api/v2")
 
-    @app.route('/')
+    @app.route("/")
     def api_home_page():
         return redirect("/api/v2/docs", code=302)
 

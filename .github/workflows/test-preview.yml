@@ -32,7 +32,7 @@ jobs:
       - name: Setup python
         uses: actions/setup-python@v4
         with:
-          python-version : '3.9.17'
+          python-version : '3.12.0'
       - name: Setup app database
         env:
           PGPASSWORD: postgres
@@ -42,14 +42,28 @@ jobs:
         run: make run-pytest
       - name: Coveralls
         uses: coverallsapp/github-action@v2
-
+  test-frontend:
+    name: Lint and Test Frontend
+    runs-on: ubuntu-latest
+    steps:
+        - name: Checkout
+          uses: actions/checkout@v3
+        - name: Setup node
+          uses: actions/setup-node@v3
+          with:
+            node-version: "v18.16.0"
+        - name: Check code style
+          run: make lint-frontend
+        - name: Run Jest tests
+          run: make test-frontend
   publish:
     name: Publish to Cloudflare Pages
-    needs: apitest
+    needs: test-frontend
     runs-on: ubuntu-latest
     permissions:
       contents: read
       deployments: write
+      pull-requests: write
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -63,17 +77,13 @@ jobs:
         run: |
           touch bikespace_frontend/.env.production
           echo GATSBY_BIKESPACE_API_URL=$BIKESPACE_API_URL >> bikespace_frontend/.env.production
-      - name: Check code style
-        run: make lint-frontend
       - name: Build gatbsy static frontend
         run: make build-frontend
-      - name: Run Jest tests
-        run: make test-frontend
       - name: Publish to Cloudflare Pages
         uses: cloudflare/pages-action@v1.0.0
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           projectName: bikespace-v2
           directory: bikespace_frontend/public
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}

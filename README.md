@@ -15,15 +15,25 @@ They are split up accordingly into their own directories:
 
 To run any of these components please see the `README` in each directory.
 
-This repository also has a `bikespace_landing_page` folder for the [bikespace.ca](https://bikespace.ca/) content.
+This repository also has a `bikespace_landing_page` folder for the [bikespace.ca](https://bikespace.ca/) content and a `datasets` folder for miscellaneous project data.
 
 # Development Workflow
 
-- When working on a new feature, please always check out a new branch from the latest main branch
-- When submitting Pull Requests, please submit PRs to the development branch from the feature branch you are working off
-- Squash and merge is preferred for approved pull requests to keep a clean history of project changes
+- When working on a new feature, please always check out a new branch from the latest main branch.
+- When submitting Pull Requests, please submit PRs to the development branch from the feature branch you are working off of.
+- Squash and merge is preferred for approved pull requests to keep a clean history of project changes.
 
 For more information about contributing to the BikeSpace project, please read the [Get Involved](https://bikespace.ca/#get_involved) section of our website.
+
+# Using Make Targets
+
+Most development tasks in this repository (e.g. running apps, linting code) can be run using [`make`](https://en.wikipedia.org/wiki/Make_(software)) targets that simplify multiple steps into one command and work cross-platform. For example, to run `bikespace_frontend` locally while developing, you can run the following in a terminal:
+
+```bash
+$ make run-frontend
+```
+
+Note that you may need to ensure that there are no spaces in the filepath for the project directory for the `make` command to work as intended.
 
 # Project Structure
 
