@@ -1,6 +1,8 @@
 import React, {useContext, useState, useEffect} from 'react';
 import {DateTime} from 'luxon';
 
+import {ParkingDuration} from '@/interfaces/Submission';
+
 import {
   SubmissionFiltersContext,
   SubmissionsContext,
@@ -56,9 +58,13 @@ export function ReportSummary() {
         <span>
           {submissions.length > 0
             ? ` reports ${
-                filters.dateRange === null && filters.parkingDuration === null
-                  ? ' (filtered)'
-                  : ''
+                filters.dateRange === null &&
+                filters.dateRangeInterval === null &&
+                filters.issue === null &&
+                filters.parkingDuration.length === 0 &&
+                filters.day === null
+                  ? ''
+                  : ' (filtered)'
               }`
             : 'No reports match filter criteria'}
         </span>
