@@ -22,9 +22,11 @@ export function DataIssueFrequencyChart({
   className,
 }: Pick<PlotParams, 'className'>) {
   const submissions = useContext(SubmissionsContext);
-  const {setFilters} = useContext(SubmissionFiltersContext);
+  const {
+    filters: {issue},
+    setFilters,
+  } = useContext(SubmissionFiltersContext);
 
-  const [issue, setIssue] = useState<IssueType | null>(null);
   const [data, setData] = useState<InputData[]>([]);
 
   useEffect(() => {
@@ -52,7 +54,10 @@ export function DataIssueFrequencyChart({
 
     if (!point) return;
 
-    setIssue(prev => (prev === point.y ? null : (point.y as IssueType)));
+    setFilters(prev => ({
+      ...prev,
+      issue: prev.issue === point.y ? null : (point.y as IssueType),
+    }));
   };
 
   return (
