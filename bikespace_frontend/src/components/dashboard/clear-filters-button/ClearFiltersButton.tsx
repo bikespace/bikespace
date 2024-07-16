@@ -10,7 +10,7 @@ import * as styles from './clear-filters-button.module.scss';
 
 export function ClearFiltersButton() {
   const {
-    filters: {dateRange, parkingDuration, issue, day},
+    filters: {dateRange, parkingDuration, issue, day, dateRangeInterval},
     setFilters,
   } = useContext(SubmissionFiltersContext);
 
@@ -18,7 +18,8 @@ export function ClearFiltersButton() {
     parkingDuration.length === 0 &&
     (!dateRange || (dateRange.from === null && dateRange?.to === null)) &&
     !issue &&
-    day === null
+    day === null &&
+    dateRangeInterval === null
   )
     return null;
 
@@ -28,6 +29,7 @@ export function ClearFiltersButton() {
       onClick={() => {
         setFilters({
           dateRange: null,
+          dateRangeInterval: null,
           parkingDuration: [],
           issue: null,
           day: null,

@@ -28,6 +28,7 @@ export const SubmissionFiltersContext =
     filters: {
       parkingDuration: [],
       dateRange: null,
+      dateRangeInterval: null,
       day: null,
       issue: null,
     },

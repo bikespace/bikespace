@@ -1,15 +1,15 @@
 import {DateTime, Interval} from 'luxon';
 
-import {FixedDateRange} from './types';
+import {DateRangeInterval} from '@/interfaces/Submission';
 
-export const getDateRangeFromFixedRange = (selectedRange: FixedDateRange) => {
+export const getDateRangeFromInterval = (interval: DateRangeInterval) => {
   const now = new Date();
   const dtNow = DateTime.fromJSDate(new Date());
 
-  switch (selectedRange) {
-    case FixedDateRange.AllDates:
+  switch (interval) {
+    case DateRangeInterval.AllDates:
       return null;
-    case FixedDateRange.Last7Days:
+    case DateRangeInterval.Last7Days:
       return {
         from: Interval.fromDateTimes(
           dtNow.minus({days: 7}),
@@ -17,7 +17,7 @@ export const getDateRangeFromFixedRange = (selectedRange: FixedDateRange) => {
         ).start!.toJSDate(),
         to: now,
       };
-    case FixedDateRange.Last30Days:
+    case DateRangeInterval.Last30Days:
       return {
         from: Interval.fromDateTimes(
           dtNow.minus({days: 30}),
@@ -25,7 +25,7 @@ export const getDateRangeFromFixedRange = (selectedRange: FixedDateRange) => {
         ).start!.toJSDate(),
         to: now,
       };
-    case FixedDateRange.Last90Days:
+    case DateRangeInterval.Last90Days:
       return {
         from: Interval.fromDateTimes(
           dtNow.minus({days: 90}),
@@ -33,7 +33,7 @@ export const getDateRangeFromFixedRange = (selectedRange: FixedDateRange) => {
         ).start!.toJSDate(),
         to: now,
       };
-    case FixedDateRange.Last12Months:
+    case DateRangeInterval.Last12Months:
       return {
         from: Interval.fromDateTimes(
           dtNow.minus({months: 12}).startOf('month'),
@@ -41,7 +41,7 @@ export const getDateRangeFromFixedRange = (selectedRange: FixedDateRange) => {
         ).start!.toJSDate(),
         to: now,
       };
-    case FixedDateRange.ThisYear:
+    case DateRangeInterval.ThisYear:
       return {
         from: Interval.fromDateTimes(
           dtNow.startOf('year'),
@@ -49,7 +49,7 @@ export const getDateRangeFromFixedRange = (selectedRange: FixedDateRange) => {
         ).start!.toJSDate(),
         to: now,
       };
-    case FixedDateRange.LastYear:
+    case DateRangeInterval.LastYear:
       return {
         from: Interval.fromDateTimes(
           dtNow.minus({years: 1}).startOf('year'),

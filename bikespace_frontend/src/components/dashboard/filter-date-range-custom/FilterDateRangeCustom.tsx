@@ -1,5 +1,7 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useState, useEffect} from 'react';
 import {DateTime} from 'luxon';
+
+import {DateRangeInterval} from '@/interfaces/Submission';
 
 import {
   SubmissionsDateRangeContext,
@@ -12,18 +14,25 @@ import * as styles from './filter-date-range-custom.module.scss';
 
 export function FilterDateRangeCustom() {
   const {first, last} = useContext(SubmissionsDateRangeContext);
-  const {setFilters} = useContext(SubmissionFiltersContext);
+  const {
+    filters: {dateRange},
+    setFilters,
+  } = useContext(SubmissionFiltersContext);
 
-  const [dateRange, setDateRange] = useState<{
+  const [selectedDateRange, setSelectedDateRange] = useState<{
     from: Date | null;
     to: Date | null;
   }>({
-    from: first!,
-    to: last!,
+    from: dateRange?.from || first,
+    to: dateRange?.to || last,
   });
 
   const isoFirst = DateTime.fromJSDate(first!).toISODate();
   const isoLast = DateTime.fromJSDate(last!).toISODate();
+
+  useEffect(() => {
+    setSelectedDateRange(dateRange || {from: first, to: last});
+  }, [dateRange]);
 
   return (
     <div className={styles.dateRangeCustom}>
@@ -33,14 +42,18 @@ export function FilterDateRangeCustom() {
           type="date"
           id="filter-start-date"
           name="startDate"
-          value={isoFirst!}
+          value={
+            selectedDateRange.from
+              ? formatHtmlDateValue(selectedDateRange.from)
+              : isoFirst!
+          }
           min={isoFirst!}
           max={isoLast!}
           onChange={e => {
-            setDateRange(prev => ({
+            setSelectedDateRange(prev => ({
               ...prev,
               from: e.currentTarget.value
-                ? new Date(e.currentTarget.value)
+                ? new Date(`${e.currentTarget.value}T00:00:00`)
                 : null,
             }));
           }}
@@ -52,14 +65,18 @@ export function FilterDateRangeCustom() {
           type="date"
           id="filter-end-date"
           name="endDate"
-          value={isoLast!}
+          value={
+            selectedDateRange.to
+              ? formatHtmlDateValue(selectedDateRange.to)
+              : isoLast!
+          }
           min={isoFirst!}
           max={isoLast!}
           onChange={e => {
-            setDateRange(prev => ({
+            setSelectedDateRange(prev => ({
               ...prev,
               to: e.currentTarget.value
-                ? new Date(e.currentTarget.value)
+                ? new Date(`${e.currentTarget.value}T23:59:59`)
                 : null,
             }));
           }}
@@ -71,9 +88,10 @@ export function FilterDateRangeCustom() {
           setFilters(prev => ({
             ...prev,
             dateRange: {
-              from: dateRange.from || first!,
-              to: dateRange.to || last!,
+              from: selectedDateRange.from || first!,
+              to: selectedDateRange.to || last!,
             },
+            dateRangeInterval: DateRangeInterval.CustomRange,
           }));
         }}
       >
@@ -82,3 +100,12 @@ export function FilterDateRangeCustom() {
     </div>
   );
 }
+
+const formatHtmlDateValue = (date: Date) => {
+  return date
+    .toLocaleDateString()
+    .replace(/\//g, '-')
+    .split('-')
+    .map(str => (str.length === 1 ? `0${str}` : str))
+    .join('-');
+};

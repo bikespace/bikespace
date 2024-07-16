@@ -1,9 +1,9 @@
-import React, {useContext, useState, useEffect} from 'react';
+import React, {useContext, useState} from 'react';
 import {DateTime} from 'luxon';
 
-import {FixedDateRange} from './types';
+import {DateRangeInterval} from '@/interfaces/Submission';
 
-import {getDateRangeFromFixedRange} from './utils';
+import {getDateRangeFromInterval} from './utils';
 
 import {
   SubmissionFiltersContext,
@@ -16,29 +16,13 @@ import {FilterDateRangeCustom} from '../filter-date-range-custom';
 import * as styles from './filter-date-range.module.scss';
 
 export function FilterDateRange() {
-  const {filters, setFilters} = useContext(SubmissionFiltersContext);
+  const {
+    filters: {dateRange, dateRangeInterval},
+    setFilters,
+  } = useContext(SubmissionFiltersContext);
   const {first, last} = useContext(SubmissionsDateRangeContext);
 
-  const {dateRange} = filters;
-
-  const [selectedRange, setSelectedRange] = useState<FixedDateRange>(
-    FixedDateRange.AllDates
-  );
-
-  useEffect(() => {
-    if (selectedRange === FixedDateRange.CustomRange) return;
-
-    setFilters(prev => ({
-      ...prev,
-      dateRange: getDateRangeFromFixedRange(selectedRange),
-    }));
-  }, [selectedRange]);
-
-  useEffect(() => {
-    if (dateRange) return;
-
-    setSelectedRange(FixedDateRange.AllDates);
-  }, [dateRange]);
+  const [showCustomRange, setShowCustomRange] = useState<boolean>(false);
 
   return (
     <FilterSection title="Date Range">
@@ -65,9 +49,21 @@ export function FilterDateRange() {
         <select
           name="dateRange"
           id="filter-date-range-select"
-          value={selectedRange}
+          value={dateRangeInterval || DateRangeInterval.AllDates}
           onChange={e => {
-            setSelectedRange(e.currentTarget.value as FixedDateRange);
+            const value = e.currentTarget.value as DateRangeInterval;
+
+            if (value === DateRangeInterval.CustomRange) {
+              setShowCustomRange(true);
+            } else {
+              setShowCustomRange(false);
+
+              setFilters(prev => ({
+                ...prev,
+                dateRange: getDateRangeFromInterval(value),
+                dateRangeInterval: value,
+              }));
+            }
           }}
         >
           {dateRangeOptgroups.map(group => (
@@ -81,7 +77,7 @@ export function FilterDateRange() {
           ))}
         </select>
       </div>
-      <div hidden={selectedRange !== FixedDateRange.CustomRange}>
+      <div hidden={!showCustomRange}>
         <FilterDateRangeCustom />
       </div>
     </FilterSection>
@@ -94,7 +90,7 @@ const dateRangeOptgroups = [
     options: [
       {
         label: 'All Dates',
-        value: FixedDateRange.AllDates,
+        value: DateRangeInterval.AllDates,
       },
     ],
   },
@@ -103,15 +99,15 @@ const dateRangeOptgroups = [
     options: [
       {
         label: 'Last 7 days',
-        value: FixedDateRange.Last7Days,
+        value: DateRangeInterval.Last7Days,
       },
       {
         label: 'Last 30 days',
-        value: FixedDateRange.Last30Days,
+        value: DateRangeInterval.Last30Days,
       },
       {
         label: 'Last 90 days',
-        value: FixedDateRange.Last90Days,
+        value: DateRangeInterval.Last90Days,
       },
     ],
   },
@@ -120,15 +116,15 @@ const dateRangeOptgroups = [
     options: [
       {
         label: 'Last 12 months',
-        value: FixedDateRange.Last12Months,
+        value: DateRangeInterval.Last12Months,
       },
       {
         label: 'This year',
-        value: FixedDateRange.ThisYear,
+        value: DateRangeInterval.ThisYear,
       },
       {
         label: 'Last year',
-        value: FixedDateRange.LastYear,
+        value: DateRangeInterval.LastYear,
       },
     ],
   },
@@ -137,7 +133,7 @@ const dateRangeOptgroups = [
     options: [
       {
         label: 'Custom range',
-        value: FixedDateRange.CustomRange,
+        value: DateRangeInterval.CustomRange,
       },
     ],
   },
