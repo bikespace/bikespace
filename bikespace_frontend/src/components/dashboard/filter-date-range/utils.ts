@@ -12,7 +12,7 @@ export const getDateRangeFromFixedRange = (selectedRange: FixedDateRange) => {
     case FixedDateRange.Last7Days:
       return {
         from: Interval.fromDateTimes(
-          dtNow.minus({days: 7 - 1}),
+          dtNow.minus({days: 7}),
           dtNow
         ).start!.toJSDate(),
         to: now,
@@ -20,7 +20,7 @@ export const getDateRangeFromFixedRange = (selectedRange: FixedDateRange) => {
     case FixedDateRange.Last30Days:
       return {
         from: Interval.fromDateTimes(
-          dtNow.minus({days: 30 - 1}),
+          dtNow.minus({days: 30}),
           now
         ).start!.toJSDate(),
         to: now,
@@ -28,7 +28,7 @@ export const getDateRangeFromFixedRange = (selectedRange: FixedDateRange) => {
     case FixedDateRange.Last90Days:
       return {
         from: Interval.fromDateTimes(
-          dtNow.minus({days: 90 - 1}),
+          dtNow.minus({days: 90}),
           now
         ).start!.toJSDate(),
         to: now,
@@ -36,7 +36,7 @@ export const getDateRangeFromFixedRange = (selectedRange: FixedDateRange) => {
     case FixedDateRange.Last12Months:
       return {
         from: Interval.fromDateTimes(
-          dtNow.minus({months: 12 - 1}).startOf('month'),
+          dtNow.minus({months: 12}).startOf('month'),
           dtNow.endOf('month')
         ).start!.toJSDate(),
         to: now,
