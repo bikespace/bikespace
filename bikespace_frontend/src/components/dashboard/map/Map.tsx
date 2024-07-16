@@ -9,7 +9,7 @@ import {LeafletLocateControl} from '../leaflet-locate-control';
 import {LeafletMarkerClusterGroup} from '../leaflet-marker-cluster-group';
 
 import * as styles from './map.module.scss';
-import './map.scss';
+import './leaflet.scss';
 
 interface MapProps {
   submissions: SubmissionApiPayload[];
