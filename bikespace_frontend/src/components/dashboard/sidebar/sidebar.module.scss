@@ -28,12 +28,13 @@
   }
 }
 
-$height-panel-handle: 16px;
-$height-panel-handle-bar: 6px;
-
 @media (max-width: 1024px) {
+  $height-panel-handle: 16px;
+  $height-panel-handle-bar: 6px;
+
   .sidebar {
     width: 100%;
+    border-radius: 8px 8px 0px 0px;
 
     .drawerHandle {
       all: unset;
@@ -56,6 +57,8 @@ $height-panel-handle-bar: 6px;
     }
     
     .sidebarContent {
+      max-height: 50vh;
+
       &.closed {
         display: none;
       }
