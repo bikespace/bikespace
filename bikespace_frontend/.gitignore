@@ -1,5 +1,9 @@
 node_modules/
 public/
 coverage/
+build/
 
 .next
+next-env.d.ts
+
+.DS_Store
