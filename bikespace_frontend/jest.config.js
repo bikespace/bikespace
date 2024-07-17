@@ -23,7 +23,7 @@ module.exports = {
     'build',
   ],
   transformIgnorePatterns: [
-    'node_modules/(?!(gatsby|gatsby-script|gatsby-link|react-leaflet|@react-leaflet)/)',
+    'node_modules/(?!(react-leaflet|@react-leaflet)/)',
   ],
   globals: {
     __PATH_PREFIX__: '',
