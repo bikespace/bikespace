@@ -12,7 +12,7 @@ import {
 } from '../context';
 
 import {DashboardHeader} from '../dashboard-header';
-import {Map} from '../map';
+import {SubmissionsMap} from '@/components/common/map';
 import {Noscript} from '../noscript';
 import {Sidebar} from '../sidebar';
 
@@ -98,7 +98,7 @@ export function DashboardPage({submissions}: DashboardPageProps) {
                 <DashboardHeader />
                 <main className={styles.main}>
                   <Sidebar />
-                  <Map submissions={filteredSubmissions} />
+                  <SubmissionsMap submissions={filteredSubmissions} />
                 </main>
                 <Noscript />
               </div>

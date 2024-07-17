@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useRef} from 'react';
+import React, {useContext, useEffect, useRef, ComponentProps} from 'react';
 import {Marker, useMap} from 'react-leaflet';
 import {Popup as LeafletPopup} from 'leaflet';
 import {Icon, LatLngTuple} from 'leaflet';
@@ -6,36 +6,29 @@ import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 
 import {IssueType, SubmissionApiPayload} from '@/interfaces/Submission';
 
-import {FocusedSubmissionIdContext} from '../context';
-
 import {issuePriority} from '@/config/bikespace-api';
-
-import {MapPopup} from '../map-popup';
 
 import notProvidedIcon from '@/assets/icons/icon_not_provided.svg';
 import abandonedIcon from '@/assets/icons/icon_abandoned.svg';
 import fullIcon from '@/assets/icons/icon_full.svg';
 import damagedIcon from '@/assets/icons/icon_damaged.svg';
 import otherIcon from '@/assets/icons/icon_other.svg';
+import {MapPopup} from '@/components/dashboard/map-popup';
+import {FocusedSubmissionIdContext} from '@/components/dashboard/context';
 
-interface MapMarkerProps {
-  submission: SubmissionApiPayload;
-}
+type MapMarkerProps = {
+  id: string;
+  focused: boolean;
+} & ComponentProps<typeof Marker>;
 
-export function MapMarker({submission}: MapMarkerProps) {
+export function MapMarker({id, focused, position}: MapMarkerProps) {
   // popupRef for calling openPopup() upon focus change
   // `Popup` from 'react-leaflet' forwards `Popup` from 'leaflet'
   const popupRef = useRef<LeafletPopup>(null);
 
-  const position: LatLngTuple = [submission.latitude, submission.longitude];
-
   const map = useMap();
 
-  const {focus} = useContext(FocusedSubmissionIdContext)!;
-
   useEffect(() => {
-    if (focus !== submission.id) return;
-
     map.flyTo(position, 18, {duration: 0.5});
     // put openPopup to the end of the event loop job queue so openPopup()
     // is queued after all the calls flyTo() triggers
@@ -46,18 +39,19 @@ export function MapMarker({submission}: MapMarkerProps) {
         map.openPopup(popupRef.current);
       }
     }, 0);
-  }, [focus, popupRef.current]);
+  }, [focused]);
 
-  const priorityIssue = submission.issues.reduce((a: IssueType | null, c) => {
+  /*   const priorityIssue = submission.issues.reduce((a: IssueType | null, c) => {
     if (a === null) return c;
 
     return issuePriority[a] < issuePriority[c] ? a : c;
-  }, null);
-  const customMarker = markerIssueIcons[priorityIssue ?? 'other'];
+  }, null); */
+  // const customMarker = markerIssueIcons[priorityIssue ?? 'other'];
+  // TODO: use proper marker
+  const customMarker = markerIssueIcons['other'];
 
   return (
     <Marker
-      key={submission.id}
       position={position}
       icon={
         new Icon({
@@ -71,7 +65,7 @@ export function MapMarker({submission}: MapMarkerProps) {
         })
       }
     >
-      <MapPopup submission={submission} ref={popupRef} />
+      {/* <MapPopup submission={submission} ref={popupRef} /> */}
     </Marker>
   );
 }

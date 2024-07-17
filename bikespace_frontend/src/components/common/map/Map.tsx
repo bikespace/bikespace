@@ -1,5 +1,13 @@
-import React, {useEffect, useRef} from 'react';
+import React, {
+  ComponentProps,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+} from 'react';
+import {Marker} from 'react-leaflet';
 import {useMap, MapContainer, TileLayer} from 'react-leaflet';
+import {LatLngTuple} from 'leaflet';
 import {useWindowSize} from '@uidotdev/usehooks';
 
 import {SubmissionApiPayload} from '@/interfaces/Submission';
@@ -9,9 +17,16 @@ import {LeafletLocateControl} from '../leaflet-locate-control';
 import {LeafletMarkerClusterGroup} from '../leaflet-marker-cluster-group';
 
 import * as styles from './map.module.scss';
+import {FocusedSubmissionIdContext} from '@/components/dashboard/context';
+
+type MapMarkerProps = {
+  id: string;
+  focused: boolean;
+} & ComponentProps<typeof Marker>;
 
 interface MapProps {
-  submissions: SubmissionApiPayload[];
+  // submissions: SubmissionApiPayload[];
+  markers: MapMarkerProps[];
 }
 
 const tileLayers = {
@@ -29,7 +44,24 @@ const tileLayers = {
   ),
 };
 
-export function Map({submissions}: MapProps) {
+interface SubmissionMapProps {
+  submissions: SubmissionApiPayload[];
+}
+
+export function SubmissionsMap({submissions}: SubmissionMapProps) {
+  const {focus} = useContext(FocusedSubmissionIdContext)!;
+  const markers: MapMarkerProps[] = useMemo(() => {
+    return submissions.map(submission => ({
+      id: submission.id.toFixed(0),
+      position: [submission.latitude, submission.longitude],
+      focused: focus === submission.id,
+    }));
+  }, [submissions]);
+  return <Map markers={markers} />;
+}
+
+export function Map({markers}: MapProps) {
+  // export function Map({submissions}: MapProps) {
   const mapRef = useRef(null);
 
   return (
@@ -45,8 +77,13 @@ export function Map({submissions}: MapProps) {
         {tileLayers.thunderforest}
         <MapHandler />
         <LeafletMarkerClusterGroup chunkedLoading>
-          {submissions.map(submission => (
-            <MapMarker key={submission.id} submission={submission} />
+          {markers.map(marker => (
+            <MapMarker
+              key={marker.id}
+              id={marker.id}
+              position={marker.position}
+              focused={marker.focused}
+            />
           ))}
         </LeafletMarkerClusterGroup>
       </MapContainer>
