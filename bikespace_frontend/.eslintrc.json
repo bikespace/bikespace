@@ -26,9 +26,8 @@
   "ignorePatterns": [
     "jest.config.js",
     "jest-preprocess.js",
-    "gatsby-config.ts",
     "loadershim.js",
-    "setup-test-env.js",
+    "setup-jest.js",
     "**/__mocks__/**/*"
   ]
 }
