@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Link} from 'gatsby';
+import Link from 'next/link';
 import {useClickAway} from '@uidotdev/usehooks';
 
 import * as styles from './page-header.module.scss';
@@ -16,7 +16,7 @@ export function PageHeader() {
 
   return (
     <header className={styles.header} ref={clickAwayRef}>
-      <Link to="/" title="Home" className={styles.bikespaceLogo}>
+      <Link href="/" title="Home" className={styles.bikespaceLogo}>
         <img src={bikespaceLogo} alt="BikeSpace logo" />
       </Link>
       <div

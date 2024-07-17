@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Link} from 'gatsby';
+import Link from 'next/link';
 import {useClickAway} from '@uidotdev/usehooks';
 
 import * as styles from './dashboard-header.module.scss';
@@ -31,12 +31,12 @@ export function DashboardHeader() {
         aria-label="Main"
         ref={clickAwayRef}
       >
-        <Link to="/" title="Dashboard Home" className={styles.bikespaceLogo}>
+        <Link href="/" title="Dashboard Home" className={styles.bikespaceLogo}>
           <img src={bikespaceLogo} alt="BikeSpace logo" />
         </Link>
         <ul>
           <li>
-            <Link to="/submission" data-umami-event="outbound-app">
+            <Link href="/submission" data-umami-event="outbound-app">
               Report Bike Parking Issue
             </Link>
           </li>

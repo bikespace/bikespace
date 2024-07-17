@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link} from 'gatsby';
+import Link from 'next/link';
 
 import * as styles from './not-found-page.module.scss';
 
@@ -19,7 +19,7 @@ export function NotFoundPage() {
           </>
         ) : null}
         <br />
-        <Link to="/">Go home</Link>.
+        <Link href="/">Go home</Link>.
       </p>
     </main>
   );
