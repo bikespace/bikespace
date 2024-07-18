@@ -16,10 +16,9 @@
       "@/*": ["./*"]
     },
     "skipLibCheck": true,
-    "types": ["node", "jest", "@testing-library/jest-dom"]
+    "types": ["node", "jest", "@testing-library/jest-dom"],
   },
   "include": [
-    "./src/**/*",
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
