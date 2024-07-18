@@ -11,7 +11,7 @@ import {
 
 import warningIcon from '@/assets/icons/exclamation-triangle.svg';
 
-import * as styles from './report-summary.module.scss';
+import styles from './report-summary.module.scss';
 
 export function ReportSummary() {
   const submissions = useContext(SubmissionsContext);

@@ -8,7 +8,7 @@ import {MapMarker} from '../map-marker';
 import {LeafletLocateControl} from '../leaflet-locate-control';
 import {LeafletMarkerClusterGroup} from '../leaflet-marker-cluster-group';
 
-import * as styles from './map.module.scss';
+import styles from './map.module.scss';
 import './leaflet.scss';
 
 interface MapProps {

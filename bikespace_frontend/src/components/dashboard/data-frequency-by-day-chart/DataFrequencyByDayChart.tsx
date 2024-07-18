@@ -10,7 +10,7 @@ import {SubmissionFiltersContext, SubmissionsContext} from '../context';
 
 import {LazyPlot} from '../lazy-plot';
 
-import * as styles from './data-frequency-by-day-chart.module.scss';
+import styles from './data-frequency-by-day-chart.module.scss';
 
 type InputData = {
   name: Day;

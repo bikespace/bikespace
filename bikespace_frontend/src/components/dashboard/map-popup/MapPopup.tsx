@@ -9,7 +9,7 @@ import {FocusedSubmissionIdContext, SidebarTab, TabContext} from '../context';
 
 import {IssueBadge} from '../issue-badge';
 
-import * as styles from './map-popup.module.scss';
+import styles from './map-popup.module.scss';
 
 interface MapPopupProps {
   submission: SubmissionApiPayload;

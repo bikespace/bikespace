@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 
-import * as styles from './not-found-page.module.scss';
+import styles from './not-found-page.module.scss';
 
 export function NotFoundPage() {
   return (

@@ -5,7 +5,7 @@ import {DataIssueFrequencyChart} from '../data-issue-frequency-chart';
 import {DataFrequencyByDayChart} from '../data-frequency-by-day-chart';
 import {DataDurationByTodChart} from '../data-duration-by-tod-chart';
 
-import * as styles from './sidebar-content-data.module.scss';
+import styles from './sidebar-content-data.module.scss';
 
 export function SidebarContentData() {
   return (

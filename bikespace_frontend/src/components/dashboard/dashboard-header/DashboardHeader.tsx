@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import Link from 'next/link';
 import {useClickAway} from '@uidotdev/usehooks';
 
-import * as styles from './dashboard-header.module.scss';
+import styles from './dashboard-header.module.scss';
 
 import hamburgerMenu from '@/assets/icons/hamburger-menu.svg';
 import bikespaceLogo from '@/assets/icons/bikespace_wordmark.png';

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import * as styles from './filter-section.module.scss';
+import styles from './filter-section.module.scss';
 
 interface FilterSectionProps {
   title: string;

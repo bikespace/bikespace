@@ -2,7 +2,7 @@ import React from 'react';
 
 import {FeedbackMailTo} from '../feedback-mail-to/FeedbackMailTo';
 
-import * as styles from './submission-header.module.scss';
+import styles from './submission-header.module.scss';
 
 import bikespaceLogo from '@/assets/icons/header-logo.svg';
 

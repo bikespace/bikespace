@@ -1,6 +1,6 @@
 import React from 'react';
 
-import * as styles from './comments.module.scss';
+import styles from './comments.module.scss';
 
 export const Comments = (props: {
   comments: string;

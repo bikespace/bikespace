@@ -3,7 +3,7 @@ import {LocationLatLng} from '@/interfaces/Submission';
 import {MapContainer, TileLayer, Marker} from 'react-leaflet';
 import {LatLngTuple} from 'leaflet';
 
-import * as styles from './location.module.scss';
+import styles from './location.module.scss';
 
 interface LocationProps {
   location: LocationLatLng;

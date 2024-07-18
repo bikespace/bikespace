@@ -17,7 +17,7 @@ import {Map} from '../map';
 import {Noscript} from '../noscript';
 import {Sidebar} from '../sidebar';
 
-import * as styles from './dashboard-page.module.scss';
+import styles from './dashboard-page.module.scss';
 
 interface DashboardPageProps {
   submissions: SubmissionApiPayload[];

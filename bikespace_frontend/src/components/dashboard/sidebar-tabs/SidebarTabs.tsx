@@ -2,7 +2,7 @@ import React, {useContext} from 'react';
 
 import {TabContext, SidebarTab} from '../context';
 
-import * as styles from './sidebar-tabs.module.scss';
+import styles from './sidebar-tabs.module.scss';
 
 const tabs = [
   {

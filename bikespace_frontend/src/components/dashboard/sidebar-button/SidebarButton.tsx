@@ -1,6 +1,6 @@
 import React from 'react';
 
-import * as styles from './sidebar-button.module.scss';
+import styles from './sidebar-button.module.scss';
 
 export function SidebarButton({
   children,

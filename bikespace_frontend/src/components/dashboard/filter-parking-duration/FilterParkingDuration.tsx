@@ -7,7 +7,7 @@ import {ParkingDuration} from '@/interfaces/Submission';
 import {FilterSection} from '../filter-section';
 import {SidebarButton} from '../sidebar-button';
 
-import * as styles from './filter-parking-duration.module.scss';
+import styles from './filter-parking-duration.module.scss';
 
 enum DurationCategory {
   Short = 'short',

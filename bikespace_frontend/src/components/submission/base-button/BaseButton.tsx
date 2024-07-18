@@ -1,6 +1,6 @@
 import React from 'react';
 
-import * as styles from './base-button.module.scss';
+import styles from './base-button.module.scss';
 
 import checkIcon from '@/assets/icons/check.svg';
 

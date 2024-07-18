@@ -7,7 +7,7 @@ import {SidebarContentFilters} from '../sidebar-content-filter';
 import {SidebarContentData} from '../sidebar-content-data';
 import {SidebarContentFeed} from '../sidebar-content-feed';
 
-import * as styles from './sidebar-tab-content.module.scss';
+import styles from './sidebar-tab-content.module.scss';
 
 export function SidebarTabContent() {
   const {tab} = useContext(TabContext);

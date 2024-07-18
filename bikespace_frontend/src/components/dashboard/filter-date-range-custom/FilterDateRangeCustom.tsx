@@ -10,7 +10,7 @@ import {
 
 import {SidebarButton} from '../sidebar-button';
 
-import * as styles from './filter-date-range-custom.module.scss';
+import styles from './filter-date-range-custom.module.scss';
 
 export function FilterDateRangeCustom() {
   const {first, last} = useContext(SubmissionsDateRangeContext);

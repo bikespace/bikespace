@@ -3,7 +3,7 @@ import React, {useState} from 'react';
 import {SidebarTabs} from '../sidebar-tabs';
 import {SidebarTabContent} from '../sidebar-tab-content';
 
-import * as styles from './sidebar.module.scss';
+import styles from './sidebar.module.scss';
 
 export function Sidebar() {
   const [open, setOpen] = useState<boolean>(true);

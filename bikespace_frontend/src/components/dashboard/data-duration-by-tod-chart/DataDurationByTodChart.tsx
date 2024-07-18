@@ -11,7 +11,7 @@ import {SubmissionsContext} from '../context';
 
 import {LazyPlot} from '../lazy-plot';
 
-import * as styles from './data-duration-by-tod-chart.module.scss';
+import styles from './data-duration-by-tod-chart.module.scss';
 
 export function DataDurationByTodChart({
   className,

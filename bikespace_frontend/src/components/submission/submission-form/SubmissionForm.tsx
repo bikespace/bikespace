@@ -18,7 +18,7 @@ import {SubmissionProgressBar} from '../submission-progress-bar';
 import {SubmissionFormController} from '../submission-form-controller';
 import {SubmissionFormContent} from '../submission-form-content';
 
-import * as styles from './submission-form.module.scss';
+import styles from './submission-form.module.scss';
 
 const orderedComponents = [Issue, Location, Time, Comments, Summary].map(
   fn => fn.name

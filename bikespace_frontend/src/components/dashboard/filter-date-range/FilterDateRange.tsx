@@ -13,7 +13,7 @@ import {
 import {FilterSection} from '../filter-section';
 import {FilterDateRangeCustom} from '../filter-date-range-custom';
 
-import * as styles from './filter-date-range.module.scss';
+import styles from './filter-date-range.module.scss';
 
 export function FilterDateRange() {
   const {

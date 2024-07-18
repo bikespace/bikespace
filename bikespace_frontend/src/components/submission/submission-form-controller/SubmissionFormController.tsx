@@ -7,7 +7,7 @@ import {
   SubmissionResponsePayload,
 } from '@/interfaces/Submission';
 
-import * as styles from './submission-form-controller.module.scss';
+import styles from './submission-form-controller.module.scss';
 
 interface SubmissionFormControllerProps {
   submissionPayload: SubmissionPayload;

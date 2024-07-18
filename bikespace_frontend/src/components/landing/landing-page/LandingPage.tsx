@@ -1,8 +1,8 @@
 import React from 'react';
 
-import {PageHeader} from '../page-header';
+import {Header} from '../header';
 
-import * as styles from './page-template.module.scss';
+import styles from './page-template.module.scss';
 
 type PageTemplateProps = {
   markdownRemark: {
@@ -14,7 +14,7 @@ type PageTemplateProps = {
   };
 };
 
-export function PageTemplate({
+export function LandingPage({
   data, // this prop will be injected by the GraphQL query below.
 }: {
   data: PageTemplateProps;
@@ -23,7 +23,7 @@ export function PageTemplate({
   const {html} = markdownRemark;
   return (
     <>
-      <PageHeader />
+      <Header />
       <main className={styles.pageMain}>
         <div dangerouslySetInnerHTML={{__html: html}} />
       </main>
