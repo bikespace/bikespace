@@ -1,5 +1,5 @@
 import React from 'react';
-import {navigate} from 'gatsby';
+import {useRouter} from 'next/navigation';
 
 import {
   SubmissionPayload,
@@ -30,6 +30,8 @@ export function SubmissionFormController({
   setSubmissionStatus,
   formOrder,
 }: SubmissionFormControllerProps) {
+  const router = useRouter();
+
   async function handleSubmit() {
     try {
       const response = await fetch(
@@ -72,7 +74,7 @@ export function SubmissionFormController({
     } else if (i === 1 && step < formOrder.length - 1) {
       setStep(step + 1);
     } else if (i === -1 && step > 0 && submissionStatus.status !== 'summary') {
-      navigate('/');
+      router.push('/');
     }
     return true;
   };
@@ -96,7 +98,7 @@ export function SubmissionFormController({
       {submissionStatus.status === 'success' && (
         <button
           className={styles.primaryBtnNoFill}
-          onClick={() => navigate('/')}
+          onClick={() => router.push('/')}
           data-umami-event="close-button"
         >
           Close
