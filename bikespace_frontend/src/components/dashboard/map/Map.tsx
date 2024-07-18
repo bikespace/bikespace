@@ -1,6 +1,8 @@
 import React, {useEffect, useRef} from 'react';
 import {useMap, MapContainer, TileLayer} from 'react-leaflet';
 import {useWindowSize} from '@uidotdev/usehooks';
+
+import 'leaflet/dist/leaflet.css';
 import 'leaflet-defaulticon-compatibility';
 import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css';
 
