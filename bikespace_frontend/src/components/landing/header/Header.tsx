@@ -2,11 +2,11 @@ import React, {useState} from 'react';
 import Link from 'next/link';
 import {useClickAway} from '@uidotdev/usehooks';
 
-import styles from './page-header.module.scss';
+import styles from './header.module.scss';
 
-import hamburgerMenu from '@/assets/icons/hamburger-menu.svg';
+import hamburgerMenu from '@/assets/icons/hamburger-menu.svg?url';
 import bikespaceLogo from '@/assets/icons/bikespace_wordmark.png';
-import githubLogo from '@/assets/icons/github-mark.svg';
+import githubLogo from '@/assets/icons/github-mark.svg?url';
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
@@ -26,7 +26,7 @@ export function Header() {
           setIsMenuOpen(!isMenuOpen);
         }}
       >
-        <img src={hamburgerMenu} alt="Menu icon" />
+        <img src={hamburgerMenu.src} alt="Menu" />
       </div>
       <nav
         className={`${styles.mainNav} ${isMenuOpen ? styles.open : ''}`}
@@ -38,7 +38,7 @@ export function Header() {
           </li>
           <li>
             <a href="https://github.com/bikespace/bikespace/tree/main/">
-              <img src={githubLogo} alt="GitHub Logo" id="github-logo" />
+              <img src={githubLogo.src} alt="GitHub" />
               Contribute
             </a>
           </li>
