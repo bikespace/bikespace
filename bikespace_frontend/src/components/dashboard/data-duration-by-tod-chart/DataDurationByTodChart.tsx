@@ -1,5 +1,5 @@
 import React, {useContext, useMemo} from 'react';
-import {PlotParams} from 'react-plotly.js';
+import Plotly, {PlotParams} from 'react-plotly.js';
 import {Annotations} from 'plotly.js-dist-min';
 import {DateTime, Interval} from 'luxon';
 
@@ -9,13 +9,9 @@ import {ParkingDuration} from '@/interfaces/Submission';
 
 import {SubmissionsContext} from '../context';
 
-import {LazyPlot} from '../lazy-plot';
-
 import styles from './data-duration-by-tod-chart.module.scss';
 
-export function DataDurationByTodChart({
-  className,
-}: Pick<PlotParams, 'className'>) {
+function DataDurationByTodChart({className}: Pick<PlotParams, 'className'>) {
   const submissions = useContext(SubmissionsContext);
 
   const data = useMemo<number[][]>(() => {
@@ -50,7 +46,7 @@ export function DataDurationByTodChart({
   }, [data]);
 
   return (
-    <LazyPlot
+    <Plotly
       className={className}
       data={[
         {
@@ -129,6 +125,9 @@ export function DataDurationByTodChart({
     />
   );
 }
+
+export default DataDurationByTodChart;
+export {DataDurationByTodChart};
 
 const heatmapColorRange = [
   styles.colorScale0,

@@ -1,6 +1,7 @@
 'use client';
 
 import React, {useState, useEffect} from 'react';
+import dynamic from 'next/dynamic';
 
 import {SubmissionApiPayload, SubmissionFilters} from '@/interfaces/Submission';
 
@@ -15,15 +16,20 @@ import {
 } from '../context';
 
 import {DashboardHeader} from '../dashboard-header';
-import {Map} from '../map';
 import {Noscript} from '../noscript';
 import {Sidebar} from '../sidebar';
+import {MapProps} from '../map';
 
 import styles from './dashboard-page.module.scss';
 
 interface DashboardPageProps {
   submissions: SubmissionApiPayload[];
 }
+
+const Map = dynamic<MapProps>(() => import('../map/Map'), {
+  loading: () => <></>,
+  ssr: false,
+});
 
 export function DashboardPage({submissions}: DashboardPageProps) {
   const [tab, setTab] = useState<SidebarTab>(SidebarTab.Data);

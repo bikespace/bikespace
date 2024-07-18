@@ -1,6 +1,8 @@
 import React, {useEffect, useRef} from 'react';
 import {useMap, MapContainer, TileLayer} from 'react-leaflet';
 import {useWindowSize} from '@uidotdev/usehooks';
+import 'leaflet-defaulticon-compatibility';
+import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css';
 
 import {SubmissionApiPayload} from '@/interfaces/Submission';
 
@@ -11,7 +13,7 @@ import {LeafletMarkerClusterGroup} from '../leaflet-marker-cluster-group';
 import styles from './map.module.scss';
 import './leaflet.scss';
 
-interface MapProps {
+export interface MapProps {
   submissions: SubmissionApiPayload[];
 }
 
@@ -30,7 +32,7 @@ const tileLayers = {
   ),
 };
 
-export function Map({submissions}: MapProps) {
+function Map({submissions}: MapProps) {
   const mapRef = useRef(null);
 
   return (
@@ -54,6 +56,9 @@ export function Map({submissions}: MapProps) {
     </div>
   );
 }
+
+export default Map;
+export {Map};
 
 const MapHandler = () => {
   const map = useMap();
