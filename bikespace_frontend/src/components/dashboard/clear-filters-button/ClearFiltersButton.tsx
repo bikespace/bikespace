@@ -36,7 +36,7 @@ export function ClearFiltersButton() {
         });
       }}
     >
-      <img src={clearFilterIcon} />
+      <img src={clearFilterIcon.src} />
       <span>Clear Filters</span>
     </SidebarButton>
   );

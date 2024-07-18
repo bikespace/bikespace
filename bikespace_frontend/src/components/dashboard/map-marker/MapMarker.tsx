@@ -77,9 +77,9 @@ export function MapMarker({submission}: MapMarkerProps) {
 }
 
 const markerIssueIcons = {
-  not_provided: notProvidedIcon,
-  damaged: damagedIcon,
-  abandoned: abandonedIcon,
-  other: otherIcon,
-  full: fullIcon,
+  not_provided: notProvidedIcon.src,
+  damaged: damagedIcon.src,
+  abandoned: abandonedIcon.src,
+  other: otherIcon.src,
+  full: fullIcon.src,
 };

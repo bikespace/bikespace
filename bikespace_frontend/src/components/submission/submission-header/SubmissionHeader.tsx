@@ -11,7 +11,7 @@ export function SubmissionHeader() {
     <header className={styles.header}>
       <img
         className={styles.headerLogo}
-        src={bikespaceLogo}
+        src={bikespaceLogo.src}
         alt="bikespace logo"
       />
       <FeedbackMailTo />

@@ -24,7 +24,7 @@ export function DashboardHeader() {
           setIsMenuOpen(true);
         }}
       >
-        <img src={hamburgerMenu} alt="Menu icon" />
+        <img src={hamburgerMenu.src} alt="Menu icon" />
       </div>
       <nav
         className={`${styles.mainNav} ${isMenuOpen ? styles.open : ''}`}
@@ -53,7 +53,7 @@ export function DashboardHeader() {
               href="https://github.com/bikespace/bikespace/tree/main/bikespace_dashboard"
               data-umami-event="outbound-github"
             >
-              <img src={githubLogo} alt="GitHub Logo" id="github-logo" />
+              <img src={githubLogo.src} alt="GitHub Logo" id="github-logo" />
               Contribute
             </a>
           </li>
@@ -65,7 +65,7 @@ export function DashboardHeader() {
               data-umami-event="mailto-feedback"
               id="mailto-feedback"
             >
-              <img src={mailtoIcon} alt="Email Icon" />
+              <img src={mailtoIcon.src} alt="Email Icon" />
               Feedback
             </a>
           </li>

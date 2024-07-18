@@ -42,7 +42,7 @@ export class BaseButton extends React.Component<BaseButtonProps> {
         <label htmlFor={`${this.props.name}_${this.props.value}`}>
           <div className={styles.baseButton}>
             {this.props.children}
-            <img className={styles.check} src={checkIcon} alt="checkmark" />
+            <img className={styles.check} src={checkIcon.src} alt="checkmark" />
           </div>
         </label>
       </div>

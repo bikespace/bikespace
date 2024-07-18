@@ -1,8 +1,6 @@
 import React, {useContext, useState, useEffect} from 'react';
 import {DateTime} from 'luxon';
 
-import {ParkingDuration} from '@/interfaces/Submission';
-
 import {
   SubmissionFiltersContext,
   SubmissionsContext,
@@ -51,7 +49,7 @@ export function ReportSummary() {
         ) : (
           <img
             className={styles.warningIcon}
-            src={warningIcon}
+            src={warningIcon.src}
             alt="warning icon"
           />
         )}

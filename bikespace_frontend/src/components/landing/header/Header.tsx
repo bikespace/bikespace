@@ -4,9 +4,9 @@ import {useClickAway} from '@uidotdev/usehooks';
 
 import styles from './header.module.scss';
 
-import hamburgerMenu from '@/assets/icons/hamburger-menu.svg?url';
+import hamburgerMenu from '@/assets/icons/hamburger-menu.svg';
 import bikespaceLogo from '@/assets/icons/bikespace_wordmark.png';
-import githubLogo from '@/assets/icons/github-mark.svg?url';
+import githubLogo from '@/assets/icons/github-mark.svg';
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
