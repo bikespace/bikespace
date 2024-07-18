@@ -61,7 +61,7 @@ export function MapMarker({submission}: MapMarkerProps) {
       position={position}
       icon={
         new Icon({
-          shadowUrl: markerShadow,
+          shadowUrl: markerShadow.src,
           iconSize: [36, 36],
           iconAnchor: [18, 36],
           popupAnchor: [0, -36 * 0.8],

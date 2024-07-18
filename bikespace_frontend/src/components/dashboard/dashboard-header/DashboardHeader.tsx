@@ -32,7 +32,7 @@ export function DashboardHeader() {
         ref={clickAwayRef}
       >
         <Link href="/" title="Dashboard Home" className={styles.bikespaceLogo}>
-          <img src={bikespaceLogo} alt="BikeSpace logo" />
+          <img src={bikespaceLogo.src} alt="BikeSpace logo" />
         </Link>
         <ul>
           <li>

@@ -12,7 +12,7 @@ const tabContext = {
 
 describe('SidebarTabs', () => {
   beforeEach(() => {
-    jest.spyOn(React, 'useContext').mockReturnValue(tabContext);
+    jest.spyOn(React, 'useContext').mockReturnValue(tabContext as any);
 
     render(<SidebarTabs />);
   });

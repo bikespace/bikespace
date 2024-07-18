@@ -17,7 +17,7 @@ export function Header() {
   return (
     <header className={styles.header} ref={clickAwayRef}>
       <Link href="/" title="Home" className={styles.bikespaceLogo}>
-        <img src={bikespaceLogo} alt="BikeSpace logo" />
+        <img src={bikespaceLogo.src} alt="BikeSpace logo" />
       </Link>
       <div
         role="button"
