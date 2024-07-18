@@ -16,15 +16,11 @@
     "strict": true,
     "outDir": "build",
     "plugins": [
-      {
-        "name": "next"
-      }
+      { "name": "next" }
     ],
     "baseUrl": "./src",
     "paths": {
-      "@/*": [
-        "./*"
-      ]
+      "@/*": ["./*"]
     },
     "skipLibCheck": true,
     "types": [

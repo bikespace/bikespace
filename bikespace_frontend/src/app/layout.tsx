@@ -1,10 +1,10 @@
 import React from 'react';
-import type { Metadata } from "next";
+import type {Metadata} from 'next';
 
-import "@/styles/global.scss";
+import '@/styles/global.scss';
 
 export const metadata: Metadata = {
-  title: "BikeSpace",
+  title: 'BikeSpace',
 };
 
 export default async function RootLayout({
@@ -14,9 +14,7 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>
-        {children}
-      </body>
+      <body>{children}</body>
     </html>
   );
 }
