@@ -1,3 +1,5 @@
+'use client';
+
 import React, {useState, useEffect} from 'react';
 
 import {SubmissionApiPayload, SubmissionFilters} from '@/interfaces/Submission';
