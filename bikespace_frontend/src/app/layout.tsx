@@ -1,7 +1,7 @@
 import React from 'react';
 import type { Metadata } from "next";
 
-import "@/styles/global.scss";
+import "@/assets/styles/global.scss";
 
 export const metadata: Metadata = {
   title: "BikeSpace",

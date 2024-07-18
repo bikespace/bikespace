@@ -6,6 +6,6 @@ const nextConfig = withMDX({
   experimental: {
     typedRoutes: true,
   },
-});
+})();
 
 export default nextConfig;
