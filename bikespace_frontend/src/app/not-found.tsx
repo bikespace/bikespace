@@ -6,4 +6,4 @@ export default NotFoundPage;
 
 export const metadata: Metadata = {
   title: 'Not found',
-}
+};

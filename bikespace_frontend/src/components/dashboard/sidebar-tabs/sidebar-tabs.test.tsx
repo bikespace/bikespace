@@ -12,6 +12,7 @@ const tabContext = {
 
 describe('SidebarTabs', () => {
   beforeEach(() => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     jest.spyOn(React, 'useContext').mockReturnValue(tabContext as any);
 
     render(<SidebarTabs />);

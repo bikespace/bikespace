@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import {Route} from 'next';
 import Link from 'next/link';
 import {useClickAway} from '@uidotdev/usehooks';
 
@@ -16,7 +17,7 @@ export function Header() {
 
   return (
     <header className={styles.header} ref={clickAwayRef}>
-      <Link href="/" title="Home" className={styles.bikespaceLogo}>
+      <Link href={'/' as Route} title="Home" className={styles.bikespaceLogo}>
         <img src={bikespaceLogo.src} alt="BikeSpace logo" />
       </Link>
       <div

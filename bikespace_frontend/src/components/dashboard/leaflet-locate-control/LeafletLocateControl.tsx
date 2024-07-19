@@ -3,9 +3,7 @@ import 'leaflet.locatecontrol';
 import 'leaflet.locatecontrol/dist/L.Control.Locate.css';
 import {Control} from 'leaflet';
 
-interface P extends L.ControlOptions {}
-
-function createLocateInstance(props: P) {
+function createLocateInstance(props: L.ControlOptions) {
   const instance = new Control.Locate(props);
 
   return instance;

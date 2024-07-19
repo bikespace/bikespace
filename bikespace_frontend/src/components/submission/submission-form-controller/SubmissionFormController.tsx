@@ -1,4 +1,5 @@
 import React from 'react';
+import {Route} from 'next';
 import {useRouter} from 'next/navigation';
 
 import {
@@ -35,7 +36,7 @@ export function SubmissionFormController({
   async function handleSubmit() {
     try {
       const response = await fetch(
-        `https://api-dev.bikespace.ca/api/v2/submissions`,
+        'https://api-dev.bikespace.ca/api/v2/submissions',
         {
           method: 'POST',
           body: JSON.stringify(submissionPayload),
@@ -74,7 +75,7 @@ export function SubmissionFormController({
     } else if (i === 1 && step < formOrder.length - 1) {
       setStep(step + 1);
     } else if (i === -1 && step > 0 && submissionStatus.status !== 'summary') {
-      router.push('/');
+      router.push('/' as Route);
     }
     return true;
   };
@@ -98,7 +99,7 @@ export function SubmissionFormController({
       {submissionStatus.status === 'success' && (
         <button
           className={styles.primaryBtnNoFill}
-          onClick={() => router.push('/')}
+          onClick={() => router.push('/' as Route)}
           data-umami-event="close-button"
         >
           Close

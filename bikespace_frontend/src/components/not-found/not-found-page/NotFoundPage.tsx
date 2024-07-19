@@ -1,4 +1,5 @@
 import React from 'react';
+import {Route} from 'next';
 import Link from 'next/link';
 
 import styles from './not-found-page.module.scss';
@@ -19,7 +20,7 @@ export function NotFoundPage() {
           </>
         ) : null}
         <br />
-        <Link href="/">Go home</Link>.
+        <Link href={'/' as Route}>Go home</Link>.
       </p>
     </main>
   );

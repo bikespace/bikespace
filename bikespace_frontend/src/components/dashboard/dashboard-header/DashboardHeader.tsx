@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import {Route} from 'next';
 import Link from 'next/link';
 import {useClickAway} from '@uidotdev/usehooks';
 
@@ -31,7 +32,11 @@ export function DashboardHeader() {
         aria-label="Main"
         ref={clickAwayRef}
       >
-        <Link href="/" title="Dashboard Home" className={styles.bikespaceLogo}>
+        <Link
+          href={'/' as Route}
+          title="Dashboard Home"
+          className={styles.bikespaceLogo}
+        >
           <img src={bikespaceLogo.src} alt="BikeSpace logo" />
         </Link>
         <ul>

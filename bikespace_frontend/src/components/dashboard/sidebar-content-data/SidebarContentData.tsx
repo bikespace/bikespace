@@ -24,7 +24,7 @@ const DataFrequencyByDayChart = dynamic<ChartProps>(
   }
 );
 const DataDurationByTodChart = dynamic<ChartProps>(
-  () => import('../data-duration-by-tod-chart/DataDurationByTodChart') as any,
+  () => import('../data-duration-by-tod-chart/DataDurationByTodChart'),
   {
     loading: () => <></>,
     ssr: false,
