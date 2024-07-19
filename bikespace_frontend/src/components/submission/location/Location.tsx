@@ -3,6 +3,10 @@ import {LocationLatLng} from '@/interfaces/Submission';
 import {MapContainer, TileLayer, Marker} from 'react-leaflet';
 import {LatLngTuple} from 'leaflet';
 
+import 'leaflet/dist/leaflet.css';
+import 'leaflet-defaulticon-compatibility';
+import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css';
+
 import styles from './location.module.scss';
 
 interface LocationProps {
