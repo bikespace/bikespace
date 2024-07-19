@@ -1,4 +1,5 @@
 import React, {useState, useEffect, useContext} from 'react';
+import umami from '@umami/node';
 
 import {SubmissionFiltersContext} from '../context';
 
@@ -15,7 +16,10 @@ enum DurationCategory {
 }
 
 export function FilterParkingDuration() {
-  const {filters, setFilters} = useContext(SubmissionFiltersContext);
+  const {
+    filters: {parkingDuration},
+    setFilters,
+  } = useContext(SubmissionFiltersContext);
 
   const [durationCategory, setDurationCategory] =
     useState<DurationCategory | null>(null);
@@ -42,6 +46,21 @@ export function FilterParkingDuration() {
     }
   }, [durationCategory]);
 
+  useEffect(() => {
+    if (parkingDuration.length === 0) return;
+
+    umami.track(
+      'parkingdurationfilter',
+      Object.values(ParkingDuration).reduce(
+        (acc, next) => ({
+          ...acc,
+          [next]: parkingDuration.includes(next),
+        }),
+        {}
+      )
+    );
+  }, [parkingDuration]);
+
   return (
     <FilterSection title="Parking Duration">
       <div className={styles.categoryButtons}>
@@ -64,7 +83,7 @@ export function FilterParkingDuration() {
               id={`filter-parking-duration-${value}`}
               name={value}
               className="filter-parking-duration-input"
-              checked={filters.parkingDuration?.includes(value)}
+              checked={parkingDuration?.includes(value)}
               onChange={() => {
                 setFilters(prev => ({
                   ...prev,

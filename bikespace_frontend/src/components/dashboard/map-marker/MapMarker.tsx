@@ -2,6 +2,8 @@ import React, {useContext, useEffect, useRef} from 'react';
 import {Marker, useMap} from 'react-leaflet';
 import {Popup as LeafletPopup} from 'leaflet';
 import {Icon, LatLngTuple} from 'leaflet';
+import umami from '@umami/node';
+
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 
 import {IssueType, SubmissionApiPayload} from '@/interfaces/Submission';
@@ -42,9 +44,13 @@ export function MapMarker({submission}: MapMarkerProps) {
     // i.e. this minimize the chance of popup from opening during the flyTo() changes
     // also map.openPopup() works most of the time while marker.openPopup() does not
     setTimeout(() => {
-      if (popupRef.current !== null) {
-        map.openPopup(popupRef.current);
-      }
+      if (!popupRef.current) return;
+
+      map.openPopup(popupRef.current);
+
+      umami.track('popupopen', {
+        submission_id: submission.id,
+      });
     }, 0);
   }, [focus, popupRef.current]);
 

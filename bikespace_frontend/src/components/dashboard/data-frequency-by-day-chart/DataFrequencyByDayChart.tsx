@@ -1,6 +1,7 @@
 import React, {useContext, useState, useEffect} from 'react';
 import Plotly, {PlotParams} from 'react-plotly.js';
 import {PlotMouseEvent} from 'plotly.js-dist-min';
+import umami from '@umami/node';
 
 import {layout, config} from '@/config/plotly';
 
@@ -40,6 +41,8 @@ function DataFrequencyByDayChart({className}: Pick<PlotParams, 'className'>) {
       ...prev,
       day,
     }));
+
+    if (day !== null) umami.track('daychart', {filter: day});
   }, [day]);
 
   const handleClick = (e: PlotMouseEvent) => {

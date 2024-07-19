@@ -1,6 +1,7 @@
 import React, {useContext, useState, useEffect} from 'react';
 import Plotly, {PlotParams} from 'react-plotly.js';
 import {PlotMouseEvent} from 'plotly.js-dist-min';
+import umami from '@umami/node';
 
 import {layout, config} from '@/config/plotly';
 
@@ -43,6 +44,8 @@ function DataIssueFrequencyChart({className}: Pick<PlotParams, 'className'>) {
       ...prev,
       issue,
     }));
+
+    if (issue !== null) umami.track('issuechart', {filter: issue});
   }, [issue]);
 
   const handleClick = (e: PlotMouseEvent) => {
