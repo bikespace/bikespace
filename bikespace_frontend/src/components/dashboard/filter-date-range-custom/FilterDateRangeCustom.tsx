@@ -1,4 +1,4 @@
-import React, {useContext, useState, useEffect} from 'react';
+import React, {useContext, useState, useEffect, useCallback} from 'react';
 import {DateTime} from 'luxon';
 
 import {DateRangeInterval} from '@/interfaces/Submission';
@@ -23,8 +23,8 @@ export function FilterDateRangeCustom() {
     from: Date | null;
     to: Date | null;
   }>({
-    from: dateRange?.from || first,
-    to: dateRange?.to || last,
+    from: null,
+    to: null,
   });
 
   const isoFirst = DateTime.fromJSDate(first!).toISODate();
@@ -33,6 +33,41 @@ export function FilterDateRangeCustom() {
   useEffect(() => {
     setSelectedDateRange(dateRange || {from: first, to: last});
   }, [dateRange]);
+
+  const handleFromChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setSelectedDateRange({
+        from: e.currentTarget.value
+          ? new Date(`${e.currentTarget.value}T00:00:00`)
+          : first!,
+        to: selectedDateRange.to,
+      });
+    },
+    [selectedDateRange.to]
+  );
+
+  const handleToChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setSelectedDateRange({
+        from: selectedDateRange.from,
+        to: e.currentTarget.value
+          ? new Date(`${e.currentTarget.value}T23:59:59`)
+          : last!,
+      });
+    },
+    [selectedDateRange.from]
+  );
+
+  const applyCustomDateRange = useCallback(() => {
+    setFilters(prev => ({
+      ...prev,
+      dateRange: {
+        from: selectedDateRange.from || first!,
+        to: selectedDateRange.to || last!,
+      },
+      dateRangeInterval: DateRangeInterval.CustomRange,
+    }));
+  }, [selectedDateRange, dateRange, setFilters]);
 
   return (
     <div className={styles.dateRangeCustom}>
@@ -49,14 +84,7 @@ export function FilterDateRangeCustom() {
           }
           min={isoFirst!}
           max={isoLast!}
-          onChange={e => {
-            setSelectedDateRange(prev => ({
-              ...prev,
-              from: e.currentTarget.value
-                ? new Date(`${e.currentTarget.value}T00:00:00`)
-                : null,
-            }));
-          }}
+          onChange={handleFromChange}
         />
       </div>
       <div className={styles.dateInput}>
@@ -72,29 +100,10 @@ export function FilterDateRangeCustom() {
           }
           min={isoFirst!}
           max={isoLast!}
-          onChange={e => {
-            setSelectedDateRange(prev => ({
-              ...prev,
-              to: e.currentTarget.value
-                ? new Date(`${e.currentTarget.value}T23:59:59`)
-                : null,
-            }));
-          }}
+          onChange={handleToChange}
         />
       </div>
-      <SidebarButton
-        type="button"
-        onClick={() => {
-          setFilters(prev => ({
-            ...prev,
-            dateRange: {
-              from: selectedDateRange.from || first!,
-              to: selectedDateRange.to || last!,
-            },
-            dateRangeInterval: DateRangeInterval.CustomRange,
-          }));
-        }}
-      >
+      <SidebarButton type="button" onClick={applyCustomDateRange}>
         Apply
       </SidebarButton>
     </div>
