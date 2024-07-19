@@ -2,6 +2,7 @@
 
 import React, {useState, useEffect} from 'react';
 import dynamic from 'next/dynamic';
+import umami from '@umami/node';
 
 import {SubmissionApiPayload, SubmissionFilters} from '@/interfaces/Submission';
 
@@ -92,6 +93,12 @@ export function DashboardPage({submissions}: DashboardPageProps) {
       )
     );
   }, [submissions, filters]);
+
+  useEffect(() => {
+    if (focusedSubmissionId === null) return;
+
+    umami.track('focus_submission', {submission_id: focusedSubmissionId});
+  }, [focusedSubmissionId]);
 
   return (
     <SubmissionsDateRangeContext.Provider value={submissionsDateRange}>
