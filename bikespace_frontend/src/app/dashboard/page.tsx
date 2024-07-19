@@ -9,7 +9,7 @@ export default async function Page() {
 
   const data = await res.json();
 
-  const submissions = data?.submissions ? data.submissions : [];
+  const submissions = data.submissions || [];
 
   return <DashboardPage submissions={submissions} />;
 }

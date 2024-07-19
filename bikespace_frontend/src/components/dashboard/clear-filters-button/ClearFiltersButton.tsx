@@ -35,6 +35,7 @@ export function ClearFiltersButton() {
           day: null,
         });
       }}
+      umamiEvent="clear-filters"
     >
       <img src={clearFilterIcon.src} />
       <span>Clear Filters</span>

@@ -1,6 +1,7 @@
 import React, {useEffect, useRef} from 'react';
 import {useMap, MapContainer, TileLayer} from 'react-leaflet';
 import {useWindowSize} from '@uidotdev/usehooks';
+import umami from '@umami/node';
 
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-defaulticon-compatibility';
@@ -71,7 +72,7 @@ const MapHandler = () => {
     map
       .locate()
       .on('locationfound', e => {
-        // this.analytics_event('locationfound');
+        umami.track('locationfound');
         map.flyTo(e.latlng, map.getZoom());
       })
       .on('locationerror', err => {
@@ -80,7 +81,8 @@ const MapHandler = () => {
         const message =
           CUSTOM_GEO_ERROR_MESSAGES[code] ||
           'Unknown error while trying to locate you';
-        // this.analytics_event('locationerror', {code: err.code, message});
+
+        umami.track('locationerror', {code: err.code, message});
         console.log(message);
       });
   }, []);
