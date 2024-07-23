@@ -42,7 +42,8 @@
     "react-dom": "^18.3.1",
     "react-leaflet": "^4.2.1",
     "react-plotly.js": "^2.6.0",
-    "sass": "^1.77.8"
+    "sass": "^1.77.8",
+    "sharp": "^0.33.4"
   },
   "devDependencies": {
     "@faker-js/faker": "^8.4.1",
