@@ -1,6 +1,7 @@
 import withMDX from '@next/mdx';
 
 const nextConfig = withMDX()({
+  distDir: 'build',
   // Enable SSG
   output: 'export',
   // Configure `pageExtensions` to include MDX files
