@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import dynamic from 'next/dynamic';
 
 import {
   IssueType,
@@ -10,7 +11,6 @@ import {
 } from '@/interfaces/Submission';
 
 import {Issue} from '../issue';
-import {Location} from '../location';
 import {Time} from '../time';
 import {Comments} from '../comments';
 import {Summary} from '../summary';
@@ -18,7 +18,14 @@ import {SubmissionProgressBar} from '../submission-progress-bar';
 import {SubmissionFormController} from '../submission-form-controller';
 import {SubmissionFormContent} from '../submission-form-content';
 
+import {LocationProps} from '../location/Location';
+
 import styles from './submission-form.module.scss';
+
+const Location = dynamic<LocationProps>(() => import('../location/Location'), {
+  loading: () => <></>,
+  ssr: false,
+});
 
 const orderedComponents = [Issue, Location, Time, Comments, Summary].map(
   fn => fn.name

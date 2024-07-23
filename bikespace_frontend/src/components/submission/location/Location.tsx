@@ -9,12 +9,12 @@ import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility
 
 import styles from './location.module.scss';
 
-interface LocationProps {
+export interface LocationProps {
   location: LocationLatLng;
   handler: React.ReactNode;
 }
 
-export function Location({location, handler}: LocationProps) {
+function Location({location, handler}: LocationProps) {
   const position = [location.latitude, location.longitude] as LatLngTuple;
 
   return (
@@ -40,3 +40,6 @@ export function Location({location, handler}: LocationProps) {
     </div>
   );
 }
+
+export {Location};
+export default Location;
