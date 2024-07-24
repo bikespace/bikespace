@@ -1,8 +1,6 @@
 import React, {useContext, useState, useEffect} from 'react';
 import {DateTime} from 'luxon';
 
-import {ParkingDuration} from '@/interfaces/Submission';
-
 import {
   SubmissionFiltersContext,
   SubmissionsContext,
@@ -11,7 +9,7 @@ import {
 
 import warningIcon from '@/assets/icons/exclamation-triangle.svg';
 
-import * as styles from './report-summary.module.scss';
+import styles from './report-summary.module.scss';
 
 export function ReportSummary() {
   const submissions = useContext(SubmissionsContext);
@@ -51,7 +49,7 @@ export function ReportSummary() {
         ) : (
           <img
             className={styles.warningIcon}
-            src={warningIcon}
+            src={warningIcon.src}
             alt="warning icon"
           />
         )}

@@ -1,5 +1,6 @@
 import React, {useContext, useState, useEffect, useCallback} from 'react';
 import {DateTime} from 'luxon';
+import umami from '@umami/node';
 
 import {DateRangeInterval} from '@/interfaces/Submission';
 
@@ -10,7 +11,7 @@ import {
 
 import {SidebarButton} from '../sidebar-button';
 
-import * as styles from './filter-date-range-custom.module.scss';
+import styles from './filter-date-range-custom.module.scss';
 
 export function FilterDateRangeCustom() {
   const {first, last} = useContext(SubmissionsDateRangeContext);
@@ -39,7 +40,7 @@ export function FilterDateRangeCustom() {
       setSelectedDateRange({
         from: e.currentTarget.value
           ? new Date(`${e.currentTarget.value}T00:00:00`)
-          : first!,
+          : null,
         to: selectedDateRange.to,
       });
     },
@@ -52,7 +53,7 @@ export function FilterDateRangeCustom() {
         from: selectedDateRange.from,
         to: e.currentTarget.value
           ? new Date(`${e.currentTarget.value}T23:59:59`)
-          : last!,
+          : null,
       });
     },
     [selectedDateRange.from]
@@ -67,6 +68,13 @@ export function FilterDateRangeCustom() {
       },
       dateRangeInterval: DateRangeInterval.CustomRange,
     }));
+
+    if (dateRange)
+      umami.track('datefilter', {
+        ...(selectedDateRange.from && {from: selectedDateRange.from}),
+        ...(selectedDateRange.to && {from: selectedDateRange.to}),
+        interval: DateRangeInterval.CustomRange,
+      });
   }, [selectedDateRange, dateRange, setFilters]);
 
   return (

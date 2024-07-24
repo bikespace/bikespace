@@ -1,6 +1,7 @@
 import React, {useContext, useState, useEffect} from 'react';
-import Plot, {PlotParams} from 'react-plotly.js';
+import Plotly, {PlotParams} from 'react-plotly.js';
 import {PlotMouseEvent} from 'plotly.js-dist-min';
+import umami from '@umami/node';
 
 import {layout, config} from '@/config/plotly';
 
@@ -8,18 +9,14 @@ import {Day} from '@/interfaces/Submission';
 
 import {SubmissionFiltersContext, SubmissionsContext} from '../context';
 
-import {LazyPlot} from '../lazy-plot';
-
-import * as styles from './data-frequency-by-day-chart.module.scss';
+import styles from './data-frequency-by-day-chart.module.scss';
 
 type InputData = {
   name: Day;
   count: number;
 };
 
-export function DataFrequencyByDayChart({
-  className,
-}: Pick<PlotParams, 'className'>) {
+function DataFrequencyByDayChart({className}: Pick<PlotParams, 'className'>) {
   const submissions = useContext(SubmissionsContext);
   const {filters, setFilters} = useContext(SubmissionFiltersContext);
 
@@ -44,6 +41,8 @@ export function DataFrequencyByDayChart({
       ...prev,
       day,
     }));
+
+    if (day !== null) umami.track('daychart', {filter: day});
   }, [day]);
 
   const handleClick = (e: PlotMouseEvent) => {
@@ -55,7 +54,7 @@ export function DataFrequencyByDayChart({
   };
 
   return (
-    <LazyPlot
+    <Plotly
       className={className}
       data={[
         {
@@ -100,6 +99,9 @@ export function DataFrequencyByDayChart({
     />
   );
 }
+
+export default DataFrequencyByDayChart;
+export {DataFrequencyByDayChart};
 
 const dayLabels = {
   [Day.Monday]: 'Mon',

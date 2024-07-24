@@ -1,4 +1,8 @@
+'use client';
+
 import React, {useState, useEffect} from 'react';
+import dynamic from 'next/dynamic';
+import umami from '@umami/node';
 
 import {SubmissionApiPayload, SubmissionFilters} from '@/interfaces/Submission';
 
@@ -13,15 +17,20 @@ import {
 } from '../context';
 
 import {DashboardHeader} from '../dashboard-header';
-import {Map} from '../map';
 import {Noscript} from '../noscript';
 import {Sidebar} from '../sidebar';
+import {MapProps} from '../map';
 
-import * as styles from './dashboard-page.module.scss';
+import styles from './dashboard-page.module.scss';
 
 interface DashboardPageProps {
   submissions: SubmissionApiPayload[];
 }
+
+const Map = dynamic<MapProps>(() => import('../map/Map'), {
+  loading: () => <></>,
+  ssr: false,
+});
 
 export function DashboardPage({submissions}: DashboardPageProps) {
   const [tab, setTab] = useState<SidebarTab>(SidebarTab.Data);
@@ -84,6 +93,12 @@ export function DashboardPage({submissions}: DashboardPageProps) {
       )
     );
   }, [submissions, filters]);
+
+  useEffect(() => {
+    if (focusedSubmissionId === null) return;
+
+    umami.track('focus_submission', {submission_id: focusedSubmissionId});
+  }, [focusedSubmissionId]);
 
   return (
     <SubmissionsDateRangeContext.Provider value={submissionsDateRange}>

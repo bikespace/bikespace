@@ -31,7 +31,7 @@ export const FeedbackMailTo = () => {
       <img
         height={20}
         style={{marginRight: '0.3rem'}}
-        src={mailToIcon}
+        src={mailToIcon.src}
         alt="Email Icon"
         data-umami-event="mail-to-button"
       />

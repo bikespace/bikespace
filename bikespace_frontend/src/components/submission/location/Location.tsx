@@ -3,14 +3,18 @@ import {LocationLatLng} from '@/interfaces/Submission';
 import {MapContainer, TileLayer, Marker} from 'react-leaflet';
 import {LatLngTuple} from 'leaflet';
 
-import * as styles from './location.module.scss';
+import 'leaflet/dist/leaflet.css';
+import 'leaflet-defaulticon-compatibility';
+import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css';
 
-interface LocationProps {
+import styles from './location.module.scss';
+
+export interface LocationProps {
   location: LocationLatLng;
   handler: React.ReactNode;
 }
 
-export function Location({location, handler}: LocationProps) {
+function Location({location, handler}: LocationProps) {
   const position = [location.latitude, location.longitude] as LatLngTuple;
 
   return (
@@ -36,3 +40,6 @@ export function Location({location, handler}: LocationProps) {
     </div>
   );
 }
+
+export {Location};
+export default Location;

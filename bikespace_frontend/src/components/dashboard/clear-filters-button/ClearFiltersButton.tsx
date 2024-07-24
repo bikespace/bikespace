@@ -6,7 +6,7 @@ import {SidebarButton} from '../sidebar-button';
 
 import clearFilterIcon from '@/assets/icons/clear-filter.svg';
 
-import * as styles from './clear-filters-button.module.scss';
+import styles from './clear-filters-button.module.scss';
 
 export function ClearFiltersButton() {
   const {
@@ -35,8 +35,9 @@ export function ClearFiltersButton() {
           day: null,
         });
       }}
+      umamiEvent="clear-filters"
     >
-      <img src={clearFilterIcon} />
+      <img src={clearFilterIcon.src} />
       <span>Clear Filters</span>
     </SidebarButton>
   );

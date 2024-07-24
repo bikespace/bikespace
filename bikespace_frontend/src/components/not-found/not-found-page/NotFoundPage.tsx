@@ -1,7 +1,8 @@
 import React from 'react';
-import {Link} from 'gatsby';
+import {Route} from 'next';
+import Link from 'next/link';
 
-import * as styles from './not-found-page.module.scss';
+import styles from './not-found-page.module.scss';
 
 export function NotFoundPage() {
   return (
@@ -19,7 +20,7 @@ export function NotFoundPage() {
           </>
         ) : null}
         <br />
-        <Link to="/">Go home</Link>.
+        <Link href={'/' as Route}>Go home</Link>.
       </p>
     </main>
   );

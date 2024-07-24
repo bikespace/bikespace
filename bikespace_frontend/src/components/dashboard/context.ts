@@ -8,7 +8,7 @@ export enum SidebarTab {
   Feed = 'feed',
 }
 
-type TabContextData = {
+export type TabContextData = {
   tab: SidebarTab;
   setTab: React.Dispatch<React.SetStateAction<SidebarTab>>;
 };

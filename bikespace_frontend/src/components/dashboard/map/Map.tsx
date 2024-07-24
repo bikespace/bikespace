@@ -1,6 +1,11 @@
 import React, {useEffect, useRef} from 'react';
 import {useMap, MapContainer, TileLayer} from 'react-leaflet';
 import {useWindowSize} from '@uidotdev/usehooks';
+import umami from '@umami/node';
+
+import 'leaflet/dist/leaflet.css';
+import 'leaflet-defaulticon-compatibility';
+import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css';
 
 import {SubmissionApiPayload} from '@/interfaces/Submission';
 
@@ -8,10 +13,10 @@ import {MapMarker} from '../map-marker';
 import {LeafletLocateControl} from '../leaflet-locate-control';
 import {LeafletMarkerClusterGroup} from '../leaflet-marker-cluster-group';
 
-import * as styles from './map.module.scss';
+import styles from './map.module.scss';
 import './leaflet.scss';
 
-interface MapProps {
+export interface MapProps {
   submissions: SubmissionApiPayload[];
 }
 
@@ -30,7 +35,7 @@ const tileLayers = {
   ),
 };
 
-export function Map({submissions}: MapProps) {
+function Map({submissions}: MapProps) {
   const mapRef = useRef(null);
 
   return (
@@ -55,6 +60,9 @@ export function Map({submissions}: MapProps) {
   );
 }
 
+export default Map;
+export {Map};
+
 const MapHandler = () => {
   const map = useMap();
 
@@ -64,7 +72,7 @@ const MapHandler = () => {
     map
       .locate()
       .on('locationfound', e => {
-        // this.analytics_event('locationfound');
+        umami.track('locationfound');
         map.flyTo(e.latlng, map.getZoom());
       })
       .on('locationerror', err => {
@@ -73,7 +81,8 @@ const MapHandler = () => {
         const message =
           CUSTOM_GEO_ERROR_MESSAGES[code] ||
           'Unknown error while trying to locate you';
-        // this.analytics_event('locationerror', {code: err.code, message});
+
+        umami.track('locationerror', {code: err.code, message});
         console.log(message);
       });
   }, []);

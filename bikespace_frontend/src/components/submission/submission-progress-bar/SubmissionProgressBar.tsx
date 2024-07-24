@@ -1,6 +1,6 @@
 import React from 'react';
 
-import * as styles from './submission-progress-bar.module.scss';
+import styles from './submission-progress-bar.module.scss';
 
 type SubmissionProgressBarProps = {
   step: number;

@@ -7,7 +7,7 @@ import {FocusedSubmissionIdContext} from '../context';
 
 import {IssueBadge} from '../issue-badge';
 
-import * as styles from './feed-submision-item.module.scss';
+import styles from './feed-submision-item.module.scss';
 
 interface FeedSubmissionItemProps {
   submission: SubmissionApiPayload;

@@ -2,7 +2,7 @@ import React from 'react';
 
 import {IssueType} from '@/interfaces/Submission';
 
-import * as styles from './issue-badge.module.scss';
+import styles from './issue-badge.module.scss';
 
 interface IssueBadgeProps {
   issue: IssueType;

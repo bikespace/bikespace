@@ -1,1 +1,1 @@
-export {IndexPage} from './index-page';
+export {LandingLayout} from './landing-layout';

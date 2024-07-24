@@ -2,7 +2,7 @@ import React from 'react';
 import {ParkingDuration} from '@/interfaces/Submission';
 import {BaseButton} from '../base-button';
 
-import * as styles from './time.module.scss';
+import styles from './time.module.scss';
 
 export const Time = (props: {
   parkingDuration: ParkingDuration;

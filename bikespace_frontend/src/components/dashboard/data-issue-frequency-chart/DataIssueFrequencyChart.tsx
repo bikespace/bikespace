@@ -1,6 +1,7 @@
 import React, {useContext, useState, useEffect} from 'react';
-import {PlotParams} from 'react-plotly.js';
+import Plotly, {PlotParams} from 'react-plotly.js';
 import {PlotMouseEvent} from 'plotly.js-dist-min';
+import umami from '@umami/node';
 
 import {layout, config} from '@/config/plotly';
 
@@ -8,9 +9,7 @@ import {IssueType} from '@/interfaces/Submission';
 
 import {SubmissionFiltersContext, SubmissionsContext} from '../context';
 
-import {LazyPlot} from '../lazy-plot';
-
-import * as styles from './data-issue-frequency-chart.module.scss';
+import styles from './data-issue-frequency-chart.module.scss';
 
 type InputData = {
   type: IssueType;
@@ -18,9 +17,7 @@ type InputData = {
   color: string;
 };
 
-export function DataIssueFrequencyChart({
-  className,
-}: Pick<PlotParams, 'className'>) {
+function DataIssueFrequencyChart({className}: Pick<PlotParams, 'className'>) {
   const submissions = useContext(SubmissionsContext);
   const {
     filters: {issue},
@@ -47,6 +44,8 @@ export function DataIssueFrequencyChart({
       ...prev,
       issue,
     }));
+
+    if (issue !== null) umami.track('issuechart', {filter: issue});
   }, [issue]);
 
   const handleClick = (e: PlotMouseEvent) => {
@@ -61,7 +60,7 @@ export function DataIssueFrequencyChart({
   };
 
   return (
-    <LazyPlot
+    <Plotly
       className={className}
       data={[
         {
@@ -104,6 +103,9 @@ export function DataIssueFrequencyChart({
     />
   );
 }
+
+export default DataIssueFrequencyChart;
+export {DataIssueFrequencyChart};
 
 const issueLabels = {
   [IssueType.NotProvided]: 'No nearby parking ',

@@ -1,8 +1,9 @@
 import React, {useState} from 'react';
-import {Link} from 'gatsby';
+import {Route} from 'next';
+import Link from 'next/link';
 import {useClickAway} from '@uidotdev/usehooks';
 
-import * as styles from './dashboard-header.module.scss';
+import styles from './dashboard-header.module.scss';
 
 import hamburgerMenu from '@/assets/icons/hamburger-menu.svg';
 import bikespaceLogo from '@/assets/icons/bikespace_wordmark.png';
@@ -24,19 +25,23 @@ export function DashboardHeader() {
           setIsMenuOpen(true);
         }}
       >
-        <img src={hamburgerMenu} alt="Menu icon" />
+        <img src={hamburgerMenu.src} alt="Menu icon" />
       </div>
       <nav
         className={`${styles.mainNav} ${isMenuOpen ? styles.open : ''}`}
         aria-label="Main"
         ref={clickAwayRef}
       >
-        <Link to="/" title="Dashboard Home" className={styles.bikespaceLogo}>
-          <img src={bikespaceLogo} alt="BikeSpace logo" />
+        <Link
+          href={'/' as Route}
+          title="Dashboard Home"
+          className={styles.bikespaceLogo}
+        >
+          <img src={bikespaceLogo.src} alt="BikeSpace logo" />
         </Link>
         <ul>
           <li>
-            <Link to="/submission" data-umami-event="outbound-app">
+            <Link href="/submission" data-umami-event="outbound-app">
               Report Bike Parking Issue
             </Link>
           </li>
@@ -53,7 +58,7 @@ export function DashboardHeader() {
               href="https://github.com/bikespace/bikespace/tree/main/bikespace_dashboard"
               data-umami-event="outbound-github"
             >
-              <img src={githubLogo} alt="GitHub Logo" id="github-logo" />
+              <img src={githubLogo.src} alt="GitHub Logo" id="github-logo" />
               Contribute
             </a>
           </li>
@@ -65,7 +70,7 @@ export function DashboardHeader() {
               data-umami-event="mailto-feedback"
               id="mailto-feedback"
             >
-              <img src={mailtoIcon} alt="Email Icon" />
+              <img src={mailtoIcon.src} alt="Email Icon" />
               Feedback
             </a>
           </li>

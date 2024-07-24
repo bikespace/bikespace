@@ -1,5 +1,6 @@
 import React from 'react';
-import {navigate} from 'gatsby';
+import {Route} from 'next';
+import {useRouter} from 'next/navigation';
 
 import {
   SubmissionPayload,
@@ -7,7 +8,7 @@ import {
   SubmissionResponsePayload,
 } from '@/interfaces/Submission';
 
-import * as styles from './submission-form-controller.module.scss';
+import styles from './submission-form-controller.module.scss';
 
 interface SubmissionFormControllerProps {
   submissionPayload: SubmissionPayload;
@@ -30,10 +31,12 @@ export function SubmissionFormController({
   setSubmissionStatus,
   formOrder,
 }: SubmissionFormControllerProps) {
+  const router = useRouter();
+
   async function handleSubmit() {
     try {
       const response = await fetch(
-        `${process.env.GATSBY_BIKESPACE_API_URL}/submissions`,
+        'https://api-dev.bikespace.ca/api/v2/submissions',
         {
           method: 'POST',
           body: JSON.stringify(submissionPayload),
@@ -72,7 +75,7 @@ export function SubmissionFormController({
     } else if (i === 1 && step < formOrder.length - 1) {
       setStep(step + 1);
     } else if (i === -1 && step > 0 && submissionStatus.status !== 'summary') {
-      navigate('/');
+      router.push('/' as Route);
     }
     return true;
   };
@@ -96,7 +99,7 @@ export function SubmissionFormController({
       {submissionStatus.status === 'success' && (
         <button
           className={styles.primaryBtnNoFill}
-          onClick={() => navigate('/')}
+          onClick={() => router.push('/' as Route)}
           data-umami-event="close-button"
         >
           Close

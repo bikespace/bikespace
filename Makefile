@@ -91,8 +91,11 @@ db-stamp-heads:
 fly-deploy-api:
 	cd $(BIKESPACE_API_DIR) && flyctl deploy
 
-run-frontend:
+run-frontend: build-frontend
 	cd $(BIKESPACE_FRONTEND_DIR) && npm install && npm run start
+
+dev-frontend:
+	cd $(BIKESPACE_FRONTEND_DIR) && npm install && npm run develop
 	
 lint-frontend:
 	cd $(BIKESPACE_FRONTEND_DIR) && npm install && npm run lint

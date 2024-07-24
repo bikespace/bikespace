@@ -1,14 +1,15 @@
 import React, {useState} from 'react';
-import {Link} from 'gatsby';
+import {Route} from 'next';
+import Link from 'next/link';
 import {useClickAway} from '@uidotdev/usehooks';
 
-import * as styles from './page-header.module.scss';
+import styles from './header.module.scss';
 
 import hamburgerMenu from '@/assets/icons/hamburger-menu.svg';
 import bikespaceLogo from '@/assets/icons/bikespace_wordmark.png';
 import githubLogo from '@/assets/icons/github-mark.svg';
 
-export function PageHeader() {
+export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const clickAwayRef = useClickAway(() => {
     setIsMenuOpen(false);
@@ -16,8 +17,8 @@ export function PageHeader() {
 
   return (
     <header className={styles.header} ref={clickAwayRef}>
-      <Link to="/" title="Home" className={styles.bikespaceLogo}>
-        <img src={bikespaceLogo} alt="BikeSpace logo" />
+      <Link href={'/' as Route} title="Home" className={styles.bikespaceLogo}>
+        <img src={bikespaceLogo.src} alt="BikeSpace logo" />
       </Link>
       <div
         role="button"
@@ -26,7 +27,7 @@ export function PageHeader() {
           setIsMenuOpen(!isMenuOpen);
         }}
       >
-        <img src={hamburgerMenu} alt="Menu icon" />
+        <img src={hamburgerMenu.src} alt="Menu" />
       </div>
       <nav
         className={`${styles.mainNav} ${isMenuOpen ? styles.open : ''}`}
@@ -38,7 +39,7 @@ export function PageHeader() {
           </li>
           <li>
             <a href="https://github.com/bikespace/bikespace/tree/main/">
-              <img src={githubLogo} alt="GitHub Logo" id="github-logo" />
+              <img src={githubLogo.src} alt="GitHub" />
               Contribute
             </a>
           </li>

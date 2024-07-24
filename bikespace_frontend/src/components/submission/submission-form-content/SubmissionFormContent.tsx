@@ -1,4 +1,5 @@
 import React from 'react';
+import dynamic from 'next/dynamic';
 
 import {
   IssueType,
@@ -8,11 +9,12 @@ import {
 } from '@/interfaces/Submission';
 
 import {Issue} from '../issue';
-import {Location} from '../location';
 import {MapHandler} from '../map-handler';
 import {Time} from '../time';
 import {Comments} from '../comments';
 import {Summary} from '../summary';
+
+import {LocationProps} from '../location';
 
 interface SubmissionFormContentProps {
   formOrder: string[];
@@ -29,6 +31,11 @@ interface SubmissionFormContentProps {
   setComments: React.Dispatch<React.SetStateAction<string>>;
   submissionStatus: SubmissionResponsePayload;
 }
+
+const Location = dynamic<LocationProps>(() => import('../location/Location'), {
+  loading: () => <></>,
+  ssr: false,
+});
 
 export function SubmissionFormContent({
   formOrder,

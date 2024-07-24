@@ -1,9 +1,11 @@
+'use client';
+
 import React from 'react';
 
 import {SubmissionHeader} from '../submission-header';
 import {SubmissionForm} from '../submission-form';
 
-import * as styles from './submission-page.module.scss';
+import styles from './submission-page.module.scss';
 
 export function SubmissionPage() {
   return (
