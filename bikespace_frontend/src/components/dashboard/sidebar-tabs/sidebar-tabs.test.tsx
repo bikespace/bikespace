@@ -1,7 +1,7 @@
 import React from 'react';
 import {render, screen, fireEvent} from '@testing-library/react';
 
-import {SidebarTab} from '../context';
+import {TabContext, SidebarTab} from '../context';
 
 import {SidebarTabs} from './SidebarTabs';
 
@@ -12,10 +12,11 @@ const tabContext = {
 
 describe('SidebarTabs', () => {
   beforeEach(() => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    jest.spyOn(React, 'useContext').mockReturnValue(tabContext as any);
-
-    render(<SidebarTabs />);
+    render(
+      <TabContext.Provider value={tabContext}>
+        <SidebarTabs />
+      </TabContext.Provider>
+    );
   });
 
   test('should render tabs properly', () => {

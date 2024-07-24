@@ -100,6 +100,7 @@ const config = {
   moduleNameMapper: {
     // ...
     '^@/(.*)$': '<rootDir>/src/$1',
+    'react-leaflet': '<rootDir>/__test__/mocks/react-leaflet.jsx',
   },
 
   // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader
@@ -190,7 +191,7 @@ const config = {
   },
 
   // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
-  transformIgnorePatterns: ['node_modules/(?!(react-leaflet|@react-leaflet)/)'],
+  transformIgnorePatterns: ['node_modules'],
 
   // An array of regexp pattern strings that are matched against all modules before the module loader will automatically return a mock for them
   // unmockedModulePathPatterns: undefined,
