@@ -45,7 +45,7 @@ export function MapMarker({submission}: MapMarkerProps) {
   }, [windowSize.width]);
 
   const handlePopupClose = () => {
-    setFocus(null);
+    if (focus === submission.id) setFocus(null);
   };
 
   useEffect(() => {
