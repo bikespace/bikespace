@@ -85,7 +85,7 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           projectName: bikespace-v2
-          directory: bikespace_frontend/public
+          directory: bikespace_frontend/out
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
 
   
