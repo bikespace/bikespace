@@ -35,6 +35,8 @@
   .sidebar {
     width: 100%;
     border-radius: 8px 8px 0px 0px;
+    min-height: 60vh;
+    height: 60vh;
 
     .drawerHandle {
       all: unset;
@@ -44,6 +46,7 @@
       width: 100%;
       margin: 0;
       padding: calc(($height-panel-handle - $height-panel-handle-bar) / 2) 0;
+      
 
       &::before {
         display: block;
@@ -56,10 +59,11 @@
       }
     }
     
-    .sidebarContent {
-      max-height: 50vh;
+    &.closed {
+      min-height: auto;
+      height: auto;
 
-      &.closed {
+      .sidebarContent {
         display: none;
       }
     }
