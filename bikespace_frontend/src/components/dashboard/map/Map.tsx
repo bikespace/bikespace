@@ -1,5 +1,6 @@
 import React, {useEffect, useRef} from 'react';
 import {useMap, MapContainer, TileLayer} from 'react-leaflet';
+import MarkerClusterGroup from 'react-leaflet-cluster';
 import {useWindowSize} from '@uidotdev/usehooks';
 import umami from '@umami/node';
 
@@ -11,7 +12,6 @@ import {SubmissionApiPayload} from '@/interfaces/Submission';
 
 import {MapMarker} from '../map-marker';
 import {LeafletLocateControl} from '../leaflet-locate-control';
-import {LeafletMarkerClusterGroup} from '../leaflet-marker-cluster-group';
 
 import styles from './map.module.scss';
 import './leaflet.scss';
@@ -50,11 +50,11 @@ function Map({submissions}: MapProps) {
         <LeafletLocateControl />
         {tileLayers.thunderforest}
         <MapHandler />
-        <LeafletMarkerClusterGroup chunkedLoading>
+        <MarkerClusterGroup chunkedLoading>
           {submissions.map(submission => (
             <MapMarker key={submission.id} submission={submission} />
           ))}
-        </LeafletMarkerClusterGroup>
+        </MarkerClusterGroup>
       </MapContainer>
     </div>
   );
