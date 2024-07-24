@@ -10,7 +10,7 @@
   },
   "scripts": {
     "develop": "next dev --port 8080",
-    "start": "next start --port 8080",
+    "start": "npx serve@latest out",
     "build": "next build",
     "lint": "next lint",
     "compile": "tsc",
@@ -43,6 +43,7 @@
     "react-leaflet": "^4.2.1",
     "react-plotly.js": "^2.6.0",
     "sass": "^1.77.8",
+    "serve": "^14.2.3",
     "sharp": "^0.33.4"
   },
   "devDependencies": {
