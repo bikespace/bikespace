@@ -31,8 +31,8 @@ export const MapPopup = forwardRef<LeafletPopup, MapPopupProps>(
     );
 
     return (
-      <Popup ref={ref}>
-        <div className={styles.popup}>
+      <Popup ref={ref} className={styles.popup}>
+        <div>
           <strong>Issues:</strong>
           {issues ? (
             <div className={styles.issues}>

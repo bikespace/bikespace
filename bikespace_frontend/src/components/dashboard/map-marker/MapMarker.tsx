@@ -1,8 +1,9 @@
-import React, {useContext, useEffect, useRef} from 'react';
+import React, {useContext, useEffect, useRef, useCallback} from 'react';
 import {Marker, useMap} from 'react-leaflet';
 import {Popup as LeafletPopup} from 'leaflet';
 import {Icon, LatLngTuple} from 'leaflet';
 import umami from '@umami/node';
+import {useWindowSize} from '@uidotdev/usehooks';
 
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 
@@ -33,12 +34,25 @@ export function MapMarker({submission}: MapMarkerProps) {
 
   const map = useMap();
 
-  const {focus} = useContext(FocusedSubmissionIdContext);
+  const windowSize = useWindowSize();
+
+  const {focus, setFocus} = useContext(FocusedSubmissionIdContext);
+
+  const handleClick = useCallback(() => {
+    if (!windowSize.width || windowSize.width > 768) return;
+
+    setFocus(submission.id);
+  }, [windowSize.width]);
+
+  const handlePopupClose = () => {
+    setFocus(null);
+  };
 
   useEffect(() => {
     if (focus !== submission.id) return;
 
     map.flyTo(position, 18, {duration: 0.5});
+
     // put openPopup to the end of the event loop job queue so openPopup()
     // is queued after all the calls flyTo() triggers
     // i.e. this minimize the chance of popup from opening during the flyTo() changes
@@ -59,7 +73,7 @@ export function MapMarker({submission}: MapMarkerProps) {
 
     return issuePriority[a] < issuePriority[c] ? a : c;
   }, null);
-  const customMarker = markerIssueIcons[priorityIssue ?? 'other'];
+  const customMarker = markerIssueIcons[priorityIssue ?? IssueType.Other];
 
   return (
     <Marker
@@ -68,7 +82,7 @@ export function MapMarker({submission}: MapMarkerProps) {
       icon={
         new Icon({
           shadowUrl: markerShadow.src,
-          iconSize: [36, 36],
+          iconSize: focus === submission.id ? [54, 54] : [36, 36],
           iconAnchor: [18, 36],
           popupAnchor: [0, -36 * 0.8],
           shadowSize: [41, 41],
@@ -76,6 +90,10 @@ export function MapMarker({submission}: MapMarkerProps) {
           iconUrl: customMarker,
         })
       }
+      eventHandlers={{
+        click: handleClick,
+        popupclose: handlePopupClose,
+      }}
     >
       <MapPopup submission={submission} ref={popupRef} />
     </Marker>
@@ -83,9 +101,9 @@ export function MapMarker({submission}: MapMarkerProps) {
 }
 
 const markerIssueIcons = {
-  not_provided: notProvidedIcon.src,
-  damaged: damagedIcon.src,
-  abandoned: abandonedIcon.src,
-  other: otherIcon.src,
-  full: fullIcon.src,
+  [IssueType.NotProvided]: notProvidedIcon.src,
+  [IssueType.Damaged]: damagedIcon.src,
+  [IssueType.Abandoned]: abandonedIcon.src,
+  [IssueType.Other]: otherIcon.src,
+  [IssueType.Full]: fullIcon.src,
 };
