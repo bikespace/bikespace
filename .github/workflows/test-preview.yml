@@ -51,7 +51,7 @@ jobs:
         - name: Setup node
           uses: actions/setup-node@v3
           with:
-            node-version: "v18.16.0"
+            node-version: "v18.17.0"
         - name: Check code style
           run: make lint-frontend
         - name: Run Jest tests
@@ -70,7 +70,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v3
         with:
-          node-version: "v18.16.0"
+          node-version: "v18.17.0"
       - name: Create env file
         env:
           BIKESPACE_API_URL: ${{ vars.BIKESPACE_API_URL }}
