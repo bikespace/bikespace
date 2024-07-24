@@ -8,17 +8,17 @@
   padding: 2px 4px;
 
   &.not_provided {
+    border-color: $color-secondary-blue;
+    background-color: $color-secondary-blue-light;
+  }
+
+  &.damaged {
     border-color: $color-secondary-red;
     background-color: $color-secondary-red-light;
   }
 
-  &.damaged {
-    border-color: $color-secondary-orange;
-    background-color: $color-secondary-orange-light;
-  }
-
   &.abandoned {
-    border-color: $color-secondary-yellow;
+    border-color: $color-secondary-yellow-dark;
     background-color: $color-secondary-yellow-light;
   }
 

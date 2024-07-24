@@ -39,7 +39,7 @@ export const MapPopup = forwardRef<LeafletPopup, MapPopupProps>(
               {issues
                 .sort((a, b) => issuePriority[a] - issuePriority[b])
                 .map(issue => (
-                  <IssueBadge issue={issue} key={issue} />
+                  <IssueBadge issue={issue} labelForm="long" key={issue} />
                 ))}
             </div>
           ) : (

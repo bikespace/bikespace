@@ -6,22 +6,33 @@ import styles from './issue-badge.module.scss';
 
 interface IssueBadgeProps {
   issue: IssueType;
+  labelForm?: 'short' | 'long';
 }
 
-const issueBadgeLabels = {
-  not_provided: 'Bicycle parking was full',
-  damaged: 'Bicycle parking was damaged',
-  abandoned: 'Parked bicycle was abandoned',
-  other: 'Other issue',
-  full: 'Bicycle parking was full',
-};
-
-export function IssueBadge({issue}: IssueBadgeProps) {
+export function IssueBadge({issue, labelForm = 'short'}: IssueBadgeProps) {
   return issueBadgeLabels[issue] ? (
     <div className={`${styles.issue} ${styles[issue]}`}>
-      {issueBadgeLabels[issue]}
+      {labelForm === 'short'
+        ? issueBadgeLabels[issue]
+        : issueBadgeFullLabels[issue]}
     </div>
   ) : (
     <div className={styles.issue}>{issue}</div>
   );
 }
+
+const issueBadgeLabels = {
+  [IssueType.NotProvided]: 'No nearby parking',
+  [IssueType.Damaged]: 'Parking damaged',
+  [IssueType.Abandoned]: 'Abandoned bicycle',
+  [IssueType.Other]: 'Other issue',
+  [IssueType.Full]: 'Parking full',
+};
+
+const issueBadgeFullLabels = {
+  [IssueType.NotProvided]: 'Bicycle parking was not provided nearby',
+  [IssueType.Damaged]: 'Bicycle parking was damaged',
+  [IssueType.Abandoned]: 'Parked bicycle was abandoned',
+  [IssueType.Other]: 'Other issue',
+  [IssueType.Full]: 'Bicycle parking was full',
+};
