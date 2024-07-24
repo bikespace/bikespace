@@ -10,7 +10,7 @@
   },
   "scripts": {
     "develop": "next dev --port 8080",
-    "start": "npx serve@latest out",
+    "start": "npx serve out -p 8080",
     "build": "next build",
     "lint": "next lint",
     "compile": "tsc",
