@@ -36,7 +36,7 @@ class Submission(db.Model):
         sa.Enum(ParkingDuration, create_constraint=False, native_enum=False)
     )
     parking_time = db.Column(db.DateTime, nullable=False, default=datetime.now())
-    comments = db.Column(db.String(256), default=None, nullable=True)
+    comments = db.Column(db.Text, default=None, nullable=True)
 
     def __init__(
         self, latitude, longitude, issues, parking_duration, parking_time, comments
