@@ -1,4 +1,5 @@
-import {create} from 'zustand';
+import {createWithEqualityFn} from 'zustand/traditional';
+import {shallow} from 'zustand/shallow';
 
 import {
   FiltersSlice,
@@ -14,9 +15,12 @@ import {
 type StoreSlice = FiltersSlice & FocusedIdSlice & SubmissionsSlice & TabSlice;
 
 // Combine modular stores (slices) into single global store
-export const useSubmissionsStore = create<StoreSlice>()((...a) => ({
-  ...createFiltersSlice(...a),
-  ...createFocusedIdSlice(...a),
-  ...createSubmissionsSlice(...a),
-  ...createTabSlice(...a),
-}));
+export const useSubmissionsStore = createWithEqualityFn<StoreSlice>()(
+  (...a) => ({
+    ...createFiltersSlice(...a),
+    ...createFocusedIdSlice(...a),
+    ...createSubmissionsSlice(...a),
+    ...createTabSlice(...a),
+  }),
+  shallow
+);

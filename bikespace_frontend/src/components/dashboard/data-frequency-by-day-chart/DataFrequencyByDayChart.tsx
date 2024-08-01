@@ -34,12 +34,14 @@ function DataFrequencyByDayChart({className}: Pick<PlotParams, 'className'>) {
   useEffect(() => {
     if (allSubmissions.length === 0 || submissions.length === 0) return;
 
-    const inputData = Object.values(Day).map(d => ({
-      name: d as Day,
-      count: allSubmissions.filter(
-        submission => new Date(submission.parking_time).getDay() === d
-      ).length,
-    }));
+    const inputData = Object.values(Day)
+      .slice(7, 14)
+      .map(d => ({
+        name: d as Day,
+        count: allSubmissions.filter(
+          submission => new Date(submission.parking_time).getDay() === d
+        ).length,
+      }));
 
     setData(inputData);
   }, [allSubmissions, submissions, day]);

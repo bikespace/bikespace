@@ -20,8 +20,8 @@ const Map = dynamic<MapProps>(() => import('../map/Map'), {
 });
 
 export function DashboardPage() {
-  const {data} = useSubmissionsQuery();
-  const allSubmissions = data || [];
+  const queryResult = useSubmissionsQuery();
+  const allSubmissions = queryResult.data || [];
 
   const {submissions, setSubmissions, filters, focusedId} = useSubmissionsStore(
     state => ({

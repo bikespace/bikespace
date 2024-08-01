@@ -5,6 +5,8 @@ import {useWindowSize} from '@uidotdev/usehooks';
 
 import {trackUmamiEvent} from '@/utils';
 
+import useSubmissionsStore from '@/store';
+
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-defaulticon-compatibility';
 import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css';
@@ -39,6 +41,11 @@ const tileLayers = {
 function Map({submissions}: MapProps) {
   const mapRef = useRef(null);
 
+  const {focus, setFocus} = useSubmissionsStore(state => ({
+    focus: state.focusedId,
+    setFocus: state.setFocusedId,
+  }));
+
   return (
     <div className={styles.map}>
       <MapContainer
@@ -53,7 +60,17 @@ function Map({submissions}: MapProps) {
         <MapHandler />
         <MarkerClusterGroup chunkedLoading>
           {submissions.map(submission => (
-            <MapMarker key={submission.id} submission={submission} />
+            <MapMarker
+              key={submission.id}
+              submission={submission}
+              isFocused={focus === submission.id}
+              handleClick={() => {
+                setFocus(submission.id);
+              }}
+              handlePopupClose={() => {
+                if (focus === submission.id) setFocus(null);
+              }}
+            />
           ))}
         </MarkerClusterGroup>
       </MapContainer>

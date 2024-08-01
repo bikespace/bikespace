@@ -2,15 +2,12 @@ import React, {useEffect, useRef} from 'react';
 import {Marker, useMap} from 'react-leaflet';
 import {Popup as LeafletPopup} from 'leaflet';
 import {Icon, LatLngTuple} from 'leaflet';
-import {useWindowSize} from '@uidotdev/usehooks';
 
 import {IssueType, SubmissionApiPayload} from '@/interfaces/Submission';
 
 import {issuePriority} from '@/config/bikespace-api';
 
 import {trackUmamiEvent} from '@/utils';
-
-import {useSubmissionsStore} from '@/store';
 
 import {MapPopup} from '../map-popup';
 
@@ -25,9 +22,17 @@ import styles from './map-marker.module.scss';
 
 interface MapMarkerProps {
   submission: SubmissionApiPayload;
+  isFocused: boolean;
+  handleClick: () => void;
+  handlePopupClose: () => void;
 }
 
-export function MapMarker({submission}: MapMarkerProps) {
+export function MapMarker({
+  submission,
+  isFocused,
+  handleClick,
+  handlePopupClose,
+}: MapMarkerProps) {
   // popupRef for calling openPopup() upon focus change
   // `Popup` from 'react-leaflet' forwards `Popup` from 'leaflet'
   const popupRef = useRef<LeafletPopup>(null);
@@ -36,21 +41,8 @@ export function MapMarker({submission}: MapMarkerProps) {
 
   const map = useMap();
 
-  const {focus, setFocus} = useSubmissionsStore(state => ({
-    focus: state.focusedId,
-    setFocus: state.setFocusedId,
-  }));
-
-  const handleClick = () => {
-    setFocus(submission.id);
-  };
-
-  const handlePopupClose = () => {
-    if (focus === submission.id) setFocus(null);
-  };
-
   useEffect(() => {
-    if (focus !== submission.id) return;
+    if (!isFocused) return;
 
     map.flyTo(position, 18, {duration: 0.5});
 
@@ -83,7 +75,7 @@ export function MapMarker({submission}: MapMarkerProps) {
       icon={
         new Icon({
           shadowUrl: markerShadow.src,
-          iconSize: focus === submission.id ? [54, 54] : [36, 36],
+          iconSize: isFocused ? [54, 54] : [36, 36],
           iconAnchor: [18, 36],
           popupAnchor: [0, -36 * 0.8],
           shadowSize: [41, 41],

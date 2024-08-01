@@ -12,6 +12,9 @@ export function useSubmissionsQuery() {
 
       const data = await res.json();
 
+      return data;
+    },
+    select: data => {
       const submissions: SubmissionApiPayload[] = data.submissions || [];
 
       submissions.sort(
@@ -22,6 +25,7 @@ export function useSubmissionsQuery() {
 
       return submissions;
     },
+    staleTime: Infinity,
   });
 
   return query;
