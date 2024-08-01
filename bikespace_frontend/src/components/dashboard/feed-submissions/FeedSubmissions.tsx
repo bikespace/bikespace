@@ -21,7 +21,7 @@ export function FeedSubmissions() {
         <h2>Latest Submissions</h2>
       </div>
       <div className={styles.list}>
-        {submissions.map(submission => (
+        {submissions.toReversed().map(submission => (
           <FeedSubmissionItem
             key={submission.id}
             submission={submission}

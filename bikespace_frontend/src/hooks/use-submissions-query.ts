@@ -19,8 +19,8 @@ export function useSubmissionsQuery() {
 
       submissions.sort(
         (a, b) =>
-          new Date(b.parking_time).getTime() -
-          new Date(a.parking_time).getTime()
+          new Date(a.parking_time).getTime() -
+          new Date(b.parking_time).getTime()
       );
 
       return submissions;
