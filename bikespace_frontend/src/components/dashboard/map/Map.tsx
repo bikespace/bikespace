@@ -1,9 +1,6 @@
-import React, {useEffect, useRef} from 'react';
-import {useMap, MapContainer, TileLayer} from 'react-leaflet';
+import React, {useCallback, useRef} from 'react';
+import {MapContainer, TileLayer} from 'react-leaflet';
 import MarkerClusterGroup from 'react-leaflet-cluster';
-import {useWindowSize} from '@uidotdev/usehooks';
-
-import {trackUmamiEvent} from '@/utils';
 
 import useSubmissionsStore from '@/store';
 
@@ -15,6 +12,7 @@ import {SubmissionApiPayload} from '@/interfaces/Submission';
 
 import {MapMarker} from '../map-marker';
 import {LeafletLocateControl} from '../leaflet-locate-control';
+import {MapHandler} from '../map-handler';
 
 import styles from './map.module.scss';
 import './leaflet.scss';
@@ -46,79 +44,43 @@ function Map({submissions}: MapProps) {
     setFocus: state.setFocusedId,
   }));
 
+  const handlePopupClose = useCallback(
+    (id: number) => {
+      if (focus === id) setFocus(null);
+    },
+    [focus]
+  );
+
   return (
-    <div className={styles.map}>
-      <MapContainer
-        center={[43.733399, -79.376221]}
-        zoom={11}
-        scrollWheelZoom
-        style={{height: '100%'}}
-        ref={mapRef}
-      >
-        <LeafletLocateControl />
-        {tileLayers.thunderforest}
-        <MapHandler />
-        <MarkerClusterGroup chunkedLoading>
-          {submissions.map(submission => (
-            <MapMarker
-              key={submission.id}
-              submission={submission}
-              isFocused={focus === submission.id}
-              handleClick={() => {
-                setFocus(submission.id);
-              }}
-              handlePopupClose={() => {
-                if (focus === submission.id) setFocus(null);
-              }}
-            />
-          ))}
-        </MarkerClusterGroup>
-      </MapContainer>
-    </div>
+    <MapContainer
+      center={[43.733399, -79.376221]}
+      zoom={11}
+      scrollWheelZoom
+      style={{height: '100%'}}
+      ref={mapRef}
+      className={styles.map}
+    >
+      <LeafletLocateControl />
+      {tileLayers.thunderforest}
+      <MarkerClusterGroup chunkedLoading>
+        {submissions.map(submission => (
+          <MapMarker
+            key={submission.id}
+            submission={submission}
+            isFocused={focus === submission.id}
+            handleClick={() => {
+              setFocus(submission.id);
+            }}
+            handlePopupClose={() => {
+              handlePopupClose(submission.id);
+            }}
+          />
+        ))}
+      </MarkerClusterGroup>
+      <MapHandler />
+    </MapContainer>
   );
 }
 
 export default Map;
 export {Map};
-
-const MapHandler = () => {
-  const map = useMap();
-
-  const window = useWindowSize();
-
-  useEffect(() => {
-    map
-      .locate()
-      .on('locationfound', e => {
-        trackUmamiEvent('locationfound');
-        map.flyTo(e.latlng, map.getZoom());
-      })
-      .on('locationerror', err => {
-        const code = err.code as 0 | 1 | 2 | 3;
-
-        const message =
-          CUSTOM_GEO_ERROR_MESSAGES[code] ||
-          'Unknown error while trying to locate you';
-
-        trackUmamiEvent('locationerror', {code: err.code, message});
-
-        console.log(message);
-      });
-  }, []);
-
-  useEffect(() => {
-    map.invalidateSize();
-  }, [window]);
-
-  return null;
-};
-
-const CUSTOM_GEO_ERROR_MESSAGES = {
-  // leaflet internally uses 0 to denote missing Geolocation API
-  // ref: https://github.com/Leaflet/Leaflet/blob/00e0534cd9aa723d10a652146311efd9ce990b46/src/map/Map.js#L632
-  0: 'GPS is not supported in your browser.',
-  1: 'Please allow location access.',
-  // happens when: location is disabled at OS-level / when GPS has other errors
-  2: 'Had trouble locating you. Please turn on / restart your GPS or try another device.',
-  3: 'It took too long to locate you. Please try again.',
-};

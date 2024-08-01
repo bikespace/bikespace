@@ -44,7 +44,9 @@ export function MapMarker({
   useEffect(() => {
     if (!isFocused) return;
 
-    map.flyTo(position, 18, {duration: 0.5});
+    const duration = 0.5;
+
+    map.flyTo(position, 18, {duration});
 
     // put openPopup to the end of the event loop job queue so openPopup()
     // is queued after all the calls flyTo() triggers
@@ -58,8 +60,8 @@ export function MapMarker({
       trackUmamiEvent('popupopen', {
         submission_id: submission.id,
       });
-    }, 0);
-  }, [focus, popupRef.current]);
+    }, duration * 1000);
+  }, [isFocused, popupRef.current]);
 
   const priorityIssue = submission.issues.reduce((a: IssueType | null, c) => {
     if (a === null) return c;
