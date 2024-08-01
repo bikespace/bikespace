@@ -1,11 +1,12 @@
 import React, {useContext, useState, useEffect} from 'react';
 import Plotly, {PlotParams} from 'react-plotly.js';
 import {PlotMouseEvent} from 'plotly.js-dist-min';
-import umami from '@umami/node';
 
 import {layout, config} from '@/config/plotly';
 
 import {Day} from '@/interfaces/Submission';
+
+import {trackUmamiEvent} from '@/utils';
 
 import {useSubmissionsQuery} from '@/hooks';
 
@@ -23,9 +24,11 @@ function DataFrequencyByDayChart({className}: Pick<PlotParams, 'className'>) {
   const allSubmissions = queryResult.data || [];
 
   const submissions = useContext(SubmissionsContext);
-  const {filters, setFilters} = useContext(SubmissionFiltersContext);
+  const {
+    filters: {day},
+    setFilters,
+  } = useContext(SubmissionFiltersContext);
 
-  const [day, setDay] = useState<Day | null>(null);
   const [data, setData] = useState<InputData[]>([]);
 
   useEffect(() => {
@@ -39,23 +42,19 @@ function DataFrequencyByDayChart({className}: Pick<PlotParams, 'className'>) {
     }));
 
     setData(inputData);
-  }, [allSubmissions, submissions, filters.day]);
-
-  useEffect(() => {
-    setFilters(prev => ({
-      ...prev,
-      day,
-    }));
-
-    if (day !== null) umami.track('daychart', {filter: day});
-  }, [day]);
+  }, [allSubmissions, submissions, day]);
 
   const handleClick = (e: PlotMouseEvent) => {
     const point = e.points[0];
 
     if (!point) return;
 
-    setDay(prev => (prev === point.x ? null : (point.x as Day)));
+    setFilters(prev => ({
+      ...prev,
+      day: prev.day === point.x ? null : (point.x as Day),
+    }));
+
+    if (point.x) trackUmamiEvent('daychart', {filter: point.x});
   };
 
   return (
@@ -66,7 +65,11 @@ function DataFrequencyByDayChart({className}: Pick<PlotParams, 'className'>) {
           type: 'bar',
           x: data.map(d => d.name),
           y: data.map(d => d.count),
-          marker: {color: styles.barColor},
+          marker: {
+            color: day
+              ? data.map(d => (d.name === day ? styles.barColor : 'black'))
+              : styles.barColor,
+          },
           text: data.map(d => d.count.toString()),
           textposition: 'outside',
           cliponaxis: false,

@@ -1,10 +1,11 @@
 import React, {useContext, useState, useEffect, useCallback} from 'react';
 import {DateTime} from 'luxon';
-import umami from '@umami/node';
 
 import {DateRangeInterval} from '@/interfaces/Submission';
 
 import {SubmissionsDateRangeContext, SubmissionFiltersContext} from '@/context';
+
+import {trackUmamiEvent} from '@/utils';
 
 import {SidebarButton} from '../sidebar-button';
 
@@ -67,7 +68,7 @@ export function FilterDateRangeCustom() {
     }));
 
     if (dateRange)
-      umami.track('datefilter', {
+      trackUmamiEvent('datefilter', {
         ...(selectedDateRange.from && {from: selectedDateRange.from}),
         ...(selectedDateRange.to && {from: selectedDateRange.to}),
         interval: DateRangeInterval.CustomRange,

@@ -2,16 +2,15 @@ import React, {useContext, useEffect, useRef, useCallback} from 'react';
 import {Marker, useMap} from 'react-leaflet';
 import {Popup as LeafletPopup} from 'leaflet';
 import {Icon, LatLngTuple} from 'leaflet';
-import umami from '@umami/node';
 import {useWindowSize} from '@uidotdev/usehooks';
-
-import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 
 import {IssueType, SubmissionApiPayload} from '@/interfaces/Submission';
 
 import {FocusedSubmissionIdContext} from '@/context';
 
 import {issuePriority} from '@/config/bikespace-api';
+
+import {trackUmamiEvent} from '@/utils';
 
 import {MapPopup} from '../map-popup';
 
@@ -20,7 +19,7 @@ import abandonedIcon from '@/assets/icons/icon_abandoned.svg';
 import fullIcon from '@/assets/icons/icon_full.svg';
 import damagedIcon from '@/assets/icons/icon_damaged.svg';
 import otherIcon from '@/assets/icons/icon_other.svg';
-
+import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 interface MapMarkerProps {
   submission: SubmissionApiPayload;
 }
@@ -62,7 +61,7 @@ export function MapMarker({submission}: MapMarkerProps) {
 
       map.openPopup(popupRef.current);
 
-      umami.track('popupopen', {
+      trackUmamiEvent('popupopen', {
         submission_id: submission.id,
       });
     }, 0);

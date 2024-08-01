@@ -2,9 +2,8 @@ import React, {useEffect, useRef} from 'react';
 import {useMap, MapContainer, TileLayer} from 'react-leaflet';
 import MarkerClusterGroup from 'react-leaflet-cluster';
 import {useWindowSize} from '@uidotdev/usehooks';
-import umami from '@umami/node';
 
-import {umamiConfig} from '@/config/umami';
+import {trackUmamiEvent} from '@/utils';
 
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-defaulticon-compatibility';
@@ -65,8 +64,6 @@ function Map({submissions}: MapProps) {
 export default Map;
 export {Map};
 
-umami.init(umamiConfig);
-
 const MapHandler = () => {
   const map = useMap();
 
@@ -76,7 +73,7 @@ const MapHandler = () => {
     map
       .locate()
       .on('locationfound', e => {
-        umami.track('locationfound');
+        trackUmamiEvent('locationfound');
         map.flyTo(e.latlng, map.getZoom());
       })
       .on('locationerror', err => {
@@ -86,11 +83,7 @@ const MapHandler = () => {
           CUSTOM_GEO_ERROR_MESSAGES[code] ||
           'Unknown error while trying to locate you';
 
-        try {
-          umami.track('locationerror', {code: err.code, message});
-        } catch (e) {
-          console.log(e);
-        }
+        trackUmamiEvent('locationerror', {code: err.code, message});
 
         console.log(message);
       });

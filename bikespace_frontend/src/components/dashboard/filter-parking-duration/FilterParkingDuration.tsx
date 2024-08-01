@@ -1,9 +1,10 @@
 import React, {useState, useEffect, useContext} from 'react';
-import umami from '@umami/node';
 
 import {SubmissionFiltersContext} from '@/context';
 
 import {ParkingDuration} from '@/interfaces/Submission';
+
+import {trackUmamiEvent} from '@/utils';
 
 import {FilterSection} from '../filter-section';
 import {SidebarButton} from '../sidebar-button';
@@ -49,7 +50,7 @@ export function FilterParkingDuration() {
   useEffect(() => {
     if (parkingDuration.length === 0) return;
 
-    umami.track(
+    trackUmamiEvent(
       'parkingdurationfilter',
       Object.values(ParkingDuration).reduce(
         (acc, next) => ({

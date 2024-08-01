@@ -2,9 +2,10 @@
 
 import React, {useState, useEffect} from 'react';
 import dynamic from 'next/dynamic';
-import umami from '@umami/node';
 
 import {SubmissionApiPayload, SubmissionFilters} from '@/interfaces/Submission';
+
+import {trackUmamiEvent} from '@/utils';
 
 import {useSubmissionsQuery} from '@/hooks';
 
@@ -57,14 +58,7 @@ export function DashboardPage() {
   );
 
   useEffect(() => {
-    if (submissions.length === 0) {
-      setSubmissionsDateRange({
-        first: null,
-        last: null,
-      });
-
-      return;
-    }
+    if (submissions.length === 0) return;
 
     setSubmissionsDateRange({
       first: new Date(submissions[submissions.length - 1].parking_time),
@@ -95,7 +89,7 @@ export function DashboardPage() {
   useEffect(() => {
     if (focusedSubmissionId === null) return;
 
-    umami.track('focus_submission', {submission_id: focusedSubmissionId});
+    trackUmamiEvent('focus_submission', {submission_id: focusedSubmissionId});
   }, [focusedSubmissionId]);
 
   return (

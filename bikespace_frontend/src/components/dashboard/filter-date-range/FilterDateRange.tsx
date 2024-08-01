@@ -1,8 +1,9 @@
 import React, {useContext, useState} from 'react';
 import {DateTime} from 'luxon';
-import umami from '@umami/node';
 
 import {DateRangeInterval} from '@/interfaces/Submission';
+
+import {trackUmamiEvent} from '@/utils';
 
 import {getDateRangeFromInterval} from './utils';
 
@@ -65,7 +66,7 @@ export function FilterDateRange() {
               }));
 
               if (dateRange)
-                umami.track('datefilter', {
+                trackUmamiEvent('datefilter', {
                   from: dateRange.from,
                   to: dateRange.to,
                   interval: value,
