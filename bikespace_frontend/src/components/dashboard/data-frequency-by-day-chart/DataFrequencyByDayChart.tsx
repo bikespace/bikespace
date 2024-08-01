@@ -7,6 +7,8 @@ import {layout, config} from '@/config/plotly';
 
 import {Day} from '@/interfaces/Submission';
 
+import {useSubmissionsQuery} from '@/hooks';
+
 import {SubmissionFiltersContext, SubmissionsContext} from '@/context';
 
 import styles from './data-frequency-by-day-chart.module.scss';
@@ -17,6 +19,9 @@ type InputData = {
 };
 
 function DataFrequencyByDayChart({className}: Pick<PlotParams, 'className'>) {
+  const queryResult = useSubmissionsQuery();
+  const allSubmissions = queryResult.data || [];
+
   const submissions = useContext(SubmissionsContext);
   const {filters, setFilters} = useContext(SubmissionFiltersContext);
 
@@ -24,17 +29,17 @@ function DataFrequencyByDayChart({className}: Pick<PlotParams, 'className'>) {
   const [data, setData] = useState<InputData[]>([]);
 
   useEffect(() => {
-    const inputData = Object.values(Day)
-      .filter(d => typeof d === 'number')
-      .map(d => ({
-        name: d as Day,
-        count: submissions.filter(
-          submission => new Date(submission.parking_time).getDay() === d
-        ).length,
-      }));
+    if (allSubmissions.length === 0 || submissions.length === 0) return;
+
+    const inputData = Object.values(Day).map(d => ({
+      name: d as Day,
+      count: allSubmissions.filter(
+        submission => new Date(submission.parking_time).getDay() === d
+      ).length,
+    }));
 
     setData(inputData);
-  }, [submissions, filters.day]);
+  }, [allSubmissions, submissions, filters.day]);
 
   useEffect(() => {
     setFilters(prev => ({

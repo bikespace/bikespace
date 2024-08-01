@@ -4,9 +4,9 @@ import React, {useState, useEffect} from 'react';
 import dynamic from 'next/dynamic';
 import umami from '@umami/node';
 
-import {UseQueryResult} from '@tanstack/react-query';
-
 import {SubmissionApiPayload, SubmissionFilters} from '@/interfaces/Submission';
+
+import {useSubmissionsQuery} from '@/hooks';
 
 import {
   SubmissionFiltersContext,
@@ -23,16 +23,15 @@ import {MapProps} from '../map';
 
 import styles from './dashboard-page.module.scss';
 
-interface DashboardPageProps {
-  queryResult: UseQueryResult<SubmissionApiPayload[], Error>;
-}
-
 const Map = dynamic<MapProps>(() => import('../map/Map'), {
   loading: () => <></>,
   ssr: false,
 });
 
-export function DashboardPage({queryResult}: DashboardPageProps) {
+export function DashboardPage() {
+  const {data} = useSubmissionsQuery();
+  const submissions = data || [];
+
   const [tab, setTab] = useState<SidebarTab>(SidebarTab.Data);
 
   const [filters, setFilters] = useState<SubmissionFilters>({
@@ -58,8 +57,6 @@ export function DashboardPage({queryResult}: DashboardPageProps) {
   );
 
   useEffect(() => {
-    const submissions = queryResult.data || [];
-
     if (submissions.length === 0) {
       setSubmissionsDateRange({
         first: null,
@@ -73,12 +70,10 @@ export function DashboardPage({queryResult}: DashboardPageProps) {
       first: new Date(submissions[submissions.length - 1].parking_time),
       last: new Date(submissions[0].parking_time),
     });
-  }, [queryResult]);
+  }, [submissions]);
 
   // Filter submissions effect
   useEffect(() => {
-    const submissions = queryResult.data || [];
-
     if (submissions.length === 0) return;
 
     const {dateRange, parkingDuration, issue, day} = filters;
@@ -95,7 +90,7 @@ export function DashboardPage({queryResult}: DashboardPageProps) {
           (day === null || new Date(submission.parking_time).getDay() === day)
       )
     );
-  }, [queryResult, filters]);
+  }, [submissions, filters]);
 
   useEffect(() => {
     if (focusedSubmissionId === null) return;
