@@ -6,7 +6,6 @@
       "DOM",
       "DOM.Iterable",
       "EsNext",
-      "ESNext.Array"
     ],
     "jsx": "preserve",
     "module": "esnext",
