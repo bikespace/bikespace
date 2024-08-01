@@ -1,4 +1,4 @@
-import React, {useContext, useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import Plotly, {PlotParams} from 'react-plotly.js';
 import {PlotMouseEvent} from 'plotly.js-dist-min';
 
@@ -10,7 +10,7 @@ import {trackUmamiEvent} from '@/utils';
 
 import {useSubmissionsQuery} from '@/hooks';
 
-import {SubmissionFiltersContext, SubmissionsContext} from '@/context';
+import {useSubmissionsStore} from '@/store';
 
 import styles from './data-frequency-by-day-chart.module.scss';
 
@@ -23,11 +23,11 @@ function DataFrequencyByDayChart({className}: Pick<PlotParams, 'className'>) {
   const queryResult = useSubmissionsQuery();
   const allSubmissions = queryResult.data || [];
 
-  const submissions = useContext(SubmissionsContext);
-  const {
-    filters: {day},
-    setFilters,
-  } = useContext(SubmissionFiltersContext);
+  const {submissions, day, setFilters} = useSubmissionsStore(state => ({
+    submissions: state.submissions,
+    day: state.filters.day,
+    setFilters: state.setFilters,
+  }));
 
   const [data, setData] = useState<InputData[]>([]);
 
@@ -44,18 +44,20 @@ function DataFrequencyByDayChart({className}: Pick<PlotParams, 'className'>) {
     setData(inputData);
   }, [allSubmissions, submissions, day]);
 
-  const handleClick = (e: PlotMouseEvent) => {
-    const point = e.points[0];
+  const handleClick = useCallback(
+    (e: PlotMouseEvent) => {
+      const point = e.points[0];
 
-    if (!point) return;
+      if (!point) return;
 
-    setFilters(prev => ({
-      ...prev,
-      day: prev.day === point.x ? null : (point.x as Day),
-    }));
+      setFilters({
+        day: day === point.x ? null : (point.x as Day),
+      });
 
-    if (point.x) trackUmamiEvent('daychart', {filter: point.x});
-  };
+      if (point.x) trackUmamiEvent('daychart', {filter: point.x});
+    },
+    [day]
+  );
 
   return (
     <Plotly

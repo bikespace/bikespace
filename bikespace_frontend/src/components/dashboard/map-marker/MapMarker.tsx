@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useRef, useCallback} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {Marker, useMap} from 'react-leaflet';
 import {Popup as LeafletPopup} from 'leaflet';
 import {Icon, LatLngTuple} from 'leaflet';
@@ -6,11 +6,11 @@ import {useWindowSize} from '@uidotdev/usehooks';
 
 import {IssueType, SubmissionApiPayload} from '@/interfaces/Submission';
 
-import {FocusedSubmissionIdContext} from '@/context';
-
 import {issuePriority} from '@/config/bikespace-api';
 
 import {trackUmamiEvent} from '@/utils';
+
+import {useSubmissionsStore} from '@/store';
 
 import {MapPopup} from '../map-popup';
 
@@ -20,6 +20,9 @@ import fullIcon from '@/assets/icons/icon_full.svg';
 import damagedIcon from '@/assets/icons/icon_damaged.svg';
 import otherIcon from '@/assets/icons/icon_other.svg';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
+
+import styles from './map-marker.module.scss';
+
 interface MapMarkerProps {
   submission: SubmissionApiPayload;
 }
@@ -33,15 +36,14 @@ export function MapMarker({submission}: MapMarkerProps) {
 
   const map = useMap();
 
-  const windowSize = useWindowSize();
+  const {focus, setFocus} = useSubmissionsStore(state => ({
+    focus: state.focusedId,
+    setFocus: state.setFocusedId,
+  }));
 
-  const {focus, setFocus} = useContext(FocusedSubmissionIdContext);
-
-  const handleClick = useCallback(() => {
-    if (!windowSize.width || windowSize.width > 768) return;
-
+  const handleClick = () => {
     setFocus(submission.id);
-  }, [windowSize.width]);
+  };
 
   const handlePopupClose = () => {
     if (focus === submission.id) setFocus(null);
@@ -87,6 +89,7 @@ export function MapMarker({submission}: MapMarkerProps) {
           shadowSize: [41, 41],
           shadowAnchor: [12, 41],
           iconUrl: customMarker,
+          className: styles.marker,
         })
       }
       eventHandlers={{

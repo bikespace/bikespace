@@ -39,7 +39,8 @@
     "react-plotly.js": "^2.6.0",
     "sass": "^1.77.8",
     "serve": "^14.2.3",
-    "sharp": "^0.33.4"
+    "sharp": "^0.33.4",
+    "zustand": "^4.5.4"
   },
   "devDependencies": {
     "@faker-js/faker": "^8.4.1",

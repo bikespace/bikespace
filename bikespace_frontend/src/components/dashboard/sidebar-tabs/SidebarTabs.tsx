@@ -1,6 +1,7 @@
-import React, {useContext} from 'react';
+import React from 'react';
 
-import {TabContext, SidebarTab} from '@/context';
+import {useSubmissionsStore} from '@/store';
+import {SidebarTab} from '@/store/slices';
 
 import styles from './sidebar-tabs.module.scss';
 
@@ -20,7 +21,10 @@ const tabs = [
 ];
 
 export function SidebarTabs() {
-  const {tab, setTab} = useContext(TabContext);
+  const {tab, setTab} = useSubmissionsStore(state => ({
+    tab: state.tab,
+    setTab: state.setTab,
+  }));
 
   return (
     <nav className={styles.tabs}>

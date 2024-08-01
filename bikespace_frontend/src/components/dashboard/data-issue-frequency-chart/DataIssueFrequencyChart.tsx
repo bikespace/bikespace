@@ -1,4 +1,4 @@
-import React, {useContext, useState, useEffect} from 'react';
+import React, {useCallback, useState, useEffect} from 'react';
 import Plotly, {PlotParams} from 'react-plotly.js';
 import {PlotMouseEvent} from 'plotly.js-dist-min';
 
@@ -8,7 +8,7 @@ import {IssueType} from '@/interfaces/Submission';
 
 import {trackUmamiEvent} from '@/utils';
 
-import {SubmissionFiltersContext, SubmissionsContext} from '@/context';
+import {useSubmissionsStore} from '@/store';
 
 import styles from './data-issue-frequency-chart.module.scss';
 
@@ -19,11 +19,11 @@ type InputData = {
 };
 
 function DataIssueFrequencyChart({className}: Pick<PlotParams, 'className'>) {
-  const submissions = useContext(SubmissionsContext);
-  const {
-    filters: {issue},
-    setFilters,
-  } = useContext(SubmissionFiltersContext);
+  const {submissions, issue, setFilters} = useSubmissionsStore(state => ({
+    submissions: state.submissions,
+    issue: state.filters.issue,
+    setFilters: state.setFilters,
+  }));
 
   const [data, setData] = useState<InputData[]>([]);
 
@@ -41,24 +41,21 @@ function DataIssueFrequencyChart({className}: Pick<PlotParams, 'className'>) {
   }, [submissions, issue]);
 
   useEffect(() => {
-    setFilters(prev => ({
-      ...prev,
-      issue,
-    }));
+    if (issue === null) return;
 
-    if (issue !== null) trackUmamiEvent('issuechart', {filter: issue});
+    trackUmamiEvent('issuechart', {filter: issue});
   }, [issue]);
 
-  const handleClick = (e: PlotMouseEvent) => {
-    const point = e.points[0];
+  const handleClick = useCallback(
+    (e: PlotMouseEvent) => {
+      const point = e.points[0];
 
-    if (!point) return;
+      if (!point) return;
 
-    setFilters(prev => ({
-      ...prev,
-      issue: prev.issue === point.y ? null : (point.y as IssueType),
-    }));
-  };
+      setFilters({issue: issue === point.y ? null : (point.y as IssueType)});
+    },
+    [issue]
+  );
 
   return (
     <Plotly

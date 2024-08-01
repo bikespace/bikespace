@@ -1,20 +1,21 @@
-import React, {useContext, useState, useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {DateTime} from 'luxon';
 
-import {
-  SubmissionFiltersContext,
-  SubmissionsContext,
-  SubmissionsDateRangeContext,
-} from '@/context';
+import {useSubmissionsStore} from '@/store';
+
+import {useAllSubmissionsDateRange} from '@/hooks';
 
 import warningIcon from '@/assets/icons/exclamation-triangle.svg';
 
 import styles from './report-summary.module.scss';
 
 export function ReportSummary() {
-  const submissions = useContext(SubmissionsContext);
-  const {filters} = useContext(SubmissionFiltersContext);
-  const {first, last} = useContext(SubmissionsDateRangeContext);
+  const {submissions, filters} = useSubmissionsStore(state => ({
+    submissions: state.submissions,
+    filters: state.filters,
+  }));
+
+  const {first, last} = useAllSubmissionsDateRange();
 
   const [dateRange, setDateRange] = useState({
     from: first!,

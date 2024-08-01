@@ -1,22 +1,24 @@
-import React, {useContext, useState, useEffect, useCallback} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {DateTime} from 'luxon';
 
 import {DateRangeInterval} from '@/interfaces/Submission';
 
-import {SubmissionsDateRangeContext, SubmissionFiltersContext} from '@/context';
-
 import {trackUmamiEvent} from '@/utils';
+
+import {useAllSubmissionsDateRange} from '@/hooks';
+
+import {useSubmissionsStore} from '@/store';
 
 import {SidebarButton} from '../sidebar-button';
 
 import styles from './filter-date-range-custom.module.scss';
 
 export function FilterDateRangeCustom() {
-  const {first, last} = useContext(SubmissionsDateRangeContext);
-  const {
-    filters: {dateRange},
-    setFilters,
-  } = useContext(SubmissionFiltersContext);
+  const {first, last} = useAllSubmissionsDateRange();
+  const {dateRange, setFilters} = useSubmissionsStore(state => ({
+    dateRange: state.filters.dateRange,
+    setFilters: state.setFilters,
+  }));
 
   const [selectedDateRange, setSelectedDateRange] = useState<{
     from: Date | null;
@@ -58,14 +60,13 @@ export function FilterDateRangeCustom() {
   );
 
   const applyCustomDateRange = useCallback(() => {
-    setFilters(prev => ({
-      ...prev,
+    setFilters({
       dateRange: {
         from: selectedDateRange.from || first!,
         to: selectedDateRange.to || last!,
       },
       dateRangeInterval: DateRangeInterval.CustomRange,
-    }));
+    });
 
     if (dateRange)
       trackUmamiEvent('datefilter', {
@@ -73,7 +74,7 @@ export function FilterDateRangeCustom() {
         ...(selectedDateRange.to && {from: selectedDateRange.to}),
         interval: DateRangeInterval.CustomRange,
       });
-  }, [selectedDateRange, dateRange, setFilters]);
+  }, [selectedDateRange, dateRange]);
 
   return (
     <div className={styles.dateRangeCustom}>

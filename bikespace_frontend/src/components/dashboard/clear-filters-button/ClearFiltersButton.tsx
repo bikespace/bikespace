@@ -1,6 +1,6 @@
-import React, {useContext} from 'react';
+import React from 'react';
 
-import {SubmissionFiltersContext} from '@/context';
+import {useSubmissionsStore} from '@/store';
 
 import {SidebarButton} from '../sidebar-button';
 
@@ -12,7 +12,10 @@ export function ClearFiltersButton() {
   const {
     filters: {dateRange, parkingDuration, issue, day, dateRangeInterval},
     setFilters,
-  } = useContext(SubmissionFiltersContext);
+  } = useSubmissionsStore(state => ({
+    filters: state.filters,
+    setFilters: state.setFilters,
+  }));
 
   if (
     parkingDuration.length === 0 &&

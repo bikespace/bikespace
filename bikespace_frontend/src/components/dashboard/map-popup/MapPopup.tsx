@@ -1,11 +1,12 @@
-import React, {forwardRef, useContext} from 'react';
+import React, {forwardRef} from 'react';
 import {Popup} from 'react-leaflet';
 import {Popup as LeafletPopup} from 'leaflet';
 import {SubmissionApiPayload} from '@/interfaces/Submission';
 
 import {issuePriority} from '@/config/bikespace-api';
 
-import {FocusedSubmissionIdContext, SidebarTab, TabContext} from '@/context';
+import {useSubmissionsStore} from '@/store';
+import {SidebarTab} from '@/store/slices';
 
 import {IssueBadge} from '../issue-badge';
 
@@ -17,8 +18,10 @@ interface MapPopupProps {
 
 export const MapPopup = forwardRef<LeafletPopup, MapPopupProps>(
   ({submission}: MapPopupProps, ref) => {
-    const {setFocus} = useContext(FocusedSubmissionIdContext);
-    const {setTab} = useContext(TabContext);
+    const {setFocus, setTab} = useSubmissionsStore(state => ({
+      setFocus: state.setFocusedId,
+      setTab: state.setTab,
+    }));
 
     const {issues, id, comments, parking_duration, parking_time} = submission;
 

@@ -1,4 +1,4 @@
-import React, {useContext, useMemo} from 'react';
+import React, {useMemo} from 'react';
 import Plotly, {PlotParams} from 'react-plotly.js';
 import {Annotations} from 'plotly.js-dist-min';
 import {DateTime, Interval} from 'luxon';
@@ -7,12 +7,12 @@ import {layout, config} from '@/config/plotly';
 
 import {ParkingDuration} from '@/interfaces/Submission';
 
-import {SubmissionsContext} from '@/context';
+import {useSubmissionsStore} from '@/store';
 
 import styles from './data-duration-by-tod-chart.module.scss';
 
 function DataDurationByTodChart({className}: Pick<PlotParams, 'className'>) {
-  const submissions = useContext(SubmissionsContext);
+  const submissions = useSubmissionsStore(state => state.submissions);
 
   const data = useMemo<number[][]>(() => {
     return parkingDurations.map(duration => {

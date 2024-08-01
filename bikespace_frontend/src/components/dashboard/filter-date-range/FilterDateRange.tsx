@@ -1,13 +1,15 @@
-import React, {useContext, useState} from 'react';
+import React, {useState} from 'react';
 import {DateTime} from 'luxon';
 
 import {DateRangeInterval} from '@/interfaces/Submission';
 
 import {trackUmamiEvent} from '@/utils';
 
-import {getDateRangeFromInterval} from './utils';
+import {useAllSubmissionsDateRange} from '@/hooks';
 
-import {SubmissionFiltersContext, SubmissionsDateRangeContext} from '@/context';
+import {useSubmissionsStore} from '@/store';
+
+import {getDateRangeFromInterval} from './utils';
 
 import {FilterSection} from '../filter-section';
 import {FilterDateRangeCustom} from '../filter-date-range-custom';
@@ -15,11 +17,14 @@ import {FilterDateRangeCustom} from '../filter-date-range-custom';
 import styles from './filter-date-range.module.scss';
 
 export function FilterDateRange() {
-  const {
-    filters: {dateRange, dateRangeInterval},
-    setFilters,
-  } = useContext(SubmissionFiltersContext);
-  const {first, last} = useContext(SubmissionsDateRangeContext);
+  const {dateRange, dateRangeInterval, setFilters} = useSubmissionsStore(
+    state => ({
+      dateRange: state.filters.dateRange,
+      dateRangeInterval: state.filters.dateRangeInterval,
+      setFilters: state.setFilters,
+    })
+  );
+  const {first, last} = useAllSubmissionsDateRange();
 
   const [showCustomRange, setShowCustomRange] = useState<boolean>(false);
 
@@ -59,11 +64,10 @@ export function FilterDateRange() {
 
               const dateRange = getDateRangeFromInterval(value);
 
-              setFilters(prev => ({
-                ...prev,
+              setFilters({
                 dateRange,
                 dateRangeInterval: value,
-              }));
+              });
 
               if (dateRange)
                 trackUmamiEvent('datefilter', {

@@ -1,6 +1,7 @@
-import React, {useContext} from 'react';
+import React from 'react';
 
-import {TabContext, SidebarTab} from '@/context';
+import {useSubmissionsStore} from '@/store';
+import {SidebarTab} from '@/store/slices';
 
 import {ClearFiltersButton} from '../clear-filters-button';
 import {SidebarContentFilters} from '../sidebar-content-filter';
@@ -10,7 +11,7 @@ import {SidebarContentFeed} from '../sidebar-content-feed';
 import styles from './sidebar-tab-content.module.scss';
 
 export function SidebarTabContent() {
-  const {tab} = useContext(TabContext);
+  const tab = useSubmissionsStore(state => state.tab);
 
   const renderContent = () => {
     switch (tab) {

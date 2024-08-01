@@ -90,3 +90,8 @@ export enum Day {
   Saturday = 5,
   Sunday = 6,
 }
+
+export type SubmissionsDateRange = {
+  first: Date | null;
+  last: Date | null;
+};

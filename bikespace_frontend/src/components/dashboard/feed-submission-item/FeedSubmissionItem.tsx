@@ -1,9 +1,7 @@
-import React, {useContext, useEffect, useRef} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {DateTime} from 'luxon';
 
 import {SubmissionApiPayload, ParkingDuration} from '@/interfaces/Submission';
-
-import {FocusedSubmissionIdContext} from '@/context';
 
 import {IssueBadge} from '../issue-badge';
 
@@ -11,11 +9,15 @@ import styles from './feed-submision-item.module.scss';
 
 interface FeedSubmissionItemProps {
   submission: SubmissionApiPayload;
+  isFocused: boolean;
+  handleClick?: () => void;
 }
 
-export function FeedSubmissionItem({submission}: FeedSubmissionItemProps) {
-  const {focus, setFocus} = useContext(FocusedSubmissionIdContext);
-
+export function FeedSubmissionItem({
+  submission,
+  isFocused,
+  handleClick,
+}: FeedSubmissionItemProps) {
   const {id, issues, parking_time, parking_duration, comments} = submission;
 
   const parkingTime = new Date(parking_time);
@@ -23,7 +25,7 @@ export function FeedSubmissionItem({submission}: FeedSubmissionItemProps) {
   const buttonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
-    if (focus !== id) return;
+    if (!isFocused) return;
 
     buttonRef.current?.scrollIntoView();
   }, [focus]);
@@ -31,10 +33,8 @@ export function FeedSubmissionItem({submission}: FeedSubmissionItemProps) {
   return (
     <button
       ref={buttonRef}
-      className={`${styles.item} ${focus === id ? styles.focused : ''}`}
-      onClick={() => {
-        setFocus(id);
-      }}
+      className={`${styles.item} ${isFocused ? styles.focused : ''}`}
+      onClick={handleClick}
     >
       <h3>
         {DateTime.fromJSDate(parkingTime).toLocaleString(
@@ -52,7 +52,7 @@ export function FeedSubmissionItem({submission}: FeedSubmissionItemProps) {
         </span>
         <span className={styles.submissionId}>ID: {submission.id}</span>
       </div>
-      <div className="issues">
+      <div className={styles.issues}>
         {[...new Set(issues)].map(issue => (
           <IssueBadge issue={issue} key={issue} />
         ))}

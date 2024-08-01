@@ -1,10 +1,10 @@
-import React, {useState, useEffect, useContext} from 'react';
-
-import {SubmissionFiltersContext} from '@/context';
+import React, {useState, useEffect, useContext, useCallback} from 'react';
 
 import {ParkingDuration} from '@/interfaces/Submission';
 
 import {trackUmamiEvent} from '@/utils';
+
+import {useSubmissionsStore} from '@/store';
 
 import {FilterSection} from '../filter-section';
 import {SidebarButton} from '../sidebar-button';
@@ -17,10 +17,10 @@ enum DurationCategory {
 }
 
 export function FilterParkingDuration() {
-  const {
-    filters: {parkingDuration},
-    setFilters,
-  } = useContext(SubmissionFiltersContext);
+  const {parkingDuration, setFilters} = useSubmissionsStore(state => ({
+    parkingDuration: state.filters.parkingDuration,
+    setFilters: state.setFilters,
+  }));
 
   const [durationCategory, setDurationCategory] =
     useState<DurationCategory | null>(null);
@@ -28,19 +28,17 @@ export function FilterParkingDuration() {
   useEffect(() => {
     switch (durationCategory) {
       case DurationCategory.Short:
-        setFilters(prev => ({
-          ...prev,
+        setFilters({
           parkingDuration: [ParkingDuration.Minutes, ParkingDuration.Hours],
-        }));
+        });
         break;
       case DurationCategory.Long:
-        setFilters(prev => ({
-          ...prev,
+        setFilters({
           parkingDuration: [
             ParkingDuration.Overnight,
             ParkingDuration.MultiDay,
           ],
-        }));
+        });
         break;
       default:
         return;
@@ -61,6 +59,17 @@ export function FilterParkingDuration() {
       )
     );
   }, [parkingDuration]);
+
+  const handleChange = useCallback(
+    (value: ParkingDuration) => {
+      setFilters({
+        parkingDuration: parkingDuration?.includes(value)
+          ? parkingDuration.filter(v => v !== value)
+          : [...(parkingDuration || []), value],
+      });
+    },
+    [parkingDuration]
+  );
 
   return (
     <FilterSection title="Parking Duration">
@@ -86,12 +95,7 @@ export function FilterParkingDuration() {
               className="filter-parking-duration-input"
               checked={parkingDuration?.includes(value)}
               onChange={() => {
-                setFilters(prev => ({
-                  ...prev,
-                  parkingDuration: prev.parkingDuration?.includes(value)
-                    ? prev.parkingDuration.filter(v => v !== value)
-                    : [...(prev.parkingDuration || []), value],
-                }));
+                handleChange(value);
               }}
             />
             <label htmlFor={`filter-parking-duration-${value}`}>{label}</label>
