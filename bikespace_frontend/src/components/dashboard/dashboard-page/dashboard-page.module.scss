@@ -1,39 +1,11 @@
-@import '@/styles/variables';
-
 .dashboardPage {
-  position: relative;
+  flex-grow: 1;
   display: flex;
-  flex-direction: column;
-  font-family: 'Open Sans';
-  height: 100vh;
   overflow: hidden;
-
-  a {
-    text-decoration: none;
-    color: $color-secondary-dark-grey;
-  
-    &:visited {
-      color: $color-secondary-dark-grey;
-    }
-  
-    &:hover {
-      color: $color-primary;
-    }
-  }
-
-  button {
-    font-family: 'Open Sans';
-  }
-
-  .main {
-    flex-grow: 1;
-    display: flex;
-    overflow: hidden;
-  }
 }
 
 @media (max-width: 1024px) {
-  .main {
+  .dashboardPage {
     flex-direction: column-reverse;
   }
 }

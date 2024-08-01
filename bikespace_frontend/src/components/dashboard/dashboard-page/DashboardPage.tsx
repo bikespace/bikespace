@@ -4,6 +4,8 @@ import React, {useState, useEffect} from 'react';
 import dynamic from 'next/dynamic';
 import umami from '@umami/node';
 
+import {UseQueryResult} from '@tanstack/react-query';
+
 import {SubmissionApiPayload, SubmissionFilters} from '@/interfaces/Submission';
 
 import {
@@ -16,15 +18,13 @@ import {
   SidebarTab,
 } from '@/context';
 
-import {DashboardHeader} from '../dashboard-header';
-import {Noscript} from '../noscript';
 import {Sidebar} from '../sidebar';
 import {MapProps} from '../map';
 
 import styles from './dashboard-page.module.scss';
 
 interface DashboardPageProps {
-  submissions: SubmissionApiPayload[];
+  queryResult: UseQueryResult<SubmissionApiPayload[], Error>;
 }
 
 const Map = dynamic<MapProps>(() => import('../map/Map'), {
@@ -32,7 +32,7 @@ const Map = dynamic<MapProps>(() => import('../map/Map'), {
   ssr: false,
 });
 
-export function DashboardPage({submissions}: DashboardPageProps) {
+export function DashboardPage({queryResult}: DashboardPageProps) {
   const [tab, setTab] = useState<SidebarTab>(SidebarTab.Data);
 
   const [filters, setFilters] = useState<SubmissionFilters>({
@@ -49,50 +49,53 @@ export function DashboardPage({submissions}: DashboardPageProps) {
       last: null,
     });
 
-  const [filteredSubmissions, setFilteredSubmissions] =
-    useState<SubmissionApiPayload[]>(submissions);
+  const [filteredSubmissions, setFilteredSubmissions] = useState<
+    SubmissionApiPayload[]
+  >([]);
 
   const [focusedSubmissionId, setFocusedSubmissionId] = useState<number | null>(
     null
   );
 
-  // Filter submissions effect
   useEffect(() => {
-    if (submissions.length === 0) return;
+    const submissions = queryResult.data || [];
 
-    const sortedSubmissions = [...submissions];
+    if (submissions.length === 0) {
+      setSubmissionsDateRange({
+        first: null,
+        last: null,
+      });
 
-    sortedSubmissions.sort(
-      (a, b) =>
-        new Date(b.parking_time).getTime() - new Date(a.parking_time).getTime()
-    );
+      return;
+    }
 
     setSubmissionsDateRange({
-      first: new Date(
-        sortedSubmissions[sortedSubmissions.length - 1].parking_time
-      ),
-      last: new Date(sortedSubmissions[0].parking_time),
+      first: new Date(submissions[submissions.length - 1].parking_time),
+      last: new Date(submissions[0].parking_time),
     });
+  }, [queryResult]);
+
+  // Filter submissions effect
+  useEffect(() => {
+    const submissions = queryResult.data || [];
+
+    if (submissions.length === 0) return;
 
     const {dateRange, parkingDuration, issue, day} = filters;
 
     setFilteredSubmissions(
-      sortedSubmissions.filter(
+      submissions.filter(
         submission =>
-          (dateRange
-            ? new Date(submission.parking_time) >= dateRange.from &&
-              new Date(submission.parking_time) <= dateRange.to
-            : true) &&
-          (parkingDuration.length > 0
-            ? parkingDuration.includes(submission.parking_duration)
-            : true) &&
-          (issue ? submission.issues.includes(issue) : true) &&
-          (day !== null
-            ? new Date(submission.parking_time).getDay() === day
-            : true)
+          (!dateRange ||
+            (new Date(submission.parking_time) >= dateRange.from &&
+              new Date(submission.parking_time) <= dateRange.to)) &&
+          (parkingDuration.length === 0 ||
+            parkingDuration.includes(submission.parking_duration)) &&
+          (!issue || submission.issues.includes(issue)) &&
+          (day === null || new Date(submission.parking_time).getDay() === day)
       )
     );
-  }, [submissions, filters]);
+  }, [queryResult, filters]);
 
   useEffect(() => {
     if (focusedSubmissionId === null) return;
@@ -111,14 +114,10 @@ export function DashboardPage({submissions}: DashboardPageProps) {
         >
           <TabContext.Provider value={{tab, setTab}}>
             <SubmissionFiltersContext.Provider value={{filters, setFilters}}>
-              <div className={styles.dashboardPage}>
-                <DashboardHeader />
-                <main className={styles.main}>
-                  <Sidebar />
-                  <Map submissions={filteredSubmissions} />
-                </main>
-                <Noscript />
-              </div>
+              <main className={styles.dashboardPage}>
+                <Sidebar />
+                <Map submissions={filteredSubmissions} />
+              </main>
             </SubmissionFiltersContext.Provider>
           </TabContext.Provider>
         </FocusedSubmissionIdContext.Provider>
