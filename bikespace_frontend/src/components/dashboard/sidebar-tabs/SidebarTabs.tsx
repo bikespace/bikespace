@@ -1,6 +1,6 @@
 import React, {useContext} from 'react';
 
-import {TabContext, SidebarTab} from '../context';
+import {TabContext, SidebarTab} from '@/context';
 
 import styles from './sidebar-tabs.module.scss';
 

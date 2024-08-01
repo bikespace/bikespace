@@ -7,7 +7,7 @@ import {layout, config} from '@/config/plotly';
 
 import {IssueType} from '@/interfaces/Submission';
 
-import {SubmissionFiltersContext, SubmissionsContext} from '../context';
+import {SubmissionFiltersContext, SubmissionsContext} from '@/context';
 
 import styles from './data-issue-frequency-chart.module.scss';
 

@@ -9,7 +9,7 @@ import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 
 import {IssueType, SubmissionApiPayload} from '@/interfaces/Submission';
 
-import {FocusedSubmissionIdContext} from '../context';
+import {FocusedSubmissionIdContext} from '@/context';
 
 import {issuePriority} from '@/config/bikespace-api';
 

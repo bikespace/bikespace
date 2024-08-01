@@ -14,7 +14,7 @@ import {
   type SubmissionsDateRangeContextData,
   FocusedSubmissionIdContext,
   SidebarTab,
-} from '../context';
+} from '@/context';
 
 import {DashboardHeader} from '../dashboard-header';
 import {Noscript} from '../noscript';

@@ -1,7 +1,7 @@
 import React from 'react';
 import {render, screen, fireEvent} from '@testing-library/react';
 
-import {TabContext, SidebarTab} from '../context';
+import {TabContext, SidebarTab} from '@/context';
 
 import {SidebarTabs} from './SidebarTabs';
 

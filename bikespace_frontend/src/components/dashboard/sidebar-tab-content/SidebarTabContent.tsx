@@ -1,6 +1,6 @@
 import React, {useContext} from 'react';
 
-import {TabContext, SidebarTab} from '../context';
+import {TabContext, SidebarTab} from '@/context';
 
 import {ClearFiltersButton} from '../clear-filters-button';
 import {SidebarContentFilters} from '../sidebar-content-filter';

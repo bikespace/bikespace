@@ -3,7 +3,7 @@ import {DateTime} from 'luxon';
 
 import {SubmissionApiPayload, ParkingDuration} from '@/interfaces/Submission';
 
-import {FocusedSubmissionIdContext} from '../context';
+import {FocusedSubmissionIdContext} from '@/context';
 
 import {IssueBadge} from '../issue-badge';
 

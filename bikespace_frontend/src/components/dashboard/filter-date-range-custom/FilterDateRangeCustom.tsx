@@ -4,10 +4,7 @@ import umami from '@umami/node';
 
 import {DateRangeInterval} from '@/interfaces/Submission';
 
-import {
-  SubmissionsDateRangeContext,
-  SubmissionFiltersContext,
-} from '../context';
+import {SubmissionsDateRangeContext, SubmissionFiltersContext} from '@/context';
 
 import {SidebarButton} from '../sidebar-button';
 

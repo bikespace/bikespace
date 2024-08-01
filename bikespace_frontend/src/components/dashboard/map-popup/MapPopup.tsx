@@ -5,7 +5,7 @@ import {SubmissionApiPayload} from '@/interfaces/Submission';
 
 import {issuePriority} from '@/config/bikespace-api';
 
-import {FocusedSubmissionIdContext, SidebarTab, TabContext} from '../context';
+import {FocusedSubmissionIdContext, SidebarTab, TabContext} from '@/context';
 
 import {IssueBadge} from '../issue-badge';
 

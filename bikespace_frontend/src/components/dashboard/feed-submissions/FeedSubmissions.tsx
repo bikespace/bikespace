@@ -1,6 +1,6 @@
 import React, {useContext} from 'react';
 
-import {SubmissionsContext} from '../context';
+import {SubmissionsContext} from '@/context';
 
 import {FeedSubmissionItem} from '../feed-submission-item';
 

@@ -5,7 +5,7 @@ import {
   SubmissionFiltersContext,
   SubmissionsContext,
   SubmissionsDateRangeContext,
-} from '../context';
+} from '@/context';
 
 import warningIcon from '@/assets/icons/exclamation-triangle.svg';
 

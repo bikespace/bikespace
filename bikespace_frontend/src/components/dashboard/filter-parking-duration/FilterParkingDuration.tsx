@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useContext} from 'react';
 import umami from '@umami/node';
 
-import {SubmissionFiltersContext} from '../context';
+import {SubmissionFiltersContext} from '@/context';
 
 import {ParkingDuration} from '@/interfaces/Submission';
 

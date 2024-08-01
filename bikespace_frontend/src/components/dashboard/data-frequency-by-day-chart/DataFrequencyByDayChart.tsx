@@ -7,7 +7,7 @@ import {layout, config} from '@/config/plotly';
 
 import {Day} from '@/interfaces/Submission';
 
-import {SubmissionFiltersContext, SubmissionsContext} from '../context';
+import {SubmissionFiltersContext, SubmissionsContext} from '@/context';
 
 import styles from './data-frequency-by-day-chart.module.scss';
 

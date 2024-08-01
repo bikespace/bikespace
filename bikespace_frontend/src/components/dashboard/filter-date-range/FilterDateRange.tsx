@@ -6,10 +6,7 @@ import {DateRangeInterval} from '@/interfaces/Submission';
 
 import {getDateRangeFromInterval} from './utils';
 
-import {
-  SubmissionFiltersContext,
-  SubmissionsDateRangeContext,
-} from '../context';
+import {SubmissionFiltersContext, SubmissionsDateRangeContext} from '@/context';
 
 import {FilterSection} from '../filter-section';
 import {FilterDateRangeCustom} from '../filter-date-range-custom';

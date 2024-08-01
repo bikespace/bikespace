@@ -1,6 +1,6 @@
 import React, {useContext} from 'react';
 
-import {SubmissionFiltersContext} from '../context';
+import {SubmissionFiltersContext} from '@/context';
 
 import {SidebarButton} from '../sidebar-button';
 
