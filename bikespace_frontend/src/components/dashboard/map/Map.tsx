@@ -21,21 +21,6 @@ export interface MapProps {
   submissions: SubmissionApiPayload[];
 }
 
-const tileLayers = {
-  osm: (
-    <TileLayer
-      attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>'
-      url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
-    />
-  ),
-  thunderforest: (
-    <TileLayer
-      attribution='&copy; Maps <a href="https://www.thunderforest.com/">Thunderforest</a>, &copy; Data <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>'
-      url="https://tile.thunderforest.com/atlas/{z}/{x}/{y}.png?apikey=66ccf6226ef54ef38a6b97fe0b0e5d2e"
-    />
-  ),
-};
-
 function Map({submissions}: MapProps) {
   const mapRef = useRef(null);
 
@@ -56,12 +41,16 @@ function Map({submissions}: MapProps) {
       center={[43.733399, -79.376221]}
       zoom={11}
       scrollWheelZoom
-      style={{height: '100%'}}
+      style={{width: '100%', height: '100%'}}
       ref={mapRef}
       className={styles.map}
     >
       <LeafletLocateControl />
-      {tileLayers.thunderforest}
+      <TileLayer
+        attribution='&copy; Maps <a href="https://www.thunderforest.com/">Thunderforest</a>, &copy; Data <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>'
+        url="https://tile.thunderforest.com/atlas/{z}/{x}/{y}.png?apikey=66ccf6226ef54ef38a6b97fe0b0e5d2e"
+        maxZoom={20}
+      />
       <MarkerClusterGroup chunkedLoading>
         {submissions.map(submission => (
           <MapMarker
