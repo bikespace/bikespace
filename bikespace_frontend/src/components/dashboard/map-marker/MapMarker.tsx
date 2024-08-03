@@ -27,6 +27,9 @@ interface MapMarkerProps {
   handlePopupClose: () => void;
 }
 
+const FLYTO_ANIMATION_DURATION = 0.5; // 0.5 seconds
+const FLYTO_ZOOM = 20;
+
 export function MapMarker({
   submission,
   isFocused,
@@ -44,9 +47,7 @@ export function MapMarker({
   useEffect(() => {
     if (!isFocused) return;
 
-    const duration = 0.5;
-
-    map.flyTo(position, 18, {duration});
+    map.flyTo(position, FLYTO_ZOOM, {duration: FLYTO_ANIMATION_DURATION});
 
     // put openPopup to the end of the event loop job queue so openPopup()
     // is queued after all the calls flyTo() triggers
@@ -60,7 +61,7 @@ export function MapMarker({
       trackUmamiEvent('popupopen', {
         submission_id: submission.id,
       });
-    }, duration * 1000);
+    }, FLYTO_ANIMATION_DURATION * 1000);
   }, [isFocused, popupRef.current]);
 
   const priorityIssue = submission.issues.reduce((a: IssueType | null, c) => {
