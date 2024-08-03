@@ -1,6 +1,7 @@
 import React, {useCallback, useRef} from 'react';
 import {MapContainer, TileLayer} from 'react-leaflet';
 import MarkerClusterGroup from 'react-leaflet-cluster';
+import {useWindowSize} from '@uidotdev/usehooks';
 
 import useSubmissionsStore from '@/store';
 
@@ -24,6 +25,8 @@ export interface MapProps {
 function Map({submissions}: MapProps) {
   const mapRef = useRef(null);
 
+  const windowSize = useWindowSize();
+
   const {focus, setFocus} = useSubmissionsStore(state => ({
     focus: state.focusedId,
     setFocus: state.setFocusedId,
@@ -34,6 +37,15 @@ function Map({submissions}: MapProps) {
       if (focus === id) setFocus(null);
     },
     [focus]
+  );
+
+  const handleClick = useCallback(
+    (id: number) => {
+      if (windowSize.width! > 768) return;
+
+      setFocus(id);
+    },
+    [windowSize.width]
   );
 
   return (
@@ -58,7 +70,7 @@ function Map({submissions}: MapProps) {
             submission={submission}
             isFocused={focus === submission.id}
             handleClick={() => {
-              setFocus(submission.id);
+              handleClick(submission.id);
             }}
             handlePopupClose={() => {
               handlePopupClose(submission.id);

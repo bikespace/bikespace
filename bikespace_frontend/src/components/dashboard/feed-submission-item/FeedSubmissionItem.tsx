@@ -3,37 +3,42 @@ import {DateTime} from 'luxon';
 
 import {SubmissionApiPayload, ParkingDuration} from '@/interfaces/Submission';
 
+import useSubmissionsStore from '@/store';
+
 import {IssueBadge} from '../issue-badge';
 
 import styles from './feed-submision-item.module.scss';
 
 interface FeedSubmissionItemProps {
   submission: SubmissionApiPayload;
-  isFocused: boolean;
-  handleClick?: () => void;
 }
 
-export function FeedSubmissionItem({
-  submission,
-  isFocused,
-  handleClick,
-}: FeedSubmissionItemProps) {
+export function FeedSubmissionItem({submission}: FeedSubmissionItemProps) {
   const {id, issues, parking_time, parking_duration, comments} = submission;
 
   const parkingTime = new Date(parking_time);
 
   const buttonRef = useRef<HTMLButtonElement>(null);
 
+  const {focus, setFocus} = useSubmissionsStore(state => ({
+    focus: state.focusedId,
+    setFocus: state.setFocusedId,
+  }));
+
   useEffect(() => {
-    if (!isFocused) return;
+    if (!(focus === id)) return;
 
     buttonRef.current?.scrollIntoView();
   }, [focus]);
 
+  const handleClick = () => {
+    setFocus(id);
+  };
+
   return (
     <button
       ref={buttonRef}
-      className={`${styles.item} ${isFocused ? styles.focused : ''}`}
+      className={`${styles.item} ${focus === id ? styles.focused : ''}`}
       onClick={handleClick}
     >
       <h3>
