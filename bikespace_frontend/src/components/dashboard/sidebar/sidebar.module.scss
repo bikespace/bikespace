@@ -43,6 +43,7 @@
       cursor: pointer;
       display: block;
       height: $height-panel-handle;
+      flex-shrink: 0;
       width: 100%;
       margin: 0;
       padding: calc(($height-panel-handle - $height-panel-handle-bar) / 2) 0;
