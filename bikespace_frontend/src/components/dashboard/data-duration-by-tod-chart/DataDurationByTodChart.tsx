@@ -119,6 +119,7 @@ function DataDurationByTodChart({className}: Pick<PlotParams, 'className'>) {
           b: 4,
           l: 20,
         },
+        width: 320 - 4 * 2,
         height: 160,
       }}
       config={config}
