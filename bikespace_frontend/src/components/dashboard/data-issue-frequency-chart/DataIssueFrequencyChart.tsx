@@ -94,6 +94,7 @@ function DataIssueFrequencyChart({className}: Pick<PlotParams, 'className'>) {
           b: 4,
           l: 120,
         },
+        width: 320 - 4 * 2,
         height: 200,
       }}
       config={config}
