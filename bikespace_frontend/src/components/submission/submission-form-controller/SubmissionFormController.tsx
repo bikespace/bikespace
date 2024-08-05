@@ -65,6 +65,16 @@ export function SubmissionFormController({
     }
   }
 
+  // disable "Next" button if no issue is selected
+  const nextButtonDisabled =
+    formOrder[step] === 'Issue' && submissionPayload.issues.length === 0;
+
+  const handleDataValidationWarning = () => {
+    if (nextButtonDisabled) {
+      alert('Please select at least one issue');
+    }
+  };
+
   const handleStepChanged = (i: number) => {
     if (!locationLoaded) {
       return false;
@@ -81,7 +91,10 @@ export function SubmissionFormController({
   };
 
   return (
-    <div className={styles.formController}>
+    <div
+      className={styles.formController}
+      onClick={handleDataValidationWarning}
+    >
       {/* 'Back' button logic */}
       {submissionStatus.status !== 'success' && (
         <button
@@ -110,6 +123,7 @@ export function SubmissionFormController({
           step === formOrder.length - 1 ? styles.displayNone : ' '
         }`}
         onClick={() => handleStepChanged(1)}
+        disabled={nextButtonDisabled}
         data-umami-event={`next-button-from-${formOrder[step]}`}
       >
         Next

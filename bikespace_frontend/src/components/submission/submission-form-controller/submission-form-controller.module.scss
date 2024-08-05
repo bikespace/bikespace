@@ -22,6 +22,12 @@
   &.displayNone {
     display: none;
   }
+
+  &:disabled {
+    pointer-events: none;
+    color: $color-secondary-dark-grey;
+    background-color: $color-secondary-light-grey;
+  }
 }
 
 .primaryBtnNoFill {
