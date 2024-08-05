@@ -78,7 +78,7 @@ export function FilterDateRange() {
             }
           }}
         >
-          {dateRangeOptgroups.map(group => (
+          {dateRangeOptGroups.map(group => (
             <optgroup label={group.label} key={group.label}>
               {group.options.map(option => (
                 <option key={option.value} value={option.value}>
@@ -96,7 +96,7 @@ export function FilterDateRange() {
   );
 }
 
-const dateRangeOptgroups = [
+const dateRangeOptGroups = [
   {
     label: 'All Dates',
     options: [

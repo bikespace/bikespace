@@ -2,6 +2,9 @@ import {DateTime, Interval} from 'luxon';
 
 import {DateRangeInterval} from '@/interfaces/Submission';
 
+/**
+ * Note that "last x" intervals include the last x - 1 units of time plus the current unit of time, which may be incomplete. E.g. "last 7 days" includes today (partial) plus the last six days, and "last 12 months" includes this month (partial) plus the last 11 months.
+ */
 export const getDateRangeFromInterval = (interval: DateRangeInterval) => {
   const now = new Date();
   const dtNow = DateTime.fromJSDate(new Date());
@@ -11,51 +14,36 @@ export const getDateRangeFromInterval = (interval: DateRangeInterval) => {
       return null;
     case DateRangeInterval.Last7Days:
       return {
-        from: Interval.fromDateTimes(
-          dtNow.minus({days: 7}),
-          dtNow
-        ).start!.toJSDate(),
+        from: dtNow.minus({days: 7 - 1}).toJSDate(),
         to: now,
       };
     case DateRangeInterval.Last30Days:
       return {
-        from: Interval.fromDateTimes(
-          dtNow.minus({days: 30}),
-          now
-        ).start!.toJSDate(),
+        from: dtNow.minus({days: 30 - 1}).toJSDate(),
         to: now,
       };
     case DateRangeInterval.Last90Days:
       return {
-        from: Interval.fromDateTimes(
-          dtNow.minus({days: 90}),
-          now
-        ).start!.toJSDate(),
+        from: dtNow.minus({days: 90 - 1}).toJSDate(),
         to: now,
       };
     case DateRangeInterval.Last12Months:
       return {
-        from: Interval.fromDateTimes(
-          dtNow.minus({months: 12}).startOf('month'),
-          dtNow.endOf('month')
-        ).start!.toJSDate(),
-        to: now,
+        from: dtNow
+          .minus({months: 12 - 1})
+          .startOf('month')
+          .toJSDate(),
+        to: dtNow.endOf('month').toJSDate(),
       };
     case DateRangeInterval.ThisYear:
       return {
-        from: Interval.fromDateTimes(
-          dtNow.startOf('year'),
-          dtNow.endOf('year')
-        ).start!.toJSDate(),
-        to: now,
+        from: dtNow.startOf('year').toJSDate(),
+        to: dtNow.endOf('year').toJSDate(),
       };
     case DateRangeInterval.LastYear:
       return {
-        from: Interval.fromDateTimes(
-          dtNow.minus({years: 1}).startOf('year'),
-          dtNow.minus({years: 1}).endOf('year')
-        ).start!.toJSDate(),
-        to: now,
+        from: dtNow.minus({years: 1}).startOf('year').toJSDate(),
+        to: dtNow.minus({years: 1}).endOf('year').toJSDate(),
       };
     default:
       return null;
