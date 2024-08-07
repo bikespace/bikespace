@@ -1,27 +1,20 @@
-import React, {useContext, useEffect, useRef, ComponentProps} from 'react';
+import React, {useEffect, useRef, ComponentProps} from 'react';
 import {Marker, useMap} from 'react-leaflet';
 import {Popup as LeafletPopup} from 'leaflet';
-import {Icon, LatLngTuple} from 'leaflet';
-import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 
-import {IssueType, SubmissionApiPayload} from '@/interfaces/Submission';
-
-import {issuePriority} from '@/config/bikespace-api';
-
-import notProvidedIcon from '@/assets/icons/icon_not_provided.svg';
-import abandonedIcon from '@/assets/icons/icon_abandoned.svg';
-import fullIcon from '@/assets/icons/icon_full.svg';
-import damagedIcon from '@/assets/icons/icon_damaged.svg';
-import otherIcon from '@/assets/icons/icon_other.svg';
-import {MapPopup} from '@/components/dashboard/map-popup';
-import {FocusedSubmissionIdContext} from '@/components/dashboard/context';
-
-type MapMarkerProps = {
+export type MapMarkerProps = {
   id: string;
   focused: boolean;
+  iconUrl?: string;
 } & ComponentProps<typeof Marker>;
 
-export function MapMarker({id, focused, position}: MapMarkerProps) {
+export function MapMarker({
+  id,
+  focused,
+  position,
+  iconUrl = undefined,
+  ...others
+}: MapMarkerProps) {
   // popupRef for calling openPopup() upon focus change
   // `Popup` from 'react-leaflet' forwards `Popup` from 'leaflet'
   const popupRef = useRef<LeafletPopup>(null);
@@ -46,34 +39,10 @@ export function MapMarker({id, focused, position}: MapMarkerProps) {
 
     return issuePriority[a] < issuePriority[c] ? a : c;
   }, null); */
-  // const customMarker = markerIssueIcons[priorityIssue ?? 'other'];
-  // TODO: use proper marker
-  const customMarker = markerIssueIcons['other'];
 
   return (
-    <Marker
-      position={position}
-      icon={
-        new Icon({
-          shadowUrl: markerShadow,
-          iconSize: [36, 36],
-          iconAnchor: [18, 36],
-          popupAnchor: [0, -36 * 0.8],
-          shadowSize: [41, 41],
-          shadowAnchor: [12, 41],
-          iconUrl: customMarker,
-        })
-      }
-    >
+    <Marker position={position} {...others}>
       {/* <MapPopup submission={submission} ref={popupRef} /> */}
     </Marker>
   );
 }
-
-const markerIssueIcons = {
-  not_provided: notProvidedIcon,
-  damaged: damagedIcon,
-  abandoned: abandonedIcon,
-  other: otherIcon,
-  full: fullIcon,
-};

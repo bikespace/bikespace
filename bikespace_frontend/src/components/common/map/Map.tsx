@@ -10,19 +10,24 @@ import {useMap, MapContainer, TileLayer} from 'react-leaflet';
 import {LatLngTuple} from 'leaflet';
 import {useWindowSize} from '@uidotdev/usehooks';
 
-import {SubmissionApiPayload} from '@/interfaces/Submission';
+import {IssueType, SubmissionApiPayload} from '@/interfaces/Submission';
 
 import {MapMarker} from '../map-marker';
 import {LeafletLocateControl} from '../leaflet-locate-control';
 import {LeafletMarkerClusterGroup} from '../leaflet-marker-cluster-group';
+import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 
 import * as styles from './map.module.scss';
 import {FocusedSubmissionIdContext} from '@/components/dashboard/context';
 
-type MapMarkerProps = {
-  id: string;
-  focused: boolean;
-} & ComponentProps<typeof Marker>;
+import notProvidedIcon from '@/assets/icons/icon_not_provided.svg';
+import abandonedIcon from '@/assets/icons/icon_abandoned.svg';
+import fullIcon from '@/assets/icons/icon_full.svg';
+import damagedIcon from '@/assets/icons/icon_damaged.svg';
+import otherIcon from '@/assets/icons/icon_other.svg';
+import {issuePriority} from '@/config/bikespace-api';
+import {Icon} from 'leaflet';
+import {MapMarkerProps} from '../map-marker/MapMarker';
 
 interface MapProps {
   // submissions: SubmissionApiPayload[];
@@ -48,14 +53,43 @@ interface SubmissionMapProps {
   submissions: SubmissionApiPayload[];
 }
 
+const markerIssueIcons = {
+  not_provided: notProvidedIcon,
+  damaged: damagedIcon,
+  abandoned: abandonedIcon,
+  other: otherIcon,
+  full: fullIcon,
+};
+
+const getIcon = (submission: SubmissionApiPayload) => {
+  const priorityIssue = submission.issues.reduce((a: IssueType | null, c) => {
+    if (a === null) return c;
+
+    return issuePriority[a] < issuePriority[c] ? a : c;
+  }, null);
+  return markerIssueIcons[priorityIssue ?? 'other'];
+};
+
 export function SubmissionsMap({submissions}: SubmissionMapProps) {
   const {focus} = useContext(FocusedSubmissionIdContext)!;
+
   const markers: MapMarkerProps[] = useMemo(() => {
-    return submissions.map(submission => ({
-      id: submission.id.toFixed(0),
-      position: [submission.latitude, submission.longitude],
-      focused: focus === submission.id,
-    }));
+    return submissions.map(submission => {
+      return {
+        id: submission.id.toFixed(0),
+        position: [submission.latitude, submission.longitude],
+        focused: focus === submission.id,
+        icon: new Icon({
+          shadowUrl: markerShadow,
+          iconSize: [36, 36],
+          iconAnchor: [18, 36],
+          popupAnchor: [0, -36 * 0.8],
+          shadowSize: [41, 41],
+          shadowAnchor: [12, 41],
+          iconUrl: getIcon(submission),
+        }),
+      };
+    });
   }, [submissions]);
   return <Map markers={markers} />;
 }
@@ -78,12 +112,7 @@ export function Map({markers}: MapProps) {
         <MapHandler />
         <LeafletMarkerClusterGroup chunkedLoading>
           {markers.map(marker => (
-            <MapMarker
-              key={marker.id}
-              id={marker.id}
-              position={marker.position}
-              focused={marker.focused}
-            />
+            <MapMarker key={marker.id} {...marker} />
           ))}
         </LeafletMarkerClusterGroup>
       </MapContainer>
