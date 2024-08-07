@@ -4,6 +4,7 @@ import MarkerClusterGroup from 'react-leaflet-cluster';
 import {useWindowSize} from '@uidotdev/usehooks';
 
 import useSubmissionsStore from '@/store';
+import {SidebarTab} from '@/store/slices';
 
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-defaulticon-compatibility';
@@ -27,9 +28,10 @@ function Map({submissions}: MapProps) {
 
   const windowSize = useWindowSize();
 
-  const {focus, setFocus} = useSubmissionsStore(state => ({
+  const {focus, setFocus, setTab} = useSubmissionsStore(state => ({
     focus: state.focusedId,
     setFocus: state.setFocusedId,
+    setTab: state.setTab,
   }));
 
   const handlePopupClose = useCallback(
@@ -41,7 +43,9 @@ function Map({submissions}: MapProps) {
 
   const handleClick = useCallback(
     (id: number) => {
-      if (windowSize.width! > 768) return;
+      if (windowSize.width! <= 768) {
+        setTab(SidebarTab.Feed);
+      }
 
       setFocus(id);
     },

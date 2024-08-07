@@ -71,7 +71,8 @@ function DataFrequencyByDayChart({className}: Pick<PlotParams, 'className'>) {
           y: data.map(d => d.count),
           marker: {
             color: styles.barColor,
-            opacity: day ? data.map(d => (d.name === day ? 1 : 0.25)) : 1,
+            opacity:
+              day !== null ? data.map(d => (d.name === day ? 1 : 0.25)) : 1,
           },
           text: data.map(d => d.count.toString()),
           textposition: 'outside',

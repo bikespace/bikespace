@@ -1,9 +1,3 @@
 .marker {
   pointer-events: all;
 }
-
-@media (max-width: 768px) {
-  .marker {
-    pointer-events: none;
-  }
-}
