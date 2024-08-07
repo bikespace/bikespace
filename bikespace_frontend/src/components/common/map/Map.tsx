@@ -28,6 +28,7 @@ import otherIcon from '@/assets/icons/icon_other.svg';
 import {issuePriority} from '@/config/bikespace-api';
 import {Icon} from 'leaflet';
 import {MapMarkerProps} from '../map-marker/MapMarker';
+import {MapPopup} from '@/components/dashboard/map-popup';
 
 interface MapProps {
   // submissions: SubmissionApiPayload[];
@@ -88,14 +89,14 @@ export function SubmissionsMap({submissions}: SubmissionMapProps) {
           shadowAnchor: [12, 41],
           iconUrl: getIcon(submission),
         }),
+        children: <MapPopup submission={submission} />,
       };
     });
-  }, [submissions]);
+  }, [submissions, focus]);
   return <Map markers={markers} />;
 }
 
 export function Map({markers}: MapProps) {
-  // export function Map({submissions}: MapProps) {
   const mapRef = useRef(null);
 
   return (

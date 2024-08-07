@@ -13,6 +13,7 @@ export function MapMarker({
   focused,
   position,
   iconUrl = undefined,
+  children,
   ...others
 }: MapMarkerProps) {
   // popupRef for calling openPopup() upon focus change
@@ -22,27 +23,22 @@ export function MapMarker({
   const map = useMap();
 
   useEffect(() => {
+    if (!focused) return;
     map.flyTo(position, 18, {duration: 0.5});
-    // put openPopup to the end of the event loop job queue so openPopup()
-    // is queued after all the calls flyTo() triggers
-    // i.e. this minimize the chance of popup from opening during the flyTo() changes
-    // also map.openPopup() works most of the time while marker.openPopup() does not
+    /* put openPopup to the end of the event loop job queue so openPopup() is queued after all the calls flyTo() triggers
+     i.e. this minimize the chance of popup from opening during the flyTo() changes
+     also map.openPopup() works most of the time while marker.openPopup() does not
+    */
     setTimeout(() => {
       if (popupRef.current !== null) {
         map.openPopup(popupRef.current);
       }
     }, 0);
-  }, [focused]);
-
-  /*   const priorityIssue = submission.issues.reduce((a: IssueType | null, c) => {
-    if (a === null) return c;
-
-    return issuePriority[a] < issuePriority[c] ? a : c;
-  }, null); */
+  }, [focused, position]);
 
   return (
     <Marker position={position} {...others}>
-      {/* <MapPopup submission={submission} ref={popupRef} /> */}
+      {children}
     </Marker>
   );
 }
