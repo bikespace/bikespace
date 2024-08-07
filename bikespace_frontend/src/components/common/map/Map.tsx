@@ -33,6 +33,7 @@ import {MapPopup} from '@/components/dashboard/map-popup';
 interface MapProps {
   // submissions: SubmissionApiPayload[];
   markers: MapMarkerProps[];
+  className?: string;
 }
 
 const tileLayers = {
@@ -96,11 +97,11 @@ export function SubmissionsMap({submissions}: SubmissionMapProps) {
   return <Map markers={markers} />;
 }
 
-export function Map({markers}: MapProps) {
+export function Map({className, markers}: MapProps) {
   const mapRef = useRef(null);
 
   return (
-    <div className={styles.map}>
+    <div className={`${styles.map} ${className}`}>
       <MapContainer
         center={[43.733399, -79.376221]}
         zoom={11}

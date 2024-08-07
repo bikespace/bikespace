@@ -1,6 +1,8 @@
 import React from 'react';
 import {Map} from '../common/map';
 
+import * as styles from './parking-map.module.scss';
+
 export const ParkingMap = () => {
-  return <div>Parking Map</div>;
+  return <Map className={styles.parkingMapPage} markers={[]} />;
 };
