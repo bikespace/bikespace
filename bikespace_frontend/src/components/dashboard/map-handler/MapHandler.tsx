@@ -22,7 +22,11 @@ export const MapHandler = () => {
       .locate()
       .on('locationfound', e => {
         trackUmamiEvent('locationfound');
+
         map.flyTo(e.latlng, map.getZoom());
+
+        // Stop location tracking after location found
+        map.stopLocate();
       })
       .on('locationerror', err => {
         const code = err.code as 0 | 1 | 2 | 3;
