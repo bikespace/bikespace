@@ -9,6 +9,7 @@ import {
 } from '@/interfaces/Submission';
 
 import styles from './submission-form-controller.module.scss';
+import {orderedComponentsType} from '../submission-form/SubmissionForm';
 
 interface SubmissionFormControllerProps {
   submissionPayload: SubmissionPayload;
@@ -19,7 +20,7 @@ interface SubmissionFormControllerProps {
   setSubmissionStatus: React.Dispatch<
     React.SetStateAction<SubmissionResponsePayload>
   >;
-  formOrder: string[];
+  formOrder: orderedComponentsType[];
 }
 
 export function SubmissionFormController({
@@ -67,7 +68,7 @@ export function SubmissionFormController({
 
   // disable "Next" button if no issue is selected
   const nextButtonDisabled =
-    formOrder[step] === 'Issue' && submissionPayload.issues.length === 0;
+    formOrder[step].label === 'Issue' && submissionPayload.issues.length === 0;
 
   const handleDataValidationWarning = () => {
     if (nextButtonDisabled) {
@@ -102,7 +103,7 @@ export function SubmissionFormController({
             step === 0 ? styles.hide : ''
           }`}
           onClick={() => handleStepChanged(-1)}
-          data-umami-event={`back-button-from-${formOrder[step]}`}
+          data-umami-event={`back-button-from-${formOrder[step].label}`}
         >
           Back
         </button>
@@ -124,7 +125,7 @@ export function SubmissionFormController({
         }`}
         onClick={() => handleStepChanged(1)}
         disabled={nextButtonDisabled}
-        data-umami-event={`next-button-from-${formOrder[step]}`}
+        data-umami-event={`next-button-from-${formOrder[step].label}`}
       >
         Next
       </button>

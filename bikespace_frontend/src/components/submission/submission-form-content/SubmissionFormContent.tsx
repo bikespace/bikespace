@@ -15,9 +15,10 @@ import {Comments} from '../comments';
 import {Summary} from '../summary';
 
 import {LocationProps} from '../location';
+import {orderedComponentsType} from '../submission-form/SubmissionForm';
 
 interface SubmissionFormContentProps {
-  formOrder: string[];
+  formOrder: orderedComponentsType[];
   step: number;
   issues: IssueType[];
   setIssues: React.Dispatch<React.SetStateAction<IssueType[]>>;
@@ -52,17 +53,17 @@ export function SubmissionFormContent({
   setComments,
   submissionStatus,
 }: SubmissionFormContentProps) {
-  switch (formOrder[step]) {
-    case Issue.name:
+  switch (formOrder[step].label) {
+    case 'Issue':
       return <Issue issues={issues} onIssuesChanged={setIssues} />;
-    case Location.name:
+    case 'Location':
       return (
         <Location
           location={location}
           handler={<MapHandler onLocationChanged={setLocation} />}
         />
       );
-    case Time.name:
+    case 'Time':
       return (
         <Time
           parkingDuration={parkingDuration}
@@ -71,9 +72,9 @@ export function SubmissionFormContent({
           onDateTimeChanged={setDateTime}
         />
       );
-    case Comments.name:
+    case 'Comments':
       return <Comments comments={comments} onCommentsChanged={setComments} />;
-    case Summary.name: {
+    case 'Summary': {
       const submission = {
         issues: issues,
         location: location,

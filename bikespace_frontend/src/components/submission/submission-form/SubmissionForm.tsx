@@ -27,9 +27,19 @@ const Location = dynamic<LocationProps>(() => import('../location/Location'), {
   ssr: false,
 });
 
-const orderedComponents = [Issue, Location, Time, Comments, Summary].map(
-  fn => fn.name
-);
+// must use separate property for component labels in orderedComponents so that it isn't mangled during minification
+export interface orderedComponentsType {
+  component: Function;
+  label: string;
+}
+
+const orderedComponents = [
+  {component: Issue, label: 'Issue'},
+  {component: Location, label: 'Location'},
+  {component: Time, label: 'Time'},
+  {component: Comments, label: 'Comments'},
+  {component: Summary, label: 'Summary'},
+];
 
 export function SubmissionForm() {
   const [issues, setIssues] = useState<IssueType[]>([]);
