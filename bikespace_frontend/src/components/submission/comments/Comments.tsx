@@ -14,7 +14,7 @@ export const Comments = (props: {
   };
   return (
     <div className={styles.submissionComments}>
-      <h1>Comments</h1>
+      <h2>Comments</h2>
       <h3>Any additional comments you want to add...</h3>
       <textarea
         onChange={handleComments}

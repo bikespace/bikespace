@@ -5,6 +5,8 @@ import {
   SubmissionResponsePayload,
 } from '@/interfaces/Submission';
 
+import styles from './summary.module.scss';
+
 export const Summary = (props: {
   submission: Submission;
   submissionStatus: SubmissionResponsePayload;
@@ -14,8 +16,8 @@ export const Summary = (props: {
 
   if (status === SubmissionStatus.Summary) {
     return (
-      <div id="submission-summary">
-        <h1>Summary</h1>
+      <div id="submission-summary" className={styles.summary}>
+        <h2>Summary</h2>
         <div>
           <p>
             <strong>Issues:</strong> {submission.issues.join(', ').toString()}
