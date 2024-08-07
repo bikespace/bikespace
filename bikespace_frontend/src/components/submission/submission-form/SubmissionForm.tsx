@@ -28,7 +28,7 @@ const Location = dynamic<LocationProps>(() => import('../location/Location'), {
 });
 
 // must use separate property for component labels in orderedComponents so that it isn't mangled during minification
-export interface orderedComponentsType {
+export interface OrderedComponentsType {
   component: Function;
   label: string;
 }

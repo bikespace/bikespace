@@ -9,7 +9,7 @@ import {
 } from '@/interfaces/Submission';
 
 import styles from './submission-form-controller.module.scss';
-import {orderedComponentsType} from '../submission-form/SubmissionForm';
+import {OrderedComponentsType} from '../submission-form/SubmissionForm';
 
 interface SubmissionFormControllerProps {
   submissionPayload: SubmissionPayload;
@@ -20,7 +20,7 @@ interface SubmissionFormControllerProps {
   setSubmissionStatus: React.Dispatch<
     React.SetStateAction<SubmissionResponsePayload>
   >;
-  formOrder: orderedComponentsType[];
+  formOrder: OrderedComponentsType[];
 }
 
 export function SubmissionFormController({

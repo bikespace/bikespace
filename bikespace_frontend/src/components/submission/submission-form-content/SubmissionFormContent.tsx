@@ -15,10 +15,10 @@ import {Comments} from '../comments';
 import {Summary} from '../summary';
 
 import {LocationProps} from '../location';
-import {orderedComponentsType} from '../submission-form/SubmissionForm';
+import {OrderedComponentsType} from '../submission-form/SubmissionForm';
 
 interface SubmissionFormContentProps {
-  formOrder: orderedComponentsType[];
+  formOrder: OrderedComponentsType[];
   step: number;
   issues: IssueType[];
   setIssues: React.Dispatch<React.SetStateAction<IssueType[]>>;

@@ -1,5 +1,5 @@
 import React from 'react';
-import {render, screen, fireEvent} from '@testing-library/react';
+import {render, screen} from '@testing-library/react';
 
 import {SubmissionFormController} from './SubmissionFormController';
 import {
@@ -7,7 +7,7 @@ import {
   SubmissionStatus,
   SubmissionResponsePayload,
 } from '@/interfaces/Submission';
-import {orderedComponentsType} from '../submission-form/SubmissionForm';
+import {OrderedComponentsType} from '../submission-form/SubmissionForm';
 
 // Mock useRouter:
 jest.mock('next/navigation', () => ({
@@ -30,7 +30,7 @@ describe('SubmissionFormController', () => {
       'Time',
       'Comments',
       'Summary',
-    ].map(l => ({label: l}) as orderedComponentsType);
+    ].map(l => ({label: l}) as OrderedComponentsType);
     render(
       <SubmissionFormController
         locationLoaded={true}
