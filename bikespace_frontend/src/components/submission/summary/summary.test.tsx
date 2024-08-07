@@ -37,7 +37,7 @@ describe('Summary', () => {
       />
     );
 
-    expect(screen.getByRole('heading', {level: 1})).toHaveTextContent(
+    expect(screen.getByRole('heading', {level: 2})).toHaveTextContent(
       'Summary'
     );
     expect(screen.getByText(/Issues:/i));

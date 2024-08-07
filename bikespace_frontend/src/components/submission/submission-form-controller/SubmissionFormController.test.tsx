@@ -7,6 +7,7 @@ import {
   SubmissionStatus,
   SubmissionResponsePayload,
 } from '@/interfaces/Submission';
+import {orderedComponentsType} from '../submission-form/SubmissionForm';
 
 // Mock useRouter:
 jest.mock('next/navigation', () => ({
@@ -23,6 +24,13 @@ describe('SubmissionFormController', () => {
     const mockSubmissionResponsePayload = {
       status: SubmissionStatus.Summary,
     } as SubmissionResponsePayload;
+    const mockFormOrder = [
+      'Issue',
+      'Location',
+      'Time',
+      'Comments',
+      'Summary',
+    ].map(l => ({label: l}) as orderedComponentsType);
     render(
       <SubmissionFormController
         locationLoaded={true}
@@ -30,7 +38,7 @@ describe('SubmissionFormController', () => {
         setStep={jest.fn()}
         submissionPayload={mockSubmissionPayload}
         setSubmissionStatus={jest.fn()}
-        formOrder={['Issue', 'Location', 'Time', 'Comments', 'Summary']}
+        formOrder={mockFormOrder}
         submissionStatus={mockSubmissionResponsePayload}
       />
     );
