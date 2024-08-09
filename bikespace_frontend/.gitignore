@@ -1,5 +1,11 @@
 node_modules/
-.cache/
-public
-src/gatsby-types.d.ts
+public/
 coverage/
+build/
+out/
+
+.next
+next-env.d.ts
+
+.DS_Store
+.swc

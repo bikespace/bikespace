@@ -1,0 +1,123 @@
+@import '@/styles/variables';
+
+.header {
+  padding: 12px;
+  box-shadow: 8px 0px 8px rgba(0, 0, 0, 0.5);
+  height: 54px;
+  background-color: white;
+  
+  .navToggle, .navBackdrop {
+    display: none;
+  }
+
+  .mainNav {
+    display: flex;
+    flex-direction: row;
+    /* horizontal align right */
+    align-items: center;
+    width: 100%;
+
+    .bikespaceLogo {
+      flex-grow: 1;
+
+      img {
+        height: 30px;
+      }
+    }
+
+    ul, a {
+      display: flex;
+      align-items: center;
+    }
+
+    ul {
+      gap: 1rem;
+      margin: 0;
+      padding: 0;
+      color: $color-secondary-dark-grey;
+      font-weight: 600;
+    }
+
+    li {
+      
+
+      a {
+        img {
+          height: 1.4rem;
+          width: auto;
+          margin-right: 0.3rem;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 1024px) {
+  $nav-width: 250px;
+
+  .header {
+    z-index: 500;
+    position: fixed;
+    top: 32px;
+    right: 32px;
+    height: 40px;
+    width: 40px;
+    box-shadow: unset;
+    background-color: white;
+    border-radius: 2px;
+    padding: 0;
+
+    .navToggle {
+      z-index: 2;
+      height: 100%;
+      display: block;
+      padding: 8px;
+
+      img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+      }
+    }
+
+    .mainNav {
+      visibility: hidden;
+      display: block;
+      position: fixed;
+      background-color: white;
+      padding: 8px;
+      height: 100%;
+      z-index: 999;
+      width: $nav-width;
+      top: 0;
+      bottom: 0;
+      right: calc(0px - $nav-width);
+      transition: visibility .2s, right .2s linear;
+
+      .bikespaceLogo {
+        margin-bottom: 16px;
+      }
+
+      ul {
+        display: flex;
+        flex-direction: column;
+      }
+
+      &.open {
+        visibility: visible;
+        right: 0;
+      }
+
+      .navBackdrop {
+        z-index: 200;
+        position: fixed;
+        display: none;
+        inset: 0;
+
+        &.open {
+          display: block;
+        }
+      }
+    }
+  }
+}

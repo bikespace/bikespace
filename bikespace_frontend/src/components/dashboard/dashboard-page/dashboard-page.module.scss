@@ -1,0 +1,11 @@
+.dashboardPage {
+  flex-grow: 1;
+  display: flex;
+  overflow: hidden;
+}
+
+@media (max-width: 1024px) {
+  .dashboardPage {
+    flex-direction: column-reverse;
+  }
+}

@@ -1,0 +1,45 @@
+@import '@/styles/variables';
+
+.item {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 4px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid $color-secondary-light-grey;
+  text-align: left;
+  font-size: 0.9rem;
+
+  h3 {
+    font-size: medium;
+  }
+
+  .subHeader {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .submissionId {
+      font-style: italic;
+    }
+  }
+
+  .issues {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-wrap: wrap;
+  }
+
+  &:hover {
+    h3 {
+      color: $color-primary;
+    }
+  }
+
+  &.focused {
+    background: $color-secondary-light-grey;
+  }
+}

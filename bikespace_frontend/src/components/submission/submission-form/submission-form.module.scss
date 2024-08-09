@@ -1,0 +1,40 @@
+.mainContent {
+  margin: 0 auto;
+  padding: 16px 16px;
+  max-width: 640px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  height: calc(100dvh - 90px);
+  border-radius: 4px;
+
+  .mainContentBody {
+    position: relative;
+    flex-grow: 1;
+    width: 90%;
+    margin: 0 auto;
+    overflow-y: hidden;
+
+    h2 {
+      margin-bottom: 10px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #39393a;
+    }
+
+    h3 {
+      margin-bottom: 20px;
+      font-size: 1rem;
+      font-weight: normal;
+      color: #39393a;
+    }
+  }
+
+  footer {
+    width: 90%;
+    margin: 0 auto;
+    padding: 16px 0;
+    min-height: 44px;
+  }
+}

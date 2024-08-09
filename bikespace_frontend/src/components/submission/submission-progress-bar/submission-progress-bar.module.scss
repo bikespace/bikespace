@@ -1,0 +1,33 @@
+@import '@/styles/variables';
+
+.progressBar {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  width: 90%;
+  margin: 0 auto;
+  padding: 16px 0;
+
+  .middleLine {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    width: 100%;
+    height: 2px;
+    background-color: $gray-color;
+  }
+
+  .step {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: $gray-color;
+    transition: background-color 0.3s ease-in-out;
+    z-index: 10;
+
+    &.active {
+      background-color: $main-color;
+    }
+  }
+}

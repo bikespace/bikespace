@@ -1,0 +1,116 @@
+@import '@/styles/variables.scss';
+
+$header-height: 54px;
+
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  position: sticky;
+  top: 0px;
+  z-index: 10;
+
+  padding: 12px;
+  height: $header-height;
+  background-color: white;
+  
+  .bikespaceLogo {
+    flex-grow: 1;
+
+    img {
+      height: 30px;
+    }
+  }
+}
+
+.mainNav {
+  display: flex;
+  flex-direction: row;
+  /* horizontal align right */
+  align-items: center;
+
+  ul, a {
+    display: flex;
+    align-items: center;
+  }
+
+  ul {
+    gap: 1rem;
+    margin: 0;
+    padding: 0;
+    color: $color-secondary-dark-grey;
+    font-weight: 600;
+  }
+
+  li {
+    a {
+      img {
+        height: 1.4rem;
+        width: auto;
+        margin-right: 0.3rem;
+      }
+    }
+  }
+}
+
+.navToggle, .navBackdrop {
+  display: none;
+}
+
+@media (max-width: 1024px) {
+  $nav-width: 250px;
+
+  .navToggle {
+    z-index: 20;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;
+    border: 2px solid $color-secondary-dark-grey;
+    border-radius: 2px;
+
+    img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+  }
+
+  .mainNav {
+    visibility: hidden;
+    display: block;
+    position: fixed;
+    background-color: white;
+    padding: 8px;
+    height: 100%;
+    z-index: 202;
+    width: $nav-width;
+    top: $header-height;
+    bottom: 0;
+    right: calc(0px - $nav-width);
+    transition: visibility .2s, right .2s linear;
+
+    ul {
+      display: flex;
+      flex-direction: column;
+    }
+
+    &.open {
+      visibility: visible;
+      right: 0;
+    }
+
+    .navBackdrop {
+      z-index: 200;
+      position: fixed;
+      display: none;
+      inset: 0;
+
+      &.open {
+        display: block;
+      }
+    }
+  }
+}

@@ -1,0 +1,1 @@
+export {SubmissionFormContent} from './SubmissionFormContent';

@@ -1,0 +1,30 @@
+@import '@/styles/variables';
+
+.primaryBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 2rem;
+  background-color: white;
+  border: 2px solid $color-primary-d50p;
+  border-radius: 4px;
+  padding: 0px 8px;
+  font-family: $body-font-stack;
+  font-size: 0.9rem;
+  color: $color-secondary-dark-grey;
+
+  &:hover {
+    background-color: $color-primary-10p;
+    border-color: $color-primary;
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 0.2rem $color-primary-20p;
+  }
+
+  &:active {
+    background-color: $color-primary-d50p;
+    border-color: $color-primary;
+    color: $color-primary;
+  }
+}
