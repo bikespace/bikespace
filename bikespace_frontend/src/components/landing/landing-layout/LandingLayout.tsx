@@ -3,6 +3,7 @@
 import React from 'react';
 
 import {Header} from '../header';
+import {Footer} from '../footer';
 
 import styles from './landing-layout.module.scss';
 
@@ -15,7 +16,7 @@ export function LandingLayout({children}: LandingLayoutProps) {
     <>
       <Header />
       <main className={styles.pageMain}>{children}</main>
-      <footer className={styles.pageFooter}>This will be a footer</footer>
+      <Footer />
     </>
   );
 }

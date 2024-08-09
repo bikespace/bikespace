@@ -1,3 +1,15 @@
 .pageHeader, .pageMain, .pageFooter {
   font-family: "Open Sans";
 }
+
+.pageMain {
+  margin-left: 1rem;
+  margin-right: 1rem;
+  max-width: 100%;
+
+  img {
+    width: 100%;
+    max-width: 600px;
+  }
+}
+
