@@ -9,7 +9,8 @@ $header-height: 54px;
 
   padding: 12px;
   height: $header-height;
-  background-color: $color-primary-10p;
+  box-shadow: 8px 0px 8px rgba(0, 0, 0, 0.5);
+  background-color: white;
 
   .headerContent {
     display: flex;
@@ -39,6 +40,13 @@ $header-height: 54px;
   ul, a {
     display: flex;
     align-items: center;
+  }
+
+  a {
+    color: black;
+    :visited {
+      color: black;
+    }
   }
 
   ul {
@@ -73,10 +81,7 @@ $header-height: 54px;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 2px;
-    border: 2px solid black;
     filter: contrast(30%);
-    border-radius: 2px;
 
     img {
       max-width: 100%;
