@@ -30,9 +30,51 @@
   }
 }
 
+.heroButtonContainer {
+  display: inline-flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  gap: 1rem;
+}
 
+a.buttonLink {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-.buttonLink {
-  display: block;
+  height: 2rem;
+  padding: 1rem 1rem;
+
+  border: 2px solid black;
+  border-radius: 4px;
+  text-decoration: none;
+
+  &:visited {
+    color: black;
+  }
+  &:hover {
+    border-color: $color-primary;
+  }
+}
+
+a.buttonFilled {
+  border-color: $color-primary-d50p;
+  background-color: $color-primary-d50p;
+  color: white;
+  &:visited {
+    color: white;
+  }
+}
+
+a.navLink {
+  color: black;
+  padding-left: 1rem;
+  &:visited {
+    color: black;
+  }
+  &:hover {
+    color: $color-primary;
+  }
 }
 

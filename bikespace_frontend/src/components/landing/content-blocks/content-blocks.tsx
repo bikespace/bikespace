@@ -14,9 +14,28 @@ function HeroBlock({
       <div className={styles.heroBlock}>
         <div style={{flex: '2 1 400px'}}>
           <div className={styles.heroTagline}>{tagline}</div>
-          <a className={styles.buttonLink}>Button One</a>
-          <a className={styles.buttonLink}>Button Two</a>
-          <a className={styles.buttonLink}>Button Three</a>
+          <div className={styles.heroButtonContainer}>
+            <a
+              href="/"
+              className={`${styles.buttonLink} ${styles.buttonFilled}`}
+            >
+              Find bike parking
+            </a>
+            <a
+              href="/submission"
+              className={styles.buttonLink}
+              data-umami-event="submission-from-frontpage"
+            >
+              Report a bike parking issue
+            </a>
+            <a
+              href="/dashboard"
+              className={styles.navLink}
+              data-umami-event="dashboard-from-frontpage"
+            >
+              View the collected data
+            </a>
+          </div>
         </div>
         <div style={{flex: '1 1 auto'}}>
           <img src={imageSrc} className={styles.heroImage}></img>
