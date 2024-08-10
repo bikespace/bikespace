@@ -1,0 +1,36 @@
+@import '@/styles/variables.scss';
+
+.fullWidth {
+  @media (min-width: $wrapper-max-width) {
+    margin-left: calc(-100vw / 2 + $wrapper-max-width / 2);
+    margin-right: calc(-100vw / 2 + $wrapper-max-width / 2);
+    display: flex;
+    justify-content: center;
+  }
+}
+
+.heroBlock {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  max-width: $wrapper-full-width;
+
+  .heroTagline {
+    font-size: 2rem;
+    font-weight: bold;
+    text-wrap: wrap;
+  }
+
+  .heroImage {
+    width: 100%;
+    max-width: 400px;
+  }
+}
+
+
+
+.buttonLink {
+  display: block;
+}
+

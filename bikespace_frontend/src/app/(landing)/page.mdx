@@ -1,13 +1,14 @@
 import bikespaceIntro from '@/assets/images/bikespace-intro.png';
+import {HeroBlock} from '@/components/landing/content-blocks';
 
 export const metadata = {
   title: 'BikeSpace - Toronto\'s Bike Parking App',
 };
 
-Some content
-
-<img src={bikespaceIntro.src} />
-
+<HeroBlock 
+  tagline="Digital tools to improve bicycle parking in Toronto"
+  imageSrc={bikespaceIntro.src}
+></HeroBlock>
 
 ## Key Links
 
@@ -15,4 +16,14 @@ Some content
 * [View the collected data](/dashboard)
 * [About Us](/about)
 * [Style Test](/style-test)
+
+
+Every cyclist has struggled to find space to park. There is simply not enough bike parking to meet demand. Bike racks are often full, requiring a cyclist to improvise using poor alternatives like sign posts or fences. Too often racks are ancient wheel-benders, awkwardly located, or taken up by abandoned bikes.
+
+BikeSpace is a community-built web app originally started with support from the City of Toronto and Cycle Toronto. It lets people report the issues they find when trying to park their bikes in the city. This simple web app is:
+
+* quick and easy to use,
+* designed for mobile and desktop,
+* building a public map of parking problems in Toronto,
+* creating a data-driven picture to drive change.
 

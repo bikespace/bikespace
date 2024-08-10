@@ -17,34 +17,36 @@ export function Header() {
 
   return (
     <header className={styles.header} ref={clickAwayRef}>
-      <Link href={'/' as Route} title="Home" className={styles.bikespaceLogo}>
-        <img src={bikespaceLogo.src} alt="BikeSpace logo" />
-      </Link>
-      <div
-        role="button"
-        className={styles.navToggle}
-        onClick={() => {
-          setIsMenuOpen(!isMenuOpen);
-        }}
-      >
-        <img src={hamburgerMenu.src} alt="Menu" />
+      <div className={styles.headerContent}>
+        <Link href={'/' as Route} title="Home" className={styles.bikespaceLogo}>
+          <img src={bikespaceLogo.src} alt="BikeSpace logo" />
+        </Link>
+        <div
+          role="button"
+          className={styles.navToggle}
+          onClick={() => {
+            setIsMenuOpen(!isMenuOpen);
+          }}
+        >
+          <img src={hamburgerMenu.src} alt="Menu" />
+        </div>
+        <nav
+          className={`${styles.mainNav} ${isMenuOpen ? styles.open : ''}`}
+          aria-label="Main"
+        >
+          <ul>
+            <li>
+              <a href="/about">About</a>
+            </li>
+            <li>
+              <a href="https://github.com/bikespace/bikespace/tree/main/">
+                <img src={githubLogo.src} alt="GitHub" />
+                Contribute
+              </a>
+            </li>
+          </ul>
+        </nav>
       </div>
-      <nav
-        className={`${styles.mainNav} ${isMenuOpen ? styles.open : ''}`}
-        aria-label="Main"
-      >
-        <ul>
-          <li>
-            <a href="/about">About</a>
-          </li>
-          <li>
-            <a href="https://github.com/bikespace/bikespace/tree/main/">
-              <img src={githubLogo.src} alt="GitHub" />
-              Contribute
-            </a>
-          </li>
-        </ul>
-      </nav>
     </header>
   );
 }

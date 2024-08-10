@@ -3,17 +3,23 @@
 $header-height: 54px;
 
 .header {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-
   position: sticky;
   top: 0px;
   z-index: 10;
 
   padding: 12px;
   height: $header-height;
-  background-color: white;
+  background-color: $color-primary-10p;
+
+  .headerContent {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    max-width: $wrapper-full-width;
+    max-height: 100%;
+    margin: 0 auto;
+  }
   
   .bikespaceLogo {
     flex-grow: 1;
@@ -58,16 +64,16 @@ $header-height: 54px;
   display: none;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: $wrapper-full-width) {
   $nav-width: 250px;
 
   .navToggle {
     z-index: 20;
-    height: 100%;
+    max-height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 4px;
+    padding: 2px;
     border: 2px solid black;
     filter: contrast(30%);
     border-radius: 2px;
