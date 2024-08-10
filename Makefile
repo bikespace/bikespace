@@ -85,6 +85,12 @@ migrate-db:
 upgrade-db:
 	$(PYTHON) $(MANAGE_PY) db upgrade --directory $(BIKESPACE_DB_MIGRATIONS)
 
+db-history:
+	$(PYTHON) $(MANAGE_PY) db history --directory $(BIKESPACE_DB_MIGRATIONS)
+
+db-merge-heads:
+	$(PYTHON) $(MANAGE_PY) db merge heads -m "Merge heads" --directory $(BIKESPACE_DB_MIGRATIONS)
+
 db-stamp-heads:
 	$(PYTHON) $(MANAGE_PY) db stamp heads --directory $(BIKESPACE_DB_MIGRATIONS)
 

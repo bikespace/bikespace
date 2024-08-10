@@ -11,7 +11,7 @@ processes = []
   buildpacks = ["paketo-buildpacks/python"]
 
 [build.args]
-  BP_CPYTHON_VERSION = "3.12.2"
+  BP_CPYTHON_VERSION = "3.12.4"
 
 [env]
   PORT = "8000"
