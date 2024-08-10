@@ -9,11 +9,13 @@ import bikespaceLogo from '@/assets/icons/header-logo.svg';
 export function SubmissionHeader() {
   return (
     <header className={styles.header}>
-      <img
-        className={styles.headerLogo}
-        src={bikespaceLogo.src}
-        alt="bikespace logo"
-      />
+      <a href="/">
+        <img
+          className={styles.headerLogo}
+          src={bikespaceLogo.src}
+          alt="bikespace logo"
+        />
+      </a>
       <FeedbackMailTo />
     </header>
   );

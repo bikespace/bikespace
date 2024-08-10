@@ -68,7 +68,8 @@ $header-height: 54px;
     align-items: center;
     justify-content: center;
     padding: 4px;
-    border: 2px solid $color-secondary-dark-grey;
+    border: 2px solid black;
+    filter: contrast(30%);
     border-radius: 2px;
 
     img {
