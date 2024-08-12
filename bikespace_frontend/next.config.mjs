@@ -7,6 +7,7 @@ const nextConfig = withMDX()({
   pageExtensions: ['js', 'jsx', 'mdx', 'ts', 'tsx'],
   experimental: {
     typedRoutes: true,
+    missingSuspenseWithCSRBailout: false,
   },
 });
 
