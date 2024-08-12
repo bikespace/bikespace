@@ -7,7 +7,7 @@ import {trackUmamiEvent} from '@/utils';
 
 import {useSubmissionsQuery} from '@/hooks';
 
-import {useSubmissionsStore} from '@/store';
+import {useSubmissionsStore} from '@/states/store';
 
 import {Sidebar} from '../sidebar';
 import {MapProps} from '../map';
@@ -23,14 +23,14 @@ export function DashboardPage() {
   const queryResult = useSubmissionsQuery();
   const allSubmissions = queryResult.data || [];
 
-  const {submissions, setSubmissions, filters, focusedId, setFocusedId} =
-    useSubmissionsStore(state => ({
+  const {submissions, setSubmissions, filters, focusedId} = useSubmissionsStore(
+    state => ({
       submissions: state.submissions,
       setSubmissions: state.setSubmissions,
       filters: state.filters,
       focusedId: state.focusedId,
-      setFocusedId: state.setFocusedId,
-    }));
+    })
+  );
 
   useEffect(() => {
     if (allSubmissions.length === 0) return;
@@ -63,23 +63,6 @@ export function DashboardPage() {
 
     trackUmamiEvent('focus_submission', {submission_id: focusedId});
   }, [focusedId]);
-
-  // update app state based on URL parameters
-  // const searchParams = useSearchParams();
-
-  // useEffect(() => {
-  //   const paramTab = searchParams.get('tab') as SidebarTab;
-  //   const paramID = Number(searchParams.get('id'));
-
-  //   if (!queryResult.isPending) {
-  //     if (paramID) {
-  //       setFocusedId(paramID);
-  //       setTab(SidebarTab.Feed);
-  //     } else if (Object.values(SidebarTab).includes(paramTab)) {
-  //       setTab(paramTab);
-  //     }
-  //   }
-  // }, [searchParams, queryResult]);
 
   return (
     <main className={styles.dashboardPage}>

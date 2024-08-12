@@ -1,11 +1,7 @@
-import React, {useCallback, useRef} from 'react';
+import React, {useRef} from 'react';
 import {MapContainer, TileLayer} from 'react-leaflet';
 import MarkerClusterGroup from 'react-leaflet-cluster';
 import {useWindowSize} from '@uidotdev/usehooks';
-
-import useSubmissionsStore from '@/store';
-
-import {SidebarTab, useSidebarTab} from '../sidebar-tabs';
 
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css';
@@ -28,31 +24,6 @@ function Map({submissions}: MapProps) {
 
   const windowSize = useWindowSize();
 
-  const {focus, setFocus} = useSubmissionsStore(state => ({
-    focus: state.focusedId,
-    setFocus: state.setFocusedId,
-  }));
-
-  const {setTab} = useSidebarTab();
-
-  const handlePopupClose = useCallback(
-    (id: number) => {
-      if (focus === id) setFocus(null);
-    },
-    [focus]
-  );
-
-  const handleClick = useCallback(
-    (id: number) => {
-      if (windowSize.width! <= 768) {
-        setTab(SidebarTab.Feed);
-      }
-
-      setFocus(id);
-    },
-    [windowSize.width]
-  );
-
   return (
     <MapContainer
       center={[43.733399, -79.376221]}
@@ -73,13 +44,7 @@ function Map({submissions}: MapProps) {
           <MapMarker
             key={submission.id}
             submission={submission}
-            isFocused={focus === submission.id}
-            handleClick={() => {
-              handleClick(submission.id);
-            }}
-            handlePopupClose={() => {
-              handlePopupClose(submission.id);
-            }}
+            windowWidth={windowSize.width}
           />
         ))}
       </MarkerClusterGroup>

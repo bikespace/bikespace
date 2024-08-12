@@ -7,7 +7,7 @@ import {trackUmamiEvent} from '@/utils';
 
 import {useAllSubmissionsDateRange} from '@/hooks';
 
-import {useSubmissionsStore} from '@/store';
+import {useSubmissionsStore} from '@/states/store';
 
 import {getDateRangeFromInterval} from './utils';
 

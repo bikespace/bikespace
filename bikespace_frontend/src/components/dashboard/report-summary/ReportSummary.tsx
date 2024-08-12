@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {DateTime} from 'luxon';
 
-import {useSubmissionsStore} from '@/store';
+import {useSubmissionsStore} from '@/states/store';
 
 import {useAllSubmissionsDateRange, useSubmissionsQuery} from '@/hooks';
 

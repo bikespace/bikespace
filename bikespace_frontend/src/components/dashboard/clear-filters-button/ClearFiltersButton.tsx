@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {useSubmissionsStore} from '@/store';
+import {useSubmissionsStore} from '@/states/store';
 
 import {SidebarButton} from '../sidebar-button';
 

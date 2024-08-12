@@ -1,8 +1,6 @@
 import React from 'react';
 
-import {SidebarTab} from './types';
-
-import {useSidebarTab} from './hooks';
+import {SidebarTab, useSidebarTab} from '@/states/url-params';
 
 import styles from './sidebar-tabs.module.scss';
 
@@ -22,7 +20,7 @@ const tabs = [
 ];
 
 export function SidebarTabs() {
-  const {tab, setTab} = useSidebarTab();
+  const [tab, setTab] = useSidebarTab();
 
   return (
     <nav className={styles.tabs}>

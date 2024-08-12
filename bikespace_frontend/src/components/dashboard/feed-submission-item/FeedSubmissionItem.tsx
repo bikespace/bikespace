@@ -3,7 +3,7 @@ import {DateTime} from 'luxon';
 
 import {SubmissionApiPayload, ParkingDuration} from '@/interfaces/Submission';
 
-import useSubmissionsStore from '@/store';
+import useSubmissionsStore from '@/states/store';
 
 import {IssueBadge} from '../issue-badge';
 

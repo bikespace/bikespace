@@ -4,7 +4,7 @@ import {useWindowSize} from '@uidotdev/usehooks';
 
 import {trackUmamiEvent} from '@/utils';
 
-import {useSubmissionsStore} from '@/store';
+import {useSubmissionsStore} from '@/states/store';
 
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-defaulticon-compatibility';

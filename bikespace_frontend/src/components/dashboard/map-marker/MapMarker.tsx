@@ -9,6 +9,9 @@ import {issuePriority} from '@/config/bikespace-api';
 
 import {trackUmamiEvent} from '@/utils';
 
+import {useSubmissionsStore} from '@/states/store';
+import {SidebarTab, useSidebarTab} from '@/states/url-params';
+
 import {MapPopup} from '../map-popup';
 
 import notProvidedIcon from '@/assets/icons/icon_not_provided.svg';
@@ -22,20 +25,13 @@ import styles from './map-marker.module.scss';
 
 interface MapMarkerProps {
   submission: SubmissionApiPayload;
-  isFocused: boolean;
-  handleClick: () => void;
-  handlePopupClose: () => void;
+  windowWidth: number | null;
 }
 
 const FLYTO_ANIMATION_DURATION = 0.5; // 0.5 seconds
 const FLYTO_ZOOM = 20;
 
-export function MapMarker({
-  submission,
-  isFocused,
-  handleClick,
-  handlePopupClose,
-}: MapMarkerProps) {
+export function MapMarker({submission, windowWidth}: MapMarkerProps) {
   // popupRef for calling openPopup() upon focus change
   // `Popup` from 'react-leaflet' forwards `Popup` from 'leaflet'
   const popupRef = useRef<LeafletPopup>(null);
@@ -44,8 +40,17 @@ export function MapMarker({
 
   const map = useMap();
 
+  const {focus, setFocus} = useSubmissionsStore(state => ({
+    focus: state.focusedId,
+    setFocus: state.setFocusedId,
+  }));
+
+  const [, setTab] = useSidebarTab();
+
+  const isFocused = focus === submission.id;
+
   useEffect(() => {
-    if (!isFocused) return;
+    if (!isFocused || (windowWidth && windowWidth > 768)) return;
 
     map.flyTo(position, FLYTO_ZOOM, {duration: FLYTO_ANIMATION_DURATION});
 
@@ -64,6 +69,18 @@ export function MapMarker({
     }, FLYTO_ANIMATION_DURATION * 1000);
   }, [isFocused, popupRef.current]);
 
+  const handlePopupClose = () => {
+    if (focus === submission.id) setFocus(null);
+  };
+
+  const handleClick = () => {
+    if (windowWidth && windowWidth <= 768) {
+      setTab(SidebarTab.Feed);
+    }
+
+    setFocus(submission.id);
+  };
+
   const priorityIssue = submission.issues.reduce((a: IssueType | null, c) => {
     if (a === null) return c;
 
@@ -73,7 +90,6 @@ export function MapMarker({
 
   return (
     <Marker
-      key={submission.id}
       position={position}
       icon={
         new Icon({

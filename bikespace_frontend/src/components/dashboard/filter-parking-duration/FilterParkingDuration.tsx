@@ -4,7 +4,7 @@ import {ParkingDuration} from '@/interfaces/Submission';
 
 import {trackUmamiEvent} from '@/utils';
 
-import {useSubmissionsStore} from '@/store';
+import {useSubmissionsStore} from '@/states/store';
 
 import {FilterSection} from '../filter-section';
 import {SidebarButton} from '../sidebar-button';
