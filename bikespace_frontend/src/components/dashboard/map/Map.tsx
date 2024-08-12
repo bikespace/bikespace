@@ -8,7 +8,6 @@ import useSubmissionsStore from '@/store';
 import {SidebarTab, useSidebarTab} from '../sidebar-tabs';
 
 import 'leaflet/dist/leaflet.css';
-import 'leaflet-defaulticon-compatibility';
 import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css';
 
 import {SubmissionApiPayload} from '@/interfaces/Submission';

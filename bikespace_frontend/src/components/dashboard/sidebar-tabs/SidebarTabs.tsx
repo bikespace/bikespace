@@ -31,7 +31,7 @@ export function SidebarTabs() {
           key={t.name}
           className={`${styles.tab} ${t.name === tab ? styles.active : ''}`}
           onClick={() => {
-            setTab(tab);
+            setTab(t.name);
           }}
         >
           <span>{t.label}</span>
