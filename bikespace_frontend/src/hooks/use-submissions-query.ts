@@ -25,7 +25,7 @@ export function useSubmissionsQuery() {
 
       return submissions;
     },
-    staleTime: Infinity,
+    staleTime: Infinity, // Only fetch data once per app load
   });
 
   return query;

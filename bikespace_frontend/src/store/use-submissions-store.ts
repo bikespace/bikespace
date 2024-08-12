@@ -8,11 +8,9 @@ import {
   createFocusedIdSlice,
   SubmissionsSlice,
   createSubmissionsSlice,
-  TabSlice,
-  createTabSlice,
 } from './slices';
 
-type StoreSlice = FiltersSlice & FocusedIdSlice & SubmissionsSlice & TabSlice;
+type StoreSlice = FiltersSlice & FocusedIdSlice & SubmissionsSlice;
 
 // Combine modular stores (slices) into single global store
 export const useSubmissionsStore = createWithEqualityFn<StoreSlice>()(
@@ -20,7 +18,6 @@ export const useSubmissionsStore = createWithEqualityFn<StoreSlice>()(
     ...createFiltersSlice(...a),
     ...createFocusedIdSlice(...a),
     ...createSubmissionsSlice(...a),
-    ...createTabSlice(...a),
   }),
   shallow
 );

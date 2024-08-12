@@ -1,7 +1,8 @@
 import React from 'react';
 
-import {useSubmissionsStore} from '@/store';
-import {SidebarTab} from '@/store/slices';
+import {SidebarTab} from './types';
+
+import {useSidebarTab} from './hooks';
 
 import styles from './sidebar-tabs.module.scss';
 
@@ -21,10 +22,7 @@ const tabs = [
 ];
 
 export function SidebarTabs() {
-  const {tab, setTab} = useSubmissionsStore(state => ({
-    tab: state.tab,
-    setTab: state.setTab,
-  }));
+  const {tab, setTab} = useSidebarTab();
 
   return (
     <nav className={styles.tabs}>
@@ -33,7 +31,7 @@ export function SidebarTabs() {
           key={t.name}
           className={`${styles.tab} ${t.name === tab ? styles.active : ''}`}
           onClick={() => {
-            setTab(t.name);
+            setTab(tab);
           }}
         >
           <span>{t.label}</span>

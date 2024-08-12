@@ -6,8 +6,8 @@ import {SubmissionApiPayload} from '@/interfaces/Submission';
 import {issuePriority} from '@/config/bikespace-api';
 
 import {useSubmissionsStore} from '@/store';
-import {SidebarTab} from '@/store/slices';
 
+import {SidebarTab, useSidebarTab} from '../sidebar-tabs';
 import {IssueBadge} from '../issue-badge';
 
 import styles from './map-popup.module.scss';
@@ -18,10 +18,11 @@ interface MapPopupProps {
 
 export const MapPopup = forwardRef<LeafletPopup, MapPopupProps>(
   ({submission}: MapPopupProps, ref) => {
-    const {setFocus, setTab} = useSubmissionsStore(state => ({
+    const {setFocus} = useSubmissionsStore(state => ({
       setFocus: state.setFocusedId,
-      setTab: state.setTab,
     }));
+
+    const {setTab} = useSidebarTab();
 
     const {issues, id, comments, parking_duration, parking_time} = submission;
 
