@@ -79,13 +79,15 @@ export function DashboardPage() {
   const paramID = Number(searchParams.get('id'));
 
   useEffect(() => {
-    if (paramID) {
-      setFocusedId(paramID);
-      setTab(SidebarTab.Feed);
-    } else if (Object.values(SidebarTab).includes(paramTab)) {
-      setTab(paramTab);
+    if (!queryResult.isPending) {
+      if (paramID) {
+        setFocusedId(paramID);
+        setTab(SidebarTab.Feed);
+      } else if (Object.values(SidebarTab).includes(paramTab)) {
+        setTab(paramTab);
+      }
     }
-  }, [paramTab, paramID]);
+  }, [paramTab, paramID, queryResult]);
 
   return (
     <main className={styles.dashboardPage}>
