@@ -3,6 +3,17 @@ import {render, screen} from '@testing-library/react';
 
 import {SidebarTabs} from './SidebarTabs';
 
+jest.mock('next/navigation', () => ({
+  useRouter() {
+    return {};
+  },
+  useSearchParams() {
+    return {
+      get: jest.fn(),
+    };
+  },
+}));
+
 describe('SidebarTabs', () => {
   beforeEach(() => {
     render(<SidebarTabs />);
