@@ -3,7 +3,7 @@ import {DateTime} from 'luxon';
 
 import {SubmissionApiPayload, ParkingDuration} from '@/interfaces/Submission';
 
-import useSubmissionsStore from '@/states/store';
+import {useSubmissionId} from '@/states/url-params';
 
 import {IssueBadge} from '../issue-badge';
 
@@ -20,10 +20,7 @@ export function FeedSubmissionItem({submission}: FeedSubmissionItemProps) {
 
   const buttonRef = useRef<HTMLButtonElement>(null);
 
-  const {focus, setFocus} = useSubmissionsStore(state => ({
-    focus: state.focusedId,
-    setFocus: state.setFocusedId,
-  }));
+  const [focus, setFocus] = useSubmissionId();
 
   useEffect(() => {
     if (!(focus === id)) return;

@@ -4,7 +4,7 @@ import {useWindowSize} from '@uidotdev/usehooks';
 
 import {trackUmamiEvent} from '@/utils';
 
-import {useSubmissionsStore} from '@/states/store';
+import {useSubmissionId} from '@/states/url-params';
 
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-defaulticon-compatibility';
@@ -15,7 +15,7 @@ export const MapHandler = () => {
 
   const window = useWindowSize();
 
-  const focus = useSubmissionsStore(state => state.focusedId);
+  const [focus] = useSubmissionId();
 
   useEffect(() => {
     map

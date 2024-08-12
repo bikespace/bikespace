@@ -8,6 +8,7 @@ import {trackUmamiEvent} from '@/utils';
 import {useSubmissionsQuery} from '@/hooks';
 
 import {useSubmissionsStore} from '@/states/store';
+import {useSubmissionId} from '@/states/url-params';
 
 import {Sidebar} from '../sidebar';
 import {MapProps} from '../map';
@@ -23,14 +24,13 @@ export function DashboardPage() {
   const queryResult = useSubmissionsQuery();
   const allSubmissions = queryResult.data || [];
 
-  const {submissions, setSubmissions, filters, focusedId} = useSubmissionsStore(
-    state => ({
-      submissions: state.submissions,
-      setSubmissions: state.setSubmissions,
-      filters: state.filters,
-      focusedId: state.focusedId,
-    })
-  );
+  const {submissions, setSubmissions, filters} = useSubmissionsStore(state => ({
+    submissions: state.submissions,
+    setSubmissions: state.setSubmissions,
+    filters: state.filters,
+  }));
+
+  const [focusedId] = useSubmissionId();
 
   useEffect(() => {
     if (allSubmissions.length === 0) return;
