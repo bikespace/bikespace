@@ -1,4 +1,6 @@
 import React, {useEffect, useRef} from 'react';
+import {Route} from 'next';
+import {usePathname, useSearchParams, useRouter} from 'next/navigation';
 import {Marker, useMap} from 'react-leaflet';
 import {Popup as LeafletPopup} from 'leaflet';
 import {Icon, LatLngTuple} from 'leaflet';
@@ -9,8 +11,7 @@ import {issuePriority} from '@/config/bikespace-api';
 
 import {trackUmamiEvent} from '@/utils';
 
-import {useSubmissionsStore} from '@/states/store';
-import {SidebarTab, useSidebarTab} from '@/states/url-params';
+import {SidebarTab, useSubmissionId} from '@/states/url-params';
 
 import {MapPopup} from '../map-popup';
 
@@ -35,17 +36,15 @@ export function MapMarker({submission, windowWidth}: MapMarkerProps) {
   // popupRef for calling openPopup() upon focus change
   // `Popup` from 'react-leaflet' forwards `Popup` from 'leaflet'
   const popupRef = useRef<LeafletPopup>(null);
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const {replace} = useRouter();
 
   const position: LatLngTuple = [submission.latitude, submission.longitude];
 
   const map = useMap();
 
-  const {focus, setFocus} = useSubmissionsStore(state => ({
-    focus: state.focusedId,
-    setFocus: state.setFocusedId,
-  }));
-
-  const [, setTab] = useSidebarTab();
+  const [focus, setFocus] = useSubmissionId();
 
   const isFocused = focus === submission.id;
 
@@ -74,8 +73,14 @@ export function MapMarker({submission, windowWidth}: MapMarkerProps) {
   };
 
   const handleClick = () => {
+    console.log(windowWidth);
     if (windowWidth && windowWidth <= 768) {
-      setTab(SidebarTab.Feed);
+      // Manually set tab= URL params to prevent excess rerendering from subscribing to tab change
+      const params = new URLSearchParams(searchParams);
+
+      params.set('tab', SidebarTab.Feed);
+
+      replace(`${pathname}?${params.toString()}` as Route);
     }
 
     setFocus(submission.id);
