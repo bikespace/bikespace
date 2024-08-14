@@ -1,5 +1,8 @@
-import bikespaceIntro from '@/assets/images/bikespace-intro.png';
-import {HeroBlock} from '@/components/landing/content-blocks';
+import Image from 'next/image';
+
+import bikespaceIntro from '@/assets/images/Hero_Concept_v1.png';
+import testDividerImage from '@/assets/images/meadoway.png';
+import {HeroBlock, DividerImg} from '@/components/landing/content-blocks';
 
 export const metadata = {
   title: 'BikeSpace - Toronto\'s Bike Parking App',
@@ -15,6 +18,7 @@ export const metadata = {
 * [About Us](/about)
 * [Style Test](/style-test)
 
+<DividerImg imageSrc={testDividerImage.src} imageAlt='Bicycle stands on the Meadoway in Scarborough' />
 
 ## Placeholder content from existing page
 

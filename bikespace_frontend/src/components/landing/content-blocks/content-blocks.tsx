@@ -45,4 +45,23 @@ function HeroBlock({
   );
 }
 
-export {HeroBlock};
+function DividerImg({
+  imageSrc,
+  imageAlt,
+}: Readonly<{
+  imageSrc: string;
+  imageAlt: string;
+}>) {
+  return (
+    <div style={{textAlign: 'center'}}>
+      <img
+        src={imageSrc}
+        alt={imageAlt}
+        title={imageAlt}
+        style={{height: '3rem', width: 'auto'}}
+      ></img>
+    </div>
+  );
+}
+
+export {HeroBlock, DividerImg};
