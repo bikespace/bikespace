@@ -33,7 +33,7 @@ interface MapMarkerProps {
 const FLYTO_ANIMATION_DURATION = 0.5; // 0.5 seconds
 const FLYTO_ZOOM_MOBILE = 20;
 const FLYTO_ZOOM_DESKTOP = 18;
-const OPENPOPUP_DELAY = FLYTO_ANIMATION_DURATION * 1000 * 2;
+const OPENPOPUP_DELAY = FLYTO_ANIMATION_DURATION * 2 * 1000; // in milliseconds
 
 export function MapMarker({submission, windowWidth}: MapMarkerProps) {
   // popupRef for calling openPopup() upon focus change
