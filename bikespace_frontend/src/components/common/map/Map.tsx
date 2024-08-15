@@ -78,6 +78,7 @@ export function SubmissionsMap({submissions}: SubmissionMapProps) {
   const markers: MapMarkerProps[] = useMemo(() => {
     return submissions.map(submission => {
       return {
+        markerType: 'Bikespace',
         id: submission.id.toFixed(0),
         position: [submission.latitude, submission.longitude],
         focused: focus === submission.id,
@@ -112,7 +113,9 @@ export function Map({className, markers}: MapProps) {
         <LeafletLocateControl />
         {tileLayers.thunderforest}
         <MapHandler />
-        <LeafletMarkerClusterGroup chunkedLoading>
+        <LeafletMarkerClusterGroup
+        // chunkedLoading
+        >
           {markers.map(marker => (
             <MapMarker key={marker.id} {...marker} />
           ))}

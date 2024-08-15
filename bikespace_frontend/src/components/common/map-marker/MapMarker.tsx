@@ -6,6 +6,7 @@ export type MapMarkerProps = {
   id: string;
   focused: boolean;
   iconUrl?: string;
+  markerType: 'GeoJSONFeature' | 'Bikespace';
 } & ComponentProps<typeof Marker>;
 
 export function MapMarker({
@@ -14,6 +15,7 @@ export function MapMarker({
   position,
   iconUrl = undefined,
   children,
+  markerType,
   ...others
 }: MapMarkerProps) {
   // popupRef for calling openPopup() upon focus change
