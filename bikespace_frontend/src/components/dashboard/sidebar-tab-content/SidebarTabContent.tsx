@@ -1,17 +1,15 @@
 import React from 'react';
 
-import {useSubmissionsStore} from '@/store';
-import {SidebarTab} from '@/store/slices';
-
 import {ClearFiltersButton} from '../clear-filters-button';
 import {SidebarContentFilters} from '../sidebar-content-filter';
 import {SidebarContentData} from '../sidebar-content-data';
 import {SidebarContentFeed} from '../sidebar-content-feed';
+import {SidebarTab, useSidebarTab} from '@/states/url-params';
 
 import styles from './sidebar-tab-content.module.scss';
 
 export function SidebarTabContent() {
-  const tab = useSubmissionsStore(state => state.tab);
+  const [tab] = useSidebarTab();
 
   const renderContent = () => {
     switch (tab) {

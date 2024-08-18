@@ -1,9 +1,9 @@
-import {useQuery} from '@tanstack/react-query';
+import {useSuspenseQuery} from '@tanstack/react-query';
 
 import {SubmissionApiPayload} from '@/interfaces/Submission';
 
 export function useSubmissionsQuery() {
-  const query = useQuery({
+  const query = useSuspenseQuery({
     queryKey: ['submissions'],
     queryFn: async () => {
       const res = await fetch(
@@ -25,7 +25,7 @@ export function useSubmissionsQuery() {
 
       return submissions;
     },
-    staleTime: Infinity,
+    staleTime: Infinity, // Only fetch data once per app load
   });
 
   return query;

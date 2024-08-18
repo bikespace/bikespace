@@ -7,7 +7,7 @@ import {layout, config} from '@/config/plotly';
 
 import {ParkingDuration} from '@/interfaces/Submission';
 
-import {useSubmissionsStore} from '@/store';
+import {useSubmissionsStore} from '@/states/store';
 
 import styles from './data-duration-by-tod-chart.module.scss';
 

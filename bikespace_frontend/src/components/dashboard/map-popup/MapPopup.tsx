@@ -5,9 +5,9 @@ import {SubmissionApiPayload} from '@/interfaces/Submission';
 
 import {issuePriority} from '@/config/bikespace-api';
 
-import {useSubmissionsStore} from '@/store';
-import {SidebarTab} from '@/store/slices';
+import {useSubmissionsStore} from '@/states/store';
 
+import {SidebarTab, useSidebarTab, useSubmissionId} from '@/states/url-params';
 import {IssueBadge} from '../issue-badge';
 
 import styles from './map-popup.module.scss';
@@ -18,10 +18,8 @@ interface MapPopupProps {
 
 export const MapPopup = forwardRef<LeafletPopup, MapPopupProps>(
   ({submission}: MapPopupProps, ref) => {
-    const {setFocus, setTab} = useSubmissionsStore(state => ({
-      setFocus: state.setFocusedId,
-      setTab: state.setTab,
-    }));
+    const [, setSubmissionId] = useSubmissionId();
+    const [, setTab] = useSidebarTab();
 
     const {issues, id, comments, parking_duration, parking_time} = submission;
 
@@ -63,7 +61,7 @@ export const MapPopup = forwardRef<LeafletPopup, MapPopupProps>(
             className={styles.sidebarButton}
             onClick={() => {
               setTab(SidebarTab.Feed);
-              setFocus(id);
+              setSubmissionId(id);
             }}
             data-umami-event="issue-map_open_in_sidebar"
             data-umami-event-id={id}

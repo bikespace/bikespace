@@ -10,7 +10,7 @@ import {trackUmamiEvent} from '@/utils';
 
 import {useSubmissionsQuery} from '@/hooks';
 
-import {useSubmissionsStore} from '@/store';
+import {useSubmissionsStore} from '@/states/store';
 
 import styles from './data-frequency-by-day-chart.module.scss';
 

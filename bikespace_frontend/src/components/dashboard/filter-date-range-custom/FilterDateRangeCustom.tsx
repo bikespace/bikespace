@@ -7,7 +7,7 @@ import {trackUmamiEvent} from '@/utils';
 
 import {useAllSubmissionsDateRange} from '@/hooks';
 
-import {useSubmissionsStore} from '@/store';
+import {useSubmissionsStore} from '@/states/store';
 
 import {SidebarButton} from '../sidebar-button';
 
@@ -87,7 +87,7 @@ export function FilterDateRangeCustom() {
           value={
             selectedDateRange.from
               ? formatHtmlDateValue(selectedDateRange.from)
-              : isoFirst!
+              : isoFirst || ''
           }
           min={isoFirst!}
           max={isoLast!}
@@ -103,10 +103,10 @@ export function FilterDateRangeCustom() {
           value={
             selectedDateRange.to
               ? formatHtmlDateValue(selectedDateRange.to)
-              : isoLast!
+              : isoLast || ''
           }
-          min={isoFirst!}
-          max={isoLast!}
+          min={isoFirst || ''}
+          max={isoLast || ''}
           onChange={handleToChange}
         />
       </div>

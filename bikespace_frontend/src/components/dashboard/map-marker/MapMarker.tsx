@@ -1,4 +1,6 @@
 import React, {useEffect, useRef} from 'react';
+import {Route} from 'next';
+import {usePathname, useSearchParams, useRouter} from 'next/navigation';
 import {Marker, useMap} from 'react-leaflet';
 import {Popup as LeafletPopup} from 'leaflet';
 import {Icon, LatLngTuple} from 'leaflet';
@@ -8,6 +10,9 @@ import {IssueType, SubmissionApiPayload} from '@/interfaces/Submission';
 import {issuePriority} from '@/config/bikespace-api';
 
 import {trackUmamiEvent} from '@/utils';
+import {flyToMarker, openMarkerPopup} from './utils';
+
+import {SidebarTab, useSubmissionId} from '@/states/url-params';
 
 import {MapPopup} from '../map-popup';
 
@@ -22,47 +27,74 @@ import styles from './map-marker.module.scss';
 
 interface MapMarkerProps {
   submission: SubmissionApiPayload;
-  isFocused: boolean;
-  handleClick: () => void;
-  handlePopupClose: () => void;
+  windowWidth: number | null;
 }
 
 const FLYTO_ANIMATION_DURATION = 0.5; // 0.5 seconds
-const FLYTO_ZOOM = 20;
+const FLYTO_ZOOM_MOBILE = 20;
+const FLYTO_ZOOM_DESKTOP = 18;
+const OPENPOPUP_DELAY = FLYTO_ANIMATION_DURATION * 2 * 1000; // in milliseconds
 
-export function MapMarker({
-  submission,
-  isFocused,
-  handleClick,
-  handlePopupClose,
-}: MapMarkerProps) {
+export function MapMarker({submission, windowWidth}: MapMarkerProps) {
   // popupRef for calling openPopup() upon focus change
   // `Popup` from 'react-leaflet' forwards `Popup` from 'leaflet'
   const popupRef = useRef<LeafletPopup>(null);
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const {replace} = useRouter();
 
   const position: LatLngTuple = [submission.latitude, submission.longitude];
 
   const map = useMap();
 
+  const [focus, setFocus] = useSubmissionId();
+
+  const isFocused = focus === submission.id;
+
   useEffect(() => {
-    if (!isFocused) return;
+    if (!isFocused || (windowWidth && windowWidth <= 768)) return;
 
-    map.flyTo(position, FLYTO_ZOOM, {duration: FLYTO_ANIMATION_DURATION});
+    flyToMarker(map, position, {
+      zoom: FLYTO_ZOOM_DESKTOP,
+      duration: FLYTO_ANIMATION_DURATION,
+    });
 
-    // put openPopup to the end of the event loop job queue so openPopup()
-    // is queued after all the calls flyTo() triggers
-    // i.e. this minimize the chance of popup from opening during the flyTo() changes
-    // also map.openPopup() works most of the time while marker.openPopup() does not
-    setTimeout(() => {
-      if (!popupRef.current) return;
+    openMarkerPopup(map, popupRef, {duration: OPENPOPUP_DELAY});
+  }, []);
 
-      map.openPopup(popupRef.current);
+  useEffect(() => {
+    if (!isFocused || (windowWidth && windowWidth > 768)) return;
 
-      trackUmamiEvent('popupopen', {
-        submission_id: submission.id,
-      });
-    }, FLYTO_ANIMATION_DURATION * 1000);
+    flyToMarker(map, position, {
+      zoom: FLYTO_ZOOM_MOBILE,
+      duration: FLYTO_ANIMATION_DURATION,
+    });
+
+    openMarkerPopup(map, popupRef, {duration: OPENPOPUP_DELAY});
   }, [isFocused, popupRef.current]);
+
+  const handlePopupClose = () => {
+    if (focus === submission.id) setFocus(null);
+  };
+
+  const handlePopupOpen = () => {
+    trackUmamiEvent('popupopen', {
+      submission_id: submission.id,
+    });
+  };
+
+  const handleClick = () => {
+    if (windowWidth && windowWidth <= 768) {
+      // Manually set tab= URL params to prevent excess rerendering from subscribing to tab change
+      const params = new URLSearchParams(searchParams);
+
+      params.set('tab', SidebarTab.Feed);
+
+      replace(`${pathname}?${params.toString()}` as Route);
+    }
+
+    setFocus(submission.id);
+  };
 
   const priorityIssue = submission.issues.reduce((a: IssueType | null, c) => {
     if (a === null) return c;
@@ -73,7 +105,6 @@ export function MapMarker({
 
   return (
     <Marker
-      key={submission.id}
       position={position}
       icon={
         new Icon({
@@ -90,6 +121,7 @@ export function MapMarker({
       eventHandlers={{
         click: handleClick,
         popupclose: handlePopupClose,
+        popupopen: handlePopupOpen,
       }}
     >
       <MapPopup submission={submission} ref={popupRef} />

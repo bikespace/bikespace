@@ -8,7 +8,7 @@ import {IssueType} from '@/interfaces/Submission';
 
 import {trackUmamiEvent} from '@/utils';
 
-import {useSubmissionsStore} from '@/store';
+import {useSubmissionsStore} from '@/states/store';
 
 import styles from './data-issue-frequency-chart.module.scss';
 
