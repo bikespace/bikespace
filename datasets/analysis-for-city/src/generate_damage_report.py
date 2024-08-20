@@ -4,7 +4,7 @@
 # ====================================================
 #
 # This script takes user-submitted reports of damaged bicycle parking from the BikeSpace app and returns the nearest 5 or fewer City of Toronto bicycle parking features based on geographic proximity. The goal is to identify City bicycle parking that may need to be replaced or repaired.
-# 
+#
 # Source Google sheet for "BikeSpace Data Notes and Cleanup - Data.csv": [BikeSpace Data Notes and Cleanup](https://docs.google.com/spreadsheets/d/137S4d4zLhj49rEWIaaVB67UxMSU5LKMt5kIjvgYsQOU/edit?usp=sharing)
 
 from argparse import ArgumentParser
@@ -87,10 +87,26 @@ def get_dates() -> DateRange:
     }
 
 
+def filter_by_date(
+    gdf: gpd.GeoDataFrame,
+    date_column: str,
+    dates: DateRange,
+) -> gpd.GeoDataFrame:
+    date_from = (
+        dates["date_from"] if dates["date_from"] is not None else gdf[date_column].min()
+    )
+    date_to = (
+        dates["date_to"] if dates["date_to"] is not None else gdf[date_column].max()
+    )
+
+    return gdf[(gdf[date_column] >= date_from) & (gdf[date_column] <= date_to)]
+
+
 def get_bikespace_reports() -> gpd.GeoDataFrame:
     """The [BikeSpace app](https://bikespace.ca/) allows users to report issues with bicycle parking in Toronto, including parking features that are damaged. User reports can be viewed on the [BikeSpace dashboard](https://dashboard.bikespace.ca/) or downloaded via the API.
 
-    Details on the bikespace API can be found at [api-dev.bikespace.ca](https://api-dev.bikespace.ca/api/v2/docs)."""
+    Details on the bikespace API can be found at [api-dev.bikespace.ca](https://api-dev.bikespace.ca/api/v2/docs).
+    """
     # get data
     bikespace_request = requests.get(
         BIKESPACE_API_URL,
