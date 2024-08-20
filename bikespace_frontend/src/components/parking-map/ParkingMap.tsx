@@ -18,7 +18,9 @@ const useGeoJSONMarkers = ({
     return featureCollection.features
       .filter(
         f =>
-          f?.geometry?.coordinates[LAT_IDX] && f?.geometry?.coordinates[LNG_IDX]
+          f?.geometry?.type === 'Point' &&
+          f?.geometry?.coordinates[LAT_IDX] &&
+          f?.geometry?.coordinates[LNG_IDX]
       )
       .map((f, i) => ({
         position: [
@@ -48,8 +50,5 @@ export const ParkingMap = () => {
     });
   }, [setCollection]);
   const parkingMarkers = useGeoJSONMarkers({featureCollection: collection});
-  useEffect(() => {
-    console.log('parking markers', parkingMarkers);
-  }, [parkingMarkers]);
   return <Map className={styles.parkingMapPage} markers={parkingMarkers} />;
 };

@@ -113,9 +113,7 @@ export function Map({className, markers}: MapProps) {
         <LeafletLocateControl />
         {tileLayers.thunderforest}
         <MapHandler />
-        <LeafletMarkerClusterGroup
-        // chunkedLoading
-        >
+        <LeafletMarkerClusterGroup chunkedLoading>
           {markers.map(marker => (
             <MapMarker key={marker.id} {...marker} />
           ))}
