@@ -26,12 +26,16 @@ import requests
 
 # GLOBAL OPTIONS
 SEARCH_RADIUS = 30  # area to search, in metres
+
 THUMBNAIL_FOLDER = Path("thumbnails")
 SURVEY_PHOTO_FOLDER = Path("photos")
 REFERENCE_DATA_FOLDER = Path("references")
+OUTPUT_FOLDER = Path("reports")
 OUTPUT_EXCEL_NAME = "damage_bikespace_city_matches"
+
 BIKESPACE_API_URL = "https://api-dev.bikespace.ca/api/v2/submissions"
 BIKESPACE_API_PAGE_SIZE = 5000
+
 EXCLUDED_STATUSES = [
     "Resolved",
     "Invalid",
@@ -44,6 +48,7 @@ EXCLUDED_STATUSES = [
 
 
 def check_xlsxwriter_installed():
+    """Checks if the xlsxwriter library is installed so that the script will not error out at the end."""
     if importlib.util.find_spec("xlsxwriter") is None:
         raise Exception(
             "Please install xlxswriter (pip install xlxswriter) before running the script."
@@ -219,12 +224,12 @@ def export_excel(
 
     # set up output folder
     TODAY_ISO = datetime.today().strftime(r"%Y-%m-%d")
-    OUTPUT_FOLDER = Path(TODAY_ISO)
-    OUTPUT_FOLDER.mkdir(exist_ok=True)
+    REPORT_FOLDER = OUTPUT_FOLDER / TODAY_ISO
+    REPORT_FOLDER.mkdir(exist_ok=True)
 
     # set up output excel sheet
     writer = pd.ExcelWriter(
-        OUTPUT_FOLDER / f"{OUTPUT_EXCEL_NAME}_{TODAY_ISO}.xlsx",
+        REPORT_FOLDER / f"{OUTPUT_EXCEL_NAME}_{TODAY_ISO}.xlsx",
         engine="xlsxwriter",
     )
     workbook = writer.book
