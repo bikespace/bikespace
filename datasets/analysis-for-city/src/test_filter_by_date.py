@@ -23,9 +23,13 @@ gdf = gpd.GeoDataFrame().assign(
 def run_test(date_from: str, date_to: str, num_results: int):
     dates: DateRange = {
         "date_from": (
-            None if date_from is None else datetime.strptime(date_from, "%Y-%m-%d").date()
+            None
+            if date_from is None
+            else datetime.strptime(date_from, "%Y-%m-%d").date()
         ),
-        "date_to": None if date_to is None else datetime.strptime(date_to, "%Y-%m-%d").date(),
+        "date_to": (
+            None if date_to is None else datetime.strptime(date_to, "%Y-%m-%d").date()
+        ),
     }
     filtered_gdf = filter_by_date(gdf, "submission_date", dates)
     assert len(filtered_gdf) == num_results
