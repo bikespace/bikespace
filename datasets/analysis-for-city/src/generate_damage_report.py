@@ -244,6 +244,7 @@ def export_excel(
     REPORT_FOLDER.mkdir(exist_ok=True)
 
     # set up output excel sheet
+    # TODO should the filename indicate the date range as opposed to the run date? Or both? Might need to add in an indicator to the report output to note the effective date range used.
     writer = pd.ExcelWriter(
         REPORT_FOLDER / f"{OUTPUT_EXCEL_NAME}_{TODAY_ISO}.xlsx",
         engine="xlsxwriter",
