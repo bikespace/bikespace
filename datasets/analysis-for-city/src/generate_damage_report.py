@@ -13,7 +13,7 @@ from datetime import datetime, date
 import importlib.util
 import json
 from pathlib import Path, PosixPath
-from typing import TypedDict
+from typing import TypedDict, NotRequired
 from zoneinfo import ZoneInfo
 
 import contextily as cx
@@ -38,6 +38,16 @@ OUTPUT_EXCEL_NAME = "damage_bikespace_city_matches"
 BIKESPACE_API_URL = "https://api-dev.bikespace.ca/api/v2/submissions"
 BIKESPACE_API_PAGE_SIZE = 5000
 
+CLEANUP_SHEET_FILENAME = "BikeSpace Data Notes and Cleanup - Data.csv"
+CLEANUP_SHEET_COLUMNS = [
+    "Status",
+    "Notes",
+    "Survey_Date",
+    "Asset",
+    "Check_311_Date",
+    "Check_311_Notes",
+    "City_Problem_Type",
+]
 EXCLUDED_STATUSES = [
     "Resolved",
     "Invalid",
@@ -47,6 +57,23 @@ EXCLUDED_STATUSES = [
     "Caution",
     "App Feedback",
 ]
+
+
+# Interfaces
+class DateRange(TypedDict):
+    date_from: date
+    date_to: date
+
+
+class ReportCityMatch(TypedDict):
+    report: gpd.GeoDataFrame
+    city_features: gpd.GeoDataFrame
+    thumbnail: NotRequired[PosixPath]
+
+
+class MatchTables(TypedDict):
+    report_matches: gpd.GeoDataFrame
+    city_matches: gpd.GeoDataFrame
 
 
 def check_xlsxwriter_installed():
@@ -62,11 +89,6 @@ def parse_date(input: str):
     if input == None:
         return None
     return datetime.strptime(input, r"%Y-%m-%d").date()
-
-
-class DateRange(TypedDict):
-    date_from: date
-    date_to: date
 
 
 def get_dates() -> DateRange:
@@ -124,7 +146,7 @@ def get_bikespace_reports() -> gpd.GeoDataFrame:
             bikespace_reports_data["longitude"],
             bikespace_reports_data["latitude"],
         ),
-        crs="EPSG:4326", 
+        crs="EPSG:4326",
     )
 
     # show a quick summary of issue types
@@ -186,7 +208,86 @@ def get_city_data() -> gpd.GeoDataFrame:
     return city_data_all
 
 
-def save_thumbnail(entry, folder) -> PosixPath:
+def get_dashboard_permalink(id: str) -> str:
+    """Generate permalink to BikeSpace dashboard based on submission_id"""
+    return f"https://dashboard.bikespace.ca/#feed?view_all=1&submission_id={id}"
+
+
+def get_city_bikespace_matches(
+    bikespace_reports: gpd.GeoDataFrame, city_data: gpd.GeoDataFrame
+) -> MatchTables:
+    """Get city data that matches to bikespace reports based on SEARCH_RADIUS buffer"""
+    # convert crs to allow for distance calculations in metres
+    br_utm17n = bikespace_reports.to_crs(32617)
+    cd_utm17n = city_data.to_crs(32617)
+
+    # add buffer based on SEARCH_RADIUS
+    br_utm17n = br_utm17n.assign(geometry_buffered=br_utm17n.buffer(SEARCH_RADIUS))
+
+    # find city data within bikespace report buffers
+    city_matches = cd_utm17n.sjoin(
+        df=(br_utm17n[["geometry_buffered"]].set_geometry("geometry_buffered")),
+        how="inner",
+        predicate="intersects",
+    )
+
+    # calculate distances between bikespace reports and city matches
+    report_matches = gpd.GeoDataFrame(
+        [br_utm17n.loc[i] for i in city_matches["id"]],
+        crs="32617",  # UTM 17N
+    )
+    distances = city_matches["geometry"].distance(report_matches, align=False)
+    city_matches = city_matches.assign(distance=distances)
+
+    # reorder columns so that important/common values come first
+    left_columns = [
+        "distance",
+        "id",
+        "source",
+        "ID",
+        "OBJECTID",
+        "ADDRESSNUMBERTEXT",
+        "ADDRESSSTREET",
+        "FRONTINGSTREET",
+        "SIDE",
+        "FROMSTREET",
+        "DIRECTION",
+        "SITEID",
+        "WARD",
+        "BIA",
+        "ASSETTYPE",
+        "STATUS",
+        "SDE_STATE_ID",
+    ]
+    city_matches = city_matches[
+        left_columns + [col for col in city_matches.columns if col not in left_columns]
+    ]
+
+    # clean up and supplement outputs
+    city_matches = (
+        city_matches.to_crs(4326)  # WGS 84
+        .explode(index_parts=False)  # convert multipoint to point
+        .assign(
+            latitude=lambda r: [y for y in r.geometry.y],
+            longitude=lambda r: [x for x in r.geometry.x],
+        )
+        .drop(columns=["_id"])
+        .rename(columns={"id": "bikespace_id"})
+    )
+    report_matches_unique = (
+        report_matches[~report_matches.index.duplicated(keep="first")]
+        .drop(columns=["geometry_buffered"])
+        .assign(url=lambda x: [get_dashboard_permalink(str(id)) for id in x.index])
+        .to_crs(4326)  # WGS 84
+    )
+
+    return {
+        "report_matches": report_matches_unique,
+        "city_matches": city_matches,
+    }
+
+
+def save_thumbnail(entry: ReportCityMatch, folder: Path) -> PosixPath:
     """Saves a thumbnail using geodataframe.plot() if it doesn't already exist
 
     returns the relative posix path to the saved thumbnail
@@ -449,26 +550,17 @@ def generate_report():
     """Main script function"""
     check_xlsxwriter_installed()
 
+    # get data and inputs
     date_range = get_dates()
     bikespace_reports = get_bikespace_reports()
     toronto_wards = get_toronto_wards()
     city_data = get_city_data()
 
     bs_quality_check = pd.read_csv(
-        REFERENCE_DATA_FOLDER / "BikeSpace Data Notes and Cleanup - Data.csv"
+        REFERENCE_DATA_FOLDER / CLEANUP_SHEET_FILENAME
     ).set_index("id")
     bikespace_reports = bikespace_reports.join(
-        bs_quality_check[
-            [
-                "Status",
-                "Notes",
-                "Survey_Date",
-                "Asset",
-                "Check_311_Date",
-                "Check_311_Notes",
-                "City_Problem_Type",
-            ]
-        ],
+        bs_quality_check[CLEANUP_SHEET_COLUMNS],
         on="id",
         how="left",
     )
@@ -486,6 +578,7 @@ def generate_report():
     )
     br_toronto_damaged = br_toronto[["damaged" in i for i in br_toronto["issues"]]]
 
+    # display reports filtered out because they are outside of Toronto
     print("\nOutside of Toronto IDs:")
     print(br_toronto_damaged[br_toronto_damaged["WARD"].isna()].index)
     br_toronto_damaged = br_toronto_damaged[~br_toronto_damaged["WARD"].isna()]
@@ -494,84 +587,22 @@ def generate_report():
     print("\n" + f"{len(br_toronto_damaged)} filtered reports:")
     print("\n" + str(br_toronto_damaged["issues"].explode().value_counts()))
 
-    # convert crs to allow for distance calculations in metres
-    br_toronto_damaged_utm17n = br_toronto_damaged.to_crs("32617")
-    city_data_all_utm17n = city_data.to_crs("32617")
-
-    br_toronto_damaged_utm17n = br_toronto_damaged_utm17n.assign(
-        geometry_buffered=br_toronto_damaged_utm17n.buffer(SEARCH_RADIUS)
+    # get city data that matches to bikespace reports based on SEARCH_RADIUS buffer
+    match_tables: MatchTables = get_city_bikespace_matches(
+        br_toronto_damaged, city_data
     )
+    report_matches_unique = match_tables["report_matches"]
+    data_matches = match_tables["city_matches"]
 
-    data_matches = city_data_all_utm17n.sjoin(
-        df=(
-            br_toronto_damaged_utm17n[["geometry_buffered"]].set_geometry(
-                "geometry_buffered"
-            )
-        ),
-        how="inner",
-        predicate="intersects",
-    )
-
-    report_matches = gpd.GeoDataFrame(
-        [br_toronto_damaged_utm17n.loc[i] for i in data_matches["id"]],
-        crs="32617",  # UTM 17N
-    )
-
-    distances = data_matches["geometry"].distance(report_matches, align=False)
-    data_matches = data_matches.assign(distance=distances)
-    # reorder columns
-    left_columns = [
-        "distance",
-        "id",
-        "source",
-        "ID",
-        "OBJECTID",
-        "ADDRESSNUMBERTEXT",
-        "ADDRESSSTREET",
-        "FRONTINGSTREET",
-        "SIDE",
-        "FROMSTREET",
-        "DIRECTION",
-        "SITEID",
-        "WARD",
-        "BIA",
-        "ASSETTYPE",
-        "STATUS",
-        "SDE_STATE_ID",
-    ]
-    data_matches = data_matches[
-        left_columns + [col for col in data_matches.columns if col not in left_columns]
-    ]
-    data_matches = (
-        data_matches.to_crs(4326)  # WGS 84
-        .explode(index_parts=False)  # convert multipoint to point
-        .assign(
-            latitude=lambda r: [y for y in r.geometry.y],
-            longitude=lambda r: [x for x in r.geometry.x],
-        )
-        .drop(columns=["_id"])
-        .rename(columns={"id": "bikespace_id"})
-    )
-
-    report_matches_unique = (
-        report_matches[~report_matches.index.duplicated(keep="first")]
-        .drop(columns=["geometry_buffered"])
-        .sort_values(
-            by="parking_dt",
-            axis=0,
-            ascending=False,
-        )
-        .assign(
-            url=lambda x: [
-                f"https://dashboard.bikespace.ca/#feed?view_all=1&submission_id={id}"
-                for id in x.index
-            ]
-        )
-        .to_crs(4326)  # WGS 84
+    # sort by parking_date from earliest to latest
+    report_matches_unique = report_matches_unique.sort_values(
+        by="parking_dt",
+        axis=0,
+        ascending=False,
     )
 
     # organize BikeSpace damage reports alongside top 5 nearest city parking features
-    report_city_matches = []
+    report_city_matches: list[ReportCityMatch] = []
 
     for ix in report_matches_unique.index:
         report_city_matches.append(
@@ -583,6 +614,7 @@ def generate_report():
             }
         )
 
+    # generate / add thumbnail maps
     bar = Bar("Saving Thumbnails", max=len(report_city_matches))
     for entry in report_city_matches:
         entry["thumbnail"] = save_thumbnail(entry, THUMBNAIL_FOLDER)
