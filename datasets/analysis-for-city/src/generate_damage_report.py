@@ -464,9 +464,9 @@ def export_excel(
         )
         write_row += 15 + 1  # 15 is approx size of image, 1 is blank row
         report = (
-            report.reset_index(names=["id"])
-            .drop(columns=["geometry", "parking_time", "parking_dt"])
-            .T.dropna(how="all")
+            report.reset_index(names=["bikespace_id"])
+            .drop(columns=["geometry", "parking_time", "parking_dt", "index_right"])
+            .T
         )
         city_features = (
             city_features.drop(columns=["bikespace_id", "geometry"])
