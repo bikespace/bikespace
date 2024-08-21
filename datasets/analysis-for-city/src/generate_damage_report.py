@@ -7,6 +7,8 @@
 #
 # Source Google sheet for "BikeSpace Data Notes and Cleanup - Data.csv": [BikeSpace Data Notes and Cleanup](https://docs.google.com/spreadsheets/d/137S4d4zLhj49rEWIaaVB67UxMSU5LKMt5kIjvgYsQOU/edit?usp=sharing)
 
+ABOUT_DATE_OPTIONS = """Reports can be filtered by a date range by specifying a from and to date in YYYY-MM-DD format using command line arguments. Note that the range includes the start and end date, and all dates are calculated in UTC time."""
+
 from argparse import ArgumentParser
 from datetime import datetime, date
 import importlib.util
@@ -56,6 +58,7 @@ def check_xlsxwriter_installed():
 
 
 def parse_date(input: str):
+    """Convert date in YYYY-MM-DD format to datetime.date"""
     if input == None:
         return None
     return datetime.strptime(input, r"%Y-%m-%d").date()
@@ -67,9 +70,8 @@ class DateRange(TypedDict):
 
 
 def get_dates() -> DateRange:
-    parser = ArgumentParser(
-        description="Test description TODO; mention dates are inclusive, mention use of ISO time"
-    )
+    """Get dates from command line arguments and convert to datetime.date using parse_date"""
+    parser = ArgumentParser(description=ABOUT_DATE_OPTIONS)
     parser.add_argument(
         "-f", "--date_from", type=parse_date, help="Start Date in YYYY-MM-DD format"
     )
@@ -77,9 +79,6 @@ def get_dates() -> DateRange:
         "-t", "--date_to", type=parse_date, help="End Date in YYYY-MM-DD format"
     )
     args = parser.parse_args()
-
-    print(args.date_from)  # TODO remove
-    print(args.date_to)
 
     return {
         "date_from": args.date_from,
@@ -92,6 +91,7 @@ def filter_by_date(
     date_column: str,
     dates: DateRange,
 ) -> gpd.GeoDataFrame:
+    """Filter a GeoDataFrame by a column of datetime.date type. Filtered range includes the start and end dates specified."""
     date_from = (
         dates["date_from"] if dates["date_from"] is not None else gdf[date_column].min()
     )
@@ -174,6 +174,7 @@ def get_city_sources() -> dict:
 
 
 def get_city_data() -> gpd.GeoDataFrame:
+    """Convert source datasets from [open.toronto.ca](https://open.toronto.ca/) to GeoDataFrames"""
     city_sources = get_city_sources()
 
     city_data = {}
@@ -236,6 +237,7 @@ def save_thumbnail(entry, folder) -> PosixPath:
 def export_excel(
     report_city_matches, report_matches_unique, matched_city_features_unique
 ):
+    """Generate and save a report in Excel format"""
     city_sources = get_city_sources()
 
     # set up output folder
@@ -445,6 +447,7 @@ def export_excel(
 
 
 def generate_report():
+    """Main script function"""
     check_xlsxwriter_installed()
 
     date_range = get_dates()
@@ -476,8 +479,8 @@ def generate_report():
         status not in EXCLUDED_STATUSES for status in bikespace_reports["Status"]
     ]
     bikespace_reports = bikespace_reports[exclude_by_status].drop(columns=["Status"])
-    # TODO add in date filter
-    br_toronto = bikespace_reports.sjoin(
+    br_date_filtered = filter_by_date(bikespace_reports, "report_date", date_range)
+    br_toronto = br_date_filtered.sjoin(
         toronto_wards[["geometry", "WARD"]],
         how="left",
         predicate="intersects",
