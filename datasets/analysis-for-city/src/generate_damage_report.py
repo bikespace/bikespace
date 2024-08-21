@@ -216,7 +216,7 @@ def get_dashboard_permalink(id: str) -> str:
 def get_city_bikespace_matches(
     bikespace_reports: gpd.GeoDataFrame, city_data: gpd.GeoDataFrame
 ) -> MatchTables:
-    """Get city data that matches to bikespace reports based on SEARCH_RADIUS buffer"""
+    """Get city data that matches to bikespace reports based on SEARCH_RADIUS buffer or Asset ID(s) if specified"""
     # convert crs to allow for distance calculations in metres
     br_utm17n = bikespace_reports.to_crs(32617)
     cd_utm17n = city_data.to_crs(32617)
@@ -224,25 +224,53 @@ def get_city_bikespace_matches(
     # add buffer based on SEARCH_RADIUS
     br_utm17n = br_utm17n.assign(geometry_buffered=br_utm17n.buffer(SEARCH_RADIUS))
 
-    # find city data within bikespace report buffers
-    city_matches = cd_utm17n.sjoin(
-        df=(br_utm17n[["geometry_buffered"]].set_geometry("geometry_buffered")),
+    # look up city data for bikespace reports with identified assets
+    br_by_asset = br_utm17n.assign(
+        asset_list=br_utm17n["Asset"].str.split(";")
+    ).explode("asset_list")
+    asset_matches = cd_utm17n.join(
+        other=(
+            br_by_asset[["asset_list"]]
+            .rename(columns={"asset_list": "ID"})
+            .reset_index(names="bikespace_id")
+            .dropna(axis=0, subset="ID")
+            .set_index("ID")
+        ),
+        on="ID",
         how="inner",
-        predicate="intersects",
+        rsuffix="_bikespace",
+    ).assign(match_type="surveyed")
+
+    # find city data within bikespace report buffers if asset is not already identified
+    city_matches = (
+        cd_utm17n.sjoin(
+            df=(
+                br_utm17n[br_utm17n["Asset"].isna()][
+                    ["geometry_buffered"]
+                ].set_geometry("geometry_buffered")
+            ),
+            how="inner",
+            predicate="intersects",
+        )
+        .rename(columns={"id": "bikespace_id"})
+        .assign(match_type="estimated")
     )
+
+    city_and_asset_matches = pd.concat([asset_matches, city_matches])
 
     # calculate distances between bikespace reports and city matches
     report_matches = gpd.GeoDataFrame(
-        [br_utm17n.loc[i] for i in city_matches["id"]],
+        [br_utm17n.loc[i] for i in city_and_asset_matches["bikespace_id"]],
         crs="32617",  # UTM 17N
     )
-    distances = city_matches["geometry"].distance(report_matches, align=False)
-    city_matches = city_matches.assign(distance=distances)
+    distances = city_and_asset_matches["geometry"].distance(report_matches, align=False)
+    city_and_asset_matches = city_and_asset_matches.assign(distance=distances)
 
     # reorder columns so that important/common values come first
     left_columns = [
+        "match_type",
         "distance",
-        "id",
+        "bikespace_id",
         "source",
         "ID",
         "OBJECTID",
@@ -259,20 +287,20 @@ def get_city_bikespace_matches(
         "STATUS",
         "SDE_STATE_ID",
     ]
-    city_matches = city_matches[
-        left_columns + [col for col in city_matches.columns if col not in left_columns]
+    city_and_asset_matches = city_and_asset_matches[
+        left_columns
+        + [col for col in city_and_asset_matches.columns if col not in left_columns]
     ]
 
     # clean up and supplement outputs
-    city_matches = (
-        city_matches.to_crs(4326)  # WGS 84
+    city_and_asset_matches = (
+        city_and_asset_matches.to_crs(4326)  # WGS 84
         .explode(index_parts=False)  # convert multipoint to point
         .assign(
             latitude=lambda r: [y for y in r.geometry.y],
             longitude=lambda r: [x for x in r.geometry.x],
         )
         .drop(columns=["_id"])
-        .rename(columns={"id": "bikespace_id"})
     )
     report_matches_unique = (
         report_matches[~report_matches.index.duplicated(keep="first")]
@@ -283,7 +311,7 @@ def get_city_bikespace_matches(
 
     return {
         "report_matches": report_matches_unique,
-        "city_matches": city_matches,
+        "city_matches": city_and_asset_matches,
     }
 
 
