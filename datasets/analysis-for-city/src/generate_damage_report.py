@@ -1,5 +1,3 @@
-# reminder - check for TODOs
-
 # Bikespace Analysis - Damaged Bicycle Parking Reports
 # ====================================================
 #
@@ -8,6 +6,7 @@
 # Source Google sheet for "BikeSpace Data Notes and Cleanup - Data.csv": [BikeSpace Data Notes and Cleanup](https://docs.google.com/spreadsheets/d/137S4d4zLhj49rEWIaaVB67UxMSU5LKMt5kIjvgYsQOU/edit?usp=sharing)
 
 ABOUT_DATE_OPTIONS = """Reports can be filtered by a date range by specifying a from and to date in YYYY-MM-DD format using command line arguments. Note that the range includes the start and end date, and all dates are calculated in UTC time."""
+
 
 from argparse import ArgumentParser
 from datetime import datetime, date
@@ -25,6 +24,7 @@ from progress.bar import Bar
 import geopandas as gpd
 import pytz
 import requests
+
 
 # GLOBAL OPTIONS
 SEARCH_RADIUS = 30  # area to search, in metres
@@ -124,7 +124,7 @@ def get_bikespace_reports() -> gpd.GeoDataFrame:
             bikespace_reports_data["longitude"],
             bikespace_reports_data["latitude"],
         ),
-        crs="EPSG:4326",  # TODO check whether assumption about leaflet is true
+        crs="EPSG:4326", 
     )
 
     # show a quick summary of issue types
@@ -246,7 +246,6 @@ def export_excel(
     REPORT_FOLDER.mkdir(exist_ok=True)
 
     # set up output excel sheet
-    # TODO should the filename indicate the date range as opposed to the run date? Or both? Might need to add in an indicator to the report output to note the effective date range used.
     writer = pd.ExcelWriter(
         REPORT_FOLDER / f"{OUTPUT_EXCEL_NAME}_{TODAY_ISO}.xlsx",
         engine="xlsxwriter",
@@ -484,9 +483,7 @@ def generate_report():
         toronto_wards[["geometry", "WARD"]],
         how="left",
         predicate="intersects",
-    ).drop(
-        "index_right", axis=1
-    )  # TODO is this drop needed?
+    )
     br_toronto_damaged = br_toronto[["damaged" in i for i in br_toronto["issues"]]]
 
     print("\nOutside of Toronto IDs:")
