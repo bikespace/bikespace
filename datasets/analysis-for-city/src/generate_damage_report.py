@@ -20,6 +20,7 @@ import contextily as cx
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+from PIL import Image, ImageOps
 from progress.bar import Bar
 import geopandas as gpd
 import pytz
@@ -31,6 +32,9 @@ SEARCH_RADIUS = 30  # area to search, in metres
 
 THUMBNAIL_FOLDER = Path("thumbnails")
 SURVEY_PHOTO_FOLDER = Path("photos")
+RESIZED_SURVEY_PHOTO_FOLDER = Path("photos_resized")
+MAX_PHOTO_HEIGHT = 610
+MAX_PHOTO_WIDTH = 780
 REFERENCE_DATA_FOLDER = Path("references")
 OUTPUT_FOLDER = Path("reports")
 OUTPUT_EXCEL_NAME = "damage_bikespace_city_matches"
@@ -69,6 +73,7 @@ class ReportCityMatch(TypedDict):
     report: gpd.GeoDataFrame
     city_features: gpd.GeoDataFrame
     thumbnail: NotRequired[PosixPath]
+    survey_photo: NotRequired[Path | None]
 
 
 class MatchTables(TypedDict):
@@ -363,10 +368,22 @@ def save_thumbnail(entry: ReportCityMatch, folder: Path) -> PosixPath:
         return (Path(folder) / f"{bs_id}.jpg").as_posix()
 
 
+def resize_image(path: Path) -> Path:
+    """Reads an image from the specifed path and saves a resized version per the global settings. Returns the path of the resized image."""
+    im = Image.open(path)
+    resized = ImageOps.contain(im, (MAX_PHOTO_WIDTH, MAX_PHOTO_HEIGHT))
+    RESIZED_SURVEY_PHOTO_FOLDER.mkdir(exist_ok=True)
+    output_path = RESIZED_SURVEY_PHOTO_FOLDER / path.name
+    resized.save(output_path)
+    return output_path
+
+
 def export_excel(
-    report_city_matches, report_matches_unique, matched_city_features_unique
+    report_city_matches,
+    report_matches_unique,
+    matched_city_features_unique,
 ):
-    """Generate and save a report in Excel format"""
+    """Generate and save a report in Excel format using pandas.ExcelWriter and xlsxwriter engine"""
     city_sources = get_city_sources()
 
     # set up output folder
@@ -385,8 +402,9 @@ def export_excel(
     no_text_wrap = workbook.add_format({"text_wrap": False})
 
     # TAB 0 - INSTRUCTIONS PAGE
+    # -------------------------
     worksheet = workbook.add_worksheet("Notes")
-    writer.sheets["Matches"] = worksheet
+    writer.sheets["Notes"] = worksheet
 
     content = [
         ("Bikespace Analysis - Damaged Bicycle Parking Reports", bold),
@@ -410,7 +428,9 @@ def export_excel(
         ),
         ("    Damage report listed first, then data from applicable City features"),
         ("    Thumbnail maps: orange triangle is location of damage report"),
-        ("    blue dots are locations of nearest 5 City bicycle parking features"),
+        (
+            "    blue dots are locations of nearest City bicycle parking features (max 5)"
+        ),
         (" • DamageReports: data table for damaged bicycle parking reports"),
         (
             " • CityFeatures: data table for City of Toronto parking features matched with damage reports"
@@ -439,10 +459,10 @@ def export_excel(
     worksheet.fit_to_pages(1, 0)
 
     # TAB 1 - DISPLAY OF REPORTS AND MATCHES
+    # --------------------------------------
     worksheet = workbook.add_worksheet("Matches")
     writer.sheets["Matches"] = worksheet
-    pagebreaks = []
-    images = []
+    page_breaks = []
 
     # set column widths to 18 and format to word wrap
     worksheet.set_column("A:F", 18, text_wrap)
@@ -454,18 +474,27 @@ def export_excel(
 
     # write data tables
     write_row = 4
-    for pair in report_city_matches:
-        report, city_features, thumbnail = pair.values()
+    for entry in report_city_matches:
+        report, city_features, thumbnail, survey_photo = entry.values()
         worksheet.insert_image(
             write_row,
             0,
             thumbnail,
             {"x_scale": 0.5, "y_scale": 0.5, "object_position": 2},
         )
+        if survey_photo is not None:
+            worksheet.insert_image(
+                write_row,
+                3,
+                resize_image(survey_photo),
+                {"x_scale": 0.5, "y_scale": 0.5, "object_position": 2},
+            )
         write_row += 15 + 1  # 15 is approx size of image, 1 is blank row
         report = (
             report.reset_index(names=["bikespace_id"])
-            .drop(columns=["geometry", "parking_time", "parking_dt", "index_right"])
+            .drop(
+                columns=["geometry", "parking_duration", "parking_time", "parking_dt"]
+            )
             .T
         )
         city_features = (
@@ -490,9 +519,15 @@ def export_excel(
             header=False,
         )
         write_row += len(city_features) + 2
-        pagebreaks.append(write_row)
+        page_breaks.append(write_row)
+
+    # print formatting
+    worksheet.set_h_pagebreaks(page_breaks[0:-1])
+    worksheet.print_area(0, 0, write_row, 5)
+    worksheet.fit_to_pages(1, 0)  # fit to one column
 
     # TAB 2 - BIKESPACE REPORTS
+    # -------------------------
     worksheet = workbook.add_worksheet("DamageReports")
     writer.sheets["DamageReports"] = worksheet
 
@@ -529,12 +564,8 @@ def export_excel(
     worksheet.set_column("B:B", 40, text_wrap)
     worksheet.set_column("H:I", 20, text_wrap)
 
-    # print formatting
-    worksheet.set_h_pagebreaks(pagebreaks[0:-1])
-    worksheet.print_area(0, 0, write_row, 5)
-    worksheet.fit_to_pages(1, 0)  # fit to one column
-
     # TAB 3 - MATCHED CITY BICYCLE PARKING FEATURES
+    # ---------------------------------------------
     worksheet = workbook.add_worksheet("CityFeatures")
     writer.sheets["CityFeatures"] = worksheet
     # write header content
@@ -603,7 +634,7 @@ def generate_report():
         toronto_wards[["geometry", "WARD"]],
         how="left",
         predicate="intersects",
-    )
+    ).drop(columns=["index_right"])
     br_toronto_damaged = br_toronto[["damaged" in i for i in br_toronto["issues"]]]
 
     # display reports filtered out because they are outside of Toronto
@@ -648,6 +679,12 @@ def generate_report():
         entry["thumbnail"] = save_thumbnail(entry, THUMBNAIL_FOLDER)
         bar.next()
     bar.finish()
+
+    # add survey photos if provided
+    for entry in report_city_matches:
+        id = str(entry["report"].index.array[0])
+        photo_match = list(SURVEY_PHOTO_FOLDER.glob(f"{id}.*"))
+        entry["survey_photo"] = None if len(photo_match) == 0 else photo_match[0]
 
     matched_city_features_unique = pd.concat(
         [df["city_features"] for df in report_city_matches]
