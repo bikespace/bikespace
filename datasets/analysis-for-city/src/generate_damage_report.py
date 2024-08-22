@@ -54,6 +54,7 @@ CLEANUP_SHEET_COLUMNS = [
 ]
 EXCLUDED_STATUSES = [
     "Resolved",
+    "Closed",
     "Invalid",
     "Needs Checking",
     "Resolution Unclear",
