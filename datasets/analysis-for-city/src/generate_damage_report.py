@@ -378,6 +378,18 @@ def resize_image(path: Path) -> Path:
     return output_path
 
 
+def get_date_range_description(dates: DateRange) -> str:
+    """Generate date range description based on report parameters"""
+    if dates["date_from"] is None and dates["date_to"] is None:
+        return "Includes relevant BikeSpace reports from all dates collected"
+    elif dates["date_from"] is None:
+        return f"Includes relevant BikeSpace reports on or before {dates["date_to"].isoformat()}"
+    elif dates["date_to"] is None:
+        return f"Includes relevant BikeSpace reports on or after {dates["date_from"].isoformat()}"
+    else:
+        return f"Includes relevant BikeSpace reports between and including {dates["date_from"].isoformat()} and {dates["date_to"].isoformat()}"
+
+
 def export_excel(
     report_city_matches,
     report_matches_unique,
@@ -415,6 +427,7 @@ def export_excel(
         ),
         (""),
         ("NOTES", bold),
+        (" • " + get_date_range_description(get_dates())),
         (" • Coordinate reference system for lat/long values is WGS84 (EPSG:4326)"),
         (" • For any questions about this sheet, please contact bikespaceto@gmail.com"),
         (""),
@@ -423,15 +436,25 @@ def export_excel(
             " • Matches: display of damaged bicycle parking reports alongside nearby City of Toronto parking features"
         ),
         ("    Damage reports are ordered by date descending (most recent first)"),
-        (
-            f"    City features include top 5 nearest bicycle parking features within a {SEARCH_RADIUS}m radius"
-        ),
-        ("    Damage report listed first, then data from applicable City features"),
         ("    Thumbnail maps: orange triangle is location of damage report"),
         (
             "    blue dots are locations of nearest City bicycle parking features (max 5)"
         ),
+        (
+            "    Then damage report listed first, followed by data from applicable City features"
+        ),
+        (
+            "    Some City features are based on exact matches determined by volunteer site survey"
+        ),
+        (
+            f"    Otherwise, up to 5 estimated matches are shown within a {SEARCH_RADIUS}m radius of the report"
+        ),
+        (
+            "    The 'match_type' field indicates whether the matches are surveyed or estimated."
+        ),
+        (""),
         (" • DamageReports: data table for damaged bicycle parking reports"),
+        (""),
         (
             " • CityFeatures: data table for City of Toronto parking features matched with damage reports"
         ),
@@ -441,9 +464,11 @@ def export_excel(
         (
             "User reports of damaged bicycle parking are from the BikeSpace app (bikespace.ca)"
         ),
+        ("BikeSpace damage reports are checked for data quality."),
         (
-            "BikeSpace damage reports are checked for data quality and omit known test entries, duplicates, and reports not on City property."
+            "Resolved issues, known test entries, duplicates, and reports not on City property are omitted."
         ),
+        (""),
         ("City of Toronto bicycle parking features are from the following datasets:"),
         *[(" • " + source["dataset_title"]) for source in city_sources["datasets"]],
     ]
@@ -476,6 +501,13 @@ def export_excel(
     write_row = 4
     for entry in report_city_matches:
         report, city_features, thumbnail, survey_photo = entry.values()
+        worksheet.write(
+            write_row,
+            0,
+            f"BIKESPACE REPORT #{report.index.array[0]} ({report["report_date"].iloc[0].isoformat()})",
+            bold,
+        )
+        write_row += 1
         worksheet.insert_image(
             write_row,
             0,
@@ -522,9 +554,9 @@ def export_excel(
         page_breaks.append(write_row)
 
     # print formatting
+    worksheet.set_print_scale(70)  # keep most entries to one page
     worksheet.set_h_pagebreaks(page_breaks[0:-1])
     worksheet.print_area(0, 0, write_row, 5)
-    worksheet.fit_to_pages(1, 0)  # fit to one column
 
     # TAB 2 - BIKESPACE REPORTS
     # -------------------------
