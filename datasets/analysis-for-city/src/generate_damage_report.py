@@ -391,8 +391,34 @@ def get_date_range_description(dates: DateRange) -> str:
         return f"Includes relevant BikeSpace reports between and including {dates["date_from"].isoformat()} and {dates["date_to"].isoformat()}"
 
 
+def get_combined_data_table(matches: list[ReportCityMatch]) -> gpd.GeoDataFrame:
+    """Generate a combined data table where each row is one bikespace report combined with the closest matched city bicycle parking feature"""
+    rows: list[pd.Series] = []
+    for match in matches:
+        report = match["report"].reset_index(names=["bikespace_id"]).squeeze()
+        report["Additional Matches"] = len(match["city_features"]) - 1
+        report["Survey Photo"] = (
+            pd.NA if match["survey_photo"] == None else match["survey_photo"].name
+        )
+        closest_city_feature = (
+            match["city_features"]
+            .sort_values("distance", ascending=True)
+            .iloc[0]
+            .dropna()
+        )
+        combined = report.combine_first(closest_city_feature)
+        combined = combined.reindex(
+            index=report.index.union(closest_city_feature.index, sort=False)
+        )
+        rows.append(combined)
+
+    combined_table = gpd.GeoDataFrame(rows, crs="EPSG:4326")
+    return combined_table
+
+
 def export_excel(
     report_city_matches,
+    combined_data_table,
     report_matches_unique,
     matched_city_features_unique,
 ):
@@ -434,7 +460,7 @@ def export_excel(
         (""),
         ("TABS", bold),
         (
-            " • Matches: display of damaged bicycle parking reports alongside nearby City of Toronto parking features"
+            " • MatchesDisplay: display of damaged bicycle parking reports alongside nearby City of Toronto parking features"
         ),
         ("    Damage reports are ordered by date descending (most recent first)"),
         ("    Thumbnail maps: orange triangle is location of damage report"),
@@ -453,6 +479,11 @@ def export_excel(
         (
             "    The 'match_type' field indicates whether the matches are surveyed or estimated."
         ),
+        (""),
+        (
+            " • MatchesTable: display of damaged bicycle parking reports alongside first match from nearby City of Toronto parking features"
+        ),
+        ("    Damage reports are ordered by date descending (most recent first)"),
         (""),
         (" • DamageReports: data table for damaged bicycle parking reports"),
         (""),
@@ -486,8 +517,8 @@ def export_excel(
 
     # TAB 1 - DISPLAY OF REPORTS AND MATCHES
     # --------------------------------------
-    worksheet = workbook.add_worksheet("Matches")
-    writer.sheets["Matches"] = worksheet
+    worksheet = workbook.add_worksheet("MatchesDisplay")
+    writer.sheets["MatchesDisplay"] = worksheet
     page_breaks = []
 
     # set column widths to 18 and format to word wrap
@@ -538,7 +569,7 @@ def export_excel(
         )
         report.to_excel(
             writer,
-            sheet_name="Matches",
+            sheet_name="MatchesDisplay",
             startrow=write_row,
             startcol=0,
             header=False,
@@ -546,7 +577,7 @@ def export_excel(
         write_row += len(report) + 1
         city_features.to_excel(
             writer,
-            sheet_name="Matches",
+            sheet_name="MatchesDisplay",
             startrow=write_row,
             startcol=0,
             header=False,
@@ -559,7 +590,50 @@ def export_excel(
     worksheet.set_h_pagebreaks(page_breaks[0:-1])
     worksheet.print_area(0, 0, write_row, 5)
 
-    # TAB 2 - BIKESPACE REPORTS
+    # TAB 2 - COMBINED DATA TABLE
+    # -------------------------
+
+    worksheet = workbook.add_worksheet("MatchesTable")
+    writer.sheets["MatchesTable"] = worksheet
+
+    # write header content
+    worksheet.write("A1", *content[0])
+    worksheet.write("A2", *content[1])
+    worksheet.write("A3", *content[2])
+
+    combined_data = combined_data_table.drop(
+        columns=["geometry", "parking_time", "parking_dt"]
+    ).reset_index(drop=True)
+    combined_data.to_excel(
+        writer,
+        sheet_name="MatchesTable",
+        startrow=4,
+        startcol=0,
+        header=True,
+        index=False,
+    )
+
+    # formatting
+    (max_row, max_col) = combined_data.shape
+    column_settings = [{"header": column} for column in combined_data.columns]
+    worksheet.add_table(
+        4,
+        0,
+        max_row + 4,
+        max_col - 1,
+        {
+            "name": "T_MatchesTable",
+            "columns": column_settings,
+            "style": "Table Style Light 8",
+        },
+    )
+
+    worksheet.set_column(0, max_col, 15, text_wrap)
+    worksheet.set_column("B:B", 40, text_wrap)
+    worksheet.set_column("I:I", 20, text_wrap)
+    worksheet.set_column("M:M", 20, text_wrap)
+
+    # TAB 3 - BIKESPACE REPORTS
     # -------------------------
     worksheet = workbook.add_worksheet("DamageReports")
     writer.sheets["DamageReports"] = worksheet
@@ -568,7 +642,7 @@ def export_excel(
     worksheet.write("A1", "Damaged Bicycle Parking Reports", bold)
     damage_reports = report_matches_unique.drop(
         columns=["geometry", "parking_time", "parking_dt"]
-    ).reset_index()
+    ).reset_index(names="bikespace_id")
     damage_reports.to_excel(
         writer,
         sheet_name="DamageReports",
@@ -595,9 +669,10 @@ def export_excel(
 
     worksheet.set_column(0, max_col, 15, text_wrap)
     worksheet.set_column("B:B", 40, text_wrap)
-    worksheet.set_column("H:I", 20, text_wrap)
+    worksheet.set_column("I:I", 20, text_wrap)
+    worksheet.set_column("M:M", 20, text_wrap)
 
-    # TAB 3 - MATCHED CITY BICYCLE PARKING FEATURES
+    # TAB 4 - MATCHED CITY BICYCLE PARKING FEATURES
     # ---------------------------------------------
     worksheet = workbook.add_worksheet("CityFeatures")
     writer.sheets["CityFeatures"] = worksheet
@@ -722,9 +797,13 @@ def generate_report():
     matched_city_features_unique = pd.concat(
         [df["city_features"] for df in report_city_matches]
     )
+    combined_data_table = get_combined_data_table(report_city_matches)
 
     export_excel(
-        report_city_matches, report_matches_unique, matched_city_features_unique
+        report_city_matches,
+        combined_data_table,
+        report_matches_unique,
+        matched_city_features_unique,
     )
 
 
