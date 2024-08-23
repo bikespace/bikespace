@@ -123,3 +123,6 @@ coverage/
 
 # Data reports
 /datasets/analysis-for-city/thumbnails/
+/bikespace_frontend/.next
+bikespace_frontend/next-env.d.ts
+/bikespace_frontend/out
