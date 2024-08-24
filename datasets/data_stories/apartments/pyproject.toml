@@ -1,0 +1,21 @@
+[project]
+name = "apartments"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "pandas>=2.2.2",
+    "requests>=2.32.3",
+    "geopandas>=1.0.1",
+    "pandera>=0.20.3",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.uv]
+dev-dependencies = [
+    "pytest>=8.3.2",
+]
