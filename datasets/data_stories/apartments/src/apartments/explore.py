@@ -131,7 +131,7 @@ def get_building_evaluations():
         x=vdf_all["X"],
         y=vdf_all["Y"],
         index=vdf_all.index,
-        crs="EPSG:7991",  # MTM Zone 10 NAD27 EPSG:7991
+        crs="EPSG:7991",  # MTM Zone 10 NAD27 EPSG:7991 - see https://www.toronto.ca/city-government/data-research-maps/maps/purchase-maps-data/mapping-glossary/
     ).to_crs("EPSG:4326")
 
     vdf_all["LONGITUDE"] = vdf_all["LONGITUDE"].fillna(xy_converted.x)
