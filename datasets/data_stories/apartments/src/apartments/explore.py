@@ -251,7 +251,8 @@ def get_bike_parking_info():
         Path("") / "source_data" / "Toronto_Bicycle_Policy_Zones.geojson"
     )
     gdf_with_zones = gdf_with_neighbourhoods.sjoin(
-        bicycle_parking_zones, how="left").drop(columns=["index_right"])
+        bicycle_parking_zones, how="left"
+    ).drop(columns=["index_right"])
 
     gdf_with_zoning_reqs = gdf_with_zones.assign(
         zoning_reqs=gdf_with_zones[["BICYCLE_ZONE", "CONFIRMED_UNITS"]].apply(
@@ -260,7 +261,9 @@ def get_bike_parking_info():
     )
     gdf_split_zoning_reqs = pd.concat(
         [gdf_with_zoning_reqs, pd.json_normalize(
-            gdf_with_zoning_reqs["zoning_reqs"])], axis=1).drop(columns=["zoning_reqs"])
+            gdf_with_zoning_reqs["zoning_reqs"])],
+        axis=1,
+    ).drop(columns=["zoning_reqs"])
 
     gdf_unmet_need = gdf_split_zoning_reqs.assign(
         short_term_min_unmet=gdf_split_zoning_reqs["short_term_min"]
@@ -269,6 +272,17 @@ def get_bike_parking_info():
         - gdf_split_zoning_reqs["bike_parking_outdoor"].fillna(0),
         long_term_unmet=gdf_split_zoning_reqs["long_term"]
         - gdf_split_zoning_reqs["bike_parking_indoor"].fillna(0),
+    ).convert_dtypes()
+
+    gdf_unmet_need["total_unmet_min"] = (
+        gdf_unmet_need["short_term_min_unmet"] +
+        gdf_unmet_need["long_term_unmet"]
+    )
+    gdf_unmet_need["total_req_min"] = (
+        gdf_unmet_need["short_term_min"] + gdf_unmet_need["long_term"]
+    )
+    gdf_unmet_need["pc_unmet"] = (
+        gdf_unmet_need["total_unmet_min"] / gdf_unmet_need["total_req_min"]
     )
 
     # output
