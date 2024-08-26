@@ -12,17 +12,20 @@ export interface MapProps {
 }
 
 function GLMap({submissions}: MapProps) {
+  const [viewState, setViewState] = React.useState({
+    longitude: -79.376221,
+    latitude: 43.733399,
+    zoom: 10,
+  });
+
   return (
     <Map
-      initialViewState={{
-        longitude: -79.376221,
-        latitude: 43.733399,
-        zoom: 10,
-      }}
+      {...viewState}
+      onMove={evt => setViewState(evt.viewState)}
       mapStyle="https://api.maptiler.com/maps/streets/style.json?key=v29NffFdvlIBsBR5bmoQ"
       className={styles.glmap}
     />
-  )
+  );
 }
 
 export default GLMap;
