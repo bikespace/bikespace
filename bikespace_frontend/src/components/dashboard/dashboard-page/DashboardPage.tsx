@@ -14,6 +14,7 @@ import {Sidebar} from '../sidebar';
 import {MapProps} from '../map';
 
 import styles from './dashboard-page.module.scss';
+import { GLMap } from '../gl-map';
 
 const Map = dynamic<MapProps>(() => import('../map/Map'), {
   loading: () => <></>,
@@ -67,7 +68,8 @@ export function DashboardPage() {
   return (
     <main className={styles.dashboardPage}>
       <Sidebar />
-      <Map submissions={submissions} />
+      <GLMap submissions={submissions} />
+      {/* <Map submissions={submissions} /> */}
     </main>
   );
 }
