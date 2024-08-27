@@ -1,6 +1,7 @@
-import React, {useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {MapContainer, TileLayer} from 'react-leaflet';
 import MarkerClusterGroup from 'react-leaflet-cluster';
+import {Marker as LeafletMarker} from 'leaflet';
 import {useWindowSize} from '@uidotdev/usehooks';
 
 import 'leaflet/dist/leaflet.css';
@@ -19,8 +20,12 @@ export interface MapProps {
   submissions: SubmissionApiPayload[];
 }
 
+type MarkerRefs = Record<number, LeafletMarker>;
+
 function Map({submissions}: MapProps) {
   const mapRef = useRef(null);
+  const [doneLoading, setDoneLoading] = useState(false);
+  const markerRefs = useRef<MarkerRefs>({});
 
   const windowSize = useWindowSize();
 
@@ -40,13 +45,22 @@ function Map({submissions}: MapProps) {
         maxZoom={20}
       />
       <MarkerClusterGroup chunkedLoading>
-        {submissions.map(submission => (
-          <MapMarker
-            key={submission.id}
-            submission={submission}
-            windowWidth={windowSize.width}
-          />
-        ))}
+        {submissions.map((submission, index) => {
+          return (
+            <MapMarker
+              key={submission.id}
+              submission={submission}
+              windowWidth={windowSize.width}
+              doneLoading={doneLoading}
+              ref={(m: LeafletMarker) => {
+                markerRefs.current[submission.id] = m;
+                if (index === submissions.length - 1 && !doneLoading) {
+                  setDoneLoading(true);
+                }
+              }}
+            />
+          );
+        })}
       </MarkerClusterGroup>
       <MapHandler />
     </MapContainer>
