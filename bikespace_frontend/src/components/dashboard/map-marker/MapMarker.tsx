@@ -1,4 +1,10 @@
-import React, {useEffect, useRef, forwardRef} from 'react';
+import React, {
+  useEffect,
+  useRef,
+  forwardRef,
+  useImperativeHandle,
+  MutableRefObject,
+} from 'react';
 import {Route} from 'next';
 import {usePathname, useSearchParams, useRouter} from 'next/navigation';
 import {Marker, useMap} from 'react-leaflet';
@@ -7,6 +13,7 @@ import {
   Marker as LeafletMarker,
   Icon,
   LatLngTuple,
+  MarkerClusterGroup as LeafletMarkerClusterGroup,
 } from 'leaflet';
 
 import {IssueType, SubmissionApiPayload} from '@/interfaces/Submission';
@@ -14,7 +21,6 @@ import {IssueType, SubmissionApiPayload} from '@/interfaces/Submission';
 import {issuePriority} from '@/config/bikespace-api';
 
 import {trackUmamiEvent} from '@/utils';
-import {flyToMarker, openMarkerPopup} from './utils';
 
 import {SidebarTab, useSubmissionId} from '@/states/url-params';
 
@@ -33,58 +39,38 @@ interface MapMarkerProps {
   submission: SubmissionApiPayload;
   windowWidth: number | null;
   doneLoading: boolean;
+  clusterRef: MutableRefObject<LeafletMarkerClusterGroup | null>;
 }
-
-const FLYTO_ANIMATION_DURATION = 0.5; // 0.5 seconds
-const FLYTO_ZOOM_MOBILE = 20;
-const FLYTO_ZOOM_DESKTOP = 18;
-const OPENPOPUP_DELAY = FLYTO_ANIMATION_DURATION * 2 * 1000; // in milliseconds
 
 const MapMarker = forwardRef(
   (
-    {submission, windowWidth, doneLoading}: MapMarkerProps,
-    ref: React.ForwardedRef<LeafletMarker>
+    {submission, windowWidth, doneLoading, clusterRef}: MapMarkerProps,
+    outerMarkerRef: React.ForwardedRef<LeafletMarker>
   ) => {
     // popupRef for calling openPopup() upon focus change
     // `Popup` from 'react-leaflet' forwards `Popup` from 'leaflet'
     const popupRef = useRef<LeafletPopup>(null);
+    const innerMarkerRef = useRef<LeafletMarker>(null);
+    // pass MarkerRef to parent while also allowing it to be used in this component:
+    useImperativeHandle(outerMarkerRef, () => innerMarkerRef.current!, []);
     const searchParams = useSearchParams();
     const pathname = usePathname();
     const {replace} = useRouter();
 
     const position: LatLngTuple = [submission.latitude, submission.longitude];
 
-    const map = useMap();
-
     const [focus, setFocus] = useSubmissionId();
 
     const isFocused = focus === submission.id;
 
-    // desktop
+    // focus pin on load if in URL param
+    // omits dependencies array to run on every render
     useEffect(() => {
-      if (!doneLoading) return;
-      if (!isFocused || (windowWidth && windowWidth <= 768)) return;
-
-      flyToMarker(map, position, {
-        zoom: FLYTO_ZOOM_DESKTOP,
-        duration: FLYTO_ANIMATION_DURATION,
+      if (!isFocused || !doneLoading) return;
+      clusterRef.current!.zoomToShowLayer(innerMarkerRef.current!, () => {
+        innerMarkerRef.current!.openPopup();
       });
-
-      openMarkerPopup(map, popupRef, {duration: OPENPOPUP_DELAY});
-    }, [doneLoading]);
-
-    // mobile
-    useEffect(() => {
-      if (!doneLoading) return;
-      if (!isFocused || (windowWidth && windowWidth > 768)) return;
-
-      flyToMarker(map, position, {
-        zoom: FLYTO_ZOOM_MOBILE,
-        duration: FLYTO_ANIMATION_DURATION,
-      });
-
-      openMarkerPopup(map, popupRef, {duration: OPENPOPUP_DELAY});
-    }, [isFocused, doneLoading]);
+    });
 
     const handlePopupClose = () => {
       if (focus === submission.id) setFocus(null);
@@ -104,9 +90,8 @@ const MapMarker = forwardRef(
         params.set('tab', SidebarTab.Feed);
 
         replace(`${pathname}?${params.toString()}` as Route);
+        setFocus(submission.id);
       }
-
-      setFocus(submission.id);
     };
 
     const priorityIssue = submission.issues.reduce((a: IssueType | null, c) => {
@@ -136,7 +121,7 @@ const MapMarker = forwardRef(
           popupclose: handlePopupClose,
           popupopen: handlePopupOpen,
         }}
-        ref={ref}
+        ref={innerMarkerRef}
       >
         <MapPopup submission={submission} ref={popupRef} />
       </Marker>

@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useRef, useState} from 'react';
 import {MapContainer, TileLayer} from 'react-leaflet';
 import MarkerClusterGroup from 'react-leaflet-cluster';
 import {Marker as LeafletMarker} from 'leaflet';
@@ -24,6 +24,7 @@ type MarkerRefs = Record<number, LeafletMarker>;
 
 function Map({submissions}: MapProps) {
   const mapRef = useRef(null);
+  const clusterRef = useRef(null);
   const [doneLoading, setDoneLoading] = useState(false);
   const markerRefs = useRef<MarkerRefs>({});
 
@@ -44,7 +45,7 @@ function Map({submissions}: MapProps) {
         url="https://tile.thunderforest.com/atlas/{z}/{x}/{y}.png?apikey=66ccf6226ef54ef38a6b97fe0b0e5d2e"
         maxZoom={20}
       />
-      <MarkerClusterGroup chunkedLoading>
+      <MarkerClusterGroup chunkedLoading ref={clusterRef}>
         {submissions.map((submission, index) => {
           return (
             <MapMarker
@@ -52,6 +53,7 @@ function Map({submissions}: MapProps) {
               submission={submission}
               windowWidth={windowSize.width}
               doneLoading={doneLoading}
+              clusterRef={clusterRef}
               ref={(m: LeafletMarker) => {
                 markerRefs.current[submission.id] = m;
                 if (index === submissions.length - 1 && !doneLoading) {
