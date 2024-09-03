@@ -14,7 +14,7 @@ function HeroBlock({
   return (
     <div className={styles.fullWidth}>
       <div className={styles.heroBlock}>
-        <div style={{flex: '2 1 400px'}}>
+        <div style={{flex: '2 1 400px', maxWidth: '90vw'}}>
           <div className={styles.heroTagline}>{tagline}</div>
           <div className={styles.heroButtonContainer}>
             <a
