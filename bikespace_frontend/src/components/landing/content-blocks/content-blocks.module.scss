@@ -27,6 +27,10 @@
   .heroImage {
     width: 100%;
     max-width: 400px;
+
+    @media (width < 450px) {
+      max-width: 90vw;
+    }
   }
 }
 
