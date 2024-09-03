@@ -1,6 +1,8 @@
-import withMDX from '@next/mdx';
+// import withMDX from '@next/mdx';
+import createMDX from '@next/mdx';
+import remarkGfm from 'remark-gfm';
 
-const nextConfig = withMDX()({
+const nextConfig = {
   // Enable SSG
   output: 'export',
   // Configure `pageExtensions` to include MDX files
@@ -9,6 +11,12 @@ const nextConfig = withMDX()({
     typedRoutes: true,
     missingSuspenseWithCSRBailout: false,
   },
+};
+
+const withMDX = createMDX({
+  options: {
+    remarkPlugins: [remarkGfm],
+  },
 });
 
-export default nextConfig;
+export default withMDX(nextConfig);

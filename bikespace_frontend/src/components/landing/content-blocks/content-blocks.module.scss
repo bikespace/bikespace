@@ -78,3 +78,118 @@ a.navLink {
   }
 }
 
+.featureBoxWrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.featureBox {
+  $fbPadding: 1rem;
+  $shadowSize: 4px;
+
+  display: grid;
+  grid-template-rows: auto auto 1fr;
+
+  border: 1px solid $color-primary-d50p;
+  border-radius: 1rem;
+  max-width: 300px;
+  box-shadow: $shadowSize $shadowSize $shadowSize $color-secondary-light-grey;
+
+  &:hover {
+    box-shadow: $shadowSize $shadowSize $shadowSize $color-primary-20p;
+  }
+
+  .featureBoxImage {
+    display: block;
+    margin-bottom: 0;
+    padding: $fbPadding;
+    img {
+      margin-bottom: 0;
+      max-width: calc(300px - 2 * $fbPadding);
+      height: calc(300px - 2 * $fbPadding);
+      object-fit: contain;
+    }
+  }
+
+  .featureBoxTitle {
+    display: block;
+    text-decoration: none;
+    padding: calc($fbPadding / 2) $fbPadding;
+    text-align: center;
+    background-color: $color-primary-d50p;
+    :hover {
+      text-decoration: underline;
+      text-decoration-color: white;
+      text-decoration-thickness: 2px;
+    }
+    h3 {
+      margin-bottom: 0;
+      color: white;
+    }
+  }
+
+  .featureBoxDescription {
+    display: block;
+    margin-bottom: 0;
+    padding: $fbPadding;
+    background-color: $color-primary-10p;
+    border-radius: 0 0 1rem 1rem;
+    text-align: center;
+    p {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.buttondownContainer {
+  display: flex;
+  justify-content: center;
+
+  .buttondownEmbeddableForm {
+    text-align: center;
+    background-color: $color-primary-10p;
+    padding: 1rem;
+    border-radius: 8px;
+    max-width: 500px;
+  }
+  
+  .buttondownInputs {
+    display: inline-block;
+    border: 2px solid $color-primary-d50p;
+    border-radius: 4px;
+    background-color: $color-primary-d50p;
+
+    input {
+      height: 2.5rem;
+      margin: 0;
+      box-shadow: none;
+      border: 1px solid $color-primary-d50p;
+      border-radius: 0;
+    }
+
+    .buttondownInputEmail {
+      border-right: 0;
+      padding: 0 0.5rem;
+    }
+
+    .buttondownInputSubmit {
+      background-color: $color-primary-d50p;
+      color: white;
+      padding: 0 0.5rem;
+      border-left: 0;
+      font-size: 0.9rem;
+      font-weight: 700;
+
+      &:hover {
+        background-color: $color-primary;
+      }
+    }
+  }
+  
+  .buttondownReferLink {
+    font-size: 0.9rem;
+  }
+}
+
