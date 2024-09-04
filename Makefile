@@ -108,7 +108,8 @@ setup-dagster:
 	cd $(ROOT_DIR)/datasets/bicycle_parking && \
 	python -m venv .venv && \
 	. .venv/bin/activate && \
-	pip install -e ".[dev]"
+	pip install -e ".[dev]" && \
+	mkdir bicycle_parking/dev_home
 
 run-dagster:
 	cd $(ROOT_DIR)/datasets/bicycle_parking && \

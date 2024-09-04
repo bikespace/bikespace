@@ -127,3 +127,6 @@ coverage/
 /datasets/analysis-for-city/thumbnails/
 
 datasets/bicycle_parking/bicycle_parking/dev_home
+/bikespace_frontend/.next
+bikespace_frontend/next-env.d.ts
+/bikespace_frontend/out
