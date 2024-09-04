@@ -41,7 +41,7 @@ def osm_bicycle_parking_normalized(
         **{
             "meta_source_provider": "OpenStreetMap",
             "meta_source_dataset_last_updated": datetime.fromtimestamp(
-                previous.metadata["last_updated"].value,
+                previous.metadata["features_last_updated"].value,
                 tz=timezone.utc,
             ).isoformat(),
         }
