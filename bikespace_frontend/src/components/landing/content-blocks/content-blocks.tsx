@@ -50,12 +50,19 @@ function HeroBlock({
 function DividerImg({
   imageSrc,
   imageAlt,
+  imageStyle = {},
 }: Readonly<{
   imageSrc: string;
   imageAlt: string;
+  imageStyle?: React.CSSProperties;
 }>) {
+  const baseStyle: React.CSSProperties = {
+    textAlign: 'center',
+    margin: '2rem 0 1rem 0',
+  };
+  const joinedStyle: React.CSSProperties = Object.assign(baseStyle, imageStyle);
   return (
-    <div style={{textAlign: 'center', margin: '1rem 0'}}>
+    <div style={joinedStyle}>
       <img
         src={imageSrc}
         alt={imageAlt}
