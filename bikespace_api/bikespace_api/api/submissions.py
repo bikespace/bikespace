@@ -1,14 +1,16 @@
 # bikespace_api/bikespace_api/api/answers.py
 
-from flask import Blueprint, jsonify, request, Response
-from bikespace_api.api.models import Submission, IssueType, ParkingDuration
-from bikespace_api import db
-from sqlalchemy.exc import IntegrityError
-from sqlalchemy import desc
-import json
 from better_profanity import profanity
-import geojson
+from bikespace_api import db
+from bikespace_api.api.models import Submission, IssueType, ParkingDuration
+from flask import Blueprint, jsonify, request, Response, make_response
 from geojson import Feature, FeatureCollection, Point
+from io import StringIO
+from sqlalchemy import desc
+from sqlalchemy.exc import IntegrityError
+import csv
+import geojson
+import json
 
 submissions_blueprint = Blueprint("submissions", __name__)
 
@@ -23,6 +25,8 @@ def handle_submissions():
             return get_submissions_json(request)
         elif (accept_header == "application/geo+json"):
             return get_submissions_geo_json(request)
+        elif (accept_header == "text/csv"):
+            return get_submissions_csv(request)
         else:
             return get_submissions_json(request)
     elif request.method == "POST":
@@ -138,3 +142,27 @@ def get_submissions_geo_json(request):
     return_response = Response(geojson.dumps(feature_collection), 200, mimetype="application/geo+json")
     return return_response
     
+def get_submissions_csv(request):
+    submissions = Submission.query.order_by(desc(Submission.parking_time)).all()
+    submissions_list = []
+    for submission in submissions:
+        row = []
+        issues = []
+        for issue in submission.issues:
+            issues.append(issue.value)
+        row.append(submission.id)
+        row.append(str(submission.parking_time))
+        row.append(";".join(issues))
+        row.append(submission.parking_duration.value)
+        row.append(submission.comments)
+        submissions_list.append(row)
+
+    string_io = StringIO()
+    csv_writer = csv.writer(string_io)
+    csv_headers = ["id", "parking_time", "issues", "parking_duration", "comments"]
+    csv_writer.writerow(csv_headers)
+    csv_writer.writerows(submissions_list)
+    return_response = make_response(string_io.getvalue())
+    return_response.headers["Content-Disposition"] = "attachment; filename=submissions.csv"
+    return_response.headers["Content-Type"] = "text/csv"
+    return return_response

@@ -38,6 +38,12 @@ def test_get_submissions_accept_geojson(test_client):
     assert response.status_code == 200
     assert response.headers["Content-Type"] == "application/geo+json"
 
+def test_get_submission_accept_csv(test_client):
+    accept_header = {'Accept': "text/csv"}
+    response = test_client.get("/api/v2/submissions", headers=accept_header)
+    assert response.status_code == 200
+    assert response.headers["Content-Type"] == "text/csv"
+
 def test_get_sumissions_with_offset_limit(test_client):
     target_limit = 2
     response = test_client.get(f"/api/v2/submissions?offset=1&limit={target_limit}")
