@@ -17,6 +17,26 @@ def test_get_submissions(test_client):
     assert type(res["pagination"]) == dict
     assert type(res["submissions"]) == list
 
+def test_get_submissions_accept_json(test_client):
+    """
+    GIVEN a Flask application configured for testing
+    WHEN the '/api/v2/submissions' page is requested (GET)
+    THEN check that the response is Valid
+    """
+    accept_header = {'Accept': 'application/json'}
+    response = test_client.get("/api/v2/submissions", headers=accept_header)
+    res = json.loads(response.get_data())
+    assert response.status_code == 200
+    assert response.headers["Content-Type"] == "application/json"
+    assert all(k in res for k in ("pagination", "submissions"))
+    assert type(res["pagination"]) == dict
+    assert type(res["submissions"]) == list
+
+def test_get_submissions_accept_geojson(test_client):
+    accept_header = {'Accept': "application/geo+json"}
+    response = test_client.get("/api/v2/submissions", headers=accept_header)
+    assert response.status_code == 200
+    assert response.headers["Content-Type"] == "application/geo+json"
 
 def test_get_sumissions_with_offset_limit(test_client):
     target_limit = 2
