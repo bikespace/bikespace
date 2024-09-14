@@ -1,12 +1,12 @@
 ROOT_PATH := $(abspath $(lastword $(MAKEFILE_LIST)))
 ROOT_DIR :=  $(dir $(ROOT_PATH))
-BIKESPACE_API_DIR = $(ROOT_DIR)/bikespace_api
+BIKESPACE_API_DIR = $(ROOT_DIR)bikespace_api
 BIKESPACE_API_FLY_TOML = $(ROOT_DIR)/$(BIKESPACE_API_DIR)/fly.toml
 BIKESPACE_FRONTEND_DIR = $(ROOT_DIR)/bikespace_frontend
 BIKESPACE_DASHBOARD_DIR = $(ROOT_DIR)/bikespace_dashboard
 BIKESPACE_DB_MIGRATIONS = $(BIKESPACE_API_DIR)/migrations
 MANAGE_PY = $(BIKESPACE_API_DIR)/manage.py
-PIP = $(ROOT_DIR)/$(VENV)/bin/pip
+PIP = $(ROOT_DIR)$(VENV)/bin/pip
 PYTHON = $(ROOT_DIR)$(VENV)/bin/python3
 PYTHON_VERSION = 3.12.0
 MIN_PYTHON_VERSION = 3.12.0
@@ -65,7 +65,7 @@ run-pytest-terminal: setup-py
 	cd $(BIKESPACE_API_DIR) && \
 	$(PYTHON) $(MANAGE_PY) recreate-db && \
 	$(PYTHON) $(MANAGE_PY) seed-db && \
-	$(PYTHON) -m pytest --cov=bikespace_api --cov-report term
+	$(PYTHON) -m pytest -s --cov=bikespace_api --cov-report term
 
 lint-py:
 	$(PYTHON) -m black $(BIKESPACE_API_DIR)
