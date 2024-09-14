@@ -21,11 +21,11 @@ DEFAULT_OFFSET_LIMIT = 100
 def handle_submissions():
     if request.method == "GET":
         accept_header = request.headers.get("Accept")
-        if (accept_header == "application/json"):
+        if accept_header == "application/json":
             return get_submissions_json(request)
-        elif (accept_header == "application/geo+json"):
+        elif accept_header == "application/geo+json":
             return get_submissions_geo_json(request)
-        elif (accept_header == "text/csv"):
+        elif accept_header == "text/csv":
             return get_submissions_csv(request)
         else:
             return get_submissions_json(request)
@@ -48,8 +48,13 @@ def get_submission_with_id(submission_id):
         "parking_time": submission_with_id.parking_time,
         "comments": submission_with_id.comments,
     }
-    return_response = Response(response=json.dumps(submission_with_id_json, default=str), status=200, mimetype="application/json")
+    return_response = Response(
+        response=json.dumps(submission_with_id_json, default=str),
+        status=200,
+        mimetype="application/json",
+    )
     return return_response
+
 
 def get_submissions_json(request):
     """Default response for GET /submissions. Returns user reports from the bikeparking_submissions table in a paginated JSON format."""
@@ -89,7 +94,11 @@ def get_submissions_json(request):
         },
     }
 
-    return_response = Response(response=json.dumps(final_response, default=str), status=200, mimetype="application/json")
+    return_response = Response(
+        response=json.dumps(final_response, default=str),
+        status=200,
+        mimetype="application/json",
+    )
     return return_response
 
 
@@ -116,7 +125,8 @@ def post_submissions(request):
     except IntegrityError:
         db.session.rollback()
         return_response = Response(json.dumps({"status": "Error"}), 500)
-        return 
+        return
+
 
 def get_submissions_geo_json(request):
     """Optional response for GET /submissions. Returns user reports from the bikeparking_submissions table in GeoJSON format without pagination."""
@@ -129,21 +139,24 @@ def get_submissions_geo_json(request):
         point_feature = Feature(
             geometry=Point((submission.longitude, submission.latitude)),
             properties={
-                "id" : submission.id,
-                "comments" : submission.comments,
-                "issues" : issues,
-                "parking_duration" : submission.parking_duration.value,
-                "parking_time" : str(submission.parking_time),
+                "id": submission.id,
+                "comments": submission.comments,
+                "issues": issues,
+                "parking_duration": submission.parking_duration.value,
+                "parking_time": str(submission.parking_time),
             },
         )
-        if (point_feature.is_valid):
+        if point_feature.is_valid:
             geojson_features.append(point_feature)
-    
+
     feature_collection = FeatureCollection(geojson_features)
     feature_collection.errors()
-    return_response = Response(geojson.dumps(feature_collection), 200, mimetype="application/geo+json")
+    return_response = Response(
+        geojson.dumps(feature_collection), 200, mimetype="application/geo+json"
+    )
     return return_response
-    
+
+
 def get_submissions_csv(request):
     """Optional response for GET /submissions. Returns user reports from the bikeparking_submissions table in CSV format."""
     submissions = Submission.query.order_by(desc(Submission.parking_time)).all()
@@ -166,6 +179,8 @@ def get_submissions_csv(request):
     csv_writer.writerow(csv_headers)
     csv_writer.writerows(submissions_list)
     return_response = make_response(string_io.getvalue())
-    return_response.headers["Content-Disposition"] = "attachment; filename=submissions.csv"
+    return_response.headers["Content-Disposition"] = (
+        "attachment; filename=submissions.csv"
+    )
     return_response.headers["Content-Type"] = "text/csv"
     return return_response
