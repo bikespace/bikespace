@@ -5,11 +5,11 @@ The API service is a python Flask application paired with a Postgres database.
 
 To develop the API locally you'll require the following things:
  - Python version 3.12.0 or greater
- - Postgres database running on port 5432, version 15 or greater
+ - Postgres databases running on port 5432, version 15 or greater
 
 ## Database
 
-To successfully run the API locally we require a Postgres database running along side the Flask application. You will have to install Postgres on your system and run the set-up steps noted below. Once set up, ensure that Postgres is running in port `5432` with an empty database `bikespace_dev` with default credentials of `postgres:postgres` (i.e. username and password are both `postgres`).
+To successfully develop and run the API locally we require two Postgres databases running along side the Flask application. You will have to install Postgres on your system and run the set-up steps noted below. Once set up, ensure that Postgres is running in port `5432` with an empty database `bikespace_dev` with default credentials of `postgres:postgres` (i.e. username and password are both `postgres`). You will also need an empty database `bikespace_test` with the same configuration to run unit tests.
 
 Setting up the database:
 ```shell
@@ -49,7 +49,7 @@ You should be able to use the default installation options in your installer pac
 - Leave the default port as `5432`.
 - You don't need to run stack builder after installation.
 
-### Create and set up the bikespace_dev database
+### Create and set up the bikespace_dev and bikespace_test databases
 
 These instructions are for the default pgAdmin app, but you may find other apps like [Postico](https://eggerapps.at/postico2/) easier to use.
 
@@ -58,11 +58,14 @@ In pgAdmin:
 - Open the Servers list on the left and enter the password (`postgres`).
 - Right-click on Databases, then select Create > Database...
 - Database name should be `bikespace_dev`; select Save to create.
+- Do the same steps to create an empty database named `bikespace_test`.
 
 In a terminal (in the root folder of the repo):
 
 - run `$ make recreate-db` to create the table(s) used by the API.
 - run `$ make seed-db` to enter dummy data to be used during development.
+
+(You do not need to run these two steps for `bikespace_test`, the `run-pytest` make target will do them for you.)
 
 To see the results of these actions in pgAdmin, right-click the `bikespace_dev` database and select Refresh. The database tables are under Schemas. You can right-click a table and select View/Edit Data to see the entries.
 
@@ -72,3 +75,4 @@ To test the API is working with the database:
 - On the Swagger page, you can open GET and select "Try it out" - if everything is working correctly, the API should return the dummy data.
 - If you run the frontend application (`$ make run-frontend` in a separate terminal) and use it to make a new submission, you should be able to see it by making another GET request to the API or re-executing the table view in pgAdmin.
 
+To run tests, in a terminal run `$ make run-pytest`. You can find [more information about pytest in their documentation](https://docs.pytest.org/en/stable/).
