@@ -158,24 +158,30 @@ def get_submissions_geo_json(request):
 
 
 def get_submissions_csv(request):
-    """Optional response for GET /submissions. Returns user reports from the bikeparking_submissions table in CSV format."""
+    """Optional response for GET /submissions. Returns user reports from the bikeparking_submissions table in CSV format. Also breaks out issue types into separate columns for easier analysis."""
     submissions = Submission.query.order_by(desc(Submission.parking_time)).all()
     submissions_list = []
     for submission in submissions:
         row = []
-        issues = []
-        for issue in submission.issues:
-            issues.append(issue.value)
         row.append(submission.id)
         row.append(str(submission.parking_time))
-        row.append(";".join(issues))
+        row.append(";".join([issue.value for issue in submission.issues]))
+        for issue_type in IssueType:
+            row.append(issue_type in submission.issues)
         row.append(submission.parking_duration.value)
         row.append(submission.comments)
         submissions_list.append(row)
 
     string_io = StringIO()
     csv_writer = csv.writer(string_io)
-    csv_headers = ["id", "parking_time", "issues", "parking_duration", "comments"]
+    csv_headers = [
+        "id",
+        "parking_time",
+        "issues",
+        *["issue_" + t.value for t in IssueType],
+        "parking_duration",
+        "comments",
+    ]
     csv_writer.writerow(csv_headers)
     csv_writer.writerows(submissions_list)
     return_response = make_response(string_io.getvalue())
