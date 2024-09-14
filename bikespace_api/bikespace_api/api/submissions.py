@@ -52,6 +52,7 @@ def get_submission_with_id(submission_id):
     return return_response
 
 def get_submissions_json(request):
+    """Default response for GET /submissions. Returns user reports from the bikeparking_submissions table in a paginated JSON format."""
     offset = request.args.get("offset", 1, type=int)
     limit = request.args.get("limit", DEFAULT_OFFSET_LIMIT, type=int)
 
@@ -118,6 +119,7 @@ def post_submissions(request):
         return 
 
 def get_submissions_geo_json(request):
+    """Optional response for GET /submissions. Returns user reports from the bikeparking_submissions table in GeoJSON format without pagination."""
     submissions = Submission.query.all()
     geojson_features = []
     for submission in submissions:
@@ -143,6 +145,7 @@ def get_submissions_geo_json(request):
     return return_response
     
 def get_submissions_csv(request):
+    """Optional response for GET /submissions. Returns user reports from the bikeparking_submissions table in CSV format."""
     submissions = Submission.query.order_by(desc(Submission.parking_time)).all()
     submissions_list = []
     for submission in submissions:
