@@ -33,7 +33,7 @@ export function MapClusterMarker({
         const zoom = Math.min(supercluster.getClusterExpansionZoom(id), 20);
 
         map.current?.flyTo({
-          center: {lat: latitude, lng: longitude},
+          center: [longitude, latitude],
         });
         map.current?.zoomTo(zoom);
       }}

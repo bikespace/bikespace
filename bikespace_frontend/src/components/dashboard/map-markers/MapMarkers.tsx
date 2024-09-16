@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import useSupercluster from 'use-supercluster';
 import Supercluster, {ClusterProperties} from 'supercluster';
 import {useWindowSize} from '@uidotdev/usehooks';
@@ -7,16 +7,34 @@ import {BBox} from 'geojson';
 
 import {SubmissionApiPayload} from '@/interfaces/Submission';
 
+import {useSubmissionId} from '@/states/url-params';
+
 import {MapMarker} from '../map-marker';
 import {MapClusterMarker} from '../map-cluster-marker';
 
 interface MapMarkersProps {
   submissions: SubmissionApiPayload[];
+  zoom: number;
 }
 
-export function MapMarkers({submissions}: MapMarkersProps) {
+export function MapMarkers({submissions, zoom}: MapMarkersProps) {
   const windowSize = useWindowSize();
   const map = useMap();
+
+  const [focus] = useSubmissionId();
+
+  useEffect(() => {
+    if (!focus) return;
+
+    const submission = submissions.find(submission => submission.id === focus);
+
+    if (!submission) return;
+
+    map.current?.flyTo({
+      center: [submission.longitude, submission.latitude],
+    });
+    map.current?.zoomTo(16);
+  }, [focus]);
 
   const {clusters, supercluster} = useSupercluster({
     points: submissions.map(submission => ({
@@ -31,7 +49,7 @@ export function MapMarkers({submissions}: MapMarkersProps) {
       },
     })),
     bounds: map.current?.getMap().getBounds().toArray().flat() as BBox,
-    zoom: map.current?.getZoom() || 11,
+    zoom,
     options: {maxZoom: 20},
   });
 

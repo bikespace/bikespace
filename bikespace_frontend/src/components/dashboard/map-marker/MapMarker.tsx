@@ -56,8 +56,9 @@ export function MapMarker({submission, windowWidth}: MapMarkerProps) {
       latitude={submission.latitude}
       longitude={submission.longitude}
       onClick={handleClick}
-      className={`${styles.marker}${isFocused ? styles.focused : ''}`}
-      anchor="top"
+      className={`${styles.marker}${isFocused ? ` ${styles.focused}` : ''}`}
+      anchor="bottom"
+      offset={[0, 48]}
     >
       <img src={customMarkerSrc} />
       {isFocused && <MapPopup submission={submission} />}
