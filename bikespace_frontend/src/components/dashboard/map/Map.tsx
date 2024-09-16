@@ -8,7 +8,7 @@ import {SubmissionApiPayload} from '@/interfaces/Submission';
 
 import {trackUmamiEvent} from '@/utils';
 
-import {MapCluster} from '../map-cluster';
+import {MapMarkers} from '../map-markers';
 
 import 'maplibre-gl/dist/maplibre-gl.css';
 
@@ -25,9 +25,9 @@ function Map({submissions}: MapProps) {
         zoom: 14,
       }}
       attributionControl={false}
-      mapStyle="https://tile.thunderforest.com/atlas/{z}/{x}/{y}.png?apikey=66ccf6226ef54ef38a6b97fe0b0e5d2e"
+      style={{width: '100%', height: '100%'}}
+      mapStyle="https://api.thunderforest.com/styles/atlas/style.json?apikey=66ccf6226ef54ef38a6b97fe0b0e5d2e"
     >
-      <AttributionControl customAttribution='&copy; Maps <a href="https://www.thunderforest.com/">Thunderforest</a>, &copy; Data <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>' />
       <GeolocateControl
         trackUserLocation={false}
         onGeolocate={() => {
@@ -38,10 +38,12 @@ function Map({submissions}: MapProps) {
         }}
         position="top-left"
       />
-      <MapCluster submissions={submissions} />
+      <MapMarkers submissions={submissions} />
     </MapGL>
   );
 }
+
+// <AttributionControl customAttribution='&copy; Maps <a href="https://www.thunderforest.com/">Thunderforest</a>, &copy; Data <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>' />
 
 export default Map;
 export {Map};

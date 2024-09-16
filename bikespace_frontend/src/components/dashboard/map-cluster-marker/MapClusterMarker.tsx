@@ -1,24 +1,43 @@
 import {Marker} from 'react-map-gl';
+import Supercluster from 'supercluster';
+import {useMap} from 'react-map-gl';
 
 import styles from './map-cluster-marker.module.scss';
 
 interface MapClusterMarkerProps {
+  id: number;
   latitude: number;
   longitude: number;
   count: number;
   totalCount: number;
+  supercluster: Supercluster;
 }
 
 export function MapClusterMarker({
+  id,
   latitude,
   longitude,
   count,
   totalCount,
+  supercluster,
 }: MapClusterMarkerProps) {
-  const markerSize = 10 + (count / totalCount) * 20000;
+  const map = useMap();
+
+  const markerSize = 10 + (count / totalCount) * 200;
 
   return (
-    <Marker latitude={latitude} longitude={longitude}>
+    <Marker
+      latitude={latitude}
+      longitude={longitude}
+      onClick={() => {
+        const zoom = Math.min(supercluster.getClusterExpansionZoom(id), 20);
+
+        map.current?.flyTo({
+          center: {lat: latitude, lng: longitude},
+        });
+        map.current?.zoomTo(zoom);
+      }}
+    >
       <div
         className={styles.marker}
         style={{
