@@ -30,12 +30,12 @@ export function MapClusterMarker({
       latitude={latitude}
       longitude={longitude}
       onClick={() => {
-        const zoom = Math.min(supercluster.getClusterExpansionZoom(id), 16);
+        const zoom = supercluster.getClusterExpansionZoom(id);
 
         map.current?.flyTo({
           center: [longitude, latitude],
+          zoom,
         });
-        map.current?.zoomTo(zoom);
       }}
     >
       <div

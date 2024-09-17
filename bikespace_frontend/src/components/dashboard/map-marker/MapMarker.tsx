@@ -59,7 +59,9 @@ export function MapMarker({submission, windowWidth}: MapMarkerProps) {
       offset={[0, 40]}
     >
       <img src={customMarkerSrc} />
-      {isFocused && <MapPopup submission={submission} />}
+      {isFocused && windowWidth && windowWidth >= 768 && (
+        <MapPopup submission={submission} />
+      )}
     </Marker>
   );
 }
