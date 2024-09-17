@@ -24,19 +24,6 @@ export function MapMarkers({submissions, viewport}: MapMarkersProps) {
 
   const [focus] = useSubmissionId();
 
-  useEffect(() => {
-    if (!focus) return;
-
-    const submission = submissions.find(submission => submission.id === focus);
-
-    if (!submission) return;
-
-    map.current?.flyTo({
-      center: [submission.longitude, submission.latitude],
-      zoom: 15,
-    });
-  }, [focus]);
-
   const {clusters, supercluster} = useSupercluster({
     points: submissions.map(submission => ({
       type: 'Feature',
@@ -51,8 +38,39 @@ export function MapMarkers({submissions, viewport}: MapMarkersProps) {
     })),
     bounds: viewport.bounds,
     zoom: viewport.zoom,
-    options: {maxZoom: 20},
   });
+
+  useEffect(() => {
+    if (!focus) return;
+
+    const submission = submissions.find(submission => submission.id === focus);
+
+    if (!submission) return;
+
+    map.current?.flyTo({
+      center: [submission.longitude, submission.latitude],
+    });
+  }, [focus]);
+
+  useEffect(() => {
+    if (!focus || clusters.length === 0) return;
+
+    const cluster = clusters
+      .filter(c => c.properties.cluster)
+      .find(c =>
+        supercluster
+          ?.getLeaves(c.id as number)
+          .find(l => l.properties.id === focus)
+      );
+
+    if (!cluster) return;
+
+    const zoom = cluster
+      ? supercluster?.getClusterExpansionZoom(cluster.id as number) || 14
+      : 14;
+
+    map.current?.zoomTo(zoom);
+  }, [focus, clusters]);
 
   return (
     <>
