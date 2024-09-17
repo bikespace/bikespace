@@ -6,6 +6,7 @@ import {useMap} from 'react-map-gl';
 import {BBox} from 'geojson';
 
 import {SubmissionApiPayload} from '@/interfaces/Submission';
+import {Viewport} from '../map/Map';
 
 import {useSubmissionId} from '@/states/url-params';
 
@@ -14,10 +15,10 @@ import {MapClusterMarker} from '../map-cluster-marker';
 
 interface MapMarkersProps {
   submissions: SubmissionApiPayload[];
-  zoom: number;
+  viewport: Viewport;
 }
 
-export function MapMarkers({submissions, zoom}: MapMarkersProps) {
+export function MapMarkers({submissions, viewport}: MapMarkersProps) {
   const windowSize = useWindowSize();
   const map = useMap();
 
@@ -32,8 +33,8 @@ export function MapMarkers({submissions, zoom}: MapMarkersProps) {
 
     map.current?.flyTo({
       center: [submission.longitude, submission.latitude],
+      zoom: 15,
     });
-    map.current?.zoomTo(16);
   }, [focus]);
 
   const {clusters, supercluster} = useSupercluster({
@@ -48,8 +49,8 @@ export function MapMarkers({submissions, zoom}: MapMarkersProps) {
         coordinates: [submission.longitude, submission.latitude],
       },
     })),
-    bounds: map.current?.getMap().getBounds().toArray().flat() as BBox,
-    zoom,
+    bounds: viewport.bounds,
+    zoom: viewport.zoom,
     options: {maxZoom: 20},
   });
 

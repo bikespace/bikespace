@@ -33,17 +33,6 @@ export function MapMarker({submission, windowWidth}: MapMarkerProps) {
 
   const isFocused = focus === submission.id;
 
-  const handleClick = () => {
-    if (windowWidth && windowWidth <= 768) {
-      const params = new URLSearchParams(searchParams);
-
-      params.set('tab', SidebarTab.Feed);
-
-      replace(`${pathname}?${params.toString()}` as Route);
-      setFocus(submission.id);
-    }
-  };
-
   const priorityIssue = submission.issues.reduce((a: IssueType | null, c) => {
     if (a === null) return c;
 
@@ -55,10 +44,19 @@ export function MapMarker({submission, windowWidth}: MapMarkerProps) {
     <Marker
       latitude={submission.latitude}
       longitude={submission.longitude}
-      onClick={handleClick}
+      onClick={e => {
+        e.originalEvent.stopPropagation();
+
+        const params = new URLSearchParams(searchParams);
+
+        params.set('tab', SidebarTab.Feed);
+
+        replace(`${pathname}?${params.toString()}` as Route);
+        setFocus(submission.id);
+      }}
       className={`${styles.marker}${isFocused ? ` ${styles.focused}` : ''}`}
       anchor="bottom"
-      offset={[0, 48]}
+      offset={[0, 40]}
     >
       <img src={customMarkerSrc} />
       {isFocused && <MapPopup submission={submission} />}

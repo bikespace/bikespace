@@ -53,7 +53,7 @@ export function MapPopup({submission}: MapPopupProps) {
       className={styles.popup}
       onOpen={handlePopupOpen}
       onClose={handlePopupClose}
-      anchor="top"
+      anchor="bottom"
     >
       <div>
         <strong>Issues:</strong>
