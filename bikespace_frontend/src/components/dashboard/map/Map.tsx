@@ -55,6 +55,7 @@ function Map({submissions}: MapProps) {
           longitude: e.viewState.longitude,
           bounds: e.target.getBounds().toArray().flat() as BBox,
         }));
+        console.log(e);
       }}
       onLoad={e => {
         setViewport(state => ({
@@ -81,7 +82,9 @@ function Map({submissions}: MapProps) {
         position="top-left"
       />
       <ScaleControl />
-      <MapMarkers submissions={submissions} viewport={viewport} />
+      {viewport.bounds && (
+        <MapMarkers submissions={submissions} viewport={viewport} />
+      )}
     </MapGL>
   );
 }

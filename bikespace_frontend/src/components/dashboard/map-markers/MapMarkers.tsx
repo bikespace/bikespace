@@ -1,9 +1,8 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import useSupercluster from 'use-supercluster';
 import Supercluster, {ClusterProperties} from 'supercluster';
 import {useWindowSize} from '@uidotdev/usehooks';
 import {useMap} from 'react-map-gl';
-import {BBox} from 'geojson';
 
 import {SubmissionApiPayload} from '@/interfaces/Submission';
 import {Viewport} from '../map/Map';
@@ -24,6 +23,10 @@ export function MapMarkers({submissions, viewport}: MapMarkersProps) {
 
   const [focus] = useSubmissionId();
 
+  const [submission, setSubmission] = useState<
+    SubmissionApiPayload | undefined
+  >();
+
   const {clusters, supercluster} = useSupercluster({
     points: submissions.map(submission => ({
       type: 'Feature',
@@ -41,36 +44,49 @@ export function MapMarkers({submissions, viewport}: MapMarkersProps) {
   });
 
   useEffect(() => {
-    if (!focus) return;
+    setSubmission(
+      focus
+        ? submissions.find(submission => submission.id === focus)
+        : undefined
+    );
+  }, [focus, submissions]);
 
-    const submission = submissions.find(submission => submission.id === focus);
-
+  useEffect(() => {
     if (!submission) return;
 
     map.current?.flyTo({
       center: [submission.longitude, submission.latitude],
+      zoom: 16,
     });
-  }, [focus]);
+  }, [submission]);
 
   useEffect(() => {
-    if (!focus || clusters.length === 0) return;
+    if (!submission || !supercluster) return;
+
+    if (clusters.length === 0) {
+      map.current?.zoomTo(16);
+      return;
+    }
 
     const cluster = clusters
       .filter(c => c.properties.cluster)
       .find(c =>
         supercluster
           ?.getLeaves(c.id as number)
-          .find(l => l.properties.id === focus)
+          .find(l => l.properties.id === submission.id)
       );
 
     if (!cluster) return;
 
     const zoom = cluster
-      ? supercluster?.getClusterExpansionZoom(cluster.id as number) || 14
-      : 14;
+      ? supercluster.getClusterExpansionZoom(cluster.id as number)
+      : 16;
 
-    map.current?.zoomTo(zoom);
-  }, [focus, clusters]);
+    map.current?.flyTo({
+      center: [submission.longitude, submission.latitude],
+      zoom,
+    });
+  }, [submission, clusters, supercluster]);
 
   return (
     <>
