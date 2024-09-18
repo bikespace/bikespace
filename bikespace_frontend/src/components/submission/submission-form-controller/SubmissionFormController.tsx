@@ -13,7 +13,6 @@ import {OrderedComponentsType} from '../submission-form/SubmissionForm';
 
 interface SubmissionFormControllerProps {
   submissionPayload: SubmissionPayload;
-  locationLoaded: boolean;
   step: number;
   setStep: React.Dispatch<React.SetStateAction<number>>;
   submissionStatus: {status: string};
@@ -25,7 +24,6 @@ interface SubmissionFormControllerProps {
 
 export function SubmissionFormController({
   submissionPayload,
-  locationLoaded,
   step,
   setStep,
   submissionStatus,
@@ -77,10 +75,6 @@ export function SubmissionFormController({
   };
 
   const handleStepChanged = (i: number) => {
-    if (!locationLoaded) {
-      return false;
-    }
-
     if (i === -1 && step > 0 && submissionStatus.status === 'summary') {
       setStep(step - 1);
     } else if (i === 1 && step < formOrder.length - 1) {
