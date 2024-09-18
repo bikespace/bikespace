@@ -4,7 +4,7 @@ import {useMap} from 'react-map-gl';
 
 import styles from './map-cluster-marker.module.scss';
 
-interface MapClusterMarkerProps {
+interface MapMarkerClusterProps {
   id: number;
   latitude: number;
   longitude: number;
@@ -13,17 +13,22 @@ interface MapClusterMarkerProps {
   supercluster: Supercluster;
 }
 
-export function MapClusterMarker({
+const BASE_SIZE = 20;
+const SCALE_FACTOR = 100;
+
+export function MapMarkerCluster({
   id,
   latitude,
   longitude,
   count,
   totalCount,
   supercluster,
-}: MapClusterMarkerProps) {
+}: MapMarkerClusterProps) {
   const map = useMap();
 
-  const markerSize = 10 + (count / totalCount) * 200;
+  const countRatio = count / totalCount;
+
+  const markerSize = BASE_SIZE + countRatio * SCALE_FACTOR;
 
   return (
     <Marker
@@ -39,7 +44,7 @@ export function MapClusterMarker({
       }}
     >
       <div
-        className={styles.marker}
+        className={`${styles.marker} ${getSizeClassName(countRatio)}`}
         style={{
           width: `${markerSize}px`,
           height: `${markerSize}px`,
@@ -50,3 +55,11 @@ export function MapClusterMarker({
     </Marker>
   );
 }
+
+const getSizeClassName = (ratio: number) => {
+  if (ratio <= 0.1) return styles.small;
+
+  if (ratio <= 0.5) return styles.medium;
+
+  return styles.large;
+};

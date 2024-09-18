@@ -10,7 +10,7 @@ import {Viewport} from '../map/Map';
 import {useSubmissionId} from '@/states/url-params';
 
 import {MapMarker} from '../map-marker';
-import {MapClusterMarker} from '../map-cluster-marker';
+import {MapMarkerCluster} from '../map-marker-cluster';
 
 interface MapMarkersProps {
   submissions: SubmissionApiPayload[];
@@ -97,7 +97,7 @@ export function MapMarkers({submissions, viewport}: MapMarkersProps) {
           cluster.properties as ClusterProperties;
 
         return isCluster ? (
-          <MapClusterMarker
+          <MapMarkerCluster
             key={cluster.id}
             id={cluster.id as number}
             latitude={latitude}
