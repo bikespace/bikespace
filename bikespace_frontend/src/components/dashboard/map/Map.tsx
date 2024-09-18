@@ -55,7 +55,6 @@ function Map({submissions}: MapProps) {
           longitude: e.viewState.longitude,
           bounds: e.target.getBounds().toArray().flat() as BBox,
         }));
-        console.log(e);
       }}
       onLoad={e => {
         setViewport(state => ({
