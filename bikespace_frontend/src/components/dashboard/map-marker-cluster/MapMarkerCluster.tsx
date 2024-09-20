@@ -13,7 +13,7 @@ interface MapMarkerClusterProps {
   supercluster: Supercluster;
 }
 
-const BASE_SIZE = 20;
+const BASE_SIZE = 36;
 const SCALE_FACTOR = 100;
 
 export function MapMarkerCluster({
@@ -44,7 +44,7 @@ export function MapMarkerCluster({
       }}
     >
       <div
-        className={`${styles.marker} ${getSizeClassName(countRatio)}`}
+        className={`${styles.marker} ${getSizeClassName(count)}`}
         style={{
           width: `${markerSize}px`,
           height: `${markerSize}px`,
@@ -56,10 +56,10 @@ export function MapMarkerCluster({
   );
 }
 
-const getSizeClassName = (ratio: number) => {
-  if (ratio <= 0.1) return styles.small;
+const getSizeClassName = (threshold: number) => {
+  if (threshold <= 10) return styles.small;
 
-  if (ratio <= 0.5) return styles.medium;
+  if (threshold <= 100) return styles.medium;
 
   return styles.large;
 };
