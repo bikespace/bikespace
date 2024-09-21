@@ -5,13 +5,15 @@ const parking_time_date_format = 'yyyy-MM-dd hh:mm:ss';
 
 /**
  * Parses parking_time string from API and returns Luxon DateTime
- * @param {string} dateString 
+ * @param {string} dateString
  * @returns {DateTime}
  */
 function parseParkingTime(dateString) {
-  const msRemoved = dateString.split(".")[0];
-  const dtParsed = DateTime.fromFormat(msRemoved, parking_time_date_format, {zone: 'UTC'},);
-  return dtParsed.setZone("America/Toronto");
+  const msRemoved = dateString.split('.')[0];
+  const dtParsed = DateTime.fromFormat(msRemoved, parking_time_date_format, {
+    zone: 'UTC',
+  });
+  return dtParsed.setZone('America/Toronto');
 }
 
 // for "render_priority", 0 is the highest priority and higher numbers are lower priority

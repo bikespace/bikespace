@@ -165,7 +165,7 @@ class DurationTimeOfDayChart extends Component {
   updateCount() {
     // function to check whether report falls into specified duration and parking_time (time of day)
     const test = (dt_string, hours, pd_input, pd_match) => {
-      const dt = new Date(dt_string + "+00:00");
+      const dt = new Date(dt_string + '+00:00');
       const hour_test = hours.includes(dt.getHours());
       const duration_test = pd_input === pd_match;
       return hour_test && duration_test;

@@ -23,7 +23,7 @@ class ParkingDurationFilterControl extends Component {
   }
 
   build() {
-    let duration_checkboxes = [`<div>`];
+    const duration_checkboxes = ['<div>'];
     for (const [id, selected] of Object.entries(this.#selection)) {
       duration_checkboxes.push(
         `<div>
@@ -32,7 +32,7 @@ class ParkingDurationFilterControl extends Component {
             id="filter-parking-duration-${id}" 
             name="${id}"
             class="filter-parking-duration-input"
-            ${selected ? "checked" : ""}
+            ${selected ? 'checked' : ''}
           >
           <label for="filter-parking-duration-${id}">
             ${pda[id].description}
@@ -40,47 +40,49 @@ class ParkingDurationFilterControl extends Component {
         </div>`
       );
     }
-    duration_checkboxes.push(`</div>`);
+    duration_checkboxes.push('</div>');
 
     const content = [
-      `<details open>`,
-        `<summary>Parking Duration</summary>`,
-        `<div class="details-container">`,
-          `<div class="parking-duration-types">`,
-            `<button 
+      '<details open>',
+      '<summary>Parking Duration</summary>',
+      '<div class="details-container">',
+      '<div class="parking-duration-types">',
+      `<button 
               class="filter-parking-duration-type" 
               type="button"
               data-type="short-term"
             >
               Short-Term
             </button>`,
-            `<button 
+      `<button 
               class="filter-parking-duration-type" 
               type="button"
               data-type="long-term"
             >
               Long-Term
             </button>`,
-          `</div>`,
-          ...duration_checkboxes,
-        `</div>`,
-      `</details>`,
+      '</div>',
+      ...duration_checkboxes,
+      '</div>',
+      '</details>',
     ].join('');
 
     $(`#${this.root_id}`).empty().append(content);
 
-    $('.filter-parking-duration-input').on('change', (e) => {
-      const checkboxes = document.querySelectorAll('.filter-parking-duration-input');
-      let state = [];
+    $('.filter-parking-duration-input').on('change', e => {
+      const checkboxes = document.querySelectorAll(
+        '.filter-parking-duration-input'
+      );
+      const state = [];
       for (const checkbox of checkboxes) {
         if (checkbox.checked) state.push(checkbox.name);
       }
       this.setFilter(state);
     });
 
-    $('.filter-parking-duration-type').on('click', (e) => {
+    $('.filter-parking-duration-type').on('click', e => {
       const duration_type = e.target.dataset.type;
-      let state = [];
+      const state = [];
       for (const duration of Object.values(pda)) {
         if (duration.type === duration_type) {
           state.push(duration.id);
@@ -93,7 +95,9 @@ class ParkingDurationFilterControl extends Component {
   setFilter(state) {
     const filters = this.shared_state.filters;
     if (state) {
-      filters[ParkingDurationFilter.filterKey] = new ParkingDurationFilter(state);
+      filters[ParkingDurationFilter.filterKey] = new ParkingDurationFilter(
+        state
+      );
       for (const duration of Object.values(pda)) {
         this.#selection[duration.id] = state.includes(duration.id);
       }
@@ -115,8 +119,8 @@ class ParkingDurationFilterControl extends Component {
       }
     }
     for (const [id, selected] of Object.entries(this.#selection)) {
-      document.getElementById(`filter-parking-duration-${id}`)
-        .checked = selected;
+      document.getElementById(`filter-parking-duration-${id}`).checked =
+        selected;
     }
   }
 }
