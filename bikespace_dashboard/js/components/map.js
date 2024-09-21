@@ -212,7 +212,7 @@ class Map extends Component {
       const issues = point.issues
         .map(x => issue_tags[x] ?? `<div class="issue">${x}</div>`)
         .join(' ');
-      const parking_time = new Date(point.parking_time);
+      const parking_time = new Date(point.parking_time + "+00:00");
       const parking_time_desc = parking_time.toLocaleString('en-CA', {
         dateStyle: 'full',
         timeStyle: 'short',

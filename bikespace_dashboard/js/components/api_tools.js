@@ -1,6 +1,18 @@
+import {DateTime} from '../../libraries/luxon.min.js';
 import {cssVarHSL} from './sidebar/data-panel/plot_utils.js';
 
-const parking_time_date_format = 'EEE, dd MMM yyyy hh:mm:ss z';
+const parking_time_date_format = 'yyyy-MM-dd hh:mm:ss';
+
+/**
+ * Parses parking_time string from API and returns Luxon DateTime
+ * @param {string} dateString 
+ * @returns {DateTime}
+ */
+function parseParkingTime(dateString) {
+  const msRemoved = dateString.split(".")[0];
+  const dtParsed = DateTime.fromFormat(msRemoved, parking_time_date_format, {zone: 'UTC'},);
+  return dtParsed.setZone("America/Toronto");
+}
 
 // for "render_priority", 0 is the highest priority and higher numbers are lower priority
 const issue_attributes = {
@@ -87,6 +99,6 @@ const parking_duration_attributes = {
 export {
   issue_attributes,
   issueIdToLabel,
-  parking_time_date_format,
+  parseParkingTime,
   parking_duration_attributes,
 };

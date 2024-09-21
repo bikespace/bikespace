@@ -1,6 +1,6 @@
 import {Component, DateRangeFilter} from '../../main.js';
 import {DateTime, Interval} from '../../../../libraries/luxon.min.js';
-import {parking_time_date_format} from '../../api_tools.js';
+import {parseParkingTime} from '../../api_tools.js';
 
 class DateFilterControl extends Component {
   #earliestSelection;
@@ -21,11 +21,7 @@ class DateFilterControl extends Component {
 
     // Calculate date range for all data
     const all_dates = this.shared_state.response_data.map(
-      s => DateTime.fromFormat(
-        s.parking_time,
-        parking_time_date_format,
-        {zone: "America/Toronto"}
-      )
+      s => parseParkingTime(s.parking_time)
     );
     this.#earliestAll = DateTime.min(...all_dates);
     this.#latestAll = DateTime.max(...all_dates);

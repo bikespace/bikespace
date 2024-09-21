@@ -3,7 +3,7 @@ import {Component} from '../../main.js';
 import {
   parking_duration_attributes as pda, 
   issue_attributes as ia,
-  parking_time_date_format
+  parseParkingTime,
 } from '../../api_tools.js';
 import {DateTime} from '../../../../libraries/luxon.min.js';
 
@@ -186,11 +186,7 @@ class Submissions extends Component {
       );
     } else {
       for (const submission of submissions) {
-        const parking_time = DateTime.fromFormat(
-          submission.parking_time,
-          parking_time_date_format,
-          {zone: "America/Toronto"}
-        );
+        const parking_time = parseParkingTime(submission.parking_time);
         const parking_time_desc = parking_time.toLocaleString(
           {weekday: 'long', month: 'long', day: 'numeric', year: 'numeric'}, 
           {locale: 'en-CA'},
@@ -242,11 +238,7 @@ class Submissions extends Component {
 
     // parse parking_time into DateTime
     const submissions_dt = submissions.map((s) => {
-      s['parking_time_dt'] = DateTime.fromFormat(
-        s.parking_time,
-        parking_time_date_format,
-        {zone: "America/Toronto"}
-      );
+      s['parking_time_dt'] = parseParkingTime(s.parking_time);
       return s;
     });
 
