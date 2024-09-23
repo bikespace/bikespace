@@ -29,7 +29,7 @@ class HashRouter {
       );
     }
 
-    window.addEventListener('hashchange', (e) => {
+    window.addEventListener('hashchange', e => {
       this.refreshCurrent();
       this.executeCallbacks();
     });

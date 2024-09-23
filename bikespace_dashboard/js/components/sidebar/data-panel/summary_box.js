@@ -1,6 +1,6 @@
 import {Component} from '../../main.js';
 import {DateTime} from '../../../../libraries/luxon.min.js';
-import {parking_time_date_format} from '../../api_tools.js';
+import {parseParkingTime} from '../../api_tools.js';
 
 class SummaryBox extends Component {
   #entryCountDescription = 'reports';
@@ -35,12 +35,11 @@ class SummaryBox extends Component {
 
       // Date Range Description
       const submission_dates = this.shared_state.display_data.map(s =>
-        DateTime.fromFormat(s.parking_time, parking_time_date_format, {
-          zone: 'America/Toronto',
-        })
+        parseParkingTime(s.parking_time)
       );
       const earliest_entry = DateTime.min(...submission_dates);
       const latest_entry = DateTime.max(...submission_dates);
+      console.log(submission_dates, earliest_entry, latest_entry);
 
       this.#dateRangeDescription = `${earliest_entry.toLocaleString(
         DateTime.DATE_FULL,

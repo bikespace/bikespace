@@ -13,7 +13,7 @@ module.exports = {
   plugins: baseConfig.plugins.filter(notNode),
   parserOptions: {
     sourceType: 'module',
-    ecmaVersion: 2020,
+    ecmaVersion: 'latest',
   },
   globals: {
     ...baseConfig.globals,
