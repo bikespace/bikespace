@@ -53,7 +53,6 @@ export function SubmissionForm() {
     ParkingDuration.Minutes
   );
   const [dateTime, setDateTime] = useState<Date>(new Date());
-  const [locationLoaded, setLocationLoaded] = useState(false);
   const [comments, setComments] = useState('');
 
   const parkingTime = {date: dateTime, parkingDuration: parkingDuration};
@@ -64,21 +63,6 @@ export function SubmissionForm() {
     parkingTime: parkingTime,
     comments: comments,
   };
-
-  useEffect(() => {
-    navigator.geolocation.getCurrentPosition(
-      position => {
-        setLocation({
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
-        });
-        setLocationLoaded(true);
-      },
-      () => {
-        setLocationLoaded(true);
-      }
-    );
-  }, []);
 
   const [step, setStep] = useState(0);
 
@@ -121,7 +105,6 @@ export function SubmissionForm() {
 
       <footer>
         <SubmissionFormController
-          locationLoaded={locationLoaded}
           step={step}
           setStep={setStep}
           submissionPayload={submissionPayload}

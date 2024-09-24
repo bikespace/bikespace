@@ -9,7 +9,6 @@ import {
 } from '@/interfaces/Submission';
 
 import {Issue} from '../issue';
-import {MapHandler} from '../map-handler';
 import {Time} from '../time';
 import {Comments} from '../comments';
 import {Summary} from '../summary';
@@ -57,12 +56,7 @@ export function SubmissionFormContent({
     case 'Issue':
       return <Issue issues={issues} onIssuesChanged={setIssues} />;
     case 'Location':
-      return (
-        <Location
-          location={location}
-          handler={<MapHandler onLocationChanged={setLocation} />}
-        />
-      );
+      return <Location location={location} setLocation={setLocation} />;
     case 'Time':
       return (
         <Time
