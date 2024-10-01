@@ -33,6 +33,7 @@ describe('SubmissionFormController', () => {
     ].map(l => ({label: l}) as OrderedComponentsType);
     render(
       <SubmissionFormController
+        locationLoaded={true}
         step={0}
         setStep={jest.fn()}
         submissionPayload={mockSubmissionPayload}
