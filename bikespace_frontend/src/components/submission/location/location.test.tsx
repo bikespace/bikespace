@@ -12,7 +12,7 @@ describe('Test Location page component', () => {
           latitude: faker.location.latitude(),
           longitude: faker.location.longitude(),
         }}
-        setLocation={jest.fn()}
+        handler={<></>}
       />
     );
 
