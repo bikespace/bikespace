@@ -18,7 +18,11 @@ export function Header() {
   return (
     <header className={styles.header} ref={clickAwayRef}>
       <div className={styles.headerContent}>
-        <Link href={'/' as Route} title="Home" className={styles.bikespaceLogo}>
+        <Link
+          href={'/' as Route}
+          title="App Home"
+          className={styles.bikespaceLogo}
+        >
           <img src={bikespaceLogo.src} alt="BikeSpace logo" />
         </Link>
         <div
@@ -36,7 +40,7 @@ export function Header() {
         >
           <ul>
             <li>
-              <a href="/about">About</a>
+              <a href="https://bikespace.ca/">About</a>
             </li>
             <li>
               <a href="https://github.com/bikespace/bikespace/tree/main/">
