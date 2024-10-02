@@ -30,6 +30,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Submission'
+            application/geo+json:
+              schema:
+                $ref: '#/components/schemas/Submission'
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/Submission'
         "400":
           description: Invalid request
           content:

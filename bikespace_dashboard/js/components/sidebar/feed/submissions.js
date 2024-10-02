@@ -1,9 +1,9 @@
 import {makeIssueLabelById} from '../../issue_label.js';
 import {Component} from '../../main.js';
 import {
-  parking_duration_attributes as pda, 
+  parking_duration_attributes as pda,
   issue_attributes as ia,
-  parking_time_date_format
+  parseParkingTime,
 } from '../../api_tools.js';
 import {DateTime} from '../../../../libraries/luxon.min.js';
 
@@ -54,7 +54,7 @@ class Submissions extends Component {
   }
 
   /**
-   * Focus a submission in the submission list panel. 
+   * Focus a submission in the submission list panel.
    * - Applies CSS class to an item to give the feel of it being focused and scroll to it.
    * @param {Number} id ID of the submission to focus
    */
@@ -165,8 +165,8 @@ class Submissions extends Component {
   }
 
   /**
-   * Sorts issues by render priority, then formats them as HTML. 
-   * @param {string[]} issueIds 
+   * Sorts issues by render priority, then formats them as HTML.
+   * @param {string[]} issueIds
    * @returns {string} formatted HTML for issues list
    * @requires issue_label.makeIssueLabel
    * @requires api_tools.issue_attributes
@@ -186,17 +186,14 @@ class Submissions extends Component {
       );
     } else {
       for (const submission of submissions) {
-        const parking_time = DateTime.fromFormat(
-          submission.parking_time,
-          parking_time_date_format,
-          {zone: "America/Toronto"}
-        );
+        const parking_time = parseParkingTime(submission.parking_time);
         const parking_time_desc = parking_time.toLocaleString(
-          {weekday: 'long', month: 'long', day: 'numeric', year: 'numeric'}, 
-          {locale: 'en-CA'},
+          {weekday: 'long', month: 'long', day: 'numeric', year: 'numeric'},
+          {locale: 'en-CA'}
         );
         const parking_time_time = parking_time.toLocaleString(
-          DateTime.TIME_SIMPLE, {locale: 'en-CA'}
+          DateTime.TIME_SIMPLE,
+          {locale: 'en-CA'}
         );
         const html = `
           <a href='#' class="submission-item" 
@@ -204,11 +201,9 @@ class Submissions extends Component {
           >
             <h3>${parking_time_desc}</h3>
             <p class="flex-distribute">
-              <span>${
-                this.#toSentenceCase(parking_time.toRelativeCalendar())
-              } • ${
-                parking_time_time
-              }</span>
+              <span>${this.#toSentenceCase(
+                parking_time.toRelativeCalendar()
+              )} • ${parking_time_time}</span>
               <span class="submission-id">ID: ${submission.id}</span>
             </p>
             <div class="problems">
@@ -218,9 +213,9 @@ class Submissions extends Component {
               pda[submission.parking_duration]?.description ?? 'unknown'
             }</p>
             ${
-              submission.comments 
-              ? `<p><strong>Comments:</strong> ${submission.comments}</p>` 
-              : ''
+              submission.comments
+                ? `<p><strong>Comments:</strong> ${submission.comments}</p>`
+                : ''
             }
           </a>`;
         this.list.append(html);
@@ -241,12 +236,8 @@ class Submissions extends Component {
     }
 
     // parse parking_time into DateTime
-    const submissions_dt = submissions.map((s) => {
-      s['parking_time_dt'] = DateTime.fromFormat(
-        s.parking_time,
-        parking_time_date_format,
-        {zone: "America/Toronto"}
-      );
+    const submissions_dt = submissions.map(s => {
+      s['parking_time_dt'] = parseParkingTime(s.parking_time);
       return s;
     });
 

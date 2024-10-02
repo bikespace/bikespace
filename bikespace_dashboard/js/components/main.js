@@ -1,5 +1,5 @@
 import {DateTime} from '../../libraries/luxon.min.js';
-import {parking_time_date_format} from '../components/api_tools.js';
+import {parseParkingTime} from '../components/api_tools.js';
 
 const elementIdToComponentKey = id => id.replace('-', '_');
 
@@ -216,11 +216,7 @@ class DateRangeFilter extends ReportFilter {
   }
 
   test(report) {
-    const dt = DateTime.fromFormat(
-      report.parking_time,
-      parking_time_date_format,
-      {zone: 'America/Toronto'}
-    );
+    const dt = parseParkingTime(report.parking_time);
     for (const interval of this._state) {
       if (interval.contains(dt)) return true;
     }
@@ -251,11 +247,7 @@ class WeekDayPeriodFilter extends ReportFilter {
 
   test(report) {
     // Fri, 05 Jan 2024 09:22:06 GMT
-    const dt = DateTime.fromFormat(
-      report.parking_time,
-      parking_time_date_format,
-      {zone: 'America/Toronto'}
-    );
+    const dt = parseParkingTime(report.parking_time);
     const inclWeekdays = this._state.map(x => this.#dayIndex[x]);
     return inclWeekdays.includes(dt.weekday);
   }

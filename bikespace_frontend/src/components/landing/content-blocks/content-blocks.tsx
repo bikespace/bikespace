@@ -18,21 +18,15 @@ function HeroBlock({
           <div className={styles.heroTagline}>{tagline}</div>
           <div className={styles.heroButtonContainer}>
             <a
-              href="/"
-              className={`${styles.buttonLink} ${styles.buttonFilled}`}
-            >
-              Find bike parking
-            </a>
-            <a
               href="/submission"
-              className={styles.buttonLink}
+              className={`${styles.buttonLink} ${styles.buttonFilled}`}
               data-umami-event="submission-from-frontpage"
             >
               Report a bike parking issue
             </a>
             <a
               href="/dashboard"
-              className={styles.navLink}
+              className={styles.buttonLink}
               data-umami-event="dashboard-from-frontpage"
             >
               View the collected data
