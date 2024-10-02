@@ -23,13 +23,12 @@ export const MapPopup = forwardRef<LeafletPopup, MapPopupProps>(
 
     const {issues, id, comments, parking_duration, parking_time} = submission;
 
-    const formattedParkingTime = new Date(parking_time).toLocaleString(
-      'en-CA',
-      {
-        dateStyle: 'full',
-        timeStyle: 'short',
-      }
-    );
+    const formattedParkingTime = new Date(
+      parking_time + '+00:00'
+    ).toLocaleString('en-CA', {
+      dateStyle: 'full',
+      timeStyle: 'short',
+    });
 
     return (
       <Popup ref={ref} className={styles.popup}>
