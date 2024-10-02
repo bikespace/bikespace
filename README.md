@@ -10,7 +10,7 @@ BikeSpace is a community-built web app that lets people report the issues they f
 The BikeSpace application has 2 major components: the backend API, and the frontend (which includes both the submission form and the dashboard).
 They are split up accordingly into their own directories:
 - `bikespace_api` (see: [api-dev.bikespace.ca](https://api-dev.bikespace.ca/api/v2/docs))
-- `bikespace_frontend` ([app.bikespace.ca](https://app.bikespace.ca/submission) and [app.bikespace.ca/dashboard](https://app.bikespace.ca/dashboard/))
+- `bikespace_frontend` ([app.bikespace.ca/submission](https://app.bikespace.ca/submission) and [app.bikespace.ca/dashboard](https://app.bikespace.ca/dashboard/))
 
 To run any of these components please see the `README` in each directory.
 
