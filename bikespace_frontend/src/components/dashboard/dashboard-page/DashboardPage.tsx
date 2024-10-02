@@ -48,12 +48,13 @@ export function DashboardPage() {
       allSubmissions.filter(
         submission =>
           (!dateRange ||
-            (new Date(submission.parking_time) >= dateRange.from &&
-              new Date(submission.parking_time) <= dateRange.to)) &&
+            (new Date(submission.parking_time + '+00:00') >= dateRange.from &&
+              new Date(submission.parking_time + '+00:00') <= dateRange.to)) &&
           (parkingDuration.length === 0 ||
             parkingDuration.includes(submission.parking_duration)) &&
           (!issue || submission.issues.includes(issue)) &&
-          (day === null || new Date(submission.parking_time).getDay() === day)
+          (day === null ||
+            new Date(submission.parking_time + '+00:00').getDay() === day)
       )
     );
   }, [allSubmissions, filters]);

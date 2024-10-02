@@ -19,7 +19,9 @@ function DataDurationByTodChart({className}: Pick<PlotParams, 'className'>) {
       return intervals.map(
         interval =>
           submissions.filter(submission => {
-            const parkingHour = new Date(submission.parking_time).getHours();
+            const parkingHour = new Date(
+              submission.parking_time + '+00:00'
+            ).getHours();
 
             return (
               submission.parking_duration === duration &&

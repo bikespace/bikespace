@@ -16,7 +16,7 @@ interface FeedSubmissionItemProps {
 export function FeedSubmissionItem({submission}: FeedSubmissionItemProps) {
   const {id, issues, parking_time, parking_duration, comments} = submission;
 
-  const parkingTime = new Date(parking_time);
+  const parkingTime = new Date(parking_time + '+00:00');
 
   const buttonRef = useRef<HTMLButtonElement>(null);
 
