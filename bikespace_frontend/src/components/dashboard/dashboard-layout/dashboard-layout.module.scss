@@ -1,0 +1,28 @@
+@import '@/styles/variables';
+
+.dashboardLayout {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Open Sans';
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+
+  a {
+    text-decoration: none;
+    color: $color-secondary-dark-grey;
+  
+    &:visited {
+      color: $color-secondary-dark-grey;
+    }
+  
+    &:hover {
+      color: $color-primary;
+    }
+  }
+
+  button {
+    font-family: 'Open Sans';
+  }
+}

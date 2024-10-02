@@ -1,0 +1,137 @@
+import React, {useState, useEffect, useContext, useCallback} from 'react';
+
+import {ParkingDuration} from '@/interfaces/Submission';
+
+import {trackUmamiEvent} from '@/utils';
+
+import {useSubmissionsStore} from '@/states/store';
+
+import {FilterSection} from '../filter-section';
+import {SidebarButton} from '../sidebar-button';
+
+import styles from './filter-parking-duration.module.scss';
+
+enum DurationCategory {
+  Short = 'short',
+  Long = 'long',
+}
+
+export function FilterParkingDuration() {
+  const {parkingDuration, setFilters} = useSubmissionsStore(state => ({
+    parkingDuration: state.filters.parkingDuration,
+    setFilters: state.setFilters,
+  }));
+
+  const [durationCategory, setDurationCategory] =
+    useState<DurationCategory | null>(null);
+
+  useEffect(() => {
+    switch (durationCategory) {
+      case DurationCategory.Short:
+        setFilters({
+          parkingDuration: [ParkingDuration.Minutes, ParkingDuration.Hours],
+        });
+        break;
+      case DurationCategory.Long:
+        setFilters({
+          parkingDuration: [
+            ParkingDuration.Overnight,
+            ParkingDuration.MultiDay,
+          ],
+        });
+        break;
+      default:
+        return;
+    }
+  }, [durationCategory]);
+
+  useEffect(() => {
+    if (parkingDuration.length === 0) return;
+
+    trackUmamiEvent(
+      'parkingdurationfilter',
+      Object.values(ParkingDuration).reduce(
+        (acc, next) => ({
+          ...acc,
+          [next]: parkingDuration.includes(next),
+        }),
+        {}
+      )
+    );
+  }, [parkingDuration]);
+
+  const handleChange = useCallback(
+    (value: ParkingDuration) => {
+      setFilters({
+        parkingDuration: parkingDuration?.includes(value)
+          ? parkingDuration.filter(v => v !== value)
+          : [...(parkingDuration || []), value],
+      });
+    },
+    [parkingDuration]
+  );
+
+  return (
+    <FilterSection title="Parking Duration">
+      <div className={styles.categoryButtons}>
+        {durationButtons.map(({label, value}) => (
+          <SidebarButton
+            key={value}
+            onClick={() => {
+              setDurationCategory(value);
+            }}
+          >
+            {label}
+          </SidebarButton>
+        ))}
+      </div>
+      <div className={styles.durationCheckboxes}>
+        {durationCheckboxes.map(({label, value}) => (
+          <div key={value}>
+            <input
+              type="checkbox"
+              id={`filter-parking-duration-${value}`}
+              name={value}
+              className="filter-parking-duration-input"
+              checked={parkingDuration?.includes(value)}
+              onChange={() => {
+                handleChange(value);
+              }}
+            />
+            <label htmlFor={`filter-parking-duration-${value}`}>{label}</label>
+          </div>
+        ))}
+      </div>
+    </FilterSection>
+  );
+}
+
+const durationButtons = [
+  {
+    value: DurationCategory.Short,
+    label: 'Short-Term',
+  },
+  {
+    value: DurationCategory.Long,
+    label: 'Long-Term',
+  },
+];
+
+const durationCheckboxes = [
+  {
+    value: ParkingDuration.Minutes,
+    label: 'less than an hour',
+  },
+  {
+    value: ParkingDuration.Hours,
+    label: 'several hours',
+  },
+  {
+    value: ParkingDuration.Overnight,
+    label: 'overnight',
+  },
+  {
+    value: ParkingDuration.MultiDay,
+    label: 'several days',
+  },
+];

@@ -1,0 +1,50 @@
+@import '@/styles/variables';
+
+.formController {
+  display: flex;
+  justify-content: space-between;
+}
+
+.primaryBtn {
+  background-color: $main-color-bg;
+  color: white;
+  border: none;
+  height: 42px;
+  border-radius: 21px;
+  padding: 10px 25px;
+  font-size: 1.2rem;
+  cursor: pointer;
+
+  &.hide {
+    visibility: hidden;
+  }
+
+  &.displayNone {
+    display: none;
+  }
+
+  &:disabled {
+    pointer-events: none;
+    color: $color-secondary-dark-grey;
+    background-color: $color-secondary-light-grey;
+  }
+}
+
+.primaryBtnNoFill {
+  background-color: white;
+  color: $main-color;
+  border: none;
+  height: 42px;
+  border-radius: 21px;
+  padding: 10px 25px;
+  font-size: 1.2rem;
+  cursor: pointer;
+
+  &.hide {
+    visibility: hidden;
+  }
+
+  &.displayNone {
+    display: none;
+  }
+}

@@ -1,0 +1,29 @@
+@import '@/styles/variables.scss';
+
+.pageFooter {
+  padding: 1rem 1rem 1.62rem 1rem;
+  margin-top: 1rem;
+  color: white;
+  background-color: $color-primary-d50p;
+
+  .footerContent {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    max-width: $wrapper-max-width;
+    margin: 0 auto;
+  }
+
+  .footerLink {
+    color: white;
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+
+    :visited {
+      color: white;
+    }
+  }
+}

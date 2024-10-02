@@ -1,0 +1,28 @@
+@import '@/styles/variables';
+
+.dateRangeCustom {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  .dateInput {
+    display: grid;
+    grid-template-columns: 30% 70%;
+
+    input[type='date'] {
+      color: black;
+      height: 2rem;
+      background-color: white;
+      border: 2px solid $color-primary-d50p;
+      border-radius: 4px;
+      padding-left: 8px;
+      padding-right: 8px;
+      font-family: $body-font-stack;
+      font-size: 0.9rem;
+    }
+  }
+
+  button {
+    align-self: flex-start;
+  }
+}

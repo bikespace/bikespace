@@ -1,0 +1,21 @@
+@import '@/styles/variables';
+
+$colors: (
+  'not_provided': $color-secondary-blue,
+  'not_provided_light': $color-secondary-blue-light,
+  'damaged': $color-secondary-red,
+  'damaged_light': $color-secondary-red-light,
+  'abandoned': $color-secondary-yellow-dark,
+  'abandoned_light': $color-secondary-yellow-light,
+  'other': $color-secondary-med-grey,
+  'other_light': $color-secondary-light-grey,
+  'full': $color-secondary-orange,
+  'full_light': $color-secondary-orange-light,
+);
+
+// Export variables for plotly.js consumption
+:export {
+  @each $color, $value in $colors {
+    #{unquote($color)}: $value;
+  }
+}

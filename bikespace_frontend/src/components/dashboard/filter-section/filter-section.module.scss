@@ -1,0 +1,27 @@
+@import '@/styles/variables';
+
+.filterSection {
+  border-radius: 4px;
+  background-color: white;
+  padding: 4px;
+
+  summary {
+    font-weight: 600;
+    color: $color-primary-d50p;
+    border-bottom: none;
+  }
+
+  &[open] summary {
+    border-bottom: 1px solid $color-secondary-light-grey;
+    padding-bottom: 4px;
+    margin-bottom: 4px;
+  }
+
+  .sectionContent{
+    margin: 4px;
+    margin-bottom: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+}

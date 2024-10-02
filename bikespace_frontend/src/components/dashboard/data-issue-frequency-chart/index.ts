@@ -1,0 +1,1 @@
+export {DataIssueFrequencyChart} from './DataIssueFrequencyChart';

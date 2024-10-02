@@ -1,0 +1,75 @@
+@import '@/styles/variables';
+
+.sidebar {
+  background-color: $color-primary-20p;
+  box-shadow: 0px 8px 8px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  overflow-y: hidden;
+
+  .sidebarContent {
+    margin: 4px;
+    margin-bottom: 0px;
+    padding-top: 4px;
+    overflow-y: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+@media (min-width: 1024px) {
+  .sidebar {
+    width: 340px;
+  }
+
+  .drawerHandle {
+    display: none;
+  }
+}
+
+@media (max-width: 1024px) {
+  $height-panel-handle: 16px;
+  $height-panel-handle-bar: 6px;
+
+  .sidebar {
+    width: 100%;
+    border-radius: 8px 8px 0px 0px;
+    min-height: 60vh;
+    min-height: 60dvh;
+    height: 60vh;
+    height: 60dvh;
+
+    .drawerHandle {
+      all: unset;
+      cursor: pointer;
+      display: block;
+      height: $height-panel-handle;
+      flex-shrink: 0;
+      width: 100%;
+      margin: 0;
+      padding: calc(($height-panel-handle - $height-panel-handle-bar) / 2) 0;
+      
+
+      &::before {
+        display: block;
+        content: '';
+        height: $height-panel-handle-bar;
+        width: 100px;
+        margin: auto;
+        border-radius: calc($height-panel-handle-bar / 2);
+        background-color: $color-primary;
+      }
+    }
+    
+    &.closed {
+      min-height: auto;
+      height: auto;
+
+      .sidebarContent {
+        display: none;
+      }
+    }
+  }
+}

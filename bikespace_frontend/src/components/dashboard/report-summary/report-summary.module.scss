@@ -1,0 +1,33 @@
+@import '@/styles/variables';
+
+.summary {
+  padding: 4px 8px;
+  border-radius: 4px;
+  background-color: $color-primary-d50p;
+  color: white;
+  font-size: 0.9rem;
+
+  .entryCount {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-right: 0.1rem;
+  }
+
+  .warningIcon {
+    display: inline-block;
+    vertical-align: bottom;
+    padding-bottom: 0.4rem;
+    height: 1.8rem;
+  }
+}
+
+.loading {
+  min-height: 72px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background-color: $color-primary-d50p;
+  color: white;
+  font-size: 2rem;
+  font-weight: 600;
+  // text-align: center;
+}
