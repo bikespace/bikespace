@@ -7,15 +7,16 @@ BikeSpace is a community-built web app that lets people report the issues they f
 
 ## Project Structure
 
-The BikeSpace application has 3 major components the backend API, the frontend and the dashboard.
+The BikeSpace application has 2 major components: the backend API, and the frontend (which includes both the submission form and the dashboard).
 They are split up accordingly into their own directories:
 - `bikespace_api` (see: [api-dev.bikespace.ca](https://api-dev.bikespace.ca/api/v2/docs))
-- `bikespace_frontend` ([app.bikespace.ca](https://dashboard.bikespace.ca/))
-- `bikespace_dashboard` ([dashboard.bikespace.ca](https://dashboard.bikespace.ca/))
+- `bikespace_frontend` ([app.bikespace.ca](https://app.bikespace.ca/submission) and [app.bikespace.ca/dashboard](https://app.bikespace.ca/dashboard/))
 
 To run any of these components please see the `README` in each directory.
 
 This repository also has a `bikespace_landing_page` folder for the [bikespace.ca](https://bikespace.ca/) content and a `datasets` folder for miscellaneous project data.
+
+The `bikespace_dashboard` folder is now deprecated since the dashboard is now part of `bikespace_frontend`.
 
 # Development Workflow
 
@@ -30,7 +31,7 @@ For more information about contributing to the BikeSpace project, please read th
 Most development tasks in this repository (e.g. running apps, linting code) can be run using [`make`](https://en.wikipedia.org/wiki/Make_(software)) targets that simplify multiple steps into one command and work cross-platform. For example, to run `bikespace_frontend` locally while developing, you can run the following in a terminal:
 
 ```bash
-$ make run-frontend
+$ make dev-frontend
 ```
 
 Note that you may need to ensure that there are no spaces in the filepath for the project directory for the `make` command to work as intended.
