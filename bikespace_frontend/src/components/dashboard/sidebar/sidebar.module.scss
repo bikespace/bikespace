@@ -19,7 +19,7 @@
   }
 }
 
-@media (min-width: 1024px) {
+@media (min-width: $wrapper-full-width) {
   .sidebar {
     width: 340px;
   }
@@ -29,7 +29,7 @@
   }
 }
 
-@media (max-width: 1024px) {
+@media (max-width: $wrapper-full-width) {
   $height-panel-handle: 16px;
   $height-panel-handle-bar: 6px;
 

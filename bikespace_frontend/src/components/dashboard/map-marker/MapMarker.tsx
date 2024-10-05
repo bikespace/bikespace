@@ -34,6 +34,7 @@ import otherIcon from '@/assets/icons/icon_other.svg';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 
 import styles from './map-marker.module.scss';
+import {wrapperFullWidth} from '@/styles/variablesTS';
 
 interface MapMarkerProps {
   submission: SubmissionApiPayload;
@@ -83,7 +84,7 @@ const MapMarker = forwardRef(
     };
 
     const handleClick = () => {
-      if (windowWidth && windowWidth <= 768) {
+      if (windowWidth && windowWidth <= wrapperFullWidth) {
         // Manually set tab= URL params to prevent excess rerendering from subscribing to tab change
         const params = new URLSearchParams(searchParams);
 
