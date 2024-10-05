@@ -1,8 +1,6 @@
-// Style variables for use in TSX files - should match CSS variables
+// Style variables for use in TSX files pulls from variables exported from scss
 import styleVars from './variables.module.scss';
 
-// const wrapperFullWidth: number = 1024;
-const wrapperFullWidth = parseInt(styleVars.wrapperFullWidth);
-console.log('width', wrapperFullWidth, styleVars);
+const wrapperFullWidth: number = parseInt(styleVars.wrapperFullWidth);
 
 export {wrapperFullWidth};
