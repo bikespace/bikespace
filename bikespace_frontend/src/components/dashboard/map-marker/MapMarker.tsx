@@ -22,7 +22,7 @@ import {issuePriority} from '@/config/bikespace-api';
 
 import {trackUmamiEvent} from '@/utils';
 
-import {SidebarTab, useSubmissionId} from '@/states/url-params';
+import {SidebarTab, useSidebarTab, useSubmissionId} from '@/states/url-params';
 
 import {MapPopup} from '../map-popup';
 
@@ -54,6 +54,7 @@ const MapMarker = forwardRef(
     const innerMarkerRef = useRef<LeafletMarker>(null);
     // pass MarkerRef to parent while also allowing it to be used in this component:
     useImperativeHandle(outerMarkerRef, () => innerMarkerRef.current!, []);
+    const [, setTab] = useSidebarTab();
     const searchParams = useSearchParams();
     const pathname = usePathname();
     const {replace} = useRouter();
@@ -68,6 +69,9 @@ const MapMarker = forwardRef(
     // omits dependencies array to run on every render
     useEffect(() => {
       if (!isFocused || !doneLoading) return;
+      if (windowWidth && windowWidth <= wrapperFullWidth) {
+        setTab(SidebarTab.Feed);
+      }
       clusterRef.current!.zoomToShowLayer(innerMarkerRef.current!, () => {
         innerMarkerRef.current!.openPopup();
       });
