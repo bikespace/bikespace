@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef, useLayoutEffect} from 'react';
 import dynamic from 'next/dynamic';
 
 import {
@@ -82,6 +82,10 @@ export function SubmissionForm() {
 
   const [step, setStep] = useState(0);
 
+  // Scroll to top on each question change
+  const sectionRef = useRef<HTMLElement>(null);
+  useLayoutEffect(() => sectionRef.current?.scroll(0, 0), [step]);
+
   const submissionPayload: SubmissionPayload = {
     latitude: submission.location.latitude,
     longitude: submission.location.longitude,
@@ -101,7 +105,7 @@ export function SubmissionForm() {
         <SubmissionProgressBar step={step} />
       </header>
 
-      <section className={styles.mainContentBody}>
+      <section className={styles.mainContentBody} ref={sectionRef}>
         <SubmissionFormContent
           formOrder={orderedComponents}
           step={step}
