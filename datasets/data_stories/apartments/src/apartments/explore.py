@@ -44,8 +44,7 @@ def get_building_registrations():
     vdf = schema.validate(df, lazy=True)
 
     BIKE_PARKING_PATTERN = r"(?P<bike_parking_indoor>\d+) indoor parking spots and (?P<bike_parking_outdoor>\d+) outdoor parking spots"
-    bike_parking_matches = vdf["BIKE_PARKING"].str.extract(
-        BIKE_PARKING_PATTERN)
+    bike_parking_matches = vdf["BIKE_PARKING"].str.extract(BIKE_PARKING_PATTERN)
     vdf = vdf.join(bike_parking_matches)
     vdf["bike_parking_indoor"] = pd.to_numeric(vdf["bike_parking_indoor"])
     vdf["bike_parking_outdoor"] = pd.to_numeric(vdf["bike_parking_outdoor"])
@@ -71,9 +70,19 @@ def get_building_evaluations():
         strict="filter",
         # Ensure that each entry has either a valid lat/long or x/y
         checks=[
-            pa.Check(lambda df: ~(df["LONGITUDE"].isna() & df["X"].isna())),
-            pa.Check(lambda df: ~(df["LATITUDE"].isna() & df["Y"].isna())),
+            pa.Check(
+                lambda df: ~(df["LONGITUDE"].isna() & df["X"].isna()),
+                name="Has a valid long or x value",
+                raise_warning=True,
+            ),
+            pa.Check(
+                lambda df: ~(df["LATITUDE"].isna() & df["Y"].isna()),
+                name="Has a valid lat or y value",
+                raise_warning=True,
+            ),
         ],
+        # drop rows that fail validation
+        drop_invalid_rows=True,
     )
     vdf_2023_plus = schema_2023_plus.validate(df_2023_plus, lazy=True).rename(
         columns={"SITE ADDRESS": "SITE_ADDRESS"}
@@ -96,8 +105,16 @@ def get_building_evaluations():
         strict="filter",
         # Ensure that each entry has either a valid lat/long or x/y
         checks=[
-            pa.Check(lambda df: ~(df["LONGITUDE"].isna() & df["X"].isna())),
-            pa.Check(lambda df: ~(df["LATITUDE"].isna() & df["Y"].isna())),
+            pa.Check(
+                lambda df: ~(df["LONGITUDE"].isna() & df["X"].isna()),
+                name="Has a valid long or x value",
+                raise_warning=True,
+            ),
+            pa.Check(
+                lambda df: ~(df["LATITUDE"].isna() & df["Y"].isna()),
+                name="Has a valid lat or y value",
+                raise_warning=True,
+            ),
         ],
         # drop rows that fail validation
         drop_invalid_rows=True,
@@ -121,11 +138,21 @@ def get_building_evaluations():
     schema_all = pa.DataFrameSchema(
         # Ensure that each entry has either a valid lat/long or x/y
         checks=[
-            pa.Check(lambda df: ~(df["LONGITUDE"].isna() & df["X"].isna())),
-            pa.Check(lambda df: ~(df["LATITUDE"].isna() & df["Y"].isna())),
+            pa.Check(
+                lambda df: ~(df["LONGITUDE"].isna() & df["X"].isna()),
+                name="Has a valid long or x value",
+                raise_warning=True,
+            ),
+            pa.Check(
+                lambda df: ~(df["LATITUDE"].isna() & df["Y"].isna()),
+                name="Has a valid lat or y value",
+                raise_warning=True,
+            ),
         ],
+        # drop rows that fail validation
+        drop_invalid_rows=True,
     )
-    vdf_all = schema_prior.validate(df_all, lazy=True)
+    vdf_all = schema_all.validate(df_all, lazy=True)
 
     xy_converted = gpd.GeoSeries.from_xy(
         x=vdf_all["X"],
@@ -159,10 +186,8 @@ def calculate_zoning_requirement(row) -> ZoningRequirements:
         unit_multipliers["long_term"] = 0.68
 
     # requirement is rounded up to nearest whole number
-    short_term_req = math.ceil(
-        unit_multipliers["short_term"] * row["CONFIRMED_UNITS"])
-    long_term_req = math.ceil(
-        unit_multipliers["long_term"] * row["CONFIRMED_UNITS"])
+    short_term_req = math.ceil(unit_multipliers["short_term"] * row["CONFIRMED_UNITS"])
+    long_term_req = math.ceil(unit_multipliers["long_term"] * row["CONFIRMED_UNITS"])
 
     return {
         # payment in lieu allows for 50% reduction in short term; reduction amount is rounded down (i.e. total is rounded up after dividing by two)
@@ -225,8 +250,7 @@ def get_neighbourhoods_gdf() -> gpd.GeoDataFrame:
 def get_bike_parking_info():
     building_registrations = get_building_registrations()
     building_evaluations = get_building_evaluations()
-    joined = building_registrations.merge(
-        building_evaluations, how="left", on="RSN")
+    joined = building_registrations.merge(building_evaluations, how="left", on="RSN")
     gdf = gpd.GeoDataFrame(
         joined,
         geometry=gpd.GeoSeries.from_xy(
@@ -235,6 +259,7 @@ def get_bike_parking_info():
     )
 
     # need to geocode missing
+    breakpoint()
 
     # add city wards
     wards = get_wards_gdf()
@@ -260,8 +285,7 @@ def get_bike_parking_info():
         )
     )
     gdf_split_zoning_reqs = pd.concat(
-        [gdf_with_zoning_reqs, pd.json_normalize(
-            gdf_with_zoning_reqs["zoning_reqs"])],
+        [gdf_with_zoning_reqs, pd.json_normalize(gdf_with_zoning_reqs["zoning_reqs"])],
         axis=1,
     ).drop(columns=["zoning_reqs"])
 
@@ -275,8 +299,7 @@ def get_bike_parking_info():
     ).convert_dtypes()
 
     gdf_unmet_need["total_unmet_min"] = (
-        gdf_unmet_need["short_term_min_unmet"] +
-        gdf_unmet_need["long_term_unmet"]
+        gdf_unmet_need["short_term_min_unmet"] + gdf_unmet_need["long_term_unmet"]
     )
     gdf_unmet_need["total_req_min"] = (
         gdf_unmet_need["short_term_min"] + gdf_unmet_need["long_term"]
@@ -286,8 +309,7 @@ def get_bike_parking_info():
     )
 
     # output
-    gdf_unmet_need.to_file(
-        "apartments_bicycle_parking.geojson", driver="geojson")
+    gdf_unmet_need.to_file("apartments_bicycle_parking.geojson", driver="GeoJSON")
     gdf_unmet_need.to_csv("apartments_bicycle_parking.csv")
 
 

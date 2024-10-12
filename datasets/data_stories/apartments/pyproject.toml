@@ -9,6 +9,8 @@ dependencies = [
     "requests>=2.32.3",
     "geopandas>=1.0.1",
     "pandera>=0.20.3",
+    "geopy>=2.4.1",
+    "tqdm>=4.66.5",
 ]
 
 [build-system]
