@@ -30,4 +30,6 @@ def geocode_missing(
         l.point.longitude for l in gdf_missing["location"]]
     gdf_missing = gdf_missing.drop(columns=["location"])
 
-    return gdf_missing
+    gdf_geocoded = gdf_missing.combine_first(gdf)
+
+    return gdf_geocoded

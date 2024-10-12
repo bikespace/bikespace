@@ -26,10 +26,11 @@ test_gdf = gpd.GeoDataFrame(
         },
     ]
 )
+CACHED_ADDRESS = "9 STAG HILL DR"
 test_cache = {
-    "9 STAG HILL DR": {
-        "latitude": 43.703363564,
-        "longitude": -79.310527323000002,
+    CACHED_ADDRESS: {
+        "latitude": 43,  # fake lat
+        "longitude": -79,  # fake long
     },
 }
 
@@ -37,5 +38,14 @@ test_cache = {
 def test_geocode_missing():
     geocoded_gdf = geocode_missing(
         test_gdf, "latitude", "longitude", "address")
+
+    assert len(test_gdf) == len(geocoded_gdf)
+
     assert not (
         geocoded_gdf["latitude"].hasnans or geocoded_gdf["longitude"].hasnans)
+
+    # cached_row = geocoded_gdf[
+    #     geocoded_gdf["address"] == CACHED_ADDRESS
+    # ].squeeze()
+    # assert cached_row["latitude"] == test_cache[CACHED_ADDRESS]["latitude"]
+    # assert cached_row["longitude"] == test_cache[CACHED_ADDRESS]["longitude"]
