@@ -37,15 +37,15 @@ test_cache = {
 
 def test_geocode_missing():
     geocoded_gdf = geocode_missing(
-        test_gdf, "latitude", "longitude", "address")
+        test_gdf, "latitude", "longitude", "address", test_cache,)["gdf"]
 
     assert len(test_gdf) == len(geocoded_gdf)
 
     assert not (
         geocoded_gdf["latitude"].hasnans or geocoded_gdf["longitude"].hasnans)
 
-    # cached_row = geocoded_gdf[
-    #     geocoded_gdf["address"] == CACHED_ADDRESS
-    # ].squeeze()
-    # assert cached_row["latitude"] == test_cache[CACHED_ADDRESS]["latitude"]
-    # assert cached_row["longitude"] == test_cache[CACHED_ADDRESS]["longitude"]
+    cached_row = geocoded_gdf[
+        geocoded_gdf["address"] == CACHED_ADDRESS
+    ].squeeze()
+    assert cached_row["latitude"] == test_cache[CACHED_ADDRESS]["latitude"]
+    assert cached_row["longitude"] == test_cache[CACHED_ADDRESS]["longitude"]
