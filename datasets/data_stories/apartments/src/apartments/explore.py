@@ -362,6 +362,15 @@ def get_bike_parking_info():
         "apartments_bicycle_parking.geojson", driver="GeoJSON")
     gdf_unmet_need.to_csv("apartments_bicycle_parking.csv")
 
+    # filtered output for mapping
+    gdf_unmet_need[[
+        "CONFIRMED_UNITS",
+        "pc_unmet",
+        "total_req_min",
+        "total_unmet_min",
+        "geometry",
+    ]].to_file("apartments_bicycle_parking_filtered.geojson", driver="GeoJSON")
+
 
 if __name__ == "__main__":
     get_bike_parking_info()
