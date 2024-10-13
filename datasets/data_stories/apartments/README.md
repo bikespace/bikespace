@@ -22,6 +22,9 @@ Zoning:
 This project uses [uv](https://github.com/astral-sh/uv) to run the python script and keep dependencies organized.
 
 ```bash
+# make sure you are in the project directory, e.g. from the root bikespace/ folder
+$ cd datasets/data_stories/apartments/
+
 # main script to generate data
 $ uv run src/apartments/explore.py 
 
