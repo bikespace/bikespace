@@ -6,7 +6,8 @@ from geopy.extra.rate_limiter import RateLimiter
 import pandas as pd
 from tqdm import tqdm
 
-tqdm.pandas()
+# enables pd.Series.progress_apply()
+tqdm.pandas(desc="Geocoding missing addresses...")
 
 
 class AddressCacheItem(TypedDict):
@@ -46,7 +47,7 @@ def geocode_missing(
     # geocode missing addresses
     located_addresses = list(zip(
         uncached_addresses,
-        uncached_addresses.apply(geocode),
+        uncached_addresses.progress_apply(geocode),
     ))
     add_to_cache: AddressCacheDict = {address: {
         "latitude": location.point.latitude,

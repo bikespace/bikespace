@@ -76,12 +76,10 @@ def get_building_evaluations():
             pa.Check(
                 lambda df: ~(df["LONGITUDE"].isna() & df["X"].isna()),
                 name="Has a valid long or x value",
-                raise_warning=True,
             ),
             pa.Check(
                 lambda df: ~(df["LATITUDE"].isna() & df["Y"].isna()),
                 name="Has a valid lat or y value",
-                raise_warning=True,
             ),
         ],
         # drop rows that fail validation
@@ -111,12 +109,10 @@ def get_building_evaluations():
             pa.Check(
                 lambda df: ~(df["LONGITUDE"].isna() & df["X"].isna()),
                 name="Has a valid long or x value",
-                raise_warning=True,
             ),
             pa.Check(
                 lambda df: ~(df["LATITUDE"].isna() & df["Y"].isna()),
                 name="Has a valid lat or y value",
-                raise_warning=True,
             ),
         ],
         # drop rows that fail validation
@@ -144,12 +140,10 @@ def get_building_evaluations():
             pa.Check(
                 lambda df: ~(df["LONGITUDE"].isna() & df["X"].isna()),
                 name="Has a valid long or x value",
-                raise_warning=True,
             ),
             pa.Check(
                 lambda df: ~(df["LATITUDE"].isna() & df["Y"].isna()),
                 name="Has a valid lat or y value",
-                raise_warning=True,
             ),
         ],
         # drop rows that fail validation
@@ -269,12 +263,15 @@ def get_neighbourhoods_gdf() -> gpd.GeoDataFrame:
 
 
 def get_bike_parking_info():
+    # contains statistics on building bicycle parking
     building_registrations = get_building_registrations()
+
+    # contains geolocation for most buildings
     building_evaluations = get_building_evaluations()
     joined = building_registrations.merge(
         building_evaluations, how="left", on="RSN")
 
-    # geocode missing
+    # add missing geolocations
     address_cache = AddressCache(
         Path("") / "address_cache" / "address_cache.json"
     )
@@ -284,11 +281,29 @@ def get_bike_parking_info():
     address_cache.cache = updated_cache
     address_cache.save_cache()
 
+    schema_joined_geocoded = pa.DataFrameSchema(
+        # Ensure that each entry has a valid lat/long
+        checks=[
+            pa.Check(
+                lambda df: ~df["LONGITUDE"].isna(),
+                name="Has a valid longitude value",
+                raise_warning=True,
+            ),
+            pa.Check(
+                lambda df: ~df["LATITUDE"].isna(),
+                name="Has a valid latitude value",
+                raise_warning=True,
+            ),
+        ],
+    )
+    joined_validated = schema_joined_geocoded.validate(
+        joined_geocoded, lazy=True)
+
     gdf = gpd.GeoDataFrame(
-        joined_geocoded,
+        joined_validated,
         geometry=gpd.GeoSeries.from_xy(
-            x=joined_geocoded["LONGITUDE"],
-            y=joined_geocoded["LATITUDE"],
+            x=joined_validated["LONGITUDE"],
+            y=joined_validated["LATITUDE"],
             crs="EPSG:4326",
         ),
     )
