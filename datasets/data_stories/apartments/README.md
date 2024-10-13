@@ -14,4 +14,6 @@ From City of Toronto Open Data:
 
 ```bash
 $ uv run src/apartments/explore.py 
+
+$ uv run pytest
 ```

@@ -1,3 +1,4 @@
+import json
 import math
 from pathlib import Path
 from typing import TypedDict
@@ -7,6 +8,7 @@ import pandas as pd
 import pandera as pa
 
 from apartments.torontoopendata import request_tod_df, request_tod_gdf
+from apartments.geocode_missing import geocode_missing, GeoCodeDFResult, AddressCacheDict
 
 
 class ZoningRequirements(TypedDict):
@@ -44,7 +46,8 @@ def get_building_registrations():
     vdf = schema.validate(df, lazy=True)
 
     BIKE_PARKING_PATTERN = r"(?P<bike_parking_indoor>\d+) indoor parking spots and (?P<bike_parking_outdoor>\d+) outdoor parking spots"
-    bike_parking_matches = vdf["BIKE_PARKING"].str.extract(BIKE_PARKING_PATTERN)
+    bike_parking_matches = vdf["BIKE_PARKING"].str.extract(
+        BIKE_PARKING_PATTERN)
     vdf = vdf.join(bike_parking_matches)
     vdf["bike_parking_indoor"] = pd.to_numeric(vdf["bike_parking_indoor"])
     vdf["bike_parking_outdoor"] = pd.to_numeric(vdf["bike_parking_outdoor"])
@@ -168,6 +171,22 @@ def get_building_evaluations():
     return output
 
 
+class AddressCache:
+    """Utility wrapper for getting and updating address cache"""
+
+    def __init__(self, path: Path):
+        self._path = path
+        self.cache: AddressCacheDict = {}
+        if self._path.exists():
+            with self._path.open("r") as f:
+                self.cache = json.load(f)
+
+    def save_cache(self):
+        self._path.parent.mkdir(exist_ok=True)
+        with self._path.open("w") as f:
+            json.dump(self.cache, f)
+
+
 def calculate_zoning_requirement(row) -> ZoningRequirements:
     """Calculate the required number of bicycle parking spaces under the current zoning by-law using the BICYCLE_ZONE and CONFIRMED_UNITS columns"""
 
@@ -186,8 +205,10 @@ def calculate_zoning_requirement(row) -> ZoningRequirements:
         unit_multipliers["long_term"] = 0.68
 
     # requirement is rounded up to nearest whole number
-    short_term_req = math.ceil(unit_multipliers["short_term"] * row["CONFIRMED_UNITS"])
-    long_term_req = math.ceil(unit_multipliers["long_term"] * row["CONFIRMED_UNITS"])
+    short_term_req = math.ceil(
+        unit_multipliers["short_term"] * row["CONFIRMED_UNITS"])
+    long_term_req = math.ceil(
+        unit_multipliers["long_term"] * row["CONFIRMED_UNITS"])
 
     return {
         # payment in lieu allows for 50% reduction in short term; reduction amount is rounded down (i.e. total is rounded up after dividing by two)
@@ -250,16 +271,27 @@ def get_neighbourhoods_gdf() -> gpd.GeoDataFrame:
 def get_bike_parking_info():
     building_registrations = get_building_registrations()
     building_evaluations = get_building_evaluations()
-    joined = building_registrations.merge(building_evaluations, how="left", on="RSN")
+    joined = building_registrations.merge(
+        building_evaluations, how="left", on="RSN")
+
+    # geocode missing
+    address_cache = AddressCache(
+        Path("") / "address_cache" / "address_cache.json"
+    )
+    joined_geocoded, updated_cache = geocode_missing(
+        joined, "LATITUDE", "LONGITUDE", "SITE_ADDRESS_x", address_cache.cache
+    ).values()
+    address_cache.cache = updated_cache
+    address_cache.save_cache()
+
     gdf = gpd.GeoDataFrame(
-        joined,
+        joined_geocoded,
         geometry=gpd.GeoSeries.from_xy(
-            x=joined["LONGITUDE"], y=joined["LATITUDE"], crs="EPSG:4326"
+            x=joined_geocoded["LONGITUDE"],
+            y=joined_geocoded["LATITUDE"],
+            crs="EPSG:4326",
         ),
     )
-
-    # need to geocode missing
-    breakpoint()
 
     # add city wards
     wards = get_wards_gdf()
@@ -285,7 +317,8 @@ def get_bike_parking_info():
         )
     )
     gdf_split_zoning_reqs = pd.concat(
-        [gdf_with_zoning_reqs, pd.json_normalize(gdf_with_zoning_reqs["zoning_reqs"])],
+        [gdf_with_zoning_reqs, pd.json_normalize(
+            gdf_with_zoning_reqs["zoning_reqs"])],
         axis=1,
     ).drop(columns=["zoning_reqs"])
 
@@ -299,7 +332,8 @@ def get_bike_parking_info():
     ).convert_dtypes()
 
     gdf_unmet_need["total_unmet_min"] = (
-        gdf_unmet_need["short_term_min_unmet"] + gdf_unmet_need["long_term_unmet"]
+        gdf_unmet_need["short_term_min_unmet"] +
+        gdf_unmet_need["long_term_unmet"]
     )
     gdf_unmet_need["total_req_min"] = (
         gdf_unmet_need["short_term_min"] + gdf_unmet_need["long_term"]
@@ -309,7 +343,8 @@ def get_bike_parking_info():
     )
 
     # output
-    gdf_unmet_need.to_file("apartments_bicycle_parking.geojson", driver="GeoJSON")
+    gdf_unmet_need.to_file(
+        "apartments_bicycle_parking.geojson", driver="GeoJSON")
     gdf_unmet_need.to_csv("apartments_bicycle_parking.csv")
 
 

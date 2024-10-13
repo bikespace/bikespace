@@ -1,10 +1,10 @@
-import geopandas as gpd
+import pandas as pd
 
 from apartments.geocode_missing import geocode_missing
 
 # TODO - add the cache in to the geocoding function
 
-test_gdf = gpd.GeoDataFrame(
+test_df = pd.DataFrame(
     [
         {
             "description": "existing lat long",
@@ -36,16 +36,16 @@ test_cache = {
 
 
 def test_geocode_missing():
-    geocoded_gdf = geocode_missing(
-        test_gdf, "latitude", "longitude", "address", test_cache,)["gdf"]
+    geocoded_df = geocode_missing(
+        test_df, "latitude", "longitude", "address", test_cache,)["df"]
 
-    assert len(test_gdf) == len(geocoded_gdf)
+    assert len(test_df) == len(geocoded_df)
 
     assert not (
-        geocoded_gdf["latitude"].hasnans or geocoded_gdf["longitude"].hasnans)
+        geocoded_df["latitude"].hasnans or geocoded_df["longitude"].hasnans)
 
-    cached_row = geocoded_gdf[
-        geocoded_gdf["address"] == CACHED_ADDRESS
+    cached_row = geocoded_df[
+        geocoded_df["address"] == CACHED_ADDRESS
     ].squeeze()
     assert cached_row["latitude"] == test_cache[CACHED_ADDRESS]["latitude"]
     assert cached_row["longitude"] == test_cache[CACHED_ADDRESS]["longitude"]
