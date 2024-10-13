@@ -2,8 +2,6 @@ import pandas as pd
 
 from apartments.geocode_missing import geocode_missing
 
-# TODO - add the cache in to the geocoding function
-
 test_df = pd.DataFrame(
     [
         {
