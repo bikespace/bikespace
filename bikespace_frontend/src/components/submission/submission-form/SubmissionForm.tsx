@@ -1,5 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import dynamic from 'next/dynamic';
+import {useForm, FormProvider} from 'react-hook-form';
+import {zodResolver} from '@hookform/resolvers/zod';
 
 import {
   IssueType,
@@ -9,6 +11,8 @@ import {
   SubmissionStatus,
   SubmissionResponsePayload,
 } from '@/interfaces/Submission';
+
+import {SubmissionSchema, submissionSchema} from './schema';
 
 import {Issue} from '../issue';
 import {Time} from '../time';
@@ -42,6 +46,23 @@ const orderedComponents = [
 ];
 
 export function SubmissionForm() {
+  const form = useForm<SubmissionSchema>({
+    defaultValues: {
+      issues: [],
+      location: {
+        // default location is the City Hall
+        latitude: 43.65322,
+        longitude: -79.384452,
+      },
+      parkingTime: {
+        date: new Date(),
+        parkingDuration: ParkingDuration.Minutes,
+      },
+      comments: '',
+    },
+    resolver: zodResolver(submissionSchema),
+  });
+
   const [issues, setIssues] = useState<IssueType[]>([]);
   const [location, setLocation] = useState<LocationLatLng>({
     // default location is the City Hall
@@ -96,40 +117,32 @@ export function SubmissionForm() {
     });
 
   return (
-    <div className={styles.mainContent}>
-      <header>
-        <SubmissionProgressBar step={step} />
-      </header>
+    <FormProvider {...form}>
+      <form className={styles.mainContent}>
+        <header>
+          <SubmissionProgressBar step={step} />
+        </header>
 
-      <section className={styles.mainContentBody}>
-        <SubmissionFormContent
-          formOrder={orderedComponents}
-          step={step}
-          issues={issues}
-          setIssues={setIssues}
-          location={location}
-          setLocation={setLocation}
-          parkingDuration={parkingDuration}
-          setParkingDuration={setParkingDuration}
-          dateTime={dateTime}
-          setDateTime={setDateTime}
-          comments={comments}
-          setComments={setComments}
-          submissionStatus={submissionStatus}
-        />
-      </section>
+        <section className={styles.mainContentBody}>
+          <SubmissionFormContent
+            formOrder={orderedComponents}
+            step={step}
+            submissionStatus={submissionStatus}
+          />
+        </section>
 
-      <footer>
-        <SubmissionFormController
-          locationLoaded={locationLoaded}
-          step={step}
-          setStep={setStep}
-          submissionPayload={submissionPayload}
-          setSubmissionStatus={setSubmissionStatus}
-          formOrder={orderedComponents}
-          submissionStatus={submissionStatus}
-        />
-      </footer>
-    </div>
+        <footer>
+          <SubmissionFormController
+            locationLoaded={locationLoaded}
+            step={step}
+            setStep={setStep}
+            submissionPayload={submissionPayload}
+            setSubmissionStatus={setSubmissionStatus}
+            formOrder={orderedComponents}
+            submissionStatus={submissionStatus}
+          />
+        </footer>
+      </form>
+    </FormProvider>
   );
 }
