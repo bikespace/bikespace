@@ -1,20 +1,20 @@
 import React from 'react';
-import {
-  Submission,
-  SubmissionStatus,
-  SubmissionResponsePayload,
-} from '@/interfaces/Submission';
+
+import {SubmissionStatus} from '@/interfaces/Submission';
+
+import {useSubmissionFormContext} from '../schema';
 
 import styles from './summary.module.scss';
 
-export const Summary = (props: {
-  submission: Submission;
-  submissionStatus: SubmissionResponsePayload;
-}) => {
-  const submission = props.submission;
-  const {status} = props.submissionStatus;
+export const Summary = () => {
+  const {
+    watch,
+    formState: {isSubmitSuccessful},
+  } = useSubmissionFormContext();
 
-  if (status === SubmissionStatus.Summary) {
+  const submission = watch();
+
+  if (isSubmitSuccessful) {
     return (
       <div id="submission-summary" className={styles.summary}>
         <h2>Summary</h2>
