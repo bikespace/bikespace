@@ -1,19 +1,11 @@
-import React from 'react';
-import {ErrorMessage} from '@hookform/error-message';
-
 import {IssueType} from '@/interfaces/Submission';
 
 import {SelectInput} from '../select-input';
-
-import {useSubmissionFormContext} from '../schema';
-
 import {FormSectionHeader} from '../form-section-header';
 
 import styles from './issue.module.scss';
 
 export const Issue = () => {
-  const {formState: errors} = useSubmissionFormContext();
-
   return (
     <div className={styles.submissionIssue}>
       <FormSectionHeader title="What were the issue(s)?" name="issues" />

@@ -1,5 +1,3 @@
-import React from 'react';
-
 import {useSubmissionFormContext} from '../schema';
 
 import styles from './summary.module.scss';

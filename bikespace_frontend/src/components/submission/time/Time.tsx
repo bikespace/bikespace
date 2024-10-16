@@ -1,5 +1,3 @@
-import React, {useEffect} from 'react';
-
 import {ParkingDuration} from '@/interfaces/Submission';
 
 import {useSubmissionFormContext} from '../schema';
@@ -77,6 +75,5 @@ const convertToDateTimeLocalString = (date: Date) => {
   const day = date.getDate().toString().padStart(2, '0');
   const hours = ('0' + date.getHours()).slice(-2);
   const minutes = ('0' + date.getMinutes()).slice(-2);
-
   return `${year}-${month}-${day}T${hours}:${minutes}:00`;
 };

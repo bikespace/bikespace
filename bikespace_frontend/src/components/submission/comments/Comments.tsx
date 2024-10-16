@@ -2,8 +2,9 @@ import React from 'react';
 
 import {useSubmissionFormContext} from '../schema';
 
-import styles from './comments.module.scss';
 import {FormSectionHeader} from '../form-section-header';
+
+import styles from './comments.module.scss';
 
 export const Comments = () => {
   const {register} = useSubmissionFormContext();
