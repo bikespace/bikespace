@@ -50,7 +50,7 @@ export function SubmissionForm() {
         throw new Error(`Error! status: ${response.status}`);
       }
     } catch (error) {
-      console.log(error);
+      form.setError('root', error as Error);
     }
   };
 
