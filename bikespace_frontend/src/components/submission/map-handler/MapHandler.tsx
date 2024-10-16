@@ -3,13 +3,13 @@ import {useMapEvent} from 'react-leaflet';
 
 import {LocationLatLng} from '@/interfaces/Submission';
 
-interface MapHandlerProps {
-  onLocationChanged: (location: LocationLatLng) => void;
-}
+import {useSubmissionFormContext} from '../schema';
 
-export const MapHandler = ({onLocationChanged}: MapHandlerProps) => {
+export const MapHandler = () => {
+  const {setValue} = useSubmissionFormContext();
+
   useMapEvent('click', e => {
-    onLocationChanged({
+    setValue('location', {
       latitude: e.latlng.lat,
       longitude: e.latlng.lng,
     });

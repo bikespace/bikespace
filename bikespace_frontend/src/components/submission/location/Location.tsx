@@ -1,7 +1,8 @@
-import React from 'react';
-import {LocationLatLng} from '@/interfaces/Submission';
+import React, {useEffect} from 'react';
 import {MapContainer, TileLayer, Marker} from 'react-leaflet';
 import {LatLngTuple} from 'leaflet';
+
+import {useSubmissionFormContext} from '../schema';
 
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-defaulticon-compatibility';
@@ -10,12 +11,24 @@ import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility
 import styles from './location.module.scss';
 
 export interface LocationProps {
-  location: LocationLatLng;
   handler: React.ReactNode;
 }
 
-function Location({location, handler}: LocationProps) {
+function Location({handler}: LocationProps) {
+  const {setValue, watch} = useSubmissionFormContext();
+
+  const location = watch('location');
+
   const position = [location.latitude, location.longitude] as LatLngTuple;
+
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(position => {
+      setValue('location', {
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude,
+      });
+    });
+  }, []);
 
   return (
     <div className={styles.location}>

@@ -7,7 +7,7 @@ import {Issue} from './Issue';
 
 describe('Issues', () => {
   test('Issues page title should should have correct text', () => {
-    render(<Issue issues={[]} onIssuesChanged={jest.fn()} />);
+    render(<Issue />);
     expect(screen.getByRole('heading', {level: 2})).toHaveTextContent(
       'What was the issue?'
     );
@@ -17,7 +17,7 @@ describe('Issues', () => {
   });
 
   test('Issues page shows all the issue types', () => {
-    render(<Issue issues={[]} onIssuesChanged={jest.fn()} />);
+    render(<Issue />);
     expect(
       screen.getAllByRole('checkbox').map(c => c.getAttribute('value'))
     ).toEqual(expect.arrayContaining(Object.values(IssueType)));
@@ -26,7 +26,7 @@ describe('Issues', () => {
   test('Dispatches action when checkbox is clicked', () => {
     const onIssuesChanged = jest.fn();
 
-    render(<Issue issues={[]} onIssuesChanged={onIssuesChanged} />);
+    render(<Issue />);
     const checkbox = screen.getAllByRole('checkbox')[0];
     fireEvent.click(checkbox);
 
@@ -36,7 +36,7 @@ describe('Issues', () => {
   test('Checking empty checkbox should add issue to array', () => {
     const onIssuesChanged = jest.fn();
 
-    render(<Issue issues={[]} onIssuesChanged={onIssuesChanged} />);
+    render(<Issue />);
 
     const checkbox = screen.getAllByRole('checkbox')[0];
     fireEvent.click(checkbox);
@@ -46,12 +46,7 @@ describe('Issues', () => {
   test('Checking checked checkbox should remove issue to array', async () => {
     const onIssuesChanged = jest.fn();
 
-    render(
-      <Issue
-        issues={[IssueType.NotProvided]}
-        onIssuesChanged={onIssuesChanged}
-      />
-    );
+    render(<Issue />);
 
     const checkbox = screen.getAllByRole('checkbox')[0];
     fireEvent.click(checkbox);
