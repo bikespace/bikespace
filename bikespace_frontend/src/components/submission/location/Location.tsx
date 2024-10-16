@@ -23,6 +23,8 @@ function Location({handler}: LocationProps) {
 
   const position = [location.latitude, location.longitude] as LatLngTuple;
 
+  console.log(position);
+
   useEffect(() => {
     navigator.geolocation?.getCurrentPosition(position => {
       setValue('location', {
