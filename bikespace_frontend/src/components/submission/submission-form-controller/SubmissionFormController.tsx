@@ -23,7 +23,7 @@ export function SubmissionFormController({
   const {
     trigger,
     watch,
-    formState: {isSubmitted, isSubmitSuccessful, errors},
+    formState: {isSubmitted, isSubmitting, errors},
   } = useSubmissionFormContext();
 
   const issues = watch('issues');
@@ -86,6 +86,7 @@ export function SubmissionFormController({
           type="submit"
           className={styles.primaryBtn}
           data-umami-event="submit-issue-button"
+          disabled={isSubmitting}
         >
           Submit
         </button>
