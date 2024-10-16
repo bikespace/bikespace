@@ -2,7 +2,6 @@ import React from 'react';
 import {render, screen} from '@testing-library/react';
 
 import {SubmissionFormController} from './SubmissionFormController';
-import {OrderedComponentsType} from '../submission-form/SubmissionForm';
 
 // Mock useRouter:
 jest.mock('next/navigation', () => ({
@@ -15,21 +14,8 @@ jest.mock('next/navigation', () => ({
 
 describe('SubmissionFormController', () => {
   test('Next button should be disabled on issues page if no issue is selected', () => {
-    const mockFormOrder = [
-      'Issue',
-      'Location',
-      'Time',
-      'Comments',
-      'Summary',
-    ].map(l => ({label: l}) as OrderedComponentsType);
-    render(
-      <SubmissionFormController
-        locationLoaded={true}
-        step={0}
-        setStep={jest.fn()}
-        formOrder={mockFormOrder}
-      />
-    );
+    render(<SubmissionFormController step={0} setStep={jest.fn()} />);
+
     expect(screen.getByRole('button', {name: 'Next'})).toBeDisabled();
   });
 });

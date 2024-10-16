@@ -1,6 +1,7 @@
 import React from 'react';
 import {Route} from 'next';
 import {useRouter} from 'next/navigation';
+import {FieldError} from 'react-hook-form';
 
 import {useSubmissionFormContext} from '../schema';
 
@@ -22,41 +23,30 @@ export function SubmissionFormController({
   const {
     trigger,
     watch,
-    formState: {isSubmitted, isSubmitSuccessful},
+    formState: {isSubmitted, isSubmitSuccessful, errors},
   } = useSubmissionFormContext();
 
   const issues = watch('issues');
-
-  const handleStepChange = async () => {
-    if (step > 0 && isSubmitSuccessful) {
-      setStep(step - 1);
-    } else if (formOrder[step] !== 'summary') {
-      const isValid = await trigger(
-        formOrder[step] as Exclude<'summary', FormOrder>
-      );
-      if (isValid) setStep(step + 1);
-    } else if (step > 0 && !isSubmitSuccessful) {
-      router.push('/' as Route);
-    }
-
-    return true;
-  };
 
   return (
     <div className={styles.formController}>
       {!isSubmitted && (
         <button
+          type="button"
           className={`${styles.primaryBtnNoFill} ${
             step === 0 ? styles.hide : ''
           }`}
-          onClick={handleStepChange}
+          onClick={() => {
+            setStep(step - 1);
+          }}
           data-umami-event={`back-button-from-${formOrder[step]}`}
         >
           Back
         </button>
       )}
-      {!isSubmitted && (
+      {isSubmitted && (
         <button
+          type="button"
           className={styles.primaryBtnNoFill}
           onClick={() => router.push('/' as Route)}
           data-umami-event="close-button"
@@ -65,10 +55,27 @@ export function SubmissionFormController({
         </button>
       )}
       <button
+        type="button"
         className={`${styles.primaryBtn} ${
-          step === formOrder.length - 1 ? styles.displayNone : ' '
+          step === formOrder.length - 1 ? styles.displayNone : ''
         }`}
-        onClick={handleStepChange}
+        onClick={async () => {
+          if (formOrder[step] === 'summary') {
+            setStep(0);
+          } else {
+            const field = formOrder[step] as Exclude<'summary', FormOrder>;
+
+            const isValid = await trigger(field);
+
+            if (isValid) {
+              setStep(step + 1);
+            } else {
+              alert(
+                (errors[field] as FieldError[]).map(e => e.message).join(' ')
+              );
+            }
+          }
+        }}
         disabled={formOrder[step] === 'issues' && issues.length === 0}
         data-umami-event={`next-button-from-${formOrder[step]}`}
       >
