@@ -22,9 +22,10 @@ export function SelectInput({type, value, name, children}: SelectInputProps) {
     <div className={styles.inputContainer}>
       <input
         type={type}
-        data-value={value}
         {...register(name)}
+        value={value}
         id={id}
+        data-value={value}
         data-umami-event={id}
       />
       <label htmlFor={id}>
