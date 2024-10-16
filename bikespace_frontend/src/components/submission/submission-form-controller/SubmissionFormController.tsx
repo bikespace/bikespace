@@ -59,6 +59,7 @@ export function SubmissionFormController({
             } else {
               const field = formOrder[step] as Exclude<'summary', FormOrder>;
 
+              // Trigger validation for the current step
               const isValid = await trigger(field);
 
               if (isValid) setStep(step + 1);
