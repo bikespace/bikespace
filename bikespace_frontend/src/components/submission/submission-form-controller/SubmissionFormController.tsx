@@ -70,9 +70,7 @@ export function SubmissionFormController({
             if (isValid) {
               setStep(step + 1);
             } else {
-              alert(
-                (errors[field] as FieldError[]).map(e => e.message).join(' ')
-              );
+              alert(errors[field]);
             }
           }
         }}

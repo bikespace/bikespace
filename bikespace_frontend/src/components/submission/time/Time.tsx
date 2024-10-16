@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 
 import {ParkingDuration} from '@/interfaces/Submission';
 
@@ -22,7 +22,7 @@ export const Time = () => {
         id="when"
         type="datetime-local"
         {...register('parkingTime.date', {
-          valueAsDate: true,
+          setValueAs: v => new Date(v),
         })}
         value={convertToDateTimeLocalString(dateTime)}
         data-umami-event="date-time-dropdown"
