@@ -81,17 +81,15 @@ export function SubmissionFormController({
       >
         Next
       </button>
-      <button
-        type="submit"
-        className={`${styles.primaryBtn} ${
-          step === formOrder.length - 1 && isSubmitSuccessful
-            ? ''
-            : styles.displayNone
-        }`}
-        data-umami-event="submit-issue-button"
-      >
-        Submit
-      </button>
+      {step === formOrder.length - 1 && !isSubmitted && (
+        <button
+          type="submit"
+          className={styles.primaryBtn}
+          data-umami-event="submit-issue-button"
+        >
+          Submit
+        </button>
+      )}
     </div>
   );
 }
