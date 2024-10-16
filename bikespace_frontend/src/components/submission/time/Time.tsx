@@ -73,6 +73,6 @@ const convertToDateTimeLocalString = (date: Date) => {
   const day = date.getDate().toString().padStart(2, '0');
   const hours = ('0' + date.getHours()).slice(-2);
   const minutes = ('0' + date.getMinutes()).slice(-2);
-  console.log(`${year}-${month}-${day}T${hours}:${minutes}:00`);
+
   return `${year}-${month}-${day}T${hours}:${minutes}:00`;
 };

@@ -1,8 +1,6 @@
 import React from 'react';
 import {useMapEvent} from 'react-leaflet';
 
-import {LocationLatLng} from '@/interfaces/Submission';
-
 import {useSubmissionFormContext} from '../schema';
 
 export const MapHandler = () => {

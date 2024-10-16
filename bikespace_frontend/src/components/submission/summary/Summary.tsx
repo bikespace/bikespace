@@ -48,7 +48,7 @@ export const Summary = () => {
           <p>Thank You!</p>
         </>
       );
-    } else if (errors) {
+    } else if (errors.root) {
       return (
         <>
           <h1>Oops!</h1>
