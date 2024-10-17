@@ -17,11 +17,13 @@
   margin-top: 2rem;
   margin-bottom: 2rem;
   max-width: $wrapper-full-width;
+  flex: 2 1 400px;
 
   .heroTagline {
-    font-size: 2rem;
+    font-size: 2.5rem;
     font-weight: bold;
     text-wrap: wrap;
+    gap: 1rem;
   }
 
   .heroImage {
@@ -44,7 +46,7 @@ a.buttonLink {
   justify-content: center;
 
   height: 2rem;
-  padding: 1rem 1rem;
+  padding: 1.5rem;
 
   border: 2px solid black;
   border-radius: 4px;
@@ -56,6 +58,9 @@ a.buttonLink {
   &:hover {
     border-color: $color-primary;
   }
+  padding: 1.5rem;
+  width: 125%;
+  gap: 1rem;
 }
 
 a.buttonFilled {
@@ -192,4 +197,3 @@ a.navLink {
     font-size: 0.9rem;
   }
 }
-
