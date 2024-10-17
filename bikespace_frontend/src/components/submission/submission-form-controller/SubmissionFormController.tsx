@@ -1,7 +1,6 @@
 import React from 'react';
 import {Route} from 'next';
 import {useRouter} from 'next/navigation';
-import {FieldError} from 'react-hook-form';
 
 import {useSubmissionFormContext} from '../schema';
 
@@ -22,11 +21,8 @@ export function SubmissionFormController({
 
   const {
     trigger,
-    watch,
-    formState: {isSubmitted, isSubmitting, errors},
+    formState: {isSubmitted, isSubmitting, errors, isValid, isDirty},
   } = useSubmissionFormContext();
-
-  const issues = watch('issues');
 
   return (
     <div className={styles.formController}>
@@ -70,11 +66,11 @@ export function SubmissionFormController({
             if (isValid) {
               setStep(step + 1);
             } else {
-              alert(errors[field]);
+              alert(errors[field][0]);
             }
           }
         }}
-        disabled={formOrder[step] === 'issues' && issues.length === 0}
+        disabled={!isDirty || !isValid}
         data-umami-event={`next-button-from-${formOrder[step]}`}
       >
         Next
