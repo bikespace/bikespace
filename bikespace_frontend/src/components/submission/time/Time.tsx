@@ -9,7 +9,7 @@ import {SelectInput} from '../select-input';
 import styles from './time.module.scss';
 
 export const Time = () => {
-  const {watch, register} = useSubmissionFormContext();
+  const {watch, setValue} = useSubmissionFormContext();
 
   const dateTime = watch('parkingTime.date');
 
@@ -21,10 +21,11 @@ export const Time = () => {
       <input
         id="when"
         type="datetime-local"
-        {...register('parkingTime.date', {
-          setValueAs: v => new Date(v),
-        })}
+        name="parkingTime.date"
         value={convertToDateTimeLocalString(dateTime)}
+        onChange={e => {
+          setValue('parkingTime.date', new Date(e.target.value));
+        }}
         data-umami-event="date-time-dropdown"
       />
       <fieldset>
