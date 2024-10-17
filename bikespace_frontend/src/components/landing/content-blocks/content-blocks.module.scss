@@ -18,6 +18,7 @@
   margin-bottom: 2rem;
   max-width: $wrapper-full-width;
   flex: 2 1 400px;
+  padding: 5%;
 
   .heroTagline {
     font-size: 2rem;
@@ -64,12 +65,22 @@ a.buttonLink {
 }
 
 a.buttonFilled {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 2rem;
+  padding: 1.5rem;
+
   border-color: $color-primary-d50p;
   background-color: $color-primary-d50p;
   color: white;
   &:visited {
     color: white;
   }
+  padding: 1.5rem;
+  width: 125%;
+  gap: 1rem;
 }
 
 a.navLink {
