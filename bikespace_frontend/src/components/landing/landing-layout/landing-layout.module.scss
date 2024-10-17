@@ -10,6 +10,8 @@ $even-lighter-grey: #EEE;
   margin: 0 auto;
   padding: 1rem;
   max-width: $wrapper-max-width;
+  display: flex;
+  justify-content: center;
 
   // prevent long bare urls from breaking page scale
   a {

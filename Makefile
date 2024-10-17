@@ -33,7 +33,7 @@ endif
 
 clean:
 	rm -rf $(VENV)
-	cd $(BIKESPACE_FRONTEND_DIR) && npm run clean && rm -rf node_modules
+	cd $(BIKESPACE_FRONTEND_DIR) && rm -rf node_modules && rm -rf .next && rm -rf build && rm -rf out && rm -rf coverage
 
 $(VENV): check-python-version $(BIKESPACE_API_DIR)/requirements.txt
 	python3 -m venv $(VENV)
