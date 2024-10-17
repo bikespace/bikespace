@@ -16,9 +16,9 @@ function HeroBlock({
       <div className={styles.heroBlock}>
         <div style={{flex: '2 1 60%'}}>
           <div className={styles.heroTagline}>{tagline}</div>
-          <br/>
-          <br/>
-          <br/>
+          <br />
+          <br />
+          <br />
           <div className={styles.heroButtonContainer}>
             <a
               href="/submission"
