@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   useForm,
   FormProvider,
@@ -108,7 +107,7 @@ describe('Summary', () => {
 
     expect(
       screen.getByText(
-        /Something went wrong on our end processing your submission/
+        'Something went wrong on our end processing your submission'
       )
     );
   });
@@ -128,6 +127,6 @@ describe('Summary', () => {
       fireEvent.click(submitButton);
     });
 
-    expect(screen.getByText(/Something went wrong beyond our expectations/));
+    expect(screen.getByText('Something went wrong beyond our expectations'));
   });
 });
