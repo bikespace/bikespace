@@ -2,12 +2,31 @@ import React from 'react';
 import userEvent from '@testing-library/user-event';
 import {render, screen} from '@testing-library/react';
 import {faker} from '@faker-js/faker';
+import {FormProvider, useForm} from 'react-hook-form';
+
+import {SubmissionSchema} from '../schema';
 
 import {Comments} from './Comments';
 
+const MockForm = () => {
+  const form = useForm<SubmissionSchema>({
+    defaultValues: {
+      comments: '',
+    },
+  });
+
+  return (
+    <FormProvider {...form}>
+      <form>
+        <Comments />
+      </form>
+    </FormProvider>
+  );
+};
+
 describe('Comments', () => {
   test('Comments title should be rendered correctly', () => {
-    render(<Comments comments="" onCommentsChanged={jest.fn()} />);
+    render(<MockForm />);
     expect(screen.getByRole('heading', {level: 2})).toHaveTextContent(
       'Comments'
     );
@@ -17,14 +36,14 @@ describe('Comments', () => {
   });
 
   test('Dispatch action should be triggered when user types', async () => {
-    const onCommentsChanged = jest.fn();
-
-    render(<Comments comments="" onCommentsChanged={onCommentsChanged} />);
+    render(<MockForm />);
 
     const text = faker.string.alpha();
 
     const textarea = screen.getByRole('textbox');
+
     await userEvent.type(textarea, text);
-    expect(onCommentsChanged).toHaveBeenCalledTimes(text.length);
+
+    expect(textarea).toHaveDisplayValue(text);
   });
 });
