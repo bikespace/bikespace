@@ -27,6 +27,7 @@ const MockForm = () => {
 describe('Comments', () => {
   test('Comments title should be rendered correctly', () => {
     render(<MockForm />);
+
     expect(screen.getByRole('heading', {level: 2})).toHaveTextContent(
       'Comments'
     );
@@ -39,7 +40,6 @@ describe('Comments', () => {
     render(<MockForm />);
 
     const text = faker.string.alpha();
-
     const textarea = screen.getByRole('textbox');
 
     await userEvent.type(textarea, text);
