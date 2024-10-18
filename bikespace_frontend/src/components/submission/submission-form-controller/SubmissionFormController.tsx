@@ -1,8 +1,9 @@
 import React from 'react';
 import {Route} from 'next';
 import {useRouter} from 'next/navigation';
+import {FieldError} from 'react-hook-form';
 
-import {useSubmissionFormContext} from '../schema';
+import {SubmissionSchema, useSubmissionFormContext} from '../schema';
 
 import {FormOrder, formOrder} from '../constants';
 
@@ -50,31 +51,27 @@ export function SubmissionFormController({
           Close
         </button>
       )}
-      <button
-        type="button"
-        className={`${styles.primaryBtn} ${
-          step === formOrder.length - 1 ? styles.displayNone : ''
-        }`}
-        onClick={async () => {
-          if (formOrder[step] === 'summary') {
-            setStep(0);
-          } else {
-            const field = formOrder[step] as Exclude<'summary', FormOrder>;
-
-            const isValid = await trigger(field);
-
-            if (isValid) {
-              setStep(step + 1);
+      {step !== formOrder.length - 1 && (
+        <button
+          type="button"
+          className={styles.primaryBtn}
+          onClick={async () => {
+            if (formOrder[step] === 'summary') {
+              setStep(0);
             } else {
-              alert(errors[field][0]);
+              const field = formOrder[step] as Exclude<'summary', FormOrder>;
+
+              const isValid = await trigger(field);
+
+              if (isValid) setStep(step + 1);
             }
-          }
-        }}
-        disabled={!isDirty || !isValid}
-        data-umami-event={`next-button-from-${formOrder[step]}`}
-      >
-        Next
-      </button>
+          }}
+          disabled={!isDirty || !isValid}
+          data-umami-event={`next-button-from-${formOrder[step]}`}
+        >
+          Next
+        </button>
+      )}
       {step === formOrder.length - 1 && !isSubmitted && (
         <button
           type="submit"
