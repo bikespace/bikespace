@@ -37,8 +37,6 @@ export const MapHandler = () => {
             'Unknown error while trying to locate you';
 
           trackUmamiEvent('locationerror', {code: err.code, message});
-
-          console.log(message);
         });
     }
   }, []); // [] = run on first render only

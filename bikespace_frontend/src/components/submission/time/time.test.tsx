@@ -1,21 +1,35 @@
 import React from 'react';
 import {render, screen, fireEvent} from '@testing-library/react';
-import {faker} from '@faker-js/faker';
+import {FormProvider, useForm} from 'react-hook-form';
+
+import {SubmissionSchema} from '../schema';
 
 import {ParkingDuration} from '@/interfaces/Submission';
 
 import {Time} from './Time';
 
+const MockForm = () => {
+  const form = useForm<SubmissionSchema>({
+    defaultValues: {
+      parkingTime: {
+        date: new Date(),
+        parkingDuration: ParkingDuration.Minutes,
+      },
+    },
+  });
+
+  return (
+    <FormProvider {...form}>
+      <form>
+        <Time />
+      </form>
+    </FormProvider>
+  );
+};
+
 describe('Time', () => {
   test('Page title is rendered correctly', () => {
-    render(
-      <Time
-        parkingDuration={ParkingDuration.Minutes}
-        onParkingDurationChanged={jest.fn()}
-        dateTime={new Date()}
-        onDateTimeChanged={jest.fn()}
-      />
-    );
+    render(<MockForm />);
     expect(
       screen.getByRole('heading', {
         name: /when did this happen\?/i,
@@ -33,42 +47,25 @@ describe('Time', () => {
   });
 
   test('Changing parking duration correctly updates state', () => {
-    const onParkingDurationChanged = jest.fn();
-
-    render(
-      <Time
-        parkingDuration={ParkingDuration.Minutes}
-        onParkingDurationChanged={onParkingDurationChanged}
-        dateTime={new Date()}
-        onDateTimeChanged={jest.fn()}
-      />
-    );
+    render(<MockForm />);
 
     const radios = screen.getAllByRole('radio');
+    const radio = radios[1];
 
-    fireEvent.click(radios[1]);
-    expect(onParkingDurationChanged).toHaveBeenCalledWith(
-      ParkingDuration.Hours
-    );
+    fireEvent.click(radio);
+
+    expect(radio).toBeChecked();
   });
 
   test('Changing parking time correctly updates state', () => {
-    const onDateTimeChanged = jest.fn();
+    render(<MockForm />);
 
-    render(
-      <Time
-        parkingDuration={ParkingDuration.Minutes}
-        onParkingDurationChanged={jest.fn()}
-        dateTime={new Date()}
-        onDateTimeChanged={onDateTimeChanged}
-      />
-    );
-
-    const inputDate = '2024-06-17T00:00:00';
+    const inputDate = '2024-06-17T00:00';
 
     const dateTime = screen.getByLabelText('When did this happen?');
 
     fireEvent.change(dateTime, {target: {value: inputDate}});
-    expect(onDateTimeChanged).toHaveBeenCalledWith(new Date(inputDate));
+
+    expect(dateTime).toHaveValue(inputDate);
   });
 });

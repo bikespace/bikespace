@@ -1,28 +1,56 @@
 import React from 'react';
-import {render, screen} from '@testing-library/react';
+import {useForm, FormProvider} from 'react-hook-form';
+import {render, screen, fireEvent} from '@testing-library/react';
 import {faker} from '@faker-js/faker';
 
-import {
-  IssueType,
-  Submission,
-  ParkingDuration,
-  SubmissionStatus,
-} from '@/interfaces/Submission';
+import {SubmissionSchema} from '../schema';
+import {formOrder} from '../constants';
+
+import {ParkingDuration, IssueType} from '@/interfaces/Submission';
+
+import {SubmissionFormController} from '../submission-form-controller';
 
 import {Summary} from './Summary';
 
-const submission = {
-  issues: faker.helpers.arrayElements(Object.values(IssueType)),
-  location: {
-    latitude: faker.location.latitude(),
-    longitude: faker.location.longitude(),
+interface WrapperProps {
+  onSubmit?: () => void;
+}
+
+const MockForm = ({onSubmit = jest.fn()}: WrapperProps) => {
+  const form = useForm<SubmissionSchema>({
+    defaultValues: {
+      issues: [IssueType.Damaged],
+      location: {
+        // default location is the City Hall
+        latitude: 43.65322,
+        longitude: -79.384452,
+      },
+      parkingTime: {
+        date: new Date(),
+        parkingDuration: ParkingDuration.Minutes,
+      },
+      comments: '',
+    },
+  });
+
+  return (
+    <FormProvider {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)}>
+        <Summary />
+        <SubmissionFormController
+          step={formOrder.length - 1}
+          setStep={jest.fn()}
+        />
+      </form>
+    </FormProvider>
+  );
+};
+
+jest.mock('next/navigation', () => ({
+  useRouter() {
+    return {};
   },
-  parkingTime: {
-    date: new Date(),
-    parkingDuration: faker.helpers.arrayElement(Object.values(ParkingDuration)),
-  },
-  comments: faker.lorem.paragraph(),
-} satisfies Submission;
+}));
 
 describe('Summary', () => {
   beforeEach(() => {
@@ -30,14 +58,9 @@ describe('Summary', () => {
   });
 
   test('Summary text should render correctly', () => {
-    render(
-      <Summary
-        submission={submission}
-        submissionStatus={{status: SubmissionStatus.Summary}}
-      />
-    );
+    render(<MockForm />);
 
-    expect(screen.getByRole('heading', {level: 2})).toHaveTextContent(
+    expect(screen.getByRole('heading', {level: 1})).toHaveTextContent(
       'Summary'
     );
     expect(screen.getByText(/Issues:/i));
@@ -48,12 +71,11 @@ describe('Summary', () => {
   });
 
   test('Success response status should render correct message', () => {
-    render(
-      <Summary
-        submission={submission}
-        submissionStatus={{status: SubmissionStatus.Success}}
-      />
-    );
+    render(<MockForm />);
+
+    const submitButton = screen.getByText('Submit');
+
+    fireEvent.click(submitButton);
 
     expect(screen.getByRole('heading', {level: 1})).toHaveTextContent(
       'Success'
@@ -61,12 +83,7 @@ describe('Summary', () => {
   });
 
   test('Error response status should render correct message', () => {
-    render(
-      <Summary
-        submission={submission}
-        submissionStatus={{status: SubmissionStatus.Error}}
-      />
-    );
+    render(<MockForm />);
 
     expect(
       screen.getByText(
@@ -76,7 +93,7 @@ describe('Summary', () => {
   });
 
   test('Unexpected response status should render correct message', () => {
-    render(<Summary submission={submission} submissionStatus={{status: ''}} />);
+    render(<MockForm />);
 
     expect(screen.getByText(/Something went wrong beyond our expectations/));
   });
