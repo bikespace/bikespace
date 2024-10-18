@@ -8,11 +8,11 @@ import {IssueType} from '@/interfaces/Submission';
 
 import {Issue} from './Issue';
 
-interface MockFormProps {
+interface MockIssueProps {
   issues?: IssueType[];
 }
 
-const MockForm = ({issues = []}: MockFormProps) => {
+const MockIssue = ({issues = []}: MockIssueProps) => {
   const form = useForm<SubmissionSchema>({
     defaultValues: {
       issues,
@@ -30,7 +30,7 @@ const MockForm = ({issues = []}: MockFormProps) => {
 
 describe('Issues', () => {
   test('Issues page title should should have correct text', () => {
-    render(<MockForm />);
+    render(<MockIssue />);
     expect(screen.getByRole('heading', {level: 2})).toHaveTextContent(
       'What was the issue?'
     );
@@ -40,7 +40,7 @@ describe('Issues', () => {
   });
 
   test('Issues page shows all the issue types', () => {
-    render(<MockForm />);
+    render(<MockIssue />);
 
     expect(
       screen.getAllByRole('checkbox').map(c => c.getAttribute('value'))
@@ -48,7 +48,7 @@ describe('Issues', () => {
   });
 
   test('Checking empty checkbox should check issue', () => {
-    render(<MockForm />);
+    render(<MockIssue />);
 
     const checkbox = screen.getAllByRole('checkbox')[0];
 
@@ -58,7 +58,7 @@ describe('Issues', () => {
   });
 
   test('Checking checked checkbox should uncheck issue', async () => {
-    render(<MockForm issues={[IssueType.NotProvided]} />);
+    render(<MockIssue issues={[IssueType.NotProvided]} />);
 
     const checkbox = screen.getAllByRole('checkbox')[0];
 
