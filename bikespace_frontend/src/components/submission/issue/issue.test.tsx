@@ -21,7 +21,7 @@ const MockForm = ({issues = []}: MockFormProps) => {
 
   return (
     <FormProvider {...form}>
-      <form onSubmit={jest.fn()}>
+      <form>
         <Issue />
       </form>
     </FormProvider>
