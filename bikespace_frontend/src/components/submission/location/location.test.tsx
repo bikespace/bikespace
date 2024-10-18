@@ -6,7 +6,7 @@ import {SubmissionSchema} from '../schema';
 
 import {Location} from './Location';
 
-const MockForm = () => {
+const MockLocation = () => {
   const form = useForm<SubmissionSchema>({
     defaultValues: {
       location: {
@@ -27,7 +27,7 @@ const MockForm = () => {
 
 describe('Test Location page component', () => {
   test('Title should be rendered properly', () => {
-    render(<MockForm />);
+    render(<MockLocation />);
 
     expect(screen.getByRole('heading', {level: 2})).toHaveTextContent(
       'Where was the problem?'
