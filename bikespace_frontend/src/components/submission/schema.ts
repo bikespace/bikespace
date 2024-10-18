@@ -12,7 +12,7 @@ export const submissionSchema = z.object({
     longitude: z.number(),
   }),
   parkingTime: z.object({
-    date: z.coerce.date(),
+    date: z.date(),
     parkingDuration: z.nativeEnum(ParkingDuration),
   }),
   comments: z.string(),

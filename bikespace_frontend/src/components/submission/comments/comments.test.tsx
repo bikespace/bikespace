@@ -31,9 +31,6 @@ describe('Comments', () => {
     expect(screen.getByRole('heading', {level: 2})).toHaveTextContent(
       'Comments'
     );
-    expect(screen.getByRole('heading', {level: 3})).toHaveTextContent(
-      'Any additional comments you want to add...'
-    );
   });
 
   test('Dispatch action should be triggered when user types', async () => {

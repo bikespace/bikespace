@@ -31,12 +31,14 @@ describe('Time', () => {
   test('Page title is rendered correctly', () => {
     render(<MockForm />);
     expect(
-      screen.getByRole('heading', {
+      screen.getAllByRole('heading', {
+        level: 2,
         name: /when did this happen\?/i,
       })
     );
     expect(
-      screen.getByRole('group', {
+      screen.getAllByRole('heading', {
+        level: 2,
         name: /how long did you need to park\?/i,
       })
     );
@@ -62,7 +64,7 @@ describe('Time', () => {
 
     const inputDate = '2024-06-17T00:00';
 
-    const dateTime = screen.getByLabelText('When did this happen?');
+    const dateTime = screen.getByTestId('when');
 
     fireEvent.change(dateTime, {target: {value: inputDate}});
 

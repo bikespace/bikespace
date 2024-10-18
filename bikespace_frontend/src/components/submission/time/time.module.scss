@@ -1,7 +1,7 @@
 @import '@/styles/variables.module.scss';
 
 .submissionTime {
-  fieldset > .checkboxGroup {
+  .checkboxGroup {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 14px 14px;

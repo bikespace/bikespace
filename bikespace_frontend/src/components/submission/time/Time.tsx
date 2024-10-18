@@ -7,6 +7,7 @@ import {useSubmissionFormContext} from '../schema';
 import {SelectInput} from '../select-input';
 
 import styles from './time.module.scss';
+import {FormSectionHeader} from '../form-section-header';
 
 export const Time = () => {
   const {watch, setValue} = useSubmissionFormContext();
@@ -15,11 +16,12 @@ export const Time = () => {
 
   return (
     <div className={styles.submissionTime}>
-      <label htmlFor="when">
-        <h2>When did this happen?</h2>
-      </label>
+      <FormSectionHeader
+        title="When did this happen?"
+        name="parkingTime.date"
+      />
       <input
-        id="when"
+        data-testid="when"
         type="datetime-local"
         name="parkingTime.date"
         value={convertToDateTimeLocalString(dateTime)}
@@ -28,11 +30,12 @@ export const Time = () => {
         }}
         data-umami-event="date-time-dropdown"
       />
-      <fieldset>
-        <legend>
-          <h2>How long did you need to park?</h2>
-        </legend>
-        <div className={styles.checkboxGroup}>
+      <div>
+        <FormSectionHeader
+          title="How long did you need to park?"
+          name="parkingTime.parkingDuration"
+        />
+        <fieldset className={styles.checkboxGroup}>
           {radioButtons.map(({value, label}) => (
             <SelectInput
               key={value}
@@ -43,8 +46,8 @@ export const Time = () => {
               {label}
             </SelectInput>
           ))}
-        </div>
-      </fieldset>
+        </fieldset>
+      </div>
     </div>
   );
 };

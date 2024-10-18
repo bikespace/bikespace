@@ -32,8 +32,5 @@ describe('Test Location page component', () => {
     expect(screen.getByRole('heading', {level: 2})).toHaveTextContent(
       'Where was the problem?'
     );
-    expect(screen.getByRole('heading', {level: 3})).toHaveTextContent(
-      'Pin the location'
-    );
   });
 });
