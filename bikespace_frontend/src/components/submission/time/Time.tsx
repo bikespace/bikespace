@@ -6,6 +6,7 @@ import {SelectInput} from '../select-input';
 import {FormSectionHeader} from '../form-section-header';
 
 import styles from './time.module.scss';
+import {FormSectionHeader} from '../form-section-header';
 
 export const Time = () => {
   const {watch, setValue} = useSubmissionFormContext();

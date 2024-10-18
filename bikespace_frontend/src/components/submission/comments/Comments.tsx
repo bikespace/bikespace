@@ -5,6 +5,7 @@ import {useSubmissionFormContext} from '../schema';
 import {FormSectionHeader} from '../form-section-header';
 
 import styles from './comments.module.scss';
+import {FormSectionHeader} from '../form-section-header';
 
 export const Comments = () => {
   const {register} = useSubmissionFormContext();
