@@ -1,7 +1,6 @@
 import React from 'react';
 import {useForm, FormProvider} from 'react-hook-form';
 import {render, screen, fireEvent} from '@testing-library/react';
-import {faker} from '@faker-js/faker';
 
 import {SubmissionSchema} from '../schema';
 import {formOrder} from '../constants';
@@ -16,7 +15,7 @@ interface WrapperProps {
   onSubmit?: () => void;
 }
 
-const MockForm = ({onSubmit = jest.fn()}: WrapperProps) => {
+const MockSummary = ({onSubmit = jest.fn()}: WrapperProps) => {
   const form = useForm<SubmissionSchema>({
     defaultValues: {
       issues: [IssueType.Damaged],
@@ -53,12 +52,8 @@ jest.mock('next/navigation', () => ({
 }));
 
 describe('Summary', () => {
-  beforeEach(() => {
-    faker.seed(123);
-  });
-
   test('Summary text should render correctly', () => {
-    render(<MockForm />);
+    render(<MockSummary />);
 
     expect(screen.getByRole('heading', {level: 1})).toHaveTextContent(
       'Summary'
@@ -71,7 +66,7 @@ describe('Summary', () => {
   });
 
   test('Success response status should render correct message', () => {
-    render(<MockForm />);
+    render(<MockSummary />);
 
     const submitButton = screen.getByText('Submit');
 
@@ -83,18 +78,18 @@ describe('Summary', () => {
   });
 
   test('Error response status should render correct message', () => {
-    render(<MockForm />);
+    render(<MockSummary />);
 
     expect(
       screen.getByText(
-        /Something went wrong on our end processing your submission/
+        'Something went wrong on our end processing your submission'
       )
     );
   });
 
   test('Unexpected response status should render correct message', () => {
-    render(<MockForm />);
+    render(<MockSummary />);
 
-    expect(screen.getByText(/Something went wrong beyond our expectations/));
+    expect(screen.getByText('Something went wrong beyond our expectations'));
   });
 });

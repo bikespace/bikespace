@@ -8,7 +8,7 @@ import {SubmissionSchema} from '../schema';
 
 import {Comments} from './Comments';
 
-const MockForm = () => {
+const MockComments = () => {
   const form = useForm<SubmissionSchema>({
     defaultValues: {
       comments: '',
@@ -26,7 +26,7 @@ const MockForm = () => {
 
 describe('Comments', () => {
   test('Comments title should be rendered correctly', () => {
-    render(<MockForm />);
+    render(<MockComments />);
 
     expect(screen.getByRole('heading', {level: 2})).toHaveTextContent(
       'Comments'
@@ -37,7 +37,7 @@ describe('Comments', () => {
   });
 
   test('Dispatch action should be triggered when user types', async () => {
-    render(<MockForm />);
+    render(<MockComments />);
 
     const text = faker.string.alpha();
     const textarea = screen.getByRole('textbox');
