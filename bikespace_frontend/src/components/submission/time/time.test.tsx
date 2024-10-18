@@ -58,15 +58,14 @@ describe('Time', () => {
   });
 
   test('Changing parking time correctly updates state', () => {
-    const onDateTimeChanged = jest.fn();
-
     render(<MockForm />);
 
-    const inputDate = '2024-06-17T00:00:00';
+    const inputDate = '2024-06-17T00:00';
 
     const dateTime = screen.getByLabelText('When did this happen?');
 
     fireEvent.change(dateTime, {target: {value: inputDate}});
-    expect(onDateTimeChanged).toHaveBeenCalledWith(new Date(inputDate));
+
+    expect(dateTime).toHaveValue(inputDate);
   });
 });
