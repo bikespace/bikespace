@@ -1,19 +1,23 @@
 import React from 'react';
+import {ErrorMessage} from '@hookform/error-message';
 
 import {IssueType} from '@/interfaces/Submission';
 
 import {SelectInput} from '../select-input';
 
+import {useSubmissionFormContext} from '../schema';
+
+import {FormSectionHeader} from '../form-section-header';
+
 import styles from './issue.module.scss';
 
 export const Issue = () => {
+  const {formState: errors} = useSubmissionFormContext();
+
   return (
     <div className={styles.submissionIssue}>
+      <FormSectionHeader title="What were the issue(s)?" name="issues" />
       <fieldset>
-        <legend>
-          <h2>What was the issue?</h2>
-          <h3>Choose at least one</h3>
-        </legend>
         {checkboxes.map(({value, label}) => (
           <SelectInput key={value} type="checkbox" name="issues" value={value}>
             {label}

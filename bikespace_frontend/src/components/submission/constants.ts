@@ -1,3 +1,6 @@
+import {FieldPath} from 'react-hook-form';
+import {SubmissionSchema} from './schema';
+
 export const formOrder = [
   'issues',
   'location',
@@ -6,9 +9,4 @@ export const formOrder = [
   'summary',
 ] as FormOrder[];
 
-export type FormOrder =
-  | 'issues'
-  | 'location'
-  | 'parkingTime'
-  | 'comments'
-  | 'summary';
+export type FormOrder = FieldPath<SubmissionSchema> | 'summary';

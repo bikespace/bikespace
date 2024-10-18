@@ -19,23 +19,24 @@ export const Summary = () => {
           <h1>Summary</h1>
           <div>
             <p>
-              <strong>Issues:</strong> {submission.issues.join(', ').toString()}
+              <strong>Issues: </strong>
+              {submission.issues.join(', ')}
             </p>
             <p>
-              <strong>Location:</strong>{' '}
-              {submission.location.latitude.toString()},{' '}
-              {submission.location.longitude.toString()}{' '}
+              <strong>Location: </strong>
+              {`${submission.location.latitude}, ${submission.location.longitude}`}
             </p>
             <p>
-              <strong>Time:</strong>{' '}
-              {submission.parkingTime.date.toDateString()}{' '}
+              <strong>Time: </strong>
+              {submission.parkingTime.date.toDateString()}
             </p>
             <p>
-              <strong>Parking duration needed:</strong>{' '}
+              <strong>Parking duration needed: </strong>
               {submission.parkingTime.parkingDuration}
             </p>
             <p>
-              <strong>Comments:</strong> {submission.comments}
+              <strong>Comments: </strong>
+              {submission.comments}
             </p>
           </div>
         </>

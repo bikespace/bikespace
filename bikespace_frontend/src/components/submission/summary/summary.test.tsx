@@ -1,8 +1,9 @@
 import React from 'react';
-import {useForm, FormProvider} from 'react-hook-form';
-import {render, screen, fireEvent} from '@testing-library/react';
+import {useForm, FormProvider, FieldErrors} from 'react-hook-form';
+import {fireEvent, render, screen} from '@testing-library/react';
 
 import {SubmissionSchema} from '../schema';
+
 import {formOrder} from '../constants';
 
 import {ParkingDuration, IssueType} from '@/interfaces/Submission';
@@ -12,10 +13,10 @@ import {SubmissionFormController} from '../submission-form-controller';
 import {Summary} from './Summary';
 
 interface WrapperProps {
-  onSubmit?: () => void;
+  errors?: FieldErrors<SubmissionSchema>;
 }
 
-const MockSummary = ({onSubmit = jest.fn()}: WrapperProps) => {
+const MockSummary = ({errors}: WrapperProps) => {
   const form = useForm<SubmissionSchema>({
     defaultValues: {
       issues: [IssueType.Damaged],
@@ -30,11 +31,12 @@ const MockSummary = ({onSubmit = jest.fn()}: WrapperProps) => {
       },
       comments: '',
     },
+    errors,
   });
 
   return (
     <FormProvider {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
+      <form onSubmit={form.handleSubmit(jest.fn())}>
         <Summary />
         <SubmissionFormController
           step={formOrder.length - 1}
@@ -78,11 +80,11 @@ describe('Summary', () => {
   });
 
   test('Error response status should render correct message', () => {
-    render(<MockSummary />);
+    render(<MockSummary errors={{root: {}}} />);
 
     expect(
       screen.getByText(
-        'Something went wrong on our end processing your submission'
+        /Something went wrong on our end processing your submission/
       )
     );
   });
@@ -90,6 +92,6 @@ describe('Summary', () => {
   test('Unexpected response status should render correct message', () => {
     render(<MockSummary />);
 
-    expect(screen.getByText('Something went wrong beyond our expectations'));
+    expect(screen.getByText(/Something went wrong beyond our expectations/));
   });
 });

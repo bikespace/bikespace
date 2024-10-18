@@ -32,10 +32,7 @@ describe('Issues', () => {
   test('Issues page title should should have correct text', () => {
     render(<MockIssue />);
     expect(screen.getByRole('heading', {level: 2})).toHaveTextContent(
-      'What was the issue?'
-    );
-    expect(screen.getByRole('heading', {level: 3})).toHaveTextContent(
-      'Choose at least one'
+      'What were the issue(s)?'
     );
   });
 
