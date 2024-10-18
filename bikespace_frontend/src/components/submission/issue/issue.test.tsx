@@ -41,6 +41,7 @@ describe('Issues', () => {
 
   test('Issues page shows all the issue types', () => {
     render(<MockForm />);
+
     expect(
       screen.getAllByRole('checkbox').map(c => c.getAttribute('value'))
     ).toEqual(expect.arrayContaining(Object.values(IssueType)));
@@ -50,6 +51,7 @@ describe('Issues', () => {
     render(<MockForm />);
 
     const checkbox = screen.getAllByRole('checkbox')[0];
+
     fireEvent.click(checkbox);
 
     expect(checkbox).toBeChecked();
@@ -59,6 +61,7 @@ describe('Issues', () => {
     render(<MockForm issues={[IssueType.NotProvided]} />);
 
     const checkbox = screen.getAllByRole('checkbox')[0];
+
     fireEvent.click(checkbox);
 
     expect(checkbox).not.toBeChecked();
