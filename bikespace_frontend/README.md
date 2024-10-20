@@ -5,7 +5,7 @@ The BikeSpace frontend is React application written in TypeScript. [NextJS](http
 
 ## Running the frontend application
 
-Running the frontend:
+Running the frontend (see note below about running the API locally):
 ```shell
 make dev-frontend
 ```
@@ -22,6 +22,20 @@ Linting (first option shows suggested changes, second option automatically edits
 make lint-frontend
 make lint-and-fix-frontend
 ```
+
+### Environment Variables
+
+Environment variables are loaded from the relevant `bikespace_frontend/.env*` file, depending on which script is being run (e.g. `.env.development` for `make dev-frontend` and `.env.production` for `make build-frontend`). In order for environment variables to be used in the frontend output, they also have to be exported in `next.config.mjs`.
+
+NextJS documentation: 
+
+- [Configuring Environment Variables](https://nextjs.org/docs/pages/building-your-application/configuring/environment-variables)
+- [next.config.js Options > env](https://nextjs.org/docs/pages/api-reference/next-config-js/env)
+
+
+### Running the API Locally
+
+Certain development tasks (e.g. testing a form submission) also require the API to be running locally. See the instructions in [`bikespace_api/README.md](https://github.com/bikespace/bikespace/blob/main/bikespace_api/README.md) for more details.
 
 
 ## Contributing Guide

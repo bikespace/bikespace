@@ -111,9 +111,6 @@ lint-and-fix-frontend:
 
 build-frontend:
 	cd $(BIKESPACE_FRONTEND_DIR) && npm install && npm run build
-
-serve-frontend:
-	cd $(BIKESPACE_FRONTEND_DIR) && npm install && npm run serve
 	
 lint-dashboard:
 	cd $(BIKESPACE_DASHBOARD_DIR) && npm install && npm run lint
