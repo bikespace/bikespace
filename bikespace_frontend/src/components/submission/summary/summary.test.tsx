@@ -1,6 +1,11 @@
 import React from 'react';
-import {useForm, FormProvider, FieldErrors} from 'react-hook-form';
-import {fireEvent, render, screen} from '@testing-library/react';
+import {
+  useForm,
+  FormProvider,
+  FieldErrors,
+  UseFormReturn,
+} from 'react-hook-form';
+import {fireEvent, render, screen, act} from '@testing-library/react';
 
 import {SubmissionSchema} from '../schema';
 
@@ -14,9 +19,10 @@ import {Summary} from './Summary';
 
 interface WrapperProps {
   errors?: FieldErrors<SubmissionSchema>;
+  onSubmit?: (form: UseFormReturn<SubmissionSchema>) => void;
 }
 
-const MockSummary = ({errors}: WrapperProps) => {
+const MockSummary = ({errors, onSubmit = jest.fn()}: WrapperProps) => {
   const form = useForm<SubmissionSchema>({
     defaultValues: {
       issues: [IssueType.Damaged],
@@ -36,7 +42,11 @@ const MockSummary = ({errors}: WrapperProps) => {
 
   return (
     <FormProvider {...form}>
-      <form onSubmit={form.handleSubmit(jest.fn())}>
+      <form
+        onSubmit={form.handleSubmit(() => {
+          onSubmit(form);
+        })}
+      >
         <Summary />
         <SubmissionFormController
           step={formOrder.length - 1}
@@ -67,20 +77,34 @@ describe('Summary', () => {
     expect(screen.getByText(/Comments:/i));
   });
 
-  test('Success response status should render correct message', () => {
+  test('Success response status should render correct message', async () => {
     render(<MockSummary />);
 
     const submitButton = screen.getByText('Submit');
 
-    fireEvent.click(submitButton);
+    await act(() => {
+      fireEvent.click(submitButton);
+    });
 
     expect(screen.getByRole('heading', {level: 1})).toHaveTextContent(
       'Success'
     );
   });
 
-  test('Error response status should render correct message', () => {
-    render(<MockSummary errors={{root: {}}} />);
+  test('Error response status should render correct message', async () => {
+    render(
+      <MockSummary
+        onSubmit={(form: UseFormReturn<SubmissionSchema>) => {
+          form.setError('root.serverError', {message: 'Error'});
+        }}
+      />
+    );
+
+    const submitButton = screen.getByText('Submit');
+
+    await act(() => {
+      fireEvent.click(submitButton);
+    });
 
     expect(
       screen.getByText(
@@ -89,8 +113,20 @@ describe('Summary', () => {
     );
   });
 
-  test('Unexpected response status should render correct message', () => {
-    render(<MockSummary />);
+  test('Unexpected response status should render correct message', async () => {
+    render(
+      <MockSummary
+        onSubmit={(form: UseFormReturn<SubmissionSchema>) => {
+          form.setError('root.unexpected', {message: 'Error'});
+        }}
+      />
+    );
+
+    const submitButton = screen.getByText('Submit');
+
+    await act(() => {
+      fireEvent.click(submitButton);
+    });
 
     expect(screen.getByText(/Something went wrong beyond our expectations/));
   });
