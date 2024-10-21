@@ -7,7 +7,7 @@ export function useSubmissionsQuery() {
     queryKey: ['submissions'],
     queryFn: async () => {
       const res = await fetch(
-        'https://api-dev.bikespace.ca/api/v2/submissions?limit=5000'
+        `${process.env.BIKESPACE_API_URL}/submissions?limit=5000`
       );
 
       const data = await res.json();

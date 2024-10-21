@@ -11,6 +11,10 @@ const nextConfig = {
     typedRoutes: true,
     missingSuspenseWithCSRBailout: false,
   },
+  env: {
+    BIKESPACE_API_URL: process.env.BIKESPACE_API_URL,
+    BIKESPACE_API_URL_DASHBOARD: process.env.BIKESPACE_API_URL_DASHBOARD,
+  },
 };
 
 const withMDX = createMDX({

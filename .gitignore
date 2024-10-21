@@ -113,6 +113,7 @@ test.py
 swagger-ui/
 
 .env*
+!bikespace_frontend/.env*
 
 .vscode/*
 !.vscode/extensions.json

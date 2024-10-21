@@ -37,7 +37,7 @@ export function SubmissionFormController({
   async function handleSubmit() {
     try {
       const response = await fetch(
-        'https://api-dev.bikespace.ca/api/v2/submissions',
+        `${process.env.BIKESPACE_API_URL}/submissions`,
         {
           method: 'POST',
           body: JSON.stringify(submissionPayload),
