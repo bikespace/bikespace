@@ -7,49 +7,13 @@ import styles from './summary.module.scss';
 export const Summary = () => {
   const {
     watch,
-    formState: {isSubmitted, isSubmitSuccessful, errors},
+    formState: {isSubmitSuccessful, errors},
   } = useSubmissionFormContext();
 
   const submission = watch();
 
   const renderSummary = () => {
-    if (!isSubmitted) {
-      return (
-        <>
-          <h1>Summary</h1>
-          <div>
-            <p>
-              <strong>Issues: </strong>
-              {submission.issues.join(', ')}
-            </p>
-            <p>
-              <strong>Location: </strong>
-              {`${submission.location.latitude}, ${submission.location.longitude}`}
-            </p>
-            <p>
-              <strong>Time: </strong>
-              {submission.parkingTime.date.toDateString()}
-            </p>
-            <p>
-              <strong>Parking duration needed: </strong>
-              {submission.parkingTime.parkingDuration}
-            </p>
-            <p>
-              <strong>Comments: </strong>
-              {submission.comments}
-            </p>
-          </div>
-        </>
-      );
-    } else if (isSubmitSuccessful) {
-      return (
-        <>
-          <h1>Success</h1>
-          <p>Your submission has been entered successfully!</p>
-          <p>Thank You!</p>
-        </>
-      );
-    } else if (errors.root) {
+    if (errors.root?.serverError) {
       return (
         <>
           <h1>Oops!</h1>
@@ -59,7 +23,7 @@ export const Summary = () => {
           </p>
         </>
       );
-    } else {
+    } else if (errors.root?.unexpected) {
       return (
         <>
           <h1>Oops!</h1>
@@ -70,6 +34,44 @@ export const Summary = () => {
         </>
       );
     }
+
+    if (isSubmitSuccessful) {
+      return (
+        <>
+          <h1>Success</h1>
+          <p>Your submission has been entered successfully!</p>
+          <p>Thank You!</p>
+        </>
+      );
+    }
+
+    return (
+      <>
+        <h1>Summary</h1>
+        <div>
+          <p>
+            <strong>Issues: </strong>
+            {submission.issues.join(', ')}
+          </p>
+          <p>
+            <strong>Location: </strong>
+            {`${submission.location.latitude}, ${submission.location.longitude}`}
+          </p>
+          <p>
+            <strong>Time: </strong>
+            {submission.parkingTime.date.toDateString()}
+          </p>
+          <p>
+            <strong>Parking duration needed: </strong>
+            {submission.parkingTime.parkingDuration}
+          </p>
+          <p>
+            <strong>Comments: </strong>
+            {submission.comments}
+          </p>
+        </div>
+      </>
+    );
   };
 
   return <div className={styles.summary}>{renderSummary()}</div>;

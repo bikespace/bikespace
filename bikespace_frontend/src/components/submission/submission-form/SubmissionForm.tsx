@@ -47,10 +47,12 @@ export function SubmissionForm() {
       );
 
       if (!response.ok) {
-        throw new Error(`Error! status: ${response.status}`);
+        form.setError('root.serverError', {
+          message: `Error! status: ${response.status}`,
+        });
       }
     } catch (error) {
-      form.setError('root', error as Error);
+      form.setError('root.unexpected', error as Error);
     }
   };
 
