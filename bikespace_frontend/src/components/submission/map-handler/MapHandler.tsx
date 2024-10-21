@@ -1,15 +1,29 @@
-import React from 'react';
-import {useMapEvent} from 'react-leaflet';
+import React, {useEffect} from 'react';
+import {useMapEvent, useMap} from 'react-leaflet';
 
-import {LocationLatLng} from '@/interfaces/Submission';
+import {useSubmissionFormContext} from '../schema';
 
-interface MapHandlerProps {
-  onLocationChanged: (location: LocationLatLng) => void;
-}
+export const MapHandler = () => {
+  const {setValue} = useSubmissionFormContext();
 
-export const MapHandler = ({onLocationChanged}: MapHandlerProps) => {
+  const map = useMap();
+
+  useEffect(() => {
+    map.locate().on('locationfound', e => {
+      map.flyTo(e.latlng);
+      map.stopLocate();
+    });
+  }, []);
+
   useMapEvent('click', e => {
-    onLocationChanged({
+    setValue('location', {
+      latitude: e.latlng.lat,
+      longitude: e.latlng.lng,
+    });
+  });
+
+  useMapEvent('locationfound', e => {
+    setValue('location', {
       latitude: e.latlng.lat,
       longitude: e.latlng.lng,
     });
