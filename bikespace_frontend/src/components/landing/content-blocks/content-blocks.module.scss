@@ -18,7 +18,6 @@
   margin-bottom: 2rem;
   max-width: $wrapper-full-width;
   flex: 2 1 400px;
-  padding: 5%;
 
   .heroTagline {
     font-size: 2rem;
@@ -59,7 +58,6 @@ a.buttonLink {
   &:hover {
     border-color: $color-primary;
   }
-  padding: 1.5rem;
   width: 125%;
   gap: 1rem;
 }
