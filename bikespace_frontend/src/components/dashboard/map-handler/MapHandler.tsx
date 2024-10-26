@@ -18,28 +18,30 @@ export const MapHandler = () => {
   const [focus] = useSubmissionId();
 
   useEffect(() => {
-    map
-      .locate()
-      .on('locationfound', e => {
-        trackUmamiEvent('locationfound');
+    if (focus === null) {
+      map
+        .locate()
+        .on('locationfound', e => {
+          trackUmamiEvent('locationfound');
 
-        map.flyTo(e.latlng, map.getZoom());
+          map.flyTo(e.latlng, map.getZoom());
 
-        // Stop location tracking after location found
-        map.stopLocate();
-      })
-      .on('locationerror', err => {
-        const code = err.code as 0 | 1 | 2 | 3;
+          // Stop location tracking after location found
+          map.stopLocate();
+        })
+        .on('locationerror', err => {
+          const code = err.code as 0 | 1 | 2 | 3;
 
-        const message =
-          CUSTOM_GEO_ERROR_MESSAGES[code] ||
-          'Unknown error while trying to locate you';
+          const message =
+            CUSTOM_GEO_ERROR_MESSAGES[code] ||
+            'Unknown error while trying to locate you';
 
-        trackUmamiEvent('locationerror', {code: err.code, message});
+          trackUmamiEvent('locationerror', {code: err.code, message});
 
-        console.log(message);
-      });
-  }, []);
+          console.log(message);
+        });
+    }
+  }, []); // [] = run on first render only
 
   useEffect(() => {
     map.invalidateSize();

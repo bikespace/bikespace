@@ -33,3 +33,7 @@ $gray-color: #9b9b9b;
 
 $wrapper-max-width: 640px;
 $wrapper-full-width: 1024px;
+
+:export {
+  wrapperFullWidth: $wrapper-full-width;
+}

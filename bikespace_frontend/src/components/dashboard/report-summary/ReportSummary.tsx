@@ -30,8 +30,8 @@ export function ReportSummary() {
     if (submissions.length === 0) return;
 
     setDateRange({
-      from: new Date(submissions[0].parking_time),
-      to: new Date(submissions[submissions.length - 1].parking_time),
+      from: new Date(submissions[0].parking_time + '+00:00'),
+      to: new Date(submissions[submissions.length - 1].parking_time + '+00:00'),
     });
   }, [submissions]);
 

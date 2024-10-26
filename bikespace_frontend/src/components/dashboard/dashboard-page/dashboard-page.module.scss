@@ -1,10 +1,12 @@
+@import '@/styles/variables.module.scss';
+
 .dashboardPage {
   flex-grow: 1;
   display: flex;
   overflow: hidden;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: $wrapper-full-width) {
   .dashboardPage {
     flex-direction: column-reverse;
   }

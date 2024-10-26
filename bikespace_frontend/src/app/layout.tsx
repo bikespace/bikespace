@@ -23,11 +23,16 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body>{children}</body>
-      <Script
-        async
-        src={umamiConfig.hostUrl}
-        data-website-id={umamiConfig.websiteId}
-      />
+      {
+        // Disable tracking during development
+        process.env.NODE_ENV === 'development' ? null : (
+          <Script
+            async
+            src={umamiConfig.hostUrl}
+            data-website-id={umamiConfig.websiteId}
+          />
+        )
+      }
     </html>
   );
 }

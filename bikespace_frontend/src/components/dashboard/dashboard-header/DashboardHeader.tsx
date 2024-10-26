@@ -57,7 +57,7 @@ export function DashboardHeader() {
           </li>
           <li>
             <a
-              href="https://github.com/bikespace/bikespace/tree/main/bikespace_dashboard"
+              href="https://github.com/bikespace/bikespace/tree/main/bikespace_frontend"
               data-umami-event="outbound-github"
             >
               <img src={githubLogo.src} alt="GitHub Logo" id="github-logo" />
