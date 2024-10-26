@@ -27,6 +27,8 @@ make lint-and-fix-frontend
 
 Environment variables are loaded from the relevant `bikespace_frontend/.env*` file, depending on which script is being run (e.g. `.env.development` for `make dev-frontend` and `.env.production` for `make build-frontend`). In order for environment variables to be used in the frontend output, they also have to be exported in `next.config.mjs`.
 
+These `.env` files are used for configuration only. **Do not commit secrets (e.g. passwords, credentials, private keys, etc.) to the repository.** If secrets need to be loaded into the environment they can be added via an `.env.*.local` file or using other methods available via the os/server/deployment service.
+
 NextJS documentation: 
 
 - [Configuring Environment Variables](https://nextjs.org/docs/pages/building-your-application/configuring/environment-variables)
