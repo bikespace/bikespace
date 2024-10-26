@@ -113,6 +113,9 @@ test.py
 swagger-ui/
 
 .env*
+# commit config .env for bikespace_frontend but do not commit .local env files
+!bikespace_frontend/.env*
+bikespace_frontend/.env.*.local
 
 .vscode/*
 !.vscode/extensions.json
