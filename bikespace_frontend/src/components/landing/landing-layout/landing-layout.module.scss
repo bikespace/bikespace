@@ -8,8 +8,9 @@ $even-lighter-grey: #EEE;
 
 .pageMain {
   margin: 0 auto;
-  padding: 1rem;
+  padding: 10%;
   max-width: $wrapper-max-width;
+  justify-content: center;
 
   // prevent long bare urls from breaking page scale
   a {
