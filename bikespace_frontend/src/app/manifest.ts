@@ -1,5 +1,4 @@
 import type {MetadataRoute} from 'next';
-import bikespaceLogoSm from '../assets/icons/bikespace_logo_sm.svg';
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
@@ -8,9 +7,10 @@ export default function manifest(): MetadataRoute.Manifest {
     description: "Bikespace - Toronto's Bike Parking App",
     start_url: '/',
     display: 'standalone',
+    background_color: '#25c252',
     icons: [
       {
-        src: bikespaceLogoSm,
+        src: '/icon.ico',
         sizes: 'any',
         type: 'image/x-icon',
       },
