@@ -1,7 +1,7 @@
 from datetime import datetime, timezone
 
 
-from .generate_damage_report import parse_date_bikespace_api
+from analysis_for_city.generate_damage_report import parse_date_bikespace_api
 
 test_dates = [
     (

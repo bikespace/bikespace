@@ -2,23 +2,27 @@
 
 ## Usage
 
+Make sure to navigate to the `/datasets/analysis-for-city` directory before running commands.
+
+You will need to have [uv](https://docs.astral.sh/uv/) installed to run the script.
+
 Generate report:
 ```bash
 # all dates
-python src/generate_damage_report.py
+$ uv run task generate_report
 
 # only use BikeSpace reports from a specific date range
-python src/generate_damage_report.py --date_from YYYY-MM-DD --date_to YYYY-MM-DD
-python src/generate_damage_report.py -f YYYY-MM-DD -t YYYY-MM-DD
+$ uv run task generate_report --date_from YYYY-MM-DD --date_to YYYY-MM-DD
+$ uv run task generate_report -f YYYY-MM-DD -t YYYY-MM-DD
 
 # see also
-python src/generate_damage_report.py --help
+$ uv run task generate_report --help
 ```
 
 Run tests or lint:
 ```bash
-pytest
-black src/
+$ uv run pytest
+$ uv run ruff format
 ```
 
 ## Set Up Notes

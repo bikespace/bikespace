@@ -24,4 +24,8 @@ build-backend = "hatchling.build"
 dev-dependencies = [
     "taskipy>=1.14.0",
     "pytest>=8.3.3",
+    "ruff>=0.7.1",
 ]
+
+[tool.taskipy.tasks]
+generate_report = "python src/analysis_for_city/generate_damage_report.py"

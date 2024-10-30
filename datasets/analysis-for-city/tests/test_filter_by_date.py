@@ -2,7 +2,7 @@ from datetime import datetime
 
 import geopandas as gpd
 
-from .generate_damage_report import filter_by_date, DateRange
+from analysis_for_city.generate_damage_report import filter_by_date, DateRange
 
 test_dates = [
     "Thu, 15 Aug 2024 18:00:00 GMT",

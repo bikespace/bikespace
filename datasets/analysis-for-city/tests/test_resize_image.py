@@ -1,7 +1,7 @@
 from pathlib import Path
 from PIL import Image
 
-from .generate_damage_report import (
+from analysis_for_city.generate_damage_report import (
     resize_image,
     MAX_PHOTO_HEIGHT,
     MAX_PHOTO_WIDTH,
