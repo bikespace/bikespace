@@ -10,7 +10,7 @@ export default function manifest(): MetadataRoute.Manifest {
     background_color: '#25c252',
     icons: [
       {
-        src: '/icon.ico',
+        src: '/bikespace_logo_sm.svg',
         sizes: 'any',
         type: 'image/x-icon',
       },
