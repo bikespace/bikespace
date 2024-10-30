@@ -9,7 +9,7 @@ ABOUT_DATE_OPTIONS = """Reports can be filtered by a date range by specifying a 
 
 
 from argparse import ArgumentParser
-from datetime import datetime, date
+from datetime import datetime, date, timezone
 import importlib.util
 import json
 from pathlib import Path, PosixPath
@@ -41,6 +41,7 @@ OUTPUT_EXCEL_NAME = "damage_bikespace_city_matches"
 
 BIKESPACE_API_URL = "https://api-dev.bikespace.ca/api/v2/submissions"
 BIKESPACE_API_PAGE_SIZE = 5000
+BIKESPACE_API_DATE_FORMAT = "%Y-%m-%d %H:%M:%S"
 
 CLEANUP_SHEET_FILENAME = "BikeSpace Data Notes and Cleanup - Data.csv"
 CLEANUP_SHEET_COLUMNS = [
@@ -95,6 +96,14 @@ def parse_date(input: str):
     if input == None:
         return None
     return datetime.strptime(input, r"%Y-%m-%d").date()
+
+
+def parse_date_bikespace_api(input: str) -> datetime.date:
+    """Convert date from the BikeSpace API to datetime.date. Format is specified by the BIKESPACE_API_DATE_FORMAT constant."""
+    input_str = input.split(".")[0]
+    parsed = datetime.strptime(input_str, BIKESPACE_API_DATE_FORMAT)
+    parsed_tzaware = parsed.replace(tzinfo=timezone.utc)
+    return parsed_tzaware
 
 
 def get_dates() -> DateRange:
@@ -163,7 +172,7 @@ def get_bikespace_reports() -> gpd.GeoDataFrame:
     bikespace_reports = bikespace_reports.assign(
         parking_dt=lambda r: [
             (
-                datetime.strptime(dt_string, "%a, %d %b %Y %H:%M:%S %Z")
+                parse_date_bikespace_api(dt_string)
                 .replace(tzinfo=ZoneInfo("GMT"))
                 .astimezone(ZoneInfo("America/Toronto"))
             )
