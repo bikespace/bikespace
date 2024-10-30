@@ -1,6 +1,7 @@
 {
   "name": "Bikespace",
   "short_name": "Bikespace",
+  "description": "Bikespace - Toronto's bike parking app",
   "icons": [
     {
       "src": "/web-app-manifest-192x192.png",
