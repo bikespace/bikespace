@@ -1,4 +1,5 @@
 import type {MetadataRoute} from 'next';
+import bikespaceLogoSm from '../assets/icons/bikespace_logo_sm.svg';
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
@@ -9,7 +10,7 @@ export default function manifest(): MetadataRoute.Manifest {
     display: 'standalone',
     icons: [
       {
-        src: '/icons/bikespace_logo_sm.svg',
+        src: bikespaceLogoSm,
         sizes: 'any',
         type: 'image/x-icon',
       },
