@@ -1,0 +1,8 @@
+{
+  "name": "Bikespace",
+  "short_name": "Bikespace",
+  "description": "An application built with Next.js",
+  "start_url": "/",
+  "display": "standalone",
+  "icon": "src/assets/icons/bikespace_logo_sm.svg"
+}
