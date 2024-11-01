@@ -113,6 +113,9 @@ test.py
 swagger-ui/
 
 .env*
+# commit config .env for bikespace_frontend but do not commit .local env files
+!bikespace_frontend/.env*
+bikespace_frontend/.env.*.local
 
 .vscode/*
 !.vscode/extensions.json
@@ -123,3 +126,6 @@ coverage/
 
 # Data reports
 /datasets/analysis-for-city/thumbnails/
+/bikespace_frontend/out
+/bikespace_frontend/.next
+bikespace_frontend/next-env.d.ts

@@ -1,0 +1,31 @@
+[project]
+name = "analysis-for-city"
+version = "0.1.0"
+description = "Scripts to generate damage reports for the City of Toronto based on BikeSpace user reports"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "contextily>=1.6.2",
+    "matplotlib>=3.9.2",
+    "numpy>=2.1.2",
+    "pandas>=2.2.3",
+    "pillow>=11.0.0",
+    "progress>=1.6",
+    "geopandas>=1.0.1",
+    "requests>=2.32.3",
+    "xlsxwriter>=3.2.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.uv]
+dev-dependencies = [
+    "taskipy>=1.14.0",
+    "pytest>=8.3.3",
+    "ruff>=0.7.1",
+]
+
+[tool.taskipy.tasks]
+generate_report = "python src/analysis_for_city/generate_damage_report.py"
