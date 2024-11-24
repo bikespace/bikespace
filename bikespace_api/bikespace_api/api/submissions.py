@@ -164,6 +164,8 @@ def get_submissions_csv(request):
     for submission in submissions:
         row = []
         row.append(submission.id)
+        row.append(submission.latitude)
+        row.append(submission.longitude)
         row.append(str(submission.parking_time))
         row.append(";".join([issue.value for issue in submission.issues]))
         for issue_type in IssueType:
@@ -176,6 +178,8 @@ def get_submissions_csv(request):
     csv_writer = csv.writer(string_io)
     csv_headers = [
         "id",
+        "latitude",
+        "longitude",
         "parking_time",
         "issues",
         *["issue_" + t.value for t in IssueType],
