@@ -1,0 +1,7 @@
+[project]
+name = "google-enviro-insights"
+version = "0.1.0"
+description = "Analysis of active transportation data from Google's Environmental Insights program"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = []
