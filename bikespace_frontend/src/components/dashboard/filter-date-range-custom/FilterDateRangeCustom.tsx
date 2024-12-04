@@ -118,10 +118,6 @@ export function FilterDateRangeCustom() {
 }
 
 const formatHtmlDateValue = (date: Date) => {
-  return date
-    .toLocaleDateString()
-    .replace(/\//g, '-')
-    .split('-')
-    .map(str => (str.length === 1 ? `0${str}` : str))
-    .join('-');
+  const formattedDate = date.toISOString().split('T')[0];
+  return formattedDate;
 };
