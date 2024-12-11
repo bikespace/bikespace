@@ -18,6 +18,8 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
+    "@hookform/error-message": "^2.0.1",
+    "@hookform/resolvers": "^3.9.0",
     "@mdx-js/loader": "^3.0.1",
     "@mdx-js/react": "^3.0.1",
     "@next/mdx": "^14.2.5",
@@ -36,6 +38,7 @@
     "plotly.js-dist-min": "^2.33.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-hook-form": "^7.54.0",
     "react-leaflet": "^4.2.1",
     "react-leaflet-cluster": "^2.1.0",
     "react-plotly.js": "^2.6.0",
@@ -43,6 +46,7 @@
     "sass": "^1.77.8",
     "serve": "^14.2.3",
     "sharp": "^0.33.4",
+    "zod": "^3.23.8",
     "zustand": "^4.5.4"
   },
   "devDependencies": {

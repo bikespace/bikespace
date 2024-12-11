@@ -1,79 +1,68 @@
 import React from 'react';
+import {ErrorMessage} from '@hookform/error-message';
+
 import {IssueType} from '@/interfaces/Submission';
-import {BaseButton} from '../base-button';
+
+import {SelectInput} from '../select-input';
+
+import {useSubmissionFormContext} from '../schema';
+
+import {FormSectionHeader} from '../form-section-header';
 
 import styles from './issue.module.scss';
 
-export const Issue = (props: {
-  issues: IssueType[];
-  onIssuesChanged: (issues: IssueType[]) => void;
-}) => {
-  const issues = props.issues;
-  const handleClick = (e: React.FormEvent<HTMLInputElement>) => {
-    const issueType = e.currentTarget.dataset.value as IssueType;
-
-    let newIssues: IssueType[];
-    if (!issues.includes(issueType)) {
-      newIssues = [...issues, issueType];
-    } else {
-      newIssues = [...issues.filter(issue => issue !== issueType)];
-    }
-    props.onIssuesChanged(newIssues);
-  };
+export const Issue = () => {
+  const {formState: errors} = useSubmissionFormContext();
 
   return (
-    <form className={styles.submissionIssue}>
+    <div className={styles.submissionIssue}>
+      <FormSectionHeader title="What were the issue(s)?" name="issues" />
       <fieldset>
-        <legend>
-          <h2>What was the issue?</h2>
-          <h3>Choose at least one</h3>
-        </legend>
-        <BaseButton
-          type="checkbox"
-          name="issue"
-          active={issues.includes(IssueType.NotProvided)}
-          value="not_provided"
-          onClick={handleClick}
-        >
-          Bicycle parking is&nbsp;<strong>not provided</strong>
-        </BaseButton>
-        <BaseButton
-          type="checkbox"
-          name="issue"
-          active={issues.includes(IssueType.Full)}
-          value="full"
-          onClick={handleClick}
-        >
-          Bicycle parking is&nbsp;<strong>full</strong>
-        </BaseButton>
-        <BaseButton
-          type="checkbox"
-          name="issue"
-          active={issues.includes(IssueType.Damaged)}
-          value="damaged"
-          onClick={handleClick}
-        >
-          Bicycle parking is&nbsp;<strong>damaged</strong>
-        </BaseButton>
-        <BaseButton
-          type="checkbox"
-          name="issue"
-          active={issues.includes(IssueType.Abandoned)}
-          value="abandoned"
-          onClick={handleClick}
-        >
-          A bicycle is&nbsp;<strong>abandoned</strong>
-        </BaseButton>
-        <BaseButton
-          type="checkbox"
-          name="issue"
-          active={issues.includes(IssueType.Other)}
-          value="other"
-          onClick={handleClick}
-        >
-          Something else
-        </BaseButton>
+        {checkboxes.map(({value, label}) => (
+          <SelectInput key={value} type="checkbox" name="issues" value={value}>
+            {label}
+          </SelectInput>
+        ))}
       </fieldset>
-    </form>
+    </div>
   );
 };
+
+const checkboxes = [
+  {
+    value: IssueType.NotProvided,
+    label: (
+      <span>
+        Bicycle parking is&nbsp;<strong>not provided</strong>
+      </span>
+    ),
+  },
+  {
+    value: IssueType.Full,
+    label: (
+      <span>
+        Bicycle parking is&nbsp;<strong>full</strong>
+      </span>
+    ),
+  },
+  {
+    value: IssueType.Damaged,
+    label: (
+      <span>
+        Bicycle parking is&nbsp;<strong>damaged</strong>
+      </span>
+    ),
+  },
+  {
+    value: IssueType.Abandoned,
+    label: (
+      <span>
+        A bicycle is&nbsp;<strong>abandoned</strong>
+      </span>
+    ),
+  },
+  {
+    value: IssueType.Other,
+    label: <span>Something else</span>,
+  },
+];
