@@ -60,21 +60,26 @@ describe('FilterDateRangeCustom', () => {
 
   /* Note that the min and max constraints are not testable, they only work with the browser UI, not for typing or changing the value directly */
 
-  test('the end date should always equal or exceed the start date', async () => {
+  test('dates should be valid and the end date should always equal or exceed the start date', async () => {
     const user = userEvent.setup();
-
     const startDateInput = screen.getByLabelText('Start date:');
     const endDateInput = screen.getByLabelText('End date:');
+    const submitButton = screen.getByRole('button');
 
     await user.clear(startDateInput);
+    await user.type(startDateInput, '2024-02-01');
+    expect(submitButton).toBeEnabled();
+
     await user.clear(endDateInput);
+    expect(submitButton).toBeDisabled();
     await user.type(endDateInput, '2024-02-01');
-    // null start date should not constrain end date
     expect(endDateInput).toHaveValue('2024-02-01');
+    expect(submitButton).toBeEnabled();
 
     await user.clear(startDateInput);
+    expect(submitButton).toBeDisabled();
     await user.type(startDateInput, '2024-03-01');
-    expect(endDateInput).toHaveValue('2024-03-01');
+    expect(submitButton).toBeDisabled();
   });
 
   // test edge cases for user local timezone

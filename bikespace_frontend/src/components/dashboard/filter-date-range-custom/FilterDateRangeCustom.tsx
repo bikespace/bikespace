@@ -15,34 +15,43 @@ export function FilterDateRangeCustom() {
 
   const isoFirst = formatHtmlDateValue(first);
   const isoLast = formatHtmlDateValue(last);
-  const [startDateValue, setStartDateValue] = useState<string>(
-    formatHtmlDateValue(new Date())
-  );
-  const [endDateValue, setEndDateValue] = useState<string>(
-    formatHtmlDateValue(new Date())
-  );
 
-  // endDate should not be before startDate
-  if (
-    new Date(endDateValue + 'T00:00:00') <
-    new Date(startDateValue + 'T00:00:00')
-  ) {
-    setEndDateValue(startDateValue);
-  }
+  const [startDateText, setStartDateText] = useState<string>(
+    formatHtmlDateValue(new Date())
+  );
+  const [endDateText, setEndDateText] = useState<string>(
+    formatHtmlDateValue(new Date())
+  );
 
   /* `+ 'T00:00:00` is added here because of a known quirk with Date API - date-only text is interpreted as UTC and date-time text is interpreted in the user time zone. See: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date#date_time_string_format */
+  const startDateValue = new Date(startDateText + 'T00:00:00');
+  const endDateValue = new Date(endDateText + 'T00:00:00');
+
+  // validation checks
+  const startDateIsValid = !isNaN(Number(startDateValue));
+  const endDateIsValid = !isNaN(Number(endDateValue));
+  const endDateNotBeforeStartDate = endDateValue >= startDateValue;
+  const inputIsValid =
+    startDateIsValid && endDateIsValid && endDateNotBeforeStartDate;
+
+  const errorMessages = [];
+  if (!startDateIsValid) errorMessages.push('Please enter a valid start date.');
+  if (!endDateIsValid) errorMessages.push('Please enter a valid end date.');
+  if (startDateIsValid && endDateIsValid && !endDateNotBeforeStartDate)
+    errorMessages.push('End date cannot be before start date.');
+
   const applyCustomDateRange = () => {
     setFilters({
       dateRange: {
-        from: new Date(startDateValue + 'T00:00:00'),
-        to: new Date(endDateValue + 'T00:00:00'),
+        from: startDateValue,
+        to: endDateValue,
       },
       dateRangeInterval: DateRangeInterval.CustomRange,
     });
 
     trackUmamiEvent('datefilter', {
-      from: startDateValue,
-      to: endDateValue,
+      from: startDateText,
+      to: endDateText,
       interval: DateRangeInterval.CustomRange,
     });
   };
@@ -55,10 +64,10 @@ export function FilterDateRangeCustom() {
           type="date"
           id="filter-start-date"
           name="startDate"
-          value={startDateValue}
+          value={startDateText}
           min={isoFirst!}
           max={isoLast!}
-          onChange={e => setStartDateValue(e.target.value)}
+          onChange={e => setStartDateText(e.target.value)}
         />
       </div>
       <div className={styles.dateInput}>
@@ -67,15 +76,22 @@ export function FilterDateRangeCustom() {
           type="date"
           id="filter-end-date"
           name="endDate"
-          value={endDateValue}
+          value={endDateText}
           min={isoFirst || ''}
           max={isoLast || ''}
-          onChange={e => setEndDateValue(e.target.value)}
+          onChange={e => setEndDateText(e.target.value)}
         />
       </div>
-      <SidebarButton type="button" onClick={applyCustomDateRange}>
+      <SidebarButton
+        type="button"
+        onClick={applyCustomDateRange}
+        disabled={!inputIsValid}
+      >
         Apply
       </SidebarButton>
+      {errorMessages.length > 0 ? (
+        <p className={styles.errorMessages}>{errorMessages.join(' ')}</p>
+      ) : null}
     </div>
   );
 }
