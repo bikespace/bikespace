@@ -22,6 +22,14 @@ export function FilterDateRangeCustom() {
     formatHtmlDateValue(new Date())
   );
 
+  // endDate should not be before startDate
+  if (
+    new Date(endDateValue + 'T00:00:00') <
+    new Date(startDateValue + 'T00:00:00')
+  ) {
+    setEndDateValue(startDateValue);
+  }
+
   /* `+ 'T00:00:00` is added here because of a known quirk with Date API - date-only text is interpreted as UTC and date-time text is interpreted in the user time zone. See: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date#date_time_string_format */
   const applyCustomDateRange = () => {
     setFilters({
