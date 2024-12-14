@@ -40,7 +40,7 @@ export function DashboardPage() {
 
   // Filter submissions when filters state changes
   useEffect(() => {
-    if (submissions.length === 0) return;
+    if (allSubmissions.length === 0) return;
 
     const {dateRange, parkingDuration, issue, day} = filters;
 
