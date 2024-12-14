@@ -89,14 +89,28 @@ Some things to think about when writing components:
 
 ### Testing Tips
 
-Use `screen.debug()` in a Jest test to see the rendered DOM
+Use `screen.debug()` in a Jest test to see the rendered DOM. Sometimes this can help you write the [right query](https://testing-library.com/docs/queries/about) for testing an element.
+
+Jest uses a library called [Istanbul](https://github.com/istanbuljs/nyc) to calculate code coverage, so if you want to exclude lines or a file from coverage, common hints are `/* istanbul ignore if */`, `/* istanbul ignore else */`, `/* istanbul ignore next */`, and `/* istanbul ignore file */`. ([More details](https://github.com/istanbuljs/nyc?tab=readme-ov-file#parsing-hints-ignoring-lines)). You can also update the `collectCoverageFrom` setting in `jest.config.js` to exclude certain file patterns.
 
 To run a single test, make sure you are in the frontend directory and then run:
 
 ```shell
-jest PATH_TO_TEST_FILE
+jest --coverage=false PATH_TO_TEST_FILE
+```
+
+For single tests on components that use `Date` or `DateTime`, you may want to use:
+
+```shell
+TZ='America/Toronto' jest --coverage=false PATH_TO_TEST_FILE
 ```
 
 You may need to make sure that Jest is in your global path. More instructions on using the Jest CLI can be found here: https://jestjs.io/docs/getting-started#running-from-command-line
 
-can also use `--watch` or `--watchAll` when developing to only re-run relevant tests when needed
+You can also use `--watch` or `--watchAll` when developing to only re-run relevant tests when needed
+
+References:
+
+- [Jest](https://jestjs.io/docs/getting-started) - test runner
+- [(React) Testing Library](https://testing-library.com/docs/) - query for specific elements and simulate user interaction
+- [Faker JS](https://fakerjs.dev/) - generate fake testing data based on the seed set in `jest.setup.ts`
