@@ -3,16 +3,21 @@ import {fireEvent, render, screen} from '@testing-library/react';
 import {userEvent} from '@testing-library/user-event';
 import {SubmissionsDateRange} from '@/interfaces/Submission';
 
-import {FilterDateRangeCustom} from './FilterDateRangeCustom';
+import {
+  FilterDateRangeCustom,
+  formatHtmlDateValue,
+} from './FilterDateRangeCustom';
 
+const todayDate = formatHtmlDateValue(new Date());
 const startDate = '2024-01-01';
-const endDate = '2024-12-31';
+const endDate = todayDate;
 
+/* `+ 'T00:00:00` is added here because of a known quirk with Date API - date-only text is interpreted as UTC and date-time text is interpreted in the user time zone. See: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date#date_time_string_format */
 jest.mock('@/hooks', () => ({
   useAllSubmissionsDateRange(): SubmissionsDateRange {
     return {
-      first: new Date(startDate),
-      last: new Date(endDate),
+      first: new Date(startDate + 'T00:00:00'),
+      last: new Date(endDate + 'T00:00:00'),
     };
   },
 }));
@@ -23,15 +28,12 @@ describe('FilterDateRangeCustom', () => {
   });
 
   test('should render two date inputs and a button', () => {
-    // screen.debug();
-
-    const startDateInput = screen.getByDisplayValue(startDate);
+    const startDateInput = screen.getByLabelText('Start date:');
     expect(startDateInput.tagName === 'input');
     expect(startDateInput.getAttribute('type') === 'date');
     expect(startDateInput.getAttribute('name') === 'startDate');
-    expect(startDateInput).toHaveValue(startDate);
 
-    const endDateInput = screen.getByDisplayValue(endDate);
+    const endDateInput = screen.getByLabelText('End date:');
     expect(endDateInput.tagName === 'input');
     expect(endDateInput.getAttribute('type') === 'date');
     expect(endDateInput.getAttribute('name') === 'endDate');
@@ -39,29 +41,27 @@ describe('FilterDateRangeCustom', () => {
     expect(screen.getByRole('button')).toHaveTextContent('Apply');
   });
 
-  test('clicking submit... submits', async () => {
-    const submitButton = screen.getByRole('button');
-    const startDateInput = screen.getByDisplayValue(startDate);
-    const newStartValue = '2024-12-01';
-    startDateInput.setAttribute('value', newStartValue);
+  test('initial date input values should be today', () => {
+    const startDateInput = screen.getByLabelText('Start date:');
+    expect(startDateInput).toHaveValue(todayDate);
 
-    // unsure if problem here is that the component is not controlled properly or I don't know how to use the testing library to change the value
-    // expect(startDateInput).toHaveValue(newStartValue);
-
-    await userEvent.click(submitButton);
-
+    const endDateInput = screen.getByLabelText('End date:');
+    expect(endDateInput).toHaveValue(todayDate);
   });
 
-  // test('typing in a date input changes the date', async () => {
-  //   const startDateInput = screen.getByDisplayValue(startDate);
-  //   // await userEvent.type(startDateInput, '2023-12-31');
-  //   await userEvent.tab();
-  //   await userEvent.keyboard('20231231');
-  //   screen.debug();
-  //   expect(startDateInput).toHaveValue('2023-12-31');
-  // });
+  test('typing in a date input changes the date', async () => {
+    const testInput = '2024-02-02';
+    const startDateInput = screen.getByLabelText('Start date:');
+    // limitation of userEvent - have to clear before new input
+    await userEvent.clear(startDateInput);
+    await userEvent.type(startDateInput, testInput);
+    expect(startDateInput).toHaveValue(testInput);
+  });
 
-  // test that changing the inputs works?
-  // does it let you test different interaction types?
+  /* Note that the min and max constraints are not testable, they only work with the browser UI, not for typing or changing the value directly */
+
   // test edge cases for user local timezone
+  // test value submitted for timezone compatibility?
+  // what if you try to select something outside the allowed parameters?
+  // shouldn't be able to put in an end date after the start date
 });
