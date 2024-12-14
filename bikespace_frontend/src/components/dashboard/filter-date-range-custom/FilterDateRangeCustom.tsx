@@ -23,14 +23,14 @@ export function FilterDateRangeCustom() {
     formatHtmlDateValue(new Date())
   );
 
-  /* `+ 'T00:00:00` is added here because of a known quirk with Date API - date-only text is interpreted as UTC and date-time text is interpreted in the user time zone. See: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date#date_time_string_format */
+  /* `+ 'T00:00:00` and 'T23:59:59' are added here in part because of a known quirk with Date API - date-only text is interpreted as UTC and date-time text is interpreted in the user time zone. See: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date#date_time_string_format */
   const startDateValue = new Date(startDateText + 'T00:00:00');
-  const endDateValue = new Date(endDateText + 'T00:00:00');
+  const endDateValue = new Date(endDateText + 'T23:59:59');
 
   // validation checks
   const startDateIsValid = !isNaN(Number(startDateValue));
   const endDateIsValid = !isNaN(Number(endDateValue));
-  const endDateNotBeforeStartDate = endDateValue >= startDateValue;
+  const endDateNotBeforeStartDate = endDateValue > startDateValue;
   const inputIsValid =
     startDateIsValid && endDateIsValid && endDateNotBeforeStartDate;
 

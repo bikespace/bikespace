@@ -12,12 +12,12 @@ const todayDate = formatHtmlDateValue(new Date());
 const startDate = '2024-01-01';
 const endDate = todayDate;
 
-/* `+ 'T00:00:00` is added here because of a known quirk with Date API - date-only text is interpreted as UTC and date-time text is interpreted in the user time zone. See: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date#date_time_string_format */
+/* `+ 'T00:00:00` and 'T23:59:59' are added here in part because of a known quirk with Date API - date-only text is interpreted as UTC and date-time text is interpreted in the user time zone. See: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date#date_time_string_format */
 jest.mock('@/hooks', () => ({
   useAllSubmissionsDateRange(): SubmissionsDateRange {
     return {
       first: new Date(startDate + 'T00:00:00'),
-      last: new Date(endDate + 'T00:00:00'),
+      last: new Date(endDate + 'T23:59:59'),
     };
   },
 }));
