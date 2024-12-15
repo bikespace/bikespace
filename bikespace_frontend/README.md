@@ -91,7 +91,7 @@ Some things to think about when writing components:
 
 Use `screen.debug()` in a Jest test to see the rendered DOM. Sometimes this can help you write the [right query](https://testing-library.com/docs/queries/about) for testing an element.
 
-Jest uses a library called [Istanbul](https://github.com/istanbuljs/nyc) to calculate code coverage, so if you want to exclude lines or a file from coverage, common hints are `/* istanbul ignore if */`, `/* istanbul ignore else */`, `/* istanbul ignore next */`, and `/* istanbul ignore file */`. ([More details](https://github.com/istanbuljs/nyc?tab=readme-ov-file#parsing-hints-ignoring-lines)). You can also update the `collectCoverageFrom` setting in `jest.config.js` to exclude certain file patterns.
+Jest is configured to use a library called [c8](https://github.com/bcoe/c8) to calculate code coverage, so if you want to exclude lines or a file from coverage, common hints are `/* c8 ignore next */`, `/* c8 ignore start */`, and `/* c8 ignore stop */`. ([More details](https://github.com/bcoe/c8#ignoring-uncovered-lines-functions-and-blocks)). You can also update the `collectCoverageFrom` setting in `jest.config.js` to exclude certain file patterns.
 
 To run a single test, make sure you are in the frontend directory and then run:
 
