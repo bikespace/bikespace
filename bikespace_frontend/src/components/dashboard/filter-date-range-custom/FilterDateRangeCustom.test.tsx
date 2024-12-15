@@ -13,7 +13,7 @@ const endDate = todayDate;
 
 /* `+ 'T00:00:00` and 'T23:59:59' are added here in part because of a known quirk with Date API - date-only text is interpreted as UTC and date-time text is interpreted in the user time zone. See: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date#date_time_string_format */
 const startDateValue = new Date(startDate + 'T00:00:00');
-const endDateValue = new Date(endDate + 'T23:59:59');
+const endDateValue = new Date(endDate + 'T23:59:59.999');
 const mockDateRange: SubmissionsDateRange = {
   first: startDateValue,
   last: endDateValue,
