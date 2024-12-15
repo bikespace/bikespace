@@ -96,15 +96,16 @@ describe('FilterDateRange', () => {
     );
   });
 
-  test('should set correct date ranges for each DateRangeInterval option', async () => {
-    const user = userEvent.setup();
-    const dateFilterSelect = screen.getByRole('combobox');
+  test.each(Object.entries(dateFilterInputs))(
+    'should set correct date range for %s option',
+    async (interval, calledWith) => {
+      const user = userEvent.setup();
+      const dateFilterSelect = screen.getByRole('combobox');
 
-    for (const [interval, calledWith] of Object.entries(dateFilterInputs)) {
       await user.selectOptions(dateFilterSelect, interval);
       expect(mockSetFilters).toHaveBeenLastCalledWith(calledWith);
       expect(mockTrackUmamiEvent).toHaveBeenCalled();
       mockTrackUmamiEvent.mockClear();
     }
-  });
+  );
 });

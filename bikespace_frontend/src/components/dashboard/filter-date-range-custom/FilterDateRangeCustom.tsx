@@ -7,14 +7,11 @@ import {SidebarButton} from '../sidebar-button';
 import styles from './filter-date-range-custom.module.scss';
 
 export function FilterDateRangeCustom() {
-  const {first, last} = useAllSubmissionsDateRange();
+  /* c8 ignore next 4 */
   const {dateRange, setFilters} = useSubmissionsStore(state => ({
     dateRange: state.filters.dateRange,
     setFilters: state.setFilters,
   }));
-
-  const isoFirst = formatHtmlDateValue(first);
-  const isoLast = formatHtmlDateValue(last);
 
   const [startDateText, setStartDateText] = useState<string>(
     formatHtmlDateValue(new Date())
@@ -65,8 +62,6 @@ export function FilterDateRangeCustom() {
           id="filter-start-date"
           name="startDate"
           value={startDateText}
-          min={isoFirst!}
-          max={isoLast!}
           onChange={e => setStartDateText(e.target.value)}
         />
       </div>
@@ -77,8 +72,6 @@ export function FilterDateRangeCustom() {
           id="filter-end-date"
           name="endDate"
           value={endDateText}
-          min={isoFirst || ''}
-          max={isoLast || ''}
           onChange={e => setEndDateText(e.target.value)}
         />
       </div>
@@ -97,7 +90,6 @@ export function FilterDateRangeCustom() {
 }
 
 export const formatHtmlDateValue = (date: Date | null) => {
-  if (date === null) return '';
   const year = date.getFullYear();
   const month = (date.getMonth() + 1).toString().padStart(2, '0');
   const day = date.getDate().toString().padStart(2, '0');

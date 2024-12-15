@@ -19,10 +19,6 @@ const mockDateRange: SubmissionsDateRange = {
   last: endDateValue,
 };
 
-jest.mock('@/hooks', () => ({
-  useAllSubmissionsDateRange: () => mockDateRange,
-}));
-
 const mockTrackUmamiEvent = jest.fn().mockName('mockTrackUmamiEvent');
 jest.mock('@/utils', () => ({
   trackUmamiEvent: (...args: Parameters<typeof mockTrackUmamiEvent>) =>
@@ -86,8 +82,6 @@ describe('FilterDateRangeCustom', () => {
     await userEvent.type(startDateInput, testInput);
     expect(startDateInput).toHaveValue(testInput);
   });
-
-  /* Note that the min and max constraints are not testable, they only work with the browser UI, not for typing or changing the value directly */
 
   test('dates should be valid and the end date should always equal or exceed the start date', async () => {
     const user = userEvent.setup();
