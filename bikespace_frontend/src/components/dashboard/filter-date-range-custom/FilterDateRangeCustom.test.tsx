@@ -1,25 +1,40 @@
 import React from 'react';
-import {fireEvent, render, screen} from '@testing-library/react';
+import {render, screen} from '@testing-library/react';
 import {userEvent} from '@testing-library/user-event';
-import {SubmissionsDateRange} from '@/interfaces/Submission';
-
+import {SubmissionsDateRange, DateRangeInterval} from '@/interfaces/Submission';
 import {
   FilterDateRangeCustom,
   formatHtmlDateValue,
 } from './FilterDateRangeCustom';
 
 const todayDate = formatHtmlDateValue(new Date());
-const startDate = '2024-01-01';
+const startDate = todayDate;
 const endDate = todayDate;
 
 /* `+ 'T00:00:00` and 'T23:59:59' are added here in part because of a known quirk with Date API - date-only text is interpreted as UTC and date-time text is interpreted in the user time zone. See: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date#date_time_string_format */
+const startDateValue = new Date(startDate + 'T00:00:00');
+const endDateValue = new Date(endDate + 'T23:59:59');
+const mockDateRange: SubmissionsDateRange = {
+  first: startDateValue,
+  last: endDateValue,
+};
+
 jest.mock('@/hooks', () => ({
-  useAllSubmissionsDateRange(): SubmissionsDateRange {
-    return {
-      first: new Date(startDate + 'T00:00:00'),
-      last: new Date(endDate + 'T23:59:59'),
-    };
-  },
+  useAllSubmissionsDateRange: () => mockDateRange,
+}));
+
+const mockTrackUmamiEvent = jest.fn().mockName('mockTrackUmamiEvent');
+jest.mock('@/utils', () => ({
+  trackUmamiEvent: (...args: Parameters<typeof mockTrackUmamiEvent>) =>
+    mockTrackUmamiEvent(...args),
+}));
+
+const mockSetFilters = jest.fn().mockName('mockSetFilters');
+jest.mock('@/states/store', () => ({
+  useSubmissionsStore: () => ({
+    dateRange: mockDateRange,
+    setFilters: mockSetFilters,
+  }),
 }));
 
 describe('FilterDateRangeCustom', () => {
@@ -46,7 +61,25 @@ describe('FilterDateRangeCustom', () => {
     expect(startDateInput).toHaveValue(todayDate);
 
     const endDateInput = screen.getByLabelText('End date:');
-    expect(endDateInput).toHaveValue(todayDate);
+    expect(endDateInput).toHaveValue(endDate);
+  });
+
+  test('clicking submit should send a correct date filter range and trigger analytics', async () => {
+    const user = userEvent.setup();
+    const submitButton = screen.getByRole('button');
+    await user.click(submitButton);
+    expect(mockSetFilters).toHaveBeenCalledWith({
+      dateRange: {
+        from: startDateValue,
+        to: endDateValue,
+      },
+      dateRangeInterval: DateRangeInterval.CustomRange,
+    });
+    expect(mockTrackUmamiEvent).toHaveBeenCalledWith('datefilter', {
+      from: startDate,
+      to: endDate,
+      interval: DateRangeInterval.CustomRange,
+    });
   });
 
   test('typing in a date input changes the date', async () => {
@@ -81,7 +114,4 @@ describe('FilterDateRangeCustom', () => {
     await user.type(startDateInput, '2024-03-01');
     expect(submitButton).toBeDisabled();
   });
-
-  // test edge cases for user local timezone
-  // test value submitted for timezone compatibility?
 });
