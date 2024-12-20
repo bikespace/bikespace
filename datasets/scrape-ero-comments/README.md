@@ -24,7 +24,7 @@ These two topics related to the bill were also posed on the Ontario Regulatory R
 
 This scraper scrapes the supplied ERO notice page and downloads all the publicly available comments.
 
-To run navigate to `datasets/scrape-ero-comments/`
+To run navigate to `datasets/scrape-ero-comments/`. This script should work with Python 3.12 and above.
 
 You will need [virtualenv](https://virtualenv.pypa.io/en/latest/) if you don't have it installed already.
 
