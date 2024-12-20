@@ -16,7 +16,7 @@ BASE_URL = "https://ero.ontario.ca"
 ERO_NUMBER = "019-9266"
 NOTICE_COMMENTS_URL = BASE_URL + f"/notice/{ERO_NUMBER}/comments"
 START_PAGE = 0
-END_PAGE = 835
+END_PAGE = 836
 REQUEST_THROTTLE = 1  # delay between requests, in seconds
 OUTPUT_FOLDER = Path(f"output/ero-{ERO_NUMBER}-comments")
 
@@ -82,7 +82,7 @@ def combine_pages(pages_path: Path, output_path: Path):
 
 
 def scrape_ero(output_path: Path = OUTPUT_FOLDER):
-    for page_number in range(START_PAGE, END_PAGE):
+    for page_number in range(START_PAGE, END_PAGE + 1):
         # skip if page file already saved
         if (output_path / f"comments-{page_number}.json").exists():
             continue
