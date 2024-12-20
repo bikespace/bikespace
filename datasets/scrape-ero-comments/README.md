@@ -43,7 +43,7 @@ pip install -r requirements.txt
 python3 scrape-ero.py
 ```
 
-You can set the `NOTICE_COMMENTS_URL` in the `scrape-ero.py` for the notice to scrape.
+You can set the `ERO_NUMBER` in the `scrape-ero.py` for the notice to scrape.
 You will also need to set the `START_PAGE` and `END_PAGE` number in the script.
 These values can obtained manually just by going to the webpage and clicking the `Last` page and getting the `page=` value on the url bar.
 
