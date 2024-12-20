@@ -3,6 +3,7 @@ import ssl
 import time
 from pathlib import Path
 from urllib.request import urlopen
+import argparse
 
 import pandas as pd
 from bs4 import BeautifulSoup
@@ -13,13 +14,8 @@ ctx.verify_mode = ssl.CERT_NONE
 
 # https://ero.ontario.ca/notice/019-9266/comments?comment_body_value=&cid=&field_commenting_on_behalf_of_value=All&page=1
 BASE_URL = "https://ero.ontario.ca"
-ERO_NUMBER = "019-9266"
-NOTICE_COMMENTS_URL = BASE_URL + f"/notice/{ERO_NUMBER}/comments"
-START_PAGE = 0
-END_PAGE = 836
+OUTPUT_FOLDER = "output"
 REQUEST_THROTTLE = 1  # delay between requests, in seconds
-OUTPUT_FOLDER = Path(f"output/ero-{ERO_NUMBER}-comments")
-
 
 def write_to_json(file_path, dict_to_write):
     with open(file_path, "w") as outfile:
@@ -29,7 +25,7 @@ def write_to_json(file_path, dict_to_write):
 def find_comment_link(
     soup: BeautifulSoup,
     page: int,
-    output_path: Path = OUTPUT_FOLDER,
+    output_path: Path,
 ):
     comments_dict = {}
     json_file = "comments-{}.json".format(page)
@@ -81,22 +77,31 @@ def combine_pages(pages_path: Path, output_path: Path):
     combined_dfs.to_csv(output_path / f"{pages_path.stem}.csv")
 
 
-def scrape_ero(output_path: Path = OUTPUT_FOLDER):
-    for page_number in range(START_PAGE, END_PAGE + 1):
+def scrape_ero_comments(notice_number: str, start_page: int, end_page: int):
+    notice_comments_url = BASE_URL + f"/notice/{notice_number}/comments"
+    Path(f"{OUTPUT_FOLDER}/ero-{notice_number}-comments").mkdir(parents=True, exist_ok=True)
+    output_path = Path(f"{OUTPUT_FOLDER}/ero-{notice_number}-comments")
+
+    for page_number in range(start_page, end_page + 1):
         # skip if page file already saved
         if (output_path / f"comments-{page_number}.json").exists():
             continue
 
-        PAGE_URL = "{}?page={}".format(NOTICE_COMMENTS_URL, page_number)
+        PAGE_URL = "{}?page={}".format(notice_comments_url, page_number)
         print("Scraping {}".format(PAGE_URL))
         base_page = urlopen(PAGE_URL, context=ctx)
         base_page_html = base_page.read().decode("utf-8")
         soup = BeautifulSoup(base_page_html, "html.parser")
-        find_comment_link(soup=soup, page=page_number)
+        find_comment_link(soup=soup, page=page_number, output_path=output_path)
         time.sleep(REQUEST_THROTTLE)
 
     combine_pages(pages_path=output_path, output_path=output_path.parent)
 
 
 if __name__ == "__main__":
-    scrape_ero()
+    parser = argparse.ArgumentParser(description="This tool scrapes all publicly submitted comments on an ERO notice.")
+    parser.add_argument('--notice-number', type=str, required=True, help="The ERO notice number")
+    parser.add_argument('--start-page', type=int, default=0, help="The page number of the comments to start the scrape from.")
+    parser.add_argument('--end-page', type=int, default=0, help="The page number of the comments to end the scrape on.")
+    args = parser.parse_args()
+    scrape_ero_comments(notice_number=args.notice_number, start_page=args.start_page, end_page=args.end_page)
