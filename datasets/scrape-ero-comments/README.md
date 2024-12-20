@@ -48,3 +48,9 @@ You will also need to set the `START_PAGE` and `END_PAGE` number in the script.
 These values can obtained manually just by going to the webpage and clicking the `Last` page and getting the `page=` value on the url bar.
 
 The scraped comments will be outputted to the `output` folder, each page will have it's own json file.
+
+If you need to update the requirements during development, pip install or uninstall the relevant packages, and then run:
+
+```bash
+pip freeze > requirements.txt
+```
