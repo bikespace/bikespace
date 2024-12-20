@@ -11,7 +11,7 @@ Background information on Bill 212:
 
 The ERO is used specifically for the environmental impacts of legislation and other Ontario government rule-making. There were two ERO consultations related to Bill 212, one for its proposed changes to highway construction and related environmental assessments, and one for its proposed actions and regulations regarding bicycle lanes:
 
-- [019-9265 "Building Highways Faster Act , 2024"](https://ero.ontario.ca/notice/019-9265)
+- [019-9265 "Building Highways Faster Act, 2024"](https://ero.ontario.ca/notice/019-9265)
 - [019-9266 "Framework for bike lanes that require removal of a traffic lane."](https://ero.ontario.ca/notice/019-9266)
 
 These two topics related to the bill were also posed on the Ontario Regulatory Registry, which is the usual channel for leglative and rule-making consultation with a more general focus (i.e. not just limited to environmental impacts):
