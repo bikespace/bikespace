@@ -31,6 +31,8 @@ export function FilterDateRangeCustom() {
   const isoFirst = DateTime.fromJSDate(first!).toISODate();
   const isoLast = DateTime.fromJSDate(last!).toISODate();
 
+  const today = new Date();
+
   useEffect(() => {
     setSelectedDateRange(dateRange || {from: first, to: last});
   }, [dateRange]);
@@ -62,8 +64,8 @@ export function FilterDateRangeCustom() {
   const applyCustomDateRange = useCallback(() => {
     setFilters({
       dateRange: {
-        from: selectedDateRange.from || first!,
-        to: selectedDateRange.to || last!,
+        from: selectedDateRange.from,
+        to: selectedDateRange.to,
       },
       dateRangeInterval: DateRangeInterval.CustomRange,
     });
@@ -84,11 +86,7 @@ export function FilterDateRangeCustom() {
           type="date"
           id="filter-start-date"
           name="startDate"
-          value={
-            selectedDateRange.from
-              ? formatHtmlDateValue(selectedDateRange.from)
-              : isoFirst || ''
-          }
+          value={formatHtmlDateValue(selectedDateRange.from || today)}
           min={isoFirst!}
           max={isoLast!}
           onChange={handleFromChange}
@@ -100,13 +98,9 @@ export function FilterDateRangeCustom() {
           type="date"
           id="filter-end-date"
           name="endDate"
-          value={
-            selectedDateRange.to
-              ? formatHtmlDateValue(selectedDateRange.to)
-              : isoLast || ''
-          }
-          min={isoFirst || ''}
-          max={isoLast || ''}
+          value={formatHtmlDateValue(selectedDateRange.to || today)}
+          min={isoFirst!}
+          max={isoLast!}
           onChange={handleToChange}
         />
       </div>

@@ -32,19 +32,13 @@ export function DashboardPage() {
 
   const [focusedId] = useSubmissionId();
 
+  // Filter submissions when filters state changes
   useEffect(() => {
     if (allSubmissions.length === 0) return;
 
-    setSubmissions(allSubmissions);
-  }, [allSubmissions]);
-
-  // Filter submissions when filters state changes
-  useEffect(() => {
-    if (submissions.length === 0) return;
-
     const {dateRange, parkingDuration, issue, day} = filters;
 
-    let subs = submissions.slice();
+    let subs = allSubmissions.slice();
 
     if (dateRange.from || dateRange.to)
       subs = subs.filter(s => {
@@ -56,7 +50,7 @@ export function DashboardPage() {
         );
       });
 
-    if (parkingDuration.length === 0)
+    if (parkingDuration.length !== 0)
       subs = subs.filter(s => parkingDuration.includes(s.parking_duration));
 
     if (issue !== null) subs = subs.filter(s => s.issues.includes(issue));

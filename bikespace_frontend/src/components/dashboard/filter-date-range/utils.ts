@@ -1,4 +1,4 @@
-import {DateTime, Interval} from 'luxon';
+import {DateTime} from 'luxon';
 
 import {DateRangeInterval} from '@/interfaces/Submission';
 
@@ -9,9 +9,11 @@ export const getDateRangeFromInterval = (interval: DateRangeInterval) => {
   const now = new Date();
   const dtNow = DateTime.fromJSDate(new Date());
 
+  const nullRange = {from: null, to: null};
+
   switch (interval) {
     case DateRangeInterval.AllDates:
-      return null;
+      return nullRange;
     case DateRangeInterval.Last7Days:
       return {
         from: dtNow.minus({days: 7 - 1}).toJSDate(),
@@ -46,6 +48,6 @@ export const getDateRangeFromInterval = (interval: DateRangeInterval) => {
         to: dtNow.minus({years: 1}).endOf('year').toJSDate(),
       };
     default:
-      return null;
+      return nullRange;
   }
 };

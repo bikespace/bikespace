@@ -35,12 +35,12 @@ export function FilterDateRange() {
           <strong>Showing between:</strong>
         </div>
         <div>
-          {`${DateTime.fromJSDate(dateRange?.from || first!).toLocaleString(
+          {`${DateTime.fromJSDate(dateRange.from || first!).toLocaleString(
             DateTime.DATE_FULL,
             {
               locale: 'en-CA',
             }
-          )} - ${DateTime.fromJSDate(dateRange?.to || last!).toLocaleString(
+          )} - ${DateTime.fromJSDate(dateRange.to || last!).toLocaleString(
             DateTime.DATE_FULL,
             {locale: 'en-CA'}
           )}`}
@@ -62,14 +62,14 @@ export function FilterDateRange() {
             } else {
               setShowCustomRange(false);
 
-              const dateRange = getDateRangeFromInterval(value);
+              const range = getDateRangeFromInterval(value);
 
               setFilters({
-                dateRange,
+                dateRange: range,
                 dateRangeInterval: value,
               });
 
-              if (dateRange)
+              if (dateRange.from && dateRange.to)
                 trackUmamiEvent('datefilter', {
                   from: dateRange.from,
                   to: dateRange.to,
