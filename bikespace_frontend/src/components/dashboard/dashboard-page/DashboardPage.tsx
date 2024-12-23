@@ -44,19 +44,29 @@ export function DashboardPage() {
 
     const {dateRange, parkingDuration, issue, day} = filters;
 
-    setSubmissions(
-      allSubmissions.filter(
-        submission =>
-          (!dateRange ||
-            (new Date(submission.parking_time + '+00:00') >= dateRange.from &&
-              new Date(submission.parking_time + '+00:00') <= dateRange.to)) &&
-          (parkingDuration.length === 0 ||
-            parkingDuration.includes(submission.parking_duration)) &&
-          (!issue || submission.issues.includes(issue)) &&
-          (day === null ||
-            new Date(submission.parking_time + '+00:00').getDay() === day)
-      )
-    );
+    let subs = submissions.slice();
+
+    if (dateRange.from || dateRange.to)
+      subs = subs.filter(s => {
+        const d = new Date(s.parking_time + '+00:00');
+
+        return (
+          (dateRange.from ? d >= dateRange.from : true) &&
+          (dateRange.to ? d <= dateRange.to : true)
+        );
+      });
+
+    if (parkingDuration.length === 0)
+      subs = subs.filter(s => parkingDuration.includes(s.parking_duration));
+
+    if (issue !== null) subs = subs.filter(s => s.issues.includes(issue));
+
+    if (day !== null)
+      subs = subs.filter(
+        s => new Date(s.parking_time + '+00:00').getDay() === day
+      );
+
+    setSubmissions(subs);
   }, [allSubmissions, filters]);
 
   useEffect(() => {
