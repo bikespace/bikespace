@@ -28,6 +28,29 @@ export function FilterDateRange() {
 
   const [showCustomRange, setShowCustomRange] = useState<boolean>(false);
 
+  function handleChange(e: React.ChangeEvent<HTMLSelectElement>) {
+    const value = e.currentTarget.value as DateRangeInterval;
+
+    if (value === DateRangeInterval.CustomRange) {
+      setShowCustomRange(true);
+    } else {
+      setShowCustomRange(false);
+
+      const range = getDateRangeFromInterval(value);
+
+      setFilters({
+        dateRange: range,
+        dateRangeInterval: value,
+      });
+
+      trackUmamiEvent('datefilter', {
+        from: dateRange.from ?? '',
+        to: dateRange.to ?? '',
+        interval: value,
+      });
+    }
+  }
+
   return (
     <FilterSection title="Date Range">
       <div>
@@ -54,29 +77,7 @@ export function FilterDateRange() {
           name="dateRange"
           id="filter-date-range-select"
           value={dateRangeInterval || DateRangeInterval.AllDates}
-          onChange={e => {
-            const value = e.currentTarget.value as DateRangeInterval;
-
-            if (value === DateRangeInterval.CustomRange) {
-              setShowCustomRange(true);
-            } else {
-              setShowCustomRange(false);
-
-              const range = getDateRangeFromInterval(value);
-
-              setFilters({
-                dateRange: range,
-                dateRangeInterval: value,
-              });
-
-              if (dateRange.from && dateRange.to)
-                trackUmamiEvent('datefilter', {
-                  from: dateRange.from,
-                  to: dateRange.to,
-                  interval: value,
-                });
-            }
-          }}
+          onChange={handleChange}
         >
           {dateRangeOptGroups.map(group => (
             <optgroup label={group.label} key={group.label}>
