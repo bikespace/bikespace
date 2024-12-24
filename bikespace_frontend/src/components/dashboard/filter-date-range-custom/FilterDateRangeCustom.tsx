@@ -39,29 +39,23 @@ export function FilterDateRangeCustom() {
     setSelectedDateRange(dateRange || {from: defaultFirst, to: defaultLast});
   }, [dateRange]);
 
-  const handleFromChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      setSelectedDateRange({
-        from: e.currentTarget.value
-          ? new Date(`${e.currentTarget.value}T00:00:00`)
-          : null,
-        to: selectedDateRange.to,
-      });
-    },
-    [selectedDateRange.to]
-  );
+  function handleFromChange(e: React.ChangeEvent<HTMLInputElement>) {
+    setSelectedDateRange({
+      from: e.currentTarget.value
+        ? new Date(`${e.currentTarget.value}T00:00:00`)
+        : null,
+      to: selectedDateRange.to,
+    });
+  }
 
-  const handleToChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      setSelectedDateRange({
-        from: selectedDateRange.from,
-        to: e.currentTarget.value
-          ? new Date(`${e.currentTarget.value}T23:59:59`)
-          : null,
-      });
-    },
-    [selectedDateRange.from]
-  );
+  function handleToChange(e: React.ChangeEvent<HTMLInputElement>) {
+    setSelectedDateRange({
+      from: selectedDateRange.from,
+      to: e.currentTarget.value
+        ? new Date(`${e.currentTarget.value}T23:59:59`)
+        : null,
+    });
+  }
 
   function applyCustomDateRange() {
     setFilters({
@@ -87,7 +81,7 @@ export function FilterDateRangeCustom() {
           type="date"
           id="filter-start-date"
           name="startDate"
-          value={formatHtmlDateValue(selectedDateRange.from || today)}
+          value={formatHtmlDateValue(selectedDateRange.from ?? null)}
           min={isoFirst!}
           max={isoLast!}
           onChange={handleFromChange}
@@ -99,7 +93,7 @@ export function FilterDateRangeCustom() {
           type="date"
           id="filter-end-date"
           name="endDate"
-          value={formatHtmlDateValue(selectedDateRange.to || today)}
+          value={formatHtmlDateValue(selectedDateRange.to ?? null)}
           min={isoFirst!}
           max={isoLast!}
           onChange={handleToChange}
@@ -112,7 +106,8 @@ export function FilterDateRangeCustom() {
   );
 }
 
-export const formatHtmlDateValue = (date: Date) => {
+export const formatHtmlDateValue = (date: Date | null): string => {
+  if (date === null) return '';
   const year = date.getFullYear();
   const month = (date.getMonth() + 1).toString().padStart(2, '0');
   const day = date.getDate().toString().padStart(2, '0');
