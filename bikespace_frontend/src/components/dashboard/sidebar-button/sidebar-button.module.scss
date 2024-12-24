@@ -27,11 +27,4 @@
     border-color: $color-primary;
     color: $color-primary;
   }
-
-  &:disabled {
-    pointer-events: none;
-    color: $color-secondary-dark-grey;
-    background-color: $color-secondary-light-grey;
-    border-color: $color-secondary-dark-grey;
-  }
 }

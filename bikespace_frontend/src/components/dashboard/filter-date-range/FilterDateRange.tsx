@@ -1,12 +1,19 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {DateTime} from 'luxon';
+
 import {DateRangeInterval} from '@/interfaces/Submission';
+
 import {trackUmamiEvent} from '@/utils';
+
 import {useAllSubmissionsDateRange} from '@/hooks';
+
 import {useSubmissionsStore} from '@/states/store';
-import {getDateRangeFromInterval} from './UtilsFilterDateRange';
+
+import {getDateRangeFromInterval} from './utils';
+
 import {FilterSection} from '../filter-section';
 import {FilterDateRangeCustom} from '../filter-date-range-custom';
+
 import styles from './filter-date-range.module.scss';
 
 export function FilterDateRange() {
@@ -19,72 +26,57 @@ export function FilterDateRange() {
   );
   const {first, last} = useAllSubmissionsDateRange();
 
-  function handleChange(e: React.ChangeEvent<HTMLSelectElement>) {
-    const value = e.target.value as DateRangeInterval;
+  const [showCustomRange, setShowCustomRange] = useState<boolean>(false);
 
-    if (value === DateRangeInterval.CustomRange) {
-      setFilters({
-        dateRange: dateRange,
-        dateRangeInterval: value,
-      });
-    } else {
-      const newDateRange = getDateRangeFromInterval(value);
-
-      setFilters({
-        dateRange: newDateRange,
-        dateRangeInterval: value,
-      });
-
-      trackUmamiEvent('datefilter', {
-        from: newDateRange ? newDateRange.from : '',
-        to: newDateRange ? newDateRange.to : '',
-        interval: value,
-      });
-    }
-  }
-
-  const rangeIndicator =
-    (dateRangeInterval ?? DateRangeInterval.AllDates) ===
-    DateRangeInterval.AllDates ? (
-      <div>
-        <strong>Showing all dates</strong>
-      </div>
-    ) : (
+  return (
+    <FilterSection title="Date Range">
       <div>
         <div>
           <strong>Showing between:</strong>
         </div>
         <div>
-          {`${DateTime.fromJSDate(dateRange?.from || first!).toLocaleString(
+          {`${DateTime.fromJSDate(dateRange.from || first!).toLocaleString(
             DateTime.DATE_FULL,
             {
               locale: 'en-CA',
             }
-          )} - ${DateTime.fromJSDate(dateRange?.to || last!).toLocaleString(
+          )} - ${DateTime.fromJSDate(dateRange.to || last!).toLocaleString(
             DateTime.DATE_FULL,
             {locale: 'en-CA'}
           )}`}
         </div>
       </div>
-    );
-
-  const customRange =
-    dateRangeInterval === DateRangeInterval.CustomRange ? (
-      <div>
-        <FilterDateRangeCustom />
-      </div>
-    ) : null;
-
-  return (
-    <FilterSection title="Date Range">
-      {rangeIndicator}
       <div className={styles.dateRangeSelect}>
-        <label htmlFor="filter-date-range-select">Select:</label>
+        <label htmlFor="filter-date-range-select">
+          <strong>Select:</strong>
+        </label>
         <select
           name="dateRange"
           id="filter-date-range-select"
-          value={dateRangeInterval ?? ''}
-          onChange={handleChange}
+          value={dateRangeInterval || DateRangeInterval.AllDates}
+          onChange={e => {
+            const value = e.currentTarget.value as DateRangeInterval;
+
+            if (value === DateRangeInterval.CustomRange) {
+              setShowCustomRange(true);
+            } else {
+              setShowCustomRange(false);
+
+              const range = getDateRangeFromInterval(value);
+
+              setFilters({
+                dateRange: range,
+                dateRangeInterval: value,
+              });
+
+              if (dateRange.from && dateRange.to)
+                trackUmamiEvent('datefilter', {
+                  from: dateRange.from,
+                  to: dateRange.to,
+                  interval: value,
+                });
+            }
+          }}
         >
           {dateRangeOptGroups.map(group => (
             <optgroup label={group.label} key={group.label}>
@@ -97,7 +89,9 @@ export function FilterDateRange() {
           ))}
         </select>
       </div>
-      {customRange}
+      <div hidden={!showCustomRange}>
+        <FilterDateRangeCustom />
+      </div>
     </FilterSection>
   );
 }

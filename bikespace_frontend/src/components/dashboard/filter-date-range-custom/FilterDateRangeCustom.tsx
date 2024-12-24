@@ -1,57 +1,82 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
+import {DateTime} from 'luxon';
+
 import {DateRangeInterval} from '@/interfaces/Submission';
+
 import {trackUmamiEvent} from '@/utils';
+
 import {useAllSubmissionsDateRange} from '@/hooks';
+
 import {useSubmissionsStore} from '@/states/store';
+
 import {SidebarButton} from '../sidebar-button';
+
 import styles from './filter-date-range-custom.module.scss';
 
 export function FilterDateRangeCustom() {
-  /* c8 ignore next 4 */
+  const {first, last} = useAllSubmissionsDateRange();
   const {dateRange, setFilters} = useSubmissionsStore(state => ({
     dateRange: state.filters.dateRange,
     setFilters: state.setFilters,
   }));
 
-  const [startDateText, setStartDateText] = useState<string>(
-    formatHtmlDateValue(new Date())
+  const [selectedDateRange, setSelectedDateRange] = useState<{
+    from: Date | null;
+    to: Date | null;
+  }>({
+    from: null,
+    to: null,
+  });
+
+  const isoFirst = DateTime.fromJSDate(first!).toISODate();
+  const isoLast = DateTime.fromJSDate(last!).toISODate();
+
+  const today = new Date();
+
+  useEffect(() => {
+    setSelectedDateRange(dateRange || {from: first, to: last});
+  }, [dateRange]);
+
+  const handleFromChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setSelectedDateRange({
+        from: e.currentTarget.value
+          ? new Date(`${e.currentTarget.value}T00:00:00`)
+          : null,
+        to: selectedDateRange.to,
+      });
+    },
+    [selectedDateRange.to]
   );
-  const [endDateText, setEndDateText] = useState<string>(
-    formatHtmlDateValue(new Date())
+
+  const handleToChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setSelectedDateRange({
+        from: selectedDateRange.from,
+        to: e.currentTarget.value
+          ? new Date(`${e.currentTarget.value}T23:59:59`)
+          : null,
+      });
+    },
+    [selectedDateRange.from]
   );
 
-  /* `+ 'T00:00:00` and 'T23:59:59' are added here in part because of a known quirk with Date API - date-only text is interpreted as UTC and date-time text is interpreted in the user time zone. See: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date#date_time_string_format */
-  const startDateValue = new Date(startDateText + 'T00:00:00');
-  const endDateValue = new Date(endDateText + 'T23:59:59.999');
-
-  // validation checks
-  const startDateIsValid = !isNaN(Number(startDateValue));
-  const endDateIsValid = !isNaN(Number(endDateValue));
-  const endDateNotBeforeStartDate = endDateValue > startDateValue;
-  const inputIsValid =
-    startDateIsValid && endDateIsValid && endDateNotBeforeStartDate;
-
-  const errorMessages = [];
-  if (!startDateIsValid) errorMessages.push('Please enter a valid start date.');
-  if (!endDateIsValid) errorMessages.push('Please enter a valid end date.');
-  if (startDateIsValid && endDateIsValid && !endDateNotBeforeStartDate)
-    errorMessages.push('End date cannot be before start date.');
-
-  const applyCustomDateRange = () => {
+  const applyCustomDateRange = useCallback(() => {
     setFilters({
       dateRange: {
-        from: startDateValue,
-        to: endDateValue,
+        from: selectedDateRange.from,
+        to: selectedDateRange.to,
       },
       dateRangeInterval: DateRangeInterval.CustomRange,
     });
 
-    trackUmamiEvent('datefilter', {
-      from: startDateText,
-      to: endDateText,
-      interval: DateRangeInterval.CustomRange,
-    });
-  };
+    if (dateRange)
+      trackUmamiEvent('datefilter', {
+        ...(selectedDateRange.from && {from: selectedDateRange.from}),
+        ...(selectedDateRange.to && {from: selectedDateRange.to}),
+        interval: DateRangeInterval.CustomRange,
+      });
+  }, [selectedDateRange, dateRange]);
 
   return (
     <div className={styles.dateRangeCustom}>
@@ -61,8 +86,10 @@ export function FilterDateRangeCustom() {
           type="date"
           id="filter-start-date"
           name="startDate"
-          value={startDateText}
-          onChange={e => setStartDateText(e.target.value)}
+          value={formatHtmlDateValue(selectedDateRange.from || today)}
+          min={isoFirst!}
+          max={isoLast!}
+          onChange={handleFromChange}
         />
       </div>
       <div className={styles.dateInput}>
@@ -71,20 +98,15 @@ export function FilterDateRangeCustom() {
           type="date"
           id="filter-end-date"
           name="endDate"
-          value={endDateText}
-          onChange={e => setEndDateText(e.target.value)}
+          value={formatHtmlDateValue(selectedDateRange.to || today)}
+          min={isoFirst!}
+          max={isoLast!}
+          onChange={handleToChange}
         />
       </div>
-      <SidebarButton
-        type="button"
-        onClick={applyCustomDateRange}
-        disabled={!inputIsValid}
-      >
+      <SidebarButton type="button" onClick={applyCustomDateRange}>
         Apply
       </SidebarButton>
-      {errorMessages.length > 0 ? (
-        <p className={styles.errorMessages}>{errorMessages.join(' ')}</p>
-      ) : null}
     </div>
   );
 }
