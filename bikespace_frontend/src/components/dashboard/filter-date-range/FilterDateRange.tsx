@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {DateTime} from 'luxon';
 
 import {DateRangeInterval} from '@/interfaces/Submission';
@@ -26,16 +26,15 @@ export function FilterDateRange() {
   );
   const {first, last} = useAllSubmissionsDateRange();
 
-  const [showCustomRange, setShowCustomRange] = useState<boolean>(false);
-
   function handleChange(e: React.ChangeEvent<HTMLSelectElement>) {
     const value = e.currentTarget.value as DateRangeInterval;
 
     if (value === DateRangeInterval.CustomRange) {
-      setShowCustomRange(true);
+      setFilters({
+        dateRange: dateRange,
+        dateRangeInterval: DateRangeInterval.CustomRange,
+      });
     } else {
-      setShowCustomRange(false);
-
       const range = getDateRangeFromInterval(value);
 
       setFilters({
@@ -90,7 +89,7 @@ export function FilterDateRange() {
           ))}
         </select>
       </div>
-      <div hidden={!showCustomRange}>
+      <div hidden={dateRangeInterval !== DateRangeInterval.CustomRange}>
         <FilterDateRangeCustom />
       </div>
     </FilterSection>
