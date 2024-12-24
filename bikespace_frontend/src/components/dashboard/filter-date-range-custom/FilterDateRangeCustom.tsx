@@ -36,8 +36,25 @@ export function FilterDateRangeCustom() {
   const isoLast = DateTime.fromJSDate(last!).toISODate();
 
   useEffect(() => {
-    setSelectedDateRange(dateRange || {from: defaultFirst, to: defaultLast});
+    setSelectedDateRange({
+      from: dateRange.from ?? defaultFirst,
+      to: dateRange.to ?? defaultLast,
+    });
   }, [dateRange]);
+
+  // validation checks
+  const startDateIsValid = Number(selectedDateRange.from) > 0;
+  const endDateIsValid = Number(selectedDateRange.to) > 0;
+  const endDateNotBeforeStartDate =
+    selectedDateRange.to! > selectedDateRange.from!;
+  const inputIsValid =
+    startDateIsValid && endDateIsValid && endDateNotBeforeStartDate;
+
+  const errorMessages = [];
+  if (!startDateIsValid) errorMessages.push('Please enter a valid start date.');
+  if (!endDateIsValid) errorMessages.push('Please enter a valid end date.');
+  if (startDateIsValid && endDateIsValid && !endDateNotBeforeStartDate)
+    errorMessages.push('End date cannot be before start date.');
 
   function handleFromChange(e: React.ChangeEvent<HTMLInputElement>) {
     setSelectedDateRange({
@@ -99,9 +116,16 @@ export function FilterDateRangeCustom() {
           onChange={handleToChange}
         />
       </div>
-      <SidebarButton type="button" onClick={applyCustomDateRange}>
+      <SidebarButton
+        type="button"
+        onClick={applyCustomDateRange}
+        disabled={!inputIsValid}
+      >
         Apply
       </SidebarButton>
+      {errorMessages.length > 0 ? (
+        <p className={styles.errorMessages}>{errorMessages.join(' ')}</p>
+      ) : null}
     </div>
   );
 }
