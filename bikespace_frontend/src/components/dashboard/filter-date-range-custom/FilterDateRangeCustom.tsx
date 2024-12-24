@@ -20,21 +20,23 @@ export function FilterDateRangeCustom() {
     setFilters: state.setFilters,
   }));
 
+  const today = new Date();
+  const defaultFirst = DateTime.fromJSDate(today).startOf('day').toJSDate();
+  const defaultLast = DateTime.fromJSDate(today).endOf('day').toJSDate();
+
   const [selectedDateRange, setSelectedDateRange] = useState<{
     from: Date | null;
     to: Date | null;
   }>({
-    from: null,
-    to: null,
+    from: defaultFirst,
+    to: defaultLast,
   });
 
   const isoFirst = DateTime.fromJSDate(first!).toISODate();
   const isoLast = DateTime.fromJSDate(last!).toISODate();
 
-  const today = new Date();
-
   useEffect(() => {
-    setSelectedDateRange(dateRange || {from: first, to: last});
+    setSelectedDateRange(dateRange || {from: defaultFirst, to: defaultLast});
   }, [dateRange]);
 
   const handleFromChange = useCallback(
@@ -61,7 +63,7 @@ export function FilterDateRangeCustom() {
     [selectedDateRange.from]
   );
 
-  const applyCustomDateRange = useCallback(() => {
+  function applyCustomDateRange() {
     setFilters({
       dateRange: {
         from: selectedDateRange.from,
@@ -70,13 +72,12 @@ export function FilterDateRangeCustom() {
       dateRangeInterval: DateRangeInterval.CustomRange,
     });
 
-    if (dateRange)
-      trackUmamiEvent('datefilter', {
-        ...(selectedDateRange.from && {from: selectedDateRange.from}),
-        ...(selectedDateRange.to && {from: selectedDateRange.to}),
-        interval: DateRangeInterval.CustomRange,
-      });
-  }, [selectedDateRange, dateRange]);
+    trackUmamiEvent('datefilter', {
+      from: selectedDateRange.from ?? '',
+      to: selectedDateRange.to ?? '',
+      interval: DateRangeInterval.CustomRange,
+    });
+  }
 
   return (
     <div className={styles.dateRangeCustom}>
@@ -111,7 +112,7 @@ export function FilterDateRangeCustom() {
   );
 }
 
-const formatHtmlDateValue = (date: Date) => {
+export const formatHtmlDateValue = (date: Date) => {
   const year = date.getFullYear();
   const month = (date.getMonth() + 1).toString().padStart(2, '0');
   const day = date.getDate().toString().padStart(2, '0');

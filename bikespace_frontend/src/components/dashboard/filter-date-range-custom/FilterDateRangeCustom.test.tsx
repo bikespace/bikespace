@@ -1,7 +1,11 @@
 import React from 'react';
 import {render, screen} from '@testing-library/react';
 import {userEvent} from '@testing-library/user-event';
-import {SubmissionsDateRange, DateRangeInterval} from '@/interfaces/Submission';
+import {
+  SubmissionsDateRange,
+  DateRangeInterval,
+  SubmissionFilters,
+} from '@/interfaces/Submission';
 import {
   FilterDateRangeCustom,
   formatHtmlDateValue,
@@ -18,6 +22,14 @@ const mockDateRange: SubmissionsDateRange = {
   first: startDateValue,
   last: endDateValue,
 };
+const mockFilterDateRange: SubmissionFilters['dateRange'] = {
+  from: startDateValue,
+  to: endDateValue,
+};
+
+jest.mock('@/hooks', () => ({
+  useAllSubmissionsDateRange: () => mockDateRange,
+}));
 
 const mockTrackUmamiEvent = jest.fn().mockName('mockTrackUmamiEvent');
 jest.mock('@/utils', () => ({
@@ -28,7 +40,7 @@ jest.mock('@/utils', () => ({
 const mockSetFilters = jest.fn().mockName('mockSetFilters');
 jest.mock('@/states/store', () => ({
   useSubmissionsStore: () => ({
-    dateRange: mockDateRange,
+    dateRange: mockFilterDateRange,
     setFilters: mockSetFilters,
   }),
 }));

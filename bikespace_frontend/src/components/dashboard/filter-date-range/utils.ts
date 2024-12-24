@@ -16,18 +16,27 @@ export const getDateRangeFromInterval = (interval: DateRangeInterval) => {
       return nullRange;
     case DateRangeInterval.Last7Days:
       return {
-        from: dtNow.minus({days: 7 - 1}).toJSDate(),
-        to: now,
+        from: dtNow
+          .minus({days: 7 - 1})
+          .startOf('day')
+          .toJSDate(),
+        to: dtNow.endOf('day').toJSDate(),
       };
     case DateRangeInterval.Last30Days:
       return {
-        from: dtNow.minus({days: 30 - 1}).toJSDate(),
-        to: now,
+        from: dtNow
+          .minus({days: 30 - 1})
+          .startOf('day')
+          .toJSDate(),
+        to: dtNow.endOf('day').toJSDate(),
       };
     case DateRangeInterval.Last90Days:
       return {
-        from: dtNow.minus({days: 90 - 1}).toJSDate(),
-        to: now,
+        from: dtNow
+          .minus({days: 90 - 1})
+          .startOf('day')
+          .toJSDate(),
+        to: dtNow.endOf('day').toJSDate(),
       };
     case DateRangeInterval.Last12Months:
       return {
