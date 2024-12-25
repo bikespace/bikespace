@@ -17,6 +17,7 @@ import {FilterDateRangeCustom} from '../filter-date-range-custom';
 import styles from './filter-date-range.module.scss';
 
 export function FilterDateRange() {
+  /* c8 ignore next 7 */
   const {dateRange, dateRangeInterval, setFilters} = useSubmissionsStore(
     state => ({
       dateRange: state.filters.dateRange,
@@ -89,9 +90,11 @@ export function FilterDateRange() {
           ))}
         </select>
       </div>
-      <div hidden={dateRangeInterval !== DateRangeInterval.CustomRange}>
-        <FilterDateRangeCustom />
-      </div>
+      {dateRangeInterval === DateRangeInterval.CustomRange ? (
+        <div data-testid="FilterDateRangeCustom">
+          <FilterDateRangeCustom />
+        </div>
+      ) : null}
     </FilterSection>
   );
 }
