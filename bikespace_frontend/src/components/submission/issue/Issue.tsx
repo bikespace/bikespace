@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {IssueType} from '@/interfaces/Submission';
 import {BaseButton} from '../base-button';
 
@@ -20,6 +20,9 @@ export const Issue = (props: {
     }
     props.onIssuesChanged(newIssues);
   };
+  // Prevent interaction before hydration - required for e2e testing
+  const [hydrated, setHydrated] = useState<boolean>(false);
+  useEffect(() => setHydrated(true), []);
 
   return (
     <form className={styles.submissionIssue}>
@@ -34,6 +37,7 @@ export const Issue = (props: {
           active={issues.includes(IssueType.NotProvided)}
           value="not_provided"
           onClick={handleClick}
+          isDisabled={!hydrated}
         >
           Bicycle parking is&nbsp;<strong>not provided</strong>
         </BaseButton>
