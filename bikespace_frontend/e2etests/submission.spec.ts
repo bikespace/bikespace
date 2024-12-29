@@ -21,6 +21,12 @@ test.use({
 test.beforeEach(async ({context}) => {
   // test isolation: block all network requests except for localhost
   await context.route(/https?:\/\/(?!localhost).+/, route => route.abort());
+
+  // mock submissions API
+  await context.route('**/api/v2/submissions', async route => {
+    const json = {status: 'created'};
+    await route.fulfill({status: 201, json: json});
+  });
 });
 
 test('Submit an issue', async ({page}) => {
