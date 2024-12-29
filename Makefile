@@ -121,4 +121,9 @@ lint-and-fix-dashboard:
 test-frontend:
 	cd $(BIKESPACE_FRONTEND_DIR) && npm install && npm run test
 
+e2e-frontend:
+	cd $(BIKESPACE_FRONTEND_DIR) && npm install && \
+	npx playwright install --with-deps && \
+	npx playwright test
+
 .PHONY: setup-py clean pip-freeze run-flask-app lint-py seed-db recreate-db fly-deploy-api fly-deploy-frontend run-frontend build-frontend 
