@@ -18,6 +18,11 @@ test.use({
   },
 });
 
+test.beforeEach(async ({context}) => {
+  // test isolation: block all network requests except for localhost
+  await context.route(/https?:\/\/(?!localhost).+/, route => route.abort());
+});
+
 test('Submit an issue', async ({page}) => {
   // navigate to /submissions from home page
   await page.goto('/');
@@ -50,7 +55,7 @@ test('Submit an issue', async ({page}) => {
   await expect(submitSummary).toContainText(
     /Location: \d{2}\.\d+, -\d{2}\.\d+/
   );
-  // Should be slightly different location than browser
+  // Should be slightly different location than browser if map interaction successful
   await expect(submitSummary).not.toContainText(
     `Location: ${testLat}, ${testLong}`
   );

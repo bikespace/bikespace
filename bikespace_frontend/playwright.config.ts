@@ -12,7 +12,7 @@ dotenv.config({path: path.resolve(__dirname, '.env.test')});
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
-  testDir: './tests',
+  testDir: './e2etests',
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -71,9 +71,20 @@ export default defineConfig({
   ],
 
   /* Run your local dev server before starting the tests */
-  // webServer: {
-  //   command: 'npm run start',
-  //   url: 'http://127.0.0.1:3000',
-  //   reuseExistingServer: !process.env.CI,
-  // },
+  webServer: [
+    {
+      cwd: '..',
+      command: 'make run-flask-app',
+      url: 'http://127.0.0.1:8000',
+      stderr: 'pipe',
+      reuseExistingServer: !process.env.CI,
+    },
+    {
+      cwd: '..',
+      command: 'make dev-frontend',
+      url: 'http://127.0.0.1:8080',
+      stderr: 'pipe',
+      reuseExistingServer: !process.env.CI,
+    },
+  ],
 });
