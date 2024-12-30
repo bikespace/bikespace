@@ -97,11 +97,11 @@ jobs:
       if: ${{ !cancelled() }}
       with:
         name: playwright-report
-        path: playwright-report/
+        path: bikespace_frontend/playwright-report/
         retention-days: 30
   publish:
     name: Publish to Cloudflare Pages
-    needs: test-frontend
+    needs: [test-frontend, e2e-frontend]
     runs-on: ubuntu-latest
     permissions:
       contents: read
