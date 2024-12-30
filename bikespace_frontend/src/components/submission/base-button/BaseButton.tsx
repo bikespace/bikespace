@@ -11,7 +11,7 @@ type BaseButtonProps = {
   active: boolean;
   name: string;
   onClick: (e: React.FormEvent<HTMLInputElement>) => void;
-  isDisabled: boolean;
+  isDisabled?: boolean;
 };
 
 export class BaseButton extends React.Component<BaseButtonProps> {
@@ -27,7 +27,7 @@ export class BaseButton extends React.Component<BaseButtonProps> {
             checked={this.props.active}
             id={`${this.props.name}_${this.props.value}`}
             data-umami-event={`${this.props.name}_${this.props.value}`}
-            disabled={this.props.isDisabled}
+            disabled={this.props.isDisabled ?? false}
           />
         )}
         {this.props.type === 'radio' && (
@@ -39,7 +39,7 @@ export class BaseButton extends React.Component<BaseButtonProps> {
             checked={this.props.active}
             id={`${this.props.name}_${this.props.value}`}
             data-umami-event={`${this.props.name}_${this.props.value}`}
-            disabled={this.props.isDisabled}
+            disabled={this.props.isDisabled ?? false}
           />
         )}
         <label htmlFor={`${this.props.name}_${this.props.value}`}>

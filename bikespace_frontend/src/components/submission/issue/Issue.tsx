@@ -47,6 +47,7 @@ export const Issue = (props: {
           active={issues.includes(IssueType.Full)}
           value="full"
           onClick={handleClick}
+          isDisabled={!hydrated}
         >
           Bicycle parking is&nbsp;<strong>full</strong>
         </BaseButton>
@@ -56,6 +57,7 @@ export const Issue = (props: {
           active={issues.includes(IssueType.Damaged)}
           value="damaged"
           onClick={handleClick}
+          isDisabled={!hydrated}
         >
           Bicycle parking is&nbsp;<strong>damaged</strong>
         </BaseButton>
@@ -65,6 +67,7 @@ export const Issue = (props: {
           active={issues.includes(IssueType.Abandoned)}
           value="abandoned"
           onClick={handleClick}
+          isDisabled={!hydrated}
         >
           A bicycle is&nbsp;<strong>abandoned</strong>
         </BaseButton>
@@ -74,6 +77,7 @@ export const Issue = (props: {
           active={issues.includes(IssueType.Other)}
           value="other"
           onClick={handleClick}
+          isDisabled={!hydrated}
         >
           Something else
         </BaseButton>

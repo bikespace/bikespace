@@ -32,7 +32,12 @@ test.beforeEach(async ({context}) => {
 test('Submit an issue', async ({page}) => {
   // navigate to /submissions from home page
   await page.goto('/');
-  await page.getByRole('link', {name: 'Report a bike parking issue'}).click();
+
+  // purpose of .toPass: sometimes this first link click is flaky on webkit, not sure why
+  await expect(async () => {
+    await page.getByRole('link', {name: 'Report a bike parking issue'}).click();
+    await page.waitForURL('/submission');
+  }).toPass();
 
   // issue entry - 'next' button should be disabled until an issue is selected
   await expect(page.getByRole('button', {name: 'Next'})).toBeDisabled();
