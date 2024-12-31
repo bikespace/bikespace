@@ -25,7 +25,6 @@ export function ParkingMapPage() {
 
   async function addImage(id: string, src: string) {
     const response = await map?.loadImage(src);
-    console.log(id, src, map);
     map?.addImage(id, response!.data);
   }
 
