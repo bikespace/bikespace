@@ -1,7 +1,7 @@
 'use client';
 
 import React, {useEffect, useState} from 'react';
-import Map, {Marker, NavigationControl} from 'react-map-gl/maplibre';
+import Map, {GeolocateControl, NavigationControl} from 'react-map-gl/maplibre';
 // import dynamic from 'next/dynamic';
 
 import {trackUmamiEvent} from '@/utils';
@@ -48,6 +48,7 @@ export function ParkingMapPage() {
         mapStyle={`https://api.maptiler.com/maps/streets/style.json?key=${process.env.MAPTILER_API_KEY}`}
       >
         <NavigationControl position="top-left" />
+        <GeolocateControl position="top-left" />
       </Map>
     </main>
   );
