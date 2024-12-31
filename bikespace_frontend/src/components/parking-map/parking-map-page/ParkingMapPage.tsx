@@ -1,28 +1,34 @@
 'use client';
 
-import React, {useEffect, useState} from 'react';
-import Map, {GeolocateControl, NavigationControl} from 'react-map-gl/maplibre';
-// import dynamic from 'next/dynamic';
-
+import React, {useEffect, useState, useRef} from 'react';
+import Map, {
+  GeolocateControl,
+  Layer,
+  Source,
+  NavigationControl,
+  // useMap,
+} from 'react-map-gl/maplibre';
+import type {SymbolLayer} from 'react-map-gl/maplibre';
 import {trackUmamiEvent} from '@/utils';
 
 // import {useParkingMapQuery} from '@/hooks';
-
-// import {useSubmissionsStore} from '@/states/store';
-// import {useSubmissionId} from '@/states/url-params';
-
 // import {Sidebar} from '../sidebar';
-// import {MapProps} from '../map';
 
 import 'maplibre-gl/dist/maplibre-gl.css';
 import styles from './parking-map-page.module.scss';
-
-// const Map = dynamic<MapProps>(() => import('../map/Map'), {
-//   loading: () => <></>,
-//   ssr: false,
-// });
+import bollardIcon from '@/assets/icons/bollard.png';
+import {Map as MaplibreMap} from 'maplibre-gl';
 
 export function ParkingMapPage() {
+  const mapRef = useRef<MaplibreMap>(null);
+  const {current: map} = mapRef;
+
+  async function addImage(id: string, src: string) {
+    const response = await map?.loadImage(src);
+    console.log(id, src, map);
+    map?.addImage(id, response!.data);
+  }
+
   const [defaultLocation, setDefaultLocation] = useState({
     latitude: 43.65322,
     longitude: -79.384452,
@@ -36,9 +42,32 @@ export function ParkingMapPage() {
     });
   }, []);
 
+  const bicycleParkingURL =
+    'https://raw.githubusercontent.com/tallcoleman/new-parking-map/refs/heads/main/Display%20Files/all_sources.geojson';
+
+  useEffect(() => {
+    addImage('bollard', bollardIcon.src);
+  }, [map]);
+  const parkingLayer: SymbolLayer = {
+    id: 'bicycle-parking',
+    type: 'symbol',
+    source: 'bicycle-parking',
+    layout: {
+      'icon-image': 'bollard',
+      'icon-overlap': 'always',
+      'icon-size': 1 / 20,
+      'text-field': ['get', 'capacity'],
+      'text-size': 12,
+      'text-anchor': 'top',
+      'text-offset': [0, 1],
+      'text-overlap': 'always',
+    },
+  };
+
   return (
     <main className={styles.parkingMapPage}>
       <Map
+        ref={mapRef}
         initialViewState={{
           latitude: defaultLocation.latitude,
           longitude: defaultLocation.longitude,
@@ -49,6 +78,9 @@ export function ParkingMapPage() {
       >
         <NavigationControl position="top-left" />
         <GeolocateControl position="top-left" />
+        <Source id="bicycle-parking" type="geojson" data={bicycleParkingURL}>
+          <Layer {...parkingLayer} />
+        </Source>
       </Map>
     </main>
   );
