@@ -14,6 +14,7 @@ const nextConfig = {
   env: {
     BIKESPACE_API_URL: process.env.BIKESPACE_API_URL,
     BIKESPACE_API_URL_DASHBOARD: process.env.BIKESPACE_API_URL_DASHBOARD,
+    MAPTILER_API_KEY: 'v29NffFdvlIBsBR5bmoQ',
   },
 };
 

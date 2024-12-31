@@ -1,0 +1,13 @@
+@import '@/styles/variables.module.scss';
+
+.parkingMapPage {
+  flex-grow: 1;
+  display: flex;
+  overflow: hidden;
+}
+
+@media (max-width: $wrapper-full-width) {
+  .parkingMapPage {
+    flex-direction: column-reverse;
+  }
+}
