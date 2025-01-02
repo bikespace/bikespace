@@ -45,7 +45,6 @@ function Location({location, setLocation}: LocationProps) {
           <GeolocateControl
             ref={geoControlRef}
             position="top-left"
-            trackUserLocation
             onGeolocate={e => {
               setLocation({
                 latitude: e.coords.latitude,
