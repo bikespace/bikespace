@@ -1,30 +1,9 @@
 import Image from 'next/image';
 
-import {
-  HeroBlock, 
-  DividerImg,
-  FeatureBoxWrapper,
-  FeatureBox,
-  EmailSignUp,
-} from '@/components/landing/content-blocks';
+import {HeroBlock} from '@/components/landing/content-blocks';
 
 import bikespaceIntro from '@/assets/images/Hero_Concept_v2.png';
-import iconHopeful from '@/assets/icons/frontpage/hopeful_icon_dark.png';
-import iconDataDriven from '@/assets/icons/frontpage/data_driven_icon_dark.png';
-import featureBoxParkingMap from '@/assets/images/map-placeholder.jpg';
-import featureBoxApp from '@/assets/images/mobile_reporting_app.png';
-import featureBoxDashboard from '@/assets/images/desktop_dashboard_2024-02.png';
-import iconCommunity from '@/assets/icons/frontpage/community_icon_dark.png';
-import iconPromoteBikeSpace from '@/assets/icons/frontpage/promote_bs_icon-01_dark.png';
-import iconJoinUs from '@/assets/icons/frontpage/join_us_icon-01_dark.png';
-import iconGetUpdates from '@/assets/icons/frontpage/get_updates_dark.png';
-import iconPlaceholder from '@/assets/images/rings.png';
 
-export const metadata = {
-  title: 'BikeSpace - Toronto\'s Bike Parking App',
-};
+export const metadata = { title: 'BikeSpace - Toronto\'s Bike Parking App', };
 
-<HeroBlock 
-  tagline="Digital tools to improve bicycle parking in Toronto"
-  imageSrc={bikespaceIntro.src}
-></HeroBlock>
+<HeroBlock tagline="Digital tools to improve bicycle parking in Toronto" imageSrc={bikespaceIntro.src} />
