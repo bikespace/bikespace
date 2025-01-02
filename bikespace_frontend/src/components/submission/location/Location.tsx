@@ -1,9 +1,5 @@
 import React, {RefObject, useRef} from 'react';
-import MapGL, {
-  Marker,
-  AttributionControl,
-  GeolocateControl,
-} from 'react-map-gl/maplibre';
+import MapGL, {Marker, GeolocateControl} from 'react-map-gl/maplibre';
 
 import {LocationLatLng} from '@/interfaces/Submission';
 
@@ -46,7 +42,6 @@ function Location({location, setLocation}: LocationProps) {
             });
           }}
         >
-          <AttributionControl customAttribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' />
           <GeolocateControl
             ref={geoControlRef}
             position="top-left"
