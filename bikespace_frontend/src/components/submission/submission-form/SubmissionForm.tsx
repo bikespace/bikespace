@@ -49,8 +49,6 @@ export function SubmissionForm() {
     longitude: -79.384452,
   });
 
-  const [locationLoaded, setLocationLoaded] = useState(false);
-
   const [parkingDuration, setParkingDuration] = useState<ParkingDuration>(
     ParkingDuration.Minutes
   );
@@ -60,18 +58,12 @@ export function SubmissionForm() {
   const parkingTime = {date: dateTime, parkingDuration: parkingDuration};
 
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition(
-      position => {
-        setLocation({
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
-        });
-        setLocationLoaded(true);
-      },
-      () => {
-        setLocationLoaded(true);
-      }
-    );
+    navigator.geolocation.getCurrentPosition(position => {
+      setLocation({
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude,
+      });
+    });
   }, []);
 
   const submission = {

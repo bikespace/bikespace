@@ -1,4 +1,4 @@
-import React, {RefObject, useRef, useEffect} from 'react';
+import React, {RefObject, useRef} from 'react';
 import MapGL, {
   Marker,
   AttributionControl,
@@ -22,12 +22,6 @@ function Location({location, setLocation}: LocationProps) {
 
   const {latitude, longitude} = location;
 
-  useEffect(() => {
-    if (!geoControlRef.current) return;
-
-    geoControlRef.current.trigger();
-  }, [geoControlRef.current]);
-
   return (
     <div className={styles.location}>
       <h2>Where was the problem?</h2>
@@ -38,10 +32,13 @@ function Location({location, setLocation}: LocationProps) {
           initialViewState={{
             latitude,
             longitude,
-            zoom: 16,
+            zoom: 18,
           }}
           mapStyle="https://basemaps.cartocdn.com/gl/positron-gl-style/style.json"
           attributionControl={false}
+          // onLoad={() => {
+          //   geoControlRef.current?.trigger();
+          // }}
           onClick={e => {
             setLocation({
               latitude: e.lngLat.lat,
