@@ -1,11 +1,9 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useState, useEffect} from 'react';
 import {DateTime} from 'luxon';
 
 import {DateRangeInterval} from '@/interfaces/Submission';
 
 import {trackUmamiEvent} from '@/utils';
-
-import {useAllSubmissionsDateRange} from '@/hooks';
 
 import {useSubmissionsStore} from '@/states/store';
 
@@ -14,7 +12,6 @@ import {SidebarButton} from '../sidebar-button';
 import styles from './filter-date-range-custom.module.scss';
 
 export function FilterDateRangeCustom() {
-  const {first, last} = useAllSubmissionsDateRange();
   const {dateRange, setFilters} = useSubmissionsStore(state => ({
     dateRange: state.filters.dateRange,
     setFilters: state.setFilters,
@@ -31,9 +28,6 @@ export function FilterDateRangeCustom() {
     from: defaultFirst,
     to: defaultLast,
   });
-
-  const isoFirst = DateTime.fromJSDate(first!).toISODate();
-  const isoLast = DateTime.fromJSDate(last!).toISODate();
 
   useEffect(() => {
     setSelectedDateRange({
@@ -99,8 +93,6 @@ export function FilterDateRangeCustom() {
           id="filter-start-date"
           name="startDate"
           value={formatHtmlDateValue(selectedDateRange.from ?? null)}
-          min={isoFirst!}
-          max={isoLast!}
           onChange={handleFromChange}
         />
       </div>
@@ -111,8 +103,6 @@ export function FilterDateRangeCustom() {
           id="filter-end-date"
           name="endDate"
           value={formatHtmlDateValue(selectedDateRange.to ?? null)}
-          min={isoFirst!}
-          max={isoLast!}
           onChange={handleToChange}
         />
       </div>
