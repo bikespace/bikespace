@@ -14,7 +14,7 @@
     "build": "next build",
     "lint": "next lint",
     "fix": "next lint --fix",
-    "test": "jest",
+    "test": "TZ='America/Toronto' jest",
     "test:watch": "jest --watch"
   },
   "dependencies": {

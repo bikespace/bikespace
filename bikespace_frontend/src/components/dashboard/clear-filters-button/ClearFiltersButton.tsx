@@ -19,7 +19,8 @@ export function ClearFiltersButton() {
 
   if (
     parkingDuration.length === 0 &&
-    (!dateRange || (dateRange.from === null && dateRange?.to === null)) &&
+    dateRange.from === null &&
+    dateRange.to === null &&
     !issue &&
     day === null &&
     dateRangeInterval === null
@@ -31,7 +32,7 @@ export function ClearFiltersButton() {
       className={styles.button}
       onClick={() => {
         setFilters({
-          dateRange: null,
+          dateRange: {from: null, to: null},
           dateRangeInterval: null,
           parkingDuration: [],
           issue: null,

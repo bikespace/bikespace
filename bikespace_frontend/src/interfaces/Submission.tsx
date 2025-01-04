@@ -72,9 +72,9 @@ export enum DateRangeInterval {
 
 export interface SubmissionFilters {
   dateRange: {
-    from: Date;
-    to: Date;
-  } | null;
+    from: Date | null;
+    to: Date | null;
+  };
   dateRangeInterval: DateRangeInterval | null;
   parkingDuration: ParkingDuration[];
   issue: IssueType | null;
