@@ -9,7 +9,7 @@ export interface FiltersSlice {
 
 export const defaultFilter = {
   parkingDuration: [],
-  dateRange: null,
+  dateRange: {from: null, to: null},
   dateRangeInterval: null,
   day: null,
   issue: null,
