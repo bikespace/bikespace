@@ -1,9 +1,8 @@
 import React from 'react';
 import {Route} from 'next';
 import {useRouter} from 'next/navigation';
-import {FieldError} from 'react-hook-form';
 
-import {SubmissionSchema, useSubmissionFormContext} from '../schema';
+import {useSubmissionFormContext} from '../schema';
 
 import {FormOrder, formOrder} from '../constants';
 
@@ -22,7 +21,7 @@ export function SubmissionFormController({
 
   const {
     trigger,
-    formState: {isSubmitted, isSubmitting, errors, isValid, isDirty},
+    formState: {isSubmitted, isSubmitting, isValid, isDirty},
   } = useSubmissionFormContext();
 
   return (
