@@ -91,6 +91,14 @@ $even-lighter-grey: #EEE;
     }
   }
 
+  sup {
+    font-size: 0.83em;
+    line-height: 0.5em;
+    vertical-align: baseline;
+    position: relative;
+    top: -0.4em;
+  }
+
   img {
     width: 100%;
     max-width: $wrapper-max-width;
