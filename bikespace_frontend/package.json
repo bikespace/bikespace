@@ -31,7 +31,7 @@
     "leaflet-defaulticon-compatibility": "^0.1.2",
     "leaflet.locatecontrol": "^0.81.1",
     "luxon": "^3.4.4",
-    "next": "^14.2.5",
+    "next": "^14.2.22",
     "nuqs": "^1.17.8",
     "plotly.js-dist-min": "^2.33.0",
     "react": "^18.3.1",
