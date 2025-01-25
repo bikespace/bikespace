@@ -1,13 +1,8 @@
 'use client';
 
-import React, {useEffect, useState, useRef} from 'react';
-import Map, {
-  GeolocateControl,
-  Layer,
-  Source,
-  NavigationControl,
-} from 'react-map-gl/maplibre';
-import {trackUmamiEvent} from '@/utils';
+import React, {useEffect, useState} from 'react';
+import Map, {GeolocateControl, NavigationControl} from 'react-map-gl/maplibre';
+// import {trackUmamiEvent} from '@/utils';
 
 // import {Sidebar} from '../sidebar';
 import {ParkingLayer} from './ParkingLayer';
@@ -36,7 +31,7 @@ export function ParkingMapPage() {
         initialViewState={{
           latitude: defaultLocation.latitude,
           longitude: defaultLocation.longitude,
-          zoom: 14,
+          zoom: 12,
         }}
         style={{width: '100%', height: '100%'}}
         mapStyle={`https://api.maptiler.com/maps/streets/style.json?key=${process.env.MAPTILER_API_KEY}`}
