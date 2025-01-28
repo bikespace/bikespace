@@ -69,7 +69,7 @@ export function ParkingLayer() {
       'text-field': ['get', 'capacity'],
       'text-size': 8,
       'text-anchor': 'top',
-      'text-offset': [0, 0.2],
+      'text-offset': [0, -2.5],
       'text-overlap': 'always',
     },
   };
