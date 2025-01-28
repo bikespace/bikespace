@@ -34,7 +34,10 @@ export function ParkingMapPage() {
     });
   }, []);
 
-  const [featureList, setFeatureList] = useState<MapGeoJSONFeature[]>([]);
+  const [sidebarFeatureList, setSidebarFeatureList] = useState<
+    MapGeoJSONFeature[]
+  >([]);
+  const [mapFeatureList, setMapFeatureList] = useState<MapGeoJSONFeature[]>([]);
   const mapRef = useRef<MapRef>(null);
 
   function handleLayerClick(e: MapLayerMouseEvent) {
@@ -43,38 +46,43 @@ export function ParkingMapPage() {
       e.point as PointLike,
       {layers: ['bicycle-parking']} as QueryRenderedFeaturesOptions
     );
-    console.log(features);
-    setFeatureList(features);
+    setSidebarFeatureList(features);
+    setMapFeatureList(features);
 
-    if (featureList.length > 0) {
-      for (const f of featureList) {
-        map.setFeatureState({source: f.source, id: f.id}, {selected: false});
+    if (sidebarFeatureList.length > 0) {
+      for (const f of sidebarFeatureList) {
+        map.setFeatureState(
+          {source: f.source, id: f.id},
+          {selected: false, sidebar: false}
+        );
       }
     }
     if (features.length > 0) {
       for (const f of features) {
-        map.setFeatureState({source: f.source, id: f.id}, {selected: true});
+        map.setFeatureState(
+          {source: f.source, id: f.id},
+          {selected: true, sidebar: true}
+        );
       }
     }
   }
 
   // TODOs:
-  // - make code more DRY (have another state variable for the "prev" list and do useEffect for the clear/update on render?)
-  // - add two levels of feature state: one for selected cluster, one for drill down using sidebar. FeatureState can be any abitrary KV pair.
+  // - document decision on dealing with past state in the handler vs prev state. See: https://react.dev/reference/react/useState#storing-information-from-previous-renders
+  // - improve map render for two levels of feature state: one for selected cluster, one for drill down using sidebar. FeatureState can be any abitrary KV pair.
   // - also needs a flyto
   // - also needs a hover state to see which item on the sidebar is the one being selected?
   function handleFeatureDescriptionClick(
     e: React.MouseEvent<HTMLElement>,
     f: MapGeoJSONFeature
   ) {
-    console.log(f);
     const map = mapRef.current;
     if (!map) return;
 
-    setFeatureList([f]);
+    setMapFeatureList([f]);
 
-    if (featureList.length > 0) {
-      for (const f of featureList) {
+    if (sidebarFeatureList.length > 0) {
+      for (const f of sidebarFeatureList) {
         map.setFeatureState({source: f.source, id: f.id}, {selected: false});
       }
     }
@@ -85,8 +93,8 @@ export function ParkingMapPage() {
     <main className={styles.parkingMapPage}>
       <Sidebar>
         <div className={styles.sideBarContainer}>
-          {featureList.length > 0
-            ? featureList.map(f => (
+          {sidebarFeatureList.length > 0
+            ? sidebarFeatureList.map(f => (
                 <ParkingFeatureDescription
                   feature={f}
                   handleClick={handleFeatureDescriptionClick}

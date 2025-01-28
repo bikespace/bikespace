@@ -77,7 +77,9 @@ export function ParkingLayer() {
         'case',
         ['boolean', ['feature-state', 'selected'], false],
         1,
-        0.3,
+        ['boolean', ['feature-state', 'sidebar'], false],
+        0.6,
+        0.2,
       ],
     },
   };
