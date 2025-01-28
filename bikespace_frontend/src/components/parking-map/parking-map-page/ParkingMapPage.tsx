@@ -61,6 +61,8 @@ export function ParkingMapPage() {
   // TODOs:
   // - make code more DRY (have another state variable for the "prev" list and do useEffect for the clear/update on render?)
   // - add two levels of feature state: one for selected cluster, one for drill down using sidebar. FeatureState can be any abitrary KV pair.
+  // - also needs a flyto
+  // - also needs a hover state to see which item on the sidebar is the one being selected?
   function handleFeatureDescriptionClick(
     e: React.MouseEvent<HTMLElement>,
     f: MapGeoJSONFeature
