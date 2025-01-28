@@ -6,10 +6,12 @@ import styles from './parking-feature-description.module.scss';
 
 export interface ParkingFeatureDescriptionProps {
   feature: MapGeoJSONFeature;
+  handleClick: Function; // TODO make more specific?
 }
 
 export function ParkingFeatureDescription({
   feature,
+  handleClick,
 }: ParkingFeatureDescriptionProps) {
   if (!feature.properties) {
     return <p>Feature has no properties</p>;
@@ -34,7 +36,9 @@ export function ParkingFeatureDescription({
   return (
     <div className={styles.featureDescription}>
       <h3>
-        {parkingTypeDescription} ({capacityDescription}){indicatorList}
+        <a href="#" onClick={(e: React.MouseEvent) => handleClick(e, feature)}>
+          {parkingTypeDescription} ({capacityDescription}){indicatorList}
+        </a>
       </h3>
       {operator ? <p>Operator: {operator}</p> : null}
       {covered === 'yes' ? <p>☂️ covered</p> : null}

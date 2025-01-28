@@ -3,6 +3,7 @@ import {Layer, Source, useMap} from 'react-map-gl/maplibre';
 import type {SymbolLayer} from 'react-map-gl/maplibre';
 
 import parkingIcon from '@/assets/icons/parking_map/parking.png';
+import parkingIconSelected from '@/assets/icons/parking_map/parking_selected.png';
 import parkingIconCovered from '@/assets/icons/parking_map/parking_covered.png';
 import parkingIconPaid from '@/assets/icons/parking_map/parking_paid.png';
 import parkingIconCoveredPaid from '@/assets/icons/parking_map/parking_covered_paid.png';
@@ -55,6 +56,7 @@ export function ParkingLayer() {
 
   useEffect(() => {
     addImage('parking_icon', parkingIcon.src);
+    addImage('parking_icon_selected', parkingIconSelected.src);
     // icons.map(({id, src}) => addImage(id, src));
   }, [map]);
   const parkingLayer: SymbolLayer = {
@@ -65,17 +67,30 @@ export function ParkingLayer() {
       'icon-image': 'parking_icon',
       'icon-anchor': 'bottom',
       'icon-overlap': 'always',
-      'icon-size': 1 / 10,
+      'icon-size': 1 / 12,
       'text-field': ['get', 'capacity'],
       'text-size': 8,
       'text-anchor': 'top',
       'text-offset': [0, -2.5],
       'text-overlap': 'always',
     },
+    paint: {
+      'icon-opacity': [
+        'case',
+        ['boolean', ['feature-state', 'selected'], false],
+        1,
+        0.3,
+      ],
+    },
   };
 
   return (
-    <Source id="bicycle-parking" type="geojson" data={bicycleParkingURL}>
+    <Source
+      id="bicycle-parking"
+      type="geojson"
+      data={bicycleParkingURL}
+      generateId={true}
+    >
       <Layer {...parkingLayer} />
     </Source>
   );
