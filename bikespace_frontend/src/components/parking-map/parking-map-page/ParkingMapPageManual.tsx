@@ -16,7 +16,7 @@ import {useParkingMapQuery} from '@/hooks';
 
 import 'maplibre-gl/dist/maplibre-gl.css';
 import styles from './parking-map-page.module.scss';
-import bollardIcon from '@/assets/icons/parking_map/bollard.png';
+import parkingIcon from '@/assets/icons/parking_map/parking.png';
 
 export function ParkingMapPageManual() {
   const {status, data, error} = useParkingMapQuery();
@@ -45,7 +45,7 @@ export function ParkingMapPageManual() {
       const [long, lat] = geometry.coordinates;
       return (
         <Marker key={index} latitude={lat} longitude={long}>
-          <img src={bollardIcon.src} height={16}/>
+          <img src={parkingIcon.src} height={16}/>
         </Marker>
       );
     });

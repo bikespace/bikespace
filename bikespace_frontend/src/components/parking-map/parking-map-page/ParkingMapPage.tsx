@@ -16,7 +16,7 @@ import {BikeLaneLayer} from './BikeLaneLayer';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import styles from './parking-map-page.module.scss';
 import {MapGeoJSONFeature, QueryRenderedFeaturesOptions} from 'maplibre-gl';
-import { ParkingFeatureDescription } from './ParkingFeatureDescription';
+import {ParkingFeatureDescription} from './parking-feature-description/ParkingFeatureDescription';
 
 export function ParkingMapPage() {
   const [defaultLocation, setDefaultLocation] = useState({

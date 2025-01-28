@@ -2,6 +2,7 @@ import React from 'react';
 import {MapGeoJSONFeature} from 'maplibre-gl';
 
 import {bicycleParkingDescriptions as bpDesc} from './bicycle_parkingDescriptions';
+import styles from './parking-feature-description.module.scss';
 
 export interface ParkingFeatureDescriptionProps {
   feature: MapGeoJSONFeature;
@@ -31,7 +32,7 @@ export function ParkingFeatureDescription({
     indicators.length > 0 ? ' ' + indicators.join(' ') : null;
 
   return (
-    <div>
+    <div className={styles.featureDescription}>
       <h3>
         {parkingTypeDescription} ({capacityDescription}){indicatorList}
       </h3>
