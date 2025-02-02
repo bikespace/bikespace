@@ -25,9 +25,10 @@ export function FilterDateRange() {
       setFilters: state.setFilters,
     })
   );
+
   const {first, last} = useAllSubmissionsDateRange();
 
-  function handleChange(e: React.ChangeEvent<HTMLSelectElement>) {
+  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.currentTarget.value as DateRangeInterval;
 
     if (value === DateRangeInterval.CustomRange) {
@@ -49,7 +50,7 @@ export function FilterDateRange() {
         interval: value,
       });
     }
-  }
+  };
 
   return (
     <FilterSection title="Date Range">
