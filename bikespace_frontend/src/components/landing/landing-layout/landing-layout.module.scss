@@ -8,7 +8,7 @@ $even-lighter-grey: #EEE;
 
 .pageMain {
   margin: 0 auto;
-  padding: 10%;
+  padding: 1rem;
   max-width: $wrapper-max-width;
   justify-content: center;
 
@@ -89,6 +89,14 @@ $even-lighter-grey: #EEE;
       color: #25c252;
       text-decoration-thickness: 2px;
     }
+  }
+
+  sup {
+    font-size: 0.83em;
+    line-height: 0.5em;
+    vertical-align: baseline;
+    position: relative;
+    top: -0.4em;
   }
 
   img {
