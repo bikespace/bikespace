@@ -1,3 +1,18 @@
+import {
+  DividerImg,
+  EmailSignUp,
+  FeatureBoxWrapper,
+  FeatureBox,
+  IconHeading,
+} from '@/components/landing/content-blocks';
+
+import featureBoxParkingMap from '@/assets/images/map-placeholder.jpg';
+import featureBoxApp from '@/assets/images/mobile_reporting_app.png';
+import featureBoxDashboard from '@/assets/images/desktop_dashboard_2024-02.png';
+import iconPromoteBikeSpace from '@/assets/icons/frontpage/promote_bs_icon-01_dark.png';
+import iconJoinUs from '@/assets/icons/frontpage/join_us_icon-01_dark.png';
+import iconGetUpdates from '@/assets/icons/frontpage/get_updates_dark.png';
+
 # About BikeSpace
 
 BikeSpace is a community-built web app originally started [with support from the City of Toronto](https://web.archive.org/web/20190624165253/https://www.toronto.ca/services-payments/streets-parking-transportation/cycling-in-toronto/bikespace-app/) and Cycle Toronto. It lets people report the issues they find when trying to park their bikes in the city.
@@ -20,56 +35,58 @@ By helping to improve bicycle parking across the city, we hope that even more pe
 
 The goal of BikeSpace is to empower cyclists by making it easy to find bicycle parking, identify areas where bicycle parking is missing, and collectively report issues with existing rings, racks, and stands.
 
-**[Feature boxes with photo]**
-
-- Toronto Bike Parking Map
-- Bike Parking Issue Reporting App
-- Bike Parking Issue Dashboard
+<FeatureBoxWrapper>
+  <FeatureBox
+    title='Bike Parking Map'
+    description='Find bike parking in Toronto'
+    imageSrc={featureBoxParkingMap.src}
+    imageAlt='Test alt text'
+    linksTo='https://bikespace.ca/#find_parking'
+  />
+  <FeatureBox
+    title='Issue Reporting App'
+    description='Report issues such as areas without bike parking or bike parking that is full or damaged'
+    imageSrc={featureBoxApp.src}
+    imageAlt='Test alt text'
+    linksTo='/submission'
+  />
+  <FeatureBox
+    title='Issue Dashboard'
+    description='Explore bike parking issues reported by BikeSpace users'
+    imageSrc={featureBoxDashboard.src}
+    imageAlt='Test alt text'
+    linksTo='/dashboard'
+  />
+</FeatureBoxWrapper>
 
 
 ## Get Involved
 
-BikeSpace is run by a team of [Civic Tech Toronto](https://civictech.ca/) volunteers who are passionate about making Toronto a great cycling city. 
-
-[Add Graphic] <a href="mailto:bikespaceto@gmail.com?subject=I want to promote BikeSpace&body=Hi BikeSpace team,%0D%0A%0D%0AI'm interested in promoting the BikeSpace web app to my community. Please send me some info!%0D%0A%0D%0ALet me tell you a little about myself...">Promote BikeSpace</a>
+<IconHeading imageSrc={iconPromoteBikeSpace.src} imageAlt=''>
+<h3>Promote BikeSpace</h3>
+</IconHeading>
 
 Help us get the word out by sharing BikeSpace with your friends and community!
 
-[Add Graphic] <a href="mailto:bikespaceto@gmail.com?subject=I want to join the BikeSpace team&body=Hi BikeSpace team,%0D%0A%0D%0AI'm really interested in your project and would like to help you build this tool to help make Toronto a more bike-friendly city!%0D%0A%0D%0ALet me tell you a little about myself and what I might contribute to the project...">Join Our team</a>
+<a href="mailto:bikespaceto@gmail.com?subject=I want to promote BikeSpace&body=Hi BikeSpace team,%0D%0A%0D%0AI'm interested in promoting the BikeSpace web app to my community. Please send me some info!%0D%0A%0D%0ALet me tell you a little about myself...">Email us for resources</a>
+
+<IconHeading imageSrc={iconJoinUs.src} imageAlt=''>
+<h3>Join Our Team</h3>
+</IconHeading>
 
 This is an exciting project built by great people and we invite anybody who wants to help to join us!
 
 There are lots of great ways to get involved:
 
-- Come talk to us at a weekly [Civic Tech Toronto Hacknight](https://guild.host/ctto/events)
+- Come talk to us at a [weekly Civic Tech Toronto Hacknights](https://civictech.ca/)
 - Join our [Slack Channel](https://civictechto.slack.com/archives/C61CZLA5V)
 - Check out our project on [GitHub](https://github.com/bikespace/bikespace)
+- <a href="mailto:bikespaceto@gmail.com?subject=I want to join the BikeSpace team&body=Hi BikeSpace team,%0D%0A%0D%0AI'm really interested in your project and would like to help you build this tool to help make Toronto a more bike-friendly city!%0D%0A%0D%0ALet me tell you a little about myself and what I might contribute to the project...">Email us for more information</a>
 
-[Add Graphic] [Get Updates](https://buttondown.email/bikespace)
+<IconHeading imageSrc={iconGetUpdates.src} imageAlt=''>
+<h3>Get Updates</h3>
+</IconHeading>
 
 Join our newsletter for updates on the project and for opportunities to make a change:
 
-[Buttondown email subscription box]
-
-
-
-# OLD: About BikeSpace Content
-
-BikeSpace is a community-built web app originally started [with support from the City of Toronto](https://web.archive.org/web/20190624165253/https://www.toronto.ca/services-payments/streets-parking-transportation/cycling-in-toronto/bikespace-app/) and Cycle Toronto. 
-It lets people report the issues they find when trying to park their bikes in the city. This simple web app is:
-- quick and easy to use,
-- designed for mobile and desktop,
-- building a public map of parking problems in Toronto,
-- creating a data-driven picture to drive change.
-
-Every cyclist has struggled to find space to park. 
-There is simply not enough bike parking to meet demand. 
-Bike racks are often full, requiring a cyclist to improvise using poor alternatives like sign posts or fences. 
-Too often racks are ancient wheel-benders, awkwardly located, or taken up by abandoned bikes.
-
-City planners, businesses and property managers all know there is a problem.
-They want to build simple and safe bike parking across the city but they need solid evidence of demand to invest smartly.
-Toronto needs a data-driven solution to bike parking—BikeSpace will produce that data and drive real change.
-
-We invite you to [try the BikeSpace web app](/submission) and tell us what you think! 
-If you have feedback about the app, please feel free to share it using the [issues tab of our GitHub page](https://github.com/bikespace/bikespace/issues).
+<EmailSignUp />

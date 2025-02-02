@@ -69,7 +69,7 @@ function DividerImg({
 
 function FeatureBoxWrapper({children}: Readonly<{children: React.ReactNode}>) {
   return (
-    <div className={styles.fullWidth}>
+    <div /*className={styles.fullWidth}*/>
       <div className={styles.featureBoxWrapper}>{children}</div>
     </div>
   );
@@ -147,4 +147,31 @@ function EmailSignUp() {
   );
 }
 
-export {HeroBlock, DividerImg, FeatureBoxWrapper, FeatureBox, EmailSignUp};
+interface IconHeadingProps {
+  children: React.ReactNode;
+  imageSrc: string;
+  imageAlt: string;
+}
+
+function IconHeading({children, imageSrc, imageAlt}: IconHeadingProps) {
+  return (
+    <div className={styles.iconHeading}>
+      <img
+        src={imageSrc}
+        alt={imageAlt}
+        title={imageAlt}
+        style={{height: '3rem', width: 'auto', marginBottom: 0}}
+      ></img>
+      <div className={styles.iconHeadingChildren}>{children}</div>
+    </div>
+  );
+}
+
+export {
+  HeroBlock,
+  DividerImg,
+  FeatureBoxWrapper,
+  FeatureBox,
+  EmailSignUp,
+  IconHeading,
+};
