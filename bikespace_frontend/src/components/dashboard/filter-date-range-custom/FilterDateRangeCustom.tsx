@@ -50,25 +50,25 @@ export function FilterDateRangeCustom() {
   if (startDateIsValid && endDateIsValid && !endDateNotBeforeStartDate)
     errorMessages.push('End date cannot be before start date.');
 
-  function handleFromChange(e: React.ChangeEvent<HTMLInputElement>) {
+  const handleFromChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedDateRange({
       from: e.currentTarget.value
         ? new Date(`${e.currentTarget.value}T00:00:00`)
         : null,
       to: selectedDateRange.to,
     });
-  }
+  };
 
-  function handleToChange(e: React.ChangeEvent<HTMLInputElement>) {
+  const handleToChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedDateRange({
       from: selectedDateRange.from,
       to: e.currentTarget.value
         ? new Date(`${e.currentTarget.value}T23:59:59`)
         : null,
     });
-  }
+  };
 
-  function applyCustomDateRange() {
+  const applyCustomDateRange = () => {
     setFilters({
       dateRange: {
         from: selectedDateRange.from,
@@ -82,7 +82,7 @@ export function FilterDateRangeCustom() {
       to: selectedDateRange.to ?? '',
       interval: DateRangeInterval.CustomRange,
     });
-  }
+  };
 
   return (
     <div className={styles.dateRangeCustom}>
@@ -122,8 +122,6 @@ export function FilterDateRangeCustom() {
 
 export const formatHtmlDateValue = (date: Date | null): string => {
   if (date === null) return '';
-  const year = date.getFullYear();
-  const month = (date.getMonth() + 1).toString().padStart(2, '0');
-  const day = date.getDate().toString().padStart(2, '0');
-  return `${year}-${month}-${day}`;
+
+  return DateTime.fromJSDate(date).toFormat('yyyy-LL-dd');
 };
