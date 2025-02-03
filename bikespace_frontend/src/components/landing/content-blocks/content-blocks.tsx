@@ -31,6 +31,13 @@ function HeroBlock({
             >
               View the collected data
             </a>
+            <a
+              href="/parking-map"
+              className={styles.buttonLink}
+              data-umami-event="parking-map-from-frontpage"
+            >
+              Find bicycle parking
+            </a>
           </div>
         </div>
         <div style={{flex: '1 1 auto'}}>
