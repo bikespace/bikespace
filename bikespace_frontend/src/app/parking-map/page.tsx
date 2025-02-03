@@ -42,7 +42,7 @@ export default function Page() {
     if (!mapRef.current) return;
     const map = mapRef.current;
 
-    // TODO umami
+    trackUmamiEvent('parking-map-feature-click');
 
     const features = map.queryRenderedFeatures(e.point, {
       layers: ['bikeparking2-0-existing'],
