@@ -9,6 +9,8 @@ import Map, {
 } from 'react-map-gl';
 import mapboxgl from 'mapbox-gl';
 
+import {trackUmamiEvent} from '@/utils';
+
 import 'mapbox-gl/dist/mapbox-gl.css';
 
 import type {MapRef} from 'react-map-gl';
@@ -102,8 +104,8 @@ export default function Page() {
       onClick={handleClick}
     >
       {popUp ? generatePopup(popUp) : null}
-      <NavigationControl />
-      <GeolocateControl />
+      <NavigationControl position="top-left" />
+      <GeolocateControl position="top-left" />
     </Map>
   );
 }
