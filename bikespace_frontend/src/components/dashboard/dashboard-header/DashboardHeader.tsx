@@ -43,17 +43,10 @@ export function DashboardHeader() {
         </Link>
         <ul>
           <li>
-            <Link href="/submission" data-umami-event="outbound-app">
-              Report Bike Parking Issue
-            </Link>
+            <Link href="/submission">Report Bike Parking Issue</Link>
           </li>
           <li>
-            <a
-              href="https://bikespace.ca/"
-              data-umami-event="outbound-landing-page"
-            >
-              About BikeSpace
-            </a>
+            <a href="/about">About BikeSpace</a>
           </li>
           <li>
             <a
