@@ -78,7 +78,7 @@ export function DashboardHeader() {
 const feedbackTo = 'bikespaceto@gmail.com';
 const feedbackSubject = 'BikeSpace Dashboard Feedback';
 const feedbackBody = `----------
-Please describe your feedback about app.bikespace.ca/dashboard below. We welcome both positive feedback (e.g. I found x feature useful) and constructive feedback (e.g. y is broken, I wish the dashboard did z).
+Please describe your feedback about the bikespace.ca dashboard below. We welcome both positive feedback (e.g. I found x feature useful) and constructive feedback (e.g. y is broken, I wish the dashboard did z).
 
 Especially for constructive feedback, you can help us by letting us know:
 - Your browser and platform (e.g. Safari, iPhone)
