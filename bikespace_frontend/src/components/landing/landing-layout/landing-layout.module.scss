@@ -23,6 +23,11 @@ $even-lighter-grey: #EEE;
     margin-bottom: 1rem;
   }
 
+  // prevent floating nav bar from overlapping heading when using anchor links
+  h1, h2, h3, h4, h5, h6 {
+    scroll-margin-top: calc(54px + 1rem);
+  }
+
   h1 {
     font-size: 2rem;
   }
