@@ -23,7 +23,7 @@ This repository also has a `/datasets` folder for miscellaneous project data. Th
 - When submitting Pull Requests, please submit PRs to the development branch from the feature branch you are working off of.
 - Squash and merge is preferred for approved pull requests to keep a clean history of project changes.
 
-For more information about contributing to the BikeSpace project, please read the [Get Involved](https://bikespace.ca/about#get_involved) section of our website.
+For more information about contributing to the BikeSpace project, please read the [Get Involved](https://bikespace.ca/about#get-involved) section of our website.
 
 # Using Make Targets
 
