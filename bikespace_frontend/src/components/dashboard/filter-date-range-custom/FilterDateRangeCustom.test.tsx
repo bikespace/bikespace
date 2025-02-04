@@ -1,35 +1,10 @@
 import React from 'react';
 import {render, screen} from '@testing-library/react';
 import {userEvent} from '@testing-library/user-event';
-import {
-  SubmissionsDateRange,
-  DateRangeInterval,
-  SubmissionFilters,
-} from '@/interfaces/Submission';
-import {
-  FilterDateRangeCustom,
-  formatHtmlDateValue,
-} from './FilterDateRangeCustom';
 
-const todayDate = formatHtmlDateValue(new Date());
-const startDate = todayDate;
-const endDate = todayDate;
+import {DateRangeInterval} from '@/interfaces/Submission';
 
-/* `+ 'T00:00:00` and 'T23:59:59' are added here in part because of a known quirk with Date API - date-only text is interpreted as UTC and date-time text is interpreted in the user time zone. See: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date#date_time_string_format */
-const startDateValue = new Date(startDate + 'T00:00:00');
-const endDateValue = new Date(endDate + 'T23:59:59.999');
-const mockDateRange: SubmissionsDateRange = {
-  first: startDateValue,
-  last: endDateValue,
-};
-const mockFilterDateRange: SubmissionFilters['dateRange'] = {
-  from: startDateValue,
-  to: endDateValue,
-};
-
-jest.mock('@/hooks', () => ({
-  useAllSubmissionsDateRange: () => mockDateRange,
-}));
+import {FilterDateRangeCustom} from './FilterDateRangeCustom';
 
 const mockTrackUmamiEvent = jest.fn().mockName('mockTrackUmamiEvent');
 jest.mock('@/utils', () => ({
@@ -40,42 +15,56 @@ jest.mock('@/utils', () => ({
 const mockSetFilters = jest.fn().mockName('mockSetFilters');
 jest.mock('@/states/store', () => ({
   useSubmissionsStore: () => ({
-    dateRange: mockFilterDateRange,
     setFilters: mockSetFilters,
   }),
 }));
 
 describe('FilterDateRangeCustom', () => {
+  const today = new Date();
+
   beforeEach(() => {
     render(<FilterDateRangeCustom />);
   });
 
   test('should render two date inputs and a button', () => {
     const startDateInput = screen.getByLabelText('Start date:');
-    expect(startDateInput.tagName === 'input');
-    expect(startDateInput.getAttribute('type') === 'date');
-    expect(startDateInput.getAttribute('name') === 'startDate');
+    expect(startDateInput.tagName).toEqual('INPUT');
+    expect(startDateInput.getAttribute('type')).toEqual('date');
+    expect(startDateInput.getAttribute('name')).toEqual('from');
 
     const endDateInput = screen.getByLabelText('End date:');
-    expect(endDateInput.tagName === 'input');
-    expect(endDateInput.getAttribute('type') === 'date');
-    expect(endDateInput.getAttribute('name') === 'endDate');
+    expect(endDateInput.tagName).toEqual('INPUT');
+    expect(endDateInput.getAttribute('type')).toEqual('date');
+    expect(endDateInput.getAttribute('name')).toEqual('to');
 
     expect(screen.getByRole('button')).toHaveTextContent('Apply');
   });
 
   test('initial date input values should be today', () => {
+    const todayDate = today.toISOString().substring(0, 10);
+
     const startDateInput = screen.getByLabelText('Start date:');
     expect(startDateInput).toHaveValue(todayDate);
 
     const endDateInput = screen.getByLabelText('End date:');
-    expect(endDateInput).toHaveValue(endDate);
+    expect(endDateInput).toHaveValue(todayDate);
   });
 
   test('clicking submit should send a correct date filter range and trigger analytics', async () => {
+    const year = today.getFullYear();
+    const month = today.getMonth();
+    const day = today.getDate();
+
+    /* `+ 'T00:00:00` and 'T23:59:59' are added here in part because of a known quirk with Date API - date-only text is interpreted as UTC and date-time text is interpreted in the user time zone. See: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date#date_time_string_format */
+    const startDateValue = new Date(Date.UTC(year, month, day, 0, 0, 0, 0));
+    const endDateValue = new Date(Date.UTC(year, month, day, 23, 59, 59, 999));
+
     const user = userEvent.setup();
     const submitButton = screen.getByRole('button');
+
     await user.click(submitButton);
+
+    expect(mockTrackUmamiEvent).toHaveBeenCalled();
     expect(mockSetFilters).toHaveBeenCalledWith({
       dateRange: {
         from: startDateValue,
@@ -83,15 +72,16 @@ describe('FilterDateRangeCustom', () => {
       },
       dateRangeInterval: DateRangeInterval.CustomRange,
     });
-    expect(mockTrackUmamiEvent).toHaveBeenCalled();
   });
 
   test('typing in a date input changes the date', async () => {
     const testInput = '2024-02-02';
+
     const startDateInput = screen.getByLabelText('Start date:');
     // limitation of userEvent - have to clear before new input
     await userEvent.clear(startDateInput);
     await userEvent.type(startDateInput, testInput);
+
     expect(startDateInput).toHaveValue(testInput);
   });
 
@@ -99,21 +89,28 @@ describe('FilterDateRangeCustom', () => {
     const user = userEvent.setup();
     const startDateInput = screen.getByLabelText('Start date:');
     const endDateInput = screen.getByLabelText('End date:');
-    const submitButton = screen.getByRole('button');
+    const submitBtn = screen.getByRole('button');
 
     await user.clear(startDateInput);
     await user.type(startDateInput, '2024-02-01');
-    expect(submitButton).toBeEnabled();
+
+    expect(submitBtn).toBeEnabled();
 
     await user.clear(endDateInput);
-    expect(submitButton).toBeDisabled();
+
+    expect(submitBtn).toBeDisabled();
+
     await user.type(endDateInput, '2024-02-01');
+
     expect(endDateInput).toHaveValue('2024-02-01');
-    expect(submitButton).toBeEnabled();
+    expect(submitBtn).toBeEnabled();
 
     await user.clear(startDateInput);
-    expect(submitButton).toBeDisabled();
+
+    expect(submitBtn).toBeDisabled();
+
     await user.type(startDateInput, '2024-03-01');
-    expect(submitButton).toBeDisabled();
+
+    expect(submitBtn).toBeDisabled();
   });
 });
