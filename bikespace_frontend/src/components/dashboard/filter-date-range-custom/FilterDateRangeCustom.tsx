@@ -1,5 +1,7 @@
-import React, {useState, useEffect} from 'react';
+import {useForm} from 'react-hook-form';
 import {DateTime} from 'luxon';
+
+import {CustomDateRangeSchema, customDateRangeSchemaResolver} from './schema';
 
 import {DateRangeInterval} from '@/interfaces/Submission';
 
@@ -12,116 +14,70 @@ import {SidebarButton} from '../sidebar-button';
 import styles from './filter-date-range-custom.module.scss';
 
 export function FilterDateRangeCustom() {
-  const {dateRange, setFilters} = useSubmissionsStore(state => ({
-    dateRange: state.filters.dateRange,
+  const {setFilters} = useSubmissionsStore(state => ({
     setFilters: state.setFilters,
   }));
 
   const today = new Date();
-  const defaultFirst = DateTime.fromJSDate(today).startOf('day').toJSDate();
-  const defaultLast = DateTime.fromJSDate(today).endOf('day').toJSDate();
+  const todayDate = today.toISOString().substring(0, 10);
 
-  const [selectedDateRange, setSelectedDateRange] = useState<{
-    from: Date | null;
-    to: Date | null;
-  }>({
-    from: defaultFirst,
-    to: defaultLast,
+  const form = useForm<CustomDateRangeSchema>({
+    resolver: customDateRangeSchemaResolver,
+    mode: 'onChange',
   });
 
-  useEffect(() => {
-    setSelectedDateRange({
-      from: dateRange.from ?? defaultFirst,
-      to: dateRange.to ?? defaultLast,
-    });
-  }, [dateRange]);
-
-  // validation checks
-  const startDateIsValid = Number(selectedDateRange.from) > 0;
-  const endDateIsValid = Number(selectedDateRange.to) > 0;
-  const endDateNotBeforeStartDate =
-    selectedDateRange.to! > selectedDateRange.from!;
-  const inputIsValid =
-    startDateIsValid && endDateIsValid && endDateNotBeforeStartDate;
-
-  const errorMessages = [];
-  if (!startDateIsValid) errorMessages.push('Please enter a valid start date.');
-  if (!endDateIsValid) errorMessages.push('Please enter a valid end date.');
-  if (startDateIsValid && endDateIsValid && !endDateNotBeforeStartDate)
-    errorMessages.push('End date cannot be before start date.');
-
-  const handleFromChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedDateRange({
-      from: e.currentTarget.value
-        ? new Date(`${e.currentTarget.value}T00:00:00`)
-        : null,
-      to: selectedDateRange.to,
-    });
-  };
-
-  const handleToChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedDateRange({
-      from: selectedDateRange.from,
-      to: e.currentTarget.value
-        ? new Date(`${e.currentTarget.value}T23:59:59`)
-        : null,
-    });
-  };
-
-  const applyCustomDateRange = () => {
+  const onSubmit = (data: CustomDateRangeSchema) => {
     setFilters({
       dateRange: {
-        from: selectedDateRange.from,
-        to: selectedDateRange.to,
+        from: DateTime.fromJSDate(data.from).toUTC().startOf('day').toJSDate(),
+        to: DateTime.fromJSDate(data.to).toUTC().endOf('day').toJSDate(),
       },
       dateRangeInterval: DateRangeInterval.CustomRange,
     });
 
     trackUmamiEvent('datefilter', {
-      from: selectedDateRange.from ?? '',
-      to: selectedDateRange.to ?? '',
+      from: data.from ?? '',
+      to: data.to ?? '',
       interval: DateRangeInterval.CustomRange,
     });
   };
 
   return (
-    <div className={styles.dateRangeCustom}>
+    <form
+      className={styles.dateRangeCustom}
+      onSubmit={form.handleSubmit(onSubmit)}
+    >
+      {form.formState.errors.from && (
+        <p className={styles.errorMessages}>
+          {form.formState.errors.from.message}
+        </p>
+      )}
       <div className={styles.dateInput}>
         <label htmlFor="filter-start-date">Start date:</label>
         <input
           type="date"
           id="filter-start-date"
-          name="startDate"
-          value={formatHtmlDateValue(selectedDateRange.from ?? null)}
-          onChange={handleFromChange}
+          {...form.register('from', {valueAsDate: true})}
+          defaultValue={todayDate}
         />
       </div>
+      {form.formState.errors.to && (
+        <p className={styles.errorMessages}>
+          {form.formState.errors.to.message}
+        </p>
+      )}
       <div className={styles.dateInput}>
         <label htmlFor="filter-end-date">End date:</label>
         <input
           type="date"
           id="filter-end-date"
-          name="endDate"
-          value={formatHtmlDateValue(selectedDateRange.to ?? null)}
-          onChange={handleToChange}
+          {...form.register('to', {valueAsDate: true})}
+          defaultValue={todayDate}
         />
       </div>
-      <SidebarButton
-        type="button"
-        onClick={applyCustomDateRange}
-        disabled={!inputIsValid}
-      >
+      <SidebarButton type="submit" disabled={!form.formState.isValid}>
         Apply
       </SidebarButton>
-      {errorMessages.length > 0 ? (
-        <p className={styles.errorMessages}>{errorMessages.join(' ')}</p>
-      ) : null}
-    </div>
+    </form>
   );
 }
-
-export const formatHtmlDateValue = (date: Date | null): string => {
-  if (date === null) return '';
-
-  return DateTime.fromJSDate(date).toFormat('yyyy-LL-dd');
-};
