@@ -2,8 +2,8 @@ import {ParkingDuration} from '@/interfaces/Submission';
 
 import {useSubmissionFormContext} from '../schema';
 
-import {SelectInput} from '../select-input';
 import {FormSectionHeader} from '../form-section-header';
+import {SelectInput} from '../select-input';
 
 import styles from './time.module.scss';
 

@@ -1,15 +1,11 @@
 import {IssueType} from '@/interfaces/Submission';
 
-import {useSubmissionFormContext} from '../schema';
-
 import {SelectInput} from '../select-input';
 import {FormSectionHeader} from '../form-section-header';
 
 import styles from './issue.module.scss';
 
 export const Issue = () => {
-  const {formState: errors} = useSubmissionFormContext();
-
   return (
     <div className={styles.submissionIssue}>
       <FormSectionHeader title="What were the issue(s)?" name="issues" />
