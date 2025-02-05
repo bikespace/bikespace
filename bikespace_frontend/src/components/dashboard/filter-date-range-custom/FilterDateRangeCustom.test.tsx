@@ -7,6 +7,7 @@ import {DateRangeInterval} from '@/interfaces/Submission';
 import {FilterDateRangeCustom} from './FilterDateRangeCustom';
 
 const mockTrackUmamiEvent = jest.fn().mockName('mockTrackUmamiEvent');
+
 jest.mock('@/utils', () => ({
   trackUmamiEvent: (...args: Parameters<typeof mockTrackUmamiEvent>) =>
     mockTrackUmamiEvent(...args),
@@ -75,14 +76,14 @@ describe('FilterDateRangeCustom', () => {
   });
 
   test('typing in a date input changes the date', async () => {
-    const testInput = '2024-02-02';
+    const testDate = '2024-02-02';
 
     const startDateInput = screen.getByLabelText('Start date:');
     // limitation of userEvent - have to clear before new input
     await userEvent.clear(startDateInput);
-    await userEvent.type(startDateInput, testInput);
+    await userEvent.type(startDateInput, testDate);
 
-    expect(startDateInput).toHaveValue(testInput);
+    expect(startDateInput).toHaveValue(testDate);
   });
 
   test('dates should be valid and the end date should always equal or exceed the start date', async () => {
@@ -91,11 +92,17 @@ describe('FilterDateRangeCustom', () => {
     const endDateInput = screen.getByLabelText('End date:');
     const submitBtn = screen.getByRole('button');
 
+    await user.click(startDateInput);
     await user.clear(startDateInput);
+
+    expect(submitBtn).toBeDisabled();
+
     await user.type(startDateInput, '2024-02-01');
 
+    expect(startDateInput).toHaveValue('2024-02-01');
     expect(submitBtn).toBeEnabled();
 
+    await user.click(endDateInput);
     await user.clear(endDateInput);
 
     expect(submitBtn).toBeDisabled();
@@ -105,10 +112,8 @@ describe('FilterDateRangeCustom', () => {
     expect(endDateInput).toHaveValue('2024-02-01');
     expect(submitBtn).toBeEnabled();
 
+    await user.click(startDateInput);
     await user.clear(startDateInput);
-
-    expect(submitBtn).toBeDisabled();
-
     await user.type(startDateInput, '2024-03-01');
 
     expect(submitBtn).toBeDisabled();
