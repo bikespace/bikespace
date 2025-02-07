@@ -2,7 +2,7 @@ name: Deploy Landing Page
 on:
   push:
     branches:
-        - archive-old-landing-page
+        - main
     paths:
         - archive/index.html
 jobs:
