@@ -1,1 +1,1 @@
-export {SubmissionFormContent} from './SubmissionFormContent';
+export * from './SubmissionFormContent';
