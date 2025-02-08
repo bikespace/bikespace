@@ -14,7 +14,7 @@ They are split up accordingly into their own directories:
 
 To run any of these components please see the `README` in each directory.
 
-This repository also has a `/datasets` folder for miscellaneous project data. The `/bikespace_dashboard` and `/bikespace_frontend` folders are deprecated and will be removed in the future.
+This repository also has a `/datasets` folder for miscellaneous project data and an `/archive` folder for code from previous project webpages that are now deprecated.
 
 
 # Development Workflow
