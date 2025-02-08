@@ -1,10 +1,10 @@
-name: Deploy Landing Page
+name: Deploy Landing Page Redirect
 on:
   push:
     branches:
         - main
     paths:
-        - archive/index.html
+        - archive/redirect-app-bikespace-ca/index.html
 jobs:
     deploy-to-cloudflare:
         name: Deploy to Cloudflare
@@ -21,5 +21,5 @@ jobs:
                 apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
                 accountId: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
                 projectName: app-bikespace-redirect
-                directory: ./archive
+                directory: ./archive/redirect-app-bikespace-ca/
                 gitHubToken: ${{ secrets.GITHUB_TOKEN }}
