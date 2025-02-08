@@ -1,10 +1,10 @@
-name: Deploy Dashboard
+name: Deploy Dashboard Redirect
 on:
   push:
     branches:
         - main
     paths:
-        - bikespace_dashboard/**
+        - archive/redirect-dashboard-bikespace-ca/index.html
 jobs:
     deploy-to-cloudflare:
         name: Deploy to Cloudflare
@@ -20,6 +20,6 @@ jobs:
               with:
                 apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
                 accountId: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
-                projectName: bikespace-dashboard
-                directory: ./bikespace_dashboard
+                projectName: dashboard-bikespace-redirect
+                directory: ./archive/redirect-dashboard-bikespace-ca/
                 gitHubToken: ${{ secrets.GITHUB_TOKEN }}
