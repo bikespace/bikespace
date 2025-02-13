@@ -2,7 +2,7 @@ import React from 'react';
 import {render, screen, fireEvent} from '@testing-library/react';
 import {FormProvider, useForm} from 'react-hook-form';
 
-import {SubmissionSchema} from '../schema';
+import {SubmissionSchema} from '../submission-form/schema';
 
 import {IssueType} from '@/interfaces/Submission';
 

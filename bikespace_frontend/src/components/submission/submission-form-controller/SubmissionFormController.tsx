@@ -1,7 +1,7 @@
 import {Route} from 'next';
 import {useRouter} from 'next/navigation';
 
-import {useSubmissionFormContext} from '../schema';
+import {useSubmissionFormContext} from '../submission-form/schema';
 
 import {FormOrder, formOrder} from '../constants';
 

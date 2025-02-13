@@ -6,7 +6,7 @@ import {
 } from 'react-hook-form';
 import {fireEvent, render, screen, act} from '@testing-library/react';
 
-import {SubmissionSchema} from '../schema';
+import {SubmissionSchema} from '../submission-form/schema';
 
 import {formOrder} from '../constants';
 

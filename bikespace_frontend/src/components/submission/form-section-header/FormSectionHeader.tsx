@@ -2,7 +2,10 @@ import React from 'react';
 import {FieldPath} from 'react-hook-form';
 import {ErrorMessage} from '@hookform/error-message';
 
-import {SubmissionSchema, useSubmissionFormContext} from '../schema';
+import {
+  SubmissionSchema,
+  useSubmissionFormContext,
+} from '../submission-form/schema';
 
 import styles from './form-section-header.module.scss';
 

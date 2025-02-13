@@ -1,6 +1,6 @@
 import React from 'react';
 import {useFormContext} from 'react-hook-form';
-import {SubmissionSchema} from '../schema';
+import {SubmissionSchema} from '../submission-form/schema';
 
 import styles from './select-input.module.scss';
 
