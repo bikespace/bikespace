@@ -1,5 +1,6 @@
 import React from 'react';
-import {render, screen, fireEvent} from '@testing-library/react';
+import {render, screen, fireEvent, act} from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import {FormProvider, useForm} from 'react-hook-form';
 
 import {SubmissionSchema} from '../submission-form/schema';
@@ -48,13 +49,15 @@ describe('Time', () => {
     expect(screen.getByText(/multiday/i));
   });
 
-  test('Changing parking duration correctly updates state', () => {
+  test('Changing parking duration correctly updates state', async () => {
     render(<MockForm />);
 
     const radios = screen.getAllByRole('radio');
     const radio = radios[1];
 
-    fireEvent.click(radio);
+    const user = userEvent.setup();
+
+    await user.click(radio);
 
     expect(radio).toBeChecked();
   });
@@ -66,7 +69,9 @@ describe('Time', () => {
 
     const dateTime = screen.getByTestId('when');
 
-    fireEvent.change(dateTime, {target: {value: inputDate}});
+    act(() => {
+      fireEvent.change(dateTime, {target: {value: inputDate}});
+    });
 
     expect(dateTime).toHaveValue(inputDate);
   });
