@@ -1,10 +1,7 @@
 import * as z from 'zod';
+import {zodResolver} from '@hookform/resolvers/zod';
 
-import {
-  IssueType,
-  ParkingDuration,
-  SubmissionPayload,
-} from '@/interfaces/Submission';
+import {IssueType, ParkingDuration} from '@/interfaces/Submission';
 import {useFormContext} from 'react-hook-form';
 
 export const submissionSchema = z.object({
@@ -28,15 +25,4 @@ export const useSubmissionFormContext = () => {
   return useFormContext<SubmissionSchema>();
 };
 
-export function convertSubmissionSchemaToSubmissionPayload(
-  data: SubmissionSchema
-): SubmissionPayload {
-  return {
-    latitude: data.location.latitude,
-    longitude: data.location.longitude,
-    issues: data.issues,
-    parking_time: data.parkingTime.date,
-    parking_duration: data.parkingTime.parkingDuration,
-    comments: data.comments,
-  };
-}
+export const submissionSchemaResolver = zodResolver(submissionSchema);
