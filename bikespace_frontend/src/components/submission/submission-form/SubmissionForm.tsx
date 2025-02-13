@@ -4,7 +4,11 @@ import {zodResolver} from '@hookform/resolvers/zod';
 
 import {ParkingDuration} from '@/interfaces/Submission';
 
-import {SubmissionSchema, submissionSchema} from '../schema';
+import {
+  convertSubmissionSchemaToSubmissionPayload,
+  SubmissionSchema,
+  submissionSchema,
+} from '../schema';
 
 import {SubmissionProgressBar} from '../submission-progress-bar';
 import {SubmissionFormController} from '../submission-form-controller';
@@ -38,7 +42,9 @@ export function SubmissionForm() {
         `${process.env.BIKESPACE_API_URL}/submissions`,
         {
           method: 'POST',
-          body: JSON.stringify(data),
+          body: JSON.stringify(
+            convertSubmissionSchemaToSubmissionPayload(data)
+          ),
           headers: {
             'Content-Type': 'application/json',
             Accept: 'application/json',
