@@ -1,117 +1,47 @@
-import React from 'react';
 import {Route} from 'next';
 import {useRouter} from 'next/navigation';
 
-import {
-  SubmissionPayload,
-  SubmissionStatus,
-  SubmissionResponsePayload,
-} from '@/interfaces/Submission';
+import {useSubmissionFormContext} from '../schema';
+
+import {FormOrder, formOrder} from '../constants';
 
 import styles from './submission-form-controller.module.scss';
-import {OrderedComponentsType} from '../submission-form/SubmissionForm';
 
 interface SubmissionFormControllerProps {
-  submissionPayload: SubmissionPayload;
-  locationLoaded: boolean;
   step: number;
   setStep: React.Dispatch<React.SetStateAction<number>>;
-  submissionStatus: {status: string};
-  setSubmissionStatus: React.Dispatch<
-    React.SetStateAction<SubmissionResponsePayload>
-  >;
-  formOrder: OrderedComponentsType[];
 }
 
 export function SubmissionFormController({
-  submissionPayload,
-  locationLoaded,
   step,
   setStep,
-  submissionStatus,
-  setSubmissionStatus,
-  formOrder,
 }: SubmissionFormControllerProps) {
   const router = useRouter();
 
-  async function handleSubmit() {
-    try {
-      const response = await fetch(
-        `${process.env.BIKESPACE_API_URL}/submissions`,
-        {
-          method: 'POST',
-          body: JSON.stringify(submissionPayload),
-          headers: {
-            'Content-Type': 'application/json',
-            Accept: 'application/json',
-          },
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error(`Error! status: ${response.status}`);
-      }
-
-      if (response.status === 201) {
-        setSubmissionStatus({status: SubmissionStatus.Success});
-      }
-    } catch (error) {
-      if (error instanceof Error) {
-        console.log('Error message: ', error.message);
-        setSubmissionStatus({status: SubmissionStatus.Error});
-      } else {
-        console.log('unexpected error', error);
-        setSubmissionStatus({status: SubmissionStatus.Error});
-      }
-    }
-  }
-
-  // disable "Next" button if no issue is selected
-  const nextButtonDisabled =
-    formOrder[step].label === 'Issue' && submissionPayload.issues.length === 0;
-
-  const handleDataValidationWarning = () => {
-    if (nextButtonDisabled) {
-      alert('Please select at least one issue');
-    }
-  };
-
-  const handleStepChanged = (i: number) => {
-    if (!locationLoaded) {
-      return false;
-    }
-
-    if (i === -1 && step > 0 && submissionStatus.status === 'summary') {
-      setStep(step - 1);
-    } else if (i === 1 && step < formOrder.length - 1) {
-      setStep(step + 1);
-    } else if (i === -1 && step > 0 && submissionStatus.status !== 'summary') {
-      router.push('/' as Route);
-    }
-    return true;
-  };
+  const {
+    trigger,
+    formState: {isSubmitted, isSubmitting, isValid, isDirty},
+  } = useSubmissionFormContext();
 
   return (
-    <div
-      className={styles.formController}
-      onClick={handleDataValidationWarning}
-    >
-      {/* 'Back' button logic */}
-      {submissionStatus.status !== 'success' && (
+    <div className={styles.formController}>
+      {!isSubmitted && (
         <button
+          type="button"
           className={`${styles.primaryBtnNoFill} ${
             step === 0 ? styles.hide : ''
           }`}
-          onClick={() => handleStepChanged(-1)}
-          data-umami-event={`back-button-from-${formOrder[step].label}`}
+          onClick={() => {
+            setStep(step - 1);
+          }}
+          data-umami-event={`back-button-from-${formOrder[step]}`}
         >
           Back
         </button>
       )}
-
-      {/* 'Close' button logic */}
-      {submissionStatus.status === 'success' && (
+      {isSubmitted && (
         <button
+          type="button"
           className={styles.primaryBtnNoFill}
           onClick={() => router.push('/' as Route)}
           data-umami-event="close-button"
@@ -119,27 +49,38 @@ export function SubmissionFormController({
           Close
         </button>
       )}
-      <button
-        className={`${styles.primaryBtn} ${
-          step === formOrder.length - 1 ? styles.displayNone : ' '
-        }`}
-        onClick={() => handleStepChanged(1)}
-        disabled={nextButtonDisabled}
-        data-umami-event={`next-button-from-${formOrder[step].label}`}
-      >
-        Next
-      </button>
-      <button
-        className={`${styles.primaryBtn} ${
-          step === formOrder.length - 1 && submissionStatus.status === 'summary'
-            ? ''
-            : styles.displayNone
-        }`}
-        onClick={() => handleSubmit()}
-        data-umami-event="submit-issue-button"
-      >
-        Submit
-      </button>
+      {step !== formOrder.length - 1 && (
+        <button
+          type="button"
+          className={styles.primaryBtn}
+          onClick={async () => {
+            if (formOrder[step] === 'summary') {
+              setStep(0);
+            } else {
+              const field = formOrder[step] as Exclude<'summary', FormOrder>;
+
+              // Trigger validation for the current step
+              const isValid = await trigger(field);
+
+              if (isValid) setStep(step + 1);
+            }
+          }}
+          disabled={!isDirty || !isValid}
+          data-umami-event={`next-button-from-${formOrder[step]}`}
+        >
+          Next
+        </button>
+      )}
+      {step === formOrder.length - 1 && !isSubmitted && (
+        <button
+          type="submit"
+          className={styles.primaryBtn}
+          data-umami-event="submit-issue-button"
+          disabled={isSubmitting}
+        >
+          Submit
+        </button>
+      )}
     </div>
   );
 }
