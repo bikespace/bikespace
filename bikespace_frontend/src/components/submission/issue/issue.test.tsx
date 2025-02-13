@@ -1,8 +1,9 @@
 import React from 'react';
-import {render, screen, fireEvent} from '@testing-library/react';
+import {render, screen} from '@testing-library/react';
+import {userEvent} from '@testing-library/user-event';
 import {FormProvider, useForm} from 'react-hook-form';
 
-import {SubmissionSchema} from '../schema';
+import {SubmissionSchema} from '../submission-form/schema';
 
 import {IssueType} from '@/interfaces/Submission';
 
@@ -44,12 +45,14 @@ describe('Issues', () => {
     ).toEqual(expect.arrayContaining(Object.values(IssueType)));
   });
 
-  test('Checking empty checkbox should check issue', () => {
+  test('Checking empty checkbox should check issue', async () => {
     render(<MockIssue />);
 
     const checkbox = screen.getAllByRole('checkbox')[0];
 
-    fireEvent.click(checkbox);
+    const user = userEvent.setup();
+
+    await user.click(checkbox);
 
     expect(checkbox).toBeChecked();
   });
@@ -59,7 +62,9 @@ describe('Issues', () => {
 
     const checkbox = screen.getAllByRole('checkbox')[0];
 
-    fireEvent.click(checkbox);
+    const user = userEvent.setup();
+
+    await user.click(checkbox);
 
     expect(checkbox).not.toBeChecked();
   });

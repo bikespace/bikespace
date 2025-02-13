@@ -42,6 +42,8 @@ jobs:
         run: make run-pytest
       - name: Coveralls
         uses: coverallsapp/github-action@v2
+        with: 
+          fail-on-error: false
   test-frontend:
     name: Lint and Test Frontend
     runs-on: ubuntu-latest

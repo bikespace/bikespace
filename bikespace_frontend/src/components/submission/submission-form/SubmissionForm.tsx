@@ -1,10 +1,9 @@
 import {useState} from 'react';
 import {useForm, FormProvider} from 'react-hook-form';
-import {zodResolver} from '@hookform/resolvers/zod';
 
 import {ParkingDuration} from '@/interfaces/Submission';
 
-import {SubmissionSchema, submissionSchema} from '../schema';
+import {SubmissionSchema, submissionSchemaResolver} from './schema';
 
 import {SubmissionProgressBar} from '../submission-progress-bar';
 import {SubmissionFormController} from '../submission-form-controller';
@@ -27,7 +26,7 @@ export function SubmissionForm() {
       },
       comments: '',
     },
-    resolver: zodResolver(submissionSchema),
+    resolver: submissionSchemaResolver,
   });
 
   const [step, setStep] = useState<number>(0);
@@ -35,10 +34,17 @@ export function SubmissionForm() {
   const onSubmit = async (data: SubmissionSchema) => {
     try {
       const response = await fetch(
-        'https://api-dev.bikespace.ca/api/v2/submissions',
+        `${process.env.BIKESPACE_API_URL}/submissions`,
         {
           method: 'POST',
-          body: JSON.stringify(data),
+          body: JSON.stringify({
+            latitude: data.location.latitude,
+            longitude: data.location.longitude,
+            issues: data.issues,
+            parking_time: data.parkingTime.date,
+            parking_duration: data.parkingTime.parkingDuration,
+            comments: data.comments,
+          }),
           headers: {
             'Content-Type': 'application/json',
             Accept: 'application/json',

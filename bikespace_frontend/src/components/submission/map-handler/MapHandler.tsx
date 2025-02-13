@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import {useMapEvent, useMap} from 'react-leaflet';
 
-import {useSubmissionFormContext} from '../schema';
+import {useSubmissionFormContext} from '../submission-form/schema';
 
 export const MapHandler = () => {
   const {setValue} = useSubmissionFormContext();

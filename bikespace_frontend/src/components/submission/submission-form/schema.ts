@@ -1,4 +1,5 @@
 import * as z from 'zod';
+import {zodResolver} from '@hookform/resolvers/zod';
 
 import {IssueType, ParkingDuration} from '@/interfaces/Submission';
 import {useFormContext} from 'react-hook-form';
@@ -23,3 +24,5 @@ export type SubmissionSchema = z.infer<typeof submissionSchema>;
 export const useSubmissionFormContext = () => {
   return useFormContext<SubmissionSchema>();
 };
+
+export const submissionSchemaResolver = zodResolver(submissionSchema);
