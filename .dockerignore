@@ -11,6 +11,8 @@
 **/.toolstarget
 **/.vs
 **/.vscode
+**/.next
+**/.cache 
 **/*.*proj.user
 **/*.dbmdl
 **/*.jfm
@@ -24,5 +26,7 @@
 **/obj
 **/secrets.dev.yaml
 **/values.dev.yaml
+**/build
+**/dist
 LICENSE
 README.md

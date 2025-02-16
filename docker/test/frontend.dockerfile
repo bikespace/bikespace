@@ -1,17 +1,11 @@
-# Use the latest LTS version of Node.js
 FROM node:22-alpine
- 
-# Set the working directory inside the container
 WORKDIR /app
- 
-# Copy package.json and package-lock.json
+ENV PATH /app/node_modules/.bin:$PATH
 COPY bikespace_frontend/package*.json ./
- 
-# Install dependencies
 RUN npm install
- 
-# Copy the rest of your application files
-COPY bikespace_frontend/. .
+COPY bikespace_frontend/next.config.mjs bikespace_frontend/tsconfig.json ./
+COPY bikespace_frontend/src/ ./src/
+COPY bikespace_frontend/public/ ./public
  
 # Expose the port your app runs on
 EXPOSE 3000
