@@ -33,11 +33,11 @@ test('Submit an issue', async ({page}) => {
   // navigate to /submissions from home page
   await page.goto('/');
 
-  // purpose of .toPass: sometimes this first link click is flaky on webkit, not sure why
+  // purpose of .toPass and custom intervals: ensures retry if page hydrates during navigation; particularly common problem on webkit
   await expect(async () => {
     await page.getByRole('link', {name: 'Report a bike parking issue'}).click();
     await page.waitForURL('/submission');
-  }).toPass();
+  }).toPass({intervals: [1_000, 2_000, 5_000]});
 
   // issue entry - 'next' button should be disabled until an issue is selected
   await expect(page.getByRole('button', {name: 'Next'})).toBeDisabled();
