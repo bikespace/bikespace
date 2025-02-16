@@ -79,12 +79,12 @@ export default defineConfig({
     //   stderr: 'pipe',
     //   reuseExistingServer: !process.env.CI,
     // },
-    {
-      cwd: '..',
-      command: 'make dev-frontend',
-      url: 'http://127.0.0.1:8080',
-      stderr: 'pipe',
-      reuseExistingServer: !process.env.CI,
-    },
+    // {
+    //   cwd: '..',
+    //   command: 'make dev-frontend',
+    //   url: 'http://127.0.0.1:8080',
+    //   stderr: 'pipe',
+    //   reuseExistingServer: !process.env.CI,
+    // },
   ],
 });
