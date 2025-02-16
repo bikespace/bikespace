@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {useSubmissionFormContext} from '../schema';
+import {useSubmissionFormContext} from '../submission-form/schema';
 
 import {FormSectionHeader} from '../form-section-header';
 

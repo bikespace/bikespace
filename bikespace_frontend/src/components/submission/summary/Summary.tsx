@@ -1,4 +1,4 @@
-import {useSubmissionFormContext} from '../schema';
+import {useSubmissionFormContext} from '../submission-form/schema';
 
 import styles from './summary.module.scss';
 

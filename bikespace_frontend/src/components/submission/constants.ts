@@ -1,5 +1,5 @@
 import {FieldPath} from 'react-hook-form';
-import {SubmissionSchema} from './schema';
+import {SubmissionSchema} from './submission-form/schema';
 
 export const formOrder = [
   'issues',

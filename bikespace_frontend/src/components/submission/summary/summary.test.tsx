@@ -4,9 +4,10 @@ import {
   FieldErrors,
   UseFormReturn,
 } from 'react-hook-form';
-import {fireEvent, render, screen, act} from '@testing-library/react';
+import {render, screen, act} from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
-import {SubmissionSchema} from '../schema';
+import {SubmissionSchema} from '../submission-form/schema';
 
 import {formOrder} from '../constants';
 
@@ -81,9 +82,9 @@ describe('Summary', () => {
 
     const submitButton = screen.getByText('Submit');
 
-    await act(() => {
-      fireEvent.click(submitButton);
-    });
+    const user = userEvent.setup();
+
+    await user.click(submitButton);
 
     expect(screen.getByRole('heading', {level: 1})).toHaveTextContent(
       'Success'
@@ -101,9 +102,9 @@ describe('Summary', () => {
 
     const submitButton = screen.getByText('Submit');
 
-    await act(() => {
-      fireEvent.click(submitButton);
-    });
+    const user = userEvent.setup();
+
+    await user.click(submitButton);
 
     expect(
       screen.getByText(
@@ -123,9 +124,9 @@ describe('Summary', () => {
 
     const submitButton = screen.getByText('Submit');
 
-    await act(() => {
-      fireEvent.click(submitButton);
-    });
+    const user = userEvent.setup();
+
+    await user.click(submitButton);
 
     expect(screen.getByText(/Something went wrong beyond our expectations/));
   });

@@ -4,7 +4,7 @@ import {render, screen} from '@testing-library/react';
 import {faker} from '@faker-js/faker';
 import {FormProvider, useForm} from 'react-hook-form';
 
-import {SubmissionSchema} from '../schema';
+import {SubmissionSchema} from '../submission-form/schema';
 
 import {Comments} from './Comments';
 

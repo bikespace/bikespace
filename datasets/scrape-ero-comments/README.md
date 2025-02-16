@@ -1,4 +1,4 @@
-# ERO comments scraper
+# ERO scraper
 
 ## Background Information - Ontario Bill 212 (2024) Analysis
 
@@ -22,7 +22,9 @@ These two topics related to the bill were also posed on the Ontario Regulatory R
 
 ## Usage
 
-This scraper scrapes the supplied ERO notice page and downloads all the publicly available comments.
+There are two scrapers provided:
+- `scrape_ero_notice_comments.py` scrapes the supplied ERO notice page and downloads all the publicly available comments.
+- `scrape_ero_notices_comment_count.py` scrapes the comments count and statistics of ERO notices on the ERO website.
 
 To run navigate to `datasets/scrape-ero-comments/`. This script should work with Python 3.12 and above.
 
@@ -39,15 +41,24 @@ source venv/bin/activate # Linux or Mac
 # Install dependencies
 pip install -r requirements.txt
 
-# Run the scraper
-python3 scrape-ero.py
+# Running the scrape_ero_notice_comments scraper
+python3 scrape_ero_notice_comments.py --notice-number [ero_notice_number_to_scrape] --output-path [folder_to_output_scraped_files] --start-page [page_to_start_the_scraper_on] --end-page [page_to_end_the_scraper_on]
+
+# Running the scrape_ero_notices_comment_count scraper
+python3 scrape_ero_notices_comment_count.py --output-path [folder_to_output_scraped_files] --start-page [page_to_start_the_scraper_on] --end-page [page_to_end_the_scraper_on]
 ```
 
-You can set the `ERO_NUMBER` in the `scrape-ero.py` for the notice to scrape.
-You will also need to set the `START_PAGE` and `END_PAGE` number in the script.
+You can set the notice number to scrape as an argument `--notice-number` for the `scrape_ero_notice_comments` scraper.
+You can also optionally set the start page `--start-page` and end page `--end-page` number in the scraper.
+
 These values can obtained manually just by going to the webpage and clicking the `Last` page and getting the `page=` value on the url bar.
 
-The scraped comments will be outputted to the `output` folder, each page will have it's own json file.
+The scraped comments will be outputted to the `--output-path` argument folder, each page will have it's own json file.
+To combine the json files for each scraped page, there is a helper script `combine_pages.py`
+```bash
+# combining the scraped json files
+python3 combine_pages.py --pages-path [path_to_all_the_scraped_pages_json_files] --output-path [path_to_output_the_combined_json_files]
+```
 
 If you need to update the requirements during development, pip install or uninstall the relevant packages, and then run:
 
