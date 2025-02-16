@@ -1,0 +1,7 @@
+bikespace_frontend/node_modules
+# npm-debug.log
+bikespace_frontend/*.dockerfile
+.dockerignore
+.git
+.gitignore
+.env

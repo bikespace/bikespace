@@ -1,0 +1,36 @@
+name: bikespace
+
+services:
+  # bikespace_frontend:
+  #   build:
+  #     context: .
+  #     dockerfile: bikespace_frontend/dev.dockerfile
+  #   ports:
+  #     - "8000:3000"
+  bikespace_api:
+    build:
+      context: .
+      dockerfile: docker/test/api.dockerfile
+    depends_on:
+      db:
+        condition: service_healthy
+        restart: true
+    environment:
+      APP_SETTINGS: "bikespace_api.config.TestingConfig"
+      TEST_DATABASE_URI: "postgresql://postgres:testpwd@db/bikespace_test"
+      FLASK_DEBUG: "true"
+      FLASK_RUN_PORT: 8000
+    ports:
+    - "8000:8000"
+  db:
+    image: postgres
+    restart: always
+    user: postgres
+    environment:
+      POSTGRES_PASSWORD: "testpwd"
+      POSTGRES_DB: "bikespace_test"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 1s
+      timeout: 5s
+      retries: 10
