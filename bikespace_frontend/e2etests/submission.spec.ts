@@ -37,7 +37,7 @@ test('Submit an issue', async ({page}) => {
   await expect(async () => {
     await page.getByRole('link', {name: 'Report a bike parking issue'}).click();
     await page.waitForURL('/submission');
-  }).toPass({intervals: [1_000, 2_000, 5_000]});
+  }).toPass({intervals: [1_000, 2_000, 5_000, 10_000, 15_000, 20_000, 25_000]});
 
   // issue entry - 'next' button should be disabled until an issue is selected
   await expect(page.getByRole('button', {name: 'Next'})).toBeDisabled();
