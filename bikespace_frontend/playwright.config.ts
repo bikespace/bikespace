@@ -72,19 +72,19 @@ export default defineConfig({
 
   /* Run your local dev server before starting the tests */
   webServer: [
-    // {
-    //   cwd: '..',
-    //   command: 'make run-flask-app',
-    //   url: 'http://127.0.0.1:8000',
-    //   stderr: 'pipe',
-    //   reuseExistingServer: !process.env.CI,
-    // },
-    // {
-    //   cwd: '..',
-    //   command: 'make dev-frontend',
-    //   url: 'http://127.0.0.1:8080',
-    //   stderr: 'pipe',
-    //   reuseExistingServer: !process.env.CI,
-    // },
+    {
+      cwd: '..',
+      command: 'make run-flask-app',
+      url: 'http://127.0.0.1:8000',
+      stderr: 'pipe',
+      reuseExistingServer: !process.env.CI,
+    },
+    {
+      cwd: '..',
+      command: 'make dev-frontend',
+      url: 'http://127.0.0.1:8080',
+      stderr: 'pipe',
+      reuseExistingServer: !process.env.CI,
+    },
   ],
 });
