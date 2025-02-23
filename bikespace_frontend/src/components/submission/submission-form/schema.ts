@@ -1,11 +1,7 @@
 import * as z from 'zod';
 import {zodResolver} from '@hookform/resolvers/zod';
 
-import {
-  IssueType,
-  ParkingDuration,
-  SubmissionPayload,
-} from '@/interfaces/Submission';
+import {IssueType, ParkingDuration} from '@/interfaces/Submission';
 import {useFormContext} from 'react-hook-form';
 
 export const submissionSchema = z.object({
