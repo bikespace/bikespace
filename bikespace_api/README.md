@@ -83,6 +83,7 @@ On macos:
 
 ```bash
 # list the processes running using the port
+# may not include background postgres server if you have it installed
 $ lsof -i :5432 
 
 # stop local database, replace $VERSION with what you have installed
