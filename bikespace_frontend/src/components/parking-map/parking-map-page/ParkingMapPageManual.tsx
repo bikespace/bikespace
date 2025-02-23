@@ -45,7 +45,7 @@ export function ParkingMapPageManual() {
       const [long, lat] = geometry.coordinates;
       return (
         <Marker key={index} latitude={lat} longitude={long}>
-          <img src={parkingIcon.src} height={16}/>
+          <img src={parkingIcon.src} height={16} />
         </Marker>
       );
     });
