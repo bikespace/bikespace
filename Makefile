@@ -60,7 +60,7 @@ run-flask-app-test: setup-py launch-db db-test-server
 	$(PYTHON) $(MANAGE_PY) seed-db && \
 	$(PYTHON) $(MANAGE_PY) run
 
-run-pytest: setup-py launch-db db-test-server
+run-pytest: setup-py
 	export APP_SETTINGS=bikespace_api.config.TestingConfig && \
 	export TEST_DATABASE_URI=postgresql://postgres:postgres@localhost:5432/bikespace_test && \
 	cd $(BIKESPACE_API_DIR) && \
@@ -68,7 +68,7 @@ run-pytest: setup-py launch-db db-test-server
 	$(PYTHON) $(MANAGE_PY) seed-db && \
 	$(PYTHON) -m pytest --cov=bikespace_api --cov-report lcov
 
-run-pytest-terminal: setup-py launch-db db-test-server
+run-pytest-terminal: setup-py
 	export APP_SETTINGS=bikespace_api.config.TestingConfig && \
 	export TEST_DATABASE_URI=postgresql://postgres:postgres@localhost:5432/bikespace_test && \
 	cd $(BIKESPACE_API_DIR) && \
