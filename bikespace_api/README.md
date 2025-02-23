@@ -76,3 +76,22 @@ To test the API is working with the database:
 - If you run the frontend application (`$ make run-frontend` in a separate terminal) and use it to make a new submission, you should be able to see it by making another GET request to the API or re-executing the table view in pgAdmin.
 
 To run tests, in a terminal run `$ make run-pytest`. You can find [more information about pytest in their documentation](https://docs.pytest.org/en/stable/).
+
+## Troubleshooting - multiple services using port 5432
+
+On macos:
+
+```bash
+# list the processes running using the port
+$ lsof -i :5432 
+
+# stop local database, replace $VERSION with what you have installed
+# postgres --version may help if you don't know
+$ sudo -u postgres pg_ctl -D /Library/PostgreSQL/$VERSION/data stop
+```
+
+If `postgres` or `pg_ctl` don't work for you, you might need to add postgres to your `.bash_profile` or `.zshrc` file by adding a line like this (replace 17 with your version number):
+
+```
+export PATH="/Library/PostgreSQL/17/bin/:$PATH"
+```
