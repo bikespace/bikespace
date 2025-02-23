@@ -50,8 +50,21 @@ export default function MyComponent() {
 
   return <button disabled={!hydrated}>Press Me!</button>
 }
-
 ```
+
+### Retry if interrupted by page hydration
+
+For navigation links, sometimes page hydration may interrupt the navigation action. To handle this, you can retry with `.toPass`:
+
+```tsx
+await expect(async () => {
+    await page.getByRole('link', {name: 'Report a bike parking issue'}).click();
+    await expect(page).toHaveURL('/submission', {timeout: 100});
+  }).toPass();
+```
+
+`.toPass` must have an action and then an `expect` statement to be resolved as a result of that action.
+
 
 ### Quirks with toMatchAriaSnapshot
 

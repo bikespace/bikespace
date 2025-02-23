@@ -21,23 +21,17 @@ test.use({
 test.beforeEach(async ({context}) => {
   // test isolation: block all network requests except for localhost
   await context.route(/https?:\/\/(?!localhost).+/, route => route.abort());
-
-  // mock submissions API
-  await context.route('**/api/v2/submissions', async route => {
-    const json = {status: 'created'};
-    await route.fulfill({status: 201, json: json});
-  });
 });
 
 test('Submit an issue', async ({page}, testInfo) => {
   // navigate to /submissions from home page
   await page.goto('/');
 
-  // purpose of .toPass and custom intervals: ensures retry if page hydrates during navigation; particularly common problem on webkit
+  // purpose of .toPass: ensures retry if page hydrates during navigation; particularly common problem on webkit
   await expect(async () => {
     await page.getByRole('link', {name: 'Report a bike parking issue'}).click();
-    await page.waitForURL('/submission');
-  }).toPass({intervals: [1_000, 2_000, 5_000, 10_000, 15_000, 20_000, 25_000]});
+    await expect(page).toHaveURL('/submission', {timeout: 100});
+  }).toPass();
 
   // issue entry - 'next' button should be disabled until an issue is selected
   await expect(page.getByRole('button', {name: 'Next'})).toBeDisabled();
