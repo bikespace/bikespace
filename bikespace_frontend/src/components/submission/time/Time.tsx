@@ -14,12 +14,14 @@ export const Time = () => {
 
   return (
     <div className={styles.submissionTime}>
-      <FormSectionHeader
-        title="When did this happen?"
-        name="parkingTime.date"
-      />
+      <label htmlFor="when">
+        <FormSectionHeader
+          title="When did this happen?"
+          name="parkingTime.date"
+        />
+      </label>
       <input
-        data-testid="when"
+        id="when"
         type="datetime-local"
         name="parkingTime.date"
         value={convertToDateTimeLocalString(dateTime)}
