@@ -150,4 +150,6 @@ test-e2e:
 	npx playwright install --with-deps && \
 	npx playwright test
 
-.PHONY: setup-py clean pip-freeze run-flask-app lint-py seed-db recreate-db fly-deploy-api fly-deploy-frontend run-frontend build-frontend launch-db stop-db db-test-server
+test-all: run-pytest test-frontend test-e2e
+
+.PHONY: setup-py clean pip-freeze run-flask-app lint-py seed-db recreate-db fly-deploy-api fly-deploy-frontend run-frontend build-frontend launch-db stop-db db-test-server test-e2e test-all
