@@ -1,5 +1,8 @@
 import json
 from datetime import datetime
+
+from pytest import mark
+
 from bikespace_api.api.models import Submission, IssueType, ParkingDuration
 
 
@@ -87,6 +90,7 @@ def test_get_submissions_with_id(test_client):
     assert type(res["comments"]) == str
 
 
+@mark.uses_db
 def test_post_submissions(test_client):
     dummy_submission = {
         "latitude": 43.6532,
