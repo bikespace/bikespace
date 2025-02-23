@@ -58,7 +58,7 @@ run-flask-app-test: setup-py launch-db db-test-server
 	export APP_SETTINGS=bikespace_api.config.TestingConfig && \
 	export TEST_DATABASE_URI=postgresql://postgres:postgres@localhost:5432/bikespace_test && \
 	export FLASK_DEBUG=true && \
-	export FLASK_RUN_PORT=8000 && \
+	export FLASK_RUN_PORT=8001 && \
 	$(PYTHON) $(MANAGE_PY) recreate-db && \
 	$(PYTHON) $(MANAGE_PY) seed-db && \
 	$(PYTHON) $(MANAGE_PY) run
@@ -107,9 +107,9 @@ db-stamp-heads:
 	$(PYTHON) $(MANAGE_PY) db stamp heads --directory $(BIKESPACE_DB_MIGRATIONS)
 
 # Run a postgres Docker container unless in CI environment
-launch-db: stop-db
+launch-db:
 ifneq ($(CI),true)
-	docker run --name db \
+	docker start db || docker run --name db \
 	--detach --rm \
 	--env POSTGRES_USER=postgres \
 	--env POSTGRES_PASSWORD=postgres \
@@ -132,6 +132,9 @@ run-frontend: build-frontend
 
 dev-frontend:
 	cd $(BIKESPACE_FRONTEND_DIR) && npm install && npm run develop
+
+dev-frontend-test:
+	cd $(BIKESPACE_FRONTEND_DIR) && npm install && npm run develop-test
 	
 lint-frontend:
 	cd $(BIKESPACE_FRONTEND_DIR) && npm install && npm run lint

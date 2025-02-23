@@ -3,7 +3,7 @@ import {test, expect} from '@playwright/test';
 const testLat = 43.76;
 const testLong = -79.43;
 const apiURL: string =
-  process.env.BIKESPACE_API_URL ?? 'http://localhost:8000/api/v2';
+  process.env.BIKESPACE_API_URL ?? 'http://localhost:8001/api/v2';
 
 test.use({
   geolocation: {
