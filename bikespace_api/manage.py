@@ -1,11 +1,8 @@
-import unittest
 from flask.cli import FlaskGroup
 
 from bikespace_api import create_app, db
 from bikespace_api.api.models import Submission, IssueType, ParkingDuration
 from datetime import datetime
-
-import json
 
 app = create_app()
 cli = FlaskGroup(create_app=create_app)
