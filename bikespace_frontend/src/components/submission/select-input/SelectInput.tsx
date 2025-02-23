@@ -11,9 +11,16 @@ interface SelectInputProps {
   children: React.ReactNode;
   value: string;
   name: 'issues' | 'parkingTime.parkingDuration';
+  disabled?: boolean;
 }
 
-export function SelectInput({type, value, name, children}: SelectInputProps) {
+export function SelectInput({
+  type,
+  value,
+  name,
+  children,
+  disabled,
+}: SelectInputProps) {
   const {register} = useFormContext<SubmissionSchema>();
 
   const id = `${name}_${value}`;
@@ -27,6 +34,7 @@ export function SelectInput({type, value, name, children}: SelectInputProps) {
         id={id}
         data-value={value}
         data-umami-event={id}
+        disabled={disabled}
       />
       <label htmlFor={id}>
         <div className={styles.baseButton}>

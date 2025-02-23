@@ -45,6 +45,7 @@ requests==2.32.2
 rich==13.5.2
 setuptools==75.8.0
 SQLAlchemy==2.0.37
+SQLAlchemy-Utils==0.41.2
 tomli==2.0.1
 typing_extensions==4.12.2
 urllib3==2.2.2

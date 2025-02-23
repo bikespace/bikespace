@@ -67,7 +67,7 @@ describe('Time', () => {
 
     const inputDate = '2024-06-17T00:00';
 
-    const dateTime = screen.getByTestId('when');
+    const dateTime = screen.getByLabelText('When did this happen?');
 
     act(() => {
       fireEvent.change(dateTime, {target: {value: inputDate}});
