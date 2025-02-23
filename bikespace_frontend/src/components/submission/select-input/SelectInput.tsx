@@ -11,7 +11,7 @@ interface SelectInputProps {
   children: React.ReactNode;
   value: string;
   name: 'issues' | 'parkingTime.parkingDuration';
-  disabled: boolean;
+  disabled?: boolean;
 }
 
 export function SelectInput({
