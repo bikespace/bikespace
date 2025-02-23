@@ -29,7 +29,7 @@ test.beforeEach(async ({context}) => {
   });
 });
 
-test('Submit an issue', async ({page}) => {
+test('Submit an issue', async ({page}, testInfo) => {
   // navigate to /submissions from home page
   await page.goto('/');
 
@@ -57,7 +57,8 @@ test('Submit an issue', async ({page}) => {
   await page.getByRole('button', {name: 'Next'}).click();
 
   // comment entry
-  await page.getByRole('textbox').fill('Test comment');
+  const testComment = `Comment from end-to-end test "${testInfo.title}" on ${testInfo.project.name}`;
+  await page.getByRole('textbox').fill(testComment);
   await page.getByRole('button', {name: 'Next'}).click();
 
   // check summary content
@@ -72,7 +73,7 @@ test('Submit an issue', async ({page}) => {
   );
   await expect(submitSummary).toContainText(/Time: Sun Jan \d?1 2023/);
   await expect(submitSummary).toContainText('Parking duration needed: hours');
-  await expect(submitSummary).toContainText('Comments: Test comment');
+  await expect(submitSummary).toContainText(`Comments: ${testComment}`);
 
   // check API call on submission
   const requestPromise = page.waitForRequest(apiURL + '/submissions');
@@ -82,7 +83,7 @@ test('Submit an issue', async ({page}) => {
     issues: ['not_provided'],
     parking_time: '2023-01-01T17:30:00.000Z',
     parking_duration: 'hours',
-    comments: 'Test comment',
+    comments: testComment,
   });
   expect(request.postDataJSON()).toHaveProperty('latitude');
   expect(request.postDataJSON()).toHaveProperty('longitude');
