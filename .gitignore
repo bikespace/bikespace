@@ -129,3 +129,4 @@ coverage/
 /bikespace_frontend/out
 /bikespace_frontend/.next
 bikespace_frontend/next-env.d.ts
+/bikespace_dashboard/node_modules

@@ -3,7 +3,7 @@ import {test, expect} from '@playwright/test';
 const testLat = 43.76;
 const testLong = -79.43;
 const apiURL: string =
-  process.env.BIKESPACE_API_URL ?? 'http://localhost:8000/api/v2';
+  process.env.BIKESPACE_API_URL ?? 'http://localhost:8001/api/v2';
 
 test.use({
   geolocation: {
@@ -21,22 +21,16 @@ test.use({
 test.beforeEach(async ({context}) => {
   // test isolation: block all network requests except for localhost
   await context.route(/https?:\/\/(?!localhost).+/, route => route.abort());
-
-  // mock submissions API
-  await context.route('**/api/v2/submissions', async route => {
-    const json = {status: 'created'};
-    await route.fulfill({status: 201, json: json});
-  });
 });
 
-test('Submit an issue', async ({page}) => {
+test('Submit an issue', async ({page}, testInfo) => {
   // navigate to /submissions from home page
   await page.goto('/');
 
-  // purpose of .toPass: sometimes this first link click is flaky on webkit, not sure why
+  // purpose of .toPass: ensures retry if page hydrates during navigation; particularly common problem on webkit
   await expect(async () => {
     await page.getByRole('link', {name: 'Report a bike parking issue'}).click();
-    await page.waitForURL('/submission');
+    await expect(page).toHaveURL('/submission', {timeout: 100});
   }).toPass();
 
   // issue entry - 'next' button should be disabled until an issue is selected
@@ -57,7 +51,8 @@ test('Submit an issue', async ({page}) => {
   await page.getByRole('button', {name: 'Next'}).click();
 
   // comment entry
-  await page.getByRole('textbox').fill('Test comment');
+  const testComment = `Comment from end-to-end test "${testInfo.title}" on ${testInfo.project.name}`;
+  await page.getByRole('textbox').fill(testComment);
   await page.getByRole('button', {name: 'Next'}).click();
 
   // check summary content
@@ -72,7 +67,7 @@ test('Submit an issue', async ({page}) => {
   );
   await expect(submitSummary).toContainText(/Time: Sun Jan \d?1 2023/);
   await expect(submitSummary).toContainText('Parking duration needed: hours');
-  await expect(submitSummary).toContainText('Comments: Test comment');
+  await expect(submitSummary).toContainText(`Comments: ${testComment}`);
 
   // check API call on submission
   const requestPromise = page.waitForRequest(apiURL + '/submissions');
@@ -82,7 +77,7 @@ test('Submit an issue', async ({page}) => {
     issues: ['not_provided'],
     parking_time: '2023-01-01T17:30:00.000Z',
     parking_duration: 'hours',
-    comments: 'Test comment',
+    comments: testComment,
   });
   expect(request.postDataJSON()).toHaveProperty('latitude');
   expect(request.postDataJSON()).toHaveProperty('longitude');

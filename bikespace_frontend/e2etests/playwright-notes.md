@@ -33,7 +33,7 @@ npx playwright codegen http://localhost:8080 --timezone="America/Toronto" --geol
 
 ### Server pre-requisites
 
-`npx playwright test` will start up the frontend server and the api server if they are not already running (using the configuration in `playwright.config.ts` under `webServer`). The config uses the make commands to run the servers, for consistency. For the API server, postgres will have to be set up (see instructions in the `./bikespace_api` README).
+`npx playwright test` will start up the frontend server and the api server if they are not already running (using the configuration in `playwright.config.ts` under `webServer`). The config uses the make commands to run the servers, for consistency. For the API server, make sure that you have docker running so that it can launch the database container.
 
 `npx playwright codegen` does not appear to auto-start the development servers, so you will have to run e.g. `make dev-frontend` from the project root first and then separately run `npx playwright codegen` from `./bikespace_frontend`.
 
@@ -50,8 +50,21 @@ export default function MyComponent() {
 
   return <button disabled={!hydrated}>Press Me!</button>
 }
-
 ```
+
+### Retry if navigation interrupted by page hydration
+
+For navigation links, sometimes page hydration may interrupt the navigation action. To handle this, you can retry with `.toPass`:
+
+```tsx
+await expect(async () => {
+    await page.getByRole('link', {name: 'Report a bike parking issue'}).click();
+    await expect(page).toHaveURL('/submission', {timeout: 100});
+  }).toPass();
+```
+
+`.toPass` must have an action and then an `expect` statement to be resolved as a result of that action.
+
 
 ### Quirks with toMatchAriaSnapshot
 

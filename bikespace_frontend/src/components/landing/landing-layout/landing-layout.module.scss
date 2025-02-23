@@ -8,7 +8,7 @@ $even-lighter-grey: #EEE;
 
 .pageMain {
   margin: 0 auto;
-  padding: 10%;
+  padding: 1rem;
   max-width: $wrapper-max-width;
   justify-content: center;
 
@@ -21,6 +21,11 @@ $even-lighter-grey: #EEE;
 
   div, iframe, h1, h2, h3, h4, h5, h6, p, ul, ol, blockquote, img, table, pre, figure {
     margin-bottom: 1rem;
+  }
+
+  // prevent floating nav bar from overlapping heading when using anchor links
+  h1, h2, h3, h4, h5, h6 {
+    scroll-margin-top: calc(54px + 1rem);
   }
 
   h1 {
@@ -89,6 +94,14 @@ $even-lighter-grey: #EEE;
       color: #25c252;
       text-decoration-thickness: 2px;
     }
+  }
+
+  sup {
+    font-size: 0.83em;
+    line-height: 0.5em;
+    vertical-align: baseline;
+    position: relative;
+    top: -0.4em;
   }
 
   img {

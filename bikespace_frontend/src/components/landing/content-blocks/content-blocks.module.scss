@@ -106,7 +106,7 @@ a.navLink {
 
   border: 1px solid $color-primary-d50p;
   border-radius: 1rem;
-  max-width: 300px;
+  max-width: 240px;
   box-shadow: $shadowSize $shadowSize $shadowSize $color-secondary-light-grey;
 
   &:hover {
@@ -119,8 +119,8 @@ a.navLink {
     padding: $fbPadding;
     img {
       margin-bottom: 0;
-      max-width: calc(300px - 2 * $fbPadding);
-      height: calc(300px - 2 * $fbPadding);
+      max-width: calc(240px - 2 * $fbPadding);
+      height: calc(240px - 2 * $fbPadding);
       object-fit: contain;
     }
   }
@@ -202,5 +202,21 @@ a.navLink {
   
   .buttondownReferLink {
     font-size: 0.9rem;
+  }
+}
+
+.iconHeading {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: left;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+div.iconHeadingChildren {
+  margin-bottom: 0;
+  h2, h3, h4, h5, h6 {
+    margin-bottom: 0;
   }
 }

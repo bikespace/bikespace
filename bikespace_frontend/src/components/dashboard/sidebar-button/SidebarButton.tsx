@@ -16,7 +16,7 @@ export function SidebarButton({
   return (
     <button
       {...props}
-      className={`${styles.primaryBtn} ${className}`}
+      className={`${styles.primaryBtn}` + (className ? ` ${className}` : '')}
       data-umami-event={umamiEvent}
     >
       {children}

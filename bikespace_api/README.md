@@ -5,20 +5,11 @@ The API service is a python Flask application paired with a Postgres database.
 
 To develop the API locally you'll require the following things:
  - Python version 3.12.0 or greater
- - Postgres databases running on port 5432, version 15 or greater
+ - Docker (docker daemon) running to launch Postgres database container
 
-## Database
+Several tasks (e.g. running the API locally, running certain tests) require a database to be running, but the make targets will take care of launching a Postgres container for you as long as you have Docker running.
 
-To successfully develop and run the API locally we require two Postgres databases running along side the Flask application. You will have to install Postgres on your system and run the set-up steps noted below. Once set up, ensure that Postgres is running in port `5432` with an empty database `bikespace_dev` with default credentials of `postgres:postgres` (i.e. username and password are both `postgres`). You will also need an empty database `bikespace_test` with the same configuration to run unit tests.
-
-Setting up the database:
-```shell
-#recreates an empty database
-make recreate-db
-
-#seed the database with test data
-make seed-db
-```
+To stop the Postgres container, just run `make stop-db`.
 
 ## Running the API service
 
@@ -27,52 +18,46 @@ Running the backend service:
 ```shell 
 $ make run-flask-app
 ```
-The development server should now to be running at `127.0.0.1:8000`
+The development server should now be running at `localhost:8000`
 
 ## API Docs
 
 The api follows an OpenAPI 3.0 Spec, the spec can be found at `bikespace_api/bikespace_api/static/bikespace-open-api.yaml`
 
-The swagger-ui to render the OpenAPI spec can be found at `127.0.0.1:8000/api/v2/docs`
+The swagger-ui to render the OpenAPI spec can be found at `localhost:8000/api/v2/docs`
 
-## Database Set-Up
+## Observing the database directly
 
-These instructions are for setting up the database for use in local development.
+There are several options for clients that will allow you to interact with the database. Two examples:
 
-### Install Postgres
+- [Postico](https://eggerapps.at/postico2/)
+- [pgAdmin](https://www.pgadmin.org/) - default installed with Postgres
 
-Download the version of Postgres that matches your system using the links on [postgresql.org](https://www.postgresql.org/).
+To connect and view:
 
-You should be able to use the default installation options in your installer package:
+- Register a connection (localhost:5432 with user `postgres` and password `postgres`)
+- On pgAdmin right-click the `bikespace_dev` or `bikespace_test` database and select Refresh. The database tables are under Schemas. You can right-click a table and select View/Edit Data to see the entries.
+- On Postico, click on the `bikespace_dev` or `bikespace_test` database and then click on the table in the left-hand menu.
 
-- When the installer prompts you for the password for the database superuser (`postgres`), enter `postgres`.
-- Leave the default port as `5432`.
-- You don't need to run stack builder after installation.
 
-### Create and set up the bikespace_dev and bikespace_test databases
+## Troubleshooting - multiple services using port 5432
 
-These instructions are for the default pgAdmin app, but you may find other apps like [Postico](https://eggerapps.at/postico2/) easier to use.
+You may run into this error if you have your own installation of Postgres already running or if there is a Postgres client listening on the 5432 port before the database Docker container launches.
 
-In pgAdmin:
+On macos:
 
-- Open the Servers list on the left and enter the password (`postgres`).
-- Right-click on Databases, then select Create > Database...
-- Database name should be `bikespace_dev`; select Save to create.
-- Do the same steps to create an empty database named `bikespace_test`.
+```bash
+# list the processes running using the port
+# may not include background postgres server if you have it installed
+$ lsof -i :5432 
 
-In a terminal (in the root folder of the repo):
+# stop local database, replace $VERSION with what you have installed
+# postgres --version may help if you don't know
+$ sudo -u postgres pg_ctl -D /Library/PostgreSQL/$VERSION/data stop
+```
 
-- run `$ make recreate-db` to create the table(s) used by the API.
-- run `$ make seed-db` to enter dummy data to be used during development.
+If `postgres` or `pg_ctl` don't work for you, you might need to add postgres to your `.bash_profile` or `.zshrc` file by adding a line like this (replace 17 with your version number):
 
-(You do not need to run these two steps for `bikespace_test`, the `run-pytest` make target will do them for you.)
-
-To see the results of these actions in pgAdmin, right-click the `bikespace_dev` database and select Refresh. The database tables are under Schemas. You can right-click a table and select View/Edit Data to see the entries.
-
-To test the API is working with the database:
-
-- In a terminal, run `$ make run-flask-app` and navigate to the local url it runs on (usually http://127.0.0.1:8000) to open the Swagger UI page.
-- On the Swagger page, you can open GET and select "Try it out" - if everything is working correctly, the API should return the dummy data.
-- If you run the frontend application (`$ make run-frontend` in a separate terminal) and use it to make a new submission, you should be able to see it by making another GET request to the API or re-executing the table view in pgAdmin.
-
-To run tests, in a terminal run `$ make run-pytest`. You can find [more information about pytest in their documentation](https://docs.pytest.org/en/stable/).
+```
+export PATH="/Library/PostgreSQL/17/bin/:$PATH"
+```

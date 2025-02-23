@@ -40,7 +40,7 @@ export function Header() {
         >
           <ul>
             <li>
-              <a href="https://bikespace.ca/">About</a>
+              <a href="/about">About</a>
             </li>
             <li>
               <a href="https://github.com/bikespace/bikespace/tree/main/">

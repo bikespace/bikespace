@@ -1,6 +1,7 @@
 // import withMDX from '@next/mdx';
 import createMDX from '@next/mdx';
 import remarkGfm from 'remark-gfm';
+import rehypeSlug from 'rehype-slug';
 
 const nextConfig = {
   // Enable SSG
@@ -21,6 +22,7 @@ const nextConfig = {
 const withMDX = createMDX({
   options: {
     remarkPlugins: [remarkGfm],
+    rehypePlugins: [rehypeSlug],
   },
 });
 
