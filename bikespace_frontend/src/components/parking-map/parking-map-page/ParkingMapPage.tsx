@@ -6,6 +6,7 @@ import Map, {
   MapLayerMouseEvent,
   NavigationControl,
   PointLike,
+  Marker,
 } from 'react-map-gl/maplibre';
 // import {trackUmamiEvent} from '@/utils';
 
@@ -14,11 +15,15 @@ import {ParkingLayer} from './ParkingLayer';
 import {BikeLaneLayer} from './BikeLaneLayer';
 
 import type {MapRef} from 'react-map-gl/maplibre';
+import type {Point} from 'geojson';
 
 import 'maplibre-gl/dist/maplibre-gl.css';
 import styles from './parking-map-page.module.scss';
 import {MapGeoJSONFeature, QueryRenderedFeaturesOptions} from 'maplibre-gl';
 import {ParkingFeatureDescription} from './parking-feature-description/ParkingFeatureDescription';
+
+import parkingSidebarIcon from '@/assets/icons/parking_map/parking_sidebar.png';
+import parkingSelectedIcon from '@/assets/icons/parking_map/parking_selected.png';
 
 export function ParkingMapPage() {
   const [defaultLocation, setDefaultLocation] = useState({
@@ -38,16 +43,21 @@ export function ParkingMapPage() {
     MapGeoJSONFeature[]
   >([]);
   const [mapFeatureList, setMapFeatureList] = useState<MapGeoJSONFeature[]>([]);
+  const sidebarFeatureIDs = sidebarFeatureList.map(f => f.id);
+  const mapFeatureIDs = mapFeatureList.map(f => f.id);
   const mapRef = useRef<MapRef>(null);
 
   function handleLayerClick(e: MapLayerMouseEvent) {
     const map = e.target;
     const features = map.queryRenderedFeatures(
       e.point as PointLike,
-      {layers: ['bicycle-parking']} as QueryRenderedFeaturesOptions
+      {
+        layers: ['bicycle-parking'],
+      } as QueryRenderedFeaturesOptions
     );
     setSidebarFeatureList(features);
     setMapFeatureList(features);
+    console.log(features);
 
     if (sidebarFeatureList.length > 0) {
       for (const f of sidebarFeatureList) {
@@ -89,6 +99,13 @@ export function ParkingMapPage() {
     map.setFeatureState({source: f.source, id: f.id}, {selected: true});
   }
 
+  function addSprite() {
+    const map = mapRef.current;
+    if (!map) return;
+
+    map?.setSprite('/parking_map/parking_sprites');
+  }
+
   return (
     <main className={styles.parkingMapPage}>
       <Sidebar>
@@ -112,6 +129,7 @@ export function ParkingMapPage() {
         }}
         style={{width: '100%', height: '100%'}}
         mapStyle={`https://api.maptiler.com/maps/streets/style.json?key=${process.env.MAPTILER_API_KEY}`}
+        onLoad={addSprite}
         onClick={handleLayerClick}
         ref={mapRef}
       >
@@ -119,6 +137,36 @@ export function ParkingMapPage() {
         <GeolocateControl position="top-left" />
         <BikeLaneLayer />
         <ParkingLayer />
+        {sidebarFeatureList.map(feature => {
+          const geometry = feature.geometry as Point;
+          const [long, lat] = geometry.coordinates;
+          return (
+            <Marker
+              key={feature.id}
+              latitude={lat}
+              longitude={long}
+              anchor="bottom"
+              offset={[0, 6]}
+            >
+              <img src={parkingSidebarIcon.src} height={42} />
+            </Marker>
+          );
+        })}
+        {mapFeatureList.map(feature => {
+          const geometry = feature.geometry as Point;
+          const [long, lat] = geometry.coordinates;
+          return (
+            <Marker
+              key={feature.id}
+              latitude={lat}
+              longitude={long}
+              anchor="bottom"
+              offset={[0, 6]}
+            >
+              <img src={parkingSelectedIcon.src} height={42} />
+            </Marker>
+          );
+        })}
       </Map>
     </main>
   );

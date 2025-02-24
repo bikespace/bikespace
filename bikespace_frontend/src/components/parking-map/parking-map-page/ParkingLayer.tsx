@@ -62,36 +62,28 @@ export function ParkingLayer() {
     type: 'symbol',
     source: 'bicycle-parking',
     layout: {
-      'icon-image': 'parking_icon',
+      'icon-image': 'parking',
       'icon-anchor': 'bottom',
       'icon-overlap': 'always',
-      'icon-size': 1 / 12,
+      'icon-size': 2 / 7,
       'text-field': ['get', 'capacity'],
-      'text-size': 8,
+      'text-size': 7,
       'text-anchor': 'top',
-      'text-offset': [0, -2.5],
-      'text-overlap': 'always',
-    },
-    paint: {
-      'icon-opacity': [
-        'case',
-        ['boolean', ['feature-state', 'selected'], false],
-        1,
-        ['boolean', ['feature-state', 'sidebar'], false],
-        0.6,
-        0.2,
-      ],
+      'text-offset': [0, -2.6],
+      'text-optional': true,
     },
   };
 
   return (
-    <Source
-      id="bicycle-parking"
-      type="geojson"
-      data={bicycleParkingURL}
-      generateId={true}
-    >
-      <Layer {...parkingLayer} />
-    </Source>
+    <>
+      <Source
+        id="bicycle-parking"
+        type="geojson"
+        data={bicycleParkingURL}
+        generateId={true}
+      >
+        <Layer {...parkingLayer} />
+      </Source>
+    </>
   );
 }
