@@ -72,6 +72,14 @@ export function ParkingLayer() {
       'text-offset': [0, -2.6],
       'text-optional': true,
     },
+    paint: {
+      'icon-opacity': [
+        'case',
+        ['boolean', ['feature-state', 'sidebar'], false],
+        0,
+        1,
+      ],
+    },
   };
 
   return (

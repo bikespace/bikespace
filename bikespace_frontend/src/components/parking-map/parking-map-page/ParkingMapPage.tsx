@@ -57,7 +57,6 @@ export function ParkingMapPage() {
     );
     setSidebarFeatureList(features);
     setMapFeatureList(features);
-    console.log(features);
 
     if (sidebarFeatureList.length > 0) {
       for (const f of sidebarFeatureList) {
@@ -113,6 +112,9 @@ export function ParkingMapPage() {
           {sidebarFeatureList.length > 0
             ? sidebarFeatureList.map(f => (
                 <ParkingFeatureDescription
+                  selected={
+                    mapFeatureIDs.includes(f.id) && mapFeatureIDs.length === 1
+                  }
                   feature={f}
                   handleClick={handleFeatureDescriptionClick}
                   key={f.id}
@@ -148,7 +150,7 @@ export function ParkingMapPage() {
               anchor="bottom"
               offset={[0, 6]}
             >
-              <img src={parkingSidebarIcon.src} height={42} />
+              <img src={parkingSidebarIcon.src} height={44} />
             </Marker>
           );
         })}
@@ -163,7 +165,7 @@ export function ParkingMapPage() {
               anchor="bottom"
               offset={[0, 6]}
             >
-              <img src={parkingSelectedIcon.src} height={42} />
+              <img src={parkingSelectedIcon.src} height={44} />
             </Marker>
           );
         })}

@@ -7,11 +7,13 @@ import styles from './parking-feature-description.module.scss';
 export interface ParkingFeatureDescriptionProps {
   feature: MapGeoJSONFeature;
   handleClick: Function; // TODO make more specific?
+  selected: boolean;
 }
 
 export function ParkingFeatureDescription({
   feature,
   handleClick,
+  selected,
 }: ParkingFeatureDescriptionProps) {
   if (!feature.properties) {
     return <p>Feature has no properties</p>;
@@ -34,7 +36,11 @@ export function ParkingFeatureDescription({
     indicators.length > 0 ? ' ' + indicators.join(' ') : null;
 
   return (
-    <div className={styles.featureDescription}>
+    <div
+      className={
+        selected ? styles.featureDescriptionSelected : styles.featureDescription
+      }
+    >
       <h3>
         <a href="#" onClick={(e: React.MouseEvent) => handleClick(e, feature)}>
           {parkingTypeDescription} ({capacityDescription}){indicatorList}

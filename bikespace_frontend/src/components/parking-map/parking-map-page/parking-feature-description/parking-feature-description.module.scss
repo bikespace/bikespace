@@ -1,5 +1,17 @@
-.featureDescription {
+@mixin base-feature {
   margin-bottom: 1rem;
   padding: 4px;
   background-color: white;
+  border: 3px solid;
+  border-radius: 4px;
+}
+
+.featureDescription {
+  @include base-feature;
+  border-color: white;
+}
+
+.featureDescriptionSelected {
+  @include base-feature;
+  border-color: #ed125b;
 }
