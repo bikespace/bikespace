@@ -6,6 +6,10 @@ import {DateRangeInterval} from '@/interfaces/Submission';
 
 import {FilterDateRangeCustom} from './FilterDateRangeCustom';
 
+// Mock timing to set failure state where the date corresponding to the current time differs between UTC and ET
+const todayDate = new Date('2024-12-31T22:00:00');
+jest.useFakeTimers({advanceTimers: true}).setSystemTime(todayDate);
+
 const mockTrackUmamiEvent = jest.fn().mockName('mockTrackUmamiEvent');
 
 jest.mock('@/utils', () => ({
@@ -56,9 +60,8 @@ describe('FilterDateRangeCustom', () => {
     const month = today.getMonth();
     const day = today.getDate();
 
-    /* `+ 'T00:00:00` and 'T23:59:59' are added here in part because of a known quirk with Date API - date-only text is interpreted as UTC and date-time text is interpreted in the user time zone. See: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date#date_time_string_format */
-    const startDateValue = new Date(Date.UTC(year, month, day, 0, 0, 0, 0));
-    const endDateValue = new Date(Date.UTC(year, month, day, 23, 59, 59, 999));
+    const startDateValue = new Date(year, month, day, 0, 0, 0, 0);
+    const endDateValue = new Date(year, month, day, 23, 59, 59, 999);
 
     const user = userEvent.setup();
     const submitButton = screen.getByRole('button');

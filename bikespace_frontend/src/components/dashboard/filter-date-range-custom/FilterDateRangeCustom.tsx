@@ -26,11 +26,20 @@ export function FilterDateRangeCustom() {
     mode: 'onChange',
   });
 
+  /**
+   * Note: the intended behaviour is for the date specified to be interpreted in the User's timezone. react-hook-form provides dates in the UTC timezone, so .setZone() below is used to adjust the date to 'local'.
+   */
   const onSubmit = (data: CustomDateRangeSchema) => {
     setFilters({
       dateRange: {
-        from: DateTime.fromJSDate(data.from).toUTC().startOf('day').toJSDate(),
-        to: DateTime.fromJSDate(data.to).toUTC().endOf('day').toJSDate(),
+        from: DateTime.fromJSDate(data.from)
+          .setZone('local')
+          .startOf('day')
+          .toJSDate(),
+        to: DateTime.fromJSDate(data.to)
+          .setZone('local')
+          .endOf('day')
+          .toJSDate(),
       },
       dateRangeInterval: DateRangeInterval.CustomRange,
     });
