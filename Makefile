@@ -13,6 +13,9 @@ CURR_PYTHON_VERSION := $(shell python3 -c 'import platform; print(platform.pytho
 LOWEST_PYTHON_VERSION := $(shell printf '%s\n' $(MIN_PYTHON_VERSION) $(CURR_PYTHON_VERSION) | sort -V | head -n1)
 VENV = venv
 
+# used by github actions; will be overridden if already set in the environment
+CI ?= false
+
 export APP_SETTINGS = bikespace_api.config.DevelopmentConfig
 export DATABASE_URL = postgresql://postgres:postgres@localhost:5432/bikespace_dev
 export TEST_DATABASE_URI = postgresql://postgres:postgres@localhost:5432/bikespace_test
@@ -42,14 +45,25 @@ $(VENV): check-python-version $(BIKESPACE_API_DIR)/requirements.txt
 pip-freeze: $(BIKESPACE_API_DIR)/requirements.txt
 	$(PIP) freeze > $(BIKESPACE_API_DIR)/requirements.txt
 
-run-flask-app: setup-py
+run-flask-app: setup-py launch-db db-test-server
 	export APP_SETTINGS=bikespace_api.config.DevelopmentConfig && \
 	export DATABASE_URL=postgresql://postgres:postgres@localhost:5432/bikespace_dev && \
 	export FLASK_DEBUG=true && \
 	export FLASK_RUN_PORT=8000 && \
+	$(PYTHON) $(MANAGE_PY) recreate-db && \
+	$(PYTHON) $(MANAGE_PY) seed-db && \
 	$(PYTHON) $(MANAGE_PY) run
 
-run-pytest: setup-py
+run-flask-app-test: setup-py launch-db db-test-server
+	export APP_SETTINGS=bikespace_api.config.TestingConfig && \
+	export TEST_DATABASE_URI=postgresql://postgres:postgres@localhost:5432/bikespace_test && \
+	export FLASK_DEBUG=true && \
+	export FLASK_RUN_PORT=8001 && \
+	$(PYTHON) $(MANAGE_PY) recreate-db && \
+	$(PYTHON) $(MANAGE_PY) seed-db && \
+	$(PYTHON) $(MANAGE_PY) run
+
+run-pytest: setup-py launch-db db-test-server
 	export APP_SETTINGS=bikespace_api.config.TestingConfig && \
 	export TEST_DATABASE_URI=postgresql://postgres:postgres@localhost:5432/bikespace_test && \
 	cd $(BIKESPACE_API_DIR) && \
@@ -57,7 +71,7 @@ run-pytest: setup-py
 	$(PYTHON) $(MANAGE_PY) seed-db && \
 	$(PYTHON) -m pytest --cov=bikespace_api --cov-report lcov
 
-run-pytest-terminal: setup-py
+run-pytest-terminal: setup-py launch-db db-test-server
 	export APP_SETTINGS=bikespace_api.config.TestingConfig && \
 	export TEST_DATABASE_URI=postgresql://postgres:postgres@localhost:5432/bikespace_test && \
 	cd $(BIKESPACE_API_DIR) && \
@@ -92,6 +106,24 @@ db-merge-heads:
 db-stamp-heads:
 	$(PYTHON) $(MANAGE_PY) db stamp heads --directory $(BIKESPACE_DB_MIGRATIONS)
 
+# Run a postgres Docker container unless in CI environment
+launch-db:
+ifneq ($(CI),true)
+	docker start bikespace_db || docker run --name bikespace_db \
+	--detach --rm \
+	--env POSTGRES_USER=postgres \
+	--env POSTGRES_PASSWORD=postgres \
+	-p 5432:5432 \
+	postgres
+endif
+
+stop-db:
+	docker stop bikespace_db
+
+# Confirm that a postgres server is running at localhost:5432. Retries until timeout.
+db-test-server: setup-py
+	$(PYTHON) $(MANAGE_PY) test-db-server
+
 fly-deploy-api:
 	cd $(BIKESPACE_API_DIR) && flyctl deploy
 
@@ -100,6 +132,9 @@ run-frontend: build-frontend
 
 dev-frontend:
 	cd $(BIKESPACE_FRONTEND_DIR) && npm install && npm run develop
+
+dev-frontend-test:
+	cd $(BIKESPACE_FRONTEND_DIR) && npm install && npm run develop-test
 	
 lint-frontend:
 	cd $(BIKESPACE_FRONTEND_DIR) && npm install && npm run lint
@@ -113,4 +148,11 @@ build-frontend:
 test-frontend:
 	cd $(BIKESPACE_FRONTEND_DIR) && npm install && npm run test
 
-.PHONY: setup-py clean pip-freeze run-flask-app lint-py seed-db recreate-db fly-deploy-api fly-deploy-frontend run-frontend build-frontend 
+test-e2e:
+	cd $(BIKESPACE_FRONTEND_DIR) && npm install && \
+	npx playwright install --with-deps && \
+	npx playwright test
+
+test-all: run-pytest test-frontend test-e2e
+
+.PHONY: setup-py clean pip-freeze run-flask-app lint-py seed-db recreate-db fly-deploy-api fly-deploy-frontend run-frontend build-frontend launch-db stop-db db-test-server test-e2e test-all

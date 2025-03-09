@@ -72,5 +72,9 @@ export const Summary = () => {
     );
   };
 
-  return <div className={styles.summary}>{renderSummary()}</div>;
+  return (
+    <div id="submission-summary" className={styles.summary}>
+      {renderSummary()}
+    </div>
+  );
 };
