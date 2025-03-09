@@ -8,9 +8,12 @@ import chevronDown from '@/assets/icons/chevron-down.svg';
 
 import styles from './sidebar.module.scss';
 
-export function Sidebar() {
-  const [open, setOpen] = useState<boolean>(true);
+interface SidebarProps {
+  open: boolean;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
+export function Sidebar({open, setOpen}: SidebarProps) {
   return (
     <div className={`${styles.sidebar} ${open ? '' : styles.closed}`}>
       <button

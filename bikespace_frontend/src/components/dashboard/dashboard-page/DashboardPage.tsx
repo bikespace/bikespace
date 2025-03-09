@@ -1,6 +1,6 @@
 'use client';
 
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import dynamic from 'next/dynamic';
 
 import {trackUmamiEvent} from '@/utils';
@@ -21,6 +21,8 @@ const Map = dynamic<MapProps>(() => import('../map/Map'), {
 });
 
 export function DashboardPage() {
+  const [sidebarOpen, setSidebarOpen] = useState<boolean>(true);
+
   const queryResult = useSubmissionsQuery();
   const allSubmissions = queryResult.data || [];
 
@@ -71,8 +73,8 @@ export function DashboardPage() {
 
   return (
     <main className={styles.dashboardPage}>
-      <Sidebar />
-      <Map submissions={submissions} />
+      <Sidebar open={sidebarOpen} setOpen={setSidebarOpen} />
+      <Map submissions={submissions} sidebarState={sidebarOpen} />
     </main>
   );
 }

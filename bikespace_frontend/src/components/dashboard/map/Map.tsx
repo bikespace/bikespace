@@ -1,7 +1,7 @@
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {MapContainer, TileLayer} from 'react-leaflet';
 import MarkerClusterGroup from 'react-leaflet-cluster';
-import {Marker as LeafletMarker} from 'leaflet';
+import {Marker as LeafletMarker, Map as lMap} from 'leaflet';
 import {useWindowSize} from '@uidotdev/usehooks';
 
 import 'leaflet/dist/leaflet.css';
@@ -18,17 +18,24 @@ import './leaflet.scss';
 
 export interface MapProps {
   submissions: SubmissionApiPayload[];
+  sidebarState: boolean;
 }
 
 type MarkerRefs = Record<number, LeafletMarker>;
 
-function Map({submissions}: MapProps) {
-  const mapRef = useRef(null);
+function Map({submissions, sidebarState}: MapProps) {
+  const mapRef: React.LegacyRef<lMap> = useRef(null);
   const clusterRef = useRef(null);
   const [doneLoading, setDoneLoading] = useState(false);
   const markerRefs = useRef<MarkerRefs>({});
 
   const windowSize = useWindowSize();
+
+  // Ensure map still fills the available space when sidebar opens/closes
+  useEffect(() => {
+    if (!mapRef.current) return;
+    mapRef.current.invalidateSize();
+  }, [sidebarState]);
 
   return (
     <MapContainer
