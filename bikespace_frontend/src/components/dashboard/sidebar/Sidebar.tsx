@@ -3,6 +3,9 @@ import React, {useState} from 'react';
 import {SidebarTabs} from '../sidebar-tabs';
 import {SidebarTabContent} from '../sidebar-tab-content';
 
+import chevronUp from '@/assets/icons/chevron-up.svg';
+import chevronDown from '@/assets/icons/chevron-down.svg';
+
 import styles from './sidebar.module.scss';
 
 export function Sidebar() {
@@ -15,7 +18,9 @@ export function Sidebar() {
         onClick={() => {
           setOpen(prev => !prev);
         }}
-      />
+      >
+        <img src={open ? chevronDown.src : chevronUp.src} />
+      </button>
       <div className={styles.sidebarContent}>
         <SidebarTabs />
         <SidebarTabContent />
