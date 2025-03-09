@@ -1,7 +1,6 @@
 'use client';
 
 import React, {useEffect} from 'react';
-import dynamic from 'next/dynamic';
 
 import {trackUmamiEvent} from '@/utils';
 
@@ -11,14 +10,9 @@ import {useSubmissionsStore} from '@/states/store';
 import {useSubmissionId} from '@/states/url-params';
 
 import {Sidebar} from '../sidebar';
-import {MapProps} from '../map';
+import {Map} from '../map';
 
 import styles from './dashboard-page.module.scss';
-
-const Map = dynamic<MapProps>(() => import('../map/Map'), {
-  loading: () => <></>,
-  ssr: false,
-});
 
 export function DashboardPage() {
   const queryResult = useSubmissionsQuery();
