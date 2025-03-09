@@ -42,30 +42,34 @@
     height: 60dvh;
 
     .drawerHandle {
-      all: unset;
-      cursor: pointer;
-      display: block;
-      height: $height-panel-handle;
-      flex-shrink: 0;
-      width: 100%;
-      margin: 0;
-      padding: calc(($height-panel-handle - $height-panel-handle-bar) / 2) 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      // all: unset;
+      // cursor: pointer;
+      // display: block;
+      // height: $height-panel-handle;
+      // flex-shrink: 0;
+      // width: 100%;
+      // margin: 0;
+      // padding: calc(($height-panel-handle - $height-panel-handle-bar) / 2) 0;
       
 
-      &::before {
-        display: block;
-        content: '';
-        height: $height-panel-handle-bar;
-        width: 100px;
-        margin: auto;
-        border-radius: calc($height-panel-handle-bar / 2);
-        background-color: $color-primary;
-      }
+    //   &::before {
+    //     display: block;
+    //     content: '';
+    //     height: $height-panel-handle-bar;
+    //     width: 100px;
+    //     margin: auto;
+    //     border-radius: calc($height-panel-handle-bar / 2);
+    //     background-color: $color-primary;
+    //   }
     }
     
     &.closed {
       min-height: auto;
       height: auto;
+      padding-bottom: 1rem;
 
       .sidebarContent {
         display: none;

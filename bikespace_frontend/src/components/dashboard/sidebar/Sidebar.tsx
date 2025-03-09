@@ -19,7 +19,7 @@ export function Sidebar() {
           setOpen(prev => !prev);
         }}
       >
-        <img src={open ? chevronDown.src : chevronUp.src} />
+        <img src={open ? chevronDown.src : chevronUp.src} width={24} />
       </button>
       <div className={styles.sidebarContent}>
         <SidebarTabs />
