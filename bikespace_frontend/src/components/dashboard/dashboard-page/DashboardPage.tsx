@@ -1,7 +1,6 @@
 'use client';
 
-import {useEffect} from 'react';
-import dynamic from 'next/dynamic';
+import React, {useEffect} from 'react';
 
 import {trackUmamiEvent} from '@/utils';
 
@@ -11,20 +10,10 @@ import {useSingleSubmissionQuery} from '@/hooks/use-single-submission-query';
 import {useStore} from '@/states/store';
 import {useSubmissionId} from '@/states/url-params';
 
-import {MapProps} from '../map';
+import Sidebar from '../sidebar/Sidebar';
+import {Map} from '../map';
 
 import styles from './dashboard-page.module.scss';
-
-// dynamically load the sidebar to avoid SSR in development
-const Sidebar = dynamic(() => import('../sidebar/Sidebar'), {
-  loading: () => <></>,
-  ssr: false,
-});
-
-const Map = dynamic<MapProps>(() => import('../map/Map'), {
-  loading: () => <></>,
-  ssr: false,
-});
 
 export function DashboardPage() {
   const [focusedId] = useSubmissionId();
