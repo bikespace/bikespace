@@ -45,6 +45,15 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      border: 2px solid $color-primary-20p;
+
+      &:hover {
+        border: 2px solid $color-primary;
+      }
+
+      &:active {
+        background-color: $color-primary-d50p;
+      }
     }
     
     &.closed {
