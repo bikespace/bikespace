@@ -1,0 +1,52 @@
+@import 'stylevars.css';
+
+/* LAYOUT */
+/* Don't show pop-ups on mobile; no change for desktop */
+/* If you change these breakpoints, please also change in map.js */
+@media (width < 1024px) and (min-height: 500px) {
+  .leaflet-popup {
+    display: none;
+  }
+}
+
+/* MARKER CLUSTERS */
+#issue-map {
+  .marker-cluster-small {
+    background-color: var(--color-primary-50p);
+
+    div {
+      background-color: var(--color-primary-70p);
+    }
+  }
+
+  .marker-cluster-medium {
+    background-color: var(--color-primary);
+
+    div {
+      background-color: var(--color-primary-d20p);
+      color: white;
+    }
+  }
+
+  .marker-cluster-large {
+    background-color: var(--color-primary-d20p);
+
+    div {
+      background-color: var(--color-primary-d50p);
+      color: white;
+    }
+  }
+}
+
+/* MAP POP-UPS */
+.leaflet-popup-content {
+  font-family: var(--body-font-stack);
+
+  .submission-id {
+    font-style: italic;
+  }
+
+  .a-button {
+    color: var(--color-secondary-dark-grey);
+  }
+}

@@ -1,28 +1,38 @@
-import React, {RefObject, useRef} from 'react';
+import {useEffect, useRef, RefObject} from 'react';
 import MapGL, {Marker, GeolocateControl} from 'react-map-gl/maplibre';
 
-import {LocationLatLng} from '@/interfaces/Submission';
+import {useSubmissionFormContext} from '../submission-form/schema';
+
+import {FormSectionHeader} from '../form-section-header';
 
 import 'maplibre-gl/dist/maplibre-gl.css';
 
 import styles from './location.module.scss';
 
-export interface LocationProps {
-  location: LocationLatLng;
-  setLocation: React.Dispatch<React.SetStateAction<LocationLatLng>>;
-}
-
-function Location({location, setLocation}: LocationProps) {
+export function Location() {
   const geoControlRef =
     useRef<maplibregl.GeolocateControl>() as RefObject<maplibregl.GeolocateControl>;
 
-  const {latitude, longitude} = location;
+  const {setValue, watch} = useSubmissionFormContext();
+
+  const {latitude, longitude} = watch('location');
+
+  useEffect(() => {
+    navigator.geolocation?.getCurrentPosition(position => {
+      setValue('location', {
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude,
+      });
+    });
+  }, []);
 
   return (
     <div className={styles.location}>
-      <h2>Where was the problem?</h2>
-      <h3>Pin the location</h3>
-
+      <FormSectionHeader
+        title="Where was the problem?"
+        description="Pin the location"
+        name="location"
+      />
       <section className={styles.outerMapContainer} role="application">
         <MapGL
           initialViewState={{
@@ -36,7 +46,7 @@ function Location({location, setLocation}: LocationProps) {
           //   geoControlRef.current?.trigger();
           // }}
           onClick={e => {
-            setLocation({
+            setValue('location', {
               latitude: e.lngLat.lat,
               longitude: e.lngLat.lng,
             });
@@ -46,7 +56,7 @@ function Location({location, setLocation}: LocationProps) {
             ref={geoControlRef}
             position="top-left"
             onGeolocate={e => {
-              setLocation({
+              setValue('location', {
                 latitude: e.coords.latitude,
                 longitude: e.coords.longitude,
               });
@@ -58,6 +68,3 @@ function Location({location, setLocation}: LocationProps) {
     </div>
   );
 }
-
-export {Location};
-export default Location;

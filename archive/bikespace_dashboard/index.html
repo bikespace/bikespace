@@ -1,0 +1,113 @@
+<!doctype html>
+<html>
+  <head>
+    <meta http-equip="Content-Type" content="text/html;charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>BikeSpace Dashboard</title>
+    <meta
+      name="description"
+      content="BikeSpace is an online tool for cyclists to report bicycle parking issues."
+    />
+    <link rel="stylesheet" href="libraries/leaflet/leaflet.css" />
+    <link rel="stylesheet" href="css/main.css" />
+    <link rel="icon" type="image/x-icon" href="assets/bikespace_logo_sm.svg" />
+    <script>
+      if (window.location.host === 'dashboard.bikespace.ca') {
+        let s = document.createElement('script');
+        s.src = 'https://us.umami.is/script.js';
+        s.dataset['websiteId'] = '77b33a3d-0b83-41f2-9b54-589d36903aed';
+        document.head.appendChild(s);
+      }
+    </script>
+  </head>
+  <body>
+    <header>
+      <a href="#" id="nav-toggle">
+        <img src="./assets/hamburger-menu.svg" alt="Menu icon" />
+      </a>
+      <nav class="main-nav" aria-label="Main">
+        <a href="#" title="Dashboard Home" id="bikespace-logo">
+          <img src="assets/bikespace_wordmark.png" alt="BikeSpace logo" />
+        </a>
+        <ul>
+          <li>
+            <a
+              href="https://app.bikespace.ca/submission/"
+              data-umami-event="outbound-app"
+              >Report Bike Parking Issue</a
+            >
+          </li>
+          <li>
+            <a
+              href="https://bikespace.ca/"
+              data-umami-event="outbound-landing-page"
+              >About BikeSpace</a
+            >
+          </li>
+          <li>
+            <a
+              href="https://github.com/bikespace/bikespace/tree/main/bikespace_dashboard"
+              data-umami-event="outbound-github"
+              ><img
+                src="./assets/github-mark.svg"
+                alt="GitHub Logo"
+                id="github-logo"
+              />Contribute</a
+            >
+          </li>
+          <li>
+            <a
+              href="mailto:bikespaceto@gmail.com?subject=BikeSpace%20Dashboard%20Feedback"
+              data-umami-event="mailto-feedback"
+              id="mailto-feedback"
+              ><img
+                src="./assets/envelope-at.svg"
+                alt="Email Icon"
+              />Feedback</a
+            >
+          </li>
+        </ul>
+      </nav>
+      <div
+        id="nav-backdrop"
+        role="button"
+        aria-roledescription="Dismiss Navigation Menu"
+      ></div>
+    </header>
+    <noscript>
+      <h2>Please enable JavaScript to use this site</h2>
+      <p>
+        This dashboard needs to have JavaScript enabled to render dynamic
+        content. If you are not able to enable JavaScript on this device, some
+        other options for accessing the BikeSpace data include:
+      </p>
+      <ul>
+        <li>
+          Archived copies on our GitHub page:
+          <a href="https://github.com/bikespace/bikespace-v2/tree/main/datasets"
+            >bikespace-v2/datasets/</a
+          >
+          (may not be 100% up-to-date; select "raw" to see the unformatted
+          data).
+        </li>
+        <li>
+          Via command line, e.g.:
+          <pre>
+$ curl "https://api-dev.bikespace.ca/api/v2/submissions?limit=5000" -o "bikespace_reports.json"</pre
+          >
+          See our GitHub page for
+          <a
+            href="https://github.com/bikespace/bikespace-v2/blob/main/bikespace_api/bikespace_api/static/bikespace-open-api.yaml"
+            >additional information about API parameters</a
+          >
+        </li>
+      </ul>
+    </noscript>
+    <script src="libraries/jquery-3.7.1.min.js"></script>
+    <script src="libraries/plotly-2.27.0.min.js" charset="utf-8"></script>
+    <script src="libraries/leaflet/leaflet.js"></script>
+    <script src="libraries/leaflet/leaflet.markercluster.js"></script>
+    <script src="js/app.js" type="module"></script>
+  </body>
+</html>

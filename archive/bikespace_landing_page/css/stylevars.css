@@ -1,0 +1,24 @@
+@import "fonts.css";
+
+:root {
+  --color-primary: hsl(137, 68%, 45%);
+  --color-primary-70p: hsl(137, 56%, 62%);
+  --color-primary-50p: hsl(137, 56%, 73%);
+  --color-primary-20p: hsl(137, 57%, 89%);
+  --color-primary-10p: hsl(135, 57%, 95%);
+  --color-primary-d20p: hsl(137, 68%, 36%);
+  --color-primary-d50p: hsl(137, 68%, 23%);
+  --color-primary-d70p: hsl(137, 68%, 14%);
+  --color-secondary-yellow: hsl(58, 88%, 57%);
+  --color-secondary-yellow-light: hsl(58, 60%, 90%);
+  --color-secondary-orange: hsl(38, 100%, 50%);
+  --color-secondary-orange-light: hsl(38, 60%, 90%);
+  --color-secondary-red: hsl(340, 86%, 50%);
+  --color-secondary-red-light: hsl(340, 60%, 90%);
+  --color-secondary-light-grey: #d8e1e5;
+  --color-secondary-med-grey: #2c3b42;
+  --color-secondary-dark-grey: #1f2a2d;
+  --color-body-text: #212529;
+
+  /* --body-font-stack: "Open Sans", Arial, Helvetica, sans-serif; */
+}

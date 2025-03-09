@@ -1,18 +1,36 @@
-import unittest
+import os
+import time
+
 from flask.cli import FlaskGroup
+from sqlalchemy_utils import database_exists, create_database
 
 from bikespace_api import create_app, db
 from bikespace_api.api.models import Submission, IssueType, ParkingDuration
 from datetime import datetime
-
-import json
 
 app = create_app()
 cli = FlaskGroup(create_app=create_app)
 
 
 @cli.command()
+def test_db_server():
+    duration = 0
+    while duration < 10:
+        stream = os.popen(r"pg_isready -h localhost -p 5432")
+        stream.read()
+        if stream.close() is None:
+            return
+        time.sleep(1)
+        duration += 1
+
+    raise Exception("Unable to connect to a Postgres server")
+
+
+@cli.command()
 def recreate_db():
+    if not database_exists(app.config["SQLALCHEMY_DATABASE_URI"]):
+        create_database(app.config["SQLALCHEMY_DATABASE_URI"])
+
     db.drop_all()
     db.create_all()
     db.session.commit()

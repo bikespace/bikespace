@@ -70,7 +70,8 @@ export function ReportSummary() {
         <span>
           {submissions.length > 0
             ? ` reports ${
-                filters.dateRange === null &&
+                filters.dateRange.from === null &&
+                filters.dateRange.to === null &&
                 filters.dateRangeInterval === null &&
                 filters.issue === null &&
                 filters.parkingDuration.length === 0 &&

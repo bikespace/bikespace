@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import {useState} from 'react';
 import {DateTime} from 'luxon';
 
 import {DateRangeInterval} from '@/interfaces/Submission';
@@ -17,6 +17,7 @@ import {FilterDateRangeCustom} from '../filter-date-range-custom';
 import styles from './filter-date-range.module.scss';
 
 export function FilterDateRange() {
+  /* c8 ignore next 7 */
   const {dateRange, dateRangeInterval, setFilters} = useSubmissionsStore(
     state => ({
       dateRange: state.filters.dateRange,
@@ -24,9 +25,32 @@ export function FilterDateRange() {
       setFilters: state.setFilters,
     })
   );
-  const {first, last} = useAllSubmissionsDateRange();
 
   const [showCustomRange, setShowCustomRange] = useState<boolean>(false);
+
+  const {first, last} = useAllSubmissionsDateRange();
+
+  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = e.currentTarget.value as DateRangeInterval;
+
+    if (value === DateRangeInterval.CustomRange) {
+      setShowCustomRange(true);
+    } else {
+      setShowCustomRange(false);
+      const range = getDateRangeFromInterval(value);
+
+      setFilters({
+        dateRange: range,
+        dateRangeInterval: value,
+      });
+
+      trackUmamiEvent('datefilter', {
+        from: dateRange.from ?? '',
+        to: dateRange.to ?? '',
+        interval: value,
+      });
+    }
+  };
 
   return (
     <FilterSection title="Date Range">
@@ -35,12 +59,12 @@ export function FilterDateRange() {
           <strong>Showing between:</strong>
         </div>
         <div>
-          {`${DateTime.fromJSDate(dateRange?.from || first!).toLocaleString(
+          {`${DateTime.fromJSDate(dateRange.from || first!).toLocaleString(
             DateTime.DATE_FULL,
             {
               locale: 'en-CA',
             }
-          )} - ${DateTime.fromJSDate(dateRange?.to || last!).toLocaleString(
+          )} - ${DateTime.fromJSDate(dateRange.to || last!).toLocaleString(
             DateTime.DATE_FULL,
             {locale: 'en-CA'}
           )}`}
@@ -54,29 +78,7 @@ export function FilterDateRange() {
           name="dateRange"
           id="filter-date-range-select"
           value={dateRangeInterval || DateRangeInterval.AllDates}
-          onChange={e => {
-            const value = e.currentTarget.value as DateRangeInterval;
-
-            if (value === DateRangeInterval.CustomRange) {
-              setShowCustomRange(true);
-            } else {
-              setShowCustomRange(false);
-
-              const dateRange = getDateRangeFromInterval(value);
-
-              setFilters({
-                dateRange,
-                dateRangeInterval: value,
-              });
-
-              if (dateRange)
-                trackUmamiEvent('datefilter', {
-                  from: dateRange.from,
-                  to: dateRange.to,
-                  interval: value,
-                });
-            }
-          }}
+          onChange={handleChange}
         >
           {dateRangeOptGroups.map(group => (
             <optgroup label={group.label} key={group.label}>
@@ -89,9 +91,11 @@ export function FilterDateRange() {
           ))}
         </select>
       </div>
-      <div hidden={!showCustomRange}>
-        <FilterDateRangeCustom />
-      </div>
+      {showCustomRange && (
+        <div data-testid="FilterDateRangeCustom">
+          <FilterDateRangeCustom />
+        </div>
+      )}
     </FilterSection>
   );
 }
