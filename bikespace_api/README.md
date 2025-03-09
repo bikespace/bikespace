@@ -44,6 +44,8 @@ To connect and view:
 
 You may run into this error if you have your own installation of Postgres already running or if there is a Postgres client listening on the 5432 port before the database Docker container launches.
 
+(If you are running Postgres.app, then you can just close the application and the server should stop.)
+
 On macos:
 
 ```bash

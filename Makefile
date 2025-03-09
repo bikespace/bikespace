@@ -109,7 +109,7 @@ db-stamp-heads:
 # Run a postgres Docker container unless in CI environment
 launch-db:
 ifneq ($(CI),true)
-	docker start db || docker run --name db \
+	docker start bikespace_db || docker run --name bikespace_db \
 	--detach --rm \
 	--env POSTGRES_USER=postgres \
 	--env POSTGRES_PASSWORD=postgres \
@@ -118,7 +118,7 @@ ifneq ($(CI),true)
 endif
 
 stop-db:
-	docker stop db || true
+	docker stop bikespace_db
 
 # Confirm that a postgres server is running at localhost:5432. Retries until timeout.
 db-test-server: setup-py
