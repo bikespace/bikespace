@@ -14,8 +14,14 @@ The development frontend server should be running at `localhost:8080`
 
 Testing the frontend:
 ```shell
+# front-end unit tests
 make test-frontend
+
+# end-to-end tests with a local test database and API
+make test-e2e
 ```
+
+More documentation on the end-to-end testing can be found in `bikespace_frontend/e2etests/`.
 
 Linting (first option shows suggested changes, second option automatically edits):
 ```shell
@@ -37,7 +43,7 @@ NextJS documentation:
 
 ### Running the API Locally
 
-Certain development tasks (e.g. testing a form submission) also require the API to be running locally. See the instructions in [`bikespace_api/README.md](https://github.com/bikespace/bikespace/blob/main/bikespace_api/README.md) for more details.
+Certain development tasks (e.g. testing a form submission) also require the API to be running locally. See the instructions in [`bikespace_api/README.md`](https://github.com/bikespace/bikespace/blob/main/bikespace_api/README.md) for more details.
 
 
 ## Contributing Guide
@@ -87,7 +93,7 @@ Some things to think about when writing components:
 - [accessibility (A11y) testing](https://developer.mozilla.org/en-US/docs/Web/Accessibility), e.g. in the interaction options offered and colour selection
 
 
-### Testing Tips
+### Jest Testing Tips
 
 Use `screen.debug()` in a Jest test to see the rendered DOM. Sometimes this can help you write the [right query](https://testing-library.com/docs/queries/about) for testing an element.
 

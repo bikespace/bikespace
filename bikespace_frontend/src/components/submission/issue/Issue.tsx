@@ -1,3 +1,5 @@
+import {useState, useEffect} from 'react';
+
 import {IssueType} from '@/interfaces/Submission';
 
 import {SelectInput} from '../select-input';
@@ -6,12 +8,21 @@ import {FormSectionHeader} from '../form-section-header';
 import styles from './issue.module.scss';
 
 export const Issue = () => {
+  const [hydrated, setHydrated] = useState<boolean>(false);
+  useEffect(() => setHydrated(true), []);
+
   return (
     <div className={styles.submissionIssue}>
       <FormSectionHeader title="What were the issue(s)?" name="issues" />
       <fieldset>
         {checkboxes.map(({value, label}) => (
-          <SelectInput key={value} type="checkbox" name="issues" value={value}>
+          <SelectInput
+            key={value}
+            type="checkbox"
+            name="issues"
+            value={value}
+            disabled={!hydrated}
+          >
             {label}
           </SelectInput>
         ))}
