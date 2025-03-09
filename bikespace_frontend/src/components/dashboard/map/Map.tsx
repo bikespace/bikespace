@@ -13,6 +13,7 @@ import {trackUmamiEvent} from '@/utils';
 import {MapMarkers} from '../map-markers';
 
 import 'maplibre-gl/dist/maplibre-gl.css';
+
 export interface MapProps {
   submissions: SubmissionApiPayload[];
 }
@@ -88,5 +89,4 @@ function Map({submissions}: MapProps) {
   );
 }
 
-export default Map;
 export {Map};

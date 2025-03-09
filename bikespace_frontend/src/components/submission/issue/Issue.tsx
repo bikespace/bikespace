@@ -1,6 +1,6 @@
-import {useState, useEffect} from 'react';
-
 import {IssueType} from '@/interfaces/Submission';
+
+import {useHydrated} from '@/hooks';
 
 import {SelectInput} from '../select-input';
 import {FormSectionHeader} from '../form-section-header';
@@ -8,8 +8,7 @@ import {FormSectionHeader} from '../form-section-header';
 import styles from './issue.module.scss';
 
 export const Issue = () => {
-  const [hydrated, setHydrated] = useState<boolean>(false);
-  useEffect(() => setHydrated(true), []);
+  const hydrated = useHydrated();
 
   return (
     <div className={styles.submissionIssue}>
