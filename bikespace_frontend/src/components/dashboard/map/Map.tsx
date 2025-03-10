@@ -20,7 +20,6 @@ import './leaflet.scss';
 
 export interface MapProps {
   submissions: SubmissionApiPayload[];
-  sidebarState: boolean;
 }
 
 type MarkerRefs = Record<number, LeafletMarker>;
@@ -34,13 +33,13 @@ function Map({submissions}: MapProps) {
 
   const windowSize = useWindowSize();
 
-  const {sidebar} = useStore(state => state.ui);
+  const isSidebarOpen = useStore(state => state.ui.sidebar.isOpen);
 
   // Ensure map still fills the available space when sidebar opens/closes
   useEffect(() => {
     if (!mapRef.current) return;
     mapRef.current.invalidateSize();
-  }, [sidebar.isOpen]);
+  }, [isSidebarOpen]);
 
   return (
     <MapContainer
