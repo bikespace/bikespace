@@ -7,12 +7,12 @@ import {layout, config} from '@/config/plotly';
 
 import {ParkingDuration} from '@/interfaces/Submission';
 
-import {useSubmissionsStore} from '@/states/store';
+import {useStore} from '@/states/store';
 
 import styles from './data-duration-by-tod-chart.module.scss';
 
 function DataDurationByTodChart({className}: Pick<PlotParams, 'className'>) {
-  const submissions = useSubmissionsStore(state => state.submissions);
+  const submissions = useStore(state => state.submissions);
 
   const data = useMemo<number[][]>(() => {
     return parkingDurations.map(duration => {

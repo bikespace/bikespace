@@ -28,7 +28,7 @@ jest.mock('@/utils', () => ({
 
 const mockSetFilters = jest.fn().mockName('mockSetFilters');
 jest.mock('@/states/store', () => ({
-  useSubmissionsStore: () => ({
+  useStore: () => ({
     dateRange: mockDateRange,
     setFilters: mockSetFilters,
   }),

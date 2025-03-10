@@ -1,13 +1,13 @@
 'use client';
 
-import React, {useEffect, useState} from 'react';
+import {useEffect} from 'react';
 import dynamic from 'next/dynamic';
 
 import {trackUmamiEvent} from '@/utils';
 
 import {useSubmissionsQuery} from '@/hooks';
 
-import {useSubmissionsStore} from '@/states/store';
+import {useStore} from '@/states/store';
 import {useSubmissionId} from '@/states/url-params';
 
 import {Sidebar} from '../sidebar';
@@ -21,12 +21,10 @@ const Map = dynamic<MapProps>(() => import('../map/Map'), {
 });
 
 export function DashboardPage() {
-  const [sidebarOpen, setSidebarOpen] = useState<boolean>(true);
-
   const queryResult = useSubmissionsQuery();
   const allSubmissions = queryResult.data || [];
 
-  const {submissions, setSubmissions, filters} = useSubmissionsStore(state => ({
+  const {submissions, setSubmissions, filters} = useStore(state => ({
     submissions: state.submissions,
     setSubmissions: state.setSubmissions,
     filters: state.filters,
@@ -73,8 +71,8 @@ export function DashboardPage() {
 
   return (
     <main className={styles.dashboardPage}>
-      <Sidebar open={sidebarOpen} setOpen={setSidebarOpen} />
-      <Map submissions={submissions} sidebarState={sidebarOpen} />
+      <Sidebar />
+      <Map submissions={submissions} />
     </main>
   );
 }
