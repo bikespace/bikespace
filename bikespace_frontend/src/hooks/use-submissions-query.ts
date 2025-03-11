@@ -1,29 +1,33 @@
 import {useQuery} from '@tanstack/react-query';
 
-import {SubmissionApiPayload} from '@/interfaces/Submission';
+import {SubmissionApiGeoJsonPayload} from '@/interfaces/Submission';
 
 export function useSubmissionsQuery() {
   const query = useQuery({
     queryKey: ['submissions'],
     queryFn: async () => {
       const res = await fetch(
-        `${process.env.BIKESPACE_API_URL_DASHBOARD}/submissions?limit=5000`
+        `${process.env.BIKESPACE_API_URL_DASHBOARD}/submissions?limit=5000`,
+        {
+          headers: {
+            Accept: 'application/geo+json',
+            'Content-Type': 'application/geo+json',
+          },
+        }
       );
 
       const data = await res.json();
 
-      return data;
+      return data as SubmissionApiGeoJsonPayload | undefined;
     },
     select: data => {
-      const submissions: SubmissionApiPayload[] = data.submissions || [];
-
-      submissions.sort(
+      data?.features.sort(
         (a, b) =>
-          new Date(a.parking_time).getTime() -
-          new Date(b.parking_time).getTime()
+          new Date(a.properties.parking_time).getTime() -
+          new Date(b.properties.parking_time).getTime()
       );
 
-      return submissions;
+      return data;
     },
     staleTime: Infinity, // Only fetch data once per app load
   });

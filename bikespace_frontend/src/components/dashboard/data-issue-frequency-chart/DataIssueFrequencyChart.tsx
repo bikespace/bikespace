@@ -32,8 +32,9 @@ function DataIssueFrequencyChart({className}: Pick<PlotParams, 'className'>) {
 
     const inputData = issues.map(i => ({
       type: i,
-      count: submissions.filter(submission => submission.issues.includes(i))
-        .length,
+      count: submissions.filter(submission =>
+        submission.properties.issues.includes(i)
+      ).length,
       color: styles[!issue || issue === i ? i : `${i}_light`],
     }));
 

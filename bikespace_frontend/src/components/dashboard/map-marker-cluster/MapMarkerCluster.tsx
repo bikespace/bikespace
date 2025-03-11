@@ -1,6 +1,6 @@
 import {Marker} from 'react-map-gl';
 import Supercluster from 'supercluster';
-import {useMap} from 'react-map-gl';
+import {useMap} from 'react-map-gl/maplibre';
 
 import styles from './map-cluster-marker.module.scss';
 
