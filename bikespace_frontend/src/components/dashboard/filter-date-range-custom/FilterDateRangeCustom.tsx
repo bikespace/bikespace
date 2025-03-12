@@ -7,14 +7,14 @@ import {DateRangeInterval} from '@/interfaces/Submission';
 
 import {trackUmamiEvent} from '@/utils';
 
-import {useSubmissionsStore} from '@/states/store';
+import {useStore} from '@/states/store';
 
 import {SidebarButton} from '../sidebar-button';
 
 import styles from './filter-date-range-custom.module.scss';
 
 export function FilterDateRangeCustom() {
-  const {setFilters} = useSubmissionsStore(state => ({
+  const {setFilters} = useStore(state => ({
     setFilters: state.setFilters,
   }));
 

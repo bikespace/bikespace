@@ -8,7 +8,7 @@ import {IssueType} from '@/interfaces/Submission';
 
 import {trackUmamiEvent} from '@/utils';
 
-import {useSubmissionsStore} from '@/states/store';
+import {useStore} from '@/states/store';
 
 import styles from './data-issue-frequency-chart.module.scss';
 
@@ -19,7 +19,7 @@ type InputData = {
 };
 
 function DataIssueFrequencyChart({className}: Pick<PlotParams, 'className'>) {
-  const {submissions, issue, setFilters} = useSubmissionsStore(state => ({
+  const {submissions, issue, setFilters} = useStore(state => ({
     submissions: state.submissions,
     issue: state.filters.issue,
     setFilters: state.setFilters,

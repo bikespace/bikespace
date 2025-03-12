@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {useSubmissionsStore} from '@/states/store';
+import {useStore} from '@/states/store';
 
 import {SidebarButton} from '../sidebar-button';
 
@@ -12,7 +12,7 @@ export function ClearFiltersButton() {
   const {
     filters: {dateRange, parkingDuration, issue, day, dateRangeInterval},
     setFilters,
-  } = useSubmissionsStore(state => ({
+  } = useStore(state => ({
     filters: state.filters,
     setFilters: state.setFilters,
   }));

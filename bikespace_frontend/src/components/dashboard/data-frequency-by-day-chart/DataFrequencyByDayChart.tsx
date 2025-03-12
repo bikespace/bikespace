@@ -10,7 +10,7 @@ import {trackUmamiEvent} from '@/utils';
 
 import {useSubmissionsQuery} from '@/hooks';
 
-import {useSubmissionsStore} from '@/states/store';
+import {useStore} from '@/states/store';
 
 import styles from './data-frequency-by-day-chart.module.scss';
 
@@ -23,7 +23,7 @@ function DataFrequencyByDayChart({className}: Pick<PlotParams, 'className'>) {
   const queryResult = useSubmissionsQuery();
   const allSubmissions = queryResult.data?.features || [];
 
-  const {submissions, day, setFilters} = useSubmissionsStore(state => ({
+  const {submissions, day, setFilters} = useStore(state => ({
     submissions: state.submissions,
     day: state.filters.day,
     setFilters: state.setFilters,
