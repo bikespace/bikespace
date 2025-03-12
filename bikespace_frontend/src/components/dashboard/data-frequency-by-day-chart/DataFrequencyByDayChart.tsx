@@ -21,7 +21,7 @@ type InputData = {
 
 function DataFrequencyByDayChart({className}: Pick<PlotParams, 'className'>) {
   const queryResult = useSubmissionsQuery();
-  const allSubmissions = queryResult.data || [];
+  const allSubmissions = queryResult.data?.features || [];
 
   const {submissions, day, setFilters} = useStore(state => ({
     submissions: state.submissions,
@@ -40,7 +40,8 @@ function DataFrequencyByDayChart({className}: Pick<PlotParams, 'className'>) {
         name: d as Day,
         count: allSubmissions.filter(
           submission =>
-            new Date(submission.parking_time + '+00:00').getDay() === d
+            new Date(submission.properties.parking_time + '+00:00').getDay() ===
+            d
         ).length,
       }));
 

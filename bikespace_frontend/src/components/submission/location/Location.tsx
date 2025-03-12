@@ -1,27 +1,21 @@
-import {useEffect} from 'react';
-import {MapContainer, TileLayer, Marker} from 'react-leaflet';
-import {LatLngTuple} from 'leaflet';
+import {useEffect, useRef, RefObject} from 'react';
+import MapGL, {Marker, GeolocateControl} from 'react-map-gl/maplibre';
 
 import {useSubmissionFormContext} from '../submission-form/schema';
 
-import 'leaflet/dist/leaflet.css';
-import 'leaflet-defaulticon-compatibility';
-import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css';
-
 import {FormSectionHeader} from '../form-section-header';
+
+import 'maplibre-gl/dist/maplibre-gl.css';
 
 import styles from './location.module.scss';
 
-export interface LocationProps {
-  handler: React.ReactNode;
-}
+export function Location() {
+  const geoControlRef =
+    useRef<maplibregl.GeolocateControl>() as RefObject<maplibregl.GeolocateControl>;
 
-function Location({handler}: LocationProps) {
   const {setValue, watch} = useSubmissionFormContext();
 
-  const location = watch('location');
-
-  const position = [location.latitude, location.longitude] as LatLngTuple;
+  const {latitude, longitude} = watch('location');
 
   useEffect(() => {
     navigator.geolocation?.getCurrentPosition(position => {
@@ -40,23 +34,37 @@ function Location({handler}: LocationProps) {
         name="location"
       />
       <section className={styles.outerMapContainer} role="application">
-        <MapContainer
-          center={position}
-          zoom={18}
-          scrollWheelZoom={false}
-          style={{height: '100%'}}
+        <MapGL
+          initialViewState={{
+            latitude,
+            longitude,
+            zoom: 18,
+          }}
+          mapStyle="https://basemaps.cartocdn.com/gl/positron-gl-style/style.json"
+          attributionControl={false}
+          // onLoad={() => {
+          //   geoControlRef.current?.trigger();
+          // }}
+          onClick={e => {
+            setValue('location', {
+              latitude: e.lngLat.lat,
+              longitude: e.lngLat.lng,
+            });
+          }}
         >
-          <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
+          <GeolocateControl
+            ref={geoControlRef}
+            position="top-left"
+            onGeolocate={e => {
+              setValue('location', {
+                latitude: e.coords.latitude,
+                longitude: e.coords.longitude,
+              });
+            }}
           />
-          <Marker position={position} />
-          {handler}
-        </MapContainer>
+          <Marker latitude={latitude} longitude={longitude} />
+        </MapGL>
       </section>
     </div>
   );
 }
-
-export {Location};
-export default Location;

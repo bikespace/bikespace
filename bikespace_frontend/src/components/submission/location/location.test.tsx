@@ -19,7 +19,7 @@ const MockLocation = () => {
   return (
     <FormProvider {...form}>
       <form>
-        <Location handler={<></>} />
+        <Location />
       </form>
     </FormProvider>
   );

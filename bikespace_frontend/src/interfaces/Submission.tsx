@@ -95,3 +95,23 @@ export type SubmissionsDateRange = {
   first: Date | null;
   last: Date | null;
 };
+
+export interface SubmissionFeature {
+  type: 'Feature';
+  geometry: {
+    coordinates: [number, number];
+    type: 'Point';
+  };
+  properties: {
+    id: number;
+    issues: IssueType[];
+    parking_time: string;
+    parking_duration: ParkingDuration;
+    comments: String;
+  };
+}
+
+export interface SubmissionApiGeoJsonPayload {
+  type: 'FeatureCollection';
+  features: SubmissionFeature[];
+}

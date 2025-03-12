@@ -1,7 +1,6 @@
 'use client';
 
-import {useEffect} from 'react';
-import dynamic from 'next/dynamic';
+import React, {useEffect} from 'react';
 
 import {trackUmamiEvent} from '@/utils';
 
@@ -11,18 +10,13 @@ import {useStore} from '@/states/store';
 import {useSubmissionId} from '@/states/url-params';
 
 import {Sidebar} from '../sidebar';
-import {MapProps} from '../map';
+import {DashboardMap} from '../dashboard-map';
 
 import styles from './dashboard-page.module.scss';
 
-const Map = dynamic<MapProps>(() => import('../map/Map'), {
-  loading: () => <></>,
-  ssr: false,
-});
-
 export function DashboardPage() {
   const queryResult = useSubmissionsQuery();
-  const allSubmissions = queryResult.data || [];
+  const allSubmissions = queryResult.data?.features || [];
 
   const {submissions, setSubmissions, filters} = useStore(state => ({
     submissions: state.submissions,
@@ -42,7 +36,7 @@ export function DashboardPage() {
 
     if (dateRange.from || dateRange.to)
       subs = subs.filter(s => {
-        const d = new Date(s.parking_time + '+00:00');
+        const d = new Date(s.properties.parking_time + '+00:00');
 
         return (
           (dateRange.from ? d >= dateRange.from : true) &&
@@ -51,13 +45,16 @@ export function DashboardPage() {
       });
 
     if (parkingDuration.length !== 0)
-      subs = subs.filter(s => parkingDuration.includes(s.parking_duration));
+      subs = subs.filter(s =>
+        parkingDuration.includes(s.properties.parking_duration)
+      );
 
-    if (issue !== null) subs = subs.filter(s => s.issues.includes(issue));
+    if (issue !== null)
+      subs = subs.filter(s => s.properties.issues.includes(issue));
 
     if (day !== null)
       subs = subs.filter(
-        s => new Date(s.parking_time + '+00:00').getDay() === day
+        s => new Date(s.properties.parking_time + '+00:00').getDay() === day
       );
 
     setSubmissions(subs);
@@ -72,7 +69,7 @@ export function DashboardPage() {
   return (
     <main className={styles.dashboardPage}>
       <Sidebar />
-      <Map submissions={submissions} />
+      <DashboardMap submissions={submissions} />
     </main>
   );
 }

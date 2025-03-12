@@ -1,0 +1,106 @@
+import {useEffect, useState} from 'react';
+import useSupercluster from 'use-supercluster';
+import Supercluster, {ClusterProperties} from 'supercluster';
+import {useWindowSize} from '@uidotdev/usehooks';
+import {useMap} from 'react-map-gl/maplibre';
+import {BBox} from 'geojson';
+
+import {SubmissionFeature} from '@/interfaces/Submission';
+
+import {useSubmissionId} from '@/states/url-params';
+
+import {MapMarker} from '../map-marker';
+import {MapMarkerCluster} from '../map-marker-cluster';
+
+interface MapMarkersProps {
+  submissions: SubmissionFeature[];
+}
+
+export function MapMarkers({submissions}: MapMarkersProps) {
+  const windowSize = useWindowSize();
+  const map = useMap();
+
+  const [focus] = useSubmissionId();
+
+  const [submission, setSubmission] = useState<SubmissionFeature | undefined>();
+
+  const {clusters, supercluster} = useSupercluster({
+    points: submissions,
+    bounds: map.current?.getBounds().toArray().flat() as BBox | undefined,
+    zoom: map.current?.getZoom() || 12,
+  });
+
+  useEffect(() => {
+    setSubmission(
+      focus
+        ? submissions.find(submission => submission.properties.id === focus)
+        : undefined
+    );
+  }, [focus, submissions]);
+
+  useEffect(() => {
+    if (!submission) return;
+
+    map.current?.flyTo({
+      center: submission.geometry.coordinates,
+      zoom: 16,
+    });
+  }, [submission]);
+
+  useEffect(() => {
+    if (!submission || !supercluster) return;
+
+    if (clusters.length === 0) {
+      map.current?.zoomTo(16);
+      return;
+    }
+
+    const cluster = clusters
+      .filter(c => c.)
+      .find(c =>
+        supercluster
+          ?.getLeaves(c.id as number)
+          .find(l => l.properties.id === submission.properties.id)
+      );
+
+    if (!cluster) return;
+
+    const zoom = cluster
+      ? supercluster.getClusterExpansionZoom(cluster.id as number)
+      : 16;
+
+    map.current?.flyTo({
+      center: submission.geometry.coordinates,
+      zoom,
+    });
+  }, [submission, clusters, supercluster]);
+
+  return (
+    <>
+      {clusters.map(cluster => {
+        const [longitude, latitude] = cluster.geometry.coordinates;
+
+        const {cluster: isCluster, point_count: pointCount} =
+          cluster.properties as ClusterProperties;
+
+        return isCluster ? (
+          <MapMarkerCluster
+            key={cluster.id}
+            id={cluster.id as number}
+            latitude={latitude}
+            longitude={longitude}
+            count={pointCount}
+            totalCount={submissions.length}
+            supercluster={supercluster as Supercluster}
+          />
+        ) : (
+          <MapMarker
+            key={cluster.properties.id}
+            submission={cluster}
+            windowWidth={windowSize.width}
+          />
+        );
+      })}
+    </>
+  );
+}

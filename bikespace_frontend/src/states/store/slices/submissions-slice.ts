@@ -1,12 +1,12 @@
 import {StateCreator} from 'zustand';
 
-import type {SubmissionApiPayload} from '@/interfaces/Submission';
+import type {SubmissionFeature} from '@/interfaces/Submission';
 
 import {FiltersSlice} from './filters-slice';
 
 export interface SubmissionsSlice {
-  submissions: SubmissionApiPayload[];
-  setSubmissions: (submissions: SubmissionApiPayload[]) => void;
+  submissions: SubmissionFeature[];
+  setSubmissions: (submissions: SubmissionFeature[]) => void;
 }
 
 export const createSubmissionsSlice: StateCreator<

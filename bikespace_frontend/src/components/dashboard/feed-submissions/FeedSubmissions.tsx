@@ -18,7 +18,10 @@ export function FeedSubmissions() {
       </div>
       <div className={styles.list}>
         {[...submissions].reverse().map(submission => (
-          <FeedSubmissionItem key={submission.id} submission={submission} />
+          <FeedSubmissionItem
+            key={submission.properties.id}
+            submission={submission}
+          />
         ))}
       </div>
     </div>

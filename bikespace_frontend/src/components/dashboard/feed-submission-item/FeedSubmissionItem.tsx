@@ -1,7 +1,7 @@
 import React, {useEffect, useRef} from 'react';
 import {DateTime} from 'luxon';
 
-import {SubmissionApiPayload, ParkingDuration} from '@/interfaces/Submission';
+import {ParkingDuration, SubmissionFeature} from '@/interfaces/Submission';
 
 import {useSubmissionId} from '@/states/url-params';
 
@@ -10,11 +10,12 @@ import {IssueBadge} from '../issue-badge';
 import styles from './feed-submision-item.module.scss';
 
 interface FeedSubmissionItemProps {
-  submission: SubmissionApiPayload;
+  submission: SubmissionFeature;
 }
 
 export function FeedSubmissionItem({submission}: FeedSubmissionItemProps) {
-  const {id, issues, parking_time, parking_duration, comments} = submission;
+  const {id, issues, parking_time, parking_duration, comments} =
+    submission.properties;
 
   const parkingTime = new Date(parking_time + '+00:00');
 
@@ -52,7 +53,7 @@ export function FeedSubmissionItem({submission}: FeedSubmissionItemProps) {
             {locale: 'en-CA'}
           )}
         </span>
-        <span className={styles.submissionId}>ID: {submission.id}</span>
+        <span className={styles.submissionId}>ID: {id}</span>
       </div>
       <div className={styles.issues}>
         {[...new Set(issues)].map(issue => (

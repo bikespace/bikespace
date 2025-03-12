@@ -1,3 +1,15 @@
 .marker {
   pointer-events: all;
+  
+  img {
+    width: 32px;
+    height: 32px;
+  }
+
+  &.focused {
+    img {
+      width: 48px;
+      height: 48px;
+    }
+  }
 }
