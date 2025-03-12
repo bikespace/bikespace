@@ -4,7 +4,7 @@ import {ParkingDuration} from '@/interfaces/Submission';
 
 import {trackUmamiEvent} from '@/utils';
 
-import {useSubmissionsStore} from '@/states/store';
+import {useStore} from '@/states/store';
 
 import {FilterSection} from '../filter-section';
 import {SidebarButton} from '../sidebar-button';
@@ -17,7 +17,7 @@ enum DurationCategory {
 }
 
 export function FilterParkingDuration() {
-  const {parkingDuration, setFilters} = useSubmissionsStore(state => ({
+  const {parkingDuration, setFilters} = useStore(state => ({
     parkingDuration: state.filters.parkingDuration,
     setFilters: state.setFilters,
   }));

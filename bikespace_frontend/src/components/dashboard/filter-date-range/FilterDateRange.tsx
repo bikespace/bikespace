@@ -7,7 +7,7 @@ import {trackUmamiEvent} from '@/utils';
 
 import {useAllSubmissionsDateRange} from '@/hooks';
 
-import {useSubmissionsStore} from '@/states/store';
+import {useStore} from '@/states/store';
 
 import {getDateRangeFromInterval} from './utils';
 
@@ -18,13 +18,11 @@ import styles from './filter-date-range.module.scss';
 
 export function FilterDateRange() {
   /* c8 ignore next 7 */
-  const {dateRange, dateRangeInterval, setFilters} = useSubmissionsStore(
-    state => ({
-      dateRange: state.filters.dateRange,
-      dateRangeInterval: state.filters.dateRangeInterval,
-      setFilters: state.setFilters,
-    })
-  );
+  const {dateRange, dateRangeInterval, setFilters} = useStore(state => ({
+    dateRange: state.filters.dateRange,
+    dateRangeInterval: state.filters.dateRangeInterval,
+    setFilters: state.setFilters,
+  }));
 
   const [showCustomRange, setShowCustomRange] = useState<boolean>(false);
 
