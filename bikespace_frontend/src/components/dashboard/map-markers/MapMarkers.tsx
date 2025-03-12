@@ -2,10 +2,10 @@ import {useEffect, useState} from 'react';
 import useSupercluster from 'use-supercluster';
 import Supercluster, {ClusterProperties} from 'supercluster';
 import {useWindowSize} from '@uidotdev/usehooks';
-import {useMap} from 'react-map-gl';
+import {useMap} from 'react-map-gl/maplibre';
 import {BBox} from 'geojson';
 
-import {SubmissionApiPayload} from '@/interfaces/Submission';
+import {SubmissionFeature} from '@/interfaces/Submission';
 
 import {useSubmissionId} from '@/states/url-params';
 
@@ -13,7 +13,7 @@ import {MapMarker} from '../map-marker';
 import {MapMarkerCluster} from '../map-marker-cluster';
 
 interface MapMarkersProps {
-  submissions: SubmissionApiPayload[];
+  submissions: SubmissionFeature[];
 }
 
 export function MapMarkers({submissions}: MapMarkersProps) {
@@ -22,22 +22,10 @@ export function MapMarkers({submissions}: MapMarkersProps) {
 
   const [focus] = useSubmissionId();
 
-  const [submission, setSubmission] = useState<
-    SubmissionApiPayload | undefined
-  >();
+  const [submission, setSubmission] = useState<SubmissionFeature | undefined>();
 
   const {clusters, supercluster} = useSupercluster({
-    points: submissions.map(submission => ({
-      type: 'Feature',
-      properties: {
-        ...submission,
-        cluster: false,
-      },
-      geometry: {
-        type: 'Point',
-        coordinates: [submission.longitude, submission.latitude],
-      },
-    })),
+    points: submissions,
     bounds: map.current?.getBounds().toArray().flat() as BBox | undefined,
     zoom: map.current?.getZoom() || 12,
   });
@@ -45,7 +33,7 @@ export function MapMarkers({submissions}: MapMarkersProps) {
   useEffect(() => {
     setSubmission(
       focus
-        ? submissions.find(submission => submission.id === focus)
+        ? submissions.find(submission => submission.properties.id === focus)
         : undefined
     );
   }, [focus, submissions]);
@@ -54,7 +42,7 @@ export function MapMarkers({submissions}: MapMarkersProps) {
     if (!submission) return;
 
     map.current?.flyTo({
-      center: [submission.longitude, submission.latitude],
+      center: submission.geometry.coordinates,
       zoom: 16,
     });
   }, [submission]);
@@ -68,11 +56,11 @@ export function MapMarkers({submissions}: MapMarkersProps) {
     }
 
     const cluster = clusters
-      .filter(c => c.properties.cluster)
+      .filter(c => c.)
       .find(c =>
         supercluster
           ?.getLeaves(c.id as number)
-          .find(l => l.properties.id === submission.id)
+          .find(l => l.properties.id === submission.properties.id)
       );
 
     if (!cluster) return;
@@ -82,7 +70,7 @@ export function MapMarkers({submissions}: MapMarkersProps) {
       : 16;
 
     map.current?.flyTo({
-      center: [submission.longitude, submission.latitude],
+      center: submission.geometry.coordinates,
       zoom,
     });
   }, [submission, clusters, supercluster]);
@@ -108,7 +96,7 @@ export function MapMarkers({submissions}: MapMarkersProps) {
         ) : (
           <MapMarker
             key={cluster.properties.id}
-            submission={cluster.properties as SubmissionApiPayload}
+            submission={cluster}
             windowWidth={windowSize.width}
           />
         );
