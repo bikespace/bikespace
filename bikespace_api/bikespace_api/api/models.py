@@ -37,7 +37,7 @@ class Submission(db.Model):
     )
     parking_time = db.Column(db.DateTime, nullable=False, default=datetime.now())
     comments = db.Column(db.Text, default=None, nullable=True)
-    submitted_datetime = db.Column(db.DateTime, nullable=False, default=datetime.now())
+    submitted_datetime = db.Column(db.DateTime)
 
     def __init__(
         self, latitude, longitude, issues, parking_duration, parking_time, comments
