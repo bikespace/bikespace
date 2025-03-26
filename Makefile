@@ -97,6 +97,9 @@ migrate-db:
 upgrade-db:
 	$(PYTHON) $(MANAGE_PY) db upgrade --directory $(BIKESPACE_DB_MIGRATIONS)
 
+downgrade-db:
+	$(PYTHON) $(MANAGE_PY) db downgrade --directory $(BIKESPACE_DB_MIGRATIONS)
+
 db-history:
 	$(PYTHON) $(MANAGE_PY) db history --directory $(BIKESPACE_DB_MIGRATIONS)
 
