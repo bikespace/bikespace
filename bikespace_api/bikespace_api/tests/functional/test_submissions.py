@@ -79,6 +79,7 @@ def test_get_submissions_with_id(test_client):
             "parking_duration",
             "parking_time",
             "comments",
+            "submitted_datetime",
         )
     )
     assert res["id"] == target_id
@@ -88,6 +89,7 @@ def test_get_submissions_with_id(test_client):
     assert type(res["parking_duration"]) == str
     assert type(res["parking_time"]) == str
     assert type(res["comments"]) == str
+    assert type(res["submitted_datetime"]) in (None, str)
 
 
 @mark.uses_db
@@ -101,6 +103,7 @@ def test_post_submissions(test_client):
         "comments": "test1",
     }
     response = test_client.post("/api/v2/submissions", json=dummy_submission)
+    current_datetime = datetime.now()
     res = json.loads(response.get_data())
     new_submission = Submission.query.filter_by(id=4).first()
     assert response.status_code == 201
@@ -117,3 +120,4 @@ def test_post_submissions(test_client):
         dummy_submission["parking_time"], "%Y-%m-%d %H:%M:%S.%f"
     )
     assert new_submission.comments == dummy_submission["comments"]
+    assert (current_datetime - new_submission.submitted_datetime).total_seconds() < 1
