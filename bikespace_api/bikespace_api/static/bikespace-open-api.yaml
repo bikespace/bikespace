@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: 2.0.0
+  version: 2.0.1
   title: BikeSpace API
   description: BikeSpace API
 
@@ -89,3 +89,6 @@ components:
           type: string
         comments:
           type: string
+        submitted_datetime:
+          type: string
+          format: date-time
