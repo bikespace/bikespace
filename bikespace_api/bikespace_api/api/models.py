@@ -4,7 +4,7 @@ from sqlalchemy.sql import func
 import sqlalchemy as sa
 import sqlalchemy.dialects.postgresql as pg
 from bikespace_api import db
-from datetime import datetime
+from datetime import datetime, timezone
 from enum import Enum
 
 
@@ -37,7 +37,7 @@ class Submission(db.Model):
     )
     parking_time = db.Column(db.DateTime, nullable=False, default=datetime.now())
     comments = db.Column(db.Text, default=None, nullable=True)
-    submitted_datetime = db.Column(db.DateTime)
+    submitted_datetime = db.Column(db.DateTime(timezone=True), nullable=True)
 
     def __init__(
         self, latitude, longitude, issues, parking_duration, parking_time, comments
@@ -48,4 +48,4 @@ class Submission(db.Model):
         self.parking_duration = parking_duration
         self.parking_time = parking_time
         self.comments = comments
-        self.submitted_datetime = datetime.now()
+        self.submitted_datetime = datetime.now(timezone.utc)

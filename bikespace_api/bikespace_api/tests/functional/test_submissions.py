@@ -1,5 +1,5 @@
 import json
-from datetime import datetime
+from datetime import datetime, timezone
 
 from pytest import mark
 
@@ -103,7 +103,7 @@ def test_post_submissions(test_client):
         "comments": "test1",
     }
     response = test_client.post("/api/v2/submissions", json=dummy_submission)
-    current_datetime = datetime.now()
+    current_datetime = datetime.now(timezone.utc)
     res = json.loads(response.get_data())
     new_submission = Submission.query.filter_by(id=4).first()
     assert response.status_code == 201
