@@ -14,9 +14,25 @@ interface FeedSubmissionItemProps {
 }
 
 export function FeedSubmissionItem({submission}: FeedSubmissionItemProps) {
-  const {id, issues, parking_time, parking_duration, comments} = submission;
+  const {
+    id,
+    issues,
+    parking_time,
+    parking_duration,
+    comments,
+    submitted_datetime,
+  } = submission;
 
   const parkingTime = new Date(parking_time + '+00:00');
+  const submittedDateTime = submitted_datetime
+    ? new Date(submitted_datetime) // submitted_datetime already has a tz offset
+    : 'Not Recorded';
+  const timeDescriptionTitle = [
+    'Encountered: ',
+    parkingTime.toLocaleString(),
+    '\nSubmitted: ',
+    submittedDateTime.toLocaleString(),
+  ].join(' ');
 
   const buttonRef = useRef<HTMLButtonElement>(null);
 
@@ -38,7 +54,7 @@ export function FeedSubmissionItem({submission}: FeedSubmissionItemProps) {
       className={`${styles.item} ${focus === id ? styles.focused : ''}`}
       onClick={handleClick}
     >
-      <h3>
+      <h3 title={timeDescriptionTitle}>
         {DateTime.fromJSDate(parkingTime).toLocaleString(
           {weekday: 'long', month: 'long', day: 'numeric', year: 'numeric'},
           {locale: 'en-CA'}
