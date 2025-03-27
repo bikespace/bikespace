@@ -22,7 +22,7 @@ The development server should now be running at `localhost:8000`
 
 ## API Docs
 
-The api follows an OpenAPI 3.0 Spec, the spec can be found at `bikespace_api/bikespace_api/static/bikespace-open-api.yaml`
+The api follows an OpenAPI 3.0 Spec, the spec can be found at `bikespace_api/bikespace_api/static/bikespace-open-api.yaml`. When making changes to the database models, the spec should also be edited manually to match.
 
 The swagger-ui to render the OpenAPI spec can be found at `localhost:8000/api/v2/docs`
 
