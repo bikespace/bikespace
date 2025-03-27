@@ -91,12 +91,15 @@ recreate-db: setup-py
 init-db: setup-py 
 	$(PYTHON) $(MANAGE_PY) db init --directory $(BIKESPACE_DB_MIGRATIONS)
 
+# generates a migration script based on the current model definitions
 migrate-db: 
 	$(PYTHON) $(MANAGE_PY) db migrate --directory $(BIKESPACE_DB_MIGRATIONS)
 
+# applies all the migration scripts to update the database to the newest schema
 upgrade-db:
 	$(PYTHON) $(MANAGE_PY) db upgrade --directory $(BIKESPACE_DB_MIGRATIONS)
 
+# reverts migration by one step (run multiple times if needed)
 downgrade-db:
 	$(PYTHON) $(MANAGE_PY) db downgrade --directory $(BIKESPACE_DB_MIGRATIONS)
 
