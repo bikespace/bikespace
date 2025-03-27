@@ -77,7 +77,7 @@ run-pytest-terminal: setup-py launch-db db-test-server
 	cd $(BIKESPACE_API_DIR) && \
 	$(PYTHON) $(MANAGE_PY) recreate-db && \
 	$(PYTHON) $(MANAGE_PY) seed-db && \
-	$(PYTHON) -m pytest -s --cov=bikespace_api --cov-report term
+	$(PYTHON) -m pytest -s --cov=bikespace_api --cov-report term-missing
 
 lint-py:
 	$(PYTHON) -m black $(BIKESPACE_API_DIR)
