@@ -47,7 +47,11 @@ def get_submission_with_id(submission_id):
         "parking_duration": submission_with_id.parking_duration.value,
         "parking_time": submission_with_id.parking_time,
         "comments": submission_with_id.comments,
-        "submitted_datetime": submission_with_id.submitted_datetime.isoformat(),
+        "submitted_datetime": (
+            submission_with_id.submitted_datetime.isoformat()
+            if submission_with_id.submitted_datetime is not None
+            else None
+        ),
     }
     return_response = Response(
         response=json.dumps(submission_with_id_json, default=str),
@@ -81,7 +85,11 @@ def get_submissions_json(request):
             "parking_duration": submission.parking_duration.value,
             "parking_time": submission.parking_time,
             "comments": submission.comments,
-            "submitted_datetime": submission.submitted_datetime.isoformat(),
+            "submitted_datetime": (
+                submission.submitted_datetime.isoformat()
+                if submission.submitted_datetime is not None
+                else None
+            ),
         }
         json_output.append(submission_json)
 
@@ -146,7 +154,11 @@ def get_submissions_geo_json(request):
                 "issues": issues,
                 "parking_duration": submission.parking_duration.value,
                 "parking_time": str(submission.parking_time),
-                "submitted_datetime": submission.submitted_datetime.isoformat(),
+                "submitted_datetime": (
+                    submission.submitted_datetime.isoformat()
+                    if submission.submitted_datetime is not None
+                    else None
+                ),
             },
         )
         if point_feature.is_valid:
@@ -175,7 +187,11 @@ def get_submissions_csv(request):
             row.append(issue_type in submission.issues)
         row.append(submission.parking_duration.value)
         row.append(submission.comments)
-        row.append(submission.submitted_datetime.isoformat())
+        row.append(
+            submission.submitted_datetime.isoformat()
+            if submission.submitted_datetime is not None
+            else None
+        )
         submissions_list.append(row)
 
     string_io = StringIO()
