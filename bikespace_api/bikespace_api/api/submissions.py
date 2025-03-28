@@ -130,7 +130,9 @@ def post_submissions(request):
         )
         db.session.add(new_submission)
         db.session.commit()
-        return_response = Response(json.dumps({"status": "created"}), 201)
+        return_response = Response(
+            json.dumps({"status": "created", "submission_id": new_submission.id}), 201
+        )
         return return_response
     except IntegrityError:
         db.session.rollback()
