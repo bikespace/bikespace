@@ -69,6 +69,8 @@ function uniqueBy(a: Array<Object>, getKey: Function): Array<Object> {
 }
 
 export function ParkingMapPage() {
+  const [zoomLevel, setZoomLevel] = useState<number>(12);
+
   const mapRef = useRef<MapRef>(null);
   const map = mapRef.current;
   const interactiveLayers = ['bicycle-parking'];
@@ -231,6 +233,7 @@ export function ParkingMapPage() {
     <main className={styles.parkingMapPage}>
       <Sidebar>
         <div className={styles.sideBarContainer}>
+          <p>{`Zoom: ${zoomLevel}`}</p>
           {sidebarFeatureList.length > 0
             ? sidebarFeatureList.map(f => (
                 <ParkingFeatureDescription
@@ -261,6 +264,9 @@ export function ParkingMapPage() {
         mapStyle={`https://api.maptiler.com/maps/streets/style.json?key=${process.env.MAPTILER_API_KEY}`}
         onLoad={handleOnLoad}
         onClick={handleLayerClick}
+        onZoomEnd={() =>
+          setZoomLevel(Math.round((map?.getZoom() ?? 0) * 10) / 10)
+        }
         ref={mapRef}
       >
         <NavigationControl position="top-left" />
