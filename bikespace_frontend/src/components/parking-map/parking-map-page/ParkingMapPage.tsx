@@ -47,13 +47,14 @@ export function ParkingMapPage() {
   const mapFeatureIDs = mapFeatureList.map(f => f.id);
   const mapRef = useRef<MapRef>(null);
   const map = mapRef.current;
+  const interactiveLayers = ['bicycle-parking'];
 
   function handleLayerClick(e: MapLayerMouseEvent) {
     if (!map) return;
     const features = map.queryRenderedFeatures(
       e.point as PointLike,
       {
-        layers: ['bicycle-parking'],
+        layers: interactiveLayers,
       } as QueryRenderedFeaturesOptions
     );
     setSidebarFeatureList(features);
@@ -102,6 +103,24 @@ export function ParkingMapPage() {
     map.setSprite('/parking_map/parking_sprites');
   }
 
+  // show map pins as interactive when mouse is over them
+  function handleMouseHover() {
+    if (!map) return;
+    for (const layer of interactiveLayers) {
+      map.on('mouseenter', layer, () => {
+        map.getCanvas().style.cursor = 'pointer';
+      });
+      map.on('mouseleave', layer, () => {
+        map.getCanvas().style.cursor = '';
+      });
+    }
+  }
+
+  function handleOnLoad() {
+    addSprite();
+    handleMouseHover();
+  }
+
   return (
     <main className={styles.parkingMapPage}>
       <Sidebar>
@@ -128,7 +147,7 @@ export function ParkingMapPage() {
         }}
         style={{width: '100%', height: '100%'}}
         mapStyle={`https://api.maptiler.com/maps/streets/style.json?key=${process.env.MAPTILER_API_KEY}`}
-        onLoad={addSprite}
+        onLoad={handleOnLoad}
         onClick={handleLayerClick}
         ref={mapRef}
       >
@@ -146,6 +165,7 @@ export function ParkingMapPage() {
               longitude={long}
               anchor="bottom"
               offset={[0, 6]}
+              style={{cursor: 'pointer'}}
             >
               <img src={parkingSidebarIcon.src} height={44} />
             </Marker>
@@ -161,6 +181,7 @@ export function ParkingMapPage() {
               longitude={long}
               anchor="bottom"
               offset={[0, 6]}
+              style={{cursor: 'pointer'}}
             >
               <img src={parkingSelectedIcon.src} height={44} />
             </Marker>
