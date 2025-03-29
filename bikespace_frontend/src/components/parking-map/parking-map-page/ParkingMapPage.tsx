@@ -60,7 +60,7 @@ function getCentroid(feature: MapGeoJSONFeature) {
   );
 }
 
-function uniqueBy(a: Array<Object>, getKey: Function) {
+function uniqueBy(a: Array<Object>, getKey: Function): Array<Object> {
   const seen = new Set();
   return a.filter(item => {
     const k = getKey(item);
@@ -86,7 +86,7 @@ export function ParkingMapPage() {
   const mapFeatureSelectedOrHovered = uniqueBy(
     [...mapFeatureList, ...mapFeatureHovered],
     (f: MapGeoJSONFeature) => f.id
-  );
+  ) as Array<MapGeoJSONFeature>;
 
   // zoom and position controls
   const [defaultLocation, setDefaultLocation] = useState({
