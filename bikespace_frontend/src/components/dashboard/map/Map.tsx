@@ -1,8 +1,10 @@
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {MapContainer, TileLayer} from 'react-leaflet';
 import MarkerClusterGroup from 'react-leaflet-cluster';
-import {Marker as LeafletMarker} from 'leaflet';
+import {Marker as LeafletMarker, Map as lMap} from 'leaflet';
 import {useWindowSize} from '@uidotdev/usehooks';
+
+import {useStore} from '@/states/store';
 
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css';
@@ -23,12 +25,21 @@ export interface MapProps {
 type MarkerRefs = Record<number, LeafletMarker>;
 
 function Map({submissions}: MapProps) {
-  const mapRef = useRef(null);
+  const mapRef: React.LegacyRef<lMap> = useRef(null);
   const clusterRef = useRef(null);
-  const [doneLoading, setDoneLoading] = useState(false);
   const markerRefs = useRef<MarkerRefs>({});
 
+  const [doneLoading, setDoneLoading] = useState(false);
+
   const windowSize = useWindowSize();
+
+  const isSidebarOpen = useStore(state => state.ui.sidebar.isOpen);
+
+  // Ensure map still fills the available space when sidebar opens/closes
+  useEffect(() => {
+    if (!mapRef.current) return;
+    mapRef.current.invalidateSize();
+  }, [isSidebarOpen]);
 
   return (
     <MapContainer

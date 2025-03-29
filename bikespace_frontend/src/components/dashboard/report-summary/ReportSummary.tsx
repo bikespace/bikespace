@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {DateTime} from 'luxon';
 
-import {useSubmissionsStore} from '@/states/store';
+import {useStore} from '@/states/store';
 
 import {useAllSubmissionsDateRange, useSubmissionsQuery} from '@/hooks';
 
@@ -14,7 +14,7 @@ import styles from './report-summary.module.scss';
 export function ReportSummary() {
   const {isFetching} = useSubmissionsQuery();
 
-  const {submissions, filters} = useSubmissionsStore(state => ({
+  const {submissions, filters} = useStore(state => ({
     submissions: state.submissions,
     filters: state.filters,
   }));

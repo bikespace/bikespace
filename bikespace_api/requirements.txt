@@ -19,13 +19,13 @@ Flask-SQLAlchemy==3.1.1
 Flask-Testing==0.8.1
 geojson==3.1.0
 greenlet==3.0.3
-gunicorn==22.0.0
+gunicorn==23.0.0
 idna==3.7
 importlib-metadata==6.0.0
 importlib-resources==6.0.1
 iniconfig==2.0.0
 itsdangerous==2.2.0
-Jinja2==3.1.5
+Jinja2==3.1.6
 limits==3.5.0
 Mako==1.2.4
 markdown-it-py==3.0.0

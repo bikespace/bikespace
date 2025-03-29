@@ -1,13 +1,13 @@
 'use client';
 
-import React, {useEffect} from 'react';
+import {useEffect} from 'react';
 import dynamic from 'next/dynamic';
 
 import {trackUmamiEvent} from '@/utils';
 
 import {useSubmissionsQuery} from '@/hooks';
 
-import {useSubmissionsStore} from '@/states/store';
+import {useStore} from '@/states/store';
 import {useSubmissionId} from '@/states/url-params';
 
 import {Sidebar} from '../sidebar';
@@ -24,7 +24,7 @@ export function DashboardPage() {
   const queryResult = useSubmissionsQuery();
   const allSubmissions = queryResult.data || [];
 
-  const {submissions, setSubmissions, filters} = useSubmissionsStore(state => ({
+  const {submissions, setSubmissions, filters} = useStore(state => ({
     submissions: state.submissions,
     setSubmissions: state.setSubmissions,
     filters: state.filters,
