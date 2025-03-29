@@ -26,6 +26,11 @@ import parkingSidebarIcon from '@/assets/icons/parking_map/parking_sidebar.png';
 import parkingSelectedIcon from '@/assets/icons/parking_map/parking_selected.png';
 
 export function ParkingMapPage() {
+  const mapRef = useRef<MapRef>(null);
+  const map = mapRef.current;
+  const interactiveLayers = ['bicycle-parking'];
+
+  // zoom and position controls
   const [defaultLocation, setDefaultLocation] = useState({
     latitude: 43.65322,
     longitude: -79.384452,
@@ -39,15 +44,37 @@ export function ParkingMapPage() {
     });
   }, []);
 
+  function zoomAndFlyTo(features: MapGeoJSONFeature[], zoomLevel = 15) {
+    if (!map) return;
+
+    // zoom in if needed
+    zoomLevel = Math.max(zoomLevel, map.getZoom());
+
+    const allCoords = features.map(f => {
+      const geometry = f.geometry as Point;
+      const [lon, lat] = geometry.coordinates;
+      return {lon: lon, lat: lat};
+    });
+    const allLon = allCoords.map(coords => coords.lon);
+    const allLat = allCoords.map(coords => coords.lat);
+    // calculate centroid from average lon, lat
+    const centroid = {
+      lon: allLon.reduce((partial, l) => partial + l, 0) / allLon.length,
+      lat: allLat.reduce((partial, l) => partial + l, 0) / allLat.length,
+    };
+
+    map.flyTo({
+      center: [centroid.lon, centroid.lat],
+      zoom: zoomLevel,
+    });
+  }
+
   const [sidebarFeatureList, setSidebarFeatureList] = useState<
     MapGeoJSONFeature[]
   >([]);
   const [mapFeatureList, setMapFeatureList] = useState<MapGeoJSONFeature[]>([]);
   const sidebarFeatureIDs = sidebarFeatureList.map(f => f.id);
   const mapFeatureIDs = mapFeatureList.map(f => f.id);
-  const mapRef = useRef<MapRef>(null);
-  const map = mapRef.current;
-  const interactiveLayers = ['bicycle-parking'];
 
   function handleLayerClick(e: MapLayerMouseEvent) {
     if (!map) return;
@@ -60,6 +87,10 @@ export function ParkingMapPage() {
     setSidebarFeatureList(features);
     setMapFeatureList(features);
 
+    if (features.length > 0) zoomAndFlyTo(features);
+
+    // mask out selected features that are manually rendered
+    // (ParkingLayer style uses the 'sidebar' property to set opacity to 100%)
     if (sidebarFeatureList.length > 0) {
       for (const f of sidebarFeatureList) {
         map.setFeatureState(
@@ -80,8 +111,6 @@ export function ParkingMapPage() {
 
   // TODOs:
   // - document decision on dealing with past state in the handler vs prev state. See: https://react.dev/reference/react/useState#storing-information-from-previous-renders
-  // - improve map render for two levels of feature state: one for selected cluster, one for drill down using sidebar. FeatureState can be any abitrary KV pair.
-  // - also needs a flyto
   // - also needs a hover state to see which item on the sidebar is the one being selected?
   function handleFeatureDescriptionClick(
     e: React.MouseEvent<HTMLElement>,
@@ -157,12 +186,12 @@ export function ParkingMapPage() {
         <ParkingLayer />
         {sidebarFeatureList.map(feature => {
           const geometry = feature.geometry as Point;
-          const [long, lat] = geometry.coordinates;
+          const [lon, lat] = geometry.coordinates;
           return (
             <Marker
               key={feature.id}
               latitude={lat}
-              longitude={long}
+              longitude={lon}
               anchor="bottom"
               offset={[0, 6]}
               style={{cursor: 'pointer'}}
@@ -173,12 +202,12 @@ export function ParkingMapPage() {
         })}
         {mapFeatureList.map(feature => {
           const geometry = feature.geometry as Point;
-          const [long, lat] = geometry.coordinates;
+          const [lon, lat] = geometry.coordinates;
           return (
             <Marker
               key={feature.id}
               latitude={lat}
-              longitude={long}
+              longitude={lon}
               anchor="bottom"
               offset={[0, 6]}
               style={{cursor: 'pointer'}}
