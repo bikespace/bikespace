@@ -91,10 +91,13 @@ export function ParkingMapPage() {
       lon: Math.max(...allCoords.map(coords => coords.lon)),
       lat: Math.max(...allCoords.map(coords => coords.lat)),
     };
-    const testCamera = map.cameraForBounds([
-      [boundsSW.lon, boundsSW.lat],
-      [boundsNE.lon, boundsNE.lat],
-    ]);
+    const testCamera = map.cameraForBounds(
+      [
+        [boundsSW.lon, boundsSW.lat],
+        [boundsNE.lon, boundsNE.lat],
+      ],
+      {padding: {top: 50, right: 10, left: 10, bottom: 10}}
+    );
 
     // zoom in if currently more zoomed out than 15 unless the points don't fit
     zoomLevel = Math.min(
