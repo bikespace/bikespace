@@ -10,6 +10,7 @@ import parkingIconCoveredPaid from '@/assets/icons/parking_map/parking_covered_p
 // examples of type-specific icons
 import parkingIconRack from '@/assets/icons/parking_map/parking_rack.png';
 import parkingIconBollard from '@/assets/icons/parking_map/parking_bollard.png';
+import {ExpressionSpecification} from 'maplibre-gl';
 
 /*
 Use the stuff below with:
@@ -103,8 +104,9 @@ export function ParkingLayer() {
       'circle-radius': 3,
       'circle-stroke-width': 2,
       'circle-stroke-color': 'white',
-      'circle-opacity': ['literal', parkingLayerDenseOpacity],
-      'circle-stroke-opacity': ['literal', parkingLayerDenseOpacity],
+      'circle-opacity': parkingLayerDenseOpacity as ExpressionSpecification,
+      'circle-stroke-opacity':
+        parkingLayerDenseOpacity as ExpressionSpecification,
     },
   };
 
