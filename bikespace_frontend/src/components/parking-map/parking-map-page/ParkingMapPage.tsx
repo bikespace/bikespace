@@ -26,7 +26,6 @@ import parkingSidebarIcon from '@/assets/icons/parking_map/parking_sidebar.png';
 import parkingSelectedIcon from '@/assets/icons/parking_map/parking_selected.png';
 
 function getCentroid(feature: MapGeoJSONFeature) {
-  console.log(feature.geometry);
   if (feature.geometry.type === 'LineString') {
     const geometry = feature.geometry as LineString;
     return geometry.coordinates[0];
