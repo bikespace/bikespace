@@ -61,6 +61,13 @@ export function ParkingMapPage() {
   const map = mapRef.current;
   const interactiveLayers = ['bicycle-parking'];
 
+  // manage state of selected features
+  const [sidebarFeatureList, setSidebarFeatureList] = useState<
+    MapGeoJSONFeature[]
+  >([]);
+  const [mapFeatureList, setMapFeatureList] = useState<MapGeoJSONFeature[]>([]);
+  const mapFeatureIDs = mapFeatureList.map(f => f.id);
+
   // zoom and position controls
   const [defaultLocation, setDefaultLocation] = useState({
     latitude: 43.65322,
@@ -99,7 +106,7 @@ export function ParkingMapPage() {
       {padding: {top: 50, right: 10, left: 10, bottom: 10}}
     );
 
-    // zoom in if currently more zoomed out than 15 unless the points don't fit
+    // zoom in if currently more zoomed out than default zoomLevel unless the points don't fit
     zoomLevel = Math.min(
       testCamera?.zoom ?? 0,
       Math.max(zoomLevel, map.getZoom())
@@ -110,13 +117,6 @@ export function ParkingMapPage() {
       zoom: zoomLevel,
     });
   }
-
-  const [sidebarFeatureList, setSidebarFeatureList] = useState<
-    MapGeoJSONFeature[]
-  >([]);
-  const [mapFeatureList, setMapFeatureList] = useState<MapGeoJSONFeature[]>([]);
-  const sidebarFeatureIDs = sidebarFeatureList.map(f => f.id);
-  const mapFeatureIDs = mapFeatureList.map(f => f.id);
 
   function handleLayerClick(e: MapLayerMouseEvent) {
     if (!map) return;
@@ -131,9 +131,10 @@ export function ParkingMapPage() {
 
     if (features.length > 0) zoomAndFlyTo(features);
 
-    // mask out selected features that are manually rendered
-    // (ParkingLayer style uses the 'sidebar' property to set opacity to 100%)
-    if (sidebarFeatureList.length > 0) {
+    // Update opacity of features that will be / were 'manually' rendered
+    // (ParkingLayer style uses the 'sidebar' custom property to set opacity to 100%)
+    // Note - sidebarFeatureList below is still the 'old' values. See: https://react.dev/reference/react/useState#storing-information-from-previous-renders
+    if (sidebarFeatureList.length > 0) { 
       for (const f of sidebarFeatureList) {
         map.setFeatureState(
           {source: f.source, id: f.id},
@@ -151,9 +152,6 @@ export function ParkingMapPage() {
     }
   }
 
-  // TODOs:
-  // - document decision on dealing with past state in the handler vs prev state. See: https://react.dev/reference/react/useState#storing-information-from-previous-renders
-  // - also needs a hover state to see which item on the sidebar is the one being selected?
   function handleFeatureDescriptionClick(
     e: React.MouseEvent<HTMLElement>,
     f: MapGeoJSONFeature
