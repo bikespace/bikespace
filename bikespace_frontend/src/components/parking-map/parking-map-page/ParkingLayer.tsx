@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import {Layer, Source, useMap} from 'react-map-gl/maplibre';
-import type {SymbolLayer} from 'react-map-gl/maplibre';
+import type {CircleLayer, SymbolLayer} from 'react-map-gl/maplibre';
 
 import parkingIcon from '@/assets/icons/parking_map/parking.png';
 import parkingIconCovered from '@/assets/icons/parking_map/parking_covered.png';
@@ -74,11 +74,37 @@ export function ParkingLayer() {
     },
     paint: {
       'icon-opacity': [
-        'case',
-        ['boolean', ['feature-state', 'sidebar'], false],
+        'interpolate',
+        ['linear'],
+        ['zoom'],
+        16,
         0,
-        1,
+        16.05,
+        ['case', ['boolean', ['feature-state', 'sidebar'], false], 0, 1],
       ],
+    },
+  };
+
+  const parkingLayerDenseOpacity = [
+    'interpolate',
+    ['linear'],
+    ['zoom'],
+    16,
+    1,
+    16.05,
+    0,
+  ];
+  const parkingLayerDense: CircleLayer = {
+    id: 'bicycle-parking-dense',
+    type: 'circle',
+    source: 'bicycle_parking',
+    paint: {
+      'circle-color': '#136329',
+      'circle-radius': 3,
+      'circle-stroke-width': 2,
+      'circle-stroke-color': 'white',
+      'circle-opacity': ['literal', parkingLayerDenseOpacity],
+      'circle-stroke-opacity': ['literal', parkingLayerDenseOpacity],
     },
   };
 
@@ -91,6 +117,7 @@ export function ParkingLayer() {
         generateId={true}
       >
         <Layer {...parkingLayer} />
+        <Layer {...parkingLayerDense} />
       </Source>
     </>
   );
