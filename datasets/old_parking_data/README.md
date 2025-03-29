@@ -27,3 +27,13 @@ The script does the following things:
 - Generate a geojson file of only the older parking data that is NOT within 30 metres of a currently-known bicycle parking location
 
 The purpose of the second file is to help identify areas to survey to determine if there is bicycle parking that should be added to OpenStreetMap.
+
+## Screenshots - Precision Loss
+
+Native use of MapBox style:
+
+<img width="761" alt="Screenshot 2025-03-28 at 10 43 10 PM" src="https://github.com/user-attachments/assets/9fb823ab-ae22-4fde-99fa-bb5f1fed261f" />
+
+Extracted data:
+
+<img width="705" alt="Screenshot 2025-03-28 at 10 42 54 PM" src="https://github.com/user-attachments/assets/83e33884-6505-4eb5-a8e8-942cf39c569d" />
