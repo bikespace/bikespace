@@ -15,7 +15,7 @@ import {ParkingLayer} from './ParkingLayer';
 import {BikeLaneLayer} from './BikeLaneLayer';
 
 import type {MapRef} from 'react-map-gl/maplibre';
-import type {Point} from 'geojson';
+import type {LineString, Point} from 'geojson';
 
 import 'maplibre-gl/dist/maplibre-gl.css';
 import styles from './parking-map-page.module.scss';
@@ -24,6 +24,38 @@ import {ParkingFeatureDescription} from './parking-feature-description/ParkingFe
 
 import parkingSidebarIcon from '@/assets/icons/parking_map/parking_sidebar.png';
 import parkingSelectedIcon from '@/assets/icons/parking_map/parking_selected.png';
+
+function getCentroid(feature: MapGeoJSONFeature) {
+  console.log(feature.geometry);
+  if (feature.geometry.type === 'LineString') {
+    const geometry = feature.geometry as LineString;
+    return geometry.coordinates[0];
+    /*
+      NOTE: code below provides the centroid of a LineString, but this leads to inconsistent placement between the layer rendering and the manual marker rendering since MapLibre uses the first point instead of the centroid. I tried specifying setting the 'symbol-placement' layout property to 'line-center' for LineStrings but that property apparently doesn't support data expressions, which makes it impossible to specify for a mixed geometry layer of Points and LineStrings.
+    */
+    // const allLon = geometry.coordinates.map(coords => {
+    //   const [lon, lat] = coords;
+    //   return lon;
+    // });
+    // const allLat = geometry.coordinates.map(coords => {
+    //   const [lon, lat] = coords;
+    //   return lat;
+    // });
+    // // calculate centroid from average lon, lat
+    // const centroid = [
+    //   allLon.reduce((partial, l) => partial + l, 0) / allLon.length,
+    //   allLat.reduce((partial, l) => partial + l, 0) / allLat.length,
+    // ];
+    // return centroid;
+  }
+  if (feature.geometry.type === 'Point') {
+    const geometry = feature.geometry as Point;
+    return geometry.coordinates;
+  }
+  throw new Error(
+    `Error in getCentroid function: unhandled geometry type ${feature.geometry.type}`
+  );
+}
 
 export function ParkingMapPage() {
   const mapRef = useRef<MapRef>(null);
@@ -47,24 +79,32 @@ export function ParkingMapPage() {
   function zoomAndFlyTo(features: MapGeoJSONFeature[], zoomLevel = 15) {
     if (!map) return;
 
-    // zoom in if needed
-    zoomLevel = Math.max(zoomLevel, map.getZoom());
-
+    // calculate bounds and test camera fit and center
     const allCoords = features.map(f => {
-      const geometry = f.geometry as Point;
-      const [lon, lat] = geometry.coordinates;
+      const [lon, lat] = getCentroid(f);
       return {lon: lon, lat: lat};
     });
-    const allLon = allCoords.map(coords => coords.lon);
-    const allLat = allCoords.map(coords => coords.lat);
-    // calculate centroid from average lon, lat
-    const centroid = {
-      lon: allLon.reduce((partial, l) => partial + l, 0) / allLon.length,
-      lat: allLat.reduce((partial, l) => partial + l, 0) / allLat.length,
+    const boundsSW = {
+      lon: Math.min(...allCoords.map(coords => coords.lon)),
+      lat: Math.min(...allCoords.map(coords => coords.lat)),
     };
+    const boundsNE = {
+      lon: Math.max(...allCoords.map(coords => coords.lon)),
+      lat: Math.max(...allCoords.map(coords => coords.lat)),
+    };
+    const testCamera = map.cameraForBounds([
+      [boundsSW.lon, boundsSW.lat],
+      [boundsNE.lon, boundsNE.lat],
+    ]);
+
+    // zoom in if currently more zoomed out than 15 unless the points don't fit
+    zoomLevel = Math.min(
+      testCamera?.zoom ?? 0,
+      Math.max(zoomLevel, map.getZoom())
+    );
 
     map.flyTo({
-      center: [centroid.lon, centroid.lat],
+      center: testCamera?.center,
       zoom: zoomLevel,
     });
   }
@@ -185,8 +225,7 @@ export function ParkingMapPage() {
         <BikeLaneLayer />
         <ParkingLayer />
         {sidebarFeatureList.map(feature => {
-          const geometry = feature.geometry as Point;
-          const [lon, lat] = geometry.coordinates;
+          const [lon, lat] = getCentroid(feature);
           return (
             <Marker
               key={feature.id}
@@ -201,8 +240,7 @@ export function ParkingMapPage() {
           );
         })}
         {mapFeatureList.map(feature => {
-          const geometry = feature.geometry as Point;
-          const [lon, lat] = geometry.coordinates;
+          const [lon, lat] = getCentroid(feature);
           return (
             <Marker
               key={feature.id}
