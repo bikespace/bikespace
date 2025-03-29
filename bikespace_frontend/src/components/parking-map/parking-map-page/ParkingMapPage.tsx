@@ -46,9 +46,10 @@ export function ParkingMapPage() {
   const sidebarFeatureIDs = sidebarFeatureList.map(f => f.id);
   const mapFeatureIDs = mapFeatureList.map(f => f.id);
   const mapRef = useRef<MapRef>(null);
+  const map = mapRef.current;
 
   function handleLayerClick(e: MapLayerMouseEvent) {
-    const map = e.target;
+    if (!map) return;
     const features = map.queryRenderedFeatures(
       e.point as PointLike,
       {
@@ -85,9 +86,7 @@ export function ParkingMapPage() {
     e: React.MouseEvent<HTMLElement>,
     f: MapGeoJSONFeature
   ) {
-    const map = mapRef.current;
     if (!map) return;
-
     setMapFeatureList([f]);
 
     if (sidebarFeatureList.length > 0) {
@@ -99,10 +98,8 @@ export function ParkingMapPage() {
   }
 
   function addSprite() {
-    const map = mapRef.current;
     if (!map) return;
-
-    map?.setSprite('/parking_map/parking_sprites');
+    map.setSprite('/parking_map/parking_sprites');
   }
 
   return (
