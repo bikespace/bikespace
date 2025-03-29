@@ -25,6 +25,10 @@ import {ParkingFeatureDescription} from './parking-feature-description/ParkingFe
 import parkingSidebarIcon from '@/assets/icons/parking_map/parking_sidebar.png';
 import parkingSelectedIcon from '@/assets/icons/parking_map/parking_selected.png';
 
+/*
+  IMPORTANT NOTE: Several functions take advantage of the fact that state does not update until the next render to make updates to old and new values at the same time. See: https://react.dev/reference/react/useState#storing-information-from-previous-renders
+*/
+
 function getCentroid(feature: MapGeoJSONFeature) {
   if (feature.geometry.type === 'LineString') {
     const geometry = feature.geometry as LineString;
@@ -56,6 +60,14 @@ function getCentroid(feature: MapGeoJSONFeature) {
   );
 }
 
+function uniqueBy(a: Array<Object>, getKey: Function) {
+  const seen = new Set();
+  return a.filter(item => {
+    const k = getKey(item);
+    return seen.has(k) ? false : seen.add(k);
+  });
+}
+
 export function ParkingMapPage() {
   const mapRef = useRef<MapRef>(null);
   const map = mapRef.current;
@@ -67,6 +79,14 @@ export function ParkingMapPage() {
   >([]);
   const [mapFeatureList, setMapFeatureList] = useState<MapGeoJSONFeature[]>([]);
   const mapFeatureIDs = mapFeatureList.map(f => f.id);
+  const [mapFeatureHovered, setMapFeatureHovered] = useState<
+    MapGeoJSONFeature[]
+  >([]);
+  const mapFeatureHoveredIDs = mapFeatureHovered.map(f => f.id);
+  const mapFeatureSelectedOrHovered = uniqueBy(
+    [...mapFeatureList, ...mapFeatureHovered],
+    (f: MapGeoJSONFeature) => f.id
+  );
 
   // zoom and position controls
   const [defaultLocation, setDefaultLocation] = useState({
@@ -127,17 +147,16 @@ export function ParkingMapPage() {
       } as QueryRenderedFeaturesOptions
     );
     setSidebarFeatureList(features);
-    setMapFeatureList(features);
+    setMapFeatureList(features.length === 1 ? features : []);
 
     if (features.length > 0) zoomAndFlyTo(features);
 
     // Update opacity of features that will be / were 'manually' rendered
     // (ParkingLayer style uses the 'sidebar' custom property to set opacity to 100%)
-    // Note - sidebarFeatureList below is still the 'old' values. See: https://react.dev/reference/react/useState#storing-information-from-previous-renders
-    if (sidebarFeatureList.length > 0) { 
-      for (const f of sidebarFeatureList) {
+    if (sidebarFeatureList.length > 0) {
+      for (const old_f of sidebarFeatureList) {
         map.setFeatureState(
-          {source: f.source, id: f.id},
+          {source: old_f.source, id: old_f.id},
           {selected: false, sidebar: false}
         );
       }
@@ -152,19 +171,37 @@ export function ParkingMapPage() {
     }
   }
 
-  function handleFeatureDescriptionClick(
+  function handleFeatureSelection(
     e: React.MouseEvent<HTMLElement>,
     f: MapGeoJSONFeature
   ) {
     if (!map) return;
-    setMapFeatureList([f]);
+    if (e.type === 'click') {
+      setMapFeatureList([f]);
+    } else {
+      setMapFeatureHovered([f]);
+    }
 
-    if (sidebarFeatureList.length > 0) {
-      for (const f of sidebarFeatureList) {
-        map.setFeatureState({source: f.source, id: f.id}, {selected: false});
-      }
+    // update map pin formatting
+    for (const old_f of mapFeatureSelectedOrHovered) {
+      map.setFeatureState(
+        {source: old_f.source, id: old_f.id},
+        {selected: false}
+      );
     }
     map.setFeatureState({source: f.source, id: f.id}, {selected: true});
+  }
+
+  function handleUnHover() {
+    if (!map) return;
+    setMapFeatureHovered([]);
+
+    for (const old_f of mapFeatureHovered) {
+      map.setFeatureState(
+        {source: old_f.source, id: old_f.id},
+        {selected: false}
+      );
+    }
   }
 
   function addSprite() {
@@ -200,8 +237,14 @@ export function ParkingMapPage() {
                   selected={
                     mapFeatureIDs.includes(f.id) && mapFeatureIDs.length === 1
                   }
+                  hovered={
+                    mapFeatureHoveredIDs.includes(f.id) &&
+                    mapFeatureHoveredIDs.length === 1
+                  }
                   feature={f}
-                  handleClick={handleFeatureDescriptionClick}
+                  handleClick={handleFeatureSelection}
+                  handleHover={handleFeatureSelection}
+                  handleUnHover={handleUnHover}
                   key={f.id}
                 />
               ))
@@ -239,7 +282,7 @@ export function ParkingMapPage() {
             </Marker>
           );
         })}
-        {mapFeatureList.map(feature => {
+        {mapFeatureSelectedOrHovered.map(feature => {
           const [lon, lat] = getCentroid(feature);
           return (
             <Marker

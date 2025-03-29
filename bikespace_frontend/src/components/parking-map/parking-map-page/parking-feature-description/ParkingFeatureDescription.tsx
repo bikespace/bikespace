@@ -5,15 +5,21 @@ import {bicycleParkingDescriptions as bpDesc} from './bicycle_parkingDescription
 import styles from './parking-feature-description.module.scss';
 
 export interface ParkingFeatureDescriptionProps {
-  feature: MapGeoJSONFeature;
-  handleClick: Function; // TODO make more specific?
   selected: boolean;
+  hovered: boolean;
+  feature: MapGeoJSONFeature;
+  handleClick: Function;
+  handleHover: Function;
+  handleUnHover: Function;
 }
 
 export function ParkingFeatureDescription({
+  selected,
+  hovered,
   feature,
   handleClick,
-  selected,
+  handleHover,
+  handleUnHover,
 }: ParkingFeatureDescriptionProps) {
   if (!feature.properties) {
     return <p>Feature has no properties</p>;
@@ -38,11 +44,18 @@ export function ParkingFeatureDescription({
   return (
     <div
       className={
-        selected ? styles.featureDescriptionSelected : styles.featureDescription
+        hovered || selected
+          ? styles.featureDescriptionSelected
+          : styles.featureDescription
       }
     >
       <h3>
-        <a href="#" onClick={(e: React.MouseEvent) => handleClick(e, feature)}>
+        <a
+          href="#"
+          onClick={(e: React.MouseEvent) => handleClick(e, feature)}
+          onMouseOver={(e: React.MouseEvent) => handleHover(e, feature)}
+          onMouseOut={() => handleUnHover()}
+        >
           {parkingTypeDescription} ({capacityDescription}){indicatorList}
         </a>
       </h3>
