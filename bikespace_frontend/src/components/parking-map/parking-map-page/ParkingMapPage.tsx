@@ -75,7 +75,7 @@ export function ParkingMapPage() {
     });
   }, []);
 
-  function zoomAndFlyTo(features: MapGeoJSONFeature[], zoomLevel = 15) {
+  function zoomAndFlyTo(features: MapGeoJSONFeature[], zoomLevel = 18) {
     if (!map) return;
 
     // calculate bounds and test camera fit and center
