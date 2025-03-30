@@ -67,7 +67,7 @@ jobs:
         run: make migrate-test-db
   deploy-to-fly:
       name: Deploy to fly.io
-      needs: apitest
+      needs: [apitest, api-migration-test]
       runs-on: ubuntu-latest
       permissions:
         contents: read
