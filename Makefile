@@ -92,7 +92,7 @@ init-db: setup-py
 	$(PYTHON) $(MANAGE_PY) db init --directory $(BIKESPACE_DB_MIGRATIONS)
 
 # check if database migrations need to be generated for the API
-migrate-test-db:
+migrate-test-db: setup-py
 	$(PYTHON) $(MANAGE_PY) db check --directory $(BIKESPACE_DB_MIGRATIONS)
 
 # generates a migration script based on the current model definitions
