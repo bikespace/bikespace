@@ -91,6 +91,15 @@ recreate-db: setup-py
 init-db: setup-py 
 	$(PYTHON) $(MANAGE_PY) db init --directory $(BIKESPACE_DB_MIGRATIONS)
 
+# check if database migrations need to be generated for the API
+migrate-test-db: setup-py launch-db db-test-server
+	export APP_SETTINGS=bikespace_api.config.DevelopmentConfig && \
+	export DATABASE_URL=postgresql://postgres:postgres@localhost:5432/bikespace_dev && \
+	$(PYTHON) $(MANAGE_PY) recreate-db && \
+	$(PYTHON) $(MANAGE_PY) db stamp heads --directory $(BIKESPACE_DB_MIGRATIONS) && \
+	$(PYTHON) $(MANAGE_PY) db upgrade --directory $(BIKESPACE_DB_MIGRATIONS) && \
+	$(PYTHON) $(MANAGE_PY) db check --directory $(BIKESPACE_DB_MIGRATIONS)
+
 # generates a migration script based on the current model definitions
 migrate-db: 
 	$(PYTHON) $(MANAGE_PY) db migrate --directory $(BIKESPACE_DB_MIGRATIONS)
