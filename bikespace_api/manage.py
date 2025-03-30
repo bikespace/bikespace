@@ -69,6 +69,23 @@ def seed_db():
             "comments2",
         )
     )
+    db.session.add(
+        Submission(
+            43.65,
+            -79.40,
+            [IssueType.OTHER],
+            ParkingDuration.MINUTES,
+            datetime.now(),
+            "Example of null submitted_datetime",
+        )
+    )
+    db.session.commit()
+
+    # have to manually null out submitted_datetime to replicate grandfathered database entry
+    submitted_datetime_null = db.session.execute(
+        db.select(Submission).filter_by(comments="Example of null submitted_datetime")
+    ).scalar_one()
+    submitted_datetime_null.submitted_datetime = None
     db.session.commit()
 
 

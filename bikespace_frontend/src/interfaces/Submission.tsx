@@ -37,7 +37,7 @@ export interface Submission {
   issues: IssueType[];
   location: LocationLatLng;
   parkingTime: ParkingTime;
-  comments: String;
+  comments: string;
 }
 
 export interface SubmissionPayload {
@@ -46,7 +46,7 @@ export interface SubmissionPayload {
   issues: IssueType[];
   parking_time: Date;
   parking_duration: ParkingDuration;
-  comments: String;
+  comments: string;
 }
 
 export interface SubmissionApiPayload {
@@ -56,7 +56,8 @@ export interface SubmissionApiPayload {
   issues: IssueType[];
   parking_time: string;
   parking_duration: ParkingDuration;
-  comments: String;
+  comments: string;
+  submitted_datetime: string | null;
 }
 
 export enum DateRangeInterval {

@@ -21,7 +21,19 @@ export const MapPopup = forwardRef<LeafletPopup, MapPopupProps>(
     const [, setSubmissionId] = useSubmissionId();
     const [, setTab] = useSidebarTab();
 
-    const {issues, id, comments, parking_duration, parking_time} = submission;
+    const {
+      issues,
+      id,
+      comments,
+      parking_duration,
+      parking_time,
+      submitted_datetime,
+    } = submission;
+
+    const parkingTime = new Date(parking_time + '+00:00');
+    const submittedDateTime = submitted_datetime
+      ? new Date(submitted_datetime) // submitted_datetime already has a tz offset
+      : 'Not Recorded';
 
     const formattedParkingTime = new Date(
       parking_time + '+00:00'
@@ -29,6 +41,12 @@ export const MapPopup = forwardRef<LeafletPopup, MapPopupProps>(
       dateStyle: 'full',
       timeStyle: 'short',
     });
+    const timeDescriptionTitle = [
+      'Encountered: ',
+      parkingTime.toLocaleString(),
+      '\nSubmitted: ',
+      submittedDateTime.toLocaleString(),
+    ].join(' ');
 
     return (
       <Popup ref={ref} className={styles.popup}>
@@ -49,7 +67,7 @@ export const MapPopup = forwardRef<LeafletPopup, MapPopupProps>(
         <p>
           This person wanted to park for{' '}
           <strong>{durationDescription[parking_duration]}</strong> on{' '}
-          <strong>{formattedParkingTime}</strong>
+          <strong title={timeDescriptionTitle}>{formattedParkingTime}</strong>
         </p>
         <p>
           <strong>Comments: </strong>

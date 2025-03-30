@@ -22,7 +22,7 @@ The development server should now be running at `localhost:8000`
 
 ## API Docs
 
-The api follows an OpenAPI 3.0 Spec, the spec can be found at `bikespace_api/bikespace_api/static/bikespace-open-api.yaml`
+The api follows an OpenAPI 3.0 Spec, the spec can be found at `bikespace_api/bikespace_api/static/bikespace-open-api.yaml`. When making changes to the database models, the spec should also be edited manually to match.
 
 The swagger-ui to render the OpenAPI spec can be found at `localhost:8000/api/v2/docs`
 
@@ -63,3 +63,19 @@ If `postgres` or `pg_ctl` don't work for you, you might need to add postgres to 
 ```
 export PATH="/Library/PostgreSQL/17/bin/:$PATH"
 ```
+
+## Adding and Testing Database Migrations
+
+In production, migrations are automatically applied on deployment. In development, you will have to create migration scrips and then apply and test them manually.
+
+Creating and applying a migration script:
+
+1. Make and save schema changes, e.g. in `./bikespace_api/bikespace_api/api/models.py`
+2. Run `make migrate-db`. If that doesn't work, try `make db-stamp-heads` first.
+3. Run `make upgrade-db` to apply the schema changes to your database.
+
+Testing a migration script:
+
+1. While the api is running for development (e.g. `make run-flask-app`), run `make downgrade-db`. You should see the database revert to the previous schema.
+2. Run `make upgrade-db`. You should see the databse update to the newest schema.
+3. Perform additional tests to confirm that a migrated database returns the correct results in use.

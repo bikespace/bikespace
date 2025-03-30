@@ -1,5 +1,5 @@
 import json
-from datetime import datetime
+from datetime import datetime, timezone
 
 from pytest import mark
 
@@ -63,8 +63,8 @@ def test_get_sumissions_with_offset_limit(test_client):
     assert len(res["submissions"]) == target_limit
 
 
-def test_get_submissions_with_id(test_client):
-    target_id = 1
+@mark.parametrize("target_id", [1, 4])
+def test_get_submissions_with_id(test_client, target_id):
     response = test_client.get(f"/api/v2/submissions/{target_id}")
     res = json.loads(response.get_data())
     assert response.status_code == 200
@@ -79,6 +79,7 @@ def test_get_submissions_with_id(test_client):
             "parking_duration",
             "parking_time",
             "comments",
+            "submitted_datetime",
         )
     )
     assert res["id"] == target_id
@@ -88,10 +89,11 @@ def test_get_submissions_with_id(test_client):
     assert type(res["parking_duration"]) == str
     assert type(res["parking_time"]) == str
     assert type(res["comments"]) == str
+    assert type(res["submitted_datetime"]) in (type(None), str)
 
 
 @mark.uses_db
-def test_post_submissions(test_client):
+def test_post_submissions(test_client, submission_id=5):
     dummy_submission = {
         "latitude": 43.6532,
         "longitude": -79.3832,
@@ -101,10 +103,11 @@ def test_post_submissions(test_client):
         "comments": "test1",
     }
     response = test_client.post("/api/v2/submissions", json=dummy_submission)
+    current_datetime = datetime.now(timezone.utc)
     res = json.loads(response.get_data())
-    new_submission = Submission.query.filter_by(id=4).first()
+    new_submission = Submission.query.filter_by(id=submission_id).first()
     assert response.status_code == 201
-    assert new_submission.id == 4
+    assert new_submission.id == submission_id
     assert new_submission.latitude == dummy_submission["latitude"]
     assert new_submission.longitude == dummy_submission["longitude"]
     assert new_submission.issues == [
@@ -117,3 +120,4 @@ def test_post_submissions(test_client):
         dummy_submission["parking_time"], "%Y-%m-%d %H:%M:%S.%f"
     )
     assert new_submission.comments == dummy_submission["comments"]
+    assert (current_datetime - new_submission.submitted_datetime).total_seconds() < 1

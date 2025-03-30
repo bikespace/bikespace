@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: 2.0.0
+  version: 2.0.1
   title: BikeSpace API
   description: BikeSpace API
 
@@ -29,13 +29,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Submission'
+                $ref: '#/components/schemas/SubmissionOutputs'
             application/geo+json:
               schema:
-                $ref: '#/components/schemas/Submission'
+                $ref: '#/components/schemas/SubmissionOutputs'
             text/csv:
               schema:
-                $ref: '#/components/schemas/Submission'
+                $ref: '#/components/schemas/SubmissionOutputs'
         "400":
           description: Invalid request
           content:
@@ -54,20 +54,20 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Submission'
+              $ref: '#/components/schemas/SubmissionInputs'
       responses:
         '201':
           description: Created
 components:
   schemas:
-    Submission:
+    SubmissionInputs:
       properties:
-        id:
-          type: integer
         latitude:
           type: number
+          format: float
         longitude:
           type: number
+          format: float
         issues:
           type: array
           items:
@@ -87,5 +87,19 @@ components:
             - multiday
         parking_time:
           type: string
+          example: "2025-01-01 12:00:00"
         comments:
           type: string
+    SubmissionOutputs:
+      allOf:
+        - properties:
+            id:
+              type: integer
+        - $ref: "#/components/schemas/SubmissionInputs"
+        - properties:
+            submitted_datetime:
+              type: string
+              format: date-time
+          
+        
+
