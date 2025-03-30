@@ -12,7 +12,7 @@ export function BikeLaneLayer() {
     source: 'bicycle-lanes',
     filter: [
       'match',
-      ['get', 'INFRA_HIGHORDER'],
+      ['get', 'INFRA_LOWORDER'],
       [
         'Sharrows - Wayfinding',
         'Sharrows - Arterial - Connector',
@@ -29,7 +29,7 @@ export function BikeLaneLayer() {
       'line-width': 3,
       'line-color': [
         'match',
-        ['get', 'INFRA_HIGHORDER'],
+        ['get', 'INFRA_LOWORDER'],
         [
           'Cycle Track',
           'Cycle Track - Contraflow',
