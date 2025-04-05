@@ -3,6 +3,7 @@
 from sqlalchemy.sql import func
 import sqlalchemy as sa
 import sqlalchemy.dialects.postgresql as pg
+from flask_security.models import fsqla_v3 as fsqla
 from bikespace_api import db
 from datetime import datetime, timezone
 from enum import Enum
@@ -49,3 +50,11 @@ class Submission(db.Model):
         self.parking_time = parking_time
         self.comments = comments
         self.submitted_datetime = datetime.now(timezone.utc)
+
+fsqla.FsModels.set_db_info(db)
+
+class Role(db.Model, fsqla.FsRoleMixin):
+    pass
+
+class User(db.Model, fsqla.FsUserMixin):
+    pass

@@ -2,9 +2,10 @@ import os
 import time
 
 from flask.cli import FlaskGroup
+from flask_security import hash_password
 from sqlalchemy_utils import database_exists, create_database
 
-from bikespace_api import create_app, db
+from bikespace_api import create_app, db, security
 from bikespace_api.api.models import Submission, IssueType, ParkingDuration
 from datetime import datetime
 
@@ -33,6 +34,8 @@ def recreate_db():
 
     db.drop_all()
     db.create_all()
+    if not security.datastore.find_user(email="test@me.com"):
+        security.datastore.create_user(email="test@me.com", password=hash_password("password"))
     db.session.commit()
 
 
