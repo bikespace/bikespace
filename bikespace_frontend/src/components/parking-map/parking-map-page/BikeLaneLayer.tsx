@@ -52,9 +52,47 @@ export function BikeLaneLayer() {
     },
   };
 
+  const bikeRouteLayer: LineLayer = {
+    id: 'bicycle-routes',
+    type: 'line',
+    source: 'bicycle-lanes',
+    filter: [
+      'match',
+      ['get', 'INFRA_LOWORDER'],
+      [
+        'Sharrows - Wayfinding',
+        'Sharrows - Arterial - Connector',
+        'Signed Route (No Pavement Markings)',
+        'Sharrows',
+      ],
+      true,
+      false,
+    ],
+    layout: {
+      'line-cap': 'round',
+    },
+    paint: {
+      'line-width': 3,
+      'line-dasharray': [1, 2],
+      'line-color': [
+        'match',
+        ['get', 'INFRA_LOWORDER'],
+        [
+          'Sharrows - Wayfinding',
+          'Sharrows - Arterial - Connector',
+          'Signed Route (No Pavement Markings)',
+          'Sharrows',
+        ],
+        'hsl(137, 56%, 62%)',
+        '#2c3b42',
+      ],
+    },
+  };
+
   return (
     <Source id="bicycle-lanes" type="geojson" data={bikeLaneURL}>
       <Layer {...bikeLaneLayer} />
+      <Layer {...bikeRouteLayer} />
     </Source>
   );
 }

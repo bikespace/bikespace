@@ -22,8 +22,15 @@ import styles from './parking-map-page.module.scss';
 import {MapGeoJSONFeature, QueryRenderedFeaturesOptions} from 'maplibre-gl';
 import {ParkingFeatureDescription} from './parking-feature-description/ParkingFeatureDescription';
 
+import parkingIcon from '@/assets/icons/parking_map/parking.png';
 import parkingSidebarIcon from '@/assets/icons/parking_map/parking_sidebar.png';
 import parkingSelectedIcon from '@/assets/icons/parking_map/parking_selected.png';
+
+import networkProtected from '@/assets/icons/parking_map/legend/network_protected_lane.svg';
+import networkPainted from '@/assets/icons/parking_map/legend/network_painted_lane.svg';
+import networkTrail from '@/assets/icons/parking_map/legend/network_park_multiuse_trail.svg';
+import networkUnknown from '@/assets/icons/parking_map/legend/network_unknown_lane.svg';
+import networkSharrow from '@/assets/icons/parking_map/legend/network_sharrow_unprotected.svg';
 
 /*
   IMPORTANT NOTE: Several functions take advantage of the fact that state does not update until the next render to make updates to old and new values at the same time. See: https://react.dev/reference/react/useState#storing-information-from-previous-renders
@@ -228,25 +235,96 @@ export function ParkingMapPage() {
     <main className={styles.parkingMapPage}>
       <Sidebar>
         <div className={styles.sideBarContainer}>
-          <p>{`Zoom: ${zoomLevel}`}</p>
-          {sidebarFeatureList.length > 0
-            ? sidebarFeatureList.map(f => (
-                <ParkingFeatureDescription
-                  selected={
-                    mapFeatureIDs.includes(f.id) && mapFeatureIDs.length === 1
-                  }
-                  hovered={
-                    mapFeatureHoveredIDs.includes(f.id) &&
-                    mapFeatureHoveredIDs.length === 1
-                  }
-                  feature={f}
-                  handleClick={handleFeatureSelection}
-                  handleHover={handleFeatureSelection}
-                  handleUnHover={handleUnHover}
-                  key={f.id}
-                />
-              ))
-            : 'Click on a feature to see more information'}
+          {/* <p>{`Zoom: ${zoomLevel}`}</p> */}
+          <details
+            className={styles.legend}
+            open={!(sidebarFeatureList.length > 0)}
+          >
+            <summary>Legend</summary>
+            <div className={styles.legendContent}>
+              <h3>Bicycle Parking</h3>
+              <table className={styles.legendTable}>
+                <thead>
+                  <tr>
+                    <th>Icon</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      <img src={parkingIcon.src} height={44} />
+                    </td>
+                    <td>Public bicycle parking</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h3>Bicycle Network</h3>
+              <table className={styles.legendTable}>
+                <thead>
+                  <tr>
+                    <th>Style</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      <img src={networkProtected.src} width={44} />
+                    </td>
+                    <td>Protected bike lane</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <img src={networkPainted.src} width={44} />
+                    </td>
+                    <td>Painted bike lane</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <img src={networkTrail.src} width={44} />
+                    </td>
+                    <td>Multi-use or park trail</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <img src={networkSharrow.src} width={44} />
+                    </td>
+                    <td>Unprotected bike route (e.g. sharrows)</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <img src={networkUnknown.src} width={44} />
+                    </td>
+                    <td>Unknown bike lane type</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </details>
+          {sidebarFeatureList.length > 0 ? (
+            sidebarFeatureList.map(f => (
+              <ParkingFeatureDescription
+                selected={
+                  mapFeatureIDs.includes(f.id) && mapFeatureIDs.length === 1
+                }
+                hovered={
+                  mapFeatureHoveredIDs.includes(f.id) &&
+                  mapFeatureHoveredIDs.length === 1
+                }
+                feature={f}
+                handleClick={handleFeatureSelection}
+                handleHover={handleFeatureSelection}
+                handleUnHover={handleUnHover}
+                key={f.id}
+              />
+            ))
+          ) : (
+            <p>
+              Click on a feature to see more information or zoom in to see more
+              details
+            </p>
+          )}
         </div>
       </Sidebar>
       <Map

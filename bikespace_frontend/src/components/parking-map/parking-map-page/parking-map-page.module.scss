@@ -15,5 +15,55 @@
 .sideBarContainer {
   overflow-y: scroll;
   margin: 4px;
-  // background-color: white;
+
+  &> p {
+    padding: 4px;
+  }
+}
+
+.legend {
+  margin-bottom: 1rem;
+  background-color: white;
+  border: 3px solid $color-primary-d50p;
+  border-radius: 4px;
+
+  summary {
+    padding: 4px;
+    background-color: $color-primary-d50p;
+    color: white;
+    border-bottom: none;
+    font-weight: 600;
+  }
+
+  &[open] summary {
+    margin-bottom: 4px;
+    padding-bottom: calc(4px + 3px);
+  }
+
+  .legendContent{
+    background-color: white;
+    margin: 4px;
+    margin-bottom: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    h3 {
+      padding-top: 4px;
+    }
+  }
+}
+
+.legendTable {
+  th, td {
+    padding: 2px;
+  }
+  th {
+    text-align: left;
+    background-color: $color-secondary-light-grey;
+    border: 2px solid white;
+  }
+  td {
+    vertical-align: middle;
+  }
 }
