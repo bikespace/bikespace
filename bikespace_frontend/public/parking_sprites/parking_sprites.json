@@ -1,54 +1,54 @@
 {
-  "parking": {
-    "height": 140,
-    "pixelRatio": 1,
-    "width": 96,
-    "x": 0,
-    "y": 0
-  },
   "parking_bollard": {
     "height": 140,
     "pixelRatio": 1,
     "width": 96,
     "x": 0,
-    "y": 140
+    "y": 0
   },
   "parking_covered": {
     "height": 140,
     "pixelRatio": 1,
     "width": 96,
     "x": 0,
-    "y": 280
+    "y": 140
   },
   "parking_covered_paid": {
     "height": 140,
     "pixelRatio": 1,
     "width": 96,
-    "x": 96,
-    "y": 0
+    "x": 0,
+    "y": 280
   },
   "parking_paid": {
     "height": 140,
     "pixelRatio": 1,
     "width": 96,
     "x": 96,
-    "y": 140
+    "y": 0
   },
   "parking_rack": {
     "height": 140,
     "pixelRatio": 1,
     "width": 96,
     "x": 96,
-    "y": 280
+    "y": 140
   },
   "parking_selected": {
+    "height": 140,
+    "pixelRatio": 1,
+    "width": 96,
+    "x": 96,
+    "y": 280
+  },
+  "parking_sidebar": {
     "height": 140,
     "pixelRatio": 1,
     "width": 96,
     "x": 192,
     "y": 0
   },
-  "parking_sidebar": {
+  "parking_unselected": {
     "height": 140,
     "pixelRatio": 1,
     "width": 96,

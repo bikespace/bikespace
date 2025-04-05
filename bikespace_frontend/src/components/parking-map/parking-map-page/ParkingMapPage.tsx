@@ -22,9 +22,9 @@ import styles from './parking-map-page.module.scss';
 import {MapGeoJSONFeature, QueryRenderedFeaturesOptions} from 'maplibre-gl';
 import {ParkingFeatureDescription} from './parking-feature-description/ParkingFeatureDescription';
 
-import parkingIcon from '@/assets/icons/parking_map/parking.png';
-import parkingSidebarIcon from '@/assets/icons/parking_map/parking_sidebar.png';
-import parkingSelectedIcon from '@/assets/icons/parking_map/parking_selected.png';
+import parkingIcon from '@/assets/icons/parking_map/svgs/parking_unselected.svg';
+import parkingSidebarIcon from '@/assets/icons/parking_map/svgs/parking_sidebar.svg';
+import parkingSelectedIcon from '@/assets/icons/parking_map/svgs/parking_selected.svg';
 
 import networkProtected from '@/assets/icons/parking_map/legend/network_protected_lane.svg';
 import networkPainted from '@/assets/icons/parking_map/legend/network_painted_lane.svg';
