@@ -72,7 +72,6 @@ export function ParkingMapPage() {
   const [zoomLevel, setZoomLevel] = useState<number>(12);
 
   const mapRef = useRef<MapRef>(null);
-  const map = mapRef.current;
   const interactiveLayers = ['bicycle-parking'];
 
   // manage state of selected features
@@ -105,8 +104,6 @@ export function ParkingMapPage() {
   }, []);
 
   function zoomAndFlyTo(features: MapGeoJSONFeature[], zoomLevel = 18) {
-    if (!map) return;
-
     // calculate bounds and test camera fit and center
     const allCoords = features.map(f => {
       const [lon, lat] = getCentroid(f);
@@ -120,7 +117,7 @@ export function ParkingMapPage() {
       lon: Math.max(...allCoords.map(coords => coords.lon)),
       lat: Math.max(...allCoords.map(coords => coords.lat)),
     };
-    const testCamera = map.cameraForBounds(
+    const testCamera = mapRef.current!.cameraForBounds(
       [
         [boundsSW.lon, boundsSW.lat],
         [boundsNE.lon, boundsNE.lat],
@@ -131,18 +128,17 @@ export function ParkingMapPage() {
     // zoom in if currently more zoomed out than default zoomLevel unless the points don't fit
     zoomLevel = Math.min(
       testCamera?.zoom ?? 0,
-      Math.max(zoomLevel, map.getZoom())
+      Math.max(zoomLevel, mapRef.current!.getZoom())
     );
 
-    map.flyTo({
+    mapRef.current!.flyTo({
       center: testCamera?.center,
       zoom: zoomLevel,
     });
   }
 
   function handleLayerClick(e: MapLayerMouseEvent) {
-    if (!map) return;
-    const features = map.queryRenderedFeatures(
+    const features = mapRef.current!.queryRenderedFeatures(
       e.point as PointLike,
       {
         layers: interactiveLayers,
@@ -157,7 +153,7 @@ export function ParkingMapPage() {
     // (ParkingLayer style uses the 'sidebar' custom property to set opacity to 100%)
     if (sidebarFeatureList.length > 0) {
       for (const old_f of sidebarFeatureList) {
-        map.setFeatureState(
+        mapRef.current!.setFeatureState(
           {source: old_f.source, id: old_f.id},
           {selected: false, sidebar: false}
         );
@@ -165,7 +161,7 @@ export function ParkingMapPage() {
     }
     if (features.length > 0) {
       for (const f of features) {
-        map.setFeatureState(
+        mapRef.current!.setFeatureState(
           {source: f.source, id: f.id},
           {selected: true, sidebar: true}
         );
@@ -177,7 +173,6 @@ export function ParkingMapPage() {
     e: React.MouseEvent<HTMLElement>,
     f: MapGeoJSONFeature
   ) {
-    if (!map) return;
     if (e.type === 'click') {
       setMapFeatureList([f]);
     } else {
@@ -186,20 +181,22 @@ export function ParkingMapPage() {
 
     // update map pin formatting
     for (const old_f of mapFeatureSelectedOrHovered) {
-      map.setFeatureState(
+      mapRef.current!.setFeatureState(
         {source: old_f.source, id: old_f.id},
         {selected: false}
       );
     }
-    map.setFeatureState({source: f.source, id: f.id}, {selected: true});
+    mapRef.current!.setFeatureState(
+      {source: f.source, id: f.id},
+      {selected: true}
+    );
   }
 
   function handleUnHover() {
-    if (!map) return;
     setMapFeatureHovered([]);
 
     for (const old_f of mapFeatureHovered) {
-      map.setFeatureState(
+      mapRef.current!.setFeatureState(
         {source: old_f.source, id: old_f.id},
         {selected: false}
       );
@@ -207,20 +204,17 @@ export function ParkingMapPage() {
   }
 
   function addSprite() {
-    if (!map) return;
-    map.setSprite('/parking_sprites/parking_sprites');
-    console.log(map.getSprite());
+    mapRef.current!.setSprite('/parking_sprites/parking_sprites');
   }
 
   // show map pins as interactive when mouse is over them
   function handleMouseHover() {
-    if (!map) return;
     for (const layer of interactiveLayers) {
-      map.on('mouseenter', layer, () => {
-        map.getCanvas().style.cursor = 'pointer';
+      mapRef.current!.on('mouseenter', layer, () => {
+        mapRef.current!.getCanvas().style.cursor = 'pointer';
       });
-      map.on('mouseleave', layer, () => {
-        map.getCanvas().style.cursor = '';
+      mapRef.current!.on('mouseleave', layer, () => {
+        mapRef.current!.getCanvas().style.cursor = '';
       });
     }
   }
@@ -266,7 +260,7 @@ export function ParkingMapPage() {
         onLoad={handleOnLoad}
         onClick={handleLayerClick}
         onZoomEnd={() =>
-          setZoomLevel(Math.round((map?.getZoom() ?? 0) * 10) / 10)
+          setZoomLevel(Math.round((mapRef.current!.getZoom() ?? 0) * 10) / 10)
         }
         ref={mapRef}
       >
