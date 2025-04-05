@@ -25,6 +25,9 @@ import {ParkingFeatureDescription} from './parking-feature-description/ParkingFe
 import parkingSidebarIcon from '@/assets/icons/parking_map/parking_sidebar.png';
 import parkingSelectedIcon from '@/assets/icons/parking_map/parking_selected.png';
 
+const parkingSpriteSrc =
+  window.location.origin + '/parking_sprites/parking_sprites';
+
 /*
   IMPORTANT NOTE: Several functions take advantage of the fact that state does not update until the next render to make updates to old and new values at the same time. See: https://react.dev/reference/react/useState#storing-information-from-previous-renders
 */
@@ -208,7 +211,7 @@ export function ParkingMapPage() {
 
   function addSprite() {
     if (!map) return;
-    map.setSprite('/parking_map/parking_sprites');
+    map.setSprite(parkingSpriteSrc);
   }
 
   // show map pins as interactive when mouse is over them
