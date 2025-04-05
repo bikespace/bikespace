@@ -76,7 +76,7 @@ jobs:
         - name: Setup node
           uses: actions/setup-node@v3
           with:
-            node-version: "v18.17.0"
+            node-version: lts/*
         - name: Check code style
           run: make lint-frontend
         - name: Run Jest tests
@@ -129,11 +129,11 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v3
         with:
-          node-version: "v18.17.0"
+          node-version: lts/*
       - name: Build static frontend
         run: make build-frontend
       - name: Publish to Cloudflare Pages
-        uses: cloudflare/pages-action@v1.0.0
+        uses: cloudflare/pages-action@v1.5.0
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
