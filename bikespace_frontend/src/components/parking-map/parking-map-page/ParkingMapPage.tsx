@@ -208,7 +208,8 @@ export function ParkingMapPage() {
 
   function addSprite() {
     if (!map) return;
-    map.setSprite(window.location.origin + '/parking_sprites/parking_sprites');
+    map.setSprite('/parking_sprites/parking_sprites');
+    console.log(map.getSprite());
   }
 
   // show map pins as interactive when mouse is over them
