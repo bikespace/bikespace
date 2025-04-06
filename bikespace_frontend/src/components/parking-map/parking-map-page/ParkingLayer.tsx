@@ -35,6 +35,8 @@ Use the stuff below with:
 //   icons.map(icon => [icon.id, icon.size])
 // );
 
+export const publicAccessTypes = ['yes', 'permissive', ''];
+
 export function ParkingLayer() {
   const {current: map} = useMap();
 
@@ -46,12 +48,27 @@ export function ParkingLayer() {
   const bicycleParkingURL =
     'https://raw.githubusercontent.com/tallcoleman/new-parking-map/refs/heads/main/Display%20Files/all_sources.geojson';
 
+  const parkingLayerOpacity: ExpressionSpecification = [
+    'interpolate',
+    ['linear'],
+    ['zoom'],
+    16,
+    0,
+    16.05,
+    ['case', ['boolean', ['feature-state', 'sidebar'], false], 0, 1],
+  ];
   const parkingLayer: SymbolLayer = {
     id: 'bicycle-parking',
     type: 'symbol',
     source: 'bicycle-parking',
     layout: {
-      'icon-image': 'parking_unselected',
+      'icon-image': [
+        'match',
+        ['to-string', ['get', 'access']],
+        publicAccessTypes,
+        'parking_unselected',
+        'private_unselected',
+      ],
       'icon-anchor': 'bottom',
       'icon-overlap': 'always',
       'icon-size': 40 / 140,
@@ -71,28 +88,12 @@ export function ParkingLayer() {
       'text-optional': true,
     },
     paint: {
-      'icon-opacity': [
-        'interpolate',
-        ['linear'],
-        ['zoom'],
-        16,
-        0,
-        16.05,
-        ['case', ['boolean', ['feature-state', 'sidebar'], false], 0, 1],
-      ],
-      'text-opacity': [
-        'interpolate',
-        ['linear'],
-        ['zoom'],
-        16,
-        0,
-        16.05,
-        ['case', ['boolean', ['feature-state', 'sidebar'], false], 0, 1],
-      ],
+      'icon-opacity': parkingLayerOpacity,
+      'text-opacity': parkingLayerOpacity,
     },
   };
 
-  const parkingLayerDenseOpacity = [
+  const parkingLayerDenseOpacity: ExpressionSpecification = [
     'interpolate',
     ['linear'],
     ['zoom'],
@@ -106,13 +107,18 @@ export function ParkingLayer() {
     type: 'circle',
     source: 'bicycle_parking',
     paint: {
-      'circle-color': '#136329',
+      'circle-color': [
+        'match',
+        ['to-string', ['get', 'access']],
+        publicAccessTypes,
+        '#136329',
+        '#b3b3b3',
+      ],
       'circle-radius': 3,
       'circle-stroke-width': 2,
       'circle-stroke-color': 'white',
-      'circle-opacity': parkingLayerDenseOpacity as ExpressionSpecification,
-      'circle-stroke-opacity':
-        parkingLayerDenseOpacity as ExpressionSpecification,
+      'circle-opacity': parkingLayerDenseOpacity,
+      'circle-stroke-opacity': parkingLayerDenseOpacity,
     },
   };
 

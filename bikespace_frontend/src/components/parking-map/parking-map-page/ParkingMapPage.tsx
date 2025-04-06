@@ -8,10 +8,11 @@ import Map, {
   PointLike,
   Marker,
 } from 'react-map-gl/maplibre';
+import {StaticImageData} from 'next/image';
 // import {trackUmamiEvent} from '@/utils';
 
 import {Sidebar} from './Sidebar';
-import {ParkingLayer} from './ParkingLayer';
+import {ParkingLayer, publicAccessTypes} from './ParkingLayer';
 import {BikeLaneLayer} from './BikeLaneLayer';
 
 import type {MapRef} from 'react-map-gl/maplibre';
@@ -24,10 +25,6 @@ import {ParkingFeatureDescription} from './parking-feature-description/ParkingFe
 
 import parkingSpriteImage from '@/public/parking_sprites/parking_sprites@2x.png';
 import parkingSpriteJSON from '@/public/parking_sprites/parking_sprites@2x.json';
-
-import parkingIcon from '@/assets/icons/parking_map/svgs/parking_unselected.svg';
-import parkingSidebarIcon from '@/assets/icons/parking_map/svgs/parking_sidebar.svg';
-import parkingSelectedIcon from '@/assets/icons/parking_map/svgs/parking_selected.svg';
 
 import networkProtected from '@/assets/icons/parking_map/legend/network_protected_lane.svg';
 import networkPainted from '@/assets/icons/parking_map/legend/network_painted_lane.svg';
@@ -50,22 +47,24 @@ interface spriteProperties {
 function getSpriteImage(
   imageName: string,
   imageScale: number,
-  spriteImage: string,
+  spriteImage: StaticImageData,
   spriteJSON: {[key: string]: spriteProperties}
 ): ReactElement {
   const properties = spriteJSON[imageName] as spriteProperties;
-  console.log(imageName, properties);
   return (
     <div
       style={{
-        background: `url(${spriteImage})`,
+        background: `url(${spriteImage.src}) -${
+          (properties.x * imageScale) / properties.pixelRatio
+        }px -${
+          (properties.y * imageScale) / properties.pixelRatio
+        }px no-repeat`,
+        backgroundSize: `${
+          (spriteImage.width * imageScale) / properties.pixelRatio
+        }px ${(spriteImage.height * imageScale) / properties.pixelRatio}px`,
         display: 'inline-block',
-        height: properties.height,
-        width: properties.width,
-        backgroundPositionX: `right ${properties.x + properties.width}px`,
-        backgroundPositionY: `bottom ${properties.y + properties.height}px`,
-        transform: `scale(${imageScale / properties.pixelRatio})`,
-        translate: `0 ${(properties.height - (properties.height * imageScale) / 2) / properties.pixelRatio}px`,
+        height: `${(properties.height * imageScale) / properties.pixelRatio}px`,
+        width: `${(properties.width * imageScale) / properties.pixelRatio}px`,
       }}
     ></div>
   );
@@ -256,7 +255,7 @@ export function ParkingMapPage() {
     return getSpriteImage(
       imageName,
       imageScale,
-      parkingSpriteImage.src,
+      parkingSpriteImage,
       parkingSpriteJSON
     );
   }
@@ -293,16 +292,25 @@ export function ParkingMapPage() {
               <table className={styles.legendTable}>
                 <thead>
                   <tr>
-                    <th>Icon</th>
+                    <th style={{textAlign: 'center'}}>Icon</th>
                     <th>Description</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <td>
-                      <img src={parkingIcon.src} height={44} />
+                    <td style={{textAlign: 'center'}}>
+                      {getBikeParkingSprite('parking_unselected', 40 / 140)}
                     </td>
-                    <td>Public bicycle parking</td>
+                    <td>
+                      Public bicycle parking <br />
+                      (number indicates capacity)
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style={{textAlign: 'center'}}>
+                      {getBikeParkingSprite('private_unselected', 40 / 140)}
+                    </td>
+                    <td>Private bicycle parking</td>
                   </tr>
                 </tbody>
               </table>
@@ -310,7 +318,7 @@ export function ParkingMapPage() {
               <table className={styles.legendTable}>
                 <thead>
                   <tr>
-                    <th>Style</th>
+                    <th style={{textAlign: 'center'}}>Style</th>
                     <th>Description</th>
                   </tr>
                 </thead>
@@ -404,7 +412,12 @@ export function ParkingMapPage() {
               offset={[0, 6]}
               style={{cursor: 'pointer'}}
             >
-              {getBikeParkingSprite('parking_sidebar', 44 / 140)}
+              {getBikeParkingSprite(
+                publicAccessTypes.includes(feature.properties?.access ?? '')
+                  ? 'parking_sidebar'
+                  : 'private_sidebar',
+                44 / 140
+              )}
             </Marker>
           );
         })}
@@ -419,7 +432,12 @@ export function ParkingMapPage() {
               offset={[0, 6]}
               style={{cursor: 'pointer'}}
             >
-              {getBikeParkingSprite('parking_selected', 44 / 140)}
+              {getBikeParkingSprite(
+                publicAccessTypes.includes(feature.properties?.access ?? '')
+                  ? 'parking_selected'
+                  : 'private_selected',
+                44 / 140
+              )}
             </Marker>
           );
         })}
