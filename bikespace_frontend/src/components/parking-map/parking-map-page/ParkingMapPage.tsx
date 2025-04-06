@@ -15,7 +15,7 @@ import {Sidebar} from './Sidebar';
 import {ParkingLayer, publicAccessTypes} from './ParkingLayer';
 import {BikeLaneLayer} from './BikeLaneLayer';
 
-import type {MapRef} from 'react-map-gl/maplibre';
+import type {LngLatLike, MapRef} from 'react-map-gl/maplibre';
 import type {LineString, Point} from 'geojson';
 
 import 'maplibre-gl/dist/maplibre-gl.css';
@@ -144,6 +144,14 @@ export function ParkingMapPage() {
       });
     });
   }, []);
+  useEffect(() => {
+    if (!mapRef.current) return;
+    mapRef.current.setCenter([
+      defaultLocation.longitude,
+      defaultLocation.latitude,
+    ] as LngLatLike);
+    mapRef.current.setZoom(14);
+  }, [defaultLocation, mapRef.current]);
 
   function zoomAndFlyTo(features: MapGeoJSONFeature[], zoomLevel = 18) {
     // calculate bounds and test camera fit and center
