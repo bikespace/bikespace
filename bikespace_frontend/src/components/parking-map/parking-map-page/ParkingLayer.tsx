@@ -2,14 +2,6 @@ import React, {useEffect} from 'react';
 import {Layer, Source, useMap} from 'react-map-gl/maplibre';
 import type {CircleLayer, SymbolLayer} from 'react-map-gl/maplibre';
 
-import parkingIcon from '@/assets/icons/parking_map/parking.png';
-import parkingIconCovered from '@/assets/icons/parking_map/parking_covered.png';
-import parkingIconPaid from '@/assets/icons/parking_map/parking_paid.png';
-import parkingIconCoveredPaid from '@/assets/icons/parking_map/parking_covered_paid.png';
-
-// examples of type-specific icons
-import parkingIconRack from '@/assets/icons/parking_map/parking_rack.png';
-import parkingIconBollard from '@/assets/icons/parking_map/parking_bollard.png';
 import {ExpressionSpecification} from 'maplibre-gl';
 
 /*
@@ -54,10 +46,6 @@ export function ParkingLayer() {
   const bicycleParkingURL =
     'https://raw.githubusercontent.com/tallcoleman/new-parking-map/refs/heads/main/Display%20Files/all_sources.geojson';
 
-  useEffect(() => {
-    addImage('parking_icon', parkingIcon.src);
-    // icons.map(({id, src}) => addImage(id, src));
-  }, [map]);
   const parkingLayer: SymbolLayer = {
     id: 'bicycle-parking',
     type: 'symbol',
@@ -66,15 +54,33 @@ export function ParkingLayer() {
       'icon-image': 'parking_unselected',
       'icon-anchor': 'bottom',
       'icon-overlap': 'always',
-      'icon-size': 2 / 7,
-      'text-field': ['get', 'capacity'],
+      'icon-size': 40 / 140,
+      'text-field': [
+        'match',
+        ['get', 'capacity'],
+        '2',
+        ' ',
+        ['get', 'capacity'],
+      ],
       'text-size': 8,
+      'text-font': ['Open Sans Bold'],
       'text-anchor': 'top',
       'text-offset': [0, -2.6],
+      'text-overlap': 'never',
+      'text-ignore-placement': true,
       'text-optional': true,
     },
     paint: {
       'icon-opacity': [
+        'interpolate',
+        ['linear'],
+        ['zoom'],
+        16,
+        0,
+        16.05,
+        ['case', ['boolean', ['feature-state', 'sidebar'], false], 0, 1],
+      ],
+      'text-opacity': [
         'interpolate',
         ['linear'],
         ['zoom'],

@@ -24,6 +24,9 @@
     "paths": {
       "@/*": [
         "./*"
+      ],
+      "@/public/*": [
+        "../public/*"
       ]
     },
     "skipLibCheck": true,

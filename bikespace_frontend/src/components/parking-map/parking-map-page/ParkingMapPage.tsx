@@ -1,6 +1,6 @@
 'use client';
 
-import React, {useEffect, useState, useRef} from 'react';
+import React, {useEffect, useState, useRef, ReactElement} from 'react';
 import Map, {
   GeolocateControl,
   MapLayerMouseEvent,
@@ -22,6 +22,9 @@ import styles from './parking-map-page.module.scss';
 import {MapGeoJSONFeature, QueryRenderedFeaturesOptions} from 'maplibre-gl';
 import {ParkingFeatureDescription} from './parking-feature-description/ParkingFeatureDescription';
 
+import parkingSpriteImage from '@/public/parking_sprites/parking_sprites@2x.png';
+import parkingSpriteJSON from '@/public/parking_sprites/parking_sprites@2x.json';
+
 import parkingIcon from '@/assets/icons/parking_map/svgs/parking_unselected.svg';
 import parkingSidebarIcon from '@/assets/icons/parking_map/svgs/parking_sidebar.svg';
 import parkingSelectedIcon from '@/assets/icons/parking_map/svgs/parking_selected.svg';
@@ -35,6 +38,38 @@ import networkSharrow from '@/assets/icons/parking_map/legend/network_sharrow_un
 /*
   IMPORTANT NOTE: Several functions take advantage of the fact that state does not update until the next render to make updates to old and new values at the same time. See: https://react.dev/reference/react/useState#storing-information-from-previous-renders
 */
+
+interface spriteProperties {
+  height: number;
+  pixelRatio: number;
+  width: number;
+  x: number;
+  y: number;
+}
+
+function getSpriteImage(
+  imageName: string,
+  imageScale: number,
+  spriteImage: string,
+  spriteJSON: {[key: string]: spriteProperties}
+): ReactElement {
+  const properties = spriteJSON[imageName] as spriteProperties;
+  console.log(imageName, properties);
+  return (
+    <div
+      style={{
+        background: `url(${spriteImage})`,
+        display: 'inline-block',
+        height: properties.height,
+        width: properties.width,
+        backgroundPositionX: `right ${properties.x + properties.width}px`,
+        backgroundPositionY: `bottom ${properties.y + properties.height}px`,
+        transform: `scale(${imageScale / properties.pixelRatio})`,
+        translate: `0 ${(properties.height - (properties.height * imageScale) / 2) / properties.pixelRatio}px`,
+      }}
+    ></div>
+  );
+}
 
 function getCentroid(feature: MapGeoJSONFeature) {
   if (feature.geometry.type === 'LineString') {
@@ -214,6 +249,18 @@ export function ParkingMapPage() {
     mapRef.current!.setSprite('/parking_sprites/parking_sprites');
   }
 
+  function getBikeParkingSprite(
+    imageName: string,
+    imageScale: number
+  ): ReactElement {
+    return getSpriteImage(
+      imageName,
+      imageScale,
+      parkingSpriteImage.src,
+      parkingSpriteJSON
+    );
+  }
+
   // show map pins as interactive when mouse is over them
   function handleMouseHover() {
     for (const layer of interactiveLayers) {
@@ -357,7 +404,7 @@ export function ParkingMapPage() {
               offset={[0, 6]}
               style={{cursor: 'pointer'}}
             >
-              <img src={parkingSidebarIcon.src} height={44} />
+              {getBikeParkingSprite('parking_sidebar', 44 / 140)}
             </Marker>
           );
         })}
@@ -372,7 +419,7 @@ export function ParkingMapPage() {
               offset={[0, 6]}
               style={{cursor: 'pointer'}}
             >
-              <img src={parkingSelectedIcon.src} height={44} />
+              {getBikeParkingSprite('parking_selected', 44 / 140)}
             </Marker>
           );
         })}

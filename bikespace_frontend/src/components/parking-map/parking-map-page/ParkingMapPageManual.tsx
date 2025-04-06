@@ -16,7 +16,7 @@ import {useParkingMapQuery} from '@/hooks';
 
 import 'maplibre-gl/dist/maplibre-gl.css';
 import styles from './parking-map-page.module.scss';
-import parkingIcon from '@/assets/icons/parking_map/parking.png';
+import parkingIcon from '@/assets/icons/parking_map/svgs/parking_unselected.svg';
 
 export function ParkingMapPageManual() {
   const {status, data, error} = useParkingMapQuery();
