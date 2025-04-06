@@ -289,6 +289,7 @@ export function ParkingMapPage() {
             <summary>Legend</summary>
             <div className={styles.legendContent}>
               <h3>Bicycle Parking</h3>
+              <p>Number on icons indicates capacity</p>
               <table className={styles.legendTable}>
                 <thead>
                   <tr>
@@ -301,10 +302,7 @@ export function ParkingMapPage() {
                     <td style={{textAlign: 'center'}}>
                       {getBikeParkingSprite('parking_unselected', 40 / 140)}
                     </td>
-                    <td>
-                      Public bicycle parking <br />
-                      (number indicates capacity)
-                    </td>
+                    <td>Public bicycle parking</td>
                   </tr>
                   <tr>
                     <td style={{textAlign: 'center'}}>
