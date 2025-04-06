@@ -1,9 +1,14 @@
+@import '@/styles/variables.module.scss';
+
 @mixin base-feature {
   margin-bottom: 1rem;
   padding: 4px;
   background-color: white;
   border: 3px solid;
   border-radius: 4px;
+  p {
+    margin-top: 4px;
+  }
 }
 
 .featureDescription {
@@ -14,4 +19,29 @@
 .featureDescriptionSelected {
   @include base-feature;
   border-color: #ed125b;
+}
+
+.featureDescriptionAllData {
+  margin-top: 8px;
+  font-size: 0.9rem;
+
+  summary {
+    font-weight: bold;
+    color: #777;
+    &::marker {
+      color: $color-secondary-med-light-grey;
+    }
+  }
+
+  dt {
+    font-weight: bold;
+    margin-top: 4px;
+  }
+
+  .featureDescriptionAllDataContent {
+    background-color: $color-secondary-light-grey;
+    border-radius: 4px;
+    padding: 4px;
+  }
+
 }

@@ -25,8 +25,16 @@ export function ParkingFeatureDescription({
     return <p>Feature has no properties</p>;
   }
 
-  const {bicycle_parking, capacity, operator, covered, fee, image} =
-    feature.properties;
+  const {
+    bicycle_parking,
+    capacity,
+    description,
+    covered,
+    cargo_bike,
+    fee,
+    image,
+    operator,
+  } = feature.properties;
 
   const parkingTypeDescription = bicycle_parking
     ? bpDesc?.[bicycle_parking] ?? bicycle_parking
@@ -59,8 +67,20 @@ export function ParkingFeatureDescription({
           {parkingTypeDescription} ({capacityDescription}){indicatorList}
         </a>
       </h3>
-      {operator ? <p>Operator: {operator}</p> : null}
+      {description ? (
+        <p>
+          <em>{description}</em>
+        </p>
+      ) : null}
       {covered === 'yes' ? <p>☂️ covered</p> : null}
+      {cargo_bike === 'yes' || cargo_bike === 'designated' ? (
+        <p>
+          📦 cargo bike friendly
+          {feature.properties['capacity:cargo_bike']
+            ? ` (🚲 x ${feature.properties['capacity:cargo_bike']})`
+            : null}
+        </p>
+      ) : null}
       {fee === 'yes' ? <p>💲 requires payment</p> : null}
       {image ? (
         <p>
@@ -70,6 +90,21 @@ export function ParkingFeatureDescription({
           </a>
         </p>
       ) : null}
+      {operator ? <p>Operator: {operator}</p> : null}
+
+      <details className={styles.featureDescriptionAllData}>
+        <summary>All Data</summary>
+        <div className={styles.featureDescriptionAllDataContent}>
+          {Object.entries(feature.properties).map(([k, v]) => {
+            return (
+              <div key={k}>
+                <dt>{k}</dt>
+                <dd>{v}</dd>
+              </div>
+            );
+          })}
+        </div>
+      </details>
     </div>
   );
 }
