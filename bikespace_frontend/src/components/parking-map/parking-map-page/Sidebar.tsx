@@ -5,8 +5,15 @@ import chevronDown from '@/assets/icons/chevron-down.svg';
 
 import styles from '@/components/dashboard/sidebar/sidebar.module.scss';
 
-export function Sidebar({children}: {children: React.ReactNode}) {
-  const [isOpen, setIsOpen] = useState<boolean>(true);
+export function Sidebar({
+  children,
+  isOpen,
+  setIsOpen,
+}: {
+  children: React.ReactNode;
+  isOpen: boolean;
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}) {
   return (
     <div className={`${styles.sidebar} ${isOpen ? '' : styles.closed}`}>
       <button

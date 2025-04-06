@@ -111,6 +111,7 @@ function uniqueBy(a: Array<Object>, getKey: Function): Array<Object> {
 
 export function ParkingMapPage() {
   const [zoomLevel, setZoomLevel] = useState<number>(12);
+  const [isOpen, setIsOpen] = useState<boolean>(true);
 
   const mapRef = useRef<MapRef>(null);
   const interactiveLayers = ['bicycle-parking'];
@@ -188,7 +189,14 @@ export function ParkingMapPage() {
     setSidebarFeatureList(features);
     setMapFeatureList(features.length === 1 ? features : []);
 
-    if (features.length > 0) zoomAndFlyTo(features);
+    if (features.length > 0) {
+      if (isOpen) {
+        zoomAndFlyTo(features);
+      } else {
+        setIsOpen(true);
+        mapRef.current!.once('resize', () => zoomAndFlyTo(features));
+      }
+    }
 
     // Update opacity of features that will be / were 'manually' rendered
     // (ParkingLayer style uses the 'sidebar' custom property to set opacity to 100%)
@@ -279,7 +287,7 @@ export function ParkingMapPage() {
 
   return (
     <main className={styles.parkingMapPage}>
-      <Sidebar>
+      <Sidebar isOpen={isOpen} setIsOpen={setIsOpen}>
         <div className={styles.sideBarContainer}>
           {/* <p>{`Zoom: ${zoomLevel}`}</p> */}
           <details
