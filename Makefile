@@ -163,6 +163,15 @@ build-frontend:
 test-frontend:
 	cd $(BIKESPACE_FRONTEND_DIR) && npm install && npm run test
 
+# installation and instructions for spreet: https://github.com/flother/spreet
+generate-sprites:
+	spreet --unique \
+	bikespace_frontend/src/assets/icons/parking_map/svgs \
+	bikespace_frontend/public/parking_sprites/parking_sprites && \
+	spreet --retina --unique \
+	bikespace_frontend/src/assets/icons/parking_map/svgs \
+	bikespace_frontend/public/parking_sprites/parking_sprites@2x
+
 test-e2e:
 	cd $(BIKESPACE_FRONTEND_DIR) && npm install && \
 	npx playwright install --with-deps && \
