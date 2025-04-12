@@ -249,7 +249,17 @@ export function ParkingMapPage() {
     );
   }
 
-  function handleUnHover() {
+  function handleFeatureHover(
+    e: React.MouseEvent<HTMLElement>,
+    f: MapGeoJSONFeature
+  ) {
+    // don't apply hover highlighting on touch devices
+    if (navigator.maxTouchPoints === 0) {
+      handleFeatureSelection(e, f);
+    }
+  }
+
+  function handleFeatureUnHover() {
     setMapFeatureHovered([]);
 
     for (const old_f of mapFeatureHovered) {
@@ -429,8 +439,8 @@ export function ParkingMapPage() {
                 }
                 feature={f}
                 handleClick={handleFeatureSelection}
-                handleHover={handleFeatureSelection}
-                handleUnHover={handleUnHover}
+                handleHover={handleFeatureHover}
+                handleUnHover={handleFeatureUnHover}
                 key={f.id}
               />
             ))
