@@ -40,7 +40,7 @@ export function ParkingFeatureDescription({
           </a>
           {' ('}
           <a
-            href={`https://www.openstreetmap.org/edit?${type}=${id}`}
+            href={`https://www.openstreetmap.org/edit?${type}=${id}#hashtags=bikespaceto`}
             target="_blank"
           >
             edit
