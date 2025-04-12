@@ -25,6 +25,53 @@ export function ParkingFeatureDescription({
     return <p>Feature has no properties</p>;
   }
 
+  function getSourceLink(feature: MapGeoJSONFeature) {
+    const properties = feature.properties;
+    if (properties.meta_source === 'OpenStreetMap') {
+      const [type, id] = properties.meta_osm_id.split('/');
+      return (
+        <p>
+          Source:{' '}
+          <a
+            href={`https://www.openstreetmap.org/${properties.meta_osm_id}`}
+            target="_blank"
+          >
+            OpenStreetMap
+          </a>
+          {' ('}
+          <a
+            href={`https://www.openstreetmap.org/edit?${type}=${id}`}
+            target="_blank"
+          >
+            edit
+          </a>
+          )
+        </p>
+      );
+    } else if (properties.meta_source === 'City of Toronto') {
+      // Exclude un-navigable source urls from clusters (separated by '|' character)
+      const sourceUrl =
+        properties.meta_source_url.search(/\|/) > 0
+          ? null
+          : properties.meta_source_url;
+      return (
+        <p>
+          Source:{' '}
+          {sourceUrl ? (
+            <a href={sourceUrl} target="_blank">
+              City of Toronto
+            </a>
+          ) : (
+            'City of Toronto'
+          )}
+        </p>
+      );
+    } else if (properties.meta_source) {
+      return <p>Source: {properties.meta_source}</p>;
+    }
+    return null;
+  }
+
   const {
     bicycle_parking,
     capacity,
@@ -34,7 +81,6 @@ export function ParkingFeatureDescription({
     fee,
     image,
     operator,
-    meta_osm_id,
   } = feature.properties;
 
   const parkingTypeDescription = bicycle_parking
@@ -92,17 +138,7 @@ export function ParkingFeatureDescription({
         </p>
       ) : null}
       {operator ? <p>Operator: {operator}</p> : null}
-      {meta_osm_id ? (
-        <p>
-          <a
-            href={`https://www.openstreetmap.org/${meta_osm_id}`}
-            target="_blank"
-          >
-            View on OpenStreetMap
-          </a>
-        </p>
-      ) : null}
-
+      {getSourceLink(feature)}
       <details className={styles.featureDescriptionAllData}>
         <summary>All Data</summary>
         <div className={styles.featureDescriptionAllDataContent}>
