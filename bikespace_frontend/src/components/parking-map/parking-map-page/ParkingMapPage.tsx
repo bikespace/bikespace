@@ -266,13 +266,41 @@ export function ParkingMapPage() {
 
   function getBikeParkingSprite(
     imageName: string,
-    imageScale: number
+    imageScale: number,
+    textOverlay: string,
+    textOverlayOptions: {
+      'text-size': number;
+      'text-anchor': 'top' | 'bottom';
+      'text-offset': [number, number];
+    }
   ): ReactElement {
-    return getSpriteImage(
-      imageName,
-      imageScale,
-      parkingSpriteImage,
-      parkingSpriteJSON
+    const [w, h] = textOverlayOptions['text-offset'];
+    const fontSize = textOverlayOptions['text-size'];
+    return (
+      <div style={{position: 'relative'}}>
+        {getSpriteImage(
+          imageName,
+          imageScale,
+          parkingSpriteImage,
+          parkingSpriteJSON
+        )}
+        <div
+          style={{
+            position: 'absolute',
+            fontSize: fontSize,
+            fontFamily: 'Open Sans',
+            fontWeight: 'bold',
+            ...(textOverlayOptions['text-anchor'] === 'top'
+              ? {top: -h * fontSize * 0.9}
+              : {bottom: -h * fontSize * 0.9}),
+            left: 0,
+            right: 0,
+            textAlign: 'center',
+          }}
+        >
+          {textOverlay}
+        </div>
+      </div>
     );
   }
 
@@ -316,13 +344,31 @@ export function ParkingMapPage() {
                 <tbody>
                   <tr>
                     <td style={{textAlign: 'center'}}>
-                      {getBikeParkingSprite('parking_unselected', 40 / 140)}
+                      {getBikeParkingSprite(
+                        'parking_unselected',
+                        40 / 140,
+                        '#',
+                        {
+                          'text-size': 8,
+                          'text-anchor': 'top',
+                          'text-offset': [0, -2.6],
+                        }
+                      )}
                     </td>
                     <td>Public bicycle parking</td>
                   </tr>
                   <tr>
                     <td style={{textAlign: 'center'}}>
-                      {getBikeParkingSprite('private_unselected', 40 / 140)}
+                      {getBikeParkingSprite(
+                        'private_unselected',
+                        40 / 140,
+                        '#',
+                        {
+                          'text-size': 8,
+                          'text-anchor': 'top',
+                          'text-offset': [0, -2.6],
+                        }
+                      )}
                     </td>
                     <td>Private bicycle parking</td>
                   </tr>
@@ -430,7 +476,16 @@ export function ParkingMapPage() {
                 publicAccessTypes.includes(feature.properties?.access ?? '')
                   ? 'parking_sidebar'
                   : 'private_sidebar',
-                44 / 140
+                44 / 140,
+                feature.properties?.capacity &&
+                  feature.properties?.capacity !== 2
+                  ? feature.properties.capacity
+                  : '',
+                {
+                  'text-size': 8,
+                  'text-anchor': 'top',
+                  'text-offset': [0, -2.3],
+                }
               )}
             </Marker>
           );
@@ -450,7 +505,16 @@ export function ParkingMapPage() {
                 publicAccessTypes.includes(feature.properties?.access ?? '')
                   ? 'parking_selected'
                   : 'private_selected',
-                44 / 140
+                44 / 140,
+                feature.properties?.capacity &&
+                  feature.properties?.capacity !== '2'
+                  ? feature.properties.capacity
+                  : '',
+                {
+                  'text-size': 8,
+                  'text-anchor': 'top',
+                  'text-offset': [0, -2.3],
+                }
               )}
             </Marker>
           );
