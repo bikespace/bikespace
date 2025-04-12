@@ -34,6 +34,7 @@ export function ParkingFeatureDescription({
     fee,
     image,
     operator,
+    meta_osm_id,
   } = feature.properties;
 
   const parkingTypeDescription = bicycle_parking
@@ -91,6 +92,16 @@ export function ParkingFeatureDescription({
         </p>
       ) : null}
       {operator ? <p>Operator: {operator}</p> : null}
+      {meta_osm_id ? (
+        <p>
+          <a
+            href={`https://www.openstreetmap.org/${meta_osm_id}`}
+            target="_blank"
+          >
+            View on OpenStreetMap
+          </a>
+        </p>
+      ) : null}
 
       <details className={styles.featureDescriptionAllData}>
         <summary>All Data</summary>
