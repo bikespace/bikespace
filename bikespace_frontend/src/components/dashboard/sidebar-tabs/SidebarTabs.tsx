@@ -8,6 +8,7 @@ import feedIcon from './icons/feed';
 import infoIcon from './icons/info';
 
 import styles from './sidebar-tabs.module.scss';
+import {useStore} from '@/states/store';
 
 const tabs = [
   {
@@ -33,6 +34,7 @@ const tabs = [
 ];
 
 export function SidebarTabs() {
+  const {setIsOpen} = useStore(state => state.ui.sidebar);
   const [tab, setTab] = useSidebarTab();
 
   return (
@@ -42,6 +44,7 @@ export function SidebarTabs() {
           key={t.name}
           className={`${styles.tab} ${t.name === tab ? styles.active : ''}`}
           onClick={() => {
+            setIsOpen(true);
             setTab(t.name);
           }}
         >

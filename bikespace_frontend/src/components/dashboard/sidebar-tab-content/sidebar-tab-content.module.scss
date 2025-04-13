@@ -1,9 +1,59 @@
+@import '@/styles/variables.module.scss';
+
+$actions-height: 70px;
+
 .tabContent {
-  margin: 4px;
-  overflow-y: auto;
-  padding-bottom: 4px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: calc(100vh - $actions-height);
+  width: 100vw;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  background: $color-primary-50p;
+  padding: 6px;
+  z-index: 9999;
+
+  @media (min-width: $wrapper-full-width) {
+    position: relative;
+    top: auto;
+    left: auto;
+    width: auto;
+    height: auto;
+    overflow-y: auto;
+    background: none;
+    padding-bottom: 4px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    margin: 4px;
+    gap: 4px;
+  }
+}
+
+.actions {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100vw;
+  height: $actions-height;
+  background: $color-primary-50p;
+  padding: 6px;
+  padding-top: 7px;
+  @media (min-width: $wrapper-full-width) {
+    display: none;
+  }
+}
+
+.action {
+  background: $color-primary-d50p;
+  border-radius: 6px;
+  width: 100%;
   display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  gap: 4px;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 8px;
 }

@@ -32,6 +32,7 @@ $secondary-color: #2c3b42;
 $gray-color: #9b9b9b;
 
 $wrapper-max-width: 800px;
+/* sync with WRAPPER_FULL_WIDTH in /src/hooks/use-is-mobile.ts */
 $wrapper-full-width: 1024px;
 
 :export {

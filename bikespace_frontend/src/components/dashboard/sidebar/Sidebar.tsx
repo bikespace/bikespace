@@ -1,34 +1,29 @@
-import {useStore} from '@/states/store';
+import {useState, useEffect} from 'react';
+import {useIsMobile} from '@/hooks/use-is-mobile';
 
 import {SidebarTabs} from '../sidebar-tabs';
 import {SidebarTabContent} from '../sidebar-tab-content';
 
-import chevronUp from '@/assets/icons/chevron-up.svg';
-import chevronDown from '@/assets/icons/chevron-down.svg';
-
 import styles from './sidebar.module.scss';
+import {useStore} from '@/states/store';
 
 export function Sidebar() {
+  const isMobile = useIsMobile();
   const {isOpen, setIsOpen} = useStore(state => state.ui.sidebar);
 
+  useEffect(() => {
+    if (isMobile) {
+      // setIsOpen(false);
+      setIsOpen(true);
+    } else {
+      setIsOpen(true);
+    }
+  }, [isMobile]);
+
   return (
-    <div className={`${styles.sidebar} ${isOpen ? '' : styles.closed}`}>
-      <button
-        className={styles.drawerHandle}
-        onClick={() => {
-          setIsOpen(!isOpen);
-        }}
-      >
-        <img
-          src={isOpen ? chevronDown.src : chevronUp.src}
-          width={24}
-          style={{pointerEvents: 'none'}}
-        />
-      </button>
-      <div className={styles.sidebarContent}>
-        <SidebarTabs />
-        <SidebarTabContent />
-      </div>
+    <div className={styles.sidebar}>
+      <SidebarTabs />
+      {isOpen && <SidebarTabContent />}
     </div>
   );
 }

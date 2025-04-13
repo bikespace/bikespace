@@ -14,7 +14,7 @@ export interface UiSlice {
 export const createUiSlice: StateCreator<UiSlice, [], [], UiSlice> = set => ({
   ui: {
     sidebar: {
-      isOpen: true,
+      isOpen: false,
       setIsOpen: (isOpen: boolean) => {
         set(state => ({
           ui: {

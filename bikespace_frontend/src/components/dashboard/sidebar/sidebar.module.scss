@@ -1,6 +1,8 @@
 @import '@/styles/variables.module.scss';
 
 .sidebar {
+  width: 100%;
+  height: 60px;
   background-color: $color-primary-20p;
   overflow: hidden;
   display: flex;
@@ -8,57 +10,9 @@
   flex-shrink: 0;
   overflow-y: hidden;
 
-  .sidebarContent {
-    height: 100%;
-    margin-bottom: 0px;
-    overflow-y: hidden;
-    display: flex;
-    flex-direction: row;
-  }
-}
-
-@media (min-width: $wrapper-full-width) {
-  .sidebar {
+  @media (min-width: $wrapper-full-width) {
     width: 430px;
-  }
-
-  .drawerHandle {
-    display: none;
-  }
-}
-
-@media (max-width: $wrapper-full-width) {
-  .sidebar {
-    width: 100%;
-    border-radius: 8px 8px 0px 0px;
-    min-height: 60vh;
-    min-height: 60dvh;
-    height: 60vh;
-    height: 60dvh;
-
-    .drawerHandle {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border: 2px solid $color-primary-20p;
-
-      &:hover {
-        border: 2px solid $color-primary;
-      }
-
-      &:active {
-        background-color: $color-primary-d50p;
-      }
-    }
-
-    &.closed {
-      min-height: auto;
-      height: auto;
-      padding-bottom: 1.5rem;
-
-      .sidebarContent {
-        display: none;
-      }
-    }
+    height: 100%;
+    flex-direction: row;
   }
 }

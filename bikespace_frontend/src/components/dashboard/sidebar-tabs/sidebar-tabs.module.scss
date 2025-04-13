@@ -2,56 +2,70 @@
 
 .tabs {
   display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+  height: 85px;
+  width: 100%;
+  padding: 4px;
+  color: black;
+
+  @media (min-width: $wrapper-full-width) {
+    width: 85px;
+    height: 100%;
+    border-right: 1px solid $color-primary-d50p;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 4px 0 0;
+  }
+}
+
+.tab {
+  position: relative;
+  text-align: center;
+  display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
-  gap: 4px;
-  width: 85px;
-  padding: 0;
-  padding-top: 4px;
-  margin: 0;
-  color: black;
-  border-right: 1px solid $color-primary-d50p;
+  justify-content: center;
+  width: 100%;
+  border-radius: 6px;
 
-  .tab {
-    position: relative;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
+  color: black;
+  stroke: black;
+
+  @media (min-width: $wrapper-full-width) {
     height: 60px;
     padding-left: 12px;
+    border-radius: 0;
 
-    color: black;
-    stroke: black;
+    &.active {
+      background-color: $color-primary-50p;
 
+      @media (min-width: $wrapper-full-width) {
+        &:after {
+          content: '';
+          display: block;
+          height: 100%;
+          width: 12px;
+          background-color: $color-primary-d50p;
+          position: absolute;
+          top: 0;
+          left: 0;
+        }
+      }
+    }
+  }
+  @media (hover: hover) {
     &:hover,
     &:focus {
       color: white;
       stroke: white;
       background-color: $color-primary-50p;
     }
+  }
 
-    &.active {
-      background-color: $color-primary-50p;
-
-      &:after {
-        content: '';
-        display: block;
-        height: 100%;
-        width: 12px;
-        background-color: $color-primary-d50p;
-        position: absolute;
-        top: 0;
-        left: 0;
-      }
-    }
-
-    span {
-      font-size: 16px;
-      font-weight: 600;
-    }
+  span {
+    font-size: 16px;
+    font-weight: 600;
   }
 }
