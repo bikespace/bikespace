@@ -2,7 +2,6 @@
 
 .sidebar {
   background-color: $color-primary-20p;
-  box-shadow: 0px 8px 8px rgba(0, 0, 0, 0.5);
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -10,18 +9,17 @@
   overflow-y: hidden;
 
   .sidebarContent {
-    margin: 4px;
+    height: 100%;
     margin-bottom: 0px;
-    padding-top: 4px;
     overflow-y: hidden;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
   }
 }
 
 @media (min-width: $wrapper-full-width) {
   .sidebar {
-    width: 340px;
+    width: 430px;
   }
 
   .drawerHandle {
@@ -52,7 +50,7 @@
         background-color: $color-primary-d50p;
       }
     }
-    
+
     &.closed {
       min-height: auto;
       height: auto;

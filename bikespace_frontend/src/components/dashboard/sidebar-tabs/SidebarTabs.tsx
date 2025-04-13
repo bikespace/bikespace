@@ -2,20 +2,33 @@ import React from 'react';
 
 import {SidebarTab, useSidebarTab} from '@/states/url-params';
 
+import insightsIcon from './icons/insights';
+import filtersIcon from './icons/filters';
+import feedIcon from './icons/feed';
+import infoIcon from './icons/info';
+
 import styles from './sidebar-tabs.module.scss';
 
 const tabs = [
   {
-    label: 'Data',
+    label: 'Insights',
     name: SidebarTab.Data,
+    icon: insightsIcon,
   },
   {
     label: 'Filters',
     name: SidebarTab.Filters,
+    icon: filtersIcon,
   },
   {
     label: 'Feed',
     name: SidebarTab.Feed,
+    icon: feedIcon,
+  },
+  {
+    label: 'Info',
+    name: SidebarTab.Info,
+    icon: infoIcon,
   },
 ];
 
@@ -32,6 +45,7 @@ export function SidebarTabs() {
             setTab(t.name);
           }}
         >
+          <t.icon />
           <span>{t.label}</span>
         </button>
       ))}

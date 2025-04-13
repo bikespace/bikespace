@@ -1,8 +1,9 @@
 .tabContent {
-  margin-top: 16px;
+  margin: 4px;
   overflow-y: auto;
   padding-bottom: 4px;
   display: flex;
   flex-direction: column;
+  flex-grow: 1;
   gap: 4px;
 }
