@@ -4,7 +4,7 @@ import localData from '@/assets/all_sources.json';
 
 export function useParkingMapQuery() {
   const bicycleParkingURL =
-    'https://raw.githubusercontent.com/tallcoleman/new-parking-map/refs/heads/main/Display%20Files/all_sources.geojson';
+    'https://raw.githubusercontent.com/bikespace/parking-map-data/refs/heads/main/Display%20Files/all_sources.geojson';
 
   const query = useQuery({
     queryKey: ['parking_locations'],

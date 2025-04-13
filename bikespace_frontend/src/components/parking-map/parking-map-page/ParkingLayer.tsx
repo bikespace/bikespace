@@ -46,7 +46,7 @@ export function ParkingLayer() {
   }
 
   const bicycleParkingURL =
-    'https://raw.githubusercontent.com/tallcoleman/new-parking-map/refs/heads/main/Display%20Files/all_sources.geojson';
+    'https://raw.githubusercontent.com/bikespace/parking-map-data/refs/heads/main/Display%20Files/all_sources.geojson';
 
   const parkingLayerOpacity: ExpressionSpecification = [
     'interpolate',

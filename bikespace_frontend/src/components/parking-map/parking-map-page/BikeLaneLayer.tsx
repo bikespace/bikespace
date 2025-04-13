@@ -4,7 +4,7 @@ import type {LineLayer} from 'react-map-gl/maplibre';
 
 export function BikeLaneLayer() {
   const bikeLaneURL =
-    'https://raw.githubusercontent.com/tallcoleman/new-parking-map/refs/heads/demo-map-app/demo_app/data/cycling-network.geojson';
+    'https://raw.githubusercontent.com/bikespace/parking-map-data/refs/heads/demo-map-app/demo_app/data/cycling-network.geojson';
 
   const bikeLaneLayer: LineLayer = {
     id: 'bicycle-lanes',
