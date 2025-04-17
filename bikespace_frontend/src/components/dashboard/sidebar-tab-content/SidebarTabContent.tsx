@@ -2,7 +2,7 @@ import React from 'react';
 
 import {ClearFiltersButton} from '../clear-filters-button';
 import {SidebarContentFilters} from '../sidebar-content-filter';
-import {SidebarContentData} from '../sidebar-content-data';
+import {SidebarContentInsights} from '../sidebar-content-insights';
 import {SidebarContentFeed} from '../sidebar-content-feed';
 import {SidebarTab, useSidebarTab} from '@/states/url-params';
 
@@ -16,14 +16,14 @@ export function SidebarTabContent() {
 
   const renderContent = () => {
     switch (tab) {
-      case SidebarTab.Data:
-        return <SidebarContentData />;
+      case SidebarTab.Insights:
+        return <SidebarContentInsights />;
       case SidebarTab.Filters:
         return <SidebarContentFilters />;
       case SidebarTab.Feed:
         return <SidebarContentFeed />;
       default:
-        return <SidebarContentData />;
+        return <SidebarContentInsights />;
     }
   };
 

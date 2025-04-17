@@ -13,8 +13,7 @@ export function Sidebar() {
 
   useEffect(() => {
     if (isMobile) {
-      // setIsOpen(false);
-      setIsOpen(true);
+      setIsOpen(false);
     } else {
       setIsOpen(true);
     }

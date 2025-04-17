@@ -1,1 +1,0 @@
-export {SidebarContentData} from './SidebarContentData';

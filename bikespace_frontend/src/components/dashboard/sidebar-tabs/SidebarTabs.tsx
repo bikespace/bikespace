@@ -13,7 +13,7 @@ import {useStore} from '@/states/store';
 const tabs = [
   {
     label: 'Insights',
-    name: SidebarTab.Data,
+    name: SidebarTab.Insights,
     icon: insightsIcon,
   },
   {

@@ -30,8 +30,8 @@
   width: 100%;
   border-radius: 6px;
 
-  color: black;
-  stroke: black;
+  color: $color-primary-d70p;
+  stroke: $color-primary-d70p;
 
   @media (min-width: $wrapper-full-width) {
     height: 60px;
@@ -58,9 +58,8 @@
   @media (hover: hover) {
     &:hover,
     &:focus {
-      color: white;
-      stroke: white;
-      background-color: $color-primary-50p;
+      color: $color-primary-d50p;
+      stroke: $color-primary-d50p;
     }
   }
 

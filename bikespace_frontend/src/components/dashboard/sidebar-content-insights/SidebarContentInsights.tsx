@@ -31,7 +31,7 @@ const DataDurationByTodChart = dynamic<ChartProps>(
   }
 );
 
-export function SidebarContentData() {
+export function SidebarContentInsights() {
   return (
     <>
       <ReportSummary />
