@@ -1,9 +1,10 @@
 import React from 'react';
 
 import {ClearFiltersButton} from '../clear-filters-button';
-import {SidebarContentFilters} from '../sidebar-content-filter';
-import {SidebarContentInsights} from '../sidebar-content-insights';
-import {SidebarContentFeed} from '../sidebar-content-feed';
+import {SidebarContentFilters} from './_SidebarContentFilters';
+import {SidebarContentInsights} from './_SidebarContentInsights';
+import {SidebarContentFeed} from './_SidebarContentFeed';
+import {SidebarContentInfo} from './_SidebarContentInfo';
 import {SidebarTab, useSidebarTab} from '@/states/url-params';
 
 import styles from './sidebar-tab-content.module.scss';
@@ -22,6 +23,8 @@ export function SidebarTabContent() {
         return <SidebarContentFilters />;
       case SidebarTab.Feed:
         return <SidebarContentFeed />;
+      case SidebarTab.Info:
+        return <SidebarContentInfo />;
       default:
         return <SidebarContentInsights />;
     }
@@ -29,8 +32,10 @@ export function SidebarTabContent() {
 
   return (
     <div className={styles.tabContent}>
-      <ClearFiltersButton />
-      {renderContent()}
+      <div className={styles.SidebarContent}>
+        <ClearFiltersButton />
+        {renderContent()}
+      </div>
       <div className={styles.actions}>
         <button onClick={() => setIsOpen(false)} className={styles.action}>
           Back to Map

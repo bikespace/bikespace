@@ -5,7 +5,7 @@ import {PlotParams} from 'react-plotly.js';
 
 import {ReportSummary} from '../report-summary';
 
-import styles from './sidebar-content-data.module.scss';
+import styles from './_SidebarContent.module.scss';
 
 type ChartProps = Pick<PlotParams, 'className'>;
 

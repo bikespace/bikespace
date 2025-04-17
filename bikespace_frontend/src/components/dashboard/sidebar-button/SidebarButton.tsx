@@ -23,3 +23,26 @@ export function SidebarButton({
     </button>
   );
 }
+
+interface SidebarLinkButtonProps
+  extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
+  umamiEvent?: string;
+}
+
+/** A link that looks like a button */
+export function SidebarLinkButton({
+  children,
+  className,
+  umamiEvent,
+  ...props
+}: SidebarLinkButtonProps) {
+  return (
+    <a
+      className={[styles.primaryBtn, styles.filled, className].join(' ')}
+      data-umami-event={umamiEvent}
+      {...props}
+    >
+      {children}
+    </a>
+  );
+}

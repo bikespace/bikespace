@@ -12,11 +12,11 @@
   a {
     text-decoration: none;
     color: $color-secondary-dark-grey;
-  
-    &:visited {
+
+    p &:visited {
       color: $color-secondary-dark-grey;
     }
-  
+
     &:hover {
       color: $color-primary;
     }
