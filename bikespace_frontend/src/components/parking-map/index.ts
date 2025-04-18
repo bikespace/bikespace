@@ -1,2 +1,2 @@
-export {ParkingMapPage, ParkingMapPageManual} from './parking-map-page';
+export {ParkingMapPage} from './parking-map-page';
 export {ParkingMapLayout} from './parking-map-layout';
