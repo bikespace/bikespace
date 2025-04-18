@@ -163,6 +163,10 @@ build-frontend:
 test-frontend:
 	cd $(BIKESPACE_FRONTEND_DIR) && npm install && npm run test
 
+# requires Inkscape to be installed; see instructions in split_icons.py
+split-svgs:
+	cd $(BIKESPACE_FRONTEND_DIR) && $(PYTHON) icon_tools/split_icons.py
+
 # installation and instructions for spreet: https://github.com/flother/spreet
 generate-sprites:
 	spreet --unique \

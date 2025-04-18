@@ -26,11 +26,11 @@ import {ParkingFeatureDescription} from './parking-feature-description/ParkingFe
 import parkingSpriteImage from '@/public/parking_sprites/parking_sprites@2x.png';
 import parkingSpriteJSON from '@/public/parking_sprites/parking_sprites@2x.json';
 
-import networkProtected from '@/assets/icons/parking_map/legend/network_protected_lane.svg';
-import networkPainted from '@/assets/icons/parking_map/legend/network_painted_lane.svg';
-import networkTrail from '@/assets/icons/parking_map/legend/network_park_multiuse_trail.svg';
-import networkUnknown from '@/assets/icons/parking_map/legend/network_unknown_lane.svg';
-import networkSharrow from '@/assets/icons/parking_map/legend/network_sharrow_unprotected.svg';
+import networkProtected from '@/assets/icons/bicycle_network/split/network_protected_lane.svg';
+import networkPainted from '@/assets/icons/bicycle_network/split/network_painted_lane.svg';
+import networkTrail from '@/assets/icons/bicycle_network/split/network_park_multiuse_trail.svg';
+import networkUnknown from '@/assets/icons/bicycle_network/split/network_unknown_lane.svg';
+import networkSharrow from '@/assets/icons/bicycle_network/split/network_sharrow_unprotected.svg';
 
 /*
   IMPORTANT NOTE: Several functions take advantage of the fact that state does not update until the next render to make updates to old and new values at the same time. See: https://react.dev/reference/react/useState#storing-information-from-previous-renders
