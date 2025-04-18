@@ -300,7 +300,6 @@ export function ParkingMapPage() {
             position: 'absolute',
             fontSize: fontSize,
             fontFamily: textOverlayOptions['text-font'].join(', '),
-            // fontWeight: 'bold',
             ...(textOverlayOptions['text-anchor'] === 'top'
               ? {top: -h * fontSize * 0.9}
               : {bottom: -h * fontSize * 0.9}),
