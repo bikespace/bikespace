@@ -1,1 +1,0 @@
-export {FeedSubmissions} from './FeedSubmissions';

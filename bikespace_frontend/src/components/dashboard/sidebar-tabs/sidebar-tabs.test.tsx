@@ -19,8 +19,8 @@ describe('SidebarTabs', () => {
     render(<SidebarTabs />);
   });
 
-  test('should render tabs properly', () => {
-    for (const label of ['Data', 'Filters', 'Feed']) {
+  test('should render tab labels', () => {
+    for (const label of ['Insights', 'Filters', 'Feed', 'Info']) {
       const element = screen.getByText(new RegExp(label));
 
       expect(element).toBeInTheDocument();

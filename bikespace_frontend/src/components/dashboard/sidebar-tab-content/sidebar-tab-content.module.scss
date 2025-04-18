@@ -1,8 +1,67 @@
+@import '@/styles/variables.module.scss';
+
+$actions-height: 70px;
+
 .tabContent {
-  margin-top: 16px;
-  overflow-y: auto;
-  padding-bottom: 4px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: calc(100vh - $actions-height);
+  width: 100vw;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  background: $color-primary-50p;
+  z-index: 9999;
+
+  @media (min-width: $wrapper-full-width) {
+    position: relative;
+    top: auto;
+    left: auto;
+    width: auto;
+    height: 100%;
+    overflow-y: hidden;
+    background: none;
+    padding-bottom: 4px;
+    flex-grow: 1;
+  }
+}
+
+.actions {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100vw;
+  height: $actions-height;
+  background: $color-primary-50p;
+  padding: 6px;
+  padding-top: 7px;
+  @media (min-width: $wrapper-full-width) {
+    display: none;
+  }
+}
+
+.action {
+  background: $color-primary-d50p;
+  border-radius: 6px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 8px;
+}
+
+.SidebarContent {
+  padding: 6px;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
+  height: 100%;
+  overflow: scroll;
+
+  @media (min-width: $wrapper-full-width) {
+    overflow: hidden;
+  }
 }

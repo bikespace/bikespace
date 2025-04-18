@@ -34,4 +34,10 @@
     background-color: $color-secondary-light-grey;
     border-color: $color-secondary-dark-grey;
   }
+
+  &.filled {
+    background: $color-primary-d50p;
+    color: white;
+    cursor: pointer;
+  }
 }
