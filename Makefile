@@ -167,14 +167,9 @@ test-frontend:
 split-svgs:
 	cd $(BIKESPACE_FRONTEND_DIR) && $(PYTHON) icon_tools/split_icons.py
 
-# installation and instructions for spreet: https://github.com/flother/spreet
+# requires spreet to be installed; see instructions in generate_sprites.py
 generate-sprites:
-	spreet --unique \
-	bikespace_frontend/src/assets/icons/parking_map/svgs \
-	bikespace_frontend/public/parking_sprites/parking_sprites && \
-	spreet --retina --unique \
-	bikespace_frontend/src/assets/icons/parking_map/svgs \
-	bikespace_frontend/public/parking_sprites/parking_sprites@2x
+	cd $(BIKESPACE_FRONTEND_DIR) && $(PYTHON) icon_tools/generate_sprites.py
 
 test-e2e:
 	cd $(BIKESPACE_FRONTEND_DIR) && npm install && \

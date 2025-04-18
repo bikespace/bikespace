@@ -15,7 +15,8 @@ import subprocess
 import xml.etree.ElementTree as ET
 
 TO_PROCESS = [
-    ("src/assets/icons/bicycle_network/src", "src/assets/icons/bicycle_network/split")
+    ("src/assets/icons/bicycle_network/src", "src/assets/icons/bicycle_network"),
+    ("src/assets/icons/parking_map/src", "src/assets/icons/parking_map"),
 ]
 
 INKSCAPE_COMMAND = getenv(
