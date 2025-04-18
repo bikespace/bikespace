@@ -282,6 +282,7 @@ export function ParkingMapPage() {
       'text-size': number;
       'text-anchor': 'top' | 'bottom';
       'text-offset': [number, number];
+      'text-font': string[];
     }
   ): ReactElement {
     const [w, h] = textOverlayOptions['text-offset'];
@@ -298,8 +299,8 @@ export function ParkingMapPage() {
           style={{
             position: 'absolute',
             fontSize: fontSize,
-            fontFamily: 'Open Sans',
-            fontWeight: 'bold',
+            fontFamily: textOverlayOptions['text-font'].join(', '),
+            // fontWeight: 'bold',
             ...(textOverlayOptions['text-anchor'] === 'top'
               ? {top: -h * fontSize * 0.9}
               : {bottom: -h * fontSize * 0.9}),
@@ -362,6 +363,7 @@ export function ParkingMapPage() {
                           'text-size': 8,
                           'text-anchor': 'top',
                           'text-offset': [0, -2.6],
+                          'text-font': ['Open Sans Bold'],
                         }
                       )}
                     </td>
@@ -377,6 +379,7 @@ export function ParkingMapPage() {
                           'text-size': 8,
                           'text-anchor': 'top',
                           'text-offset': [0, -2.6],
+                          'text-font': ['Open Sans Bold'],
                         }
                       )}
                     </td>
@@ -495,6 +498,7 @@ export function ParkingMapPage() {
                   'text-size': 8,
                   'text-anchor': 'top',
                   'text-offset': [0, -2.3],
+                  'text-font': ['Open Sans Bold'],
                 }
               )}
             </Marker>
@@ -524,6 +528,7 @@ export function ParkingMapPage() {
                   'text-size': 8,
                   'text-anchor': 'top',
                   'text-offset': [0, -2.3],
+                  'text-font': ['Open Sans Bold'],
                 }
               )}
             </Marker>
