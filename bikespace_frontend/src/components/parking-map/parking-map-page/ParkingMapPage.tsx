@@ -220,7 +220,7 @@ export function ParkingMapPage() {
       for (const f of features) {
         mapRef.current!.setFeatureState(
           {source: f.source, id: f.id},
-          {selected: true, sidebar: true}
+          {selected: features.length === 1, sidebar: true}
         );
       }
     }

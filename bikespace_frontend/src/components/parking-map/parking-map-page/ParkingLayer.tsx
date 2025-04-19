@@ -98,7 +98,7 @@ export function ParkingLayer() {
     ['linear'],
     ['zoom'],
     16,
-    1,
+    ['case', ['boolean', ['feature-state', 'sidebar'], false], 0, 1],
     16.05,
     0,
   ];
