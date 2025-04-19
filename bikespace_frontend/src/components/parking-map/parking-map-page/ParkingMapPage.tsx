@@ -9,7 +9,9 @@ import Map, {
   Marker,
 } from 'react-map-gl/maplibre';
 import {StaticImageData} from 'next/image';
-// import {trackUmamiEvent} from '@/utils';
+
+import {trackUmamiEvent} from '@/utils';
+import {UmamiEventData} from '@umami/node';
 
 import {Sidebar} from './Sidebar';
 import {ParkingLayer, publicAccessTypes} from './ParkingLayer';
@@ -198,6 +200,7 @@ export function ParkingMapPage() {
     setMapFeatureList(features.length === 1 ? features : []);
 
     if (features.length > 0) {
+      trackUmamiEvent('parking-map-feature-click');
       if (isOpen) {
         zoomAndFlyTo(features);
       } else {
@@ -232,6 +235,7 @@ export function ParkingMapPage() {
   ) {
     if (e.type === 'click') {
       setMapFeatureList([f]);
+      trackUmamiEvent('parking-map-sidebar-feature-click');
     } else {
       setMapFeatureHovered([f]);
     }
