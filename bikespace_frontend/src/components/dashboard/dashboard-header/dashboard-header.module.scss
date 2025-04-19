@@ -58,13 +58,13 @@
   .header {
     z-index: 500;
     position: fixed;
-    top: 32px;
-    right: 32px;
+    top: 10px;
+    right: 10px;
     height: 40px;
     width: 40px;
-    box-shadow: unset;
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, .1);
     background-color: white;
-    border-radius: 2px;
+    border-radius: 4px;
     padding: 0;
 
     .navToggle {
