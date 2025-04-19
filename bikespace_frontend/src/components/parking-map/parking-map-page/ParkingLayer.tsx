@@ -1,50 +1,13 @@
-import React, {useEffect} from 'react';
-import {Layer, Source, useMap} from 'react-map-gl/maplibre';
+import React from 'react';
+import {Layer, Source} from 'react-map-gl/maplibre';
 import type {CircleLayer, SymbolLayer} from 'react-map-gl/maplibre';
 
 import {ExpressionSpecification} from 'maplibre-gl';
 
-/*
-Use the stuff below with:
-
-'icon-image': [
-  'case',
-  ['in', ['get', 'bicycle_parking'], ['literal', icons.map(x => x.id)]],
-  ['get', 'bicycle_parking'],
-  'no_icon',
-]
-
-'icon-size': [
-  'coalesce',
-  ['get', ['get', 'bicycle_parking'], ['literal', iconSizeLookup]],
-  smallSize,
-],
- */
-
-// const smallSize = 1 / 25;
-// const largeSize = 1 / 10;
-// const icons = [
-//   {id: 'bollard', src: bollardIcon.src, size: smallSize},
-//   {id: 'stands', src: standsIcon.src, size: smallSize},
-//   {id: 'rack', src: rackIcon.src, size: largeSize},
-//   {id: 'two-tier', src: twoTierIcon.src, size: largeSize},
-//   {id: 'wall_loops', src: wallLoopsIcon.src, size: largeSize},
-//   {id: 'no_icon', src: nullIcon.src, size: smallSize},
-// ];
-// const iconSizeLookup = Object.fromEntries(
-//   icons.map(icon => [icon.id, icon.size])
-// );
-
+// access=* values that indicate that bicycle parking is open to the public
 export const publicAccessTypes = ['yes', 'permissive', ''];
 
 export function ParkingLayer() {
-  const {current: map} = useMap();
-
-  async function addImage(id: string, src: string) {
-    const response = await map?.loadImage(src);
-    if (!map?.hasImage(id)) map?.addImage(id, response!.data);
-  }
-
   const bicycleParkingURL =
     'https://raw.githubusercontent.com/bikespace/parking-map-data/refs/heads/main/Display%20Files/all_sources.geojson';
 
@@ -130,8 +93,8 @@ export function ParkingLayer() {
         data={bicycleParkingURL}
         generateId={true}
       >
-        <Layer {...parkingLayer} />
         <Layer {...parkingLayerDense} />
+        <Layer {...parkingLayer} />
       </Source>
     </>
   );
