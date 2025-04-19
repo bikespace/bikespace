@@ -2,6 +2,14 @@ import React from 'react';
 import {Layer, Source} from 'react-map-gl/maplibre';
 import type {LineLayer} from 'react-map-gl/maplibre';
 
+import styles from './parking-map-page.module.scss';
+
+import networkProtected from '@/assets/icons/bicycle_network/network_protected_lane.svg';
+import networkPainted from '@/assets/icons/bicycle_network/network_painted_lane.svg';
+import networkTrail from '@/assets/icons/bicycle_network/network_park_multiuse_trail.svg';
+import networkUnknown from '@/assets/icons/bicycle_network/network_unknown_lane.svg';
+import networkSharrow from '@/assets/icons/bicycle_network/network_sharrow_unprotected.svg';
+
 export function BikeLaneLayer() {
   const bikeLaneURL =
     'https://raw.githubusercontent.com/bikespace/parking-map-data/refs/heads/demo-map-app/demo_app/data/cycling-network.geojson';
@@ -94,5 +102,58 @@ export function BikeLaneLayer() {
       <Layer {...bikeLaneLayer} />
       <Layer {...bikeRouteLayer} />
     </Source>
+  );
+}
+
+export function BikeLaneLayerLegend() {
+  const legendEntries = [
+    {
+      key: 'protected',
+      icon: networkProtected.src,
+      description: 'Protected bike lane',
+    },
+    {
+      key: 'painted',
+      icon: networkPainted.src,
+      description: 'Painted bike lane',
+    },
+    {
+      key: 'trail',
+      icon: networkTrail.src,
+      description: 'Multi-use or park trail',
+    },
+    {
+      key: 'sharrow',
+      icon: networkSharrow.src,
+      description: 'Unprotected bike route (e.g. sharrows)',
+    },
+    {
+      key: 'unknown',
+      icon: networkUnknown.src,
+      description: 'Unknown bike lane type',
+    },
+  ];
+  return (
+    <>
+      <h3>Bicycle Network</h3>
+      <table className={styles.legendTable}>
+        <thead>
+          <tr>
+            <th style={{textAlign: 'center'}}>Style</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          {legendEntries.map(entry => (
+            <tr key={entry.key}>
+              <td>
+                <img src={entry.icon} width={44} />
+              </td>
+              <td>{entry.description}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </>
   );
 }

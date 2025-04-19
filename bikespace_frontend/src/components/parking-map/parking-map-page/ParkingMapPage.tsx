@@ -3,105 +3,41 @@
 import React, {useEffect, useState, useRef, ReactElement} from 'react';
 import Map, {
   GeolocateControl,
+  LngLatLike,
   MapLayerMouseEvent,
+  MapRef,
+  Marker,
   NavigationControl,
   PointLike,
-  Marker,
 } from 'react-map-gl/maplibre';
-import {StaticImageData} from 'next/image';
+import {MapGeoJSONFeature, QueryRenderedFeaturesOptions} from 'maplibre-gl';
 
 import {trackUmamiEvent} from '@/utils';
-import {UmamiEventData} from '@umami/node';
+import {
+  getCentroid,
+  getSpriteImageWithTextOverlay,
+  layoutOptions,
+} from '@/utils/mapUtils';
 
 import {Sidebar} from './Sidebar';
-import {ParkingLayer, publicAccessTypes} from './ParkingLayer';
-import {BikeLaneLayer} from './BikeLaneLayer';
-
-import type {LngLatLike, MapRef} from 'react-map-gl/maplibre';
-import type {LineString, Point} from 'geojson';
+import {
+  ParkingLayer,
+  ParkingLayerLegend,
+  publicAccessTypes,
+} from './ParkingLayer';
+import {BikeLaneLayer, BikeLaneLayerLegend} from './BikeLaneLayer';
+import {ParkingFeatureDescription} from './parking-feature-description/ParkingFeatureDescription';
 
 import 'maplibre-gl/dist/maplibre-gl.css';
 import styles from './parking-map-page.module.scss';
-import {MapGeoJSONFeature, QueryRenderedFeaturesOptions} from 'maplibre-gl';
-import {ParkingFeatureDescription} from './parking-feature-description/ParkingFeatureDescription';
 
+const parkingSpritePath = '/parking_sprites/parking_sprites';
 import parkingSpriteImage from '@/public/parking_sprites/parking_sprites@2x.png';
 import parkingSpriteJSON from '@/public/parking_sprites/parking_sprites@2x.json';
-
-import networkProtected from '@/assets/icons/bicycle_network/network_protected_lane.svg';
-import networkPainted from '@/assets/icons/bicycle_network/network_painted_lane.svg';
-import networkTrail from '@/assets/icons/bicycle_network/network_park_multiuse_trail.svg';
-import networkUnknown from '@/assets/icons/bicycle_network/network_unknown_lane.svg';
-import networkSharrow from '@/assets/icons/bicycle_network/network_sharrow_unprotected.svg';
 
 /*
   IMPORTANT NOTE: Several functions take advantage of the fact that state does not update until the next render to make updates to old and new values at the same time. See: https://react.dev/reference/react/useState#storing-information-from-previous-renders
 */
-
-interface spriteProperties {
-  height: number;
-  pixelRatio: number;
-  width: number;
-  x: number;
-  y: number;
-}
-
-function getSpriteImage(
-  imageName: string,
-  imageScale: number,
-  spriteImage: StaticImageData,
-  spriteJSON: {[key: string]: spriteProperties}
-): ReactElement {
-  const properties = spriteJSON[imageName] as spriteProperties;
-  return (
-    <div
-      style={{
-        background: `url(${spriteImage.src}) -${
-          (properties.x * imageScale) / properties.pixelRatio
-        }px -${
-          (properties.y * imageScale) / properties.pixelRatio
-        }px no-repeat`,
-        backgroundSize: `${
-          (spriteImage.width * imageScale) / properties.pixelRatio
-        }px ${(spriteImage.height * imageScale) / properties.pixelRatio}px`,
-        display: 'inline-block',
-        height: `${(properties.height * imageScale) / properties.pixelRatio}px`,
-        width: `${(properties.width * imageScale) / properties.pixelRatio}px`,
-      }}
-    ></div>
-  );
-}
-
-function getCentroid(feature: MapGeoJSONFeature) {
-  if (feature.geometry.type === 'LineString') {
-    const geometry = feature.geometry as LineString;
-    return geometry.coordinates[0];
-    /*
-      NOTE: code below provides the centroid of a LineString, but this leads to inconsistent placement between the layer rendering and the manual marker rendering since MapLibre uses the first point instead of the centroid. I tried specifying setting the 'symbol-placement' layout property to 'line-center' for LineStrings but that property apparently doesn't support data expressions, which makes it impossible to specify for a mixed geometry layer of Points and LineStrings.
-    */
-    // const allLon = geometry.coordinates.map(coords => {
-    //   const [lon, lat] = coords;
-    //   return lon;
-    // });
-    // const allLat = geometry.coordinates.map(coords => {
-    //   const [lon, lat] = coords;
-    //   return lat;
-    // });
-    // // calculate centroid from average lon, lat
-    // const centroid = [
-    //   allLon.reduce((partial, l) => partial + l, 0) / allLon.length,
-    //   allLat.reduce((partial, l) => partial + l, 0) / allLat.length,
-    // ];
-    // return centroid;
-  }
-  if (feature.geometry.type === 'Point') {
-    const geometry = feature.geometry as Point;
-    return geometry.coordinates;
-  }
-  throw new Error(
-    `Error in getCentroid function: unhandled geometry type ${feature.geometry.type}`
-  );
-}
 
 function uniqueBy(a: Array<Object>, getKey: Function): Array<Object> {
   const seen = new Set();
@@ -179,7 +115,7 @@ export function ParkingMapPage() {
 
     // zoom in if currently more zoomed out than default zoomLevel unless the points don't fit
     zoomLevel = Math.min(
-      testCamera?.zoom ?? 0,
+      testCamera?.zoom ?? zoomLevel,
       Math.max(zoomLevel, mapRef.current!.getZoom())
     );
 
@@ -275,47 +211,7 @@ export function ParkingMapPage() {
   }
 
   function addSprite() {
-    mapRef.current!.setSprite('/parking_sprites/parking_sprites');
-  }
-
-  function getBikeParkingSprite(
-    imageName: string,
-    imageScale: number,
-    textOverlay: string,
-    textOverlayOptions: {
-      'text-size': number;
-      'text-anchor': 'top' | 'bottom';
-      'text-offset': [number, number];
-      'text-font': string[];
-    }
-  ): ReactElement {
-    const [w, h] = textOverlayOptions['text-offset'];
-    const fontSize = textOverlayOptions['text-size'];
-    return (
-      <div style={{position: 'relative'}}>
-        {getSpriteImage(
-          imageName,
-          imageScale,
-          parkingSpriteImage,
-          parkingSpriteJSON
-        )}
-        <div
-          style={{
-            position: 'absolute',
-            fontSize: fontSize,
-            fontFamily: textOverlayOptions['text-font'].join(', '),
-            ...(textOverlayOptions['text-anchor'] === 'top'
-              ? {top: -h * fontSize * 0.9}
-              : {bottom: -h * fontSize * 0.9}),
-            left: 0,
-            right: 0,
-            textAlign: 'center',
-          }}
-        >
-          {textOverlay}
-        </div>
-      </div>
-    );
+    mapRef.current!.setSprite(parkingSpritePath);
   }
 
   // show map pins as interactive when mouse is over them
@@ -335,6 +231,14 @@ export function ParkingMapPage() {
     handleMouseHover();
   }
 
+  const selectedMarkerLayoutProperties: Partial<layoutOptions> = {
+    'icon-size': 44 / 140,
+    'text-size': 8,
+    'text-anchor': 'top',
+    'text-offset': [0, -2.3],
+    'text-font': ['Open Sans Bold'],
+  };
+
   return (
     <main className={styles.parkingMapPage}>
       <Sidebar isOpen={isOpen} setIsOpen={setIsOpen}>
@@ -346,91 +250,8 @@ export function ParkingMapPage() {
           >
             <summary>Legend</summary>
             <div className={styles.legendContent}>
-              <h3>Bicycle Parking</h3>
-              <p>Number on icons indicates capacity</p>
-              <table className={styles.legendTable}>
-                <thead>
-                  <tr>
-                    <th style={{textAlign: 'center'}}>Icon</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td style={{textAlign: 'center'}}>
-                      {getBikeParkingSprite(
-                        'parking_unselected',
-                        40 / 140,
-                        '#',
-                        {
-                          'text-size': 8,
-                          'text-anchor': 'top',
-                          'text-offset': [0, -2.6],
-                          'text-font': ['Open Sans Bold'],
-                        }
-                      )}
-                    </td>
-                    <td>Public bicycle parking</td>
-                  </tr>
-                  <tr>
-                    <td style={{textAlign: 'center'}}>
-                      {getBikeParkingSprite(
-                        'private_unselected',
-                        40 / 140,
-                        '#',
-                        {
-                          'text-size': 8,
-                          'text-anchor': 'top',
-                          'text-offset': [0, -2.6],
-                          'text-font': ['Open Sans Bold'],
-                        }
-                      )}
-                    </td>
-                    <td>Private bicycle parking</td>
-                  </tr>
-                </tbody>
-              </table>
-              <h3>Bicycle Network</h3>
-              <table className={styles.legendTable}>
-                <thead>
-                  <tr>
-                    <th style={{textAlign: 'center'}}>Style</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>
-                      <img src={networkProtected.src} width={44} />
-                    </td>
-                    <td>Protected bike lane</td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <img src={networkPainted.src} width={44} />
-                    </td>
-                    <td>Painted bike lane</td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <img src={networkTrail.src} width={44} />
-                    </td>
-                    <td>Multi-use or park trail</td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <img src={networkSharrow.src} width={44} />
-                    </td>
-                    <td>Unprotected bike route (e.g. sharrows)</td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <img src={networkUnknown.src} width={44} />
-                    </td>
-                    <td>Unknown bike lane type</td>
-                  </tr>
-                </tbody>
-              </table>
+              <ParkingLayerLegend />
+              <BikeLaneLayerLegend />
             </div>
           </details>
           {sidebarFeatureList.length > 0 ? (
@@ -488,21 +309,22 @@ export function ParkingMapPage() {
               offset={[0, 6]}
               style={{cursor: 'pointer'}}
             >
-              {getBikeParkingSprite(
-                publicAccessTypes.includes(feature.properties?.access ?? '')
-                  ? 'parking_sidebar'
-                  : 'private_sidebar',
-                44 / 140,
-                feature.properties?.capacity &&
-                  feature.properties?.capacity !== 2
-                  ? feature.properties.capacity
-                  : '',
+              {getSpriteImageWithTextOverlay(
+                parkingSpriteImage,
+                parkingSpriteJSON,
                 {
-                  'text-size': 8,
-                  'text-anchor': 'top',
-                  'text-offset': [0, -2.3],
-                  'text-font': ['Open Sans Bold'],
-                }
+                  'icon-image': publicAccessTypes.includes(
+                    feature.properties?.access ?? ''
+                  )
+                    ? 'parking_sidebar'
+                    : 'private_sidebar',
+                  'text-field':
+                    feature.properties?.capacity &&
+                    feature.properties?.capacity !== '2'
+                      ? feature.properties.capacity
+                      : '',
+                  ...selectedMarkerLayoutProperties,
+                } as layoutOptions
               )}
             </Marker>
           );
@@ -518,21 +340,22 @@ export function ParkingMapPage() {
               offset={[0, 6]}
               style={{cursor: 'pointer'}}
             >
-              {getBikeParkingSprite(
-                publicAccessTypes.includes(feature.properties?.access ?? '')
-                  ? 'parking_selected'
-                  : 'private_selected',
-                44 / 140,
-                feature.properties?.capacity &&
-                  feature.properties?.capacity !== '2'
-                  ? feature.properties.capacity
-                  : '',
+              {getSpriteImageWithTextOverlay(
+                parkingSpriteImage,
+                parkingSpriteJSON,
                 {
-                  'text-size': 8,
-                  'text-anchor': 'top',
-                  'text-offset': [0, -2.3],
-                  'text-font': ['Open Sans Bold'],
-                }
+                  'icon-image': publicAccessTypes.includes(
+                    feature.properties?.access ?? ''
+                  )
+                    ? 'parking_selected'
+                    : 'private_selected',
+                  'text-field':
+                    feature.properties?.capacity &&
+                    feature.properties?.capacity !== '2'
+                      ? feature.properties.capacity
+                      : '',
+                  ...selectedMarkerLayoutProperties,
+                } as layoutOptions
               )}
             </Marker>
           );
