@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 
 import chevronUp from '@/assets/icons/chevron-up.svg';
 import chevronDown from '@/assets/icons/chevron-down.svg';

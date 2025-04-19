@@ -2,7 +2,7 @@ import React from 'react';
 import {Layer, Source} from 'react-map-gl/maplibre';
 import type {LineLayer} from 'react-map-gl/maplibre';
 
-import styles from './parking-map-page.module.scss';
+import styles from './legend-tables.module.scss';
 
 import networkProtected from '@/assets/icons/bicycle_network/network_protected_lane.svg';
 import networkPainted from '@/assets/icons/bicycle_network/network_painted_lane.svg';
@@ -10,11 +10,11 @@ import networkTrail from '@/assets/icons/bicycle_network/network_park_multiuse_t
 import networkUnknown from '@/assets/icons/bicycle_network/network_unknown_lane.svg';
 import networkSharrow from '@/assets/icons/bicycle_network/network_sharrow_unprotected.svg';
 
-export function BikeLaneLayer() {
-  const bikeLaneURL =
+export function BicycleNetworkLayer() {
+  const bicycleNetworkURL =
     'https://raw.githubusercontent.com/bikespace/parking-map-data/refs/heads/demo-map-app/demo_app/data/cycling-network.geojson';
 
-  const bikeLaneLayer: LineLayer = {
+  const bicycleLaneLayer: LineLayer = {
     id: 'bicycle-lanes',
     type: 'line',
     source: 'bicycle-lanes',
@@ -60,7 +60,7 @@ export function BikeLaneLayer() {
     },
   };
 
-  const bikeRouteLayer: LineLayer = {
+  const bicycleRouteLayer: LineLayer = {
     id: 'bicycle-routes',
     type: 'line',
     source: 'bicycle-lanes',
@@ -98,14 +98,14 @@ export function BikeLaneLayer() {
   };
 
   return (
-    <Source id="bicycle-lanes" type="geojson" data={bikeLaneURL}>
-      <Layer {...bikeLaneLayer} />
-      <Layer {...bikeRouteLayer} />
+    <Source id="bicycle-network" type="geojson" data={bicycleNetworkURL}>
+      <Layer {...bicycleLaneLayer} />
+      <Layer {...bicycleRouteLayer} />
     </Source>
   );
 }
 
-export function BikeLaneLayerLegend() {
+export function BicycleNetworkLayerLegend() {
   const legendEntries = [
     {
       key: 'protected',
