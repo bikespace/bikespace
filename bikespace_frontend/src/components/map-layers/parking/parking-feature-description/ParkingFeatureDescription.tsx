@@ -1,5 +1,6 @@
 import React from 'react';
-import {MapGeoJSONFeature} from 'maplibre-gl';
+
+import type {MapGeoJSONFeature} from 'maplibre-gl';
 
 import {bicycleParkingDescriptions as bpDesc} from './bicycle_parkingDescriptions';
 import styles from './parking-feature-description.module.scss';

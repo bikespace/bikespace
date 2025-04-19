@@ -1,5 +1,6 @@
 import React from 'react';
 import {Layer, Source} from 'react-map-gl/maplibre';
+
 import type {LineLayer} from 'react-map-gl/maplibre';
 
 import styles from './legend-tables.module.scss';

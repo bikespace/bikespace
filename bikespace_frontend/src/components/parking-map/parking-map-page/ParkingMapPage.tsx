@@ -1,15 +1,7 @@
 'use client';
 
 import React, {useEffect, useState, useRef} from 'react';
-import Map, {
-  GeolocateControl,
-  LngLatLike,
-  MapLayerMouseEvent,
-  MapRef,
-  NavigationControl,
-  PointLike,
-} from 'react-map-gl/maplibre';
-import {MapGeoJSONFeature, QueryRenderedFeaturesOptions} from 'maplibre-gl';
+import Map, {GeolocateControl, NavigationControl} from 'react-map-gl/maplibre';
 
 import {trackUmamiEvent} from '@/utils';
 import {getCentroid} from '@/utils/mapUtils';
@@ -25,6 +17,17 @@ import {
   BicycleNetworkLayer,
   BicycleNetworkLayerLegend,
 } from '@/components/map-layers/BicycleNetwork';
+
+import type {
+  MapGeoJSONFeature,
+  QueryRenderedFeaturesOptions,
+} from 'maplibre-gl';
+import type {
+  LngLatLike,
+  MapLayerMouseEvent,
+  MapRef,
+  PointLike,
+} from 'react-map-gl/maplibre';
 
 import 'maplibre-gl/dist/maplibre-gl.css';
 import styles from './parking-map-page.module.scss';
