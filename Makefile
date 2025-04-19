@@ -163,6 +163,14 @@ build-frontend:
 test-frontend:
 	cd $(BIKESPACE_FRONTEND_DIR) && npm install && npm run test
 
+# requires Inkscape to be installed; see instructions in split_icons.py
+split-svgs:
+	cd $(BIKESPACE_FRONTEND_DIR) && $(PYTHON) icon_tools/split_icons.py
+
+# requires spreet to be installed; see instructions in generate_sprites.py
+generate-sprites:
+	cd $(BIKESPACE_FRONTEND_DIR) && $(PYTHON) icon_tools/generate_sprites.py
+
 test-e2e:
 	cd $(BIKESPACE_FRONTEND_DIR) && npm install && \
 	npx playwright install --with-deps && \
