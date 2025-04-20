@@ -6,7 +6,7 @@
   height: 54px;
   background-color: white;
   
-  .navToggle, .navBackdrop {
+  .navToggle {
     display: none;
   }
 
@@ -39,8 +39,6 @@
     }
 
     li {
-      
-
       a {
         img {
           height: 1.4rem;
@@ -58,22 +56,16 @@
   .header {
     z-index: 500;
     position: fixed;
-    top: 10px;
-    right: 10px;
-    height: 40px;
-    width: 40px;
-    box-shadow: 0 0 0 2px rgba(0, 0, 0, .1);
     background-color: white;
-    border-radius: 4px;
-    padding: 0;
 
     .navToggle {
-      z-index: 2;
-      height: 100%;
+      height: 40px;
       display: block;
       padding: 8px;
 
       img {
+        height: 100%;
+        width: 100%;
         max-width: 100%;
         max-height: 100%;
         object-fit: contain;
@@ -81,43 +73,53 @@
     }
 
     .mainNav {
-      visibility: hidden;
-      display: block;
-      position: fixed;
-      background-color: white;
-      padding: 8px;
-      height: 100%;
-      z-index: 999;
-      width: $nav-width;
-      top: 0;
-      bottom: 0;
-      right: calc(0px - $nav-width);
-      transition: visibility .2s, right .2s linear;
-
-      .bikespaceLogo {
-        margin-bottom: 16px;
-      }
+      display: flex;
+      flex-direction: column;
 
       ul {
         display: flex;
         flex-direction: column;
       }
 
-      &.open {
-        visibility: visible;
-        right: 0;
+      .bikespaceLogo {
+        margin: 16px 0px;
+        justify-self: center;
       }
+    }
+  }
 
-      .navBackdrop {
-        z-index: 200;
-        position: fixed;
-        display: none;
-        inset: 0;
+  .headerClosed {
+    top: 10px;
+    right: 10px;
+    height: 40px;
+    width: 40px;
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, .1);
+    border-radius: 4px;
+    padding: 0;
 
-        &.open {
-          display: block;
-        }
-      }
+    .mainNav {
+      visibility: hidden;
+    }
+  }
+
+  .headerOpen {
+    top: 0;
+    bottom: 0;
+    right: 0;
+    height: 100%;
+    width: $nav-width;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+
+    .navToggle {
+      align-self: flex-end;
+      border: 2px solid rgba(0, 0, 0, .1);
+      border-radius: 4px;
+    }
+
+    .mainNav {
+      visibility: visible;
     }
   }
 }
