@@ -24,6 +24,7 @@ export function Sidebar({
       >
         <img
           src={isOpen ? chevronDown.src : chevronUp.src}
+          alt={isOpen ? 'close details pane' : 'open details pane'}
           width={24}
           style={{pointerEvents: 'none'}}
         />

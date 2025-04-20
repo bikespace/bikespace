@@ -49,7 +49,8 @@ export interface layoutOptions extends layoutOptionsIcon, layoutOptionsText {}
 export function getSpriteImage(
   spriteImage: StaticImageData,
   spriteJSON: {[key: string]: spriteProperties},
-  layoutOptions: layoutOptionsIcon
+  layoutOptions: layoutOptionsIcon,
+  altText: string
 ): ReactElement {
   const properties = spriteJSON[
     layoutOptions['icon-image']
@@ -58,6 +59,8 @@ export function getSpriteImage(
 
   return (
     <div
+      role={altText === '' ? 'presentation' : 'img'}
+      aria-label={altText === '' ? undefined : altText}
       style={{
         background: `url(${spriteImage.src}) -${
           (properties.x * iconSize) / properties.pixelRatio
@@ -76,14 +79,15 @@ export function getSpriteImage(
 export function getSpriteImageWithTextOverlay(
   spriteImage: StaticImageData,
   spriteJSON: {[key: string]: spriteProperties},
-  layoutOptions: layoutOptions
+  layoutOptions: layoutOptions,
+  altText: string
 ): ReactElement {
   const [w, h] = layoutOptions['text-offset'];
   const textSize = layoutOptions['text-size'];
 
   return (
     <div style={{position: 'relative'}}>
-      {getSpriteImage(spriteImage, spriteJSON, layoutOptions)}
+      {getSpriteImage(spriteImage, spriteJSON, layoutOptions, altText)}
       <div
         style={{
           position: 'absolute',

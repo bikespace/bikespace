@@ -172,7 +172,8 @@ export function ParkingLayer({selected, groupSelected}: ParkingLayerProps) {
                     ? feature.properties.capacity
                     : '',
                 ...selectedMarkerLayoutProperties,
-              } as layoutOptions
+              } as layoutOptions,
+              ''
             )}
           </Marker>
         );
@@ -203,7 +204,8 @@ export function ParkingLayer({selected, groupSelected}: ParkingLayerProps) {
                     ? feature.properties.capacity
                     : '',
                 ...selectedMarkerLayoutProperties,
-              } as layoutOptions
+              } as layoutOptions,
+              ''
             )}
           </Marker>
         );
@@ -214,8 +216,16 @@ export function ParkingLayer({selected, groupSelected}: ParkingLayerProps) {
 
 export function ParkingLayerLegend() {
   const legendEntries = [
-    {icon: 'parking_unselected', description: 'Public bicycle parking'},
-    {icon: 'private_unselected', description: 'Private bicycle parking'},
+    {
+      icon: 'parking_unselected',
+      alt: 'Map icon with an illustration of a bicycle',
+      description: 'Public bicycle parking',
+    },
+    {
+      icon: 'private_unselected',
+      alt: 'Map icon with an illustration of a key',
+      description: 'Private bicycle parking',
+    },
   ];
 
   return (
@@ -244,7 +254,8 @@ export function ParkingLayerLegend() {
                     'text-anchor': 'top',
                     'text-offset': [0, -2.6],
                     'text-font': ['Open Sans Bold'],
-                  } as layoutOptions
+                  } as layoutOptions,
+                  entry.alt
                 )}
               </td>
               <td>{entry.description}</td>

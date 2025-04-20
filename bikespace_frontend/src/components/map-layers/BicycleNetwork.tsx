@@ -111,26 +111,31 @@ export function BicycleNetworkLayerLegend() {
     {
       key: 'protected',
       icon: networkProtected.src,
+      alt: 'dark green line',
       description: 'Protected bike lane',
     },
     {
       key: 'painted',
       icon: networkPainted.src,
+      alt: 'green line',
       description: 'Painted bike lane',
     },
     {
       key: 'trail',
       icon: networkTrail.src,
+      alt: 'brown line',
       description: 'Multi-use or park trail',
     },
     {
       key: 'sharrow',
       icon: networkSharrow.src,
+      alt: 'light green dashed line',
       description: 'Unprotected bike route (e.g. sharrows)',
     },
     {
       key: 'unknown',
       icon: networkUnknown.src,
+      alt: 'dark grey line',
       description: 'Unknown bike lane type',
     },
   ];
@@ -148,7 +153,7 @@ export function BicycleNetworkLayerLegend() {
           {legendEntries.map(entry => (
             <tr key={entry.key}>
               <td>
-                <img src={entry.icon} width={44} />
+                <img src={entry.icon} alt={entry.alt} width={44} />
               </td>
               <td>{entry.description}</td>
             </tr>
