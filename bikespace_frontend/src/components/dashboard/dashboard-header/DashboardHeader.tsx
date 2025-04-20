@@ -37,7 +37,7 @@ export function DashboardHeader() {
         aria-expanded={isMenuOpen ? 'true' : 'false'}
       >
         {isMenuOpen ? (
-          <img src={closeMenu.src} alt="" />
+          <img src={closeMenu.src} alt="" height={24} />
         ) : (
           <img src={hamburgerMenu.src} alt="" />
         )}
