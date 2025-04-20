@@ -21,3 +21,5 @@ const geolocation = {
 Object.defineProperty(global.navigator, 'geolocation', {
   value: geolocation,
 });
+
+export {};
