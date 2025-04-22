@@ -1,6 +1,6 @@
 import React from 'react';
 
-import type {MapGeoJSONFeature} from 'maplibre-gl';
+import type {Feature} from 'geojson';
 
 import {bicycleParkingDescriptions as bpDesc} from './bicycle_parkingDescriptions';
 import styles from './parking-feature-description.module.scss';
@@ -8,7 +8,7 @@ import styles from './parking-feature-description.module.scss';
 export interface ParkingFeatureDescriptionProps {
   selected: boolean;
   hovered: boolean;
-  feature: MapGeoJSONFeature;
+  feature: Feature;
   handleClick: Function;
   handleHover: Function;
   handleUnHover: Function;
@@ -26,8 +26,9 @@ export function ParkingFeatureDescription({
     return <p>Feature has no properties</p>;
   }
 
-  function getSourceLink(feature: MapGeoJSONFeature) {
+  function getSourceLink(feature: Feature) {
     const properties = feature.properties;
+    if (!properties) return null;
     if (properties.meta_source === 'OpenStreetMap') {
       const [type, id] = properties.meta_osm_id.split('/');
       return (

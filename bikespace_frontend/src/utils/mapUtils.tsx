@@ -1,15 +1,14 @@
 import {StaticImageData} from 'next/image';
 import React, {ReactElement} from 'react';
 
-import {MapGeoJSONFeature} from 'maplibre-gl';
-import type {LineString, Point} from 'geojson';
+import type {Feature, LineString, Point} from 'geojson';
 
 /**
- * Returns a single [lon, lat] Point from a Maplibre MapGeoJSONFeature
+ * Returns a single [lon, lat] Point from a GeoJSON Feature
  * @param feature - LineString or Point feature
  * @returns [lon, lat] Point
  */
-export function getCentroid(feature: MapGeoJSONFeature) {
+export function getCentroid(feature: Feature) {
   if (feature.geometry.type === 'LineString') {
     const geometry = feature.geometry as LineString;
     return geometry.coordinates[0];
