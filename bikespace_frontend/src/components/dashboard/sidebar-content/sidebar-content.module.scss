@@ -2,7 +2,7 @@
 
 $actions-height: 70px;
 
-.tabContent {
+.SidebarContent {
   position: fixed;
   top: 0;
   left: 0;
@@ -19,9 +19,7 @@ $actions-height: 70px;
     left: auto;
     width: auto;
     height: 100%;
-    overflow-y: hidden;
     background: none;
-    padding-bottom: 4px;
     flex-grow: 1;
   }
 }
@@ -53,15 +51,9 @@ $actions-height: 70px;
   padding: 8px;
 }
 
-.SidebarContent {
+.SidebarContentInner {
   padding: 6px;
   display: flex;
   flex-direction: column;
   gap: 6px;
-  height: 100%;
-  overflow: scroll;
-
-  @media (min-width: $wrapper-full-width) {
-    overflow: hidden;
-  }
 }

@@ -1,1 +1,0 @@
-export {SidebarTabContent} from './SidebarTabContent';

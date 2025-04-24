@@ -2,7 +2,7 @@ import {useState, useEffect} from 'react';
 import {useIsMobile} from '@/hooks/use-is-mobile';
 
 import {SidebarTabs} from '../sidebar-tabs';
-import {SidebarTabContent} from '../sidebar-tab-content';
+import {SidebarContent} from '../sidebar-content';
 
 import styles from './sidebar.module.scss';
 import {useStore} from '@/states/store';
@@ -22,7 +22,7 @@ function Sidebar() {
   return (
     <div className={styles.sidebar}>
       <SidebarTabs />
-      {isOpen && <SidebarTabContent />}
+      {isOpen && <SidebarContent />}
     </div>
   );
 }

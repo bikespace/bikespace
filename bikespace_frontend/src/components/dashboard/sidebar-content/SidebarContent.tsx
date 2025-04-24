@@ -7,10 +7,10 @@ import {SidebarContentFeed} from './_SidebarContentFeed';
 import {SidebarContentInfo} from './_SidebarContentInfo';
 import {SidebarTab, useSidebarTab} from '@/states/url-params';
 
-import styles from './sidebar-tab-content.module.scss';
+import styles from './sidebar-content.module.scss';
 import {useStore} from '@/states/store';
 
-export function SidebarTabContent() {
+export function SidebarContent() {
   const {setIsOpen} = useStore(state => state.ui.sidebar);
 
   const [tab] = useSidebarTab();
@@ -31,8 +31,8 @@ export function SidebarTabContent() {
   };
 
   return (
-    <div className={styles.tabContent}>
-      <div className={styles.SidebarContent}>
+    <div className={styles.SidebarContent}>
+      <div className={styles.SidebarContentInner}>
         <ClearFiltersButton />
         {renderContent()}
       </div>
