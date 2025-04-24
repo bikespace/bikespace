@@ -7,7 +7,7 @@ import {SidebarTabContent} from '../sidebar-tab-content';
 import styles from './sidebar.module.scss';
 import {useStore} from '@/states/store';
 
-export function Sidebar() {
+function Sidebar() {
   const isMobile = useIsMobile();
   const {isOpen, setIsOpen} = useStore(state => state.ui.sidebar);
 
@@ -26,3 +26,5 @@ export function Sidebar() {
     </div>
   );
 }
+
+export default Sidebar;

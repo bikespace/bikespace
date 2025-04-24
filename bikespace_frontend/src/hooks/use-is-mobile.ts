@@ -4,37 +4,15 @@ import {useState, useEffect} from 'react';
 const WRAPPER_FULL_WIDTH = 1024;
 
 export function useIsMobile() {
-  const isMobile = useMediaQuery(`(max-width: ${WRAPPER_FULL_WIDTH}px)`, {
-    defaultValue: false,
-  });
-
-  return isMobile;
+  return useMediaQuery(`(max-width: ${WRAPPER_FULL_WIDTH}px)`);
 }
 
-type UseMediaQueryOptions = {
-  defaultValue?: boolean;
-  initializeWithValue?: boolean;
-};
-
-const IS_SERVER = typeof window === 'undefined';
-
-export function useMediaQuery(
-  query: string,
-  {defaultValue = false, initializeWithValue = true}: UseMediaQueryOptions = {}
-): boolean {
+export function useMediaQuery(query: string): boolean {
   const getMatches = (query: string): boolean => {
-    if (IS_SERVER) {
-      return defaultValue;
-    }
     return window.matchMedia(query).matches;
   };
 
-  const [matches, setMatches] = useState<boolean>(() => {
-    if (initializeWithValue) {
-      return getMatches(query);
-    }
-    return defaultValue;
-  });
+  const [matches, setMatches] = useState<boolean>(getMatches(query));
 
   function handleChange() {
     setMatches(getMatches(query));
