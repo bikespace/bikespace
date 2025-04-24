@@ -1,10 +1,11 @@
 @import '@/styles/variables.module.scss';
 
+/* Sidebar action bar height on mobile */
 $actions-height: 70px;
 
 .SidebarContent {
   position: fixed;
-  top: 0;
+  bottom: 70px;
   left: 0;
   height: calc(100vh - $actions-height);
   width: 100vw;
@@ -12,6 +13,10 @@ $actions-height: 70px;
   overflow-y: scroll;
   background: $color-primary-50p;
   z-index: 9999;
+
+  &.Feed {
+    height: calc($feed-height - $actions-height);
+  }
 
   @media (min-width: $wrapper-full-width) {
     position: relative;

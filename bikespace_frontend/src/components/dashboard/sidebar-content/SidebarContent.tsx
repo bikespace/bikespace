@@ -30,8 +30,10 @@ export function SidebarContent() {
     }
   };
 
+  const feedStyle = tab === SidebarTab.Feed ? styles.Feed : '';
+
   return (
-    <div className={styles.SidebarContent}>
+    <div className={`${styles.SidebarContent} ${feedStyle}`}>
       <div className={styles.SidebarContentInner}>
         <ClearFiltersButton />
         {renderContent()}

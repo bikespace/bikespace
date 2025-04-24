@@ -15,6 +15,7 @@ import {
   LatLngTuple,
   MarkerClusterGroup as LeafletMarkerClusterGroup,
 } from 'leaflet';
+import {useStore} from '@/states/store';
 
 import {IssueType, SubmissionApiPayload} from '@/interfaces/Submission';
 
@@ -55,6 +56,8 @@ const MapMarker = forwardRef(
     // pass MarkerRef to parent while also allowing it to be used in this component:
     useImperativeHandle(outerMarkerRef, () => innerMarkerRef.current!, []);
     const [, setTab] = useSidebarTab();
+    const {setIsOpen} = useStore(state => state.ui.sidebar);
+
     const searchParams = useSearchParams();
     const pathname = usePathname();
     const {replace} = useRouter();
@@ -69,13 +72,24 @@ const MapMarker = forwardRef(
     // omits dependencies array to run on every render
     useEffect(() => {
       if (!isFocused || !doneLoading) return;
-      if (windowWidth && windowWidth <= wrapperFullWidth) {
-        setTab(SidebarTab.Feed);
-      }
+      // if (windowWidth && windowWidth <= wrapperFullWidth) {
+      //   console.log('SET');
+      //   setTab(SidebarTab.Feed);
+      //   setIsOpen(true);
+      // }
       clusterRef.current!.zoomToShowLayer(innerMarkerRef.current!, () => {
         innerMarkerRef.current!.openPopup();
       });
     });
+
+    // useEffect(() => {
+    //   if (!isFocused || !doneLoading) return;
+    //   if (windowWidth && windowWidth <= wrapperFullWidth) {
+    //     console.log('SET');
+    //     setTab(SidebarTab.Feed);
+    //     setIsOpen(true);
+    //   }
+    // }, [windowWidth]);
 
     const handlePopupClose = () => {
       if (focus === submission.id) setFocus(null);
@@ -96,6 +110,8 @@ const MapMarker = forwardRef(
 
         replace(`${pathname}?${params.toString()}` as Route);
         setFocus(submission.id);
+        setTab(SidebarTab.Feed);
+        setIsOpen(true);
       }
     };
 

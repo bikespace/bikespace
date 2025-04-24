@@ -19,8 +19,9 @@ function Sidebar() {
     }
   }, [isMobile]);
 
+  const openStyle = isOpen ? styles.Open : '';
   return (
-    <div className={styles.sidebar}>
+    <div className={`${styles.Sidebar} ${openStyle}`}>
       <SidebarTabs />
       {isOpen && <SidebarContent />}
     </div>

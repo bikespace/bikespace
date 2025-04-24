@@ -39,6 +39,7 @@ export function SidebarLinkButton({
   return (
     <a
       className={[styles.primaryBtn, styles.filled, className].join(' ')}
+      target="_blank"
       data-umami-event={umamiEvent}
       {...props}
     >

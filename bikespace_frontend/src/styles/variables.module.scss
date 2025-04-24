@@ -35,6 +35,9 @@ $wrapper-max-width: 800px;
 /* sync with WRAPPER_FULL_WIDTH in /src/hooks/use-is-mobile.ts */
 $wrapper-full-width: 1024px;
 
+/* Sidebar feed module height on mobile */
+$feed-height: 50vh;
+
 :export {
   wrapperFullWidth: $wrapper-full-width;
 }

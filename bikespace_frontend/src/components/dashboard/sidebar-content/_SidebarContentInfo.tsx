@@ -10,11 +10,11 @@ const content = {
   lastUpdated: 'Data Last Updated',
   about: 'About the Dashboard',
   aboutContent:
-    'The BikeSpace Dashboard is based on issues reported through the publicly accessible Bikespace Issue Reporting web app.\nLaunched in July 2018, BikeSpace allows cyclists to self-report bike parking concerns they come across in the Toronto, Canada area.',
-  try: 'Try Bikespace Issue Reporter',
+    'The BikeSpace Dashboard is based on issues reported through the publicly accessible BikeSpace Issue Reporting web app.\nLaunched in July 2018, BikeSpace allows cyclists to self-report bike parking concerns they come across in the Toronto, Canada area.',
+  try: 'Try BikeSpace Issue Reporter',
   dataGuide: 'Data Guide',
   dataGuideContent:
-    'Check out our data guide to learn more about the Bikespace bike parking submission data schema.',
+    'Check out our data guide to learn more about the BikeSpace bike parking submission data schema.',
   view: 'View Data Guide PDF',
 };
 
@@ -36,7 +36,9 @@ export function SidebarContentInfo() {
         <p>{content.dataGuideContent}</p>
         <div className={styles.bordered}>
           <img width={dataGuide.width / 2} src={dataGuide.src} />
-          <SidebarLinkButton>{content.view}</SidebarLinkButton>
+          <SidebarLinkButton href="/Bikespace Dashboard Dataset Details.pdf">
+            {content.view}
+          </SidebarLinkButton>
         </div>
       </div>
     </>

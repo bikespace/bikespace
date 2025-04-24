@@ -1,6 +1,6 @@
 @import '@/styles/variables.module.scss';
 
-.sidebar {
+.Sidebar {
   width: 100%;
   height: 60px;
   background-color: $color-primary-20p;
@@ -9,6 +9,10 @@
   flex-direction: column;
   flex-shrink: 0;
   overflow-y: hidden;
+
+  &.Open {
+    height: calc($feed-height);
+  }
 
   @media (min-width: $wrapper-full-width) {
     width: 430px;
