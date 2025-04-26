@@ -1,9 +1,14 @@
-import React from 'react';
+import React, {useState} from 'react';
 
 import type {Feature} from 'geojson';
 
+import {SidebarButton} from '@/components/dashboard/sidebar-button';
+
 import {bicycleParkingDescriptions as bpDesc} from './bicycle_parkingDescriptions';
 import styles from './parking-feature-description.module.scss';
+
+import chevronUp from '@/assets/icons/chevron-up.svg';
+import chevronDown from '@/assets/icons/chevron-down.svg';
 
 export interface ParkingFeatureDescriptionProps {
   selected: boolean;
@@ -26,6 +31,20 @@ export function ParkingFeatureDescription({
     return <p>Feature has no properties</p>;
   }
 
+  const [showAllData, setShowAllData] = useState<boolean>(false);
+
+  // main features displayed
+  // also includes `cargo_bike` and `capacity:cargo_bike`
+  const {
+    bicycle_parking,
+    capacity,
+    description,
+    covered,
+    fee,
+    image,
+    operator,
+  } = feature.properties;
+
   function getSourceLink(feature: Feature) {
     const properties = feature.properties;
     if (!properties) return null;
@@ -42,6 +61,7 @@ export function ParkingFeatureDescription({
           </a>
           {' ('}
           <a
+            aria-label="edit on OpenStreetMap"
             href={`https://www.openstreetmap.org/edit?${type}=${id}#hashtags=bikespaceto`}
             target="_blank"
           >
@@ -74,29 +94,102 @@ export function ParkingFeatureDescription({
     return null;
   }
 
-  const {
-    bicycle_parking,
-    capacity,
-    description,
-    covered,
-    cargo_bike,
-    fee,
-    image,
-    operator,
-  } = feature.properties;
+  const getFeatureHeading = () => {
+    const parkingTypeDescription = bicycle_parking
+      ? bpDesc?.[bicycle_parking] ?? bicycle_parking
+      : 'Unknown Type';
+    const capacityDescription = capacity ? (
+      <>
+        <span role="img" aria-label="capacity">
+          🚲 x{' '}
+        </span>
+        {capacity}
+      </>
+    ) : (
+      'Unknown Capacity'
+    );
+    return (
+      <h3>
+        {parkingTypeDescription} ({capacityDescription})
+      </h3>
+    );
+  };
 
-  const parkingTypeDescription = bicycle_parking
-    ? bpDesc?.[bicycle_parking] ?? bicycle_parking
-    : 'Unknown Type';
-  const capacityDescription = capacity
-    ? `🚲 x ${capacity}`
-    : 'Unknown Capacity';
+  const getFeatureDescription = () => {
+    return description ? (
+      <p>
+        <em>{description}</em>
+      </p>
+    ) : null;
+  };
 
-  const indicators = [];
-  if (covered === 'yes') indicators.push('☂️');
-  if (fee === 'yes') indicators.push('💲');
-  const indicatorList =
-    indicators.length > 0 ? ' ' + indicators.join(' ') : null;
+  const getFeatureCovered = () => {
+    return covered === 'yes' ? (
+      <p>
+        <span aria-hidden={true}>☂️</span> covered
+      </p>
+    ) : null;
+  };
+
+  function getFeatureCargoBikeFriendly(feature: Feature) {
+    if (!feature.properties) return null;
+    const cargo_bike = feature.properties['cargo_bike'];
+    return cargo_bike === 'yes' || cargo_bike === 'designated' ? (
+      <p>
+        <span aria-hidden={true}>📦</span> cargo bike friendly
+        {feature.properties['capacity:cargo_bike'] ? (
+          <>
+            <span role="img" aria-label="cargo bike capacity">
+              {' '}
+              (🚲 x{' '}
+            </span>
+            {feature.properties['capacity:cargo_bike']})
+          </>
+        ) : null}
+      </p>
+    ) : null;
+  }
+
+  const getFeatureHasFee = () => {
+    return fee === 'yes' ? (
+      <p>
+        <span aria-hidden={true}>💲</span> requires payment
+      </p>
+    ) : null;
+  };
+
+  const getFeatureImageLink = () => {
+    return image ? (
+      <p>
+        <span role="img" aria-label="photo link">
+          📷
+        </span>{' '}
+        <a href={image} target="_blank">
+          {image}
+        </a>
+      </p>
+    ) : null;
+  };
+
+  const getFeatureOperator = () =>
+    operator ? <p>Operator: {operator}</p> : null;
+
+  function getAllData(feature: Feature) {
+    if (!feature.properties) return null;
+    return showAllData ? (
+      <div className={styles.featureDescriptionAllData}>
+        <h4>All Data</h4>
+        {Object.entries(feature.properties).map(([k, v]) => {
+          return (
+            <div key={k}>
+              <dt>{k}</dt>
+              <dd>{v}</dd>
+            </div>
+          );
+        })}
+      </div>
+    ) : null;
+  }
 
   return (
     <div
@@ -105,55 +198,43 @@ export function ParkingFeatureDescription({
           ? styles.featureDescriptionSelected
           : styles.featureDescription
       }
+      onMouseOver={(e: React.MouseEvent) => handleHover(e, feature)}
+      onMouseOut={() => handleUnHover()}
     >
-      <h3>
-        <a
-          href="#"
-          onClick={(e: React.MouseEvent) => handleClick(e, feature)}
-          onMouseOver={(e: React.MouseEvent) => handleHover(e, feature)}
-          onMouseOut={() => handleUnHover()}
-        >
-          {parkingTypeDescription} ({capacityDescription}){indicatorList}
-        </a>
-      </h3>
-      {description ? (
-        <p>
-          <em>{description}</em>
-        </p>
-      ) : null}
-      {covered === 'yes' ? <p>☂️ covered</p> : null}
-      {cargo_bike === 'yes' || cargo_bike === 'designated' ? (
-        <p>
-          📦 cargo bike friendly
-          {feature.properties['capacity:cargo_bike']
-            ? ` (🚲 x ${feature.properties['capacity:cargo_bike']})`
-            : null}
-        </p>
-      ) : null}
-      {fee === 'yes' ? <p>💲 requires payment</p> : null}
-      {image ? (
-        <p>
-          📷{' '}
-          <a href={image} target="_blank">
-            {image}
-          </a>
-        </p>
-      ) : null}
-      {operator ? <p>Operator: {operator}</p> : null}
+      {getFeatureHeading()}
+      {getFeatureDescription()}
+      {getFeatureCovered()}
+      {getFeatureCargoBikeFriendly(feature)}
+      {getFeatureHasFee()}
+      {getFeatureImageLink()}
+      {getFeatureOperator()}
       {getSourceLink(feature)}
-      <details className={styles.featureDescriptionAllData}>
-        <summary>All Data</summary>
-        <div className={styles.featureDescriptionAllDataContent}>
-          {Object.entries(feature.properties).map(([k, v]) => {
-            return (
-              <div key={k}>
-                <dt>{k}</dt>
-                <dd>{v}</dd>
-              </div>
-            );
-          })}
-        </div>
-      </details>
+      <div className={styles.featureDescriptionControls}>
+        <SidebarButton
+          onClick={(e: React.MouseEvent) => handleClick(e, feature)}
+          disabled={selected}
+          umamiEvent="parking-feature-select-on-map"
+        >
+          Select{selected ? 'ed' : ''} on Map
+        </SidebarButton>
+        <SidebarButton
+          onClick={() => setShowAllData(!showAllData)}
+          aria-expanded={showAllData ? 'true' : 'false'}
+          umamiEvent={
+            showAllData
+              ? 'parking-feature-show-all-data'
+              : 'parking-feature-hide-all-data'
+          }
+        >
+          {showAllData ? 'Hide' : 'Show'} all Data
+          <img
+            src={showAllData ? chevronUp.src : chevronDown.src}
+            alt=""
+            style={{paddingLeft: 4}}
+          />
+        </SidebarButton>
+      </div>
+      {getAllData(feature)}
     </div>
   );
 }

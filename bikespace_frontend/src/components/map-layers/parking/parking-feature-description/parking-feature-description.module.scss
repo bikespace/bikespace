@@ -1,11 +1,20 @@
 @import '@/styles/variables.module.scss';
 
 @mixin base-feature {
+  width: 100%;
   margin-bottom: 1rem;
   padding: 4px;
   background-color: white;
   border: 3px solid;
   border-radius: 4px;
+  text-align: left;
+  font-size: 0.9rem;
+  cursor: pointer;
+
+  h3 {
+    font-size: medium;
+  }
+
   p {
     margin-top: 4px;
     a {
@@ -37,27 +46,30 @@
   border-color: #ed125b;
 }
 
+.featureDescriptionControls {
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+  width: 100%;
+  margin-top: 8px;
+
+  button {
+    flex-basis: 100%;
+    border: 2px solid $color-primary-20p;
+    height: 2rem * 0.9;
+    font-size: 0.9rem;
+  }
+}
+
 .featureDescriptionAllData {
   margin-top: 8px;
   font-size: 0.9rem;
-
-  summary {
-    font-weight: bold;
-    color: #777;
-    &::marker {
-      color: $color-secondary-med-light-grey;
-    }
-  }
+  background-color: $color-secondary-light-grey;
+  border-radius: 4px;
+  padding: 4px;
 
   dt {
     font-weight: bold;
     margin-top: 4px;
   }
-
-  .featureDescriptionAllDataContent {
-    background-color: $color-secondary-light-grey;
-    border-radius: 4px;
-    padding: 4px;
-  }
-
 }
