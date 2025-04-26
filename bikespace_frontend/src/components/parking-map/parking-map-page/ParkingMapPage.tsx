@@ -2,6 +2,8 @@
 
 import React, {useEffect, useState, useRef} from 'react';
 import Map, {GeolocateControl, NavigationControl} from 'react-map-gl/maplibre';
+import {bbox as getBBox} from '@turf/bbox';
+import {featureCollection as getFeatureCollection} from '@turf/helpers';
 
 import {trackUmamiEvent, getCentroid} from '@/utils';
 
@@ -86,22 +88,13 @@ export function ParkingMapPage() {
 
   function zoomAndFlyTo(features: MapGeoJSONFeature[], zoomLevel = 18) {
     // calculate bounds and test camera fit and center
-    const allCoords = features.map(f => {
-      const [lon, lat] = getCentroid(f);
-      return {lon: lon, lat: lat};
-    });
-    const boundsSW = {
-      lon: Math.min(...allCoords.map(coords => coords.lon)),
-      lat: Math.min(...allCoords.map(coords => coords.lat)),
-    };
-    const boundsNE = {
-      lon: Math.max(...allCoords.map(coords => coords.lon)),
-      lat: Math.max(...allCoords.map(coords => coords.lat)),
-    };
+    const [minLon, minLat, maxLon, maxLat] = getBBox(
+      getFeatureCollection(features)
+    );
     const testCamera = mapRef.current!.cameraForBounds(
       [
-        [boundsSW.lon, boundsSW.lat],
-        [boundsNE.lon, boundsNE.lat],
+        [minLon, minLat],
+        [maxLon, maxLat],
       ],
       {padding: {top: 50, right: 10, left: 10, bottom: 10}}
     );

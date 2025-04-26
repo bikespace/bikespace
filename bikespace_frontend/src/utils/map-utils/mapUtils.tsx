@@ -1,25 +1,16 @@
 import {StaticImageData} from 'next/image';
 import React, {ReactElement} from 'react';
+import {centroid} from '@turf/centroid';
 
-import type {Feature, LineString, Point} from 'geojson';
+import type {Feature, Position} from 'geojson';
 
 /**
- * Returns a single [lon, lat] Point from a GeoJSON Feature
+ * Returns a single [lon, lat] Point from a GeoJSON Feature using TurfJS
  * @param feature - LineString or Point feature
- * @returns [lon, lat] Point
+ * @returns [lon, lat] Position
  */
 export function getCentroid(feature: Feature) {
-  if (feature.geometry.type === 'LineString') {
-    const geometry = feature.geometry as LineString;
-    return geometry.coordinates[0];
-  }
-  if (feature.geometry.type === 'Point') {
-    const geometry = feature.geometry as Point;
-    return geometry.coordinates;
-  }
-  throw new Error(
-    `Error in getCentroid function: unhandled geometry type ${feature.geometry.type}`
-  );
+  return centroid(feature).geometry.coordinates as Position;
 }
 
 interface spriteProperties {
