@@ -18,6 +18,7 @@ export function Sidebar({
     <div className={`${styles.sidebar} ${isOpen ? '' : styles.closed}`}>
       <button
         className={styles.drawerHandle}
+        aria-expanded={isOpen}
         onClick={() => {
           setIsOpen(!isOpen);
         }}
