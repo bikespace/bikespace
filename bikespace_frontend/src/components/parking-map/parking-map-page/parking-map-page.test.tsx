@@ -2,7 +2,7 @@ import React, {forwardRef} from 'react';
 import {render, screen} from '@testing-library/react';
 import {userEvent} from '@testing-library/user-event';
 
-import {ParkingMapPage} from './ParkingMapPage';
+import {ParkingMapPage, uniqueBy} from './ParkingMapPage';
 
 jest.mock('react-map-gl/maplibre', () => ({
   __esModule: true,
@@ -10,6 +10,22 @@ jest.mock('react-map-gl/maplibre', () => ({
   GeolocateControl: () => <></>,
   NavigationControl: () => <></>,
 }));
+
+describe('uniqueBy', () => {
+  test('uniqueBy returns a Set of unique objects based on comparing the value returned by a custom function', () => {
+    interface TestObject {
+      a: number;
+      b: number;
+    }
+    const testInput: TestObject[] = [
+      {a: 1, b: 1},
+      {a: 1, b: 2},
+      {a: 2, b: 3},
+    ];
+    const uniqueInput = uniqueBy(testInput, (x: TestObject) => x.a);
+    expect(uniqueInput).toHaveLength(2);
+  });
+});
 
 describe('ParkingMapPage', () => {
   test('All ParkingMapPage images on first load have alt text', () => {

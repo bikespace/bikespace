@@ -34,7 +34,7 @@ import styles from './parking-map-page.module.scss';
 
 const parkingSpritePath = '/parking_sprites/parking_sprites';
 
-function uniqueBy(a: Array<Object>, getKey: Function): Array<Object> {
+export function uniqueBy(a: Array<Object>, getKey: Function): Array<Object> {
   const seen = new Set();
   return a.filter(item => {
     const k = getKey(item);
