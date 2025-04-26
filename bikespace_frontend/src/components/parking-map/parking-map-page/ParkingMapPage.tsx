@@ -3,8 +3,7 @@
 import React, {useEffect, useState, useRef} from 'react';
 import Map, {GeolocateControl, NavigationControl} from 'react-map-gl/maplibre';
 
-import {trackUmamiEvent} from '@/utils';
-import {getCentroid} from '@/utils/mapUtils';
+import {trackUmamiEvent, getCentroid} from '@/utils';
 
 import {Sidebar} from './Sidebar';
 import {

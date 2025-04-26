@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import {Layer, Marker, Source, useMap} from 'react-map-gl/maplibre';
 
-import {getCentroid, getSpriteImageWithTextOverlay} from '@/utils/mapUtils';
+import {getCentroid, getSpriteImageWithTextOverlay} from '@/utils';
 
 import type {CircleLayer, SymbolLayer} from 'react-map-gl/maplibre';
 import type {ExpressionSpecification, MapGeoJSONFeature} from 'maplibre-gl';
-import type {layoutOptions} from '@/utils/mapUtils';
+import type {layoutOptions} from '@/utils';
 
 import styles from '../legend-tables.module.scss';
 
