@@ -12,6 +12,7 @@
         "access": "yes",
         "fee": "no",
         "ref:open.toronto.ca:street-furniture-bicycle-parking:id": "BP-08810",
+        "description": "Default location (city hall)",
         "meta_ward_name": "Parkdale-High Park",
         "meta_ward_number": "04",
         "meta_source": "City of Toronto",
@@ -25,7 +26,91 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [-79.4372404142573, 43.64295672630829]
+        "coordinates": [-79.38, 43.65]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "source": "street-furniture-bicycle-parking",
+        "amenity": "bicycle_parking",
+        "bicycle_parking": "rack",
+        "operator": "City of Toronto",
+        "covered": "no",
+        "access": "yes",
+        "fee": "no",
+        "ref:open.toronto.ca:street-furniture-bicycle-parking:id": "BP-08810",
+        "description": "Default location (city hall) #2",
+        "meta_ward_name": "Parkdale-High Park",
+        "meta_ward_number": "04",
+        "meta_source": "City of Toronto",
+        "meta_source_dataset": "street-furniture-bicycle-parking",
+        "meta_source_url": "https://open.toronto.ca/dataset/street-furniture-bicycle-parking/",
+        "meta_source_license": "Open Government Licence - Toronto",
+        "meta_source_license_url": "https://open.toronto.ca/open-data-licence/",
+        "meta_source_last_updated": "2025-04-19 03:04:13.274000+00:00",
+        "meta_status": "Existing",
+        "meta_business_improvement_area": "None"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-79.38, 43.65]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "source": "street-furniture-bicycle-parking",
+        "amenity": "bicycle_parking",
+        "bicycle_parking": "rack",
+        "operator": "City of Toronto",
+        "covered": "no",
+        "access": "yes",
+        "fee": "no",
+        "ref:open.toronto.ca:street-furniture-bicycle-parking:id": "BP-08810",
+        "description": "Test config location",
+        "meta_ward_name": "Parkdale-High Park",
+        "meta_ward_number": "04",
+        "meta_source": "City of Toronto",
+        "meta_source_dataset": "street-furniture-bicycle-parking",
+        "meta_source_url": "https://open.toronto.ca/dataset/street-furniture-bicycle-parking/",
+        "meta_source_license": "Open Government Licence - Toronto",
+        "meta_source_license_url": "https://open.toronto.ca/open-data-licence/",
+        "meta_source_last_updated": "2025-04-19 03:04:13.274000+00:00",
+        "meta_status": "Existing",
+        "meta_business_improvement_area": "None"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-79.43, 43.76]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "source": "street-furniture-bicycle-parking",
+        "amenity": "bicycle_parking",
+        "bicycle_parking": "rack",
+        "operator": "City of Toronto",
+        "covered": "no",
+        "access": "yes",
+        "fee": "no",
+        "ref:open.toronto.ca:street-furniture-bicycle-parking:id": "BP-08810",
+        "description": "Test config location #2",
+        "meta_ward_name": "Parkdale-High Park",
+        "meta_ward_number": "04",
+        "meta_source": "City of Toronto",
+        "meta_source_dataset": "street-furniture-bicycle-parking",
+        "meta_source_url": "https://open.toronto.ca/dataset/street-furniture-bicycle-parking/",
+        "meta_source_license": "Open Government Licence - Toronto",
+        "meta_source_license_url": "https://open.toronto.ca/open-data-licence/",
+        "meta_source_last_updated": "2025-04-19 03:04:13.274000+00:00",
+        "meta_status": "Existing",
+        "meta_business_improvement_area": "None"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-79.43, 43.76]
       }
     },
     {

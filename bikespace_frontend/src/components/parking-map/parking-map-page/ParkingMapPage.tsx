@@ -5,7 +5,7 @@ import Map, {GeolocateControl, NavigationControl} from 'react-map-gl/maplibre';
 import {bbox as getBBox} from '@turf/bbox';
 import {featureCollection as getFeatureCollection} from '@turf/helpers';
 
-import {trackUmamiEvent, getCentroid} from '@/utils';
+import {trackUmamiEvent} from '@/utils';
 
 import {Sidebar} from './Sidebar';
 import {
@@ -175,6 +175,8 @@ export function ParkingMapPage() {
   }
 
   function handleOnLoad() {
+    // console log required for playwright testing
+    if (process.env.NODE_ENV !== 'production') console.log('map loaded');
     addSprite();
     handleMouseHover();
   }
