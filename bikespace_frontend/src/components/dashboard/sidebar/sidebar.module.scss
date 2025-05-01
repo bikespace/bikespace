@@ -2,7 +2,7 @@
 
 .Sidebar {
   width: 100%;
-  height: 60px;
+  height: 80px;
   background-color: $color-primary-20p;
   overflow: hidden;
   display: flex;
@@ -16,7 +16,10 @@
 
   @media (min-width: $wrapper-full-width) {
     width: 430px;
-    height: 100%;
     flex-direction: row;
+
+    &.Open {
+      height: 100%;
+    }
   }
 }

@@ -10,7 +10,7 @@ $actions-height: 70px;
   height: calc(100vh - $actions-height);
   width: 100vw;
   overflow-x: hidden;
-  overflow-y: scroll;
+  overflow-y: auto;
   background: $color-primary-50p;
   z-index: 9999;
 
@@ -22,10 +22,15 @@ $actions-height: 70px;
     position: relative;
     top: auto;
     left: auto;
+    bottom: auto;
     width: auto;
     height: 100%;
     background: none;
     flex-grow: 1;
+
+    &.Feed {
+      height: 100%;
+    }
   }
 }
 

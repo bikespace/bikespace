@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react';
+import {useEffect} from 'react';
 import {useIsMobile} from '@/hooks/use-is-mobile';
 
 import {SidebarTabs} from '../sidebar-tabs';
