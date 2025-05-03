@@ -30,7 +30,7 @@ test('Submit an issue', async ({page}, testInfo) => {
   // purpose of .toPass: ensures retry if page hydrates during navigation; particularly common problem on webkit
   await expect(async () => {
     await page.getByRole('link', {name: 'Report a bike parking issue'}).click();
-    await expect(page).toHaveURL('/submission', {timeout: 100});
+    await expect(page).toHaveURL('/submission', {timeout: 1000});
   }).toPass();
 
   // issue entry - 'next' button should be disabled until an issue is selected

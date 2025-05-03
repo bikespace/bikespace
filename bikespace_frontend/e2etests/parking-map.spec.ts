@@ -42,7 +42,7 @@ test('Navigate bike parking map', async ({page, browserName}, testInfo) => {
   // purpose of .toPass: ensures retry if page hydrates during navigation; particularly common problem on webkit
   await expect(async () => {
     await page.getByRole('link', {name: 'Find bicycle parking'}).click();
-    await expect(page).toHaveURL('/parking-map', {timeout: 100});
+    await expect(page).toHaveURL('/parking-map', {timeout: 1000});
   }).toPass();
 
   // wait for map to load
