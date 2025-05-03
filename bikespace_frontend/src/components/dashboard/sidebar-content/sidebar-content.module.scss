@@ -5,18 +5,17 @@ $actions-height: 70px;
 
 .SidebarContent {
   position: fixed;
-  bottom: 70px;
+  top: 0;
+  right: 0;
+  bottom: 0;
   left: 0;
-  height: calc(100vh - $actions-height);
-  height: calc(100dvh - $actions-height); // fix for safari
-  width: 100vw;
   overflow-x: hidden;
-  overflow-y: auto;
+  overflow-y: hidden;
   background: $color-primary-50p;
   z-index: 9999;
 
   &.Feed {
-    height: calc($feed-height - $actions-height);
+    top: calc(100% - $feed-height);
   }
 
   @media (min-width: $wrapper-full-width) {
@@ -30,7 +29,7 @@ $actions-height: 70px;
     flex-grow: 1;
 
     &.Feed {
-      height: 100%;
+      top: auto;
     }
   }
 }
@@ -39,7 +38,7 @@ $actions-height: 70px;
   position: fixed;
   bottom: 0;
   left: 0;
-  width: 100vw;
+  right: 0;
   height: $actions-height;
   background: $color-primary-50p;
   padding: 6px;
@@ -63,8 +62,15 @@ $actions-height: 70px;
 }
 
 .SidebarContentInner {
-  padding: 6px;
   display: flex;
   flex-direction: column;
   gap: 6px;
+  padding: 6px;
+  height: calc(100% - $actions-height);
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  @media (min-width: $wrapper-full-width) {
+    height: 100%;
+  }
 }
