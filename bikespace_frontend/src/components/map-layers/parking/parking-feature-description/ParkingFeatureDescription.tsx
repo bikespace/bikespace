@@ -205,8 +205,8 @@ export function ParkingFeatureDescription({
           ? styles.featureDescriptionSelected
           : styles.featureDescription
       }
-      onMouseOver={(e: React.MouseEvent) => handleHover(e, feature)}
-      onMouseOut={() => handleUnHover()}
+      onMouseEnter={(e: React.MouseEvent) => handleHover(e, feature)}
+      onMouseLeave={() => handleUnHover()}
     >
       <FeatureHeading bicycle_parking={bicycle_parking} capacity={capacity} />
       <FeatureDescription description={description} />
