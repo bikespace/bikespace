@@ -34,7 +34,7 @@ export function SidebarContentInfo() {
         </p>
         <div className={styles.bordered}>
           <img width="156" src={dataGuide.src} />
-          <SidebarLinkButton href="/Bikespace Dashboard Dataset Details.pdf">
+          <SidebarLinkButton href="/BikeSpace Dashboard Dataset Details.pdf">
             View Data Guide PDF
           </SidebarLinkButton>
         </div>

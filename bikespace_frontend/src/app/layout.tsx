@@ -36,7 +36,7 @@ export default async function RootLayout({
           sizes="180x180"
           href="/apple-touch-icon.png"
         />
-        <meta name="apple-mobile-web-app-title" content="Bikespace" />
+        <meta name="apple-mobile-web-app-title" content="BikeSpace" />
         <link rel="manifest" href="/site.webmanifest" />
       </head>
       <body>{children}</body>
