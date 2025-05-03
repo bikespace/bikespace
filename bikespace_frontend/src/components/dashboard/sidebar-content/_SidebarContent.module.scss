@@ -1,5 +1,12 @@
 @import '@/styles/variables.module.scss';
 
+.ContentHeading {
+  width: 100%;
+  border-radius: 4px;
+  padding: 8px;
+  background-color: white;
+}
+
 .ContentCard {
   width: 100%;
   border-radius: 4px;

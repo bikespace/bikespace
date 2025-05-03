@@ -11,7 +11,7 @@ export function SidebarContentFeed() {
 
   return (
     <>
-      <div className={styles.ContentCard}>
+      <div className={styles.ContentHeading}>
         <h2 className={styles.cardHeading}>Latest Submissions</h2>
       </div>
       <div className={`${styles.ContentCard} ${styles.scrollableCard}`}>
