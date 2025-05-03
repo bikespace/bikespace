@@ -8,6 +8,7 @@ $actions-height: 70px;
   bottom: 70px;
   left: 0;
   height: calc(100vh - $actions-height);
+  height: calc(100dvh - $actions-height); // fix for safari
   width: 100vw;
   overflow-x: hidden;
   overflow-y: auto;
