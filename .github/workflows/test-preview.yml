@@ -129,6 +129,8 @@ jobs:
     name: Publish to Cloudflare Pages
     needs: [test-frontend, test-e2e]
     runs-on: ubuntu-latest
+    env:
+      MAPTILER_API_KEY: ${{ secrets.MAPTILER_API_KEY }}
     permissions:
       contents: read
       deployments: write
