@@ -45,7 +45,7 @@ export function ParkingFeatureDescription({
     operator,
   } = feature.properties;
 
-  function getSourceLink(feature: Feature) {
+  function SourceLink({feature}: {feature: Feature}) {
     const properties = feature.properties;
     if (!properties) return null;
     if (properties.meta_source === 'OpenStreetMap') {
@@ -94,7 +94,13 @@ export function ParkingFeatureDescription({
     return null;
   }
 
-  const getFeatureHeading = () => {
+  function FeatureHeading({
+    bicycle_parking,
+    capacity,
+  }: {
+    bicycle_parking: string;
+    capacity: string;
+  }) {
     const parkingTypeDescription = bicycle_parking
       ? bpDesc?.[bicycle_parking] ?? bicycle_parking
       : 'Unknown Type';
@@ -113,25 +119,25 @@ export function ParkingFeatureDescription({
         {parkingTypeDescription} ({capacityDescription})
       </h3>
     );
-  };
+  }
 
-  const getFeatureDescription = () => {
+  function FeatureDescription({description}: {description: string}) {
     return description ? (
       <p>
         <em>{description}</em>
       </p>
     ) : null;
-  };
+  }
 
-  const getFeatureCovered = () => {
+  function FeatureCovered({covered}: {covered: string}) {
     return covered === 'yes' ? (
       <p>
         <span aria-hidden={true}>☂️</span> covered
       </p>
     ) : null;
-  };
+  }
 
-  function getFeatureCargoBikeFriendly(feature: Feature) {
+  function FeatureCargoBikeFriendly({feature}: {feature: Feature}) {
     if (!feature.properties) return null;
     const cargo_bike = feature.properties['cargo_bike'];
     return cargo_bike === 'yes' || cargo_bike === 'designated' ? (
@@ -150,15 +156,15 @@ export function ParkingFeatureDescription({
     ) : null;
   }
 
-  const getFeatureHasFee = () => {
+  function FeatureHasFee({fee}: {fee: string}) {
     return fee === 'yes' ? (
       <p>
         <span aria-hidden={true}>💲</span> requires payment
       </p>
     ) : null;
-  };
+  }
 
-  const getFeatureImageLink = () => {
+  function FeatureImageLink({image}: {image: string}) {
     return image ? (
       <p>
         <span role="img" aria-label="photo link">
@@ -169,12 +175,13 @@ export function ParkingFeatureDescription({
         </a>
       </p>
     ) : null;
-  };
+  }
 
-  const getFeatureOperator = () =>
-    operator ? <p>Operator: {operator}</p> : null;
+  function FeatureOperator({operator}: {operator: string}) {
+    return operator ? <p>Operator: {operator}</p> : null;
+  }
 
-  function getAllData(feature: Feature) {
+  function AllData({feature}: {feature: Feature}) {
     if (!feature.properties) return null;
     return showAllData ? (
       <div className={styles.featureDescriptionAllData}>
@@ -201,14 +208,14 @@ export function ParkingFeatureDescription({
       onMouseOver={(e: React.MouseEvent) => handleHover(e, feature)}
       onMouseOut={() => handleUnHover()}
     >
-      {getFeatureHeading()}
-      {getFeatureDescription()}
-      {getFeatureCovered()}
-      {getFeatureCargoBikeFriendly(feature)}
-      {getFeatureHasFee()}
-      {getFeatureImageLink()}
-      {getFeatureOperator()}
-      {getSourceLink(feature)}
+      <FeatureHeading bicycle_parking={bicycle_parking} capacity={capacity} />
+      <FeatureDescription description={description} />
+      <FeatureCovered covered={covered} />
+      <FeatureCargoBikeFriendly feature={feature} />
+      <FeatureHasFee fee={fee} />
+      <FeatureImageLink image={image} />
+      <FeatureOperator operator={operator} />
+      <SourceLink feature={feature} />
       <div className={styles.featureDescriptionControls}>
         <SidebarButton
           onClick={(e: React.MouseEvent) => handleClick(e, feature)}
@@ -234,7 +241,7 @@ export function ParkingFeatureDescription({
           />
         </SidebarButton>
       </div>
-      {getAllData(feature)}
+      <AllData feature={feature} />
     </div>
   );
 }
