@@ -21,7 +21,7 @@ export function BicycleNetworkLayer() {
     source: 'bicycle-lanes',
     filter: [
       'match',
-      ['get', 'INFRA_LOWORDER'],
+      ['get', 'INFRA_HIGHORDER'],
       [
         'Sharrows - Wayfinding',
         'Sharrows - Arterial - Connector',
@@ -38,7 +38,7 @@ export function BicycleNetworkLayer() {
       'line-width': 3,
       'line-color': [
         'match',
-        ['get', 'INFRA_LOWORDER'],
+        ['get', 'INFRA_HIGHORDER'],
         [
           'Cycle Track',
           'Cycle Track - Contraflow',
@@ -67,7 +67,7 @@ export function BicycleNetworkLayer() {
     source: 'bicycle-lanes',
     filter: [
       'match',
-      ['get', 'INFRA_LOWORDER'],
+      ['get', 'INFRA_HIGHORDER'],
       [
         'Sharrows - Wayfinding',
         'Sharrows - Arterial - Connector',
@@ -85,7 +85,7 @@ export function BicycleNetworkLayer() {
       'line-dasharray': [1, 2],
       'line-color': [
         'match',
-        ['get', 'INFRA_LOWORDER'],
+        ['get', 'INFRA_HIGHORDER'],
         [
           'Sharrows - Wayfinding',
           'Sharrows - Arterial - Connector',
