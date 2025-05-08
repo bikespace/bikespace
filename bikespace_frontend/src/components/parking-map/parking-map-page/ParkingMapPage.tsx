@@ -7,7 +7,7 @@ import {featureCollection as getFeatureCollection} from '@turf/helpers';
 
 import {trackUmamiEvent} from '@/utils';
 
-import {Sidebar} from './Sidebar';
+import {Sidebar} from './sidebar/Sidebar';
 import {
   ParkingFeatureDescription,
   parkingInteractiveLayers,
