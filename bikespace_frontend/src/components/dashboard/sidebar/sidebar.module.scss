@@ -1,66 +1,25 @@
 @import '@/styles/variables.module.scss';
 
-.sidebar {
+.Sidebar {
+  width: 100%;
+  height: 80px;
   background-color: $color-primary-20p;
-  box-shadow: 0px 8px 8px rgba(0, 0, 0, 0.5);
   overflow: hidden;
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
   overflow-y: hidden;
 
-  .sidebarContent {
-    margin: 4px;
-    margin-bottom: 0px;
-    padding-top: 4px;
-    overflow-y: hidden;
-    display: flex;
-    flex-direction: column;
-  }
-}
-
-@media (min-width: $wrapper-full-width) {
-  .sidebar {
-    width: 340px;
+  &.Open {
+    height: calc($feed-height);
   }
 
-  .drawerHandle {
-    display: none;
-  }
-}
+  @media (min-width: $wrapper-full-width) {
+    width: 430px;
+    flex-direction: row;
 
-@media (max-width: $wrapper-full-width) {
-  .sidebar {
-    width: 100%;
-    border-radius: 8px 8px 0px 0px;
-    min-height: 60vh;
-    min-height: 60dvh;
-    height: 60vh;
-    height: 60dvh;
-
-    .drawerHandle {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border: 2px solid $color-primary-20p;
-
-      &:hover {
-        border: 2px solid $color-primary;
-      }
-
-      &:active {
-        background-color: $color-primary-d50p;
-      }
-    }
-    
-    &.closed {
-      min-height: auto;
-      height: auto;
-      padding-bottom: 1.5rem;
-
-      .sidebarContent {
-        display: none;
-      }
+    &.Open {
+      height: 100%;
     }
   }
 }

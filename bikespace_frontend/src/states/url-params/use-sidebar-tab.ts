@@ -1,16 +1,17 @@
 import {useQueryState, parseAsStringEnum} from 'nuqs';
 
 export enum SidebarTab {
-  Data = 'data',
+  Insights = 'insights',
   Filters = 'filters',
   Feed = 'feed',
+  Info = 'info',
 }
 
 export const useSidebarTab = () => {
   return useQueryState(
     'tab',
     parseAsStringEnum<SidebarTab>(Object.values(SidebarTab)).withDefault(
-      SidebarTab.Data
+      SidebarTab.Insights
     )
   );
 };

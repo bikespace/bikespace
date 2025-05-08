@@ -1,1 +1,0 @@
-export {SidebarContentFilters} from './SidebarContentFilters';

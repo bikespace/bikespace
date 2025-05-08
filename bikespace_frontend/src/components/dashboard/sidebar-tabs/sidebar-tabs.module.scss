@@ -2,40 +2,70 @@
 
 .tabs {
   display: flex;
-  flex-direction: row;
   align-items: center;
   justify-content: space-between;
   gap: 4px;
-  padding: 0;
-  margin: 0;
-  border: 2px solid $color-primary-d50p;
-  border-radius: calc(4px * 1.5);
-  background-color: white;
+  flex-shrink: 0;
+  height: 70px;
+  width: 100%;
+  padding: 4px;
   color: black;
-  
 
-  .tab {
-    background-color: white;
-    padding: 4px 8px;
-    border: 2px solid white;
-    border-radius: 4px;
-    flex: auto;
-    text-align: center;
+  @media (min-width: $wrapper-full-width) {
+    width: 85px;
+    height: 100%;
+    border-right: 1px solid $color-primary-d50p;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 4px 0 0;
+  }
+}
 
-    &:hover, &:focus {
-      border-color: $color-primary;
-      background-color: $color-primary-20p;
-    }
-  
+.tab {
+  position: relative;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  border-radius: 6px;
+
+  color: $color-primary-d70p;
+  stroke: $color-primary-d70p;
+
+  @media (min-width: $wrapper-full-width) {
+    height: 60px;
+    padding-left: 12px;
+    border-radius: 0;
+
     &.active {
-      background-color: $color-primary-d50p;
-      border-color: $color-primary-d50p;
-      color: white;
-    }
+      background-color: $color-primary-50p;
 
-    span {
-      font-size: 16px;
-      font-weight: 600;
+      @media (min-width: $wrapper-full-width) {
+        &:after {
+          content: '';
+          display: block;
+          height: 100%;
+          width: 12px;
+          background-color: $color-primary-d50p;
+          position: absolute;
+          top: 0;
+          left: 0;
+        }
+      }
     }
+  }
+  @media (hover: hover) {
+    &:hover,
+    &:focus {
+      color: $color-primary-d50p;
+      stroke: $color-primary-d50p;
+    }
+  }
+
+  span {
+    font-size: 16px;
+    font-weight: 600;
   }
 }
