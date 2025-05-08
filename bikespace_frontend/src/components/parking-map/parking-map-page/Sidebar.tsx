@@ -3,7 +3,7 @@ import React from 'react';
 import chevronUp from '@/assets/icons/chevron-up.svg';
 import chevronDown from '@/assets/icons/chevron-down.svg';
 
-import styles from '@/components/dashboard/sidebar/sidebar.module.scss';
+import styles from './sidebar.module.scss';
 
 export function Sidebar({
   children,
