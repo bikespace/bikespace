@@ -1,1 +1,1 @@
-export {SidebarButton} from './SidebarButton';
+export {SidebarButton, SidebarLinkButton} from './SidebarButton';

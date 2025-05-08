@@ -1,0 +1,69 @@
+@import '@/styles/variables.module.scss';
+
+.ContentHeading {
+  width: 100%;
+  border-radius: 4px;
+  padding: 8px;
+  background-color: white;
+}
+
+.ContentCard {
+  width: 100%;
+  border-radius: 4px;
+  padding: 14px 18px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+h2.cardHeading {
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: $color-primary-d50p;
+}
+
+.scrollableCard {
+  flex-grow: 1;
+  overflow-y: scroll;
+  padding: 4px;
+}
+
+.bordered {
+  border: 1px solid $color-secondary-med-light-grey;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+
+  a.buttonLink {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 8px 12px;
+    background: $color-primary-d50p;
+    color: white;
+    border-radius: 6px;
+    font-weight: 500;
+    font-size: 1.1rem;
+    text-align: center;
+
+    @media (hover: hover) {
+      &:hover {
+        background: $color-primary-d50p;
+        color: $color-primary;
+      }
+    }
+  }
+}
+
+.chart {
+  flex-shrink: 0;
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+  padding: 4px;
+  overflow: hidden;
+  background-color: white;
+}

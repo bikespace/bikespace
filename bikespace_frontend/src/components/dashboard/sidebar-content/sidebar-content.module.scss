@@ -1,0 +1,76 @@
+@import '@/styles/variables.module.scss';
+
+/* Sidebar action bar height on mobile */
+$actions-height: 70px;
+
+.SidebarContent {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  background: $color-primary-50p;
+  z-index: 9999;
+
+  &.Feed {
+    top: calc(100% - $feed-height);
+  }
+
+  @media (min-width: $wrapper-full-width) {
+    position: relative;
+    top: auto;
+    left: auto;
+    bottom: auto;
+    width: auto;
+    height: 100%;
+    background: none;
+    flex-grow: 1;
+
+    &.Feed {
+      top: auto;
+    }
+  }
+}
+
+.actions {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: $actions-height;
+  background: $color-primary-50p;
+  padding: 6px;
+  padding-top: 7px;
+  @media (min-width: $wrapper-full-width) {
+    display: none;
+  }
+}
+
+.action {
+  background: $color-primary-d50p;
+  border-radius: 6px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 8px;
+}
+
+.SidebarContentInner {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 6px;
+  height: calc(100% - $actions-height);
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  @media (min-width: $wrapper-full-width) {
+    height: 100%;
+  }
+}

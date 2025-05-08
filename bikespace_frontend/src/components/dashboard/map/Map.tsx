@@ -10,6 +10,7 @@ import 'leaflet/dist/leaflet.css';
 import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css';
 
 import {SubmissionApiPayload} from '@/interfaces/Submission';
+import {useSidebarTab} from '@/states/url-params';
 
 import {MapMarker} from '../map-marker';
 import {LeafletLocateControl} from '../leaflet-locate-control';
@@ -33,13 +34,15 @@ function Map({submissions}: MapProps) {
 
   const windowSize = useWindowSize();
 
+  const [currentSidebarTab] = useSidebarTab();
+
   const isSidebarOpen = useStore(state => state.ui.sidebar.isOpen);
 
   // Ensure map still fills the available space when sidebar opens/closes
   useEffect(() => {
     if (!mapRef.current) return;
     mapRef.current.invalidateSize();
-  }, [isSidebarOpen]);
+  }, [isSidebarOpen, currentSidebarTab]);
 
   return (
     <MapContainer
