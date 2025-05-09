@@ -22,4 +22,9 @@ Object.defineProperty(global.navigator, 'geolocation', {
   value: geolocation,
 });
 
+// mock window.URL.createObjectURL
+if (typeof window.URL.createObjectURL === 'undefined') {
+  window.URL.createObjectURL = jest.fn();
+}
+
 export {};

@@ -71,8 +71,8 @@ export function ParkingLayer({selected, groupSelected}: ParkingLayerProps) {
         'match',
         ['to-string', ['get', 'access']],
         publicAccessTypes,
-        'parking_unselected',
-        'private_unselected',
+        'parking:parking_unselected',
+        'parking:private_unselected',
       ],
       'icon-anchor': 'bottom',
       'icon-overlap': 'always',
@@ -85,7 +85,10 @@ export function ParkingLayer({selected, groupSelected}: ParkingLayerProps) {
         ['get', 'capacity'],
       ],
       'text-size': 8,
-      'text-font': ['Open Sans Bold'],
+      // Open Sans Bold is not in Protomaps backup tile glyph set
+      'text-font': process.env.MAPTILER_API_KEY
+        ? ['Open Sans Bold']
+        : ['Noto Sans Medium'],
       'text-anchor': 'top',
       'text-offset': [0, -2.6],
       'text-overlap': 'never',

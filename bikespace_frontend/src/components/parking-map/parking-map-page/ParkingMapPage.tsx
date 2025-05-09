@@ -4,6 +4,9 @@ import React, {useEffect, useState, useRef} from 'react';
 import Map, {GeolocateControl, NavigationControl} from 'react-map-gl/maplibre';
 import {bbox as getBBox} from '@turf/bbox';
 import {featureCollection as getFeatureCollection} from '@turf/helpers';
+import maplibregl from 'maplibre-gl';
+import {Protocol} from 'pmtiles';
+import {layers, namedFlavor} from '@protomaps/basemaps';
 
 import {trackUmamiEvent} from '@/utils';
 
@@ -28,12 +31,29 @@ import type {
   MapLayerMouseEvent,
   MapRef,
   PointLike,
+  MapStyle,
 } from 'react-map-gl/maplibre';
 
 import 'maplibre-gl/dist/maplibre-gl.css';
 import styles from './parking-map-page.module.scss';
 
 const parkingSpritePath = '/parking_sprites/parking_sprites';
+
+const backupMapStyle: MapStyle = {
+  version: 8,
+  glyphs:
+    'https://protomaps.github.io/basemaps-assets/fonts/{fontstack}/{range}.pbf',
+  sprite: 'https://protomaps.github.io/basemaps-assets/sprites/v4/light',
+  sources: {
+    protomaps: {
+      type: 'vector',
+      url: 'pmtiles://backup_map/toronto.pmtiles',
+      attribution:
+        '<a href="https://protomaps.com">Protomaps</a> © <a href="https://openstreetmap.org">OpenStreetMap</a>',
+    },
+  },
+  layers: layers('protomaps', namedFlavor('light'), {lang: 'en'}),
+};
 
 export function uniqueBy(a: Array<Object>, getKey: Function): Array<Object> {
   const seen = new Set();
@@ -48,6 +68,15 @@ export function ParkingMapPage() {
   const [sidebarIsOpen, setSidebarIsOpen] = useState<boolean>(true);
 
   const mapRef = useRef<MapRef>(null);
+
+  // enable backup map tiles
+  useEffect(() => {
+    const protocol = new Protocol();
+    maplibregl.addProtocol('pmtiles', protocol.tile);
+    return () => {
+      maplibregl.removeProtocol('pmtiles');
+    };
+  }, []);
 
   // manage state of selected features
   const [parkingGroupSelected, setParkingGroupSelected] = useState<
@@ -159,7 +188,7 @@ export function ParkingMapPage() {
   }
 
   function addSprite() {
-    mapRef.current!.setSprite(parkingSpritePath);
+    mapRef.current!.addSprite('parking', parkingSpritePath);
   }
 
   // show map pins as interactive when mouse is over them
@@ -224,7 +253,11 @@ export function ParkingMapPage() {
           zoom: zoomLevel,
         }}
         style={{width: '100%', height: '100%'}}
-        mapStyle={`https://api.maptiler.com/maps/streets/style.json?key=${process.env.MAPTILER_API_KEY}`}
+        mapStyle={
+          process.env.MAPTILER_API_KEY
+            ? `https://api.maptiler.com/maps/streets/style.json?key=${process.env.MAPTILER_API_KEY}`
+            : backupMapStyle
+        }
         onLoad={handleOnLoad}
         onClick={handleLayerClick}
         // onZoomEnd={() =>
