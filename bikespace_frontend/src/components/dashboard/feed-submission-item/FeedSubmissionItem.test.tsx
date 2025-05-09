@@ -33,7 +33,6 @@ const mockSubmission: SubmissionApiPayload = {
 describe('FeedSubmissionItem', () => {
   test('Feed Submission Item date information should render correctly', () => {
     render(<FeedSubmissionItem submission={mockSubmission} />);
-    screen.debug();
     const itemTitle = screen.getByRole('heading');
     expect(itemTitle.textContent === 'Wednesday, January 1, 2025');
     expect(
