@@ -1,3 +1,3 @@
-import {DashboardLayout} from '@/components/dashboard';
+import {ParkingMapLayout} from '@/components/parking-map';
 
-export default DashboardLayout;
+export default ParkingMapLayout;

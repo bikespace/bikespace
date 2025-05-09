@@ -8,6 +8,7 @@ import {useClickAway} from '@uidotdev/usehooks';
 import styles from './dashboard-header.module.scss';
 
 import hamburgerMenu from '@/assets/icons/hamburger-menu.svg';
+import closeMenu from '@/assets/icons/close-menu.svg';
 import bikespaceLogo from '@/assets/icons/bikespace_wordmark.png';
 import githubLogo from '@/assets/icons/github-mark.svg';
 import mailtoIcon from '@/assets/icons/envelope-at.svg';
@@ -19,27 +20,31 @@ export function DashboardHeader() {
   }) as React.RefObject<HTMLDivElement>;
 
   return (
-    <header className={styles.header}>
-      <div
+    <header
+      className={`${styles.header} ${isMenuOpen ? styles.headerOpen : styles.headerClosed}`}
+      ref={clickAwayRef}
+    >
+      <button
         role="button"
         className={styles.navToggle}
+        tabIndex={0}
         onClick={() => {
-          setIsMenuOpen(true);
+          setIsMenuOpen(!isMenuOpen);
         }}
+        aria-label={
+          isMenuOpen ? 'Hide Navigation Menu' : 'Show Navigation Menu'
+        }
+        aria-expanded={isMenuOpen ? 'true' : 'false'}
       >
-        <img src={hamburgerMenu.src} alt="Menu icon" />
-      </div>
-      <nav
-        className={`${styles.mainNav} ${isMenuOpen ? styles.open : ''}`}
-        aria-label="Main"
-        ref={clickAwayRef}
-      >
-        <Link
-          href={'/' as Route}
-          title="Dashboard Home"
-          className={styles.bikespaceLogo}
-        >
-          <img src={bikespaceLogo.src} alt="BikeSpace logo" />
+        {isMenuOpen ? (
+          <img src={closeMenu.src} alt="" height={24} />
+        ) : (
+          <img src={hamburgerMenu.src} alt="" />
+        )}
+      </button>
+      <nav className={styles.mainNav} aria-label="Main">
+        <Link href={'/' as Route} title="Home" className={styles.bikespaceLogo}>
+          <img src={bikespaceLogo.src} alt="" />
         </Link>
         <ul>
           <li>

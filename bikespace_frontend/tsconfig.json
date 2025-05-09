@@ -24,6 +24,12 @@
     "paths": {
       "@/*": [
         "./*"
+      ],
+      "@/public/*": [
+        "../public/*"
+      ],
+      "@/__test__/*": [
+        "../__test__/*"
       ]
     },
     "skipLibCheck": true,

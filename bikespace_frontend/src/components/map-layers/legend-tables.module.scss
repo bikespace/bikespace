@@ -1,0 +1,15 @@
+@import '@/styles/variables.module.scss';
+
+.legendTable {
+  th, td {
+    padding: 2px;
+  }
+  th {
+    text-align: left;
+    background-color: $color-secondary-light-grey;
+    border: 2px solid white;
+  }
+  td {
+    vertical-align: middle;
+  }
+}

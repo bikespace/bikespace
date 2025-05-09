@@ -1,0 +1,173 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "source": "street-furniture-bicycle-parking",
+        "amenity": "bicycle_parking",
+        "bicycle_parking": "rack",
+        "operator": "City of Toronto",
+        "covered": "no",
+        "access": "yes",
+        "fee": "no",
+        "ref:open.toronto.ca:street-furniture-bicycle-parking:id": "BP-08810",
+        "description": "Default location (city hall)",
+        "meta_ward_name": "Parkdale-High Park",
+        "meta_ward_number": "04",
+        "meta_source": "City of Toronto",
+        "meta_source_dataset": "street-furniture-bicycle-parking",
+        "meta_source_url": "https://open.toronto.ca/dataset/street-furniture-bicycle-parking/",
+        "meta_source_license": "Open Government Licence - Toronto",
+        "meta_source_license_url": "https://open.toronto.ca/open-data-licence/",
+        "meta_source_last_updated": "2025-04-19 03:04:13.274000+00:00",
+        "meta_status": "Existing",
+        "meta_business_improvement_area": "None"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-79.38, 43.65]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "source": "street-furniture-bicycle-parking",
+        "amenity": "bicycle_parking",
+        "bicycle_parking": "rack",
+        "operator": "City of Toronto",
+        "covered": "no",
+        "access": "yes",
+        "fee": "no",
+        "ref:open.toronto.ca:street-furniture-bicycle-parking:id": "BP-08810",
+        "description": "Default location (city hall) #2",
+        "meta_ward_name": "Parkdale-High Park",
+        "meta_ward_number": "04",
+        "meta_source": "City of Toronto",
+        "meta_source_dataset": "street-furniture-bicycle-parking",
+        "meta_source_url": "https://open.toronto.ca/dataset/street-furniture-bicycle-parking/",
+        "meta_source_license": "Open Government Licence - Toronto",
+        "meta_source_license_url": "https://open.toronto.ca/open-data-licence/",
+        "meta_source_last_updated": "2025-04-19 03:04:13.274000+00:00",
+        "meta_status": "Existing",
+        "meta_business_improvement_area": "None"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-79.38, 43.65]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "source": "street-furniture-bicycle-parking",
+        "amenity": "bicycle_parking",
+        "bicycle_parking": "rack",
+        "operator": "City of Toronto",
+        "covered": "no",
+        "access": "yes",
+        "fee": "no",
+        "ref:open.toronto.ca:street-furniture-bicycle-parking:id": "BP-08810",
+        "description": "Test config location",
+        "meta_ward_name": "Parkdale-High Park",
+        "meta_ward_number": "04",
+        "meta_source": "City of Toronto",
+        "meta_source_dataset": "street-furniture-bicycle-parking",
+        "meta_source_url": "https://open.toronto.ca/dataset/street-furniture-bicycle-parking/",
+        "meta_source_license": "Open Government Licence - Toronto",
+        "meta_source_license_url": "https://open.toronto.ca/open-data-licence/",
+        "meta_source_last_updated": "2025-04-19 03:04:13.274000+00:00",
+        "meta_status": "Existing",
+        "meta_business_improvement_area": "None"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-79.43, 43.76]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "source": "street-furniture-bicycle-parking",
+        "amenity": "bicycle_parking",
+        "bicycle_parking": "rack",
+        "operator": "City of Toronto",
+        "covered": "no",
+        "access": "yes",
+        "fee": "no",
+        "ref:open.toronto.ca:street-furniture-bicycle-parking:id": "BP-08810",
+        "description": "Test config location #2",
+        "meta_ward_name": "Parkdale-High Park",
+        "meta_ward_number": "04",
+        "meta_source": "City of Toronto",
+        "meta_source_dataset": "street-furniture-bicycle-parking",
+        "meta_source_url": "https://open.toronto.ca/dataset/street-furniture-bicycle-parking/",
+        "meta_source_license": "Open Government Licence - Toronto",
+        "meta_source_license_url": "https://open.toronto.ca/open-data-licence/",
+        "meta_source_last_updated": "2025-04-19 03:04:13.274000+00:00",
+        "meta_status": "Existing",
+        "meta_business_improvement_area": "None"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-79.43, 43.76]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "amenity": "bicycle_parking",
+        "meta_feature_last_updated": "2024-09-19 00:08:48+00:00",
+        "meta_osm_id": "node/608774506",
+        "bicycle_parking": "bollard",
+        "capacity": "18",
+        "check_date": "2023-10-11",
+        "covered": "yes",
+        "access": "yes",
+        "cargo_bike": "yes",
+        "capacity:cargo_bike": "9",
+        "fee": "yes",
+        "note": "small",
+        "operator": "City of Toronto",
+        "operator:type": "government",
+        "quantity": "9",
+        "description": "9x ring and post",
+        "image": "http://test.image.com",
+        "level": "0",
+        "ref:open.toronto.ca:street-furniture-bicycle-parking:id": "BP-19108;BP-19109;BP-19111;BP-19110",
+        "meta_source": "OpenStreetMap",
+        "meta_source_license": "Open Data Commons Open Database License (ODbL)",
+        "meta_source_license_url": "https://www.openstreetmap.org/copyright",
+        "meta_source_last_updated": "2025-04-19 22:46:41+00:00"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-79.2895669, 43.6946788]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "amenity": "bicycle_parking",
+        "bicycle_parking": "lockers",
+        "capacity": 12,
+        "covered": "yes",
+        "fee": "yes",
+        "operator": "City of Toronto",
+        "operator:type": "government",
+        "access": "customers",
+        "website": "https://www.toronto.ca/services-payments/streets-parking-transportation/cycling-in-toronto/bicycle-parking/bicycle-lockers/",
+        "description": "Bayview Subway Station: North side of Sheppard Ave., east of Bayview Ave.",
+        "meta_source": "City of Toronto",
+        "meta_source_dataset": "City of Toronto Bicycle Locker webpage",
+        "meta_source_url": "https://www.toronto.ca/services-payments/streets-parking-transportation/cycling-in-toronto/bicycle-parking/bicycle-lockers/locker-locations/",
+        "meta_source_license": "https://www.toronto.ca/home/copyright-information/",
+        "meta_source_last_updated": "2021-06-11 16:28:18-04:00"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-79.3871441, 43.767015199999996]
+      }
+    }
+  ]
+}

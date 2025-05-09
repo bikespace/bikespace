@@ -12,6 +12,13 @@
   font-weight: 300 800;
 }
 
+// Should be used only to allow syntax parity between Maplibre Marker elements and Maplibre symbol layer specification
+@font-face {
+  font-family: 'Open Sans Bold';
+  src: url('../assets/fonts/OpenSans-VariableFont_wdth,wght.ttf');
+  font-weight: 700;
+}
+
 body {
   font-family: "Open Sans", Arial, Helvetica, sans-serif;
 }

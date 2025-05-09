@@ -28,11 +28,13 @@ jobs:
           - 5432:5432
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Setup python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version : '3.12.0'
+          cache: 'pip'
+          cache-dependency-path: bikespace_api/requirements.txt
       - name: Run pytest
         run: make run-pytest
       - name: Coveralls
@@ -60,11 +62,13 @@ jobs:
           - 5432:5432
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Setup python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version : '3.12.0'
+          cache: 'pip'
+          cache-dependency-path: bikespace_api/requirements.txt
       - name: Run migration check
         run: make migrate-test-db
   test-frontend:
@@ -72,11 +76,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
         - name: Checkout
-          uses: actions/checkout@v3
+          uses: actions/checkout@v4
         - name: Setup node
-          uses: actions/setup-node@v3
+          uses: actions/setup-node@v4
           with:
-            node-version: "v18.17.0"
+            node-version: lts/*
+            cache: 'npm'
+            cache-dependency-path: bikespace_frontend/package-lock.json
         - name: Check code style
           run: make lint-frontend
         - name: Run Jest tests
@@ -103,10 +109,14 @@ jobs:
         ports:
           - 5432:5432
     steps:
-    - uses: actions/checkout@v4
-    - uses: actions/setup-node@v4
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Setup node
+      uses: actions/setup-node@v4
       with:
         node-version: lts/*
+        cache: 'npm'
+        cache-dependency-path: bikespace_frontend/package-lock.json
     - name: Run end to end tests
       run: make test-e2e
     - uses: actions/upload-artifact@v4
@@ -119,21 +129,25 @@ jobs:
     name: Publish to Cloudflare Pages
     needs: [test-frontend, test-e2e]
     runs-on: ubuntu-latest
+    env:
+      MAPTILER_API_KEY: ${{ secrets.MAPTILER_API_KEY }}
     permissions:
       contents: read
       deployments: write
       pull-requests: write
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Setup node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: "v18.17.0"
+          node-version: lts/*
+          cache: 'npm'
+          cache-dependency-path: bikespace_frontend/package-lock.json
       - name: Build static frontend
         run: make build-frontend
       - name: Publish to Cloudflare Pages
-        uses: cloudflare/pages-action@v1.0.0
+        uses: cloudflare/pages-action@v1
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}

@@ -25,15 +25,19 @@ export function Header() {
         >
           <img src={bikespaceLogo.src} alt="BikeSpace logo" />
         </Link>
-        <div
-          role="button"
+        <button
+          tabIndex={0}
           className={styles.navToggle}
           onClick={() => {
             setIsMenuOpen(!isMenuOpen);
           }}
+          aria-label={
+            isMenuOpen ? 'Hide Navigation Menu' : 'Show Navigation Menu'
+          }
+          aria-expanded={isMenuOpen ? 'true' : 'false'}
         >
-          <img src={hamburgerMenu.src} alt="Menu" />
-        </div>
+          <img src={hamburgerMenu.src} alt="" />
+        </button>
         <nav
           className={`${styles.mainNav} ${isMenuOpen ? styles.open : ''}`}
           aria-label="Main"
