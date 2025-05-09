@@ -29,11 +29,13 @@ make lint-frontend
 make lint-and-fix-frontend
 ```
 
-### Environment Variables
+### Environment Variables and Map Tiles
 
 Environment variables are loaded from the relevant `bikespace_frontend/.env*` file, depending on which script is being run (e.g. `.env.development` for `make dev-frontend` and `.env.production` for `make build-frontend`). In order for environment variables to be used in the frontend output, they also have to be exported in `next.config.mjs`.
 
 These `.env` files are used for configuration only. **Do not commit secrets (e.g. passwords, credentials, private keys, etc.) to the repository.** If secrets need to be loaded into the environment they can be added via an `.env.*.local` file or using other methods available via the os/server/deployment service.
+
+The production website uses [MapTiler](https://www.maptiler.com/) to serve global vector tiles at all zoom levels. This requires that an API key be set using the `MAPTILER_API_KEY` environment variable. If no key is set, it falls back to using a set of [ProtoMaps](https://docs.protomaps.com/) tiles that only have detail in the Toronto area. If you want to develop using MapTiler tiles, you can sign up for a free account, create an API key to use for this project, and e.g. create an `.env.development.local` file in `/bikespace_frontend` and set a value for `MAPTILER_API_KEY=`.
 
 NextJS documentation: 
 
