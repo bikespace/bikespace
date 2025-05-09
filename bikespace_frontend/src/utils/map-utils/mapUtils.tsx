@@ -42,9 +42,8 @@ export function getSpriteImage(
   layoutOptions: layoutOptionsIcon,
   altText: string
 ): ReactElement {
-  const properties = spriteJSON[
-    layoutOptions['icon-image']
-  ] as spriteProperties;
+  const [spriteName] = layoutOptions['icon-image'].split(':').slice(-1);
+  const properties = spriteJSON[spriteName] as spriteProperties;
   const iconSize = layoutOptions['icon-size'];
 
   return (

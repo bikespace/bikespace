@@ -167,8 +167,8 @@ export function ParkingLayer({selected, groupSelected}: ParkingLayerProps) {
                 'icon-image': publicAccessTypes.includes(
                   feature.properties?.access ?? ''
                 )
-                  ? 'parking_sidebar'
-                  : 'private_sidebar',
+                  ? 'parking:parking_sidebar'
+                  : 'parking:private_sidebar',
                 'text-field':
                   feature.properties?.capacity &&
                   feature.properties?.capacity !== '2'
@@ -199,8 +199,8 @@ export function ParkingLayer({selected, groupSelected}: ParkingLayerProps) {
                 'icon-image': publicAccessTypes.includes(
                   feature.properties?.access ?? ''
                 )
-                  ? 'parking_selected'
-                  : 'private_selected',
+                  ? 'parking:parking_selected'
+                  : 'parking:private_selected',
                 'text-field':
                   feature.properties?.capacity &&
                   feature.properties?.capacity !== '2'
@@ -220,12 +220,12 @@ export function ParkingLayer({selected, groupSelected}: ParkingLayerProps) {
 export function ParkingLayerLegend() {
   const legendEntries = [
     {
-      icon: 'parking_unselected',
+      icon: 'parking:parking_unselected',
       alt: 'Map icon with an illustration of a bicycle',
       description: 'Public bicycle parking',
     },
     {
-      icon: 'private_unselected',
+      icon: 'parking:private_unselected',
       alt: 'Map icon with an illustration of a key',
       description: 'Private bicycle parking',
     },
