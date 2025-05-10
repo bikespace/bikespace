@@ -1,7 +1,7 @@
 import React from 'react';
 import {Layer, Source} from 'react-map-gl/maplibre';
 
-import type {CircleLayer, LineLayer} from 'react-map-gl/maplibre';
+import type {SymbolLayer, LineLayer} from 'react-map-gl/maplibre';
 import type {FilterSpecification} from 'maplibre-gl';
 
 export function PanoramaxImageryLayer() {
@@ -9,19 +9,21 @@ export function PanoramaxImageryLayer() {
 
   const dateFilterYear = '2025';
 
-  const imageryCircleLayer: CircleLayer = {
+  const imagerySymbolLayer: SymbolLayer = {
     id: 'panoramax-imagery-nodes',
-    type: 'circle',
+    type: 'symbol',
     source: 'panoramax-imagery',
     'source-layer': 'pictures',
     filter: ['in', dateFilterYear, ['get', 'ts']],
+    layout: {
+      'icon-image': 'imagery_map:arrow-up-circle-blue',
+      'icon-anchor': 'center',
+      'icon-overlap': 'always',
+      // 'icon-size': 40 / 140,
+      'icon-rotate': ['get', 'heading'],
+    },
     paint: {
-      'circle-color': '#00a0cc',
-      'circle-radius': 5,
-      'circle-stroke-width': 2,
-      'circle-stroke-color': 'white',
-      'circle-opacity': opacity,
-      'circle-stroke-opacity': opacity,
+      // 'icon-opacity': opacity,
     },
   };
 
@@ -66,7 +68,7 @@ export function PanoramaxImageryLayer() {
     >
       <Layer {...imageryLineLayer} />
       <Layer {...imageryLineOutlineLayer} />
-      <Layer {...imageryCircleLayer} />
+      <Layer {...imagerySymbolLayer} />
     </Source>
   );
 }

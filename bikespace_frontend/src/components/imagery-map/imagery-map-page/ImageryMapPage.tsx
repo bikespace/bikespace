@@ -29,7 +29,7 @@ import type {
 import 'maplibre-gl/dist/maplibre-gl.css';
 import styles from './imagery-map-page.module.scss';
 
-const parkingSpritePath = '/parking_sprites/parking_sprites';
+const imagerySpritePath = '/imagery_map_sprites/imagery_map_sprites';
 
 const backupMapStyle: MapStyle = {
   version: 8,
@@ -117,7 +117,12 @@ export function ImageryMapPage() {
     });
   }
 
+  function addSprite() {
+    mapRef.current!.addSprite('imagery_map', imagerySpritePath);
+  }
+
   function handleOnLoad() {
+    addSprite();
     // console log required for playwright testing
     if (process.env.NODE_ENV !== 'production') console.log('map loaded');
   }
