@@ -11,6 +11,8 @@ import {layers, namedFlavor} from '@protomaps/basemaps';
 import {trackUmamiEvent} from '@/utils';
 
 import {Sidebar} from './sidebar/Sidebar';
+import {PanoramaxImageryLayer} from '../panoramax/PanoramaxImagery';
+import {BicycleNetworkLayer} from '@/components/map-layers/BicycleNetwork';
 
 import type {
   MapGeoJSONFeature,
@@ -122,11 +124,11 @@ export function ImageryMapPage() {
 
   return (
     <main className={styles.imageryMapPage}>
-      <Sidebar isOpen={sidebarIsOpen} setIsOpen={setSidebarIsOpen}>
+      {/* <Sidebar isOpen={sidebarIsOpen} setIsOpen={setSidebarIsOpen}>
         <div className={styles.sideBarContainer}>
           <p>{`Zoom: ${zoomLevel}`}</p>
         </div>
-      </Sidebar>
+      </Sidebar> */}
       <Map
         ref={mapRef}
         initialViewState={{
@@ -148,6 +150,8 @@ export function ImageryMapPage() {
       >
         <NavigationControl position="top-left" />
         <GeolocateControl position="top-left" />
+        <BicycleNetworkLayer />
+        <PanoramaxImageryLayer />
       </Map>
     </main>
   );
