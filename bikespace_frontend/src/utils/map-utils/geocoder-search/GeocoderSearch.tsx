@@ -8,6 +8,9 @@ import type {LngLatLike, MapRef} from 'react-map-gl/dist/esm/exports-maplibre';
 
 import styles from './geocoder-search.module.scss';
 
+import closeMenu from '@/assets/icons/close-menu.svg';
+import searchIcon from '@/assets/icons/search.svg';
+
 interface GeocoderResultProps {
   feature: Feature;
   handleSelect: Function;
@@ -86,15 +89,30 @@ export function GeocoderSearch({
   }
 
   return (
-    <>
-      <input
-        type="text"
-        value={inputValue}
-        onChange={handleInputChange}
-        placeholder="Search for a Location"
-      />
-      {query.data ? (
-        <div>
+    <div className={styles.geocoderSearchContainer}>
+      <div className={styles.geocoderSearchInput}>
+        <input
+          type="text"
+          value={inputValue}
+          onChange={handleInputChange}
+          placeholder="Search for a Location"
+        />
+        {inputValue.length > 0 ? (
+          <button
+            onClick={() => {
+              setDebouncedInputValue('');
+              setInputValue('');
+            }}
+          >
+            <img src={closeMenu.src} alt="Clear Location Search" height={14} />
+          </button>
+        ) : null}
+      </div>
+      {query.isFetching ||
+      (inputValue !== debouncedInputValue && inputValue.length > 0) ? (
+        <p>Loading...</p>
+      ) : query.data ? (
+        <div className={styles.geocoderResults}>
           {query.data.features.map((f, i) => (
             <GeocoderResult
               key={i}
@@ -105,6 +123,6 @@ export function GeocoderSearch({
           ))}
         </div>
       ) : null}
-    </>
+    </div>
   );
 }

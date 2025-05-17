@@ -1,7 +1,48 @@
 @import '@/styles/variables.module.scss';
 
-.geocoderResult {
+.geocoderSearchContainer {
+  padding: 4px;
+  margin-bottom: 8px;
+  border: 2px solid $color-primary-d50p;
+  border-radius: 4px;
+  background: white;
+}
+
+.geocoderSearchInput {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 4px;
+
+  > input {
+    flex-grow: 1;
+    height: 2rem;
+    border: 0px;
+    font-size: 1rem;
+    text-indent: calc(16px + 4px * 2);
+    background-image: url('/icons/search.svg');
+    background-repeat: no-repeat;
+    background-size: 16px;
+    background-position-y: center;
+    background-position-x: 4px;
+  }
   > button {
+    display: flex;
+    align-items: center;
+    padding: 0px 8px;
+  }
+}
+
+.geocoderResults {
+  border-top: 2px solid $color-secondary-light-grey;
+  padding-top: 8px;
+}
+
+.geocoderResult {
+  margin-bottom: 4px;
+
+  > button {
+    font-size: 0.9rem;
     text-align: left;
   }
 }
