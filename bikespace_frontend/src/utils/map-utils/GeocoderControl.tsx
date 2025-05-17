@@ -10,7 +10,7 @@ import MaplibreGeocoder, {
   MaplibreGeocoderOptions,
 } from '@maplibre/maplibre-gl-geocoder';
 
-import {torontoBBox} from '@/utils/map-utils/mapUtils';
+import {torontoBBox} from '@/utils/map-utils';
 
 import type {
   MaplibreGeocoderFeatureResults,

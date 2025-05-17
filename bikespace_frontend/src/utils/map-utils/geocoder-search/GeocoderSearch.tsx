@@ -1,11 +1,12 @@
 import React, {ChangeEvent, useState, useEffect} from 'react';
 import {useQuery} from '@tanstack/react-query';
 
-import {getCentroid} from '@/utils/map-utils/mapUtils';
+import {getCentroid} from '@/utils/map-utils';
 
-import type {MouseEventHandler} from 'react';
 import type {Feature, FeatureCollection} from 'geojson';
 import type {LngLatLike, MapRef} from 'react-map-gl/dist/esm/exports-maplibre';
+
+import styles from './geocoder-search.module.scss';
 
 interface GeocoderResultProps {
   feature: Feature;
@@ -33,7 +34,7 @@ interface GeocoderSearchProps {
   resultsLimit?: number;
 }
 
-export default function GeocoderSearch({
+export function GeocoderSearch({
   map,
   inputTimeOut = 500,
   resultsLimit = 5,

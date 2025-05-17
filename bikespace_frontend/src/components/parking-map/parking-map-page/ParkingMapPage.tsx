@@ -9,8 +9,8 @@ import {Protocol} from 'pmtiles';
 import {layers, namedFlavor} from '@protomaps/basemaps';
 
 import {trackUmamiEvent} from '@/utils';
-import GeocoderControl from '@/utils/map-utils/GeocoderControl';
-import GeocoderSearch from '@/utils/map-utils/GeocoderSearch';
+import GeocoderControl from '@/utils/map-utils';
+import {GeocoderSearch} from '@/utils/map-utils';
 
 import {Sidebar} from './sidebar/Sidebar';
 import {
