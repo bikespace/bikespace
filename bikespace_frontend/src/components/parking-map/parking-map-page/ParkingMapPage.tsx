@@ -218,7 +218,7 @@ export function ParkingMapPage() {
       <Sidebar isOpen={sidebarIsOpen} setIsOpen={setSidebarIsOpen}>
         <div className={styles.sideBarContainer}>
           {/* <p>{`Zoom: ${zoomLevel}`}</p> */}
-          <GeocoderSearch />
+          <GeocoderSearch map={mapRef.current} />
           <details
             className={styles.legend}
             open={!(parkingGroupSelected.length > 0)}
@@ -270,7 +270,7 @@ export function ParkingMapPage() {
       >
         <NavigationControl position="top-left" />
         <GeolocateControl position="top-left" />
-        <GeocoderControl position="top-right" />
+        {/* <GeocoderControl position="top-right" /> */}
         <BicycleNetworkLayer />
         <ParkingLayer
           selected={parkingSelectedOrHovered}
