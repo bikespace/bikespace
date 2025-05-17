@@ -19,10 +19,14 @@ function GeocoderResult({
   handleSelect,
   isDisabled,
 }: GeocoderResultProps) {
+  const {housenumber, street, city} = feature.properties as any;
+  const address = [[housenumber, street].join(' '), city].join(', ');
   return (
-    <div>
+    <div className={styles.geocoderResult}>
       <button disabled={isDisabled} onClick={() => handleSelect()}>
-        {feature?.properties?.name ?? 'Unnamed Location'}
+        <strong>{feature?.properties?.name ?? 'Unnamed Location'}</strong>
+        <br />
+        {address}
       </button>
     </div>
   );
