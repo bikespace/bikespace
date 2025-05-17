@@ -55,8 +55,11 @@ export function GeocoderSearch({
     return () => clearTimeout(delayInputTimeoutID);
   }, [inputValue]);
 
-  async function forwardGeocode(query: string) {
-    const request = `https://photon.komoot.io/api/?q=${encodeURI(query)}&limit=${resultsLimit}`;
+  async function forwardGeocode(
+    query: string,
+    mapViewCenter: {lng: number; lat: number}
+  ) {
+    const request = `https://photon.komoot.io/api/?q=${encodeURI(query)}&limit=${resultsLimit}&lat=${mapViewCenter.lat}&lon=${mapViewCenter.lng}`;
     const response = await fetch(request);
     const geojson: FeatureCollection = await response.json();
     return geojson;
@@ -65,8 +68,8 @@ export function GeocoderSearch({
   const query = useQuery({
     queryKey: ['geocoderSearch', debouncedInputValue],
     queryFn: () =>
-      debouncedInputValue.length > 0
-        ? forwardGeocode(debouncedInputValue)
+      debouncedInputValue.length > 0 && map
+        ? forwardGeocode(debouncedInputValue, map!.getCenter())
         : null,
   });
   if (query?.data) {
