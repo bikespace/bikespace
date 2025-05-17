@@ -32,12 +32,14 @@ interface GeocoderSearchProps {
   map: MapRef | null;
   inputTimeOut?: number;
   resultsLimit?: number;
+  defaultZoom?: number;
 }
 
 export function GeocoderSearch({
   map,
   inputTimeOut = 500,
   resultsLimit = 5,
+  defaultZoom = 18,
 }: GeocoderSearchProps) {
   const [inputValue, setInputValue] = useState('');
   const [debouncedInputValue, setDebouncedInputValue] = useState('');
@@ -73,7 +75,7 @@ export function GeocoderSearch({
 
   function handleSelect(feature: Feature) {
     const location = getCentroid(feature) as LngLatLike;
-    map!.flyTo({center: location, zoom: 18});
+    map!.flyTo({center: location, zoom: defaultZoom});
   }
 
   return (
