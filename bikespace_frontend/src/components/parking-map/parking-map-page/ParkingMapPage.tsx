@@ -10,6 +10,7 @@ import {layers, namedFlavor} from '@protomaps/basemaps';
 
 import {trackUmamiEvent} from '@/utils';
 import GeocoderControl from '@/utils/map-utils/GeocoderControl';
+import GeocoderSearch from '@/utils/map-utils/GeocoderSearch';
 
 import {Sidebar} from './sidebar/Sidebar';
 import {
@@ -217,6 +218,7 @@ export function ParkingMapPage() {
       <Sidebar isOpen={sidebarIsOpen} setIsOpen={setSidebarIsOpen}>
         <div className={styles.sideBarContainer}>
           {/* <p>{`Zoom: ${zoomLevel}`}</p> */}
+          <GeocoderSearch />
           <details
             className={styles.legend}
             open={!(parkingGroupSelected.length > 0)}
