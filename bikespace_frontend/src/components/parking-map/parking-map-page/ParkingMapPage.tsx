@@ -9,7 +9,6 @@ import {Protocol} from 'pmtiles';
 import {layers, namedFlavor} from '@protomaps/basemaps';
 
 import {trackUmamiEvent} from '@/utils';
-import GeocoderControl from '@/utils/map-utils';
 import {GeocoderSearch} from '@/utils/map-utils';
 
 import {Sidebar} from './sidebar/Sidebar';
@@ -37,7 +36,6 @@ import type {
 } from 'react-map-gl/maplibre';
 
 import 'maplibre-gl/dist/maplibre-gl.css';
-import '@maplibre/maplibre-gl-geocoder/dist/maplibre-gl-geocoder.css';
 import styles from './parking-map-page.module.scss';
 
 const parkingSpritePath = '/parking_sprites/parking_sprites';
@@ -270,7 +268,6 @@ export function ParkingMapPage() {
       >
         <NavigationControl position="top-left" />
         <GeolocateControl position="top-left" />
-        {/* <GeocoderControl position="top-right" /> */}
         <BicycleNetworkLayer />
         <ParkingLayer
           selected={parkingSelectedOrHovered}

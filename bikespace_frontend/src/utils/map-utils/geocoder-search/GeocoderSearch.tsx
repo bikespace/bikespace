@@ -1,7 +1,7 @@
 import React, {ChangeEvent, useState, useEffect} from 'react';
 import {useQuery} from '@tanstack/react-query';
 
-import {getCentroid} from '@/utils/map-utils';
+import {getCentroid, torontoBBox} from '@/utils/map-utils';
 
 import type {Feature, FeatureCollection} from 'geojson';
 import type {LngLatLike, MapRef} from 'react-map-gl/dist/esm/exports-maplibre';
@@ -9,7 +9,6 @@ import type {LngLatLike, MapRef} from 'react-map-gl/dist/esm/exports-maplibre';
 import styles from './geocoder-search.module.scss';
 
 import closeMenu from '@/assets/icons/close-menu.svg';
-import searchIcon from '@/assets/icons/search.svg';
 
 interface GeocoderResultProps {
   feature: Feature;
@@ -22,8 +21,15 @@ function GeocoderResult({
   handleSelect,
   isDisabled,
 }: GeocoderResultProps) {
-  const {housenumber, street, city} = feature.properties as any;
-  const address = [[housenumber, street].join(' '), city].join(', ');
+  const {housenumber, street, city} = feature.properties as {
+    [key: string]: string;
+  };
+  const address = [
+    [housenumber, street].filter(x => x?.length > 0).join(' '),
+    city,
+  ]
+    .filter(x => x?.length > 0)
+    .join(', ');
   return (
     <div className={styles.geocoderResult}>
       <button disabled={isDisabled} onClick={() => handleSelect()}>
@@ -40,13 +46,15 @@ interface GeocoderSearchProps {
   inputTimeOut?: number;
   resultsLimit?: number;
   defaultZoom?: number;
+  bbox?: string;
 }
 
 export function GeocoderSearch({
   map,
-  inputTimeOut = 500,
+  inputTimeOut = 300,
   resultsLimit = 5,
-  defaultZoom = 18,
+  defaultZoom = 17,
+  bbox = torontoBBox.getURLParams(),
 }: GeocoderSearchProps) {
   const [inputValue, setInputValue] = useState('');
   const [debouncedInputValue, setDebouncedInputValue] = useState('');
@@ -66,7 +74,7 @@ export function GeocoderSearch({
     query: string,
     mapViewCenter: {lng: number; lat: number}
   ) {
-    const request = `https://photon.komoot.io/api/?q=${encodeURI(query)}&limit=${resultsLimit}&lat=${mapViewCenter.lat}&lon=${mapViewCenter.lng}`;
+    const request = `https://photon.komoot.io/api/?q=${encodeURI(query)}&limit=${resultsLimit}&lat=${mapViewCenter.lat}&lon=${mapViewCenter.lng}&bbox=${bbox}`;
     const response = await fetch(request);
     const geojson: FeatureCollection = await response.json();
     return geojson;
@@ -75,13 +83,10 @@ export function GeocoderSearch({
   const query = useQuery({
     queryKey: ['geocoderSearch', debouncedInputValue],
     queryFn: () =>
-      debouncedInputValue.length > 0 && map
+      debouncedInputValue.length > 0
         ? forwardGeocode(debouncedInputValue, map!.getCenter())
         : null,
   });
-  if (query?.data) {
-    console.log(query.data.features);
-  }
 
   function handleSelect(feature: Feature) {
     const location = getCentroid(feature) as LngLatLike;
@@ -108,9 +113,11 @@ export function GeocoderSearch({
           </button>
         ) : null}
       </div>
-      {query.isFetching ||
-      (inputValue !== debouncedInputValue && inputValue.length > 0) ? (
-        <p>Loading...</p>
+      {(query.isFetching || inputValue !== debouncedInputValue) &&
+      inputValue.length > 0 ? (
+        <div className={styles.geocoderResults}>
+          <div className={styles.geocoderResultLoading}>Searching...</div>
+        </div>
       ) : query.data ? (
         <div className={styles.geocoderResults}>
           {query.data.features.map((f, i) => (
