@@ -3,6 +3,7 @@ import {useQuery} from '@tanstack/react-query';
 import {Marker} from 'maplibre-gl';
 
 import {getCentroid, torontoBBox} from '@/utils/map-utils';
+import {trackUmamiEvent} from '@/utils';
 
 import type {Feature, FeatureCollection} from 'geojson';
 import type {LngLatLike, MapRef} from 'react-map-gl/dist/esm/exports-maplibre';
@@ -109,10 +110,6 @@ export function GeocoderSearch({
     };
   }, [selectedResult]);
 
-  function handleSelect(feature: Feature) {
-    setSelectedResult(feature);
-  }
-
   // Get location search results using the photon API
   // Prioritize map centre and limit to Toronto bounding box
   async function forwardGeocode(
@@ -183,9 +180,27 @@ export function GeocoderSearch({
       searchResults = (
         <div className={styles.geocoderResultPlaceholder}>Search Error</div>
       );
+      trackUmamiEvent('parking-map-geosearch-error', {
+        query: debouncedInputValue,
+        apiErrorName: query.error?.name ?? '',
+        apiErrorMessage: query.error?.message ?? '',
+      });
     }
 
     return <div className={styles.geocoderResults}>{searchResults}</div>;
+  }
+
+  function handleSelect(feature: Feature) {
+    setSelectedResult(feature);
+    trackUmamiEvent('parking-map-select-geosearch-result');
+  }
+
+  function handleClearSearch() {
+    setDebouncedInputValue('');
+    setInputValue('');
+    setSelectedResult(null);
+    setIsMinimized(false);
+    trackUmamiEvent('parking-map-clear-geosearch');
   }
 
   return (
@@ -198,14 +213,7 @@ export function GeocoderSearch({
           placeholder="Search for a Location"
         />
         {inputValue.length > 0 ? (
-          <button
-            onClick={() => {
-              setDebouncedInputValue('');
-              setInputValue('');
-              setSelectedResult(null);
-              setIsMinimized(false);
-            }}
-          >
+          <button onClick={handleClearSearch}>
             <img src={closeMenu.src} alt="Clear Location Search" height={14} />
           </button>
         ) : null}
