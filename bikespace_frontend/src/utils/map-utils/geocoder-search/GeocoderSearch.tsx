@@ -3,7 +3,7 @@ import {useQuery} from '@tanstack/react-query';
 import {Marker} from 'maplibre-gl';
 
 import {getCentroid, torontoBBox} from '@/utils/map-utils';
-import {trackUmamiEvent} from '@/utils';
+import {trackUmamiEvent, titleCase} from '@/utils';
 
 import type {Feature, FeatureCollection} from 'geojson';
 import type {LngLatLike, MapRef} from 'react-map-gl/dist/esm/exports-maplibre';
@@ -44,7 +44,11 @@ function GeocoderResult({
       className={`${styles.geocoderResult}${isSelected ? ' ' + styles.selectedResult : ''}`}
     >
       <button disabled={isDisabled} onClick={() => handleSelect()}>
-        <strong>{feature?.properties?.name ?? 'Unnamed Location'}</strong>
+        <strong>
+          {feature?.properties?.name ??
+            titleCase(feature?.properties?.type) ??
+            'Unnamed Location'}
+        </strong>
         <br />
         {address}
       </button>
