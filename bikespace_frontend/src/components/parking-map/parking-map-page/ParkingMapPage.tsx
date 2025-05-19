@@ -67,6 +67,8 @@ export function uniqueBy(a: Array<Object>, getKey: Function): Array<Object> {
 export function ParkingMapPage() {
   const [zoomLevel, setZoomLevel] = useState<number>(12);
   const [sidebarIsOpen, setSidebarIsOpen] = useState<boolean>(true);
+  const [geoSearchIsMinimized, setGeoSearchIsMinimized] =
+    useState<boolean>(false);
 
   const mapRef = useRef<MapRef>(null);
 
@@ -153,12 +155,15 @@ export function ParkingMapPage() {
 
     if (features.length > 0) {
       trackUmamiEvent('parking-map-feature-click');
+      setGeoSearchIsMinimized(true);
       if (sidebarIsOpen) {
         zoomAndFlyTo(features);
       } else {
         setSidebarIsOpen(true);
         mapRef.current!.once('resize', () => zoomAndFlyTo(features));
       }
+    } else {
+      setGeoSearchIsMinimized(false);
     }
   }
 
@@ -216,7 +221,11 @@ export function ParkingMapPage() {
       <Sidebar isOpen={sidebarIsOpen} setIsOpen={setSidebarIsOpen}>
         <div className={styles.sideBarContainer}>
           {/* <p>{`Zoom: ${zoomLevel}`}</p> */}
-          <GeocoderSearch map={mapRef.current} />
+          <GeocoderSearch
+            map={mapRef.current}
+            isMinimized={geoSearchIsMinimized}
+            setIsMinimized={setGeoSearchIsMinimized}
+          />
           <details
             className={styles.legend}
             open={!(parkingGroupSelected.length > 0)}

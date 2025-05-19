@@ -38,7 +38,7 @@
   padding-top: 8px;
 }
 
-.geocoderResultLoading {
+.geocoderResultPlaceholder {
   margin: 1px 0px 4px 4px;
   font-size: 0.9rem;
   font-weight: bold;
@@ -89,4 +89,8 @@
       box-shadow: 0 0 0 0.2rem $color-secondary-blue;
     }
   }
+}
+
+.selectedResult > button {
+  box-shadow: 0 0 0 0.2rem $color-secondary-blue;
 }
