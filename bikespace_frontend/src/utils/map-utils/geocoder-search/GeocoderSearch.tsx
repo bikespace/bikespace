@@ -1,5 +1,6 @@
 import React, {ChangeEvent, useState, useEffect} from 'react';
 import {useQuery} from '@tanstack/react-query';
+import {Marker} from 'maplibre-gl';
 
 import {getCentroid, torontoBBox} from '@/utils/map-utils';
 
@@ -56,13 +57,12 @@ export function GeocoderSearch({
   defaultZoom = 17,
   bbox = torontoBBox.getURLParams(),
 }: GeocoderSearchProps) {
+  // debouncedInputValue only updates every inputTimeout to minimize API requests
   const [inputValue, setInputValue] = useState('');
   const [debouncedInputValue, setDebouncedInputValue] = useState('');
-
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
   };
-
   useEffect(() => {
     const delayInputTimeoutID = setTimeout(() => {
       setDebouncedInputValue(inputValue);
@@ -70,6 +70,28 @@ export function GeocoderSearch({
     return () => clearTimeout(delayInputTimeoutID);
   }, [inputValue]);
 
+  // Display a marker on the map for selected search result
+  const [searchResultCoords, setSearchResultCoords] =
+    useState<LngLatLike | null>(null);
+  useEffect(() => {
+    if (!searchResultCoords) return;
+
+    const marker = new Marker({color: '#00a0cc'});
+    marker.setLngLat(searchResultCoords).addTo(map!.getMap());
+    map!.flyTo({center: searchResultCoords, zoom: defaultZoom});
+
+    return () => {
+      marker.remove();
+    };
+  }, [searchResultCoords]);
+
+  function handleSelect(feature: Feature) {
+    const location = getCentroid(feature) as LngLatLike;
+    setSearchResultCoords(location);
+  }
+
+  // Get location search results using the photon API
+  // Prioritize map centre and limit to Toronto bounding box
   async function forwardGeocode(
     query: string,
     mapViewCenter: {lng: number; lat: number}
@@ -88,11 +110,6 @@ export function GeocoderSearch({
         : null,
   });
 
-  function handleSelect(feature: Feature) {
-    const location = getCentroid(feature) as LngLatLike;
-    map!.flyTo({center: location, zoom: defaultZoom});
-  }
-
   return (
     <div className={styles.geocoderSearchContainer}>
       <div className={styles.geocoderSearchInput}>
@@ -107,6 +124,7 @@ export function GeocoderSearch({
             onClick={() => {
               setDebouncedInputValue('');
               setInputValue('');
+              setSearchResultCoords(null);
             }}
           >
             <img src={closeMenu.src} alt="Clear Location Search" height={14} />
