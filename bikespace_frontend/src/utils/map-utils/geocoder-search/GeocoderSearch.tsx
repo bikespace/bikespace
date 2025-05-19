@@ -155,7 +155,6 @@ export function GeocoderSearch({
       );
     } else if (query.data) {
       if (query.data.features.length > 0) {
-        console.log(query.data.features);
         searchResults = query.data.features.map((f, i) => {
           const properties = f.properties as {
             [key: string]: string;
