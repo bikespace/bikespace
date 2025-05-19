@@ -71,7 +71,22 @@
   margin-bottom: 4px;
 
   > button {
+    width: 100%;
+    border-radius: 4px;
     font-size: 0.9rem;
     text-align: left;
+
+    &:hover {
+      box-shadow: 0 0 0 0.2rem $color-secondary-blue;
+    }
+  
+    &:focus {
+      box-shadow: 0 0 0 0.2rem $color-secondary-blue;
+    }
+  
+    &:active {
+      background-color: $color-secondary-light-grey;
+      box-shadow: 0 0 0 0.2rem $color-secondary-blue;
+    }
   }
 }
