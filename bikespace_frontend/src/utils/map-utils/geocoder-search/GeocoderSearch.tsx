@@ -42,6 +42,16 @@ function GeocoderResult({
   );
 }
 
+function AnimatedEllipses() {
+  return (
+    <span className={styles.animatedEllipses}>
+      <span>.</span>
+      <span>.</span>
+      <span>.</span>
+    </span>
+  );
+}
+
 interface GeocoderSearchProps {
   map: MapRef | null;
   inputTimeOut?: number;
@@ -134,7 +144,10 @@ export function GeocoderSearch({
       {(query.isFetching || inputValue !== debouncedInputValue) &&
       inputValue.length > 0 ? (
         <div className={styles.geocoderResults}>
-          <div className={styles.geocoderResultLoading}>Searching...</div>
+          <div className={styles.geocoderResultLoading}>
+            Searching
+            <AnimatedEllipses />
+          </div>
         </div>
       ) : query.data ? (
         <div className={styles.geocoderResults}>
