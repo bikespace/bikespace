@@ -35,6 +35,12 @@ jest.mock('./_useGeocoderQuery', () => ({
   })),
 }));
 
+const mockTrackUmamiEvent = jest.fn().mockName('mockTrackUmamiEvent');
+jest.mock('@/utils', () => ({
+  trackUmamiEvent: (...args: Parameters<typeof mockTrackUmamiEvent>) =>
+    mockTrackUmamiEvent(...args),
+}));
+
 describe('GeocoderSearch', () => {
   test('Render GeocoderSearch', async () => {
     const user = userEvent.setup();
@@ -51,6 +57,14 @@ describe('GeocoderSearch', () => {
     await waitFor(() =>
       expect(screen.getAllByRole('button').length).toBeGreaterThan(1)
     );
+    expect(searchBox.getAttribute('value')).toBe('city');
+
+    const clearResultsButton = screen.getByRole('button', {
+      name: 'Clear Location Search',
+    });
+    await user.click(clearResultsButton);
+    expect(screen.queryByRole('button')).toBeNull();
+    expect(searchBox.getAttribute('value')).toBe('');
 
     screen.debug();
   });
