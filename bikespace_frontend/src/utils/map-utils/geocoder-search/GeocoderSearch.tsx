@@ -1,11 +1,11 @@
 import React, {ChangeEvent, useState, useEffect} from 'react';
-import {useQuery} from '@tanstack/react-query';
 import {Marker} from 'maplibre-gl';
 
+import {useGeocoderQuery} from './_useGeocoderQuery';
 import {getCentroid, torontoBBox} from '@/utils/map-utils';
 import {trackUmamiEvent, titleCase} from '@/utils';
 
-import type {Feature, FeatureCollection} from 'geojson';
+import type {Feature} from 'geojson';
 import type {LngLatLike, MapRef} from 'react-map-gl/dist/esm/exports-maplibre';
 
 import styles from './geocoder-search.module.scss';
@@ -116,23 +116,12 @@ export function GeocoderSearch({
 
   // Get location search results using the photon API
   // Prioritize map centre and limit to Toronto bounding box
-  async function forwardGeocode(
-    query: string,
-    mapViewCenter: {lng: number; lat: number}
-  ) {
-    const request = `https://photon.komoot.io/api/?q=${encodeURI(query)}&limit=${resultsLimit}&lat=${mapViewCenter.lat}&lon=${mapViewCenter.lng}&bbox=${bbox}`;
-    const response = await fetch(request);
-    const geojson: FeatureCollection = await response.json();
-    return geojson;
-  }
-
-  const query = useQuery({
-    queryKey: ['geocoderSearch', debouncedInputValue],
-    queryFn: () =>
-      debouncedInputValue.length > 0
-        ? forwardGeocode(debouncedInputValue, map!.getCenter())
-        : null,
-  });
+  const query = useGeocoderQuery(
+    debouncedInputValue,
+    map ? map.getCenter() : undefined,
+    bbox,
+    resultsLimit
+  );
 
   // minimize search results when parking features are selected
   useEffect(() => {
