@@ -4,7 +4,7 @@ import {
   FieldErrors,
   UseFormReturn,
 } from 'react-hook-form';
-import {render, screen, act} from '@testing-library/react';
+import {render, screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import {SubmissionSchema} from '../submission-form/schema';
@@ -65,7 +65,7 @@ jest.mock('next/navigation', () => ({
 
 describe('Summary', () => {
   test('Summary text should render correctly', () => {
-    render(<MockSummary />);
+    const {unmount} = render(<MockSummary />);
 
     expect(screen.getByRole('heading', {level: 1})).toHaveTextContent(
       'Summary'
@@ -75,6 +75,9 @@ describe('Summary', () => {
     expect(screen.getByText(/Time:/i));
     expect(screen.getByText(/Parking duration needed:/i));
     expect(screen.getByText(/Comments:/i));
+
+    // prevent state update 'act' error from form validation
+    unmount();
   });
 
   test('Success response status should render correct message', async () => {

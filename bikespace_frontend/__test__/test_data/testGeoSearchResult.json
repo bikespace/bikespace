@@ -1,0 +1,118 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "geometry": {
+        "coordinates": [-79.38400546703345, 43.6536032],
+        "type": "Point"
+      },
+      "type": "Feature",
+      "properties": {
+        "osm_id": 198500761,
+        "extent": [-79.3848438, 43.6541458, -79.3830415, 43.6529946],
+        "country": "Canada",
+        "city": "Toronto",
+        "countrycode": "CA",
+        "postcode": "M5H 2N2",
+        "locality": "Financial District",
+        "county": "Golden Horseshoe",
+        "type": "house",
+        "osm_type": "W",
+        "osm_key": "amenity",
+        "housenumber": "100",
+        "street": "Queen Street West",
+        "osm_value": "townhall",
+        "name": "Toronto City Hall",
+        "state": "Ontario"
+      }
+    },
+    {
+      "geometry": {
+        "coordinates": [-79.38214336106871, 43.65265355],
+        "type": "Point"
+      },
+      "type": "Feature",
+      "properties": {
+        "osm_id": 3116,
+        "extent": [-79.3824448, 43.653138, -79.3810925, 43.6521709],
+        "country": "Canada",
+        "city": "Toronto",
+        "countrycode": "CA",
+        "postcode": "M5H 2M4",
+        "locality": "Downtown Yonge",
+        "county": "Golden Horseshoe",
+        "type": "house",
+        "osm_type": "R",
+        "osm_key": "amenity",
+        "housenumber": "60",
+        "street": "Queen Street West",
+        "osm_value": "courthouse",
+        "name": "Old City Hall",
+        "state": "Ontario"
+      }
+    },
+    {
+      "geometry": {"coordinates": [-79.3963865, 43.6392482], "type": "Point"},
+      "type": "Feature",
+      "properties": {
+        "osm_type": "R",
+        "osm_id": 18725806,
+        "extent": [-79.4014217, 43.6452919, -79.3795522, 43.6339586],
+        "country": "Canada",
+        "osm_key": "place",
+        "city": "Toronto",
+        "countrycode": "CA",
+        "osm_value": "neighbourhood",
+        "name": "CityPlace",
+        "county": "Golden Horseshoe",
+        "state": "Ontario",
+        "type": "locality"
+      }
+    },
+    {
+      "geometry": {
+        "coordinates": [-79.39799687484938, 43.62805575],
+        "type": "Point"
+      },
+      "type": "Feature",
+      "properties": {
+        "osm_id": 85471,
+        "extent": [-79.4049155, 43.6336577, -79.3874595, 43.6221213],
+        "country": "Canada",
+        "city": "Toronto",
+        "countrycode": "CA",
+        "postcode": "M5V 1A1",
+        "locality": "St Lawrence-East Bayfront-The Islands",
+        "county": "Golden Horseshoe",
+        "type": "house",
+        "osm_type": "R",
+        "osm_key": "aeroway",
+        "housenumber": "1",
+        "street": "Island Airport",
+        "osm_value": "aerodrome",
+        "name": "Billy Bishop Toronto City Airport",
+        "state": "Ontario"
+      }
+    },
+    {
+      "geometry": {"coordinates": [-79.3815365, 43.652142], "type": "Point"},
+      "type": "Feature",
+      "properties": {
+        "osm_id": 555437359,
+        "country": "Canada",
+        "city": "Toronto",
+        "countrycode": "CA",
+        "postcode": "M5H 1W2",
+        "locality": "Downtown Yonge",
+        "county": "Golden Horseshoe",
+        "type": "house",
+        "osm_type": "N",
+        "osm_key": "historic",
+        "street": "Queen Street West",
+        "osm_value": "memorial",
+        "name": "Old City Hall Cenotaph",
+        "state": "Ontario"
+      }
+    }
+  ]
+}
