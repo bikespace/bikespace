@@ -3,15 +3,12 @@ import {render, screen, waitFor} from '@testing-library/react';
 import {userEvent} from '@testing-library/user-event';
 
 import {Map} from 'maplibre-gl';
-import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 
 import type {MapRef} from 'react-map-gl/dist/esm/exports-maplibre';
 
 import {GeocoderSearch} from './GeocoderSearch';
 
 import testGeoSearchResult from '@/__test__/test_data/testGeoSearchResult.json';
-
-const queryClient = new QueryClient();
 
 jest.mock('maplibre-gl', () => {
   const mockMap = {
@@ -42,13 +39,11 @@ describe('GeocoderSearch', () => {
   test('Render GeocoderSearch', async () => {
     const user = userEvent.setup();
     render(
-      <QueryClientProvider client={queryClient}>
-        <GeocoderSearch
-          map={mockMapRef}
-          isMinimized={false}
-          setIsMinimized={jest.fn()}
-        />
-      </QueryClientProvider>
+      <GeocoderSearch
+        map={mockMapRef}
+        isMinimized={false}
+        setIsMinimized={jest.fn()}
+      />
     );
 
     const searchBox = screen.getByRole('textbox');

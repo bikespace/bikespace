@@ -2,8 +2,6 @@ import React, {forwardRef} from 'react';
 import {render, screen} from '@testing-library/react';
 import {userEvent} from '@testing-library/user-event';
 
-import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
-
 import {ParkingMapPage, uniqueBy} from './ParkingMapPage';
 
 jest.mock('react-map-gl/maplibre', () => ({
@@ -13,7 +11,9 @@ jest.mock('react-map-gl/maplibre', () => ({
   NavigationControl: () => <></>,
 }));
 
-const queryClient = new QueryClient();
+jest.mock('@/utils/map-utils/geocoder-search/_useGeocoderQuery', () => ({
+  useGeocoderQuery: jest.fn(),
+}));
 
 describe('uniqueBy', () => {
   test('uniqueBy returns a Set of unique objects based on comparing the value returned by a custom function', () => {
@@ -33,11 +33,7 @@ describe('uniqueBy', () => {
 
 describe('ParkingMapPage', () => {
   test('All ParkingMapPage images on first load have alt text', () => {
-    render(
-      <QueryClientProvider client={queryClient}>
-        <ParkingMapPage />
-      </QueryClientProvider>
-    );
+    render(<ParkingMapPage />);
     expect(
       screen
         .getAllByRole('img')
@@ -47,11 +43,7 @@ describe('ParkingMapPage', () => {
 
   test('Details pane toggle has correct accessibility descriptions', async () => {
     const user = userEvent.setup();
-    render(
-      <QueryClientProvider client={queryClient}>
-        <ParkingMapPage />
-      </QueryClientProvider>
-    );
+    render(<ParkingMapPage />);
 
     // no interaction
     const paneToggle = screen.getByRole('button', {
