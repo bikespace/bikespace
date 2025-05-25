@@ -11,8 +11,24 @@ class BaseConfig:
 
     TESTING = False
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    SECRET_KEY = os.environ.get("FLASK_SECRET_KEY")
+    SECRET_KEY = os.environ.get("BIKESPACE_SECRET_KEY")
+    SECURITY_PASSWORD_SALT = os.environ.get("BIKESPACE_SECURITY_PASSWORD_SALT")
     SQLALCHEMY_ENGINE_OPTIONS = {"pool_pre_ping": True}
+    FLASK_ADMIN_FLUID_LAYOUT = True
+    FLASK_ADMIN_SWATCH = 'flatly'
+    SECURITY_URL_PREFIX = "/admin/"
+    SECURTY_LOGIN_URL = "/admin/login/"
+    SECURITY_LOGOUT_URL = "/admin/logout/"
+    SECURITY_REGISTER_URL = "/register/"
+
+    SECURITY_POST_LOGIN_VIEW = "/admin/"
+    SECURITY_POST_LOGOUT_VIEW = "/admin/"
+    SECURITY_POST_REGISTER_VIEW = "/admin/"
+
+    # Flask-Security features
+    SECURITY_REGISTERABLE = True 
+    SECURITY_SEND_REGISTER_EMAIL = False
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 
 class DevelopmentConfig(BaseConfig):
