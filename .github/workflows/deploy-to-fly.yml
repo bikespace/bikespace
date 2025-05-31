@@ -5,6 +5,7 @@ on:
       - main
     paths:
       - bikespace_api/**
+      - .github/workflows/deploy-to-fly.yml
 jobs:
   apitest:
     name: API tests
