@@ -26,7 +26,7 @@ class BaseConfig:
     SECURITY_POST_REGISTER_VIEW = "/admin/"
 
     # Flask-Security features
-    SECURITY_REGISTERABLE = True 
+    SECURITY_REGISTERABLE = False
     SECURITY_SEND_REGISTER_EMAIL = False
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
