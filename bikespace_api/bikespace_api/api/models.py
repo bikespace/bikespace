@@ -7,7 +7,7 @@ from bikespace_api import db
 from datetime import datetime, timezone
 from enum import Enum
 from flask_security import RoleMixin, UserMixin
-
+from werkzeug.security import generate_password_hash, check_password_hash
 
 class IssueType(Enum):
     NOT_PROVIDED = "not_provided"
