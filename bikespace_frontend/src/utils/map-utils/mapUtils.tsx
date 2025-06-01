@@ -95,3 +95,27 @@ export function getSpriteImageWithTextOverlay(
     </div>
   );
 }
+
+export class BBox {
+  xmin: number;
+  ymin: number;
+  xmax: number;
+  ymax: number;
+
+  constructor(xmin: number, ymin: number, xmax: number, ymax: number) {
+    this.xmin = xmin;
+    this.ymin = ymin;
+    this.xmax = xmax;
+    this.ymax = ymax;
+  }
+  getURLParams() {
+    return `${this.xmin},${this.ymin},${this.xmax},${this.ymax}`;
+  }
+}
+
+export const torontoBBox = new BBox(
+  -79.6392832,
+  43.5796082,
+  -79.1132193,
+  43.8554425
+);
