@@ -84,13 +84,11 @@
         "postcode": "M5V 1A1",
         "locality": "St Lawrence-East Bayfront-The Islands",
         "county": "Golden Horseshoe",
-        "type": "house",
         "osm_type": "R",
         "osm_key": "aeroway",
         "housenumber": "1",
         "street": "Island Airport",
         "osm_value": "aerodrome",
-        "name": "Billy Bishop Toronto City Airport",
         "state": "Ontario"
       }
     },
@@ -110,7 +108,6 @@
         "osm_key": "historic",
         "street": "Queen Street West",
         "osm_value": "memorial",
-        "name": "Old City Hall Cenotaph",
         "state": "Ontario"
       }
     }

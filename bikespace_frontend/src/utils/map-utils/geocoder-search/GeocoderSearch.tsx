@@ -46,8 +46,9 @@ function GeocoderResult({
       <button disabled={isDisabled} onClick={() => handleSelect()}>
         <strong>
           {feature?.properties?.name ??
-            titleCase(feature?.properties?.type) ??
-            'Unnamed Location'}
+            (feature?.properties?.type
+              ? titleCase(feature?.properties?.type)
+              : 'Unnamed Location')}
         </strong>
         <br />
         {address}
