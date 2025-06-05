@@ -71,11 +71,11 @@ In production, migrations are automatically applied on deployment. In developmen
 Creating and applying a migration script:
 
 1. Make and save schema changes, e.g. in `./bikespace_api/bikespace_api/api/models.py`
-2. Run `make migrate-db`. If that doesn't work, try `make db-stamp-heads` first.
+2. Run `make migrate-db`. (A migration file will be generated, you can optionally add a descriptive title using the docstring at the top.)
 3. Run `make upgrade-db` to apply the schema changes to your database.
 
 Testing a migration script:
 
 1. While the api is running for development (e.g. `make run-flask-app`), run `make downgrade-db`. You should see the database revert to the previous schema.
-2. Run `make upgrade-db`. You should see the databse update to the newest schema.
+2. Run `make upgrade-db`. You should see the database update to the newest schema.
 3. Perform additional tests to confirm that a migrated database returns the correct results in use.

@@ -96,7 +96,6 @@ migrate-test-db: setup-py launch-db db-test-server
 	export APP_SETTINGS=bikespace_api.config.DevelopmentConfig && \
 	export DATABASE_URL=postgresql://postgres:postgres@localhost:5432/bikespace_dev && \
 	$(PYTHON) $(MANAGE_PY) recreate-db && \
-	$(PYTHON) $(MANAGE_PY) db stamp heads --directory $(BIKESPACE_DB_MIGRATIONS) && \
 	$(PYTHON) $(MANAGE_PY) db upgrade --directory $(BIKESPACE_DB_MIGRATIONS) && \
 	$(PYTHON) $(MANAGE_PY) db check --directory $(BIKESPACE_DB_MIGRATIONS)
 
@@ -118,6 +117,7 @@ db-history:
 db-merge-heads:
 	$(PYTHON) $(MANAGE_PY) db merge heads -m "Merge heads" --directory $(BIKESPACE_DB_MIGRATIONS)
 
+# Tells the database that it is on the most recent migration
 db-stamp-heads:
 	$(PYTHON) $(MANAGE_PY) db stamp heads --directory $(BIKESPACE_DB_MIGRATIONS)
 
