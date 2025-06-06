@@ -5,18 +5,14 @@ The API service is a python Flask application paired with a Postgres database.
 
 To develop the API locally you'll require the following things:
  - Python version 3.12.0 or greater
- - Docker (docker daemon) running to launch Postgres database container
-
-Several tasks (e.g. running the API locally, running certain tests) require a database to be running, but the make targets will take care of launching a Postgres container for you as long as you have Docker running.
-
-To stop the Postgres container, just run `make stop-db`.
+ - Docker (docker daemon) running to launch API and database containers with docker compose
 
 ## Running the API service
 
 There are various make targets to help run/build tasks.
 Running the backend service:
 ```shell 
-$ make run-flask-app
+$ make api-dev
 ```
 The development server should now be running at `localhost:8000`
 
@@ -76,6 +72,6 @@ Creating and applying a migration script:
 
 Testing a migration script:
 
-1. While the api is running for development (e.g. `make run-flask-app`), run `make downgrade-db`. You should see the database revert to the previous schema.
+1. While the api is running for development (e.g. `make api-dev`), run `make downgrade-db`. You should see the database revert to the previous schema.
 2. Run `make upgrade-db`. You should see the database update to the newest schema.
 3. Perform additional tests to confirm that a migrated database returns the correct results in use.
