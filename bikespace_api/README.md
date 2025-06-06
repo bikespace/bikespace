@@ -12,7 +12,7 @@ To develop the API locally you'll require the following things:
 There are various make targets to help run/build tasks.
 Running the backend service:
 ```shell 
-$ make api-dev
+$ make dev-api
 ```
 The development server should now be running at `localhost:8000`
 
@@ -72,6 +72,6 @@ Creating and applying a migration script:
 
 Testing a migration script:
 
-1. While the api is running for development (e.g. `make api-dev`), run `make downgrade-db`. You should see the database revert to the previous schema.
+1. While the api is running for development (e.g. `make dev-api`), run `make downgrade-db`. You should see the database revert to the previous schema.
 2. Run `make upgrade-db`. You should see the database update to the newest schema.
 3. Perform additional tests to confirm that a migrated database returns the correct results in use.
