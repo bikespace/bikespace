@@ -3,7 +3,7 @@ name: bikespace_prodtest
 services:
   bikespace_api:
     build:
-      context: .
+      context: ..
       dockerfile: Dockerfile
     depends_on:
       db:
@@ -19,7 +19,7 @@ services:
     develop:
       watch:
         - action: rebuild
-          path: bikespace_api/
+          path: ../bikespace_api/
   db:
     image: postgres
     restart: always

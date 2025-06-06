@@ -46,25 +46,25 @@ pip-freeze: $(BIKESPACE_API_DIR)/requirements.txt
 	$(PIP) freeze > $(BIKESPACE_API_DIR)/requirements.txt
 
 dev-api-stop:
-	docker compose --file bikespace_api/compose-dev.yaml down
+	docker compose --file bikespace_api/docker/compose-dev.yaml down
 
 # port 8000
 dev-api: dev-api-stop
-	docker compose --file bikespace_api/compose-dev.yaml up --build --force-recreate
+	docker compose --file bikespace_api/docker/compose-dev.yaml up --build --force-recreate
 
 dev-api-test-stop:
-	docker compose --file bikespace_api/compose-test.yaml down
+	docker compose --file bikespace_api/docker/compose-test.yaml down
 
 # port 8001
 dev-api-test: dev-api-test-stop
-	docker compose --file bikespace_api/compose-test.yaml up --build --force-recreate
+	docker compose --file bikespace_api/docker/compose-test.yaml up --build --force-recreate
 
 prodtest-api-stop:
-	docker compose --file bikespace_api/compose-prodtest.yaml down
+	docker compose --file bikespace_api/docker/compose-prodtest.yaml down
 
 # port 8002
 prodtest-api: prodtest-api-stop
-	docker compose --file bikespace_api/compose-prodtest.yaml up --build --force-recreate
+	docker compose --file bikespace_api/docker/compose-prodtest.yaml up --build --force-recreate
 
 test-api: setup-py launch-db db-test-server
 	export APP_SETTINGS=bikespace_api.config.TestingConfig && \

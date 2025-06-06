@@ -27,17 +27,17 @@ RUN adduser \
 # Leverage a bind mount to requirements.txt to avoid having to copy them into
 # into this layer.
 RUN --mount=type=cache,target=/root/.cache/pip \
-    --mount=type=bind,source=requirements.txt,target=requirements.txt \
+    --mount=type=bind,source=../requirements.txt,target=requirements.txt \
     python -m pip install -r requirements.txt
 
     
 # Copy the source code into the container.
-COPY . .
-RUN chmod a+x boot_local.sh
+COPY .. .
+RUN chmod a+x docker/boot_local.sh
 
 # Switch to the non-privileged user to run the application.
 USER appuser
 
 # Set up entry point to run the app
 EXPOSE 8000
-ENTRYPOINT ["./boot_local.sh"]
+ENTRYPOINT ["./docker/boot_local.sh"]

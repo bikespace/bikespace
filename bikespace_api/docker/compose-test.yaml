@@ -3,8 +3,8 @@ name: bikespace_test
 services:
   bikespace_api:
     build:
-      context: .
-      dockerfile: local.dockerfile
+      context: ..
+      dockerfile: docker/local.dockerfile
     depends_on:
       db:
         condition: service_healthy
@@ -19,7 +19,7 @@ services:
     develop:
       watch:
         - action: rebuild
-          path: bikespace_api/
+          path: ../bikespace_api/
   db:
     image: postgres
     restart: always
