@@ -31,10 +31,6 @@ def recreate_db():
     if not database_exists(app.config["SQLALCHEMY_DATABASE_URI"]):
         create_database(app.config["SQLALCHEMY_DATABASE_URI"])
 
-    db.drop_all()
-    db.create_all()
-    db.session.commit()
-
 
 @cli.command()
 def seed_db():

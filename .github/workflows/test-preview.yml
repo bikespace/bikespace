@@ -36,7 +36,7 @@ jobs:
           cache: 'pip'
           cache-dependency-path: bikespace_api/requirements.txt
       - name: Run pytest
-        run: make run-pytest
+        run: make test-api
       - name: Coveralls
         uses: coverallsapp/github-action@v2
         with: 

@@ -45,58 +45,53 @@ $(VENV): check-python-version $(BIKESPACE_API_DIR)/requirements.txt
 pip-freeze: $(BIKESPACE_API_DIR)/requirements.txt
 	$(PIP) freeze > $(BIKESPACE_API_DIR)/requirements.txt
 
-run-flask-app: setup-py launch-db db-test-server
-	export APP_SETTINGS=bikespace_api.config.DevelopmentConfig && \
-	export DATABASE_URL=postgresql://postgres:postgres@localhost:5432/bikespace_dev && \
-	export FLASK_DEBUG=true && \
-	export FLASK_RUN_PORT=8000 && \
-	$(PYTHON) $(MANAGE_PY) recreate-db && \
-	$(PYTHON) $(MANAGE_PY) seed-db && \
-	$(PYTHON) $(MANAGE_PY) run
+dev-api-stop:
+	docker compose --file bikespace_api/docker/compose-dev.yaml down
 
-run-flask-app-test: setup-py launch-db db-test-server
-	export APP_SETTINGS=bikespace_api.config.TestingConfig && \
-	export TEST_DATABASE_URI=postgresql://postgres:postgres@localhost:5432/bikespace_test && \
-	export FLASK_DEBUG=true && \
-	export FLASK_RUN_PORT=8001 && \
-	$(PYTHON) $(MANAGE_PY) recreate-db && \
-	$(PYTHON) $(MANAGE_PY) seed-db && \
-	$(PYTHON) $(MANAGE_PY) run
+# port 8000
+dev-api: dev-api-stop
+	docker compose --file bikespace_api/docker/compose-dev.yaml up --build --force-recreate
 
-run-pytest: setup-py launch-db db-test-server
+dev-api-test-stop:
+	docker compose --file bikespace_api/docker/compose-test.yaml down
+
+# port 8001
+dev-api-test: dev-api-test-stop
+	docker compose --file bikespace_api/docker/compose-test.yaml up --build --force-recreate
+
+prodtest-api-stop:
+	docker compose --file bikespace_api/docker/compose-prodtest.yaml down
+
+# port 8002
+prodtest-api: prodtest-api-stop
+	docker compose --file bikespace_api/docker/compose-prodtest.yaml up --build --force-recreate
+
+test-api: setup-py launch-db db-test-server
 	export APP_SETTINGS=bikespace_api.config.TestingConfig && \
 	export TEST_DATABASE_URI=postgresql://postgres:postgres@localhost:5432/bikespace_test && \
 	cd $(BIKESPACE_API_DIR) && \
 	$(PYTHON) $(MANAGE_PY) recreate-db && \
+	$(PYTHON) $(MANAGE_PY) db upgrade --directory $(BIKESPACE_DB_MIGRATIONS) && \
 	$(PYTHON) $(MANAGE_PY) seed-db && \
 	$(PYTHON) -m pytest --cov=bikespace_api --cov-report lcov
 
-run-pytest-terminal: setup-py launch-db db-test-server
+test-api-terminal: setup-py launch-db db-test-server
 	export APP_SETTINGS=bikespace_api.config.TestingConfig && \
 	export TEST_DATABASE_URI=postgresql://postgres:postgres@localhost:5432/bikespace_test && \
 	cd $(BIKESPACE_API_DIR) && \
 	$(PYTHON) $(MANAGE_PY) recreate-db && \
+	$(PYTHON) $(MANAGE_PY) db upgrade --directory $(BIKESPACE_DB_MIGRATIONS) && \
 	$(PYTHON) $(MANAGE_PY) seed-db && \
 	$(PYTHON) -m pytest -s --cov=bikespace_api --cov-report term-missing
 
 lint-py:
 	$(PYTHON) -m black $(BIKESPACE_API_DIR)
 
-seed-db: setup-py
-	$(PYTHON) $(MANAGE_PY) seed-db
-
-recreate-db: setup-py
-	$(PYTHON) $(MANAGE_PY) recreate-db
-
-init-db: setup-py 
-	$(PYTHON) $(MANAGE_PY) db init --directory $(BIKESPACE_DB_MIGRATIONS)
-
 # check if database migrations need to be generated for the API
 migrate-test-db: setup-py launch-db db-test-server
 	export APP_SETTINGS=bikespace_api.config.DevelopmentConfig && \
 	export DATABASE_URL=postgresql://postgres:postgres@localhost:5432/bikespace_dev && \
 	$(PYTHON) $(MANAGE_PY) recreate-db && \
-	$(PYTHON) $(MANAGE_PY) db stamp heads --directory $(BIKESPACE_DB_MIGRATIONS) && \
 	$(PYTHON) $(MANAGE_PY) db upgrade --directory $(BIKESPACE_DB_MIGRATIONS) && \
 	$(PYTHON) $(MANAGE_PY) db check --directory $(BIKESPACE_DB_MIGRATIONS)
 
@@ -118,6 +113,7 @@ db-history:
 db-merge-heads:
 	$(PYTHON) $(MANAGE_PY) db merge heads -m "Merge heads" --directory $(BIKESPACE_DB_MIGRATIONS)
 
+# Tells the database that it is on the most recent migration
 db-stamp-heads:
 	$(PYTHON) $(MANAGE_PY) db stamp heads --directory $(BIKESPACE_DB_MIGRATIONS)
 
@@ -176,6 +172,6 @@ test-e2e:
 	npx playwright install --with-deps && \
 	npx playwright test
 
-test-all: run-pytest test-frontend test-e2e
+test-all: test-api test-frontend test-e2e
 
 .PHONY: setup-py clean pip-freeze run-flask-app lint-py seed-db recreate-db fly-deploy-api fly-deploy-frontend run-frontend build-frontend launch-db stop-db db-test-server test-e2e test-all

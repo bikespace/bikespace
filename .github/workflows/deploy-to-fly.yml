@@ -35,7 +35,7 @@ jobs:
         with:
           python-version : '3.12.0'
       - name: Run pytest
-        run: make run-pytest
+        run: make test-api
       - name: Coveralls
         uses: coverallsapp/github-action@v2
   api-migration-test:

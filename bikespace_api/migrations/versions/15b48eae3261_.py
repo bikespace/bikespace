@@ -1,7 +1,7 @@
-"""empty message
+"""create bikeparking_submissions table
 
 Revision ID: 15b48eae3261
-Revises: 
+Revises:
 Create Date: 2024-07-27 13:33:12.430320
 
 """

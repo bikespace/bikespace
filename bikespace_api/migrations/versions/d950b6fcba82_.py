@@ -1,7 +1,7 @@
-"""empty message
+"""remove length limit on comments column
 
 Revision ID: d950b6fcba82
-Revises: 
+Revises: 15b48eae3261
 Create Date: 2024-07-27 13:59:31.216592
 
 """
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 
 # revision identifiers, used by Alembic.
 revision = "d950b6fcba82"
-down_revision = None
+down_revision = "15b48eae3261"
 branch_labels = None
 depends_on = None
 
