@@ -9,7 +9,7 @@ primary_region = 'yyz'
 [build]
 
 [env]
-  APP_SETTINGS = "bikespace_api.config.ProductionConfig"
+  APP_SETTINGS = 'bikespace_api.config.ProductionConfig'
 
 [http_service]
   internal_port = 8000
