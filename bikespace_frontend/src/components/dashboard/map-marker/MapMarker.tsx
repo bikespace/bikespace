@@ -73,16 +73,27 @@ const MapMarker = forwardRef(
     const iconWidth = iconHeight;
 
     // focus pin on load if in URL param
+    // omits dependencies array to run on every render
     useEffect(() => {
       if (!isFocused || !doneLoading) return;
-      if (windowWidth && windowWidth <= wrapperFullWidth) {
-        setTab(SidebarTab.Feed);
-        setIsOpen(true);
-      }
+      // if (windowWidth && windowWidth <= wrapperFullWidth) {
+      //   console.log('SET');
+      //   setTab(SidebarTab.Feed);
+      //   setIsOpen(true);
+      // }
       clusterRef.current!.zoomToShowLayer(innerMarkerRef.current!, () => {
         innerMarkerRef.current!.openPopup();
       });
-    }, [doneLoading]);
+    });
+
+    // useEffect(() => {
+    //   if (!isFocused || !doneLoading) return;
+    //   if (windowWidth && windowWidth <= wrapperFullWidth) {
+    //     console.log('SET');
+    //     setTab(SidebarTab.Feed);
+    //     setIsOpen(true);
+    //   }
+    // }, [windowWidth]);
 
     const handlePopupClose = () => {
       if (focus === submission.id) setFocus(null);
