@@ -39,14 +39,11 @@ import {wrapperFullWidth} from '@/styles/variablesTS';
 
 interface MapMarkerProps {
   submission: SubmissionApiPayload;
-  windowWidth: number | null;
-  doneLoading: boolean;
-  clusterRef: MutableRefObject<LeafletMarkerClusterGroup | null>;
 }
 
 const MapMarker = forwardRef(
   (
-    {submission, windowWidth, doneLoading, clusterRef}: MapMarkerProps,
+    {submission}: MapMarkerProps,
     outerMarkerRef: React.ForwardedRef<LeafletMarker>
   ) => {
     // popupRef for calling openPopup() upon focus change
@@ -72,20 +69,8 @@ const MapMarker = forwardRef(
     const iconHeight = isFocused ? baseIconHeight * 1.5 : baseIconHeight;
     const iconWidth = iconHeight;
 
-    // focus pin on load if in URL param
-    useEffect(() => {
-      if (!isFocused || !doneLoading) return;
-      if (windowWidth && windowWidth <= wrapperFullWidth) {
-        setTab(SidebarTab.Feed);
-        setIsOpen(true);
-      }
-      clusterRef.current!.zoomToShowLayer(innerMarkerRef.current!, () => {
-        innerMarkerRef.current!.openPopup();
-      });
-    }, [doneLoading]);
-
     const handlePopupClose = () => {
-      if (focus === submission.id) setFocus(null);
+      if (isFocused) setFocus(null);
     };
 
     const handlePopupOpen = () => {
@@ -95,17 +80,7 @@ const MapMarker = forwardRef(
     };
 
     const handleClick = () => {
-      if (windowWidth && windowWidth <= wrapperFullWidth) {
-        // Manually set tab= URL params to prevent excess rerendering from subscribing to tab change
-        const params = new URLSearchParams(searchParams);
-
-        params.set('tab', SidebarTab.Feed);
-
-        replace(`${pathname}?${params.toString()}` as Route);
-        setFocus(submission.id);
-        setTab(SidebarTab.Feed);
-        setIsOpen(true);
-      }
+      setFocus(submission.id);
     };
 
     const priorityIssue = submission.issues.reduce((a: IssueType | null, c) => {
