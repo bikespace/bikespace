@@ -3,7 +3,7 @@ from datetime import datetime, timezone
 
 from pytest import mark
 
-from bikespace_api.api.models import Submission, IssueType, ParkingDuration
+from bikespace_api.api.models import IssueType, ParkingDuration, Submission
 
 
 def test_get_submissions(test_client):
@@ -17,8 +17,8 @@ def test_get_submissions(test_client):
     assert response.status_code == 200
     assert response.headers["Content-Type"] == "application/json"
     assert all(k in res for k in ("pagination", "submissions"))
-    assert type(res["pagination"]) == dict
-    assert type(res["submissions"]) == list
+    assert isinstance(res["pagination"], dict)
+    assert isinstance(res["submissions"], list)
 
 
 def test_get_submissions_accept_json(test_client):
@@ -33,8 +33,8 @@ def test_get_submissions_accept_json(test_client):
     assert response.status_code == 200
     assert response.headers["Content-Type"] == "application/json"
     assert all(k in res for k in ("pagination", "submissions"))
-    assert type(res["pagination"]) == dict
-    assert type(res["submissions"]) == list
+    assert isinstance(res["pagination"], dict)
+    assert isinstance(res["submissions"], list)
 
 
 def test_get_submissions_accept_geojson(test_client):
@@ -51,15 +51,15 @@ def test_get_submission_accept_csv(test_client):
     assert response.headers["Content-Type"] == "text/csv"
 
 
-def test_get_sumissions_with_offset_limit(test_client):
+def test_get_submissions_with_offset_limit(test_client):
     target_limit = 2
     response = test_client.get(f"/api/v2/submissions?offset=1&limit={target_limit}")
     res = json.loads(response.get_data())
     assert response.status_code == 200
     assert response.headers["Content-Type"] == "application/json"
     assert all(k in res for k in ("pagination", "submissions"))
-    assert type(res["pagination"]) == dict
-    assert type(res["submissions"]) == list
+    assert isinstance(res["pagination"], dict)
+    assert isinstance(res["submissions"], list)
     assert len(res["submissions"]) == target_limit
 
 
@@ -83,13 +83,13 @@ def test_get_submissions_with_id(test_client, target_id):
         )
     )
     assert res["id"] == target_id
-    assert type(res["latitude"]) == float
-    assert type(res["longitude"]) == float
-    assert type(res["issues"]) == list
-    assert type(res["parking_duration"]) == str
-    assert type(res["parking_time"]) == str
-    assert type(res["comments"]) == str
-    assert type(res["submitted_datetime"]) in (type(None), str)
+    assert isinstance(res["latitude"], float)
+    assert isinstance(res["longitude"], float)
+    assert isinstance(res["issues"], list)
+    assert isinstance(res["parking_duration"], str)
+    assert isinstance(res["parking_time"], str)
+    assert isinstance(res["comments"], str)
+    assert isinstance(res["submitted_datetime"], (type(None), str))
 
 
 @mark.uses_db
@@ -104,7 +104,6 @@ def test_post_submissions(test_client, submission_id=5):
     }
     response = test_client.post("/api/v2/submissions", json=dummy_submission)
     current_datetime = datetime.now(timezone.utc)
-    res = json.loads(response.get_data())
     new_submission = Submission.query.filter_by(id=submission_id).first()
     assert response.status_code == 201
     assert new_submission.id == submission_id

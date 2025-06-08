@@ -1,16 +1,18 @@
 # bikespace_api/bikespace_api/api/answers.py
 
-from better_profanity import profanity
-from bikespace_api import db
-from bikespace_api.api.models import Submission, IssueType, ParkingDuration
-from flask import Blueprint, jsonify, request, Response, make_response
-from geojson import Feature, FeatureCollection, Point
+import csv
+import json
 from io import StringIO
+
+import geojson
+from better_profanity import profanity
+from flask import Blueprint, Response, make_response, request
+from geojson import Feature, FeatureCollection, Point
 from sqlalchemy import desc
 from sqlalchemy.exc import IntegrityError
-import csv
-import geojson
-import json
+
+from bikespace_api import db
+from bikespace_api.api.models import IssueType, ParkingDuration, Submission
 
 submissions_blueprint = Blueprint("submissions", __name__)
 
