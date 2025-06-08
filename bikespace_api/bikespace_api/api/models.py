@@ -1,12 +1,11 @@
 # bikespace_api/bikespace_api/api/models.py
 
-from sqlalchemy.sql import func
 import sqlalchemy as sa
 import sqlalchemy.dialects.postgresql as pg
 from bikespace_api import db
 from datetime import datetime, timezone
 from enum import Enum
-from flask_security import RoleMixin, UserMixin
+from flask_security.core import RoleMixin, UserMixin
 
 
 class IssueType(Enum):
@@ -57,11 +56,13 @@ class Submission(db.Model):
         self.comments = comments
         self.submitted_datetime = datetime.now(timezone.utc)
 
+
 roles_users = db.Table(
     "roles_users",
     db.Column("user_id", db.Integer(), db.ForeignKey("user.id")),
     db.Column("role_id", db.Integer(), db.ForeignKey("role.id")),
 )
+
 
 class Role(db.Model, RoleMixin):
     id = db.Column(db.Integer(), primary_key=True)
@@ -70,6 +71,7 @@ class Role(db.Model, RoleMixin):
 
     def __str__(self):
         return self.name
+
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)

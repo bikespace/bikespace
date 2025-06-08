@@ -1,7 +1,11 @@
-from bikespace_api.api.models import Submission, IssueType, ParkingDuration
 from datetime import datetime, timezone
 
+from pytest import mark
 
+from bikespace_api.api.models import IssueType, ParkingDuration, Role, User
+
+
+# uses new_submission fixture from conftest.py
 def test_new_submission(new_submission):
     """
     GIVEN a Submission model
@@ -18,3 +22,21 @@ def test_new_submission(new_submission):
     assert new_submission.parking_time == datetime_object
     assert new_submission.comments == "comments"
     assert (current_datetime - new_submission.submitted_datetime).total_seconds() < 1
+
+
+@mark.parametrize("enum_val", [*IssueType, *ParkingDuration])
+def test_enum_str(enum_val):
+    """Test string representations returned by enums"""
+    assert str(enum_val) == enum_val.name
+
+
+def test_role_model_str():
+    """Test string representation returned by Role model"""
+    test_role = Role(name="test_name", description="test_description")
+    assert str(test_role) == "test_name"
+
+
+def test_user_model_str():
+    """Test string representation returned by User model"""
+    test_user = User(first_name="Jane", last_name="Doe", email="test@test.com")
+    assert str(test_user) == "test@test.com"
