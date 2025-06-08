@@ -87,7 +87,7 @@ function SearchResults({
   selectedResult,
   handleSelect,
 }: SearchResultsProps) {
-  if (isMinimized || inputValue.length === 0) return null;
+  if (inputValue.length === 0) return null;
 
   let searchResults;
   if (query.isFetching || inputValue !== debouncedInputValue) {
@@ -103,18 +103,18 @@ function SearchResults({
         const properties = f.properties as {
           [key: string]: string;
         };
-        return (
+        const isSelected =
+          selectedResult?.properties?.osm_id === properties.osm_id &&
+          selectedResult?.properties?.osm_type === properties.osm_type;
+        return !isMinimized || isSelected ? (
           <GeocoderResult
             key={i}
             feature={f}
             handleSelect={() => handleSelect(f)}
             isDisabled={disableResults}
-            isSelected={
-              selectedResult?.properties?.osm_id === properties.osm_id &&
-              selectedResult?.properties?.osm_type === properties.osm_type
-            }
+            isSelected={isSelected}
           />
-        );
+        ) : null;
       });
     } else {
       searchResults = (
@@ -191,15 +191,6 @@ export function GeocoderSearch({
     bbox,
     resultsLimit
   );
-
-  // minimize search results when parking features are selected
-  useEffect(() => {
-    if (!isMinimized || !selectedResult) return;
-
-    const address = getAddress(selectedResult);
-    const name = selectedResult?.properties?.name;
-    setInputValue((name ? `${name}, ` : '') + address);
-  }, [isMinimized]);
 
   function handleSelect(feature: Feature) {
     setSelectedResult(feature);

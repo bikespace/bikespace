@@ -127,11 +127,9 @@ describe('GeocoderSearch', () => {
       name: 'Clear Location Search',
     });
 
-    expect(screen.getAllByRole('button').length).toBe(1);
+    expect(screen.getAllByRole('button').length).toBe(2);
     expect(clearResultsButton).toBeInTheDocument();
-    expect(searchBox.getAttribute('value')).toMatch(
-      /Toronto City Hall, 100 Queen Street West, Toronto/i
-    );
+    expect(searchBox.getAttribute('value')).toMatch(/city/i);
 
     // clearing the component while minimized should blank the input
     await user.click(clearResultsButton);
