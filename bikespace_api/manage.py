@@ -4,6 +4,7 @@ import string
 import time
 from datetime import datetime
 
+from dotenv import load_dotenv
 from flask.cli import FlaskGroup
 from flask_security.utils import hash_password
 from sqlalchemy_utils import create_database, database_exists
@@ -11,6 +12,7 @@ from sqlalchemy_utils import create_database, database_exists
 from bikespace_api import create_app, create_userdatastore, db
 from bikespace_api.api.models import IssueType, ParkingDuration, Role, Submission, User
 
+load_dotenv()
 app = create_app()
 cli = FlaskGroup(create_app=create_app)
 user_datastore = create_userdatastore(db, User, Role)
