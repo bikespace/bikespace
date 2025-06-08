@@ -12,6 +12,7 @@ import {trackUmamiEvent} from '@/utils';
 import {GeocoderSearch} from '@/utils/map-utils';
 
 import {Sidebar} from './sidebar/Sidebar';
+import {SidebarButton} from '@/components/dashboard/sidebar-button';
 import {
   ParkingFeatureDescription,
   parkingInteractiveLayers,
@@ -167,6 +168,12 @@ export function ParkingMapPage() {
     }
   }
 
+  function handleFeatureSelectionClear() {
+    setParkingGroupSelected([]);
+    setParkingSelected([]);
+    setGeoSearchIsMinimized(false);
+  }
+
   function handleFeatureSelection(
     e: React.MouseEvent<HTMLElement>,
     f: MapGeoJSONFeature
@@ -221,6 +228,34 @@ export function ParkingMapPage() {
       <Sidebar isOpen={sidebarIsOpen} setIsOpen={setSidebarIsOpen}>
         <div className={styles.sideBarContainer}>
           {/* <p>{`Zoom: ${zoomLevel}`}</p> */}
+          <div className={styles.ContentHeading}>
+            {parkingGroupSelected.length > 0 ? (
+              <>
+                <h2 className={styles.cardHeading}>Selected Features</h2>
+                <SidebarButton
+                  onClick={handleFeatureSelectionClear}
+                  umamiEvent="parking-map-clear-selection"
+                >
+                  Clear Selection
+                </SidebarButton>
+              </>
+            ) : (
+              <p>
+                Click on a feature to see more information or zoom in for more details
+              </p>
+            )}
+          </div>
+          {parkingGroupSelected.map(f => (
+            <ParkingFeatureDescription
+              feature={f}
+              key={f.id}
+              selected={parkingSelectedIDs.includes(f.id)}
+              hovered={parkingHoveredIDs.includes(f.id)}
+              handleClick={handleFeatureSelection}
+              handleHover={handleFeatureHover}
+              handleUnHover={handleFeatureUnHover}
+            />
+          ))}
           <GeocoderSearch
             map={mapRef.current}
             isMinimized={geoSearchIsMinimized}
@@ -236,24 +271,6 @@ export function ParkingMapPage() {
               <BicycleNetworkLayerLegend />
             </div>
           </details>
-          {parkingGroupSelected.length > 0 ? (
-            parkingGroupSelected.map(f => (
-              <ParkingFeatureDescription
-                feature={f}
-                key={f.id}
-                selected={parkingSelectedIDs.includes(f.id)}
-                hovered={parkingHoveredIDs.includes(f.id)}
-                handleClick={handleFeatureSelection}
-                handleHover={handleFeatureHover}
-                handleUnHover={handleFeatureUnHover}
-              />
-            ))
-          ) : (
-            <p>
-              Click on a feature to see more information or zoom in to see more
-              details
-            </p>
-          )}
         </div>
       </Sidebar>
       <Map

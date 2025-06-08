@@ -21,8 +21,30 @@
   }
 }
 
+.ContentHeading {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  width: 100%;
+  border-radius: 4px;
+  padding: 8px;
+  margin-bottom: 8px;
+  background-color: white;
+
+  button {
+    height: 2rem * 0.9;
+    font-size: 0.9rem;
+  }
+}
+
+h2.cardHeading {
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: $color-primary-d50p;
+}
+
 .legend {
-  margin-bottom: 1rem;
+  margin-bottom: 8px;
   background-color: white;
   border: 2px solid $color-primary-d50p;
   border-radius: 4px;
