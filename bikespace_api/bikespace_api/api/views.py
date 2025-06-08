@@ -1,9 +1,11 @@
+import uuid
+
 from flask import abort, redirect, request, url_for
-from flask_admin.contrib.sqla import ModelView 
+from flask_admin.contrib.sqla import ModelView
 from flask_security import current_user
 from wtforms import SelectField
+
 from bikespace_api.api.models import IssueType, ParkingDuration
-import uuid
 
 
 class AdminRolesModelView(ModelView):
@@ -16,8 +18,7 @@ class AdminRolesModelView(ModelView):
 
     def _handle_view(self, name, **kwargs):
         """
-        Override builtin _handle_view in order to redirect users when a view is not
-        accessible.
+        Override builtin _handle_view in order to redirect users when a view is not accessible.
         """
         if not self.is_accessible():
             if current_user.is_authenticated:
@@ -25,13 +26,21 @@ class AdminRolesModelView(ModelView):
                 abort(403)
             else:
                 # login
-                return redirect(url_for("security.login", next=request.url)) 
+                return redirect(url_for("security.login", next=request.url))
+
 
 class AdminUsersModelView(ModelView):
     column_hide_backrefs = False
-    column_list = ('first_name', 'last_name', 'email', 'active', 'roles')
-    column_labels = {'first_name': 'First Name','last_name': 'Last Name','email': 'Email', 'active': 'Active', 'roles': 'Roles'}
     form_excluded_columns = ('fs_uniquifier')
+    column_list = ("first_name", "last_name", "email", "active", "roles")
+    column_labels = {
+        "first_name": "First Name",
+        "last_name": "Last Name",
+        "email": "Email",
+        "active": "Active",
+        "roles": "Roles",
+    }
+
     def is_accessible(self):
         return (
             current_user.is_active
@@ -56,6 +65,7 @@ class AdminUsersModelView(ModelView):
         if model.fs_uniquifier is None:
             model.fs_uniquifier = uuid.uuid4().hex
 
+
 class AdminSubmissionModelView(ModelView):
     def is_accessible(self):
         return (
@@ -75,4 +85,4 @@ class AdminSubmissionModelView(ModelView):
                 abort(403)
             else:
                 # login
-                return redirect(url_for("security.login", next=request.url)) 
+                return redirect(url_for("security.login", next=request.url))

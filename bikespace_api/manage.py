@@ -1,15 +1,15 @@
 import os
-import time
-
-from flask.cli import FlaskGroup
-from sqlalchemy_utils import database_exists, create_database
-
-from bikespace_api import create_app, db, create_userdatastore 
-from bikespace_api.api.models import Submission, IssueType, ParkingDuration, User, Role
-from datetime import datetime
-from flask_security.utils import hash_password    
 import random
 import string
+import time
+from datetime import datetime
+
+from flask.cli import FlaskGroup
+from flask_security.utils import hash_password
+from sqlalchemy_utils import create_database, database_exists
+
+from bikespace_api import create_app, create_userdatastore, db
+from bikespace_api.api.models import IssueType, ParkingDuration, Role, Submission, User
 
 app = create_app()
 cli = FlaskGroup(create_app=create_app)
@@ -104,16 +104,16 @@ def seed_db():
     db.session.commit()
 
     first_names = [
-            "Harry",
-            "Amelia",
-            "Oliver",
-            "Jack",
+        "Harry",
+        "Amelia",
+        "Oliver",
+        "Jack",
     ]
     last_names = [
-            "Brown",
-            "Smith",
-            "Patel",
-            "Jones",
+        "Brown",
+        "Smith",
+        "Patel",
+        "Jones",
     ]
 
     for i in range(len(first_names)):
