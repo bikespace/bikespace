@@ -5,8 +5,9 @@ import {useGeocoderQuery} from './_useGeocoderQuery';
 import {getCentroid, torontoBBox} from '@/utils/map-utils';
 import {trackUmamiEvent, titleCase} from '@/utils';
 
-import type {Feature} from 'geojson';
+import type {Feature, FeatureCollection} from 'geojson';
 import type {LngLatLike, MapRef} from 'react-map-gl/dist/esm/exports-maplibre';
+import type {UseQueryResult} from '@tanstack/react-query';
 
 import styles from './geocoder-search.module.scss';
 
@@ -65,6 +66,73 @@ function AnimatedEllipses() {
       <span>.</span>
     </span>
   );
+}
+
+interface SearchResultsProps {
+  isMinimized: boolean;
+  disableResults: boolean;
+  inputValue: string;
+  debouncedInputValue: string;
+  query: UseQueryResult<FeatureCollection | null, Error>;
+  selectedResult: Feature | null;
+  handleSelect: Function;
+}
+
+function SearchResults({
+  isMinimized,
+  disableResults,
+  inputValue,
+  debouncedInputValue,
+  query,
+  selectedResult,
+  handleSelect,
+}: SearchResultsProps) {
+  if (isMinimized || inputValue.length === 0) return null;
+
+  let searchResults;
+  if (query.isFetching || inputValue !== debouncedInputValue) {
+    searchResults = (
+      <div className={styles.geocoderResultPlaceholder}>
+        Searching
+        <AnimatedEllipses />
+      </div>
+    );
+  } else if (query.data) {
+    if (query.data.features.length > 0) {
+      searchResults = query.data.features.map((f, i) => {
+        const properties = f.properties as {
+          [key: string]: string;
+        };
+        return (
+          <GeocoderResult
+            key={i}
+            feature={f}
+            handleSelect={() => handleSelect(f)}
+            isDisabled={disableResults}
+            isSelected={
+              selectedResult?.properties?.osm_id === properties.osm_id &&
+              selectedResult?.properties?.osm_type === properties.osm_type
+            }
+          />
+        );
+      });
+    } else {
+      searchResults = (
+        <div className={styles.geocoderResultPlaceholder}>No results found</div>
+      );
+    }
+  } else {
+    searchResults = (
+      <div className={styles.geocoderResultPlaceholder}>Search Error</div>
+    );
+    trackUmamiEvent('parking-map-geosearch-error', {
+      query: debouncedInputValue,
+      apiErrorName: query.error?.name ?? '',
+      apiErrorMessage: query.error?.message ?? '',
+    });
+  }
+
+  return <div className={styles.geocoderResults}>{searchResults}</div>;
 }
 
 interface GeocoderSearchProps {
@@ -133,57 +201,6 @@ export function GeocoderSearch({
     setInputValue((name ? `${name}, ` : '') + address);
   }, [isMinimized]);
 
-  function SearchResults() {
-    if (isMinimized || inputValue.length === 0) return null;
-
-    let searchResults;
-    if (query.isFetching || inputValue !== debouncedInputValue) {
-      searchResults = (
-        <div className={styles.geocoderResultPlaceholder}>
-          Searching
-          <AnimatedEllipses />
-        </div>
-      );
-    } else if (query.data) {
-      if (query.data.features.length > 0) {
-        searchResults = query.data.features.map((f, i) => {
-          const properties = f.properties as {
-            [key: string]: string;
-          };
-          return (
-            <GeocoderResult
-              key={i}
-              feature={f}
-              handleSelect={() => handleSelect(f)}
-              isDisabled={!map}
-              isSelected={
-                selectedResult?.properties?.osm_id === properties.osm_id &&
-                selectedResult?.properties?.osm_type === properties.osm_type
-              }
-            />
-          );
-        });
-      } else {
-        searchResults = (
-          <div className={styles.geocoderResultPlaceholder}>
-            No results found
-          </div>
-        );
-      }
-    } else {
-      searchResults = (
-        <div className={styles.geocoderResultPlaceholder}>Search Error</div>
-      );
-      trackUmamiEvent('parking-map-geosearch-error', {
-        query: debouncedInputValue,
-        apiErrorName: query.error?.name ?? '',
-        apiErrorMessage: query.error?.message ?? '',
-      });
-    }
-
-    return <div className={styles.geocoderResults}>{searchResults}</div>;
-  }
-
   function handleSelect(feature: Feature) {
     setSelectedResult(feature);
     trackUmamiEvent('parking-map-select-geosearch-result');
@@ -212,7 +229,15 @@ export function GeocoderSearch({
           </button>
         ) : null}
       </div>
-      <SearchResults />
+      <SearchResults
+        isMinimized={isMinimized}
+        disableResults={!map}
+        inputValue={inputValue}
+        debouncedInputValue={debouncedInputValue}
+        query={query}
+        selectedResult={selectedResult}
+        handleSelect={handleSelect}
+      />
     </div>
   );
 }
