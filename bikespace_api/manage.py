@@ -1,6 +1,7 @@
 import os
 import time
 
+from dotenv import load_dotenv
 from flask.cli import FlaskGroup
 from sqlalchemy_utils import database_exists, create_database, drop_database
 
@@ -11,6 +12,7 @@ from flask_security.utils import hash_password
 import random
 import string
 
+load_dotenv()
 app = create_app()
 cli = FlaskGroup(create_app=create_app)
 user_datastore = create_userdatastore(db, User, Role)
