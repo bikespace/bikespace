@@ -30,8 +30,8 @@ class AdminRolesModelView(ModelView):
 
 
 class AdminUsersModelView(ModelView):
+    can_export = True
     column_hide_backrefs = False
-    form_excluded_columns = ('fs_uniquifier')
     column_list = ("first_name", "last_name", "email", "active", "roles")
     column_labels = {
         "first_name": "First Name",
@@ -40,6 +40,7 @@ class AdminUsersModelView(ModelView):
         "active": "Active",
         "roles": "Roles",
     }
+    form_excluded_columns = ["fs_uniquifier", "password", "confirmed_at"]
 
     def is_accessible(self):
         return (
@@ -67,6 +68,8 @@ class AdminUsersModelView(ModelView):
 
 
 class AdminSubmissionModelView(ModelView):
+    can_export = True
+
     def is_accessible(self):
         return (
             current_user.is_active
