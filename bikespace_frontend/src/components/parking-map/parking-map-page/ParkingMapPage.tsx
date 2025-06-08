@@ -228,34 +228,35 @@ export function ParkingMapPage() {
       <Sidebar isOpen={sidebarIsOpen} setIsOpen={setSidebarIsOpen}>
         <div className={styles.sideBarContainer}>
           {/* <p>{`Zoom: ${zoomLevel}`}</p> */}
-          <div className={styles.ContentHeading}>
+          <div className={styles.ContentCard}>
+            <div className={styles.ContentHeading}>
+              <h2 className={styles.cardHeading}>Bike Parking Map</h2>
+            </div>
             {parkingGroupSelected.length > 0 ? (
-              <>
-                <h2 className={styles.cardHeading}>Selected Features</h2>
-                <SidebarButton
-                  onClick={handleFeatureSelectionClear}
-                  umamiEvent="parking-map-clear-selection"
-                >
-                  Clear Selection
-                </SidebarButton>
-              </>
+              <SidebarButton
+                onClick={handleFeatureSelectionClear}
+                umamiEvent="parking-map-clear-selection"
+              >
+                Clear Selection
+              </SidebarButton>
             ) : (
-              <p>
-                Click on a feature to see more information or zoom in for more details
+              <p className={styles.cardBody}>
+                Click on a feature to see more information or zoom in for more
+                details
               </p>
             )}
+            {parkingGroupSelected.map(f => (
+              <ParkingFeatureDescription
+                feature={f}
+                key={f.id}
+                selected={parkingSelectedIDs.includes(f.id)}
+                hovered={parkingHoveredIDs.includes(f.id)}
+                handleClick={handleFeatureSelection}
+                handleHover={handleFeatureHover}
+                handleUnHover={handleFeatureUnHover}
+              />
+            ))}
           </div>
-          {parkingGroupSelected.map(f => (
-            <ParkingFeatureDescription
-              feature={f}
-              key={f.id}
-              selected={parkingSelectedIDs.includes(f.id)}
-              hovered={parkingHoveredIDs.includes(f.id)}
-              handleClick={handleFeatureSelection}
-              handleHover={handleFeatureHover}
-              handleUnHover={handleFeatureUnHover}
-            />
-          ))}
           <GeocoderSearch
             map={mapRef.current}
             isMinimized={geoSearchIsMinimized}

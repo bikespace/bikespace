@@ -199,49 +199,52 @@ export function ParkingFeatureDescription({
   }
 
   return (
-    <div
-      className={
-        hovered || selected
-          ? styles.featureDescriptionSelected
-          : styles.featureDescription
-      }
-      onMouseEnter={(e: React.MouseEvent) => handleHover(e, feature)}
-      onMouseLeave={() => handleUnHover()}
-    >
-      <FeatureHeading bicycle_parking={bicycle_parking} capacity={capacity} />
-      <FeatureDescription description={description} />
-      <FeatureCovered covered={covered} />
-      <FeatureCargoBikeFriendly feature={feature} />
-      <FeatureHasFee fee={fee} />
-      <FeatureImageLink image={image} />
-      <FeatureOperator operator={operator} />
-      <SourceLink feature={feature} />
-      <div className={styles.featureDescriptionControls}>
-        <SidebarButton
-          onClick={(e: React.MouseEvent) => handleClick(e, feature)}
-          disabled={selected}
-          umamiEvent="parking-feature-select-on-map"
-        >
-          Select{selected ? 'ed' : ''} on Map
-        </SidebarButton>
-        <SidebarButton
-          onClick={() => setShowAllData(!showAllData)}
-          aria-expanded={showAllData ? 'true' : 'false'}
-          umamiEvent={
-            showAllData
-              ? 'parking-feature-show-all-data'
-              : 'parking-feature-hide-all-data'
-          }
-        >
-          {showAllData ? 'Hide' : 'Show'} all Data
-          <img
-            src={showAllData ? chevronUp.src : chevronDown.src}
-            alt=""
-            style={{paddingLeft: 4}}
-          />
-        </SidebarButton>
+    <>
+      <div
+        className={
+          hovered || selected
+            ? styles.featureDescriptionSelected
+            : styles.featureDescription
+        }
+        onMouseEnter={(e: React.MouseEvent) => handleHover(e, feature)}
+        onMouseLeave={() => handleUnHover()}
+      >
+        <FeatureHeading bicycle_parking={bicycle_parking} capacity={capacity} />
+        <FeatureDescription description={description} />
+        <FeatureCovered covered={covered} />
+        <FeatureCargoBikeFriendly feature={feature} />
+        <FeatureHasFee fee={fee} />
+        <FeatureImageLink image={image} />
+        <FeatureOperator operator={operator} />
+        <SourceLink feature={feature} />
+        <div className={styles.featureDescriptionControls}>
+          <SidebarButton
+            onClick={(e: React.MouseEvent) => handleClick(e, feature)}
+            disabled={selected}
+            umamiEvent="parking-feature-select-on-map"
+          >
+            Select{selected ? 'ed' : ''} on Map
+          </SidebarButton>
+          <SidebarButton
+            onClick={() => setShowAllData(!showAllData)}
+            aria-expanded={showAllData ? 'true' : 'false'}
+            umamiEvent={
+              showAllData
+                ? 'parking-feature-show-all-data'
+                : 'parking-feature-hide-all-data'
+            }
+          >
+            {showAllData ? 'Hide' : 'Show'} All Data
+            <img
+              src={showAllData ? chevronUp.src : chevronDown.src}
+              alt=""
+              style={{paddingLeft: 4}}
+            />
+          </SidebarButton>
+        </div>
+        <AllData feature={feature} />
       </div>
-      <AllData feature={feature} />
-    </div>
+      <div className={styles.divider}></div>
+    </>
   );
 }
