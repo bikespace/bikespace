@@ -13,15 +13,18 @@ import {GeocoderSearch} from './GeocoderSearch';
 
 import testGeoSearchResult from '@/__test__/test_data/testGeoSearchResult.json';
 
+const mockGetCenter: jest.Mock<{lng: number; lat: number} | null> = jest.fn(
+  () => ({
+    lng: defaultMapCenter.longitude,
+    lat: defaultMapCenter.latitude,
+  })
+);
 jest.mock('maplibre-gl', () => {
   const mockMap = {
     addControl: jest.fn(),
     on: jest.fn(),
     remove: jest.fn(),
-    getCenter: jest.fn(() => ({
-      lng: defaultMapCenter.longitude,
-      lat: defaultMapCenter.latitude,
-    })),
+    getCenter: () => mockGetCenter(),
     flyTo: jest.fn(),
     // Add other methods you use as needed
   };
@@ -67,41 +70,46 @@ jest.mock('@/utils', () => {
 });
 
 describe('GeocoderSearch', () => {
-  test('Component renders correctly with search and clear interactions', async () => {
-    const user = userEvent.setup();
-    render(
-      <GeocoderSearch
-        mapRef={mockMapRef}
-        isMinimized={false}
-        setIsMinimized={jest.fn()}
-      />
-    );
+  test.each([false, true])(
+    'Component renders correctly with search and clear interactions; map.getCenter() fails: %p',
+    async getCenterFails => {
+      const user = userEvent.setup();
+      render(
+        <GeocoderSearch
+          mapRef={mockMapRef}
+          isMinimized={false}
+          setIsMinimized={jest.fn()}
+        />
+      );
 
-    // expect no results when input is blank
-    const searchBox = screen.getByRole('textbox');
-    expect(screen.queryByRole('button')).toBeNull();
+      if (getCenterFails) mockGetCenter.mockImplementation(() => null);
 
-    // expect loading indicator while results are queried
-    await user.type(searchBox, 'city');
-    expect(searchBox.getAttribute('value')).toBe('city');
-    await waitFor(() =>
-      expect(screen.getByText(/searching/i)).toBeInTheDocument()
-    );
+      // expect no results when input is blank
+      const searchBox = screen.getByRole('textbox');
+      expect(screen.queryByRole('button')).toBeNull();
 
-    // results should load at some point
-    await waitFor(() =>
-      // one button for clear results plus n buttons for results themselves
-      expect(screen.getAllByRole('button').length).toBeGreaterThan(1)
-    );
+      // expect loading indicator while results are queried
+      await user.type(searchBox, 'city');
+      expect(searchBox.getAttribute('value')).toBe('city');
+      await waitFor(() =>
+        expect(screen.getByText(/searching/i)).toBeInTheDocument()
+      );
 
-    // clearing the results should remove all buttons and blank the input
-    const clearResultsButton = screen.getByRole('button', {
-      name: 'Clear Location Search',
-    });
-    await user.click(clearResultsButton);
-    expect(screen.queryByRole('button')).toBeNull();
-    expect(searchBox.getAttribute('value')).toBe('');
-  });
+      // results should load at some point
+      await waitFor(() =>
+        // one button for clear results plus n buttons for results themselves
+        expect(screen.getAllByRole('button').length).toBeGreaterThan(1)
+      );
+
+      // clearing the results should remove all buttons and blank the input
+      const clearResultsButton = screen.getByRole('button', {
+        name: 'Clear Location Search',
+      });
+      await user.click(clearResultsButton);
+      expect(screen.queryByRole('button')).toBeNull();
+      expect(searchBox.getAttribute('value')).toBe('');
+    }
+  );
 
   test('Component minimizes when requested', async () => {
     const user = userEvent.setup();
