@@ -5,6 +5,7 @@ import {useGeocoderQuery} from './_useGeocoderQuery';
 import {getCentroid, torontoBBox} from '@/utils/map-utils';
 import {trackUmamiEvent, titleCase} from '@/utils';
 
+import type {RefObject} from 'react';
 import type {Feature, FeatureCollection} from 'geojson';
 import type {LngLatLike, MapRef} from 'react-map-gl/dist/esm/exports-maplibre';
 import type {UseQueryResult} from '@tanstack/react-query';
@@ -136,7 +137,7 @@ function SearchResults({
 }
 
 interface GeocoderSearchProps {
-  map: MapRef | null;
+  mapRef: RefObject<MapRef>;
   isMinimized: boolean;
   setIsMinimized: Function;
   inputTimeOut?: number;
@@ -146,7 +147,7 @@ interface GeocoderSearchProps {
 }
 
 export function GeocoderSearch({
-  map,
+  mapRef,
   isMinimized,
   setIsMinimized,
   inputTimeOut = 300,
@@ -154,6 +155,8 @@ export function GeocoderSearch({
   defaultZoom = 17,
   bbox = torontoBBox.getURLParams(),
 }: GeocoderSearchProps) {
+  const map = mapRef.current;
+
   // debouncedInputValue only updates every inputTimeout to minimize API requests
   const [inputValue, setInputValue] = useState('');
   const [debouncedInputValue, setDebouncedInputValue] = useState('');

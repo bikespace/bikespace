@@ -107,14 +107,6 @@ export function ParkingMapPage() {
       });
     });
   }, []);
-  useEffect(() => {
-    if (!mapRef.current) return;
-    mapRef.current.setCenter([
-      defaultLocation.longitude,
-      defaultLocation.latitude,
-    ] as LngLatLike);
-    mapRef.current.setZoom(14);
-  }, [defaultLocation, mapRef.current]);
 
   function zoomAndFlyTo(features: MapGeoJSONFeature[], zoomLevel = 18) {
     // calculate bounds and test camera fit and center
@@ -255,7 +247,7 @@ export function ParkingMapPage() {
             ))}
           </div>
           <GeocoderSearch
-            map={mapRef.current}
+            mapRef={mapRef}
             isMinimized={geoSearchIsMinimized}
             setIsMinimized={setGeoSearchIsMinimized}
           />
