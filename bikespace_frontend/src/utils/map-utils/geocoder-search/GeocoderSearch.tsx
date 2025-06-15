@@ -165,6 +165,7 @@ export function GeocoderSearch({
     setIsMinimized(false);
   };
   useEffect(() => {
+    setSelectedResult(null);
     const delayInputTimeoutID = setTimeout(() => {
       setDebouncedInputValue(inputValue);
     }, inputTimeOut);
