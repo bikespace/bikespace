@@ -9,7 +9,7 @@ import {Protocol} from 'pmtiles';
 import {layers, namedFlavor} from '@protomaps/basemaps';
 
 import {trackUmamiEvent} from '@/utils';
-import {GeocoderSearch} from '@/utils/map-utils';
+import {defaultMapCenter, GeocoderSearch} from '@/utils/map-utils';
 
 import {Sidebar} from './sidebar/Sidebar';
 import {SidebarButton} from '@/components/dashboard/sidebar-button';
@@ -98,10 +98,7 @@ export function ParkingMapPage() {
   ) as Array<MapGeoJSONFeature>;
 
   // set starting zoom and position
-  const [defaultLocation, setDefaultLocation] = useState({
-    latitude: 43.65322,
-    longitude: -79.384452,
-  });
+  const [defaultLocation, setDefaultLocation] = useState(defaultMapCenter);
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(position => {
       setDefaultLocation({

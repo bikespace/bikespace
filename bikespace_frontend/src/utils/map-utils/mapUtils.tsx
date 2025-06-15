@@ -96,6 +96,12 @@ export function getSpriteImageWithTextOverlay(
   );
 }
 
+// default map center of Toronto City Hall
+export const defaultMapCenter = {
+  latitude: 43.65322,
+  longitude: -79.384452,
+};
+
 export class BBox {
   xmin: number;
   ymin: number;

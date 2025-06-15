@@ -4,9 +4,11 @@ import {userEvent} from '@testing-library/user-event';
 
 import {Map} from 'maplibre-gl';
 
+import type {RefObject} from 'react';
 import type {MapRef} from 'react-map-gl/dist/esm/exports-maplibre';
 import type {DefinedUseQueryResult} from '@tanstack/react-query';
 
+import {defaultMapCenter} from '@/utils/map-utils';
 import {GeocoderSearch} from './GeocoderSearch';
 
 import testGeoSearchResult from '@/__test__/test_data/testGeoSearchResult.json';
@@ -16,7 +18,10 @@ jest.mock('maplibre-gl', () => {
     addControl: jest.fn(),
     on: jest.fn(),
     remove: jest.fn(),
-    getCenter: jest.fn(() => ({lng: -79.43, lat: 43.76})),
+    getCenter: jest.fn(() => ({
+      lng: defaultMapCenter.longitude,
+      lat: defaultMapCenter.latitude,
+    })),
     flyTo: jest.fn(),
     // Add other methods you use as needed
   };
@@ -33,7 +38,9 @@ jest.mock('maplibre-gl', () => {
 
 const container = document.createElement('div');
 const mockMap = new Map({container});
-const mockMapRef = {...mockMap, getMap: () => mockMap} as MapRef;
+const mockMapRef = {
+  current: {...mockMap, getMap: () => mockMap},
+} as RefObject<MapRef>;
 
 const defaultGeocoderResponse = {
   isFetching: false,
@@ -64,7 +71,7 @@ describe('GeocoderSearch', () => {
     const user = userEvent.setup();
     render(
       <GeocoderSearch
-        map={mockMapRef}
+        mapRef={mockMapRef}
         isMinimized={false}
         setIsMinimized={jest.fn()}
       />
@@ -100,7 +107,7 @@ describe('GeocoderSearch', () => {
     const user = userEvent.setup();
     const {rerender} = render(
       <GeocoderSearch
-        map={mockMapRef}
+        mapRef={mockMapRef}
         isMinimized={false}
         setIsMinimized={jest.fn()}
       />
@@ -118,7 +125,7 @@ describe('GeocoderSearch', () => {
     // minimizing the component should update the input and remove results
     rerender(
       <GeocoderSearch
-        map={mockMapRef}
+        mapRef={mockMapRef}
         isMinimized={true}
         setIsMinimized={jest.fn()}
       />
@@ -141,7 +148,7 @@ describe('GeocoderSearch', () => {
     const user = userEvent.setup();
     render(
       <GeocoderSearch
-        map={mockMapRef}
+        mapRef={mockMapRef}
         isMinimized={false}
         setIsMinimized={jest.fn()}
       />
@@ -163,7 +170,7 @@ describe('GeocoderSearch', () => {
     const user = userEvent.setup();
     render(
       <GeocoderSearch
-        map={mockMapRef}
+        mapRef={mockMapRef}
         isMinimized={false}
         setIsMinimized={jest.fn()}
       />

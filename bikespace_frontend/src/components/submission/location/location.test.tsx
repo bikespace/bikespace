@@ -2,6 +2,8 @@ import React from 'react';
 import {render, screen} from '@testing-library/react';
 import {FormProvider, useForm} from 'react-hook-form';
 
+import {defaultMapCenter} from '@/utils/map-utils';
+
 import {SubmissionSchema} from '../submission-form/schema';
 
 import {Location} from './Location';
@@ -9,10 +11,7 @@ import {Location} from './Location';
 const MockLocation = () => {
   const form = useForm<SubmissionSchema>({
     defaultValues: {
-      location: {
-        latitude: 43.65322,
-        longitude: -79.384452,
-      },
+      location: defaultMapCenter,
     },
   });
 

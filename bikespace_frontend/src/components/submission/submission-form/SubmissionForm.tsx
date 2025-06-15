@@ -2,6 +2,7 @@ import {useState} from 'react';
 import {useForm, FormProvider} from 'react-hook-form';
 
 import {ParkingDuration} from '@/interfaces/Submission';
+import {defaultMapCenter} from '@/utils/map-utils';
 
 import {SubmissionSchema, submissionSchemaResolver} from './schema';
 
@@ -15,11 +16,7 @@ export function SubmissionForm() {
   const form = useForm<SubmissionSchema>({
     defaultValues: {
       issues: [],
-      location: {
-        // default location is the City Hall
-        latitude: 43.65322,
-        longitude: -79.384452,
-      },
+      location: defaultMapCenter,
       parkingTime: {
         date: new Date(),
         parkingDuration: ParkingDuration.Minutes,
