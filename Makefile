@@ -81,7 +81,6 @@ test-api: setup-py launch-db db-test-server
 	export TEST_DATABASE_URI=postgresql://postgres:postgres@localhost:5432/bikespace_test && \
 	cd $(BIKESPACE_API_DIR) && \
 	$(PYTHON) $(MANAGE_PY) recreate-db && \
-	$(PYTHON) $(MANAGE_PY) db downgrade base --directory $(BIKESPACE_DB_MIGRATIONS) && \
 	$(PYTHON) $(MANAGE_PY) db upgrade --directory $(BIKESPACE_DB_MIGRATIONS) && \
 	$(PYTHON) $(MANAGE_PY) seed-db && \
 	$(PYTHON) -m pytest --cov=bikespace_api --cov-report lcov
@@ -92,7 +91,6 @@ test-api-terminal: setup-py launch-db db-test-server
 	export TEST_DATABASE_URI=postgresql://postgres:postgres@localhost:5432/bikespace_test && \
 	cd $(BIKESPACE_API_DIR) && \
 	$(PYTHON) $(MANAGE_PY) recreate-db && \
-	$(PYTHON) $(MANAGE_PY) db downgrade base --directory $(BIKESPACE_DB_MIGRATIONS) && \
 	$(PYTHON) $(MANAGE_PY) db upgrade --directory $(BIKESPACE_DB_MIGRATIONS) && \
 	$(PYTHON) $(MANAGE_PY) seed-db && \
 	$(PYTHON) -m pytest -s --cov=bikespace_api --cov-report term-missing
@@ -107,7 +105,6 @@ migrate-test-db: setup-py launch-db db-test-server
 	export APP_SETTINGS=bikespace_api.config.DevelopmentConfig && \
 	export DATABASE_URL=postgresql://postgres:postgres@localhost:5432/bikespace_dev && \
 	$(PYTHON) $(MANAGE_PY) recreate-db && \
-	$(PYTHON) $(MANAGE_PY) db downgrade base --directory $(BIKESPACE_DB_MIGRATIONS) && \
 	$(PYTHON) $(MANAGE_PY) db upgrade --directory $(BIKESPACE_DB_MIGRATIONS) && \
 	$(PYTHON) $(MANAGE_PY) db check --directory $(BIKESPACE_DB_MIGRATIONS)
 
