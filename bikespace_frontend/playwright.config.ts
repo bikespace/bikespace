@@ -74,7 +74,7 @@ export default defineConfig({
   webServer: [
     {
       cwd: '..',
-      command: 'make run-flask-app-test',
+      command: 'make dev-api-test',
       url: 'http://127.0.0.1:8001',
       stderr: 'pipe',
       reuseExistingServer: !process.env.CI,
