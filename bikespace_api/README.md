@@ -5,18 +5,14 @@ The API service is a python Flask application paired with a Postgres database.
 
 To develop the API locally you'll require the following things:
  - Python version 3.12.0 or greater
- - Docker (docker daemon) running to launch Postgres database container
-
-Several tasks (e.g. running the API locally, running certain tests) require a database to be running, but the make targets will take care of launching a Postgres container for you as long as you have Docker running.
-
-To stop the Postgres container, just run `make stop-db`.
+ - Docker (docker daemon) running to launch API and database containers with docker compose
 
 ## Running the API service
 
 There are various make targets to help run/build tasks.
 Running the backend service:
 ```shell 
-$ make run-flask-app
+$ make dev-api
 ```
 The development server should now be running at `localhost:8000`
 
@@ -71,11 +67,11 @@ In production, migrations are automatically applied on deployment. In developmen
 Creating and applying a migration script:
 
 1. Make and save schema changes, e.g. in `./bikespace_api/bikespace_api/api/models.py`
-2. Run `make migrate-db`. If that doesn't work, try `make db-stamp-heads` first.
+2. Run `make migrate-db`. (A migration file will be generated, you can optionally add a descriptive title using the docstring at the top.)
 3. Run `make upgrade-db` to apply the schema changes to your database.
 
 Testing a migration script:
 
-1. While the api is running for development (e.g. `make run-flask-app`), run `make downgrade-db`. You should see the database revert to the previous schema.
-2. Run `make upgrade-db`. You should see the databse update to the newest schema.
+1. While the api is running for development (e.g. `make dev-api`), run `make downgrade-db`. You should see the database revert to the previous schema.
+2. Run `make upgrade-db`. You should see the database update to the newest schema.
 3. Perform additional tests to confirm that a migrated database returns the correct results in use.
