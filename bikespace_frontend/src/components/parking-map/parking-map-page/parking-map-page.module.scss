@@ -21,23 +21,53 @@
   }
 }
 
-.legend {
-  margin-bottom: 1rem;
-  background-color: white;
-  border: 3px solid $color-primary-d50p;
+.ContentCard {
+  width: 100%;
   border-radius: 4px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 4px;
+  margin-bottom: 8px;
+}
+
+.ContentHeading {
+  width: 100%;
+  border-radius: 4px;
+  margin: 4px;
+  background-color: white;
+}
+
+h2.cardHeading {
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: $color-primary-d50p;
+}
+
+p.cardBody {
+  margin: 4px;
+  margin-top: 0px;
+}
+
+.legend {
+  margin-bottom: 8px;
+  background-color: white;
+  border-radius: 4px;
+  padding: 4px;
 
   summary {
-    padding: 4px;
-    background-color: $color-primary-d50p;
-    color: white;
-    border-bottom: none;
+    height: 2rem;
+    line-height: calc(2rem - 4px); // center text vertically
     font-weight: 600;
+    color: $color-primary-d50p;
+    border-bottom: none;
   }
 
   &[open] summary {
-    margin-bottom: 4px;
     padding-bottom: calc(4px + 3px);
+    margin-bottom: 4px;
+    border-bottom: 2px solid $color-secondary-light-grey;
   }
 
   .legendContent{

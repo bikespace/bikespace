@@ -2,10 +2,8 @@
 
 @mixin base-feature {
   width: 100%;
-  margin-bottom: 1rem;
   padding: 4px;
   background-color: white;
-  border: 3px solid;
   border-radius: 4px;
   text-align: left;
   font-size: 0.9rem;
@@ -38,12 +36,12 @@
 
 .featureDescription {
   @include base-feature;
-  border-color: white;
+  padding: calc(4px + 3px);
 }
 
 .featureDescriptionSelected {
   @include base-feature;
-  border-color: #ed125b;
+  border: 3px solid $color-secondary-red;
 }
 
 .featureDescriptionControls {
@@ -71,5 +69,13 @@
   dt {
     font-weight: bold;
     margin-top: 4px;
+  }
+}
+
+.divider {
+  border-bottom: 2px solid $color-secondary-light-grey;
+
+  &:last-of-type {
+    display: none;
   }
 }

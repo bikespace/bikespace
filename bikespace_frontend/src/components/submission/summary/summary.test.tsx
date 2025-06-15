@@ -4,18 +4,16 @@ import {
   FieldErrors,
   UseFormReturn,
 } from 'react-hook-form';
-import {render, screen, act} from '@testing-library/react';
+import {render, screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import {SubmissionSchema} from '../submission-form/schema';
-
-import {formOrder} from '../constants';
-
 import {ParkingDuration, IssueType} from '@/interfaces/Submission';
-
-import {SubmissionFormController} from '../submission-form-controller';
+import {defaultMapCenter} from '@/utils/map-utils';
 
 import {Summary} from './Summary';
+import {formOrder} from '../constants';
+import {SubmissionSchema} from '../submission-form/schema';
+import {SubmissionFormController} from '../submission-form-controller';
 
 interface WrapperProps {
   errors?: FieldErrors<SubmissionSchema>;
@@ -26,11 +24,7 @@ const MockSummary = ({errors, onSubmit = jest.fn()}: WrapperProps) => {
   const form = useForm<SubmissionSchema>({
     defaultValues: {
       issues: [IssueType.Damaged],
-      location: {
-        // default location is the City Hall
-        latitude: 43.65322,
-        longitude: -79.384452,
-      },
+      location: defaultMapCenter,
       parkingTime: {
         date: new Date(),
         parkingDuration: ParkingDuration.Minutes,
@@ -65,7 +59,7 @@ jest.mock('next/navigation', () => ({
 
 describe('Summary', () => {
   test('Summary text should render correctly', () => {
-    render(<MockSummary />);
+    const {unmount} = render(<MockSummary />);
 
     expect(screen.getByRole('heading', {level: 1})).toHaveTextContent(
       'Summary'
@@ -75,6 +69,9 @@ describe('Summary', () => {
     expect(screen.getByText(/Time:/i));
     expect(screen.getByText(/Parking duration needed:/i));
     expect(screen.getByText(/Comments:/i));
+
+    // prevent state update 'act' error from form validation
+    unmount();
   });
 
   test('Success response status should render correct message', async () => {

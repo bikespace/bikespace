@@ -5,6 +5,7 @@ import {Marker as LeafletMarker, Map as lMap} from 'leaflet';
 import {useWindowSize} from '@uidotdev/usehooks';
 
 import {useStore} from '@/states/store';
+import {defaultMapCenter} from '@/utils/map-utils';
 
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css';
@@ -46,7 +47,7 @@ function Map({submissions}: MapProps) {
 
   return (
     <MapContainer
-      center={[43.733399, -79.376221]}
+      center={[defaultMapCenter.latitude, defaultMapCenter.longitude]}
       zoom={11}
       scrollWheelZoom
       style={{width: '100%', height: '100%'}}
