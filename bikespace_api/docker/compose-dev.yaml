@@ -9,11 +9,10 @@ services:
       db:
         condition: service_healthy
         restart: true
+    env_file: "../.env"
     environment:
       APP_SETTINGS: "bikespace_api.config.DevelopmentConfig"
       DATABASE_URL: "postgresql://postgres:devpwd@db/bikespace_dev"
-      BIKESPACE_SECRET_KEY: $BIKESPACE_SECRET_KEY
-      BIKESPACE_SECURITY_PASSWORD_SALT: $BIKESPACE_SECURITY_PASSWORD_SALT
       FLASK_DEBUG: "true"
       FLASK_RUN_PORT: 8000
     ports:
