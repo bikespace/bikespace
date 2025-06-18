@@ -5,6 +5,7 @@ import {
   IssueType,
   ParkingDuration,
 } from '@/interfaces/Submission';
+import {defaultMapCenter} from '@/utils/map-utils';
 
 import {FeedSubmissionItem} from './FeedSubmissionItem';
 
@@ -21,8 +22,8 @@ jest.mock('next/navigation', () => ({
 
 const mockSubmission: SubmissionApiPayload = {
   id: 123,
-  latitude: 43.65,
-  longitude: -79.4,
+  latitude: defaultMapCenter.latitude,
+  longitude: defaultMapCenter.longitude,
   issues: [IssueType.Damaged],
   parking_time: '2025-01-01 23:00:00', // assumes UTC time
   parking_duration: ParkingDuration.Minutes,

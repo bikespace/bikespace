@@ -9,8 +9,10 @@ import {Protocol} from 'pmtiles';
 import {layers, namedFlavor} from '@protomaps/basemaps';
 
 import {trackUmamiEvent} from '@/utils';
+import {defaultMapCenter, GeocoderSearch} from '@/utils/map-utils';
 
 import {Sidebar} from './sidebar/Sidebar';
+import {SidebarButton} from '@/components/dashboard/sidebar-button';
 import {
   ParkingFeatureDescription,
   parkingInteractiveLayers,
@@ -66,6 +68,8 @@ export function uniqueBy(a: Array<Object>, getKey: Function): Array<Object> {
 export function ParkingMapPage() {
   const [zoomLevel, setZoomLevel] = useState<number>(12);
   const [sidebarIsOpen, setSidebarIsOpen] = useState<boolean>(true);
+  const [geoSearchIsMinimized, setGeoSearchIsMinimized] =
+    useState<boolean>(false);
 
   const mapRef = useRef<MapRef>(null);
 
@@ -94,10 +98,7 @@ export function ParkingMapPage() {
   ) as Array<MapGeoJSONFeature>;
 
   // set starting zoom and position
-  const [defaultLocation, setDefaultLocation] = useState({
-    latitude: 43.65322,
-    longitude: -79.384452,
-  });
+  const [defaultLocation, setDefaultLocation] = useState(defaultMapCenter);
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(position => {
       setDefaultLocation({
@@ -106,14 +107,6 @@ export function ParkingMapPage() {
       });
     });
   }, []);
-  useEffect(() => {
-    if (!mapRef.current) return;
-    mapRef.current.setCenter([
-      defaultLocation.longitude,
-      defaultLocation.latitude,
-    ] as LngLatLike);
-    mapRef.current.setZoom(14);
-  }, [defaultLocation, mapRef.current]);
 
   function zoomAndFlyTo(features: MapGeoJSONFeature[], zoomLevel = 18) {
     // calculate bounds and test camera fit and center
@@ -152,13 +145,22 @@ export function ParkingMapPage() {
 
     if (features.length > 0) {
       trackUmamiEvent('parking-map-feature-click');
+      setGeoSearchIsMinimized(true);
       if (sidebarIsOpen) {
         zoomAndFlyTo(features);
       } else {
         setSidebarIsOpen(true);
         mapRef.current!.once('resize', () => zoomAndFlyTo(features));
       }
+    } else {
+      setGeoSearchIsMinimized(false);
     }
+  }
+
+  function handleFeatureSelectionClear() {
+    setParkingGroupSelected([]);
+    setParkingSelected([]);
+    setGeoSearchIsMinimized(false);
   }
 
   function handleFeatureSelection(
@@ -215,6 +217,40 @@ export function ParkingMapPage() {
       <Sidebar isOpen={sidebarIsOpen} setIsOpen={setSidebarIsOpen}>
         <div className={styles.sideBarContainer}>
           {/* <p>{`Zoom: ${zoomLevel}`}</p> */}
+          <div className={styles.ContentCard}>
+            <div className={styles.ContentHeading}>
+              <h2 className={styles.cardHeading}>Bike Parking Map</h2>
+            </div>
+            {parkingGroupSelected.length > 0 ? (
+              <SidebarButton
+                onClick={handleFeatureSelectionClear}
+                umamiEvent="parking-map-clear-selection"
+              >
+                Clear Selection
+              </SidebarButton>
+            ) : (
+              <p className={styles.cardBody}>
+                Click on a feature to see more information or zoom in for more
+                details
+              </p>
+            )}
+            {parkingGroupSelected.map(f => (
+              <ParkingFeatureDescription
+                feature={f}
+                key={f.id}
+                selected={parkingSelectedIDs.includes(f.id)}
+                hovered={parkingHoveredIDs.includes(f.id)}
+                handleClick={handleFeatureSelection}
+                handleHover={handleFeatureHover}
+                handleUnHover={handleFeatureUnHover}
+              />
+            ))}
+          </div>
+          <GeocoderSearch
+            mapRef={mapRef}
+            isMinimized={geoSearchIsMinimized}
+            setIsMinimized={setGeoSearchIsMinimized}
+          />
           <details
             className={styles.legend}
             open={!(parkingGroupSelected.length > 0)}
@@ -225,24 +261,6 @@ export function ParkingMapPage() {
               <BicycleNetworkLayerLegend />
             </div>
           </details>
-          {parkingGroupSelected.length > 0 ? (
-            parkingGroupSelected.map(f => (
-              <ParkingFeatureDescription
-                feature={f}
-                key={f.id}
-                selected={parkingSelectedIDs.includes(f.id)}
-                hovered={parkingHoveredIDs.includes(f.id)}
-                handleClick={handleFeatureSelection}
-                handleHover={handleFeatureHover}
-                handleUnHover={handleFeatureUnHover}
-              />
-            ))
-          ) : (
-            <p>
-              Click on a feature to see more information or zoom in to see more
-              details
-            </p>
-          )}
         </div>
       </Sidebar>
       <Map
