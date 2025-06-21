@@ -2,7 +2,7 @@ import os
 import time
 
 from flask.cli import FlaskGroup
-from sqlalchemy_utils import database_exists, create_database
+from sqlalchemy_utils import database_exists, create_database, drop_database
 
 from bikespace_api import create_app, db
 from bikespace_api.api.models import Submission, IssueType, ParkingDuration
@@ -28,12 +28,9 @@ def test_db_server():
 
 @cli.command()
 def recreate_db():
-    if not database_exists(app.config["SQLALCHEMY_DATABASE_URI"]):
-        create_database(app.config["SQLALCHEMY_DATABASE_URI"])
-
-    db.drop_all()
-    db.create_all()
-    db.session.commit()
+    if database_exists(app.config["SQLALCHEMY_DATABASE_URI"]):
+        drop_database(app.config["SQLALCHEMY_DATABASE_URI"])
+    create_database(app.config["SQLALCHEMY_DATABASE_URI"])
 
 
 @cli.command()
