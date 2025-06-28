@@ -26,6 +26,7 @@ import {
 } from '@/components/map-layers/BicycleNetwork';
 
 import type {
+  FilterSpecification,
   MapGeoJSONFeature,
   QueryRenderedFeaturesOptions,
 } from 'maplibre-gl';
@@ -71,6 +72,8 @@ export function ParkingMapPage() {
   const [sidebarIsOpen, setSidebarIsOpen] = useState<boolean>(true);
   const [geoSearchIsMinimized, setGeoSearchIsMinimized] =
     useState<boolean>(false);
+  const [parkingLayerFilter, setParkingLayerFilter] =
+    useState<FilterSpecification>(true);
 
   const mapRef = useRef<MapRef>(null);
 
@@ -252,7 +255,10 @@ export function ParkingMapPage() {
             isMinimized={geoSearchIsMinimized}
             setIsMinimized={setGeoSearchIsMinimized}
           />
-          <ParkingMapFilters mapRef={mapRef} />
+          <ParkingMapFilters
+            mapRef={mapRef}
+            setFilter={setParkingLayerFilter}
+          />
           <details
             className={styles.legend}
             open={!(parkingGroupSelected.length > 0)}
@@ -290,6 +296,7 @@ export function ParkingMapPage() {
         <ParkingLayer
           selected={parkingSelectedOrHovered}
           groupSelected={parkingGroupSelected}
+          layerFilter={parkingLayerFilter}
         />
       </Map>
     </main>

@@ -5,16 +5,17 @@ import {useForm} from 'react-hook-form';
 import {parkingSourceId} from '@/components/map-layers/parking';
 
 import type {RefObject} from 'react';
-import type {MapSourceDataEvent} from 'maplibre-gl';
+import type {FilterSpecification, MapSourceDataEvent} from 'maplibre-gl';
 import type {MapRef} from 'react-map-gl/dist/esm/exports-maplibre';
 
 interface ParkingMapFiltersProps {
   mapRef: RefObject<MapRef>;
+  setFilter: React.Dispatch<React.SetStateAction<FilterSpecification>>;
 }
 
 const filterProperty = 'meta_source';
 
-export function ParkingMapFilters({mapRef}: ParkingMapFiltersProps) {
+export function ParkingMapFilters({mapRef, setFilter}: ParkingMapFiltersProps) {
   const {register} = useForm();
 
   const [sourceOptions, setSourceOptions] = useState<Set<string>>(new Set());
@@ -38,6 +39,20 @@ export function ParkingMapFilters({mapRef}: ParkingMapFiltersProps) {
     if (!mapRef.current) return;
     mapRef.current.on('sourcedata', loadData);
   }, [mapRef.current]);
+
+  useEffect(() => {
+    if (!mapRef.current) return;
+    // clear filter if all options are selected
+    if (sourceOptions.isSubsetOf(selectedSourceOptions)) {
+      setFilter(true);
+    } else {
+      setFilter([
+        'in',
+        ['get', filterProperty],
+        ['literal', [...selectedSourceOptions]],
+      ]);
+    }
+  }, [selectedSourceOptions]);
 
   return (
     <>

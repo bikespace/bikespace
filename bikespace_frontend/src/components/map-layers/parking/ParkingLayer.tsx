@@ -4,7 +4,11 @@ import {Layer, Marker, Source, useMap} from 'react-map-gl/maplibre';
 import {getCentroid, getSpriteImageWithTextOverlay} from '@/utils/map-utils';
 
 import type {CircleLayer, SymbolLayer} from 'react-map-gl/maplibre';
-import type {ExpressionSpecification, MapGeoJSONFeature} from 'maplibre-gl';
+import type {
+  ExpressionSpecification,
+  MapGeoJSONFeature,
+  FilterSpecification,
+} from 'maplibre-gl';
 import type {layoutOptions} from '@/utils/map-utils';
 
 import styles from '../legend-tables.module.scss';
@@ -21,9 +25,14 @@ const publicAccessTypes = ['yes', 'permissive', ''];
 interface ParkingLayerProps {
   selected: MapGeoJSONFeature[];
   groupSelected: MapGeoJSONFeature[];
+  layerFilter?: FilterSpecification;
 }
 
-export function ParkingLayer({selected, groupSelected}: ParkingLayerProps) {
+export function ParkingLayer({
+  selected,
+  groupSelected,
+  layerFilter = true,
+}: ParkingLayerProps) {
   const bicycleParkingURL =
     'https://raw.githubusercontent.com/bikespace/parking-map-data/refs/heads/main/Display%20Files/all_sources.geojson';
 
@@ -67,6 +76,7 @@ export function ParkingLayer({selected, groupSelected}: ParkingLayerProps) {
     id: 'bicycle-parking',
     type: 'symbol',
     source: parkingSourceId,
+    filter: layerFilter,
     layout: {
       'icon-image': [
         'match',
@@ -115,6 +125,7 @@ export function ParkingLayer({selected, groupSelected}: ParkingLayerProps) {
     id: 'bicycle-parking-dense',
     type: 'circle',
     source: parkingSourceId,
+    filter: layerFilter,
     paint: {
       'circle-color': [
         'match',
