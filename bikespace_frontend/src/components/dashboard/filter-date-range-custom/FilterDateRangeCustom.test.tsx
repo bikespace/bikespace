@@ -27,11 +27,9 @@ jest.mock('@/states/store', () => ({
 describe('FilterDateRangeCustom', () => {
   const today = new Date();
 
-  beforeEach(() => {
-    render(<FilterDateRangeCustom />);
-  });
-
   test('should render two date inputs and a button', () => {
+    const {unmount} = render(<FilterDateRangeCustom />);
+
     const startDateInput = screen.getByLabelText('Start date:');
     expect(startDateInput.tagName).toEqual('INPUT');
     expect(startDateInput.getAttribute('type')).toEqual('date');
@@ -43,9 +41,14 @@ describe('FilterDateRangeCustom', () => {
     expect(endDateInput.getAttribute('name')).toEqual('to');
 
     expect(screen.getByRole('button')).toHaveTextContent('Apply');
+
+    // prevent state update 'act' error from form validation
+    unmount();
   });
 
   test('initial date input values should be today', () => {
+    const {unmount} = render(<FilterDateRangeCustom />);
+
     const todayDate = today.toISOString().substring(0, 10);
 
     const startDateInput = screen.getByLabelText('Start date:');
@@ -53,9 +56,14 @@ describe('FilterDateRangeCustom', () => {
 
     const endDateInput = screen.getByLabelText('End date:');
     expect(endDateInput).toHaveValue(todayDate);
+
+    // prevent state update 'act' error from form validation
+    unmount();
   });
 
   test('clicking submit should send a correct date filter range and trigger analytics', async () => {
+    render(<FilterDateRangeCustom />);
+
     const year = today.getFullYear();
     const month = today.getMonth();
     const day = today.getDate();
@@ -79,6 +87,8 @@ describe('FilterDateRangeCustom', () => {
   });
 
   test('typing in a date input changes the date', async () => {
+    render(<FilterDateRangeCustom />);
+
     const testDate = '2024-02-02';
 
     const startDateInput = screen.getByLabelText('Start date:');
@@ -90,6 +100,8 @@ describe('FilterDateRangeCustom', () => {
   });
 
   test('dates should be valid and the end date should always equal or exceed the start date', async () => {
+    render(<FilterDateRangeCustom />);
+
     const user = userEvent.setup();
     const startDateInput = screen.getByLabelText('Start date:');
     const endDateInput = screen.getByLabelText('End date:');
