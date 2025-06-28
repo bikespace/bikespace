@@ -11,6 +11,7 @@ import {layers, namedFlavor} from '@protomaps/basemaps';
 import {trackUmamiEvent} from '@/utils';
 import {defaultMapCenter, GeocoderSearch} from '@/utils/map-utils';
 
+import {ParkingMapFilters} from './map-filters/ParkingMapFilters';
 import {Sidebar} from './sidebar/Sidebar';
 import {SidebarButton} from '@/components/dashboard/sidebar-button';
 import {
@@ -251,6 +252,7 @@ export function ParkingMapPage() {
             isMinimized={geoSearchIsMinimized}
             setIsMinimized={setGeoSearchIsMinimized}
           />
+          <ParkingMapFilters mapRef={mapRef} />
           <details
             className={styles.legend}
             open={!(parkingGroupSelected.length > 0)}
