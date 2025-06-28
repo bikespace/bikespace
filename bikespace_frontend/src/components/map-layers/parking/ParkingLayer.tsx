@@ -17,6 +17,7 @@ import parkingSpriteImage from '@/public/parking_sprites/parking_sprites@2x.png'
 import parkingSpriteJSON from '@/public/parking_sprites/parking_sprites@2x.json';
 
 export const parkingSourceId = 'bicycle-parking';
+export const parkingFirstLayerId = 'bicycle-parking-dense';
 export const parkingInteractiveLayers = ['bicycle-parking'];
 
 // access=* values that indicate that bicycle parking is open to the public

@@ -11,7 +11,7 @@ import networkTrail from '@/assets/icons/bicycle_network/network_park_multiuse_t
 import networkUnknown from '@/assets/icons/bicycle_network/network_unknown_lane.svg';
 import networkSharrow from '@/assets/icons/bicycle_network/network_sharrow_unprotected.svg';
 
-export function BicycleNetworkLayer() {
+export function BicycleNetworkLayer({beforeId}: {beforeId?: string}) {
   const bicycleNetworkURL =
     'https://raw.githubusercontent.com/bikespace/parking-map-data/refs/heads/demo-map-app/demo_app/data/cycling-network.geojson';
 
@@ -100,8 +100,8 @@ export function BicycleNetworkLayer() {
 
   return (
     <Source id="bicycle-network" type="geojson" data={bicycleNetworkURL}>
-      <Layer {...bicycleLaneLayer} />
-      <Layer {...bicycleRouteLayer} />
+      <Layer {...bicycleLaneLayer} beforeId={beforeId} />
+      <Layer {...bicycleRouteLayer} beforeId={beforeId} />
     </Source>
   );
 }

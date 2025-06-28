@@ -16,6 +16,7 @@ import {Sidebar} from './sidebar/Sidebar';
 import {SidebarButton} from '@/components/dashboard/sidebar-button';
 import {
   ParkingFeatureDescription,
+  parkingFirstLayerId,
   parkingInteractiveLayers,
   ParkingLayer,
   ParkingLayerLegend,
@@ -74,6 +75,7 @@ export function ParkingMapPage() {
     useState<boolean>(false);
   const [parkingLayerFilter, setParkingLayerFilter] =
     useState<FilterSpecification>(true);
+  const [showBicycleNetwork, setShowBicycleNetwork] = useState<boolean>(true);
 
   const mapRef = useRef<MapRef>(null);
 
@@ -259,6 +261,11 @@ export function ParkingMapPage() {
             mapRef={mapRef}
             setFilter={setParkingLayerFilter}
           />
+          <SidebarButton
+            onClick={() => setShowBicycleNetwork(!showBicycleNetwork)}
+          >
+            {(showBicycleNetwork ? 'Hide' : 'Show') + ' ' + 'Bicycle Network'}
+          </SidebarButton>
           <details
             className={styles.legend}
             open={!(parkingGroupSelected.length > 0)}
@@ -292,12 +299,14 @@ export function ParkingMapPage() {
       >
         <NavigationControl position="top-left" />
         <GeolocateControl position="top-left" />
-        <BicycleNetworkLayer />
         <ParkingLayer
           selected={parkingSelectedOrHovered}
           groupSelected={parkingGroupSelected}
           layerFilter={parkingLayerFilter}
         />
+        {showBicycleNetwork ? (
+          <BicycleNetworkLayer beforeId={parkingFirstLayerId} />
+        ) : null}
       </Map>
     </main>
   );
