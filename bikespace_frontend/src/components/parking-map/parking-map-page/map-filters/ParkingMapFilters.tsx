@@ -58,7 +58,7 @@ export function ParkingMapFilters({mapRef, setFilter}: ParkingMapFiltersProps) {
     <>
       <div>Filter</div>
       <fieldset>
-        <legend>Select Source</legend>
+        <legend>Select {filterProperty}</legend>
         {[...sourceOptions].map(option => (
           <div key={option}>
             <input
