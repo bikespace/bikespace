@@ -12,6 +12,7 @@ import styles from '../legend-tables.module.scss';
 import parkingSpriteImage from '@/public/parking_sprites/parking_sprites@2x.png';
 import parkingSpriteJSON from '@/public/parking_sprites/parking_sprites@2x.json';
 
+export const parkingSourceId = 'bicycle-parking';
 export const parkingInteractiveLayers = ['bicycle-parking'];
 
 // access=* values that indicate that bicycle parking is open to the public
@@ -65,7 +66,7 @@ export function ParkingLayer({selected, groupSelected}: ParkingLayerProps) {
   const parkingLayer: SymbolLayer = {
     id: 'bicycle-parking',
     type: 'symbol',
-    source: 'bicycle-parking',
+    source: parkingSourceId,
     layout: {
       'icon-image': [
         'match',
@@ -113,7 +114,7 @@ export function ParkingLayer({selected, groupSelected}: ParkingLayerProps) {
   const parkingLayerDense: CircleLayer = {
     id: 'bicycle-parking-dense',
     type: 'circle',
-    source: 'bicycle_parking',
+    source: parkingSourceId,
     paint: {
       'circle-color': [
         'match',
@@ -141,7 +142,7 @@ export function ParkingLayer({selected, groupSelected}: ParkingLayerProps) {
   return (
     <>
       <Source
-        id="bicycle-parking"
+        id={parkingSourceId}
         type="geojson"
         data={bicycleParkingURL}
         generateId={true}
