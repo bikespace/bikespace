@@ -1,0 +1,95 @@
+@import '@/styles/variables.module.scss';
+
+.geocoderSearchContainer {
+  padding: 4px;
+  margin-bottom: 8px;
+  border-radius: 4px;
+  background: white;
+}
+
+.geocoderSearchInput {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 4px;
+
+  > input {
+    flex-grow: 1;
+    height: 2rem;
+    border: 0px;
+    font-size: 1rem;
+    text-indent: calc(16px + 4px * 2);
+    background-image: url('/icons/search.svg');
+    background-repeat: no-repeat;
+    background-size: 16px;
+    background-position-y: center;
+    background-position-x: 4px;
+  }
+  > button {
+    display: flex;
+    align-items: center;
+    padding: 0px 8px;
+  }
+}
+
+.geocoderResults {
+  border-top: 2px solid $color-secondary-light-grey;
+  padding-top: 8px;
+}
+
+.geocoderResultPlaceholder {
+  margin: 1px 0px 4px 4px;
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+
+@keyframes wave {
+  0%, 60% {
+      transform: translateY(0);
+  }
+  30% {
+      transform: translateY(-2px);
+  }
+}
+
+.animatedEllipses span {
+  display: inline-block;
+  animation: wave 2s infinite ease-in-out;
+}
+.animatedEllipses span:nth-child(1) {
+  animation-delay: 0s;
+}
+.animatedEllipses span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.animatedEllipses span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+.geocoderResult {
+  margin-bottom: 4px;
+
+  > button {
+    width: 100%;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    text-align: left;
+
+    &:hover {
+      box-shadow: 0 0 0 0.2rem $color-secondary-blue;
+    }
+  
+    &:focus {
+      box-shadow: 0 0 0 0.2rem $color-secondary-blue;
+    }
+  
+    &:active {
+      background-color: $color-secondary-light-grey;
+      box-shadow: 0 0 0 0.2rem $color-secondary-blue;
+    }
+  }
+}
+
+.selectedResult > button {
+  box-shadow: 0 0 0 0.2rem $color-secondary-blue;
+}
