@@ -17,6 +17,35 @@ interface ParkingMapFilterProps {
   setFilter: React.Dispatch<React.SetStateAction<FilterSpecification>>;
 }
 
+function transformPropertyOptions(
+  input: string | undefined,
+  outputFormat:
+    | 'stringValue'
+    | 'description'
+    | 'expressionValue' = 'stringValue'
+): string | null {
+  const edgeCases = {
+    isUndefined: {
+      stringValue: '__undefined__',
+      description: '(not specified)',
+      expressionValue: null,
+    },
+    isBlankString: {
+      stringValue: '__blank__',
+      description: '(blank)',
+      expressionValue: '',
+    },
+  };
+
+  if (input === undefined || input === edgeCases.isUndefined.stringValue) {
+    return edgeCases.isUndefined[outputFormat];
+  } else if (input === '' || input === edgeCases.isBlankString.stringValue) {
+    return edgeCases.isBlankString[outputFormat];
+  } else {
+    return input;
+  }
+}
+
 const defaultFilterProperty = 'meta_source';
 
 export function ParkingMapFilter({mapRef, setFilter}: ParkingMapFilterProps) {
@@ -47,12 +76,20 @@ export function ParkingMapFilter({mapRef, setFilter}: ParkingMapFilterProps) {
     const newPropertyList: Set<string> = new Set(
       features.flatMap(f => Object.keys(f.properties))
     );
-    return [...newPropertyList].sort();
+    return [...newPropertyList].toSorted();
   }, [features]);
 
   const propertyOptions: Set<string> = useMemo(() => {
     const newPropertyOptions: Set<string> = new Set(
-      features.map(f => f.properties[filterProperty] ?? '(undefined)')
+      features
+        .map(
+          f =>
+            transformPropertyOptions(
+              f.properties?.[filterProperty],
+              'stringValue'
+            ) as string
+        )
+        .toSorted()
     );
     return newPropertyOptions;
   }, [features, filterProperty]);
@@ -73,7 +110,12 @@ export function ParkingMapFilter({mapRef, setFilter}: ParkingMapFilterProps) {
       setFilter([
         'in',
         ['get', filterProperty],
-        ['literal', [...selectedPropertyOptions]],
+        [
+          'literal',
+          [...selectedPropertyOptions].map(option =>
+            transformPropertyOptions(option, 'expressionValue')
+          ),
+        ],
       ]);
     }
   }, [selectedPropertyOptions]);
@@ -112,7 +154,9 @@ export function ParkingMapFilter({mapRef, setFilter}: ParkingMapFilterProps) {
                 setSelectedPropertyOptions(new Set(selectedPropertyOptions));
               }}
             />
-            <label htmlFor={option}>{option}</label>
+            <label htmlFor={option}>
+              {transformPropertyOptions(option, 'description')}
+            </label>
           </div>
         ))}
       </fieldset>
