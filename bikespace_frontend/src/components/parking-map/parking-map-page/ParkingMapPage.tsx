@@ -11,10 +11,12 @@ import {layers, namedFlavor} from '@protomaps/basemaps';
 import {trackUmamiEvent} from '@/utils';
 import {defaultMapCenter, GeocoderSearch} from '@/utils/map-utils';
 
+import {ParkingMapFilter} from './map-filters/ParkingMapFilter';
 import {Sidebar} from './sidebar/Sidebar';
 import {SidebarButton} from '@/components/dashboard/sidebar-button';
 import {
   ParkingFeatureDescription,
+  parkingFirstLayerId,
   parkingInteractiveLayers,
   ParkingLayer,
   ParkingLayerLegend,
@@ -25,6 +27,7 @@ import {
 } from '@/components/map-layers/BicycleNetwork';
 
 import type {
+  FilterSpecification,
   MapGeoJSONFeature,
   QueryRenderedFeaturesOptions,
 } from 'maplibre-gl';
@@ -70,6 +73,9 @@ export function ParkingMapPage() {
   const [sidebarIsOpen, setSidebarIsOpen] = useState<boolean>(true);
   const [geoSearchIsMinimized, setGeoSearchIsMinimized] =
     useState<boolean>(false);
+  const [parkingLayerFilter, setParkingLayerFilter] =
+    useState<FilterSpecification>(true);
+  const [showBicycleNetwork, setShowBicycleNetwork] = useState<boolean>(true);
 
   const mapRef = useRef<MapRef>(null);
 
@@ -251,6 +257,13 @@ export function ParkingMapPage() {
             isMinimized={geoSearchIsMinimized}
             setIsMinimized={setGeoSearchIsMinimized}
           />
+          <ParkingMapFilter mapRef={mapRef} setFilter={setParkingLayerFilter} />
+          <SidebarButton
+            onClick={() => setShowBicycleNetwork(!showBicycleNetwork)}
+            style={{margin: '1rem 0'}}
+          >
+            {(showBicycleNetwork ? 'Hide' : 'Show') + ' ' + 'Bicycle Network'}
+          </SidebarButton>
           <details
             className={styles.legend}
             open={!(parkingGroupSelected.length > 0)}
@@ -284,11 +297,14 @@ export function ParkingMapPage() {
       >
         <NavigationControl position="top-left" />
         <GeolocateControl position="top-left" />
-        <BicycleNetworkLayer />
         <ParkingLayer
           selected={parkingSelectedOrHovered}
           groupSelected={parkingGroupSelected}
+          layerFilter={parkingLayerFilter}
         />
+        {showBicycleNetwork ? (
+          <BicycleNetworkLayer beforeId={parkingFirstLayerId} />
+        ) : null}
       </Map>
     </main>
   );
