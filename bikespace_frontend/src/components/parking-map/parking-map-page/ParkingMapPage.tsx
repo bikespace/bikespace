@@ -11,7 +11,7 @@ import {layers, namedFlavor} from '@protomaps/basemaps';
 import {trackUmamiEvent} from '@/utils';
 import {defaultMapCenter, GeocoderSearch} from '@/utils/map-utils';
 
-import {ParkingMapFilter} from './map-filters/ParkingMapFilters';
+import {ParkingMapFilter} from './map-filters/ParkingMapFilter';
 import {Sidebar} from './sidebar/Sidebar';
 import {SidebarButton} from '@/components/dashboard/sidebar-button';
 import {
