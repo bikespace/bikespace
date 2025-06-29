@@ -3,6 +3,7 @@ import React, {useEffect, useState, useMemo} from 'react';
 import {useForm} from 'react-hook-form';
 
 import {parkingSourceId} from '@/components/map-layers/parking';
+import {SidebarButton} from '@/components/dashboard/sidebar-button';
 
 import type {RefObject} from 'react';
 import type {
@@ -138,6 +139,16 @@ export function ParkingMapFilter({mapRef, setFilter}: ParkingMapFilterProps) {
           </option>
         ))}
       </select>
+      <div style={{display: 'flex', margin: '4px 0', gap: '4px'}}>
+        <SidebarButton
+          onClick={() => setSelectedPropertyOptions(new Set(propertyOptions))}
+        >
+          Select All
+        </SidebarButton>
+        <SidebarButton onClick={() => setSelectedPropertyOptions(new Set())}>
+          Clear All
+        </SidebarButton>
+      </div>
       <fieldset>
         <legend>Select {filterProperty}</legend>
         {[...propertyOptions].map(option => (
