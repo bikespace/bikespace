@@ -55,7 +55,7 @@ export function ParkingMapFilter({mapRef, setFilter}: ParkingMapFilterProps) {
       features.map(f => f.properties[filterProperty] ?? '(undefined)')
     );
     return newPropertyOptions;
-  }, [filterProperty]);
+  }, [features, filterProperty]);
 
   // update property options and reset filter when features or selection changes
   useEffect(() => {
