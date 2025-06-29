@@ -11,7 +11,7 @@ import {layers, namedFlavor} from '@protomaps/basemaps';
 import {trackUmamiEvent} from '@/utils';
 import {defaultMapCenter, GeocoderSearch} from '@/utils/map-utils';
 
-import {ParkingMapFilters} from './map-filters/ParkingMapFilters';
+import {ParkingMapFilter} from './map-filters/ParkingMapFilters';
 import {Sidebar} from './sidebar/Sidebar';
 import {SidebarButton} from '@/components/dashboard/sidebar-button';
 import {
@@ -257,12 +257,10 @@ export function ParkingMapPage() {
             isMinimized={geoSearchIsMinimized}
             setIsMinimized={setGeoSearchIsMinimized}
           />
-          <ParkingMapFilters
-            mapRef={mapRef}
-            setFilter={setParkingLayerFilter}
-          />
+          <ParkingMapFilter mapRef={mapRef} setFilter={setParkingLayerFilter} />
           <SidebarButton
             onClick={() => setShowBicycleNetwork(!showBicycleNetwork)}
+            style={{margin: '1rem 0'}}
           >
             {(showBicycleNetwork ? 'Hide' : 'Show') + ' ' + 'Bicycle Network'}
           </SidebarButton>
