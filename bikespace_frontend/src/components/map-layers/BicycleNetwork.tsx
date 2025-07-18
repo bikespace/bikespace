@@ -12,8 +12,7 @@ import networkUnknown from '@/assets/icons/bicycle_network/network_unknown_lane.
 import networkSharrow from '@/assets/icons/bicycle_network/network_sharrow_unprotected.svg';
 
 export function BicycleNetworkLayer() {
-  const bicycleNetworkURL =
-    'https://raw.githubusercontent.com/bikespace/parking-map-data/refs/heads/demo-map-app/demo_app/data/cycling-network.geojson';
+  const bicycleNetworkURL = process.env.DATA_BICYCLE_NETWORK;
 
   const bicycleLaneLayer: LineLayer = {
     id: 'bicycle-lanes',
