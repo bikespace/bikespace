@@ -11,6 +11,36 @@ import networkTrail from '@/assets/icons/bicycle_network/network_park_multiuse_t
 import networkUnknown from '@/assets/icons/bicycle_network/network_unknown_lane.svg';
 import networkSharrow from '@/assets/icons/bicycle_network/network_sharrow_unprotected.svg';
 
+const bikeLaneTypes = {
+  protected: [
+    'Cycle Track',
+    'Cycle Track - Contraflow',
+    'Bi-Directional Cycle Track',
+  ],
+  painted: [
+    'Bike Lane',
+    'Bike Lane - Buffered',
+    'Bike Lane - Contraflow',
+    'Contra-Flow Bike Lane',
+    'Contraflow',
+  ],
+  multiUseTrails: [
+    'Multi-Use Trail',
+    'Multi-Use Trail - Boulevard',
+    'Multi-Use Trail - Connector',
+    'Multi-Use Trail - Entrance',
+    'Multi-Use Trail - Existing Connector',
+    'Park Road',
+  ],
+  unprotectedConnectors: [
+    'Sharrows',
+    'Sharrows - Arterial',
+    'Sharrows - Arterial - Connector',
+    'Sharrows - Wayfinding',
+    'Signed Route (No Pavement Markings)',
+  ],
+};
+
 export function BicycleNetworkLayer() {
   const bicycleNetworkURL = process.env.DATA_BICYCLE_NETWORK;
 
@@ -21,12 +51,7 @@ export function BicycleNetworkLayer() {
     filter: [
       'match',
       ['get', 'INFRA_HIGHORDER'],
-      [
-        'Sharrows - Wayfinding',
-        'Sharrows - Arterial - Connector',
-        'Signed Route (No Pavement Markings)',
-        'Sharrows',
-      ],
+      bikeLaneTypes.unprotectedConnectors,
       false,
       true,
     ],
@@ -38,22 +63,11 @@ export function BicycleNetworkLayer() {
       'line-color': [
         'match',
         ['get', 'INFRA_HIGHORDER'],
-        [
-          'Cycle Track',
-          'Cycle Track - Contraflow',
-          'Bi-Directional Cycle Track',
-        ],
+        bikeLaneTypes.protected,
         'hsl(137, 68%, 23%)',
-        [
-          'Multi-Use Trail - Boulevard',
-          'Multi-Use Trail - Entrance',
-          'Multi-Use Trail - Existing Connector',
-          'Multi-Use Trail - Connector',
-          'Multi-Use Trail',
-          'Park Road',
-        ],
+        bikeLaneTypes.multiUseTrails,
         '#8c5535',
-        ['Bike Lane - Buffered', 'Bike Lane', 'Bike Lane - Contraflow'],
+        bikeLaneTypes.painted,
         'hsl(137, 68%, 36%)',
         '#2c3b42',
       ],
@@ -67,12 +81,7 @@ export function BicycleNetworkLayer() {
     filter: [
       'match',
       ['get', 'INFRA_HIGHORDER'],
-      [
-        'Sharrows - Wayfinding',
-        'Sharrows - Arterial - Connector',
-        'Signed Route (No Pavement Markings)',
-        'Sharrows',
-      ],
+      bikeLaneTypes.unprotectedConnectors,
       true,
       false,
     ],
@@ -85,12 +94,7 @@ export function BicycleNetworkLayer() {
       'line-color': [
         'match',
         ['get', 'INFRA_HIGHORDER'],
-        [
-          'Sharrows - Wayfinding',
-          'Sharrows - Arterial - Connector',
-          'Signed Route (No Pavement Markings)',
-          'Sharrows',
-        ],
+        bikeLaneTypes.unprotectedConnectors,
         'hsl(137, 56%, 62%)',
         '#2c3b42',
       ],
