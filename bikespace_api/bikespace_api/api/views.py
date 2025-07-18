@@ -3,7 +3,7 @@ from flask_admin import AdminIndexView
 from flask_admin.contrib.sqla import ModelView 
 from flask_security import current_user
 from flask_security.utils import hash_password
-from wtforms import SelectField
+from wtforms import SelectField, PasswordField
 from bikespace_api.api.models import IssueType, ParkingDuration
 import uuid
 
@@ -50,6 +50,11 @@ class AdminUsersModelView(ModelView):
     column_list = ('first_name', 'last_name', 'email', 'active', 'roles')
     column_labels = {'first_name': 'First Name','last_name': 'Last Name','email': 'Email', 'active': 'Active', 'roles': 'Roles'}
     form_excluded_columns = ('fs_uniquifier')
+
+    form_overrides = {
+        'password': PasswordField
+    }
+
     def is_accessible(self):
         return (
             current_user.is_active
