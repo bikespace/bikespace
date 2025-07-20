@@ -69,7 +69,7 @@ def create_app(script_info=None):
 
     @app.route("/")
     def api_home_page():
-        return redirect("/api/v2/docs", code=302)
+        return redirect("/api/v2/docs/", code=302)
 
     # shell context for flask cli
     @app.shell_context_processor
