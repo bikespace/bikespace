@@ -23,8 +23,7 @@ interface ParkingLayerProps {
 }
 
 export function ParkingLayer({selected, groupSelected}: ParkingLayerProps) {
-  const bicycleParkingURL =
-    'https://raw.githubusercontent.com/bikespace/parking-map-data/refs/heads/main/Display%20Files/all_sources.geojson';
+  const bicycleParkingURL = process.env.DATA_BICYCLE_PARKING;
 
   const {current: map} = useMap();
 
