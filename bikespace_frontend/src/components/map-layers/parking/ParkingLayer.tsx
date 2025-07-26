@@ -186,8 +186,8 @@ export function ParkingLayer({selected, groupSelected}: ParkingLayerProps) {
       'circle-radius': 4,
       'circle-stroke-width': 2,
       'circle-stroke-color': 'white',
-      'circle-opacity': parkingLayerDenseOpacity,
-      'circle-stroke-opacity': parkingLayerDenseOpacity,
+      // 'circle-opacity': parkingLayerDenseOpacity,
+      // 'circle-stroke-opacity': parkingLayerDenseOpacity,
     },
   };
 
@@ -207,8 +207,8 @@ export function ParkingLayer({selected, groupSelected}: ParkingLayerProps) {
         data={bicycleParkingURL}
         generateId={true}
       >
-        <Layer {...parkingLayerDense} />
         <Layer {...parkingLayer} />
+        <Layer {...parkingLayerDense} />
       </Source>
       {groupSelected.map(feature => {
         const [lon, lat] = getCentroid(feature);
