@@ -4,7 +4,11 @@ import {Layer, Marker, Source, useMap} from 'react-map-gl/maplibre';
 import {getCentroid, getSpriteImageWithTextOverlay} from '@/utils/map-utils';
 
 import type {CircleLayer, SymbolLayer} from 'react-map-gl/maplibre';
-import type {ExpressionSpecification, MapGeoJSONFeature} from 'maplibre-gl';
+import type {
+  ExpressionSpecification,
+  FilterSpecification,
+  MapGeoJSONFeature,
+} from 'maplibre-gl';
 import type {layoutOptions} from '@/utils/map-utils';
 
 import styles from '../legend-tables.module.scss';
@@ -23,7 +27,7 @@ interface ParkingLayerProps {
 }
 
 export function ParkingLayer({selected, groupSelected}: ParkingLayerProps) {
-  const bicycleParkingURL = process.env.DATA_BICYCLE_PARKING;
+  const bicycleParkingURL = process.env.DATA_BICYCLE_PARKING_UNCLUSTERED;
 
   const {current: map} = useMap();
 
@@ -52,6 +56,54 @@ export function ParkingLayer({selected, groupSelected}: ParkingLayerProps) {
     }
   }, [groupSelected]);
 
+  // Should show:
+  // - Street furniture features (unmatched) where `bicycle_parking` type is unknown or `rack`
+  // - All unmatched data from racks, high capacity, or bike stations
+  const questFilter: FilterSpecification = [
+    'any',
+    [
+      'match',
+      ['get', 'meta_source_dataset'],
+      'street-furniture-bicycle-parking',
+      false,
+      true,
+    ],
+    ['!', ['has', 'bicycle_parking']],
+    ['match', ['get', 'bicycle_parking'], 'rack', true, false],
+  ];
+
+  // Type key
+  const parkingTypes = {
+    stands: {
+      types: ['bollard', 'stands', 'post_hoop', 'hoops', 'wide_stands'],
+      color: '#136329',
+    },
+    racks: {
+      types: ['rack', 'safe_loops', 'two-tier'],
+      color: '#0000E5',
+    },
+    wheelBenders: {
+      types: [
+        'wall_loops',
+        'wave',
+        'ground_slots',
+        'handlebar_holder',
+        'crossbar',
+        'anchors',
+        'lean_and_stick',
+      ],
+      color: '#d99726',
+    },
+    secure: {
+      types: ['lockers', 'building', 'shed'],
+      color: '#dc267f',
+    },
+    none: {
+      types: ['None'],
+      color: '#777777',
+    },
+  };
+
   const parkingLayerOpacity: ExpressionSpecification = [
     'interpolate',
     ['linear'],
@@ -65,6 +117,7 @@ export function ParkingLayer({selected, groupSelected}: ParkingLayerProps) {
     id: 'bicycle-parking',
     type: 'symbol',
     source: 'bicycle-parking',
+    filter: questFilter,
     layout: {
       'icon-image': [
         'match',
@@ -113,19 +166,28 @@ export function ParkingLayer({selected, groupSelected}: ParkingLayerProps) {
     id: 'bicycle-parking-dense',
     type: 'circle',
     source: 'bicycle_parking',
+    filter: questFilter,
     paint: {
       'circle-color': [
         'match',
-        ['to-string', ['get', 'access']],
-        publicAccessTypes,
-        '#136329',
-        '#b3b3b3',
+        ['get', 'bicycle_parking'],
+        parkingTypes.stands.types,
+        parkingTypes.stands.color,
+        parkingTypes.racks.types,
+        parkingTypes.racks.color,
+        parkingTypes.wheelBenders.types,
+        parkingTypes.wheelBenders.color,
+        parkingTypes.secure.types,
+        parkingTypes.secure.color,
+        parkingTypes.none.types,
+        parkingTypes.none.color,
+        parkingTypes.none.color, // no match fallback
       ],
-      'circle-radius': 3,
+      'circle-radius': 4,
       'circle-stroke-width': 2,
       'circle-stroke-color': 'white',
-      'circle-opacity': parkingLayerDenseOpacity,
-      'circle-stroke-opacity': parkingLayerDenseOpacity,
+      // 'circle-opacity': parkingLayerDenseOpacity,
+      // 'circle-stroke-opacity': parkingLayerDenseOpacity,
     },
   };
 
@@ -145,8 +207,8 @@ export function ParkingLayer({selected, groupSelected}: ParkingLayerProps) {
         data={bicycleParkingURL}
         generateId={true}
       >
-        <Layer {...parkingLayerDense} />
         <Layer {...parkingLayer} />
+        <Layer {...parkingLayerDense} />
       </Source>
       {groupSelected.map(feature => {
         const [lon, lat] = getCentroid(feature);
