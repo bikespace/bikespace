@@ -23,7 +23,7 @@ interface ParkingLayerProps {
 }
 
 export function ParkingLayer({selected, groupSelected}: ParkingLayerProps) {
-  const bicycleParkingURL = process.env.DATA_BICYCLE_PARKING;
+  const bicycleParkingURL = process.env.DATA_BICYCLE_PARKING_UNCLUSTERED;
 
   const {current: map} = useMap();
 
