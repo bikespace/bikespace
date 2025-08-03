@@ -2,15 +2,13 @@ import React, {useEffect, useState, useMemo} from 'react';
 
 import {useForm} from 'react-hook-form';
 
+import {useParkingDataQuery} from '@/hooks';
 import {parkingSourceId} from '@/components/map-layers/parking';
 import {SidebarButton} from '@/components/dashboard/sidebar-button';
 
 import type {RefObject} from 'react';
-import type {
-  FilterSpecification,
-  MapGeoJSONFeature,
-  MapSourceDataEvent,
-} from 'maplibre-gl';
+import type {Feature, Geometry, GeoJsonProperties} from 'geojson';
+import type {FilterSpecification, MapSourceDataEvent} from 'maplibre-gl';
 import type {MapRef} from 'react-map-gl/dist/esm/exports-maplibre';
 
 interface ParkingMapFilterProps {
@@ -50,9 +48,12 @@ function transformPropertyOptions(
 const defaultFilterProperty = 'meta_source';
 
 export function ParkingMapFilter({mapRef, setFilter}: ParkingMapFilterProps) {
-  const {register} = useForm();
+  const {register} = useForm(); // TODO keep or remove
+  const {status, data, error} = useParkingDataQuery();
 
-  const [features, setFeatures] = useState<MapGeoJSONFeature[]>([]);
+  const [features, setFeatures] = useState<
+    Feature<Geometry, GeoJsonProperties>[]
+  >([]);
   const [filterProperty, setFilterProperty] = useState<string>(
     defaultFilterProperty
   );
@@ -60,22 +61,14 @@ export function ParkingMapFilter({mapRef, setFilter}: ParkingMapFilterProps) {
     Set<string>
   >(new Set());
 
-  // set callback: load properties from source when it is loaded
-  const loadData = (e: MapSourceDataEvent) => {
-    if (e.sourceId === parkingSourceId && e.isSourceLoaded) {
-      mapRef.current!.off('sourcedata', loadData);
-      const features = mapRef.current!.querySourceFeatures(parkingSourceId);
-      setFeatures(features);
-    }
-  };
   useEffect(() => {
-    if (!mapRef.current) return;
-    mapRef.current.on('sourcedata', loadData);
-  }, [mapRef.current]);
+    if (status !== 'success') return;
+    setFeatures(data);
+  }, [status]);
 
   const filterPropertyList: string[] = useMemo(() => {
     const newPropertyList: Set<string> = new Set(
-      features.flatMap(f => Object.keys(f.properties))
+      features.flatMap(f => Object.keys(f.properties as Object))
     );
     return [...newPropertyList].toSorted();
   }, [features]);
