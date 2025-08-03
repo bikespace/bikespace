@@ -41,7 +41,7 @@ const bikeLaneTypes = {
   ],
 };
 
-export function BicycleNetworkLayer() {
+export function BicycleNetworkLayer({beforeId}: {beforeId?: string}) {
   const bicycleNetworkURL = process.env.DATA_BICYCLE_NETWORK;
 
   const bicycleLaneLayer: LineLayer = {
@@ -103,8 +103,8 @@ export function BicycleNetworkLayer() {
 
   return (
     <Source id="bicycle-network" type="geojson" data={bicycleNetworkURL}>
-      <Layer {...bicycleLaneLayer} />
-      <Layer {...bicycleRouteLayer} />
+      <Layer {...bicycleLaneLayer} beforeId={beforeId} />
+      <Layer {...bicycleRouteLayer} beforeId={beforeId} />
     </Source>
   );
 }
