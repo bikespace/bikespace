@@ -68,6 +68,10 @@ const MapMarker = forwardRef(
 
     const isFocused = focus === submission.id;
 
+    const baseIconHeight = 36;
+    const iconHeight = isFocused ? baseIconHeight * 1.5 : baseIconHeight;
+    const iconWidth = iconHeight;
+
     // focus pin on load if in URL param
     // omits dependencies array to run on every render
     useEffect(() => {
@@ -128,11 +132,11 @@ const MapMarker = forwardRef(
         icon={
           new Icon({
             shadowUrl: markerShadow.src,
-            iconSize: isFocused ? [54, 54] : [36, 36],
-            iconAnchor: [18, 36],
-            popupAnchor: [0, -36 * 0.8],
-            shadowSize: [41, 41],
-            shadowAnchor: [12, 41],
+            iconSize: [iconWidth, iconHeight],
+            iconAnchor: [iconWidth / 2, iconHeight],
+            popupAnchor: [0, -(iconHeight * 0.8)],
+            shadowSize: [iconWidth, iconHeight],
+            shadowAnchor: [iconWidth / 3, iconHeight],
             iconUrl: customMarker,
             className: styles.marker,
           })

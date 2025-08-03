@@ -19,13 +19,10 @@ test.use({
 });
 
 test.beforeEach(async ({context}) => {
-  await context.route(
-    'https://raw.githubusercontent.com/bikespace/parking-map-data/refs/heads/main/Display%20Files/all_sources.geojson',
-    async route => {
-      const body = JSON.stringify(testParkingDataSrc);
-      await route.fulfill({body});
-    }
-  );
+  await context.route(process.env.DATA_BICYCLE_PARKING, async route => {
+    const body = JSON.stringify(testParkingDataSrc);
+    await route.fulfill({body});
+  });
   // test isolation: block all network requests except for localhost
   // await context.route(/https?:\/\/(?!localhost).+/, route => route.abort());
 });
