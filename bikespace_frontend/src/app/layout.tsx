@@ -11,6 +11,8 @@ const siteTitle = 'BikeSpace';
 const siteDescription = 'Digital tools to improve bicycle parking in Toronto';
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://bikespace.ca'),
+
   title: siteTitle,
   description: siteDescription,
   openGraph: {
