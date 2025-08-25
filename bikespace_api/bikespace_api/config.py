@@ -15,7 +15,7 @@ class BaseConfig:
     SECURITY_PASSWORD_SALT = os.environ.get("BIKESPACE_SECURITY_PASSWORD_SALT")
     SQLALCHEMY_ENGINE_OPTIONS = {"pool_pre_ping": True}
     FLASK_ADMIN_FLUID_LAYOUT = True
-    FLASK_ADMIN_SWATCH = 'flatly'
+    FLASK_ADMIN_SWATCH = "flatly"
     SECURITY_URL_PREFIX = "/admin/"
     SECURTY_LOGIN_URL = "/admin/login/"
     SECURITY_LOGOUT_URL = "/admin/logout/"
@@ -29,6 +29,10 @@ class BaseConfig:
     SECURITY_REGISTERABLE = False
     SECURITY_SEND_REGISTER_EMAIL = False
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+
+    # Seed User
+    SEED_USER_EMAIL = os.environ.get("SEED_USER_EMAIL")
+    SEED_USER_PASSWORD = os.environ.get("SEED_USER_PASSWORD")
 
 
 class DevelopmentConfig(BaseConfig):
