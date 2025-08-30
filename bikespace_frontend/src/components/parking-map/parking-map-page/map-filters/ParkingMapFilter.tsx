@@ -17,12 +17,12 @@ interface ParkingMapFilterProps {
 }
 
 function transformPropertyOptions(
-  input: string | undefined,
+  input: string | boolean | undefined,
   outputFormat:
     | 'stringValue'
     | 'description'
     | 'expressionValue' = 'stringValue'
-): string | null {
+): string | boolean | null {
   const edgeCases = {
     isUndefined: {
       stringValue: '__undefined__',
@@ -34,12 +34,26 @@ function transformPropertyOptions(
       description: '(blank)',
       expressionValue: '',
     },
+    isTrue: {
+      stringValue: 'true',
+      description: 'True',
+      expressionValue: true,
+    },
+    isFalse: {
+      stringValue: 'false',
+      description: 'False',
+      expressionValue: false,
+    },
   };
 
   if (input === undefined || input === edgeCases.isUndefined.stringValue) {
     return edgeCases.isUndefined[outputFormat];
   } else if (input === '' || input === edgeCases.isBlankString.stringValue) {
     return edgeCases.isBlankString[outputFormat];
+  } else if (input === true || input === edgeCases.isTrue.stringValue) {
+    return edgeCases.isTrue[outputFormat];
+  } else if (input === false || input === edgeCases.isFalse.stringValue) {
+    return edgeCases.isFalse[outputFormat];
   } else {
     return input;
   }
