@@ -8,7 +8,7 @@ import {ReportSummary} from '../report-summary';
 import styles from './_SidebarContent.module.scss';
 import {Spinner} from '@/components/spinner/Spinner';
 
-type ChartProps = Pick<PlotParams, 'className'>;
+type ChartProps = Pick<PlotParams, 'className'> & {onReady: () => void};
 
 const DataIssueFrequencyChart = dynamic<ChartProps>(
   () => import('../data-issue-frequency-chart/DataIssueFrequencyChart'),
