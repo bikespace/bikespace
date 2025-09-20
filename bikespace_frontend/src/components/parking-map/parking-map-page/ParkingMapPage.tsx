@@ -39,7 +39,7 @@ import type {
 import 'maplibre-gl/dist/maplibre-gl.css';
 import styles from './parking-map-page.module.scss';
 import loader from '@/styles/shared/loader.module.scss';
-import {Spinner} from "@/components/spinner/Spinner";
+import {Spinner} from '@/components/spinner/Spinner';
 const parkingSpritePath = '/parking_sprites/parking_sprites';
 
 const backupMapStyle: MapStyle = {
@@ -193,7 +193,7 @@ export function ParkingMapPage() {
 
   function addSprite() {
     mapRef.current!.addSprite('parking', parkingSpritePath);
-    console.log("loading...")
+    console.log('loading...');
   }
 
   // show map pins as interactive when mouse is over them
@@ -213,7 +213,7 @@ export function ParkingMapPage() {
     if (process.env.NODE_ENV !== 'production') console.log('map loaded');
     addSprite();
     handleMouseHover();
-    console.log("done");
+    console.log('done');
   }
 
   return (
@@ -295,7 +295,7 @@ export function ParkingMapPage() {
           groupSelected={parkingGroupSelected}
         />
         {/* placed here to avoid covering the sidebar */}
-        <Spinner show={isMapLoading} overlay label="Loading map..."/>
+        <Spinner show={isMapLoading} overlay label="Loading map..." />
       </Map>
     </main>
   );

@@ -18,9 +18,9 @@ import {LeafletLocateControl} from '../leaflet-locate-control';
 import {MapHandler} from '../map-handler';
 
 import styles from './map.module.scss';
-import loader from '@/styles/shared/loader.module.scss'
+import loader from '@/styles/shared/loader.module.scss';
 import './leaflet.scss';
-import {Spinner} from "@/components/spinner/Spinner";
+import {Spinner} from '@/components/spinner/Spinner';
 
 export interface MapProps {
   submissions: SubmissionApiPayload[];
@@ -69,7 +69,7 @@ function Map({submissions}: MapProps) {
         eventHandlers={{
           loading: () => setTilesLoaded(false),
           load: () => setTilesLoaded(true),
-          tileerror: () => setTilesLoaded(true)
+          tileerror: () => setTilesLoaded(true),
         }}
       />
       {tilesLoaded && ( // Tiles should be loaded before rendering markers
@@ -94,9 +94,13 @@ function Map({submissions}: MapProps) {
         </MarkerClusterGroup>
       )}
       <MapHandler />
-      <Spinner show={isMapLoading} overlay label="Loading map..." style={{ zIndex: 1000}}/>
+      <Spinner
+        show={isMapLoading}
+        overlay
+        label="Loading map..."
+        style={{zIndex: 1000}}
+      />
     </MapContainer>
-
   );
 }
 

@@ -11,7 +11,10 @@ import {useStore} from '@/states/store';
 
 import styles from './data-duration-by-tod-chart.module.scss';
 
-function DataDurationByTodChart({className, onReady}: Pick<PlotParams, 'className'> & { onReady?: () => void }) {
+function DataDurationByTodChart({
+  className,
+  onReady,
+}: Pick<PlotParams, 'className'> & {onReady?: () => void}) {
   const submissions = useStore(state => state.submissions);
 
   const data = useMemo<number[][]>(() => {

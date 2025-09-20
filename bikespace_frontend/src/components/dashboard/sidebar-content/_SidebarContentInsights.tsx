@@ -6,7 +6,7 @@ import {PlotParams} from 'react-plotly.js';
 import {ReportSummary} from '../report-summary';
 
 import styles from './_SidebarContent.module.scss';
-import {Spinner} from "@/components/spinner/Spinner";
+import {Spinner} from '@/components/spinner/Spinner';
 
 type ChartProps = Pick<PlotParams, 'className'>;
 
@@ -35,21 +35,21 @@ const DataDurationByTodChart = dynamic<ChartProps>(
 export function SidebarContentInsights() {
   const TOTAL = 3;
   const [readyCount, setReadyCount] = useState(0);
-  const markReady = useCallback( () =>
-    setReadyCount(c => Math.min(TOTAL, c+1)),
-      []
+  const markReady = useCallback(
+    () => setReadyCount(c => Math.min(TOTAL, c + 1)),
+    []
   );
   const allReady = readyCount >= TOTAL;
   return (
     <div>
       {!allReady && (
-      <Spinner overlay label="Loading insights..." style={{ zIndex: 3000}} />
-    )}
-      <div style={{ visibility: allReady ? 'visible' : 'hidden'}}>
+        <Spinner overlay label="Loading insights..." style={{zIndex: 3000}} />
+      )}
+      <div style={{visibility: allReady ? 'visible' : 'hidden'}}>
         <ReportSummary />
-        <DataIssueFrequencyChart className={styles.chart} onReady={markReady}/>
-        <DataFrequencyByDayChart className={styles.chart} onReady={markReady}/>
-        <DataDurationByTodChart className={styles.chart} onReady={markReady}/>
+        <DataIssueFrequencyChart className={styles.chart} onReady={markReady} />
+        <DataFrequencyByDayChart className={styles.chart} onReady={markReady} />
+        <DataDurationByTodChart className={styles.chart} onReady={markReady} />
       </div>
     </div>
   );

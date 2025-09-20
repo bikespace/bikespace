@@ -18,7 +18,10 @@ type InputData = {
   color: string;
 };
 
-function DataIssueFrequencyChart({className, onReady}: Pick<PlotParams, 'className'> & { onReady?: () => void }) {
+function DataIssueFrequencyChart({
+  className,
+  onReady,
+}: Pick<PlotParams, 'className'> & {onReady?: () => void}) {
   const {submissions, issue, setFilters} = useStore(state => ({
     submissions: state.submissions,
     issue: state.filters.issue,

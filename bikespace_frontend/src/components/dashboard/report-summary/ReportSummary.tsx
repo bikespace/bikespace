@@ -47,7 +47,7 @@ export function ReportSummary() {
   if (isFetching) {
     return (
       <div className={styles.loading}>
-        <Spinner label="Loading reports..."/>
+        <Spinner label="Loading reports..." />
       </div>
     );
   }

@@ -19,7 +19,10 @@ type InputData = {
   count: number;
 };
 
-function DataFrequencyByDayChart({className, onReady}: Pick<PlotParams, 'className'> & { onReady?: () => void }) {
+function DataFrequencyByDayChart({
+  className,
+  onReady,
+}: Pick<PlotParams, 'className'> & {onReady?: () => void}) {
   const queryResult = useSubmissionsQuery();
   const allSubmissions = queryResult.data || [];
 
