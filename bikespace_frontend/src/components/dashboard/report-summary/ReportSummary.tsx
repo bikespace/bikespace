@@ -7,7 +7,7 @@ import {useAllSubmissionsDateRange, useSubmissionsQuery} from '@/hooks';
 
 import warningIcon from '@/assets/icons/exclamation-triangle.svg';
 
-import {Spinner} from './Spinner';
+import {Spinner} from '../../spinner/Spinner';
 
 import styles from './report-summary.module.scss';
 
@@ -47,8 +47,7 @@ export function ReportSummary() {
   if (isFetching) {
     return (
       <div className={styles.loading}>
-        Loading Reports
-        <Spinner />
+        <Spinner label="Loading reports..."/>
       </div>
     );
   }

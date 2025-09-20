@@ -19,7 +19,7 @@ type InputData = {
   count: number;
 };
 
-function DataFrequencyByDayChart({className}: Pick<PlotParams, 'className'>) {
+function DataFrequencyByDayChart({className, onReady}: Pick<PlotParams, 'className'> & { onReady?: () => void }) {
   const queryResult = useSubmissionsQuery();
   const allSubmissions = queryResult.data || [];
 
@@ -110,6 +110,7 @@ function DataFrequencyByDayChart({className}: Pick<PlotParams, 'className'>) {
       }}
       config={config}
       onClick={handleClick}
+      onAfterPlot={() => onReady?.()}
     />
   );
 }

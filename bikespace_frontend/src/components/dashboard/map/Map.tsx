@@ -18,7 +18,9 @@ import {LeafletLocateControl} from '../leaflet-locate-control';
 import {MapHandler} from '../map-handler';
 
 import styles from './map.module.scss';
+import loader from '@/styles/shared/loader.module.scss'
 import './leaflet.scss';
+import {Spinner} from "@/components/spinner/Spinner";
 
 export interface MapProps {
   submissions: SubmissionApiPayload[];
@@ -32,6 +34,8 @@ function Map({submissions}: MapProps) {
   const markerRefs = useRef<MarkerRefs>({});
 
   const [doneLoading, setDoneLoading] = useState(false);
+  const [tilesLoaded, setTilesLoaded] = useState(false);
+  const isMapLoading = !(doneLoading && tilesLoaded);
 
   const windowSize = useWindowSize();
 
@@ -44,6 +48,9 @@ function Map({submissions}: MapProps) {
     if (!mapRef.current) return;
     mapRef.current.invalidateSize();
   }, [isSidebarOpen, currentSidebarTab]);
+  useEffect(() => {
+    setDoneLoading(false);
+  }, [submissions.length]);
 
   return (
     <MapContainer
@@ -59,28 +66,37 @@ function Map({submissions}: MapProps) {
         attribution='&copy; Maps <a href="https://www.thunderforest.com/">Thunderforest</a>, &copy; Data <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>'
         url="https://tile.thunderforest.com/atlas/{z}/{x}/{y}.png?apikey=66ccf6226ef54ef38a6b97fe0b0e5d2e"
         maxZoom={20}
+        eventHandlers={{
+          loading: () => setTilesLoaded(false),
+          load: () => setTilesLoaded(true),
+          tileerror: () => setTilesLoaded(true)
+        }}
       />
-      <MarkerClusterGroup chunkedLoading ref={clusterRef}>
-        {submissions.map((submission, index) => {
-          return (
-            <MapMarker
-              key={submission.id}
-              submission={submission}
-              windowWidth={windowSize.width}
-              doneLoading={doneLoading}
-              clusterRef={clusterRef}
-              ref={(m: LeafletMarker) => {
-                markerRefs.current[submission.id] = m;
-                if (index === submissions.length - 1 && !doneLoading) {
-                  setDoneLoading(true);
-                }
-              }}
-            />
-          );
-        })}
-      </MarkerClusterGroup>
+      {tilesLoaded && ( // Tiles should be loaded before rendering markers
+        <MarkerClusterGroup chunkedLoading ref={clusterRef}>
+          {submissions.map((submission, index) => {
+            return (
+              <MapMarker
+                key={submission.id}
+                submission={submission}
+                windowWidth={windowSize.width}
+                doneLoading={doneLoading}
+                clusterRef={clusterRef}
+                ref={(m: LeafletMarker) => {
+                  markerRefs.current[submission.id] = m;
+                  if (index === submissions.length - 1 && !doneLoading) {
+                    setDoneLoading(true);
+                  }
+                }}
+              />
+            );
+          })}
+        </MarkerClusterGroup>
+      )}
       <MapHandler />
+      <Spinner show={isMapLoading} overlay label="Loading map..." style={{ zIndex: 1000}}/>
     </MapContainer>
+
   );
 }
 
