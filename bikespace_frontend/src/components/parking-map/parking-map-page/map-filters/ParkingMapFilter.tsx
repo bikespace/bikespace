@@ -184,7 +184,7 @@ export function ParkingMapFilter({
       )
     );
     const propertyType =
-      enabledFilterPropertiesLookup[filterProperty].type ?? 'string';
+      enabledFilterPropertiesLookup[filterProperty]?.type ?? 'string';
     let newPropertyOptionsSorted: string[];
     if (propertyType === 'string') {
       newPropertyOptionsSorted = [...newPropertyOptions].toSorted();
@@ -268,7 +268,7 @@ export function ParkingMapFilter({
       </div>
       <fieldset>
         <legend>
-          Select {enabledFilterPropertiesLookup[filterProperty].description}:
+          Select {enabledFilterPropertiesLookup[filterProperty]?.description}:
         </legend>
         {[...propertyOptions].map(option => (
           <div key={option}>
