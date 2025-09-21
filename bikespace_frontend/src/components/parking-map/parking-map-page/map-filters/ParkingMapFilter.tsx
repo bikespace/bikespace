@@ -1,15 +1,17 @@
 import React, {useEffect, useState, useMemo} from 'react';
 
-import {useForm} from 'react-hook-form';
-
 import {useParkingDataQuery} from '@/hooks';
-import {parkingSourceId} from '@/components/map-layers/parking';
 import {SidebarButton} from '@/components/shared-ui/sidebar-button';
 import {SidebarSelect} from '@/components/shared-ui/sidebar-select';
 
+import {
+  defaultEnabledFilterProperties,
+  FilterPropertyAttributes,
+} from './parking-map-filter-default-properties';
+
 import type {RefObject} from 'react';
 import type {Feature, Geometry, GeoJsonProperties} from 'geojson';
-import type {FilterSpecification, MapSourceDataEvent} from 'maplibre-gl';
+import type {FilterSpecification} from 'maplibre-gl';
 import type {MapRef} from 'react-map-gl/dist/esm/exports-maplibre';
 
 function transformPropertyOptions(
@@ -57,60 +59,6 @@ function transformPropertyOptions(
 
 const defaultFilterProperty = 'bicycle_parking';
 
-interface FilterPropertyAttributes {
-  key: string;
-  description: string;
-  type: 'string' | 'integer';
-}
-
-const defaultEnabledFilterProperties: FilterPropertyAttributes[] = [
-  {
-    key: 'access',
-    description: 'Allowed Access',
-    type: 'string',
-  },
-  {
-    key: 'bicycle_parking',
-    description: 'Bicycle Parking Type',
-    type: 'string',
-  },
-  {
-    key: 'capacity',
-    description: 'Capacity',
-    type: 'integer',
-  },
-  {
-    key: 'capacity:cargo_bike',
-    description: 'Cargo Bike Capacity',
-    type: 'integer',
-  },
-  {
-    key: 'cargo_bike',
-    description: 'Cargo Bike Suitable',
-    type: 'string',
-  },
-  {
-    key: 'covered',
-    description: 'Covered',
-    type: 'string',
-  },
-  {
-    key: 'fee',
-    description: 'Payment Required',
-    type: 'string',
-  },
-  {
-    key: 'lit',
-    description: 'Lit at Night',
-    type: 'string',
-  },
-  {
-    key: 'meta_source',
-    description: 'Data Source',
-    type: 'string',
-  },
-];
-
 interface ParkingMapFilterProps {
   mapRef: RefObject<MapRef>;
   setFilter: React.Dispatch<React.SetStateAction<FilterSpecification>>;
@@ -126,7 +74,6 @@ export function ParkingMapFilter({
   enabledFilterProperties = defaultEnabledFilterProperties,
   onlyShowEnabledFilterProperties = true,
 }: ParkingMapFilterProps) {
-  const {register} = useForm(); // TODO keep or remove
   const {status, data, error} = useParkingDataQuery();
 
   const enabledFilterPropertiesLookup = Object.fromEntries(
