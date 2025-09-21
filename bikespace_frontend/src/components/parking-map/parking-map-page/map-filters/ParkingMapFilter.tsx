@@ -128,6 +128,10 @@ export function ParkingMapFilter({
   const {register} = useForm(); // TODO keep or remove
   const {status, data, error} = useParkingDataQuery();
 
+  const enabledFilterPropertiesLookup = Object.fromEntries(
+    enabledFilterProperties.map(attributes => [attributes.key, attributes])
+  );
+
   const [features, setFeatures] = useState<
     Feature<Geometry, GeoJsonProperties>[]
   >([]);
@@ -145,26 +149,22 @@ export function ParkingMapFilter({
     const newPropertyList: Set<string> = new Set(
       features.flatMap(f => Object.keys(f.properties as Object))
     );
-    const enabledPropertyList =
-      onlyShowEnabledFilterProperties && enabledFilterProperties
-        ? newPropertyList.intersection(
-            new Set(enabledFilterProperties.map(attributes => attributes.key))
-          )
-        : newPropertyList;
+    const enabledPropertyList = onlyShowEnabledFilterProperties
+      ? newPropertyList.intersection(
+          new Set(enabledFilterProperties.map(attributes => attributes.key))
+        )
+      : newPropertyList;
     const newPropertyListAttributes: FilterPropertyAttributes[] = [
       ...enabledPropertyList,
-    ].map(key => {
-      const presetMatch = enabledFilterProperties.filter(
-        attributes => attributes.key === key
-      );
-      return presetMatch
-        ? presetMatch[0]
-        : ({
-            key: key,
-            description: key,
-            type: 'string',
-          } as FilterPropertyAttributes);
-    });
+    ].map(
+      key =>
+        enabledFilterPropertiesLookup[key] ??
+        ({
+          key: key,
+          description: key,
+          type: 'string',
+        } as FilterPropertyAttributes)
+    );
     return newPropertyListAttributes.toSorted((a, b) =>
       a.description.localeCompare(b.description, undefined, {
         sensitivity: 'base',
@@ -183,9 +183,7 @@ export function ParkingMapFilter({
       )
     );
     const propertyType =
-      enabledFilterProperties.filter(
-        attributes => attributes.key === filterProperty
-      )[0].type ?? 'string';
+      enabledFilterPropertiesLookup[filterProperty].type ?? 'string';
     let newPropertyOptionsSorted: string[];
     if (propertyType === 'string') {
       newPropertyOptionsSorted = [...newPropertyOptions].toSorted();
@@ -266,7 +264,9 @@ export function ParkingMapFilter({
         </SidebarButton>
       </div>
       <fieldset>
-        <legend>Select {filterProperty}</legend>
+        <legend>
+          Select {enabledFilterPropertiesLookup[filterProperty].description}:
+        </legend>
         {[...propertyOptions].map(option => (
           <div key={option}>
             <input
