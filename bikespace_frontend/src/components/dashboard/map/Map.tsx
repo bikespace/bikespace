@@ -35,7 +35,7 @@ function Map({submissions}: MapProps) {
 
   const [doneLoading, setDoneLoading] = useState(false);
   const [tilesLoaded, setTilesLoaded] = useState(false);
-  const isMapLoading = !(doneLoading && tilesLoaded);
+  const isMapLoading = !doneLoading;
 
   const windowSize = useWindowSize();
 
