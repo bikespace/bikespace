@@ -2,19 +2,14 @@ import {useState} from 'react';
 import {DateTime} from 'luxon';
 
 import {DateRangeInterval} from '@/interfaces/Submission';
-
 import {trackUmamiEvent} from '@/utils';
-
 import {useAllSubmissionsDateRange} from '@/hooks';
-
 import {useStore} from '@/states/store';
+import {SidebarSelect} from '@/components/shared-ui/sidebar-select';
 
 import {getDateRangeFromInterval} from './utils';
-
 import {FilterSection} from '../filter-section';
 import {FilterDateRangeCustom} from '../filter-date-range-custom';
-
-import styles from './filter-date-range.module.scss';
 
 export function FilterDateRange() {
   /* c8 ignore next 7 */
@@ -68,11 +63,11 @@ export function FilterDateRange() {
           )}`}
         </div>
       </div>
-      <div className={styles.dateRangeSelect}>
+      <div>
         <label htmlFor="filter-date-range-select">
           <strong>Select:</strong>
         </label>
-        <select
+        <SidebarSelect
           name="dateRange"
           id="filter-date-range-select"
           value={dateRangeInterval || DateRangeInterval.AllDates}
@@ -87,7 +82,7 @@ export function FilterDateRange() {
               ))}
             </optgroup>
           ))}
-        </select>
+        </SidebarSelect>
       </div>
       {showCustomRange && (
         <div data-testid="FilterDateRangeCustom">

@@ -5,6 +5,7 @@ import {useForm} from 'react-hook-form';
 import {useParkingDataQuery} from '@/hooks';
 import {parkingSourceId} from '@/components/map-layers/parking';
 import {SidebarButton} from '@/components/shared-ui/sidebar-button';
+import {SidebarSelect} from '@/components/shared-ui/sidebar-select';
 
 import type {RefObject} from 'react';
 import type {Feature, Geometry, GeoJsonProperties} from 'geojson';
@@ -240,19 +241,18 @@ export function ParkingMapFilter({
       <label htmlFor="filter-property-select">
         Choose a property to filter by:
       </label>
-      <select
+      <SidebarSelect
         name="filter-property"
         id="filter-property-select"
         value={filterProperty}
         onChange={e => setFilterProperty(e.target.value)}
-        style={{maxWidth: '100%'}}
       >
         {filterPropertyList.map(attributes => (
           <option key={attributes.key} value={attributes.key}>
             {attributes.description}
           </option>
         ))}
-      </select>
+      </SidebarSelect>
       <div style={{display: 'flex', margin: '4px 0', gap: '4px'}}>
         <SidebarButton
           onClick={() => setSelectedPropertyOptions(new Set(propertyOptions))}
