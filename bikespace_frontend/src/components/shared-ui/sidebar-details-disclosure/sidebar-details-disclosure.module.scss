@@ -12,6 +12,7 @@ details.sidebarDetailsDisclosure {
     font-weight: 600;
     color: $color-primary-d50p;
     border-bottom: none;
+    cursor: pointer;
   }
 
   &[open] summary {
