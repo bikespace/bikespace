@@ -7,7 +7,7 @@ import {trackUmamiEvent} from '@/utils';
 import {useStore} from '@/states/store';
 
 import {FilterSection} from '../filter-section';
-import {SidebarButton} from '../sidebar-button';
+import {SidebarButton} from '@/components/shared-ui/sidebar-button';
 
 import styles from './filter-parking-duration.module.scss';
 

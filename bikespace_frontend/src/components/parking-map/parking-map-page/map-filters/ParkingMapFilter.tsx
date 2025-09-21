@@ -4,7 +4,7 @@ import {useForm} from 'react-hook-form';
 
 import {useParkingDataQuery} from '@/hooks';
 import {parkingSourceId} from '@/components/map-layers/parking';
-import {SidebarButton} from '@/components/dashboard/sidebar-button';
+import {SidebarButton} from '@/components/shared-ui/sidebar-button';
 
 import type {RefObject} from 'react';
 import type {Feature, Geometry, GeoJsonProperties} from 'geojson';
