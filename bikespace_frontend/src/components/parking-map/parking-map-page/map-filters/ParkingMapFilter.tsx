@@ -11,11 +11,6 @@ import type {Feature, Geometry, GeoJsonProperties} from 'geojson';
 import type {FilterSpecification, MapSourceDataEvent} from 'maplibre-gl';
 import type {MapRef} from 'react-map-gl/dist/esm/exports-maplibre';
 
-interface ParkingMapFilterProps {
-  mapRef: RefObject<MapRef>;
-  setFilter: React.Dispatch<React.SetStateAction<FilterSpecification>>;
-}
-
 function transformPropertyOptions(
   input: string | boolean | undefined,
   outputFormat:
@@ -59,18 +54,84 @@ function transformPropertyOptions(
   }
 }
 
-const defaultFilterProperty = 'meta_source';
+const defaultFilterProperty = 'bicycle_parking';
 
-export function ParkingMapFilter({mapRef, setFilter}: ParkingMapFilterProps) {
+interface FilterPropertyAttributes {
+  key: string;
+  description: string;
+  type: 'string' | 'integer';
+}
+
+const defaultEnabledFilterProperties: FilterPropertyAttributes[] = [
+  {
+    key: 'access',
+    description: 'Allowed Access',
+    type: 'string',
+  },
+  {
+    key: 'bicycle_parking',
+    description: 'Bicycle Parking Type',
+    type: 'string',
+  },
+  {
+    key: 'capacity',
+    description: 'Capacity',
+    type: 'integer',
+  },
+  {
+    key: 'capacity:cargo_bike',
+    description: 'Cargo Bike Capacity',
+    type: 'integer',
+  },
+  {
+    key: 'cargo_bike',
+    description: 'Cargo Bike Suitable',
+    type: 'string',
+  },
+  {
+    key: 'covered',
+    description: 'Covered',
+    type: 'string',
+  },
+  {
+    key: 'fee',
+    description: 'Payment Required',
+    type: 'string',
+  },
+  {
+    key: 'lit',
+    description: 'Lit at Night',
+    type: 'string',
+  },
+  {
+    key: 'meta_source',
+    description: 'Data Source',
+    type: 'string',
+  },
+];
+
+interface ParkingMapFilterProps {
+  mapRef: RefObject<MapRef>;
+  setFilter: React.Dispatch<React.SetStateAction<FilterSpecification>>;
+  defaultProperty?: string;
+  enabledFilterProperties?: FilterPropertyAttributes[];
+  onlyShowEnabledFilterProperties?: boolean;
+}
+
+export function ParkingMapFilter({
+  mapRef,
+  setFilter,
+  defaultProperty = defaultFilterProperty,
+  enabledFilterProperties = defaultEnabledFilterProperties,
+  onlyShowEnabledFilterProperties = true,
+}: ParkingMapFilterProps) {
   const {register} = useForm(); // TODO keep or remove
   const {status, data, error} = useParkingDataQuery();
 
   const [features, setFeatures] = useState<
     Feature<Geometry, GeoJsonProperties>[]
   >([]);
-  const [filterProperty, setFilterProperty] = useState<string>(
-    defaultFilterProperty
-  );
+  const [filterProperty, setFilterProperty] = useState<string>(defaultProperty);
   const [selectedPropertyOptions, setSelectedPropertyOptions] = useState<
     Set<string>
   >(new Set());
@@ -80,26 +141,74 @@ export function ParkingMapFilter({mapRef, setFilter}: ParkingMapFilterProps) {
     setFeatures(data);
   }, [status]);
 
-  const filterPropertyList: string[] = useMemo(() => {
+  const filterPropertyList: FilterPropertyAttributes[] = useMemo(() => {
     const newPropertyList: Set<string> = new Set(
       features.flatMap(f => Object.keys(f.properties as Object))
     );
-    return [...newPropertyList].toSorted();
+    const enabledPropertyList =
+      onlyShowEnabledFilterProperties && enabledFilterProperties
+        ? newPropertyList.intersection(
+            new Set(enabledFilterProperties.map(attributes => attributes.key))
+          )
+        : newPropertyList;
+    const newPropertyListAttributes: FilterPropertyAttributes[] = [
+      ...enabledPropertyList,
+    ].map(key => {
+      const presetMatch = enabledFilterProperties.filter(
+        attributes => attributes.key === key
+      );
+      return presetMatch
+        ? presetMatch[0]
+        : ({
+            key: key,
+            description: key,
+            type: 'string',
+          } as FilterPropertyAttributes);
+    });
+    return newPropertyListAttributes.toSorted((a, b) =>
+      a.description.localeCompare(b.description, undefined, {
+        sensitivity: 'base',
+      })
+    );
   }, [features]);
 
   const propertyOptions: Set<string> = useMemo(() => {
-    const newPropertyOptions: Set<string> = new Set(
-      features
-        .map(
-          f =>
-            transformPropertyOptions(
-              f.properties?.[filterProperty],
-              'stringValue'
-            ) as string
-        )
-        .toSorted()
+    const newPropertyOptions = new Set(
+      features.map(
+        f =>
+          transformPropertyOptions(
+            f.properties?.[filterProperty],
+            'stringValue'
+          ) as string
+      )
     );
-    return newPropertyOptions;
+    const propertyType =
+      enabledFilterProperties.filter(
+        attributes => attributes.key === filterProperty
+      )[0].type ?? 'string';
+    let newPropertyOptionsSorted: string[];
+    if (propertyType === 'string') {
+      newPropertyOptionsSorted = [...newPropertyOptions].toSorted();
+    } else if (propertyType === 'integer') {
+      const newPropertyOptionsList = [...newPropertyOptions];
+      const numberProperties = newPropertyOptionsList.filter(
+        x => !Number.isNaN(parseInt(x, 10))
+      );
+      const textProperties = newPropertyOptionsList.filter(x =>
+        Number.isNaN(parseInt(x, 10))
+      );
+      const numberPropertiesSorted = numberProperties.toSorted(
+        (a, b) => parseInt(a, 10) - parseInt(b, 10)
+      );
+      const textPropertiesSorted = textProperties.toSorted();
+      newPropertyOptionsSorted = [
+        ...textPropertiesSorted,
+        ...numberPropertiesSorted,
+      ];
+    } else {
+      newPropertyOptionsSorted = [...newPropertyOptions].toSorted();
+    }
+    return new Set(newPropertyOptionsSorted);
   }, [features, filterProperty]);
 
   // update property options and reset filter when features or selection changes
@@ -140,9 +249,9 @@ export function ParkingMapFilter({mapRef, setFilter}: ParkingMapFilterProps) {
         onChange={e => setFilterProperty(e.target.value)}
         style={{maxWidth: '100%'}}
       >
-        {filterPropertyList.map(p => (
-          <option key={p} value={p}>
-            {p}
+        {filterPropertyList.map(attributes => (
+          <option key={attributes.key} value={attributes.key}>
+            {attributes.description}
           </option>
         ))}
       </select>
