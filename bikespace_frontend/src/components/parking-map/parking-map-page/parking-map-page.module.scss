@@ -16,6 +16,10 @@
   overflow-y: scroll;
   margin: 4px;
 
+  &> * {
+    margin-bottom: 8px;
+  }
+
   &> p {
     padding: 4px;
   }
@@ -29,7 +33,6 @@
   flex-direction: column;
   gap: 8px;
   padding: 4px;
-  margin-bottom: 8px;
 }
 
 .ContentHeading {

@@ -6,9 +6,12 @@ import {trackUmamiEvent} from '@/utils';
 import {useAllSubmissionsDateRange} from '@/hooks';
 import {useStore} from '@/states/store';
 import {SidebarSelect} from '@/components/shared-ui/sidebar-select';
+import {
+  SidebarDetailsDisclosure,
+  SidebarDetailsContent,
+} from '@/components/shared-ui/sidebar-details-disclosure';
 
 import {getDateRangeFromInterval} from './utils';
-import {FilterSection} from '../filter-section';
 import {FilterDateRangeCustom} from '../filter-date-range-custom';
 
 export function FilterDateRange() {
@@ -46,50 +49,53 @@ export function FilterDateRange() {
   };
 
   return (
-    <FilterSection title="Date Range">
-      <div>
+    <SidebarDetailsDisclosure open>
+      <summary>Date Range</summary>
+      <SidebarDetailsContent>
         <div>
-          <strong>Showing between:</strong>
+          <div>
+            <strong>Showing between:</strong>
+          </div>
+          <div>
+            {`${DateTime.fromJSDate(dateRange.from || first!).toLocaleString(
+              DateTime.DATE_FULL,
+              {
+                locale: 'en-CA',
+              }
+            )} - ${DateTime.fromJSDate(dateRange.to || last!).toLocaleString(
+              DateTime.DATE_FULL,
+              {locale: 'en-CA'}
+            )}`}
+          </div>
         </div>
         <div>
-          {`${DateTime.fromJSDate(dateRange.from || first!).toLocaleString(
-            DateTime.DATE_FULL,
-            {
-              locale: 'en-CA',
-            }
-          )} - ${DateTime.fromJSDate(dateRange.to || last!).toLocaleString(
-            DateTime.DATE_FULL,
-            {locale: 'en-CA'}
-          )}`}
+          <label htmlFor="filter-date-range-select">
+            <strong>Select:</strong>
+          </label>
+          <SidebarSelect
+            name="dateRange"
+            id="filter-date-range-select"
+            value={dateRangeInterval || DateRangeInterval.AllDates}
+            onChange={handleChange}
+          >
+            {dateRangeOptGroups.map(group => (
+              <optgroup label={group.label} key={group.label}>
+                {group.options.map(option => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </optgroup>
+            ))}
+          </SidebarSelect>
         </div>
-      </div>
-      <div>
-        <label htmlFor="filter-date-range-select">
-          <strong>Select:</strong>
-        </label>
-        <SidebarSelect
-          name="dateRange"
-          id="filter-date-range-select"
-          value={dateRangeInterval || DateRangeInterval.AllDates}
-          onChange={handleChange}
-        >
-          {dateRangeOptGroups.map(group => (
-            <optgroup label={group.label} key={group.label}>
-              {group.options.map(option => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </optgroup>
-          ))}
-        </SidebarSelect>
-      </div>
-      {showCustomRange && (
-        <div data-testid="FilterDateRangeCustom">
-          <FilterDateRangeCustom />
-        </div>
-      )}
-    </FilterSection>
+        {showCustomRange && (
+          <div data-testid="FilterDateRangeCustom">
+            <FilterDateRangeCustom />
+          </div>
+        )}
+      </SidebarDetailsContent>
+    </SidebarDetailsDisclosure>
   );
 }
 
