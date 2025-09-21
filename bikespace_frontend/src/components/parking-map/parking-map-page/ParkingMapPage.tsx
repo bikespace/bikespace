@@ -15,6 +15,10 @@ import {ParkingMapFilter} from './map-filters/ParkingMapFilter';
 import {Sidebar} from './sidebar/Sidebar';
 import {SidebarButton} from '@/components/shared-ui/sidebar-button';
 import {
+  SidebarDetailsDisclosure,
+  SidebarDetailsContent,
+} from '@/components/shared-ui/sidebar-details-disclosure';
+import {
   ParkingFeatureDescription,
   parkingFirstLayerId,
   parkingInteractiveLayers,
@@ -257,23 +261,35 @@ export function ParkingMapPage() {
             isMinimized={geoSearchIsMinimized}
             setIsMinimized={setGeoSearchIsMinimized}
           />
-          <ParkingMapFilter mapRef={mapRef} setFilter={setParkingLayerFilter} />
-          <SidebarButton
-            onClick={() => setShowBicycleNetwork(!showBicycleNetwork)}
-            style={{margin: '1rem 0'}}
-          >
-            {(showBicycleNetwork ? 'Hide' : 'Show') + ' ' + 'Bicycle Network'}
-          </SidebarButton>
-          <details
-            className={styles.legend}
-            open={!(parkingGroupSelected.length > 0)}
-          >
+          <SidebarDetailsDisclosure>
+            <summary>Filters</summary>
+            <SidebarDetailsContent>
+              <ParkingMapFilter
+                mapRef={mapRef}
+                setFilter={setParkingLayerFilter}
+              />
+            </SidebarDetailsContent>
+          </SidebarDetailsDisclosure>
+          <SidebarDetailsDisclosure open={!(parkingGroupSelected.length > 0)}>
             <summary>Legend</summary>
-            <div className={styles.legendContent}>
+            <SidebarDetailsContent className={styles.legendContent}>
               <ParkingLayerLegend />
               <BicycleNetworkLayerLegend />
-            </div>
-          </details>
+            </SidebarDetailsContent>
+          </SidebarDetailsDisclosure>
+          <SidebarDetailsDisclosure>
+            <summary>Map Layers</summary>
+            <SidebarDetailsContent>
+              <SidebarButton
+                onClick={() => setShowBicycleNetwork(!showBicycleNetwork)}
+                style={{margin: '1rem 0'}}
+              >
+                {(showBicycleNetwork ? 'Hide' : 'Show') +
+                  ' ' +
+                  'Bicycle Network'}
+              </SidebarButton>
+            </SidebarDetailsContent>
+          </SidebarDetailsDisclosure>
         </div>
       </Sidebar>
       <Map

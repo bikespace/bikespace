@@ -237,8 +237,11 @@ export function ParkingMapFilter({
   }, [selectedPropertyOptions]);
 
   return (
-    <div style={{margin: '1rem 0'}}>
-      <label htmlFor="filter-property-select">
+    <div>
+      <label
+        htmlFor="filter-property-select"
+        style={{display: 'block', marginBottom: '4px'}}
+      >
         Choose a property to filter by:
       </label>
       <SidebarSelect
