@@ -15,6 +15,14 @@
 .sideBarContainer {
   overflow-y: scroll;
   margin: 4px;
+  // hide scrollbar (firefox and edge)
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  // hide scrollbar (chromium)
+  &::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
 
   &> p {
     padding: 4px;
