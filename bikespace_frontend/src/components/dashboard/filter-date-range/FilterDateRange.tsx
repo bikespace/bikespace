@@ -52,7 +52,7 @@ export function FilterDateRange() {
     <SidebarDetailsDisclosure open>
       <summary>Date Range</summary>
       <SidebarDetailsContent>
-        <div>
+        <div style={{margin: '4px 0'}}>
           <div>
             <strong>Showing between:</strong>
           </div>
@@ -68,7 +68,7 @@ export function FilterDateRange() {
             )}`}
           </div>
         </div>
-        <div>
+        <div style={{margin: '4px 0'}}>
           <label htmlFor="filter-date-range-select">
             <strong>Select:</strong>
           </label>

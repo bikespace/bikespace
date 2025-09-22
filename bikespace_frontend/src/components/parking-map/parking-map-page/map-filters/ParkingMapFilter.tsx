@@ -14,6 +14,8 @@ import type {Feature, Geometry, GeoJsonProperties} from 'geojson';
 import type {FilterSpecification} from 'maplibre-gl';
 import type {MapRef} from 'react-map-gl/dist/esm/exports-maplibre';
 
+import styles from './parking-map-filter.module.scss';
+
 function transformPropertyOptions(
   input: string | boolean | undefined,
   outputFormat:
@@ -187,7 +189,7 @@ export function ParkingMapFilter({
     <div>
       <label
         htmlFor="filter-property-select"
-        style={{display: 'block', marginBottom: '4px'}}
+        className={styles.filterPropertySelectLabel}
       >
         Choose a property to filter by:
       </label>
@@ -203,7 +205,7 @@ export function ParkingMapFilter({
           </option>
         ))}
       </SidebarSelect>
-      <div style={{display: 'flex', margin: '4px 0', gap: '4px'}}>
+      <div className={styles.selectClearButtonContainer}>
         <SidebarButton
           onClick={() => setSelectedPropertyOptions(new Set(propertyOptions))}
         >
@@ -218,7 +220,7 @@ export function ParkingMapFilter({
           Select {enabledFilterPropertiesLookup[filterProperty]?.description}:
         </legend>
         {[...propertyOptions].map(option => (
-          <div key={option}>
+          <div key={option} className={styles.styledCheckboxContainer}>
             <input
               type="checkbox"
               id={option}

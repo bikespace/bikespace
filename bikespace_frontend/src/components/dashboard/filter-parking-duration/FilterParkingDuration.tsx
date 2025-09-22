@@ -92,7 +92,7 @@ export function FilterParkingDuration() {
         </div>
         <div className={styles.durationCheckboxes}>
           {durationCheckboxes.map(({label, value}) => (
-            <div key={value}>
+            <div key={value} className={styles.durationCheckbox}>
               <input
                 type="checkbox"
                 id={`filter-parking-duration-${value}`}
