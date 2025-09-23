@@ -7,6 +7,7 @@ import {SidebarSelect} from '@/components/shared-ui/sidebar-select';
 import {
   defaultEnabledFilterProperties,
   FilterPropertyAttributes,
+  propertyTypeOptions,
 } from './parking-map-filter-default-properties';
 
 import type {RefObject} from 'react';
@@ -16,6 +17,14 @@ import type {MapRef} from 'react-map-gl/dist/esm/exports-maplibre';
 
 import styles from './parking-map-filter.module.scss';
 
+/**
+ * Convert property values that might be a blank string '', boolean, or undefined into representative string values, e.g.
+ * - `''` -> `'(blank)'` (presentation) / `'__blank__'` (data)
+ * - `undefined` -> `'(not specified)'` (presentation) / `'__undefined__'` (data)
+ * - `false` -> `'False'` (presentation) / `'false'`
+ *
+ * Values that are already strings are returned unchanged. Converting all these values into strings allows for easier use in e.g. input elements.
+ */
 function transformPropertyOptions(
   input: string | boolean | undefined,
   outputFormat:
@@ -57,6 +66,42 @@ function transformPropertyOptions(
   } else {
     return input;
   }
+}
+
+/**
+ * Sorts property options (the set of values for a specific feature property over the whole dataset) according to the specified type:
+ * - "string" properties are sorted alphabetically
+ * - "integer" properties are sorted as follows: first, any non-numeric values are sorted alphabetically (e.g. text placeholders for blank or null values), then any numeric values are sorted from lowest to highest
+ *
+ * In either case, since the outputs are used for UI labels, the function returns a sorted Set with the values all returned as strings.
+ */
+function sortPropertyOptions(
+  propertyOptions: Set<string>,
+  propertyType: propertyTypeOptions
+): Set<string> {
+  let propertyOptionsSorted: string[];
+  if (propertyType === propertyTypeOptions.String) {
+    propertyOptionsSorted = [...propertyOptions].toSorted();
+  } else if (propertyType === propertyTypeOptions.Integer) {
+    const propertyOptionsList = [...propertyOptions];
+    const numberProperties = propertyOptionsList.filter(
+      x => !Number.isNaN(parseInt(x, 10))
+    );
+    const textProperties = propertyOptionsList.filter(x =>
+      Number.isNaN(parseInt(x, 10))
+    );
+    const numberPropertiesSorted = numberProperties.toSorted(
+      (a, b) => parseInt(a, 10) - parseInt(b, 10)
+    );
+    const textPropertiesSorted = textProperties.toSorted();
+    propertyOptionsSorted = [
+      ...textPropertiesSorted,
+      ...numberPropertiesSorted,
+    ];
+  } else {
+    propertyOptionsSorted = [...propertyOptions].toSorted();
+  }
+  return new Set(propertyOptionsSorted);
 }
 
 const defaultFilterProperty = 'bicycle_parking';
@@ -112,7 +157,7 @@ export function ParkingMapFilter({
         ({
           key: key,
           description: key,
-          type: 'string',
+          type: propertyTypeOptions.String,
         } as FilterPropertyAttributes)
     );
     return newPropertyListAttributes.toSorted((a, b) =>
@@ -133,30 +178,9 @@ export function ParkingMapFilter({
       )
     );
     const propertyType =
-      enabledFilterPropertiesLookup[filterProperty]?.type ?? 'string';
-    let newPropertyOptionsSorted: string[];
-    if (propertyType === 'string') {
-      newPropertyOptionsSorted = [...newPropertyOptions].toSorted();
-    } else if (propertyType === 'integer') {
-      const newPropertyOptionsList = [...newPropertyOptions];
-      const numberProperties = newPropertyOptionsList.filter(
-        x => !Number.isNaN(parseInt(x, 10))
-      );
-      const textProperties = newPropertyOptionsList.filter(x =>
-        Number.isNaN(parseInt(x, 10))
-      );
-      const numberPropertiesSorted = numberProperties.toSorted(
-        (a, b) => parseInt(a, 10) - parseInt(b, 10)
-      );
-      const textPropertiesSorted = textProperties.toSorted();
-      newPropertyOptionsSorted = [
-        ...textPropertiesSorted,
-        ...numberPropertiesSorted,
-      ];
-    } else {
-      newPropertyOptionsSorted = [...newPropertyOptions].toSorted();
-    }
-    return new Set(newPropertyOptionsSorted);
+      (enabledFilterPropertiesLookup[filterProperty]
+        ?.type as propertyTypeOptions) ?? propertyTypeOptions.String;
+    return sortPropertyOptions(newPropertyOptions, propertyType);
   }, [features, filterProperty]);
 
   // update property options and reset filter when features or selection changes
@@ -184,6 +208,17 @@ export function ParkingMapFilter({
       ]);
     }
   }, [selectedPropertyOptions]);
+
+  function handleCheckboxChange(
+    event: React.ChangeEvent<HTMLInputElement>,
+    checkboxName: string
+  ) {
+    const newSelectedPropertyOptions = new Set(selectedPropertyOptions);
+    event.target.checked
+      ? newSelectedPropertyOptions.add(checkboxName)
+      : newSelectedPropertyOptions.delete(checkboxName);
+    setSelectedPropertyOptions(newSelectedPropertyOptions);
+  }
 
   return (
     <div>
@@ -226,12 +261,7 @@ export function ParkingMapFilter({
               id={option}
               name={option}
               checked={selectedPropertyOptions.has(option)}
-              onChange={e => {
-                e.target.checked
-                  ? selectedPropertyOptions.add(option)
-                  : selectedPropertyOptions.delete(option);
-                setSelectedPropertyOptions(new Set(selectedPropertyOptions));
-              }}
+              onChange={e => handleCheckboxChange(e, option)}
             />
             <label htmlFor={option}>
               {transformPropertyOptions(option, 'description')}

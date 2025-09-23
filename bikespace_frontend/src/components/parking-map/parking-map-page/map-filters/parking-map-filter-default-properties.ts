@@ -1,53 +1,58 @@
+export enum propertyTypeOptions {
+  String = 'string',
+  Integer = 'integer',
+}
+
 export interface FilterPropertyAttributes {
   key: string;
   description: string;
-  type: 'string' | 'integer';
+  type: propertyTypeOptions;
 }
 
 export const defaultEnabledFilterProperties: FilterPropertyAttributes[] = [
   {
     key: 'access',
     description: 'Allowed Access',
-    type: 'string',
+    type: propertyTypeOptions.String,
   },
   {
     key: 'bicycle_parking',
     description: 'Bicycle Parking Type',
-    type: 'string',
+    type: propertyTypeOptions.String,
   },
   {
     key: 'capacity',
     description: 'Capacity',
-    type: 'integer',
+    type: propertyTypeOptions.Integer,
   },
   {
     key: 'capacity:cargo_bike',
     description: 'Cargo Bike Capacity',
-    type: 'integer',
+    type: propertyTypeOptions.Integer,
   },
   {
     key: 'cargo_bike',
     description: 'Cargo Bike Suitable',
-    type: 'string',
+    type: propertyTypeOptions.String,
   },
   {
     key: 'covered',
     description: 'Covered',
-    type: 'string',
+    type: propertyTypeOptions.String,
   },
   {
     key: 'fee',
     description: 'Payment Required',
-    type: 'string',
+    type: propertyTypeOptions.String,
   },
   {
     key: 'lit',
     description: 'Lit at Night',
-    type: 'string',
+    type: propertyTypeOptions.String,
   },
   {
     key: 'meta_source',
     description: 'Data Source',
-    type: 'string',
+    type: propertyTypeOptions.String,
   },
 ];
