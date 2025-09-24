@@ -135,11 +135,13 @@ export function ParkingMapFilter({
     Set<string>
   >(new Set());
 
+  // load combobox options when data arrives
   useEffect(() => {
     if (status !== 'success') return;
     setFeatures(data);
   }, [status]);
 
+  // process property keys, give them more user-friendly names (if specified), and limit to specified keys if onlyShowEnabledFilterProperties = true
   const filterPropertyList: FilterPropertyAttributes[] = useMemo(() => {
     const newPropertyList: Set<string> = new Set(
       features.flatMap(f => Object.keys(f.properties as Object))
@@ -160,6 +162,7 @@ export function ParkingMapFilter({
           type: propertyTypeOptions.String,
         } as FilterPropertyAttributes)
     );
+    // sort property keys by alphabetical order of their display names
     return newPropertyListAttributes.toSorted((a, b) =>
       a.description.localeCompare(b.description, undefined, {
         sensitivity: 'base',
@@ -167,6 +170,7 @@ export function ParkingMapFilter({
     );
   }, [features]);
 
+  // transform and sort property values for the selected key
   const propertyOptions: Set<string> = useMemo(() => {
     const newPropertyOptions = new Set(
       features.map(
