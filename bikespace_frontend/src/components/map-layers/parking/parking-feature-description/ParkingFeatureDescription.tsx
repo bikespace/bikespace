@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 
 import type {Feature} from 'geojson';
 
-import {SidebarButton} from '@/components/dashboard/sidebar-button';
+import {SidebarButton} from '@/components/shared-ui/sidebar-button';
 
 import {bicycleParkingDescriptions as bpDesc} from './bicycle_parkingDescriptions';
 import styles from './parking-feature-description.module.scss';

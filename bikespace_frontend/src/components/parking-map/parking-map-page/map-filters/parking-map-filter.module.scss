@@ -1,0 +1,20 @@
+@import '@/styles/variables.module.scss';
+
+.filterPropertySelectLabel {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.selectClearButtonContainer {
+  display: flex;
+  margin: 4px 0;
+  gap: 4px;
+}
+
+.styledCheckboxContainer {
+  margin: 2px 0;
+  input[type='checkbox'] {
+    accent-color: $color-primary-d50p;
+  }
+}
+

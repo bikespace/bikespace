@@ -2,7 +2,7 @@ import React from 'react';
 
 import {useStore} from '@/states/store';
 
-import {SidebarButton} from '../sidebar-button';
+import {SidebarButton} from '@/components/shared-ui/sidebar-button';
 
 import clearFilterIcon from '@/assets/icons/clear-filter.svg';
 

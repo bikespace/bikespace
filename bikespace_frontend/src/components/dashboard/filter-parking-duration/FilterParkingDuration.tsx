@@ -6,8 +6,11 @@ import {trackUmamiEvent} from '@/utils';
 
 import {useStore} from '@/states/store';
 
-import {FilterSection} from '../filter-section';
-import {SidebarButton} from '../sidebar-button';
+import {SidebarButton} from '@/components/shared-ui/sidebar-button';
+import {
+  SidebarDetailsDisclosure,
+  SidebarDetailsContent,
+} from '@/components/shared-ui/sidebar-details-disclosure';
 
 import styles from './filter-parking-duration.module.scss';
 
@@ -72,37 +75,42 @@ export function FilterParkingDuration() {
   );
 
   return (
-    <FilterSection title="Parking Duration">
-      <div className={styles.categoryButtons}>
-        {durationButtons.map(({label, value}) => (
-          <SidebarButton
-            key={value}
-            onClick={() => {
-              setDurationCategory(value);
-            }}
-          >
-            {label}
-          </SidebarButton>
-        ))}
-      </div>
-      <div className={styles.durationCheckboxes}>
-        {durationCheckboxes.map(({label, value}) => (
-          <div key={value}>
-            <input
-              type="checkbox"
-              id={`filter-parking-duration-${value}`}
-              name={value}
-              className="filter-parking-duration-input"
-              checked={parkingDuration?.includes(value)}
-              onChange={() => {
-                handleChange(value);
+    <SidebarDetailsDisclosure open>
+      <summary>Parking Duration</summary>
+      <SidebarDetailsContent>
+        <div className={styles.categoryButtons}>
+          {durationButtons.map(({label, value}) => (
+            <SidebarButton
+              key={value}
+              onClick={() => {
+                setDurationCategory(value);
               }}
-            />
-            <label htmlFor={`filter-parking-duration-${value}`}>{label}</label>
-          </div>
-        ))}
-      </div>
-    </FilterSection>
+            >
+              {label}
+            </SidebarButton>
+          ))}
+        </div>
+        <div className={styles.durationCheckboxes}>
+          {durationCheckboxes.map(({label, value}) => (
+            <div key={value} className={styles.durationCheckbox}>
+              <input
+                type="checkbox"
+                id={`filter-parking-duration-${value}`}
+                name={value}
+                className="filter-parking-duration-input"
+                checked={parkingDuration?.includes(value)}
+                onChange={() => {
+                  handleChange(value);
+                }}
+              />
+              <label htmlFor={`filter-parking-duration-${value}`}>
+                {label}
+              </label>
+            </div>
+          ))}
+        </div>
+      </SidebarDetailsContent>
+    </SidebarDetailsDisclosure>
   );
 }
 
