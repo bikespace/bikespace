@@ -38,6 +38,8 @@ jobs:
         run: make test-api
       - name: Coveralls
         uses: coverallsapp/github-action@v2
+        with:
+          fail-on-error: false
   api-migration-test:
     name: Test if database migrations need to be generated for API
     runs-on: ubuntu-latest
