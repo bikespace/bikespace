@@ -154,7 +154,7 @@ export function ImageryMapPage() {
         }
       >
         <NavigationControl position="top-left" />
-        <GeolocateControl position="top-left" />
+        <GeolocateControl position="top-left" trackUserLocation={true} />
         <BicycleNetworkLayer />
         <PanoramaxImageryLayer />
       </Map>
