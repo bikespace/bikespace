@@ -33,7 +33,7 @@ jobs:
       - name: Setup python
         uses: actions/setup-python@v4
         with:
-          python-version : '3.12.0'
+          python-version: "3.12.0"
       - name: Run pytest
         run: make test-api
       - name: Coveralls
@@ -63,20 +63,20 @@ jobs:
       - name: Setup python
         uses: actions/setup-python@v4
         with:
-          python-version : '3.12.0'
+          python-version: "3.12.0"
       - name: Run migration check
         run: make migrate-test-db
   deploy-to-fly:
-      name: Deploy to fly.io
-      needs: [apitest, api-migration-test]
-      runs-on: ubuntu-latest
-      permissions:
-        contents: read
-        deployments: write
-      steps:
-        - uses: actions/checkout@v3
-        - uses: superfly/flyctl-actions/setup-flyctl@master
-        - run: flyctl deploy 
-          working-directory: ./bikespace_api
-          env:
-            FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+    name: Deploy to fly.io
+    needs: [apitest, api-migration-test]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      deployments: write
+    steps:
+      - uses: actions/checkout@v3
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+      - run: flyctl deploy
+        working-directory: ./bikespace_api
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
