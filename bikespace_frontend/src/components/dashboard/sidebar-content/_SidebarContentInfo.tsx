@@ -4,7 +4,7 @@ import issueReporter from '@/assets/images/issue-reporter.svg';
 import dataGuide from '@/assets/images/data-guide.svg';
 
 import styles from './_SidebarContent.module.scss';
-import {SidebarLinkButton} from '../sidebar-button';
+import {SidebarLinkButton} from '@/components/shared-ui/sidebar-button';
 
 export function SidebarContentInfo() {
   return (

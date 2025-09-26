@@ -9,7 +9,7 @@ import {trackUmamiEvent} from '@/utils';
 
 import {useStore} from '@/states/store';
 
-import {SidebarButton} from '../sidebar-button';
+import {SidebarButton} from '@/components/shared-ui/sidebar-button';
 
 import styles from './filter-date-range-custom.module.scss';
 
