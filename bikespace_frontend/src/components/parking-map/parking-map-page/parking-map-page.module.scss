@@ -24,7 +24,11 @@
     height: 0;
   }
 
-  &> p {
+  & > * {
+    margin-bottom: 8px;
+  }
+
+  & > p {
     padding: 4px;
   }
 }
@@ -37,7 +41,6 @@
   flex-direction: column;
   gap: 8px;
   padding: 4px;
-  margin-bottom: 8px;
 }
 
 .ContentHeading {
@@ -58,36 +61,15 @@ p.cardBody {
   margin-top: 0px;
 }
 
-.legend {
-  margin-bottom: 8px;
+.legendContent {
   background-color: white;
-  border-radius: 4px;
-  padding: 4px;
+  margin: 4px;
+  margin-bottom: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 
-  summary {
-    height: 2rem;
-    line-height: calc(2rem - 4px); // center text vertically
-    font-weight: 600;
-    color: $color-primary-d50p;
-    border-bottom: none;
-  }
-
-  &[open] summary {
-    padding-bottom: calc(4px + 3px);
-    margin-bottom: 4px;
-    border-bottom: 2px solid $color-secondary-light-grey;
-  }
-
-  .legendContent{
-    background-color: white;
-    margin: 4px;
-    margin-bottom: 8px;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-
-    h3 {
-      padding-top: 4px;
-    }
+  h3 {
+    padding-top: 4px;
   }
 }
