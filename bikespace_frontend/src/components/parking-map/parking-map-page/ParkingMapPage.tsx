@@ -18,6 +18,7 @@ import {
   SidebarDetailsDisclosure,
   SidebarDetailsContent,
 } from '@/components/shared-ui/sidebar-details-disclosure';
+import {Spinner} from '@/components/shared-ui/spinner';
 import {
   ParkingFeatureDescription,
   parkingFirstLayerId,
@@ -45,7 +46,7 @@ import type {
 
 import 'maplibre-gl/dist/maplibre-gl.css';
 import styles from './parking-map-page.module.scss';
-
+import loader from '@/styles/shared/loader.module.scss';
 const parkingSpritePath = '/parking_sprites/parking_sprites';
 
 const backupMapStyle: MapStyle = {
@@ -75,6 +76,7 @@ export function uniqueBy(a: Array<Object>, getKey: Function): Array<Object> {
 export function ParkingMapPage() {
   const [zoomLevel, setZoomLevel] = useState<number>(12);
   const [sidebarIsOpen, setSidebarIsOpen] = useState<boolean>(true);
+  const [isMapLoading, setIsMapLoading] = useState<boolean>(true);
   const [geoSearchIsMinimized, setGeoSearchIsMinimized] =
     useState<boolean>(false);
   const [parkingLayerFilter, setParkingLayerFilter] =
@@ -201,6 +203,7 @@ export function ParkingMapPage() {
 
   function addSprite() {
     mapRef.current!.addSprite('parking', parkingSpritePath);
+    console.log('loading...');
   }
 
   // show map pins as interactive when mouse is over them
@@ -220,6 +223,7 @@ export function ParkingMapPage() {
     if (process.env.NODE_ENV !== 'production') console.log('map loaded');
     addSprite();
     handleMouseHover();
+    console.log('done');
   }
 
   return (
@@ -307,6 +311,7 @@ export function ParkingMapPage() {
         }
         onLoad={handleOnLoad}
         onClick={handleLayerClick}
+        onIdle={() => setIsMapLoading(false)} // set to false when map is idle
         // onZoomEnd={() =>
         //   setZoomLevel(Math.round((mapRef.current!.getZoom() ?? 0) * 10) / 10)
         // }
@@ -321,6 +326,8 @@ export function ParkingMapPage() {
         {showBicycleNetwork ? (
           <BicycleNetworkLayer beforeId={parkingFirstLayerId} />
         ) : null}
+        {/* placed here to avoid covering the sidebar */}
+        <Spinner show={isMapLoading} overlay label="Loading map..." />
       </Map>
     </main>
   );
