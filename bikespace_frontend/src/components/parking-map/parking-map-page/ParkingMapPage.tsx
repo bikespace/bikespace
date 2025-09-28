@@ -18,6 +18,7 @@ import {
   SidebarDetailsDisclosure,
   SidebarDetailsContent,
 } from '@/components/shared-ui/sidebar-details-disclosure';
+import {Spinner} from '@/components/shared-ui/spinner';
 import {
   ParkingFeatureDescription,
   parkingFirstLayerId,
@@ -46,7 +47,6 @@ import type {
 import 'maplibre-gl/dist/maplibre-gl.css';
 import styles from './parking-map-page.module.scss';
 import loader from '@/styles/shared/loader.module.scss';
-import {Spinner} from '@/components/spinner/Spinner';
 const parkingSpritePath = '/parking_sprites/parking_sprites';
 
 const backupMapStyle: MapStyle = {

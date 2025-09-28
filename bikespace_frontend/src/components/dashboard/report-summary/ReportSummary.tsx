@@ -2,14 +2,13 @@ import React, {useState, useEffect} from 'react';
 import {DateTime} from 'luxon';
 
 import {useStore} from '@/states/store';
-
 import {useAllSubmissionsDateRange, useSubmissionsQuery} from '@/hooks';
 
-import warningIcon from '@/assets/icons/exclamation-triangle.svg';
-
-import {Spinner} from '../../spinner/Spinner';
+import {Spinner} from '@/components/shared-ui/spinner';
 
 import styles from './report-summary.module.scss';
+
+import warningIcon from '@/assets/icons/exclamation-triangle.svg';
 
 export function ReportSummary() {
   const {isFetching} = useSubmissionsQuery();

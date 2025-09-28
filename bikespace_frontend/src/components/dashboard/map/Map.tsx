@@ -1,4 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
+
 import {MapContainer, TileLayer} from 'react-leaflet';
 import MarkerClusterGroup from 'react-leaflet-cluster';
 import {Marker as LeafletMarker, Map as lMap} from 'leaflet';
@@ -6,21 +7,21 @@ import {useWindowSize} from '@uidotdev/usehooks';
 
 import {useStore} from '@/states/store';
 import {defaultMapCenter} from '@/utils/map-utils';
-
-import 'leaflet/dist/leaflet.css';
-import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css';
-
 import {SubmissionApiPayload} from '@/interfaces/Submission';
 import {useSidebarTab} from '@/states/url-params';
+
+import {Spinner} from '@/components/shared-ui/spinner';
 
 import {MapMarker} from '../map-marker';
 import {LeafletLocateControl} from '../leaflet-locate-control';
 import {MapHandler} from '../map-handler';
 
+import 'leaflet/dist/leaflet.css';
+import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css';
+
 import styles from './map.module.scss';
 import loader from '@/styles/shared/loader.module.scss';
 import './leaflet.scss';
-import {Spinner} from '@/components/spinner/Spinner';
 
 export interface MapProps {
   submissions: SubmissionApiPayload[];

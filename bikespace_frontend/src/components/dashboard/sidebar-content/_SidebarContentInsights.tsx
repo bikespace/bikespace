@@ -3,10 +3,11 @@ import dynamic from 'next/dynamic';
 
 import {PlotParams} from 'react-plotly.js';
 
+import {Spinner} from '@/components/shared-ui/spinner';
+
 import {ReportSummary} from '../report-summary';
 
 import styles from './_SidebarContent.module.scss';
-import {Spinner} from '@/components/spinner/Spinner';
 
 type ChartProps = Pick<PlotParams, 'className'> & {onReady: () => void};
 
