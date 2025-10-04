@@ -12,7 +12,11 @@ import {trackUmamiEvent} from '@/utils';
 
 import {Sidebar} from './sidebar/Sidebar';
 import {PanoramaxImageryLayer} from '../panoramax/PanoramaxImagery';
-import {BicycleNetworkLayer} from '@/components/map-layers/BicycleNetwork';
+import {
+  BicycleNetworkLayer,
+  BicycleNetworkLayerControl,
+  bikeLaneTypes,
+} from '@/components/map-layers/BicycleNetwork';
 
 import type {
   MapGeoJSONFeature,
@@ -58,6 +62,9 @@ export function uniqueBy(a: Array<Object>, getKey: Function): Array<Object> {
 export function ImageryMapPage() {
   const [zoomLevel, setZoomLevel] = useState<number>(12);
   const [sidebarIsOpen, setSidebarIsOpen] = useState<boolean>(true);
+  const [selectedBikeLaneTypes, setSelectedBikeLaneTypes] = useState<
+    bikeLaneTypes[]
+  >(Object.values(bikeLaneTypes));
 
   const mapRef = useRef<MapRef>(null);
 
@@ -155,7 +162,11 @@ export function ImageryMapPage() {
       >
         <NavigationControl position="top-left" />
         <GeolocateControl position="top-left" trackUserLocation={true} />
-        <BicycleNetworkLayer />
+        <BicycleNetworkLayerControl
+          selectedTypes={selectedBikeLaneTypes}
+          setSelectedTypes={setSelectedBikeLaneTypes}
+        />
+        <BicycleNetworkLayer showBikeLaneTypes={selectedBikeLaneTypes} />
         <PanoramaxImageryLayer />
       </Map>
     </main>

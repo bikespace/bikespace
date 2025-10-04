@@ -1,6 +1,8 @@
 import React from 'react';
 import {Layer, Source} from 'react-map-gl/maplibre';
 
+import {CustomControlOverlay} from '@/utils/map-utils';
+
 import type {LineLayer} from 'react-map-gl/maplibre';
 
 import styles from './legend-tables.module.scss';
@@ -64,12 +66,25 @@ export function BicycleNetworkLayer({
     id: 'bicycle-lanes',
     type: 'line',
     source: 'bicycle-lanes',
+    // excludes unprotected connectors, which are rendered by bicycleRouteLayer
     filter: [
-      'match',
+      'in',
       ['get', 'INFRA_HIGHORDER'],
-      bikeLaneTypeLabels[bikeLaneTypes.UnprotectedConnectors],
-      false,
-      true,
+      [
+        'literal',
+        [
+          ...(showBikeLaneTypes.includes(bikeLaneTypes.Protected)
+            ? bikeLaneTypeLabels[bikeLaneTypes.Protected]
+            : []),
+          ...(showBikeLaneTypes.includes(bikeLaneTypes.Painted)
+            ? bikeLaneTypeLabels[bikeLaneTypes.Painted]
+            : []),
+          ...(showBikeLaneTypes.includes(bikeLaneTypes.MultiUseTrails)
+            ? bikeLaneTypeLabels[bikeLaneTypes.MultiUseTrails]
+            : []),
+          ...(showBikeLaneTypes.includes(bikeLaneTypes.Unknown) ? [null] : []),
+        ],
+      ],
     ],
     layout: {
       'line-cap': 'round',
@@ -85,7 +100,7 @@ export function BicycleNetworkLayer({
         '#8c5535',
         bikeLaneTypeLabels[bikeLaneTypes.Painted],
         'hsl(137, 68%, 36%)',
-        '#2c3b42',
+        '#2c3b42', // unknown or fallback value
       ],
     },
   };
@@ -95,11 +110,14 @@ export function BicycleNetworkLayer({
     type: 'line',
     source: 'bicycle-lanes',
     filter: [
-      'match',
+      'in',
       ['get', 'INFRA_HIGHORDER'],
-      bikeLaneTypeLabels[bikeLaneTypes.UnprotectedConnectors],
-      true,
-      false,
+      [
+        'literal',
+        showBikeLaneTypes.includes(bikeLaneTypes.UnprotectedConnectors)
+          ? bikeLaneTypeLabels[bikeLaneTypes.UnprotectedConnectors]
+          : [],
+      ],
     ],
     layout: {
       'line-cap': 'round',
@@ -180,5 +198,45 @@ export function BicycleNetworkLayerLegend() {
         </tbody>
       </table>
     </>
+  );
+}
+
+interface BicycleNetworkLayerControlProps {
+  selectedTypes: bikeLaneTypes[];
+  setSelectedTypes: React.Dispatch<React.SetStateAction<bikeLaneTypes[]>>;
+}
+
+export function BicycleNetworkLayerControl({
+  selectedTypes,
+  setSelectedTypes,
+}: BicycleNetworkLayerControlProps) {
+  function toggleType(laneType: bikeLaneTypes) {
+    if (selectedTypes.includes(laneType)) {
+      setSelectedTypes(selectedTypes.filter(x => x !== laneType));
+    } else {
+      setSelectedTypes([...selectedTypes, laneType]);
+    }
+  }
+
+  return (
+    <CustomControlOverlay position="bottom-left">
+      <div style={{padding: 4}}>
+        <fieldset>
+          <legend>Cycling Network:</legend>
+          {Object.values(bikeLaneTypes).map(laneType => (
+            <div key={laneType}>
+              <input
+                type="checkbox"
+                id={laneType}
+                name={laneType}
+                checked={selectedTypes.includes(laneType)}
+                onChange={e => toggleType(e.target.name as bikeLaneTypes)}
+              />
+              <label htmlFor={laneType}>{laneType}</label>
+            </div>
+          ))}
+        </fieldset>
+      </div>
+    </CustomControlOverlay>
   );
 }
