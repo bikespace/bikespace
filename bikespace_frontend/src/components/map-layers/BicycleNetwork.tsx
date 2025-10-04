@@ -11,20 +11,28 @@ import networkTrail from '@/assets/icons/bicycle_network/network_park_multiuse_t
 import networkUnknown from '@/assets/icons/bicycle_network/network_unknown_lane.svg';
 import networkSharrow from '@/assets/icons/bicycle_network/network_sharrow_unprotected.svg';
 
-const bikeLaneTypes = {
-  protected: [
+export enum bikeLaneTypes {
+  Protected = 'protected',
+  Painted = 'painted',
+  MultiUseTrails = 'multiUseTrails',
+  UnprotectedConnectors = 'unprotectedConnectors',
+  Unknown = 'unknown',
+}
+
+const bikeLaneTypeLabels = {
+  [bikeLaneTypes.Protected]: [
     'Cycle Track',
     'Cycle Track - Contraflow',
     'Bi-Directional Cycle Track',
   ],
-  painted: [
+  [bikeLaneTypes.Painted]: [
     'Bike Lane',
     'Bike Lane - Buffered',
     'Bike Lane - Contraflow',
     'Contra-Flow Bike Lane',
     'Contraflow',
   ],
-  multiUseTrails: [
+  [bikeLaneTypes.MultiUseTrails]: [
     'Multi-Use Trail',
     'Multi-Use Trail - Boulevard',
     'Multi-Use Trail - Connector',
@@ -32,7 +40,7 @@ const bikeLaneTypes = {
     'Multi-Use Trail - Existing Connector',
     'Park Road',
   ],
-  unprotectedConnectors: [
+  [bikeLaneTypes.UnprotectedConnectors]: [
     'Sharrows',
     'Sharrows - Arterial',
     'Sharrows - Arterial - Connector',
@@ -41,7 +49,15 @@ const bikeLaneTypes = {
   ],
 };
 
-export function BicycleNetworkLayer({beforeId}: {beforeId?: string}) {
+interface BicycleNetworkLayerProps {
+  showBikeLaneTypes?: bikeLaneTypes[];
+  beforeId?: string;
+}
+
+export function BicycleNetworkLayer({
+  beforeId,
+  showBikeLaneTypes = Object.values(bikeLaneTypes),
+}: BicycleNetworkLayerProps) {
   const bicycleNetworkURL = process.env.DATA_BICYCLE_NETWORK;
 
   const bicycleLaneLayer: LineLayer = {
@@ -51,7 +67,7 @@ export function BicycleNetworkLayer({beforeId}: {beforeId?: string}) {
     filter: [
       'match',
       ['get', 'INFRA_HIGHORDER'],
-      bikeLaneTypes.unprotectedConnectors,
+      bikeLaneTypeLabels[bikeLaneTypes.UnprotectedConnectors],
       false,
       true,
     ],
@@ -63,11 +79,11 @@ export function BicycleNetworkLayer({beforeId}: {beforeId?: string}) {
       'line-color': [
         'match',
         ['get', 'INFRA_HIGHORDER'],
-        bikeLaneTypes.protected,
+        bikeLaneTypeLabels[bikeLaneTypes.Protected],
         'hsl(137, 68%, 23%)',
-        bikeLaneTypes.multiUseTrails,
+        bikeLaneTypeLabels[bikeLaneTypes.MultiUseTrails],
         '#8c5535',
-        bikeLaneTypes.painted,
+        bikeLaneTypeLabels[bikeLaneTypes.Painted],
         'hsl(137, 68%, 36%)',
         '#2c3b42',
       ],
@@ -81,7 +97,7 @@ export function BicycleNetworkLayer({beforeId}: {beforeId?: string}) {
     filter: [
       'match',
       ['get', 'INFRA_HIGHORDER'],
-      bikeLaneTypes.unprotectedConnectors,
+      bikeLaneTypeLabels[bikeLaneTypes.UnprotectedConnectors],
       true,
       false,
     ],
@@ -94,7 +110,7 @@ export function BicycleNetworkLayer({beforeId}: {beforeId?: string}) {
       'line-color': [
         'match',
         ['get', 'INFRA_HIGHORDER'],
-        bikeLaneTypes.unprotectedConnectors,
+        bikeLaneTypeLabels[bikeLaneTypes.UnprotectedConnectors],
         'hsl(137, 56%, 62%)',
         '#2c3b42',
       ],
@@ -112,31 +128,31 @@ export function BicycleNetworkLayer({beforeId}: {beforeId?: string}) {
 export function BicycleNetworkLayerLegend() {
   const legendEntries = [
     {
-      key: 'protected',
+      key: bikeLaneTypes.Protected,
       icon: networkProtected.src,
       alt: 'dark green line',
       description: 'Protected bike lane',
     },
     {
-      key: 'painted',
+      key: bikeLaneTypes.Painted,
       icon: networkPainted.src,
       alt: 'green line',
       description: 'Painted bike lane',
     },
     {
-      key: 'trail',
+      key: bikeLaneTypes.MultiUseTrails,
       icon: networkTrail.src,
       alt: 'brown line',
       description: 'Multi-use or park trail',
     },
     {
-      key: 'sharrow',
+      key: bikeLaneTypes.UnprotectedConnectors,
       icon: networkSharrow.src,
       alt: 'light green dashed line',
       description: 'Unprotected bike route (e.g. sharrows)',
     },
     {
-      key: 'unknown',
+      key: bikeLaneTypes.Unknown,
       icon: networkUnknown.src,
       alt: 'dark grey line',
       description: 'Unknown bike lane type',
