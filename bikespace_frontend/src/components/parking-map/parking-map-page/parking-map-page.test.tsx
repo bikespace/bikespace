@@ -2,6 +2,9 @@ import React, {forwardRef} from 'react';
 import {render, screen} from '@testing-library/react';
 import {userEvent} from '@testing-library/user-event';
 
+import {QueryClientProvider} from '@tanstack/react-query';
+import {queryClient} from '@/config/query-client';
+
 import {ParkingMapPage, uniqueBy} from './ParkingMapPage';
 
 jest.mock('react-map-gl/maplibre', () => ({
@@ -33,7 +36,11 @@ describe('uniqueBy', () => {
 
 describe('ParkingMapPage', () => {
   test('All ParkingMapPage images on first load have alt text', () => {
-    render(<ParkingMapPage />);
+    render(
+      <QueryClientProvider client={queryClient}>
+        <ParkingMapPage />
+      </QueryClientProvider>
+    );
     expect(
       screen
         .getAllByRole('img')
@@ -43,7 +50,11 @@ describe('ParkingMapPage', () => {
 
   test('Details pane toggle has correct accessibility descriptions', async () => {
     const user = userEvent.setup();
-    render(<ParkingMapPage />);
+    render(
+      <QueryClientProvider client={queryClient}>
+        <ParkingMapPage />
+      </QueryClientProvider>
+    );
 
     // no interaction
     const paneToggle = screen.getByRole('button', {

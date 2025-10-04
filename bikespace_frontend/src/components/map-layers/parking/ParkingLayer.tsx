@@ -4,7 +4,11 @@ import {Layer, Marker, Source, useMap} from 'react-map-gl/maplibre';
 import {getCentroid, getSpriteImageWithTextOverlay} from '@/utils/map-utils';
 
 import type {CircleLayer, SymbolLayer} from 'react-map-gl/maplibre';
-import type {ExpressionSpecification, MapGeoJSONFeature} from 'maplibre-gl';
+import type {
+  ExpressionSpecification,
+  MapGeoJSONFeature,
+  FilterSpecification,
+} from 'maplibre-gl';
 import type {layoutOptions} from '@/utils/map-utils';
 
 import styles from '../legend-tables.module.scss';
@@ -12,6 +16,8 @@ import styles from '../legend-tables.module.scss';
 import parkingSpriteImage from '@/public/parking_sprites/parking_sprites@2x.png';
 import parkingSpriteJSON from '@/public/parking_sprites/parking_sprites@2x.json';
 
+export const parkingSourceId = 'bicycle-parking';
+export const parkingFirstLayerId = 'bicycle-parking-dense';
 export const parkingInteractiveLayers = ['bicycle-parking'];
 
 // access=* values that indicate that bicycle parking is open to the public
@@ -20,11 +26,15 @@ const publicAccessTypes = ['yes', 'permissive', ''];
 interface ParkingLayerProps {
   selected: MapGeoJSONFeature[];
   groupSelected: MapGeoJSONFeature[];
+  layerFilter?: FilterSpecification;
 }
 
-export function ParkingLayer({selected, groupSelected}: ParkingLayerProps) {
-  const bicycleParkingURL =
-    'https://raw.githubusercontent.com/bikespace/parking-map-data/refs/heads/main/Display%20Files/all_sources.geojson';
+export function ParkingLayer({
+  selected,
+  groupSelected,
+  layerFilter = true,
+}: ParkingLayerProps) {
+  const bicycleParkingURL = process.env.DATA_BICYCLE_PARKING;
 
   const {current: map} = useMap();
 
@@ -65,7 +75,8 @@ export function ParkingLayer({selected, groupSelected}: ParkingLayerProps) {
   const parkingLayer: SymbolLayer = {
     id: 'bicycle-parking',
     type: 'symbol',
-    source: 'bicycle-parking',
+    source: parkingSourceId,
+    filter: layerFilter,
     layout: {
       'icon-image': [
         'match',
@@ -113,7 +124,8 @@ export function ParkingLayer({selected, groupSelected}: ParkingLayerProps) {
   const parkingLayerDense: CircleLayer = {
     id: 'bicycle-parking-dense',
     type: 'circle',
-    source: 'bicycle_parking',
+    source: parkingSourceId,
+    filter: layerFilter,
     paint: {
       'circle-color': [
         'match',
@@ -141,7 +153,7 @@ export function ParkingLayer({selected, groupSelected}: ParkingLayerProps) {
   return (
     <>
       <Source
-        id="bicycle-parking"
+        id={parkingSourceId}
         type="geojson"
         data={bicycleParkingURL}
         generateId={true}

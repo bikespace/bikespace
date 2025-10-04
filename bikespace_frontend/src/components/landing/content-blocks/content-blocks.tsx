@@ -7,9 +7,11 @@ import styles from './content-blocks.module.scss';
 function HeroBlock({
   tagline,
   imageSrc,
+  imageAlt,
 }: Readonly<{
   tagline: string;
   imageSrc: string;
+  imageAlt: string;
 }>) {
   return (
     <div className={styles.fullWidth}>
@@ -41,7 +43,7 @@ function HeroBlock({
           </div>
         </div>
         <div style={{flex: '1 1 auto'}}>
-          <img src={imageSrc} className={styles.heroImage}></img>
+          <img src={imageSrc} className={styles.heroImage} alt={imageAlt}></img>
         </div>
       </div>
     </div>

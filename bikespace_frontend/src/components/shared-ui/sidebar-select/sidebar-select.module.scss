@@ -1,0 +1,23 @@
+@import '@/styles/variables.module.scss';
+
+select.sidebarSelect {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  color: black;
+  display: block;
+  width: 100%;
+  height: 2rem;
+  padding-right: calc(8px + 1.5rem);
+  padding-left: 8px;
+  --bs-form-select-bg-img: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+  background-image: var(--bs-form-select-bg-img);
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 16px 12px;
+  background-color: white;
+  border: 2px solid $color-primary-d50p;
+  border-radius: 4px;
+  font-family: $body-font-stack;
+  font-size: 0.9rem;
+}

@@ -7,8 +7,20 @@ import {umamiConfig} from '@/config/umami';
 
 import '@/styles/global.scss';
 
+const siteTitle = 'BikeSpace';
+const siteDescription = 'Digital tools to improve bicycle parking in Toronto';
+
 export const metadata: Metadata = {
-  title: 'BikeSpace',
+  metadataBase: new URL('https://bikespace.ca'),
+
+  title: siteTitle,
+  description: siteDescription,
+  openGraph: {
+    title: siteTitle,
+    description: siteDescription,
+    locale: 'en_CA',
+    type: 'website',
+  },
 };
 
 export const viewport: Viewport = {
