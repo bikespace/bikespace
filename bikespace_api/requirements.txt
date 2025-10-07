@@ -2,6 +2,7 @@ alembic==1.9.4
 argon2-cffi==23.1.0
 argon2-cffi-bindings==21.2.0
 bcrypt==4.0.1
+beautifulsoup4==4.14.2
 better-profanity==0.7.0
 black==24.3.0
 blinker==1.9.0
@@ -57,6 +58,7 @@ python-dotenv==1.1.1
 requests==2.32.4
 rich==13.5.2
 setuptools==78.1.1
+soupsieve==2.8
 SQLAlchemy==2.0.37
 SQLAlchemy-Utils==0.41.2
 tomli==2.0.1
