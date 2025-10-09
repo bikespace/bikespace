@@ -20,7 +20,6 @@ import 'leaflet/dist/leaflet.css';
 import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css';
 
 import styles from './map.module.scss';
-import loader from '@/styles/shared/loader.module.scss';
 import './leaflet.scss';
 
 export interface MapProps {

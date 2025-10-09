@@ -223,7 +223,6 @@ export function ParkingMapPage() {
     if (process.env.NODE_ENV !== 'production') console.log('map loaded');
     addSprite();
     handleMouseHover();
-    console.log('done');
   }
 
   return (

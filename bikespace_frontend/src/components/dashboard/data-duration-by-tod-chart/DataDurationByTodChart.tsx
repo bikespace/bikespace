@@ -1,4 +1,4 @@
-import React, {useMemo} from 'react';
+import React, {useCallback, useMemo, useRef} from 'react';
 import Plotly, {PlotParams} from 'react-plotly.js';
 import {Annotations} from 'plotly.js-dist-min';
 import {DateTime, Interval} from 'luxon';
@@ -16,7 +16,12 @@ function DataDurationByTodChart({
   onReady,
 }: Pick<PlotParams, 'className'> & {onReady?: () => void}) {
   const submissions = useStore(state => state.submissions);
-
+  const firedRef = useRef(false);
+  const handleAfterPlot = useCallback(() => {
+    if (firedRef.current) return;
+    firedRef.current = true;
+    onReady?.();
+  }, [onReady]);
   const data = useMemo<number[][]>(() => {
     return parkingDurations.map(duration => {
       return intervals.map(
@@ -128,7 +133,7 @@ function DataDurationByTodChart({
         height: 160,
       }}
       config={config}
-      onAfterPlot={() => onReady?.()}
+      onAfterPlot={handleAfterPlot}
     />
   );
 }

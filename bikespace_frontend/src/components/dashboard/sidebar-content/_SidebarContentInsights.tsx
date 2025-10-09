@@ -1,4 +1,4 @@
-import React, {Suspense, useCallback, useState} from 'react';
+import React, {useState} from 'react';
 import dynamic from 'next/dynamic';
 
 import {PlotParams} from 'react-plotly.js';
@@ -34,12 +34,12 @@ const DataDurationByTodChart = dynamic<ChartProps>(
 );
 
 export function SidebarContentInsights() {
-  const TOTAL = 3;
+  const TOTAL = 4; // Number of child components
   const [readyCount, setReadyCount] = useState(0);
-  const markReady = useCallback(
-    () => setReadyCount(c => Math.min(TOTAL, c + 1)),
-    []
-  );
+
+  const markReady = () => {
+    setReadyCount(c => (c < TOTAL ? c + 1 : c)); // Gets called exactly once per child component
+  };
   const allReady = readyCount >= TOTAL;
   return (
     <div>
@@ -47,7 +47,7 @@ export function SidebarContentInsights() {
         <Spinner overlay label="Loading insights..." style={{zIndex: 3000}} />
       )}
       <div style={{visibility: allReady ? 'visible' : 'hidden'}}>
-        <ReportSummary />
+        <ReportSummary onReady={markReady} />
         <DataIssueFrequencyChart className={styles.chart} onReady={markReady} />
         <DataFrequencyByDayChart className={styles.chart} onReady={markReady} />
         <DataDurationByTodChart className={styles.chart} onReady={markReady} />

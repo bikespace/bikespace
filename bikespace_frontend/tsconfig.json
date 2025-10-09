@@ -13,6 +13,8 @@
     "moduleResolution": "node",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
     "strict": true,
     "outDir": "build",
     "plugins": [

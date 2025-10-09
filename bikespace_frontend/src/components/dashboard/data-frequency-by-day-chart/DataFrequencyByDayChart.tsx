@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useState, useEffect, useCallback, useRef} from 'react';
 import Plotly, {PlotParams} from 'react-plotly.js';
 import {PlotMouseEvent} from 'plotly.js-dist-min';
 
@@ -31,6 +31,7 @@ function DataFrequencyByDayChart({
     day: state.filters.day,
     setFilters: state.setFilters,
   }));
+  const firedRef = useRef(false);
 
   const [data, setData] = useState<InputData[]>([]);
 
@@ -64,6 +65,12 @@ function DataFrequencyByDayChart({
     },
     [day]
   );
+
+  const handleAfterPlot = useCallback(() => {
+    if (firedRef.current) return;
+    firedRef.current = true;
+    onReady?.();
+  }, [onReady]);
 
   return (
     <Plotly
@@ -113,7 +120,7 @@ function DataFrequencyByDayChart({
       }}
       config={config}
       onClick={handleClick}
-      onAfterPlot={() => onReady?.()}
+      onAfterPlot={handleAfterPlot}
     />
   );
 }
