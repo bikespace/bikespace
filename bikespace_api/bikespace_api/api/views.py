@@ -7,7 +7,7 @@ from wtforms import SelectField, PasswordField
 from bikespace_api.api.models import IssueType, ParkingDuration
 import uuid
 
-class AdminIndexView(AdminIndexView):
+class MyAdminIndexView(AdminIndexView):
     def is_accessible(self):
         return (
             current_user.is_active
