@@ -9,6 +9,7 @@ from enum import Enum
 from flask_security import RoleMixin, UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 
+
 class IssueType(Enum):
     NOT_PROVIDED = "not_provided"
     FULL = "full"
@@ -57,11 +58,13 @@ class Submission(db.Model):
         self.comments = comments
         self.submitted_datetime = datetime.now(timezone.utc)
 
+
 roles_users = db.Table(
     "roles_users",
     db.Column("user_id", db.Integer(), db.ForeignKey("user.id")),
     db.Column("role_id", db.Integer(), db.ForeignKey("role.id")),
 )
+
 
 class Role(db.Model, RoleMixin):
     id = db.Column(db.Integer(), primary_key=True)
@@ -70,6 +73,7 @@ class Role(db.Model, RoleMixin):
 
     def __str__(self):
         return self.name
+
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
