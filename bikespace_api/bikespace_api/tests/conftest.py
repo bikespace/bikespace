@@ -38,6 +38,7 @@ def new_base_user_role():
     role = Role(id=1, name="user", description="Base user role")
     return role
 
+
 @pytest.fixture(scope="module")
 def new_base_user():
     from bikespace_api.api.models import User

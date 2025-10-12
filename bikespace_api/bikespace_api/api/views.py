@@ -1,20 +1,21 @@
 from flask import abort, redirect, request, url_for
 from flask_admin import AdminIndexView
-from flask_admin.contrib.sqla import ModelView 
+from flask_admin.contrib.sqla import ModelView
 from flask_security import current_user  # type: ignore
 from flask_security.utils import hash_password
 from wtforms import SelectField, PasswordField
 from bikespace_api.api.models import IssueType, ParkingDuration
 import uuid
 
+
 class MyAdminIndexView(AdminIndexView):
     def is_accessible(self):
         return (
             current_user.is_active
-            and current_user.is_authenticated 
-            and current_user.has_role('superuser')
+            and current_user.is_authenticated
+            and current_user.has_role("superuser")
         )
-    
+
     def _handle_view(self, name, **kwargs):
         if not self.is_accessible():
             abort(403)
@@ -23,6 +24,7 @@ class MyAdminIndexView(AdminIndexView):
 
     def inaccessible_callback(self, name, **kwargs):
         return redirect(url_for("security.login", next=request.url))
+
 
 class AdminRolesModelView(ModelView):
     def is_accessible(self):
@@ -43,17 +45,22 @@ class AdminRolesModelView(ModelView):
                 abort(403)
             else:
                 # login
-                return redirect(url_for("security.login", next=request.url)) 
+                return redirect(url_for("security.login", next=request.url))
+
 
 class AdminUsersModelView(ModelView):
     column_hide_backrefs = False
-    column_list = ('first_name', 'last_name', 'email', 'active', 'roles')
-    column_labels = {'first_name': 'First Name','last_name': 'Last Name','email': 'Email', 'active': 'Active', 'roles': 'Roles'}
-    form_excluded_columns = ('fs_uniquifier')
-
-    form_overrides = {
-        'password': PasswordField
+    column_list = ("first_name", "last_name", "email", "active", "roles")
+    column_labels = {
+        "first_name": "First Name",
+        "last_name": "Last Name",
+        "email": "Email",
+        "active": "Active",
+        "roles": "Roles",
     }
+    form_excluded_columns = "fs_uniquifier"
+
+    form_overrides = {"password": PasswordField}
 
     def is_accessible(self):
         return (
@@ -81,9 +88,10 @@ class AdminUsersModelView(ModelView):
             model.fs_uniquifier = uuid.uuid4().hex
         else:
             old_password = form.password.object_data
-             # If password has been changed, hash password
+            # If password has been changed, hash password
             if not old_password == model.password:
                 model.password = hash_password(form.password.data)
+
 
 class AdminSubmissionModelView(ModelView):
     def is_accessible(self):
@@ -104,4 +112,4 @@ class AdminSubmissionModelView(ModelView):
                 abort(403)
             else:
                 # login
-                return redirect(url_for("security.login", next=request.url)) 
+                return redirect(url_for("security.login", next=request.url))
