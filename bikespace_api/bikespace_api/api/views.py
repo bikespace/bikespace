@@ -1,7 +1,7 @@
 from flask import abort, redirect, request, url_for
 from flask_admin import AdminIndexView
 from flask_admin.contrib.sqla import ModelView 
-from flask_security import current_user
+from flask_security import current_user  # type: ignore
 from flask_security.utils import hash_password
 from wtforms import SelectField, PasswordField
 from bikespace_api.api.models import IssueType, ParkingDuration
