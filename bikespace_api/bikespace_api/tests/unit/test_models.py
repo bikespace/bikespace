@@ -2,6 +2,16 @@ from bikespace_api.api.models import Submission, IssueType, ParkingDuration
 from datetime import datetime, timezone
 
 
+def test_enum_string_methods():
+    """
+    GIVEN the IssueType or ParkingDuration enum
+    WHEN __str__ is called
+    The enum's name property is returned
+    """
+    assert str(IssueType.NOT_PROVIDED) == IssueType.NOT_PROVIDED.name
+    assert str(ParkingDuration.MINUTES) == ParkingDuration.MINUTES.name
+
+
 def test_new_submission(new_submission):
     """
     GIVEN a Submission model
@@ -19,6 +29,7 @@ def test_new_submission(new_submission):
     assert new_submission.comments == "comments"
     assert (current_datetime - new_submission.submitted_datetime).total_seconds() < 1
 
+
 def test_role_creation(new_base_user_role):
     """
     GIVEN a Role model
@@ -29,6 +40,7 @@ def test_role_creation(new_base_user_role):
     assert new_base_user_role.name == "user"
     assert new_base_user_role.description == "Base user role"
 
+
 def test_role_str(new_base_user_role):
     """
     GIVEN a Role model
@@ -37,11 +49,12 @@ def test_role_str(new_base_user_role):
     """
     assert str(new_base_user_role) == "user"
 
+
 def test_base_user_creation(new_base_user, new_base_user_role):
     """
     GIVEN a User model
     WHEN a new User is created
-    THEN check the id, first_name, last_name, email, password, active, confirmed_at and roles fields are set correctly
+    THEN check the id, first_name, last_name, email, password, active, confirmed_at and roles fields are set correctly and that the string representation of the user is their email
     """
     assert new_base_user.id == 1
     assert new_base_user.first_name == "Test"
@@ -50,3 +63,4 @@ def test_base_user_creation(new_base_user, new_base_user_role):
     assert new_base_user.password == "password"
     assert new_base_user.active is True
     assert (datetime.now() - new_base_user.confirmed_at).total_seconds() < 1
+    assert str(new_base_user) == new_base_user.email
