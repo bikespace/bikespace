@@ -17,7 +17,7 @@ def test_admin_page(test_client):
     assert soup.find("a", href="/admin/", string="Home")
 
 
-def test_admin_page_submision_without_logging_in(test_client):
+def test_admin_page_submission_without_logging_in(test_client):
     """
     GIVEN the flask application configured for testing
     WHEN the '/admin/submission/' page is requested (GET) without logging in
