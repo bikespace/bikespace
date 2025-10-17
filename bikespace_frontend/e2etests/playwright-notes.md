@@ -58,13 +58,12 @@ For navigation links, sometimes page hydration may interrupt the navigation acti
 
 ```tsx
 await expect(async () => {
-    await page.getByRole('link', {name: 'Report a bike parking issue'}).click();
-    await expect(page).toHaveURL('/submission', {timeout: 100});
-  }).toPass();
+  await page.getByRole('link', {name: 'Report a bike parking issue'}).click();
+  await expect(page).toHaveURL('/submission', {timeout: 100});
+}).toPass();
 ```
 
 `.toPass` must have an action and then an `expect` statement to be resolved as a result of that action.
-
 
 ### Quirks with toMatchAriaSnapshot
 

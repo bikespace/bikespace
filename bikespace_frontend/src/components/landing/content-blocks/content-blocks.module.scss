@@ -166,7 +166,7 @@ a.navLink {
     border-radius: 8px;
     max-width: 500px;
   }
-  
+
   .buttondownInputs {
     display: inline-block;
     border: 2px solid $color-primary-d50p;
@@ -199,7 +199,7 @@ a.navLink {
       }
     }
   }
-  
+
   .buttondownReferLink {
     font-size: 0.9rem;
   }
@@ -216,7 +216,11 @@ a.navLink {
 
 div.iconHeadingChildren {
   margin-bottom: 0;
-  h2, h3, h4, h5, h6 {
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     margin-bottom: 0;
   }
 }

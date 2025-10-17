@@ -1,4 +1,5 @@
 import {useSubmissionFormContext} from '../submission-form/schema';
+import Link from 'next/link';
 
 import styles from './summary.module.scss';
 
@@ -9,6 +10,7 @@ export const Summary = () => {
   } = useSubmissionFormContext();
 
   const submission = watch();
+  const submissionId = watch('submissionId');
 
   const renderSummary = () => {
     if (errors.root?.serverError) {
@@ -39,6 +41,17 @@ export const Summary = () => {
           <h1>Success</h1>
           <p>Your submission has been entered successfully!</p>
           <p>Thank You!</p>
+          {submissionId ? (
+            <Link href={`/dashboard?tab=feed&submission_id=${submissionId}`}>
+              <button className={styles.viewButton}>
+                View Your Submission
+              </button>
+            </Link>
+          ) : (
+            <Link href="/dashboard">
+              <button className={styles.viewButton}>Go to Dashboard</button>
+            </Link>
+          )}
         </>
       );
     }

@@ -16,11 +16,11 @@
   overflow-y: scroll;
   margin: 4px;
 
-  &> * {
+  & > * {
     margin-bottom: 8px;
   }
 
-  &> p {
+  & > p {
     padding: 4px;
   }
 }
@@ -53,7 +53,7 @@ p.cardBody {
   margin-top: 0px;
 }
 
-.legendContent{
+.legendContent {
   background-color: white;
   margin: 4px;
   margin-bottom: 8px;
