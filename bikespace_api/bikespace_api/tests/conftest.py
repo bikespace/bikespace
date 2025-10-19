@@ -1,12 +1,12 @@
 from datetime import datetime
 
 import pytest
+from bikespace_api.api.models import IssueType, ParkingDuration, Submission
 
 from bikespace_api import create_app
-from bikespace_api.api.models import Submission, IssueType, ParkingDuration
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture()
 def flask_app():
     """Pytest fixture to create an instance of the app for testing."""
     flask_app = create_app()
@@ -14,12 +14,12 @@ def flask_app():
     yield flask_app
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture()
 def test_client(flask_app):
     return flask_app.test_client()
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture()
 def new_submission():
     datetime_string = "2023-08-19 15:17:17.234235"
     datetime_object = datetime.strptime(datetime_string, "%Y-%m-%d %H:%M:%S.%f")
@@ -34,7 +34,7 @@ def new_submission():
     return submission
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture()
 def new_base_user_role():
     from bikespace_api.api.models import Role
 
@@ -42,7 +42,7 @@ def new_base_user_role():
     return role
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture()
 def new_base_user():
     from bikespace_api.api.models import User
 

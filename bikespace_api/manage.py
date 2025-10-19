@@ -120,6 +120,15 @@ def seed_db():
     )
     db.session.commit()
 
+    # add a non-admin user for testing
+    user_datastore.create_user(
+        first_name="Not an Admin",
+        email="notanadmin@example.com",
+        password=hash_password("notanadmin"),
+        roles=[user_role],
+    )
+    db.session.commit()
+
     # have to manually null out submitted_datetime to replicate grandfathered database entry
     submitted_datetime_null = db.session.execute(
         db.select(Submission).filter_by(comments="Example of null submitted_datetime")
