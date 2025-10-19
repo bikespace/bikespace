@@ -33,9 +33,9 @@ function Map({submissions}: MapProps) {
   const clusterRef = useRef(null);
   const markerRefs = useRef<MarkerRefs>({});
 
-  const [doneLoading, setDoneLoading] = useState(false);
-  const [tilesLoaded, setTilesLoaded] = useState(false);
-  const isMapLoading = !doneLoading;
+  const [markersReady, setMarkersReady] = useState(false);
+  const [tilesReady, setTilesReady] = useState(false);
+  const [initialized, setInitialized] = useState(false);
 
   const windowSize = useWindowSize();
 
@@ -49,8 +49,14 @@ function Map({submissions}: MapProps) {
     mapRef.current.invalidateSize();
   }, [isSidebarOpen, currentSidebarTab]);
   useEffect(() => {
-    setDoneLoading(false);
-  }, [submissions.length]);
+    if (
+      !initialized &&
+      tilesReady &&
+      (submissions.length === 0 || markersReady)
+    ) {
+      setInitialized(true);
+    }
+  }, [initialized, tilesReady, markersReady, submissions.length]);
 
   return (
     <MapContainer
@@ -67,35 +73,39 @@ function Map({submissions}: MapProps) {
         url="https://tile.thunderforest.com/atlas/{z}/{x}/{y}.png?apikey=66ccf6226ef54ef38a6b97fe0b0e5d2e"
         maxZoom={20}
         eventHandlers={{
-          loading: () => setTilesLoaded(false),
-          load: () => setTilesLoaded(true),
-          tileerror: () => setTilesLoaded(true),
+          loading: () => {
+            if (!initialized) setTilesReady(false); // first load only
+          },
+          load: () => {
+            if (!initialized) setTilesReady(true);
+          },
+          tileerror: () => {
+            if (!initialized) setTilesReady(true); // treat as “ready enough”
+          },
         }}
       />
-      {tilesLoaded && ( // Tiles should be loaded before rendering markers
-        <MarkerClusterGroup chunkedLoading ref={clusterRef}>
-          {submissions.map((submission, index) => {
-            return (
-              <MapMarker
-                key={submission.id}
-                submission={submission}
-                windowWidth={windowSize.width}
-                doneLoading={doneLoading}
-                clusterRef={clusterRef}
-                ref={(m: LeafletMarker) => {
-                  markerRefs.current[submission.id] = m;
-                  if (index === submissions.length - 1 && !doneLoading) {
-                    setDoneLoading(true);
-                  }
-                }}
-              />
-            );
-          })}
-        </MarkerClusterGroup>
-      )}
+      <MarkerClusterGroup chunkedLoading ref={clusterRef}>
+        {submissions.map((submission, index) => {
+          return (
+            <MapMarker
+              key={submission.id}
+              submission={submission}
+              windowWidth={windowSize.width}
+              doneLoading={markersReady}
+              clusterRef={clusterRef}
+              ref={(m: LeafletMarker) => {
+                markerRefs.current[submission.id] = m;
+                if (index === submissions.length - 1 && !initialized) {
+                  setMarkersReady(true);
+                }
+              }}
+            />
+          );
+        })}
+      </MarkerClusterGroup>
       <MapHandler />
       <Spinner
-        show={isMapLoading}
+        show={!initialized}
         overlay
         label="Loading map..."
         style={{zIndex: 1000}}

@@ -37,7 +37,6 @@ import type {
   QueryRenderedFeaturesOptions,
 } from 'maplibre-gl';
 import type {
-  LngLatLike,
   MapLayerMouseEvent,
   MapRef,
   PointLike,
@@ -46,7 +45,6 @@ import type {
 
 import 'maplibre-gl/dist/maplibre-gl.css';
 import styles from './parking-map-page.module.scss';
-import loader from '@/styles/shared/loader.module.scss';
 const parkingSpritePath = '/parking_sprites/parking_sprites';
 
 const backupMapStyle: MapStyle = {
@@ -326,7 +324,7 @@ export function ParkingMapPage() {
           <BicycleNetworkLayer beforeId={parkingFirstLayerId} />
         ) : null}
         {/* placed here to avoid covering the sidebar */}
-        <Spinner show={isMapLoading} overlay label="Loading map..." />
+        /*<Spinner show={isMapLoading} overlay label="Loading map..." />*/
       </Map>
     </main>
   );
