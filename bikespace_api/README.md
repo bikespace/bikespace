@@ -27,6 +27,12 @@ The api follows an OpenAPI 3.0 Spec, the spec can be found at `bikespace_api/bik
 
 The swagger-ui to render the OpenAPI spec can be found at `localhost:8000/api/v2/docs`
 
+## Pytest Tips
+
+Common items needed by tests (e.g. a configured instance of the Flask application) are provided via [pytest fixtures](https://docs.pytest.org/en/stable/how-to/fixtures.html). Fixtures specified in `conftest.py` can be used by adding them to the test function parameters and do not need to be imported (see: [fixtures reference](https://docs.pytest.org/en/stable/reference/fixtures.html#conftest-py-sharing-fixtures-across-multiple-files)).
+
+When developing locally, you can use `make test-api-terminal` command to show the coverage breakdown.
+
 ## Observing the database directly
 
 There are several options for clients that will allow you to interact with the database. Two examples:
