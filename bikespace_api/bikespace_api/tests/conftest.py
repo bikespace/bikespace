@@ -1,8 +1,22 @@
+from datetime import datetime
+
+import pytest
+
 from bikespace_api import create_app
 from bikespace_api.api.models import Submission, IssueType, ParkingDuration
-from datetime import datetime
-import os
-import pytest
+
+
+@pytest.fixture(scope="module")
+def flask_app():
+    """Pytest fixture to create an instance of the app for testing."""
+    flask_app = create_app()
+    flask_app.config.from_object("bikespace_api.config.TestingConfig")
+    yield flask_app
+
+
+@pytest.fixture(scope="module")
+def test_client(flask_app):
+    return flask_app.test_client()
 
 
 @pytest.fixture(scope="module")
@@ -18,17 +32,6 @@ def new_submission():
         "comments",
     )
     return submission
-
-
-@pytest.fixture(scope="module")
-def test_client():
-    # Set the Testing configuration prior to creating the Flask application
-    os.environ["APP_SETTINGS"] = "bikespace_api.config.TestingConfig"
-    flask_app = create_app()
-
-    with flask_app.test_client() as testing_client:
-        with flask_app.app_context():
-            yield testing_client
 
 
 @pytest.fixture(scope="module")
