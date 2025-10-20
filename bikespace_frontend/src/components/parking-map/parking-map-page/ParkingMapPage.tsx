@@ -5,6 +5,7 @@ import Map, {GeolocateControl, NavigationControl} from 'react-map-gl/maplibre';
 import {bbox as getBBox} from '@turf/bbox';
 import {featureCollection as getFeatureCollection} from '@turf/helpers';
 import maplibregl from 'maplibre-gl';
+import type {Map as MapLibreMap} from 'maplibre-gl';
 import {Protocol} from 'pmtiles';
 import {layers, namedFlavor} from '@protomaps/basemaps';
 
@@ -221,6 +222,10 @@ export function ParkingMapPage() {
     if (process.env.NODE_ENV !== 'production') console.log('map loaded');
     addSprite();
     handleMouseHover();
+
+    // after styles load
+    const map: MapLibreMap = mapRef.current!.getMap(); // maplibre-gl map instance
+    map?.once('idle', () => setIsMapLoading(false)); // wait for styles to load, then set loading to false
   }
 
   return (
@@ -308,7 +313,6 @@ export function ParkingMapPage() {
         }
         onLoad={handleOnLoad}
         onClick={handleLayerClick}
-        onIdle={() => setIsMapLoading(false)} // set to false when map is idle
         // onZoomEnd={() =>
         //   setZoomLevel(Math.round((mapRef.current!.getZoom() ?? 0) * 10) / 10)
         // }
@@ -324,7 +328,7 @@ export function ParkingMapPage() {
           <BicycleNetworkLayer beforeId={parkingFirstLayerId} />
         ) : null}
         {/* placed here to avoid covering the sidebar */}
-        /*<Spinner show={isMapLoading} overlay label="Loading map..." />*/
+        <Spinner show={isMapLoading} overlay label="Loading map..." />
       </Map>
     </main>
   );
