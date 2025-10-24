@@ -5,6 +5,8 @@ from pytest import mark
 
 from bikespace_api.api.models import Role, User
 
+# Rationale for 'type: ignore' comments: soup.find doesn't have an overload where both name= and string= are not None (as of bs4 version 4.14.2), even though this is a documented usage of the function
+
 
 def test_admin_page(test_client):
     """
@@ -15,10 +17,10 @@ def test_admin_page(test_client):
     response = test_client.get("/admin/")
     soup = BeautifulSoup(response.data, "html.parser")
     assert response.status_code == 200
-    assert soup.find("h1", string="BikeSpace Admin")
-    assert soup.find("a", class_="navbar-brand", href="/admin", string="BikeSpace")
-    assert soup.find("a", class_="btn btn-primary", href="/admin/login", string="login")
-    assert soup.find("a", href="/admin/", string="Home")
+    assert soup.find("h1", string="BikeSpace Admin")  # type: ignore
+    assert soup.find("a", class_="navbar-brand", href="/admin", string="BikeSpace")  # type: ignore
+    assert soup.find("a", class_="btn btn-primary", href="/admin/login", string="login")  # type: ignore
+    assert soup.find("a", href="/admin/", string="Home")  # type: ignore
 
 
 def test_admin_page_submission_without_logging_in(test_client):
@@ -58,14 +60,14 @@ def test_admin_page_user_without_logging_in(test_client):
     default_login_page_redirect(response, soup)
 
 
-def default_login_page_redirect(response: str, soup: BeautifulSoup):
+def default_login_page_redirect(response, soup: BeautifulSoup):
     assert response.status_code == 200
-    assert soup.find("h1", string="Login")
-    assert soup.find("a", class_="navbar-brand", href="/admin", string="BikeSpace")
+    assert soup.find("h1", string="Login")  # type: ignore
+    assert soup.find("a", class_="navbar-brand", href="/admin", string="BikeSpace")  # type: ignore
     assert soup.find(
         "input", id="submit", class_="btn btn-primary", type="submit", value="Login"
     )
-    assert soup.find("a", href="/admin/", string="Home")
+    assert soup.find("a", href="/admin/", string="Home")  # type: ignore
 
 
 def test_admin_login_successfully(test_client):
@@ -79,7 +81,10 @@ def test_admin_login_successfully(test_client):
 
     pre_login_soup = BeautifulSoup(pre_login_response.data, "html.parser")
     assert pre_login_soup.find(
-        "a", class_="btn btn-primary", href="/admin/login", string="login"
+        "a",
+        class_="btn btn-primary",
+        href="/admin/login",
+        string="login",  # type: ignore
     )
 
     post_login_response = test_client.post(
@@ -91,7 +96,10 @@ def test_admin_login_successfully(test_client):
 
     post_login_soup = BeautifulSoup(post_login_response.data, "html.parser")
     assert not post_login_soup.find(
-        "a", class_="btn btn-primary", href="/admin/login", string="login"
+        "a",
+        class_="btn btn-primary",
+        href="/admin/login",
+        string="login",  # type: ignore
     )
     assert post_login_soup.find(string=re.compile("Admin"))
 
