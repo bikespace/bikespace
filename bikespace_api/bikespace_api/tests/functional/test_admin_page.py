@@ -104,6 +104,64 @@ def test_admin_login_successfully(test_client):
     assert post_login_soup.find(string=re.compile("Admin"))
 
 
+def test_create_and_update_a_user(test_client):
+    """
+    GIVEN the flask application configured for testing
+    WHEN the flask-admin endpoints are used to create a user and then update their password
+    THEN check that the user is created and the password update is successful
+    """
+    # log in a superuser
+    login_response = test_client.post(
+        "/admin/login",
+        data=dict(email="admin@example.com", password="admin"),
+        follow_redirects=True,
+    )
+    assert login_response.status_code == 200
+
+    # create a new regular user using the flask-admin endpoint
+    new_user_properties = dict(
+        first_name="Test",
+        last_name="New User",
+        email="testnewuser@example.com",
+        password="testnewuserpassword",
+        roles=["user"],
+        active=True,
+    )
+    create_response = test_client.post(
+        "/admin/user/new/",
+        data=new_user_properties,
+    )
+
+    # confirm the new user was created
+    read_response_1 = test_client.get("/admin/user/")
+    read_soup_1 = BeautifulSoup(read_response_1.text, "html.parser")
+    assert read_soup_1.find(string=re.compile(str(new_user_properties["email"])))
+
+    # get the edit endpoint for the new user
+    # (i.e. `/admin/user/edit/?id={{user_id}}&url=/admin/user/`)
+    user_edit_url = (
+        read_soup_1.find(
+            "td",
+            string=re.compile(str(new_user_properties["email"])),  # type: ignore
+        )
+        .parent.find("a", title="Edit Record")
+        .get("href")
+    )
+
+    # update the new user's password
+    update_response = test_client.post(
+        user_edit_url,
+        data=dict(password="testupdatedpassword"),
+        follow_redirects=True,
+    )
+
+    # confirm that the update was successful
+    read_soup_2 = BeautifulSoup(update_response.text, "html.parser")
+    assert read_soup_2.find(
+        string=re.compile("record was successfully saved", flags=re.IGNORECASE)
+    )
+
+
 def test_allowed_pages_for_regular_users(test_client):
     """
     GIVEN the flask application configured for testing and
