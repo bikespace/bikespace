@@ -202,7 +202,6 @@ export function ParkingMapPage() {
 
   function addSprite() {
     mapRef.current!.addSprite('parking', parkingSpritePath);
-    console.log('loading...');
   }
 
   // show map pins as interactive when mouse is over them

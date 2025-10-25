@@ -15,7 +15,6 @@
 .sideBarContainer {
   overflow-y: scroll;
   margin: 4px;
-  padding-right: 6px;
 
   & > * {
     margin-bottom: 8px;
@@ -23,6 +22,13 @@
 
   & > p {
     padding: 4px;
+  }
+}
+
+@media (min-width: $wrapper-full-width) {
+  // Add right padding for scrollbar spacing on certain Linux chrome browsers
+  .sideBarContainer {
+    padding-right: 6px;
   }
 }
 
