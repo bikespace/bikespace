@@ -46,7 +46,10 @@ export function SidebarContentInsights() {
       {!allReady && (
         <Spinner overlay label="Loading insights..." style={{zIndex: 3000}} />
       )}
-      <div style={{visibility: allReady ? 'visible' : 'hidden'}}>
+      <div
+        className={styles.InnerMultipleSidebarContent}
+        style={{visibility: allReady ? 'visible' : 'hidden'}}
+      >
         <ReportSummary onReady={markReady} />
         <DataIssueFrequencyChart className={styles.chart} onReady={markReady} />
         <DataFrequencyByDayChart className={styles.chart} onReady={markReady} />

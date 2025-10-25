@@ -58,6 +58,12 @@ h2.cardHeading {
   }
 }
 
+.InnerMultipleSidebarContent {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
 .chart {
   flex-shrink: 0;
   width: 100%;
