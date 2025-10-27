@@ -7,7 +7,7 @@ import React, {
 } from 'react';
 import {Route} from 'next';
 import {usePathname, useSearchParams, useRouter} from 'next/navigation';
-import {Marker, useMap} from 'react-leaflet';
+import {Marker} from 'react-leaflet';
 import {
   Popup as LeafletPopup,
   Marker as LeafletMarker,

@@ -5,6 +5,7 @@ import Map, {GeolocateControl, NavigationControl} from 'react-map-gl/maplibre';
 import {bbox as getBBox} from '@turf/bbox';
 import {featureCollection as getFeatureCollection} from '@turf/helpers';
 import maplibregl from 'maplibre-gl';
+import type {Map as MapLibreMap} from 'maplibre-gl';
 import {Protocol} from 'pmtiles';
 import {layers, namedFlavor} from '@protomaps/basemaps';
 
@@ -18,6 +19,7 @@ import {
   SidebarDetailsDisclosure,
   SidebarDetailsContent,
 } from '@/components/shared-ui/sidebar-details-disclosure';
+import {Spinner} from '@/components/shared-ui/spinner';
 import {
   ParkingFeatureDescription,
   parkingFirstLayerId,
@@ -36,7 +38,6 @@ import type {
   QueryRenderedFeaturesOptions,
 } from 'maplibre-gl';
 import type {
-  LngLatLike,
   MapLayerMouseEvent,
   MapRef,
   PointLike,
@@ -45,7 +46,6 @@ import type {
 
 import 'maplibre-gl/dist/maplibre-gl.css';
 import styles from './parking-map-page.module.scss';
-
 const parkingSpritePath = '/parking_sprites/parking_sprites';
 
 const backupMapStyle: MapStyle = {
@@ -75,6 +75,7 @@ export function uniqueBy(a: Array<Object>, getKey: Function): Array<Object> {
 export function ParkingMapPage() {
   const [zoomLevel, setZoomLevel] = useState<number>(12);
   const [sidebarIsOpen, setSidebarIsOpen] = useState<boolean>(true);
+  const [isMapLoading, setIsMapLoading] = useState<boolean>(true);
   const [geoSearchIsMinimized, setGeoSearchIsMinimized] =
     useState<boolean>(false);
   const [parkingLayerFilter, setParkingLayerFilter] =
@@ -220,6 +221,10 @@ export function ParkingMapPage() {
     if (process.env.NODE_ENV !== 'production') console.log('map loaded');
     addSprite();
     handleMouseHover();
+
+    // after styles load
+    const map: MapLibreMap = mapRef.current!.getMap(); // maplibre-gl map instance
+    map?.once('idle', () => setIsMapLoading(false)); // wait for styles to load, then set loading to false
   }
 
   return (
@@ -321,6 +326,8 @@ export function ParkingMapPage() {
         {showBicycleNetwork ? (
           <BicycleNetworkLayer beforeId={parkingFirstLayerId} />
         ) : null}
+        {/* placed here to avoid covering the sidebar */}
+        <Spinner show={isMapLoading} overlay label="Loading map..." />
       </Map>
     </main>
   );

@@ -1,4 +1,4 @@
-import React, {useCallback, useState, useEffect} from 'react';
+import React, {useCallback, useState, useEffect, useRef} from 'react';
 import Plotly, {PlotParams} from 'react-plotly.js';
 import {PlotMouseEvent} from 'plotly.js-dist-min';
 
@@ -18,12 +18,16 @@ type InputData = {
   color: string;
 };
 
-function DataIssueFrequencyChart({className}: Pick<PlotParams, 'className'>) {
+function DataIssueFrequencyChart({
+  className,
+  onReady,
+}: Pick<PlotParams, 'className'> & {onReady?: () => void}) {
   const {submissions, issue, setFilters} = useStore(state => ({
     submissions: state.submissions,
     issue: state.filters.issue,
     setFilters: state.setFilters,
   }));
+  const firedRef = useRef(false);
 
   const [data, setData] = useState<InputData[]>([]);
 
@@ -56,6 +60,11 @@ function DataIssueFrequencyChart({className}: Pick<PlotParams, 'className'>) {
     },
     [issue]
   );
+  const handleAfterPlot = useCallback(() => {
+    if (firedRef.current) return; // Guard against multiple calls
+    firedRef.current = true;
+    onReady?.();
+  }, [onReady]);
 
   return (
     <Plotly
@@ -99,6 +108,7 @@ function DataIssueFrequencyChart({className}: Pick<PlotParams, 'className'>) {
       }}
       config={config}
       onClick={handleClick}
+      onAfterPlot={handleAfterPlot}
     />
   );
 }
