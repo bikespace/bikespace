@@ -16,12 +16,19 @@
   overflow-y: scroll;
   margin: 4px;
 
-  &> * {
+  & > * {
     margin-bottom: 8px;
   }
 
-  &> p {
+  & > p {
     padding: 4px;
+  }
+}
+
+@media (min-width: $wrapper-full-width) {
+  // Add right padding for scrollbar spacing on certain Linux chrome browsers
+  .sideBarContainer {
+    padding-right: 6px;
   }
 }
 
@@ -53,7 +60,7 @@ p.cardBody {
   margin-top: 0px;
 }
 
-.legendContent{
+.legendContent {
   background-color: white;
   margin: 4px;
   margin-bottom: 8px;

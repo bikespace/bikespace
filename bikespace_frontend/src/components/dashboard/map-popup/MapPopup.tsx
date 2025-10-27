@@ -5,8 +5,6 @@ import {SubmissionApiPayload} from '@/interfaces/Submission';
 
 import {issuePriority} from '@/config/bikespace-api';
 
-import {useStore} from '@/states/store';
-
 import {SidebarTab, useSidebarTab, useSubmissionId} from '@/states/url-params';
 import {IssueBadge} from '../issue-badge';
 

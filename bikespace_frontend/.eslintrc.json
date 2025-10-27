@@ -3,12 +3,15 @@
   "env": {
     "jest": true
   },
+  "plugins": ["unused-imports"],
   "overrides": [
     {
       "files": ["src/**/*.[jt]s?(x)"],
       "rules": {
         "no-unused-vars": "off",
-        "@typescript-eslint/no-unused-vars": "off"
+        "@typescript-eslint/no-unused-vars": "off",
+        "unused-imports/no-unused-imports": "warn",
+        "unused-imports/no-unused-vars": "off"
       }
     },
     {
