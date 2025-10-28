@@ -5,7 +5,12 @@ The API service is a python Flask application paired with a Postgres database.
 
 To develop the API locally you'll require the following things:
  - Python version 3.12.0 or greater
- - Docker (docker daemon) running to launch API and database containers with docker compose
+ - Docker (docker daemon) running to launch Postgres database container
+ - Set up local secrets used by flask-security using a `.env` file (see instructions in `/example.env`)
+
+Several tasks (e.g. running the API locally, running certain tests) require a database to be running, but the make targets will take care of launching a Postgres container for you as long as you have Docker running.
+
+To stop the Postgres container, just run `make stop-db`.
 
 ## Running the API service
 
@@ -21,6 +26,12 @@ The development server should now be running at `localhost:8000`
 The api follows an OpenAPI 3.0 Spec, the spec can be found at `bikespace_api/bikespace_api/static/bikespace-open-api.yaml`. When making changes to the database models, the spec should also be edited manually to match.
 
 The swagger-ui to render the OpenAPI spec can be found at `localhost:8000/api/v2/docs`
+
+## Pytest Tips
+
+Common items needed by tests (e.g. a configured instance of the Flask application) are provided via [pytest fixtures](https://docs.pytest.org/en/stable/how-to/fixtures.html). Fixtures specified in `conftest.py` can be used by adding them to the test function parameters and do not need to be imported (see: [fixtures reference](https://docs.pytest.org/en/stable/reference/fixtures.html#conftest-py-sharing-fixtures-across-multiple-files)).
+
+When developing locally, you can use `make test-api-terminal` command to show the coverage breakdown.
 
 ## Observing the database directly
 

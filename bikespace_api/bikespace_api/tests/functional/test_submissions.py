@@ -93,7 +93,7 @@ def test_get_submissions_with_id(test_client, target_id):
 
 
 @mark.uses_db
-def test_post_submissions(test_client, submission_id=5):
+def test_post_submissions(flask_app, test_client, submission_id=5):
     dummy_submission = {
         "latitude": 43.6532,
         "longitude": -79.3832,
@@ -102,10 +102,12 @@ def test_post_submissions(test_client, submission_id=5):
         "parking_time": "2023-08-19 15:17:17.234235",
         "comments": "test1",
     }
-    response = test_client.post("/api/v2/submissions", json=dummy_submission)
-    current_datetime = datetime.now(timezone.utc)
-    res = json.loads(response.get_data())
-    new_submission = Submission.query.filter_by(id=submission_id).first()
+
+    with flask_app.app_context():
+        response = test_client.post("/api/v2/submissions", json=dummy_submission)
+        current_datetime = datetime.now(timezone.utc)
+        new_submission = Submission.query.filter_by(id=submission_id).first()
+
     assert response.status_code == 201
     assert new_submission.id == submission_id
     assert new_submission.latitude == dummy_submission["latitude"]
