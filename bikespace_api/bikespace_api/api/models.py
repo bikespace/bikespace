@@ -7,10 +7,11 @@ import sqlalchemy as sa
 import sqlalchemy.dialects.postgresql as pg
 from flask_security.core import RoleMixin, UserMixin
 from sqlalchemy_continuum import make_versioned
+from sqlalchemy_continuum.plugins import FlaskPlugin
 
 from bikespace_api import db  # type: ignore
 
-make_versioned(user_cls=None)  # type: ignore
+make_versioned(plugins=[FlaskPlugin()])
 
 
 class IssueType(Enum):
@@ -37,6 +38,7 @@ class ParkingDuration(Enum):
 class Submission(db.Model):
     __tablename__ = "bikeparking_submissions"
     __versioned__ = {}
+    # TODO - flask-admin is truncating microseconds on the time values even if no changes are made; should figure out how to fix this
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     latitude = db.Column(db.Float, nullable=False)
