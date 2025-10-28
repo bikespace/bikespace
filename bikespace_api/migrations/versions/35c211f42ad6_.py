@@ -1,4 +1,4 @@
-"""empty message
+"""create roles and users
 
 Revision ID: 35c211f42ad6
 Revises: 7392d094ae76
