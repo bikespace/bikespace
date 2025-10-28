@@ -109,8 +109,12 @@ migrate-test-db: setup-py launch-db db-test-server
 	$(PYTHON) $(MANAGE_PY) db check --directory $(BIKESPACE_DB_MIGRATIONS)
 
 # generates a migration script based on the current model definitions
-.PHONY: migrate-db
-migrate-db: setup-py
+.PHONY: migrate-db 
+migrate-db: setup-py launch-db db-test-server
+	export APP_SETTINGS=bikespace_api.config.DevelopmentConfig && \
+	export DATABASE_URL=postgresql://postgres:postgres@localhost:5432/bikespace_dev && \
+	$(PYTHON) $(MANAGE_PY) recreate-db && \
+	$(PYTHON) $(MANAGE_PY) db upgrade --directory $(BIKESPACE_DB_MIGRATIONS) && \
 	$(PYTHON) $(MANAGE_PY) db migrate --directory $(BIKESPACE_DB_MIGRATIONS)
 
 # applies all the migration scripts to update the database to the newest schema
