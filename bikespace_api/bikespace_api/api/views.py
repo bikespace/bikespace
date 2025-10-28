@@ -94,6 +94,8 @@ class AdminUsersModelView(ModelView):
 
 
 class AdminSubmissionModelView(ModelView):
+    column_display_pk = True
+
     def is_accessible(self):
         return (
             current_user.is_active
