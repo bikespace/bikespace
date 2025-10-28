@@ -11,7 +11,7 @@ servers:
 paths:
   /submissions:
     get:
-      description: Returns a list of all the submitted answers
+      description: Returns a list of all the submissions
       parameters:
         - name: limit
           in: query
@@ -25,17 +25,17 @@ paths:
             type: integer
       responses:
         "200":
-          description: Successfully returned a list of submissions 
+          description: Successfully returned a list of submissions
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SubmissionOutputs'
+                $ref: "#/components/schemas/SubmissionOutputs"
             application/geo+json:
               schema:
-                $ref: '#/components/schemas/SubmissionOutputs'
+                $ref: "#/components/schemas/SubmissionOutputs"
             text/csv:
               schema:
-                $ref: '#/components/schemas/SubmissionOutputs'
+                $ref: "#/components/schemas/SubmissionOutputs"
         "400":
           description: Invalid request
           content:
@@ -47,17 +47,35 @@ paths:
                     type: string
     post:
       summary: Submit a new submission
-      
+
       requestBody:
         description: Create a new submission
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/SubmissionInputs'
+              $ref: "#/components/schemas/SubmissionInputs"
       responses:
-        '201':
+        "201":
           description: Created
+  /submissions/{submission_id}:
+    get:
+      description: Returns the specified submission
+      parameters:
+        - in: path
+          name: submission_id
+          required: true
+          schema:
+            type: string
+          description: id of the submission to request
+      responses:
+        "200":
+          description: Successfully returned a submission requested by id
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SubmissionOutputs"
+
 components:
   schemas:
     SubmissionInputs:
@@ -71,7 +89,7 @@ components:
         issues:
           type: array
           items:
-            type: string 
+            type: string
             enum:
               - not_provided
               - full
@@ -100,6 +118,3 @@ components:
             submitted_datetime:
               type: string
               format: date-time
-          
-        
-
