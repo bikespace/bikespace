@@ -1,13 +1,16 @@
 # bikespace_api/bikespace_api/api/models.py
 
-from sqlalchemy.sql import func
-import sqlalchemy as sa
-import sqlalchemy.dialects.postgresql as pg
-from bikespace_api import db
 from datetime import datetime, timezone
 from enum import Enum
-from flask_security import RoleMixin, UserMixin
-from werkzeug.security import generate_password_hash, check_password_hash
+
+import sqlalchemy as sa
+import sqlalchemy.dialects.postgresql as pg
+from flask_security.core import RoleMixin, UserMixin
+from sqlalchemy_continuum import make_versioned
+
+from bikespace_api import db  # type: ignore
+
+make_versioned(user_cls=None)  # type: ignore
 
 
 class IssueType(Enum):
@@ -33,6 +36,7 @@ class ParkingDuration(Enum):
 
 class Submission(db.Model):
     __tablename__ = "bikeparking_submissions"
+    __versioned__ = {}
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     latitude = db.Column(db.Float, nullable=False)

@@ -110,7 +110,7 @@ migrate-test-db: setup-py launch-db db-test-server
 
 # generates a migration script based on the current model definitions
 .PHONY: migrate-db
-migrate-db: 
+migrate-db: setup-py
 	$(PYTHON) $(MANAGE_PY) db migrate --directory $(BIKESPACE_DB_MIGRATIONS)
 
 # applies all the migration scripts to update the database to the newest schema
