@@ -1,72 +1,143 @@
-# bikespace_api/bikespace_api/api/answers.py
+# bikespace_api/bikespace_api/api/submissions.py
 
-from better_profanity import profanity
-from bikespace_api import db
-from bikespace_api.api.models import Submission, IssueType, ParkingDuration
-from flask import Blueprint, jsonify, request, Response, make_response
-from geojson import Feature, FeatureCollection, Point
+import csv
+import json
 from io import StringIO
+
+import geojson
+import marshmallow as ma
+from better_profanity import profanity
+from flask import Response, make_response, request
+from flask.views import MethodView
+from flask_smorest import Blueprint, abort
+from geojson import Feature, FeatureCollection, Point
+from marshmallow import validate
 from sqlalchemy import desc
 from sqlalchemy.exc import IntegrityError
-import csv
-import geojson
-import json
 
-submissions_blueprint = Blueprint("submissions", __name__)
+from bikespace_api import db  # type: ignore
+from bikespace_api.api.models import IssueType, ParkingDuration, Submission
+
+submissions_blueprint = Blueprint(
+    "submissions",
+    __name__,
+    url_prefix="/api/v2",
+    description="User reports of bicycle parking problems",
+)
 
 DEFAULT_OFFSET_LIMIT = 100
 
 
-@submissions_blueprint.route("/submissions", methods=["GET", "POST"])
-def handle_submissions():
-    if request.method == "GET":
+class SubmissionSchema(ma.Schema):
+    id = ma.fields.Integer(dump_only=True)
+    latitude = ma.fields.Float(required=True)
+    longitude = ma.fields.Float(required=True)
+    issues = ma.fields.List(ma.fields.Enum(IssueType, by_value=True))
+    parking_duration = ma.fields.Enum(ParkingDuration, by_value=True)
+    parking_time = ma.fields.DateTime(format="iso", required=True)
+    comments = ma.fields.String()
+    submitted_datetime = ma.fields.AwareDateTime(format="iso", dump_only=True)
+
+
+class SubmissionQueryArgsSchema(ma.Schema):
+    limit = ma.fields.Integer()
+    offset = ma.fields.Integer()
+
+
+class SubmissionCreateSchema(SubmissionSchema):
+    class Meta(ma.SchemaOpts):
+        only = [
+            "latitude",
+            "longitude",
+            "issues",
+            "parking_duration",
+            "parking_time",
+            "comments",
+        ]
+
+
+class SubmissionCreateConfirmationSchema(ma.Schema):
+    status = ma.fields.String(validate=validate.OneOf(["created", "Error"]))
+    submission_id = ma.fields.Integer()
+
+
+@submissions_blueprint.route("/submissions")
+class Submissions(MethodView):
+    """Main functions for reading and creating user reports of bicycle parking problems"""
+
+    @submissions_blueprint.arguments(
+        SubmissionQueryArgsSchema,
+        location="query",
+    )
+    @submissions_blueprint.response(200, SubmissionSchema(many=True))
+    @submissions_blueprint.alt_response(
+        200,
+        schema=SubmissionSchema,  # placeholder
+        content_type="application/geo+json",
+        success=True,
+    )
+    @submissions_blueprint.alt_response(
+        200,
+        schema=SubmissionSchema,  # placeholder
+        content_type="text/csv",
+        success=True,
+    )
+    def get(self, args):
+        """Returns user reports of bicycle parking problems"""
         accept_header = request.headers.get("Accept")
         if accept_header == "application/json":
-            return get_submissions_json(request)
+            return get_submissions_json(args)
         elif accept_header == "application/geo+json":
-            return get_submissions_geo_json(request)
+            return get_submissions_geo_json()
         elif accept_header == "text/csv":
-            return get_submissions_csv(request)
+            return get_submissions_csv()
         else:
-            return get_submissions_json(request)
-    elif request.method == "POST":
-        return post_submissions(request)
+            return get_submissions_json(args)
+
+    @submissions_blueprint.arguments(SubmissionCreateSchema)
+    @submissions_blueprint.response(201, SubmissionCreateConfirmationSchema)
+    def post(self, new_data):
+        """Create a new submission"""
+        profanity.load_censor_words()
+        censored_comments = profanity.censor(new_data["comments"])
+        try:
+            new_submission = Submission(
+                new_data["latitude"],
+                new_data["longitude"],
+                new_data["issues"],
+                new_data["parking_duration"],
+                new_data["parking_time"],
+                censored_comments,
+            )
+            db.session.add(new_submission)
+            db.session.commit()
+            return_response = Response(
+                json.dumps({"status": "created", "submission_id": new_submission.id}),
+                201,
+            )
+            return return_response
+        except IntegrityError:
+            db.session.rollback()
+            return_response = Response(json.dumps({"status": "Error"}), 500)
+            return
 
 
 @submissions_blueprint.route("/submissions/<submission_id>", methods=["GET"])
+@submissions_blueprint.response(200, SubmissionSchema)
 def get_submission_with_id(submission_id):
-    submission_with_id = Submission.query.filter_by(id=submission_id).first()
-    issues = []
-    for issue in submission_with_id.issues:
-        issues.append(issue.value)
-    submission_with_id_json = {
-        "id": submission_with_id.id,
-        "latitude": submission_with_id.latitude,
-        "longitude": submission_with_id.longitude,
-        "issues": issues,
-        "parking_duration": submission_with_id.parking_duration.value,
-        "parking_time": submission_with_id.parking_time,
-        "comments": submission_with_id.comments,
-        "submitted_datetime": (
-            submission_with_id.submitted_datetime.isoformat()
-            if submission_with_id.submitted_datetime is not None
-            else None
-        ),
-    }
-    return_response = Response(
-        response=json.dumps(submission_with_id_json, default=str),
-        status=200,
-        mimetype="application/json",
-    )
-    return return_response
+    query_result = Submission.query.filter_by(id=submission_id).first()
+    if query_result is not None:
+        return query_result
+    else:
+        abort(404, message="Item not found")
 
 
-def get_submissions_json(request):
+def get_submissions_json(args) -> Response:
     """Default response for GET /submissions. Returns user reports from the bikeparking_submissions table in a paginated JSON format."""
-    offset = request.args.get("offset", 1, type=int)
-    limit = request.args.get("limit", DEFAULT_OFFSET_LIMIT, type=int)
+    offset = args.get("offset", 1)
+    limit = args.get("limit", DEFAULT_OFFSET_LIMIT)
 
-    pagination = Submission.query.order_by(desc(Submission.parking_time)).paginate(
+    pagination = Submission.query.order_by(desc(Submission.parking_time)).paginate(  # type: ignore
         page=offset, per_page=limit, count=True
     )
     submissions = pagination.items
@@ -112,35 +183,7 @@ def get_submissions_json(request):
     return return_response
 
 
-def post_submissions(request):
-    json_body = request.json
-    issues = []
-    profanity.load_censor_words()
-    censored_comments = profanity.censor(json_body["comments"])
-    for issue in json_body["issues"]:
-        issues.append(IssueType(issue))
-    try:
-        new_submission = Submission(
-            json_body["latitude"],
-            json_body["longitude"],
-            issues,
-            ParkingDuration(json_body["parking_duration"]),
-            json_body["parking_time"],
-            censored_comments,
-        )
-        db.session.add(new_submission)
-        db.session.commit()
-        return_response = Response(
-            json.dumps({"status": "created", "submission_id": new_submission.id}), 201
-        )
-        return return_response
-    except IntegrityError:
-        db.session.rollback()
-        return_response = Response(json.dumps({"status": "Error"}), 500)
-        return
-
-
-def get_submissions_geo_json(request):
+def get_submissions_geo_json() -> Response:
     """Optional response for GET /submissions. Returns user reports from the bikeparking_submissions table in GeoJSON format without pagination."""
     submissions = Submission.query.all()
     geojson_features = []
@@ -174,9 +217,9 @@ def get_submissions_geo_json(request):
     return return_response
 
 
-def get_submissions_csv(request):
+def get_submissions_csv() -> Response:
     """Optional response for GET /submissions. Returns user reports from the bikeparking_submissions table in CSV format. Also breaks out issue types into separate columns for easier analysis."""
-    submissions = Submission.query.order_by(desc(Submission.parking_time)).all()
+    submissions = Submission.query.order_by(desc(Submission.parking_time)).all()  # type: ignore
     submissions_list = []
     for submission in submissions:
         row = []

@@ -6,6 +6,7 @@ from flask import Flask, redirect
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from flask_smorest import Api
 
 # instantiate the db
 db = SQLAlchemy()
@@ -24,13 +25,12 @@ def create_app(script_info=None):
     # set up extensions
     db.init_app(app)
     migrate.init_app(app, db)
+    api = Api(app)
 
     # register blueprints
     from bikespace_api.api.submissions import submissions_blueprint
-    from bikespace_api.api.docs import docs_blueprint
 
-    app.register_blueprint(submissions_blueprint, url_prefix="/api/v2")
-    app.register_blueprint(docs_blueprint, url_prefix="/api/v2")
+    api.register_blueprint(submissions_blueprint)
 
     @app.route("/")
     def api_home_page():
