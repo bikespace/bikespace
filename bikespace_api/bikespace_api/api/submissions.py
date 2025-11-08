@@ -1,24 +1,26 @@
 # bikespace_api/bikespace_api/api/answers.py
 
-from better_profanity import profanity
-from bikespace_api import db
-from bikespace_api.api.models import Submission, IssueType, ParkingDuration
-from flask import Blueprint, jsonify, request, Response, make_response, url_for
-from geojson import Feature, FeatureCollection, Point
+import csv
+import json
 from io import StringIO
+
+import geojson
+from better_profanity import profanity
+from flask import Blueprint, Response, jsonify, make_response, request, url_for
+from geojson import Feature, FeatureCollection, Point
 from sqlalchemy import desc
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy_continuum import count_versions
-import csv
-import geojson
-import json
+
+from bikespace_api import db  # type: ignore
+from bikespace_api.api.models import IssueType, ParkingDuration, Submission
 
 submissions_blueprint = Blueprint("submissions", __name__)
 
 DEFAULT_OFFSET_LIMIT = 100
 
 
-@submissions_blueprint.route("/submissions", methods=["GET", "POST"])
+@submissions_blueprint.route("/submissions", methods=["GET", "POST"])  # type: ignore
 def handle_submissions():
     if request.method == "GET":
         accept_header = request.headers.get("Accept")
@@ -98,7 +100,7 @@ def get_submissions_json(request):
     offset = request.args.get("offset", 1, type=int)
     limit = request.args.get("limit", DEFAULT_OFFSET_LIMIT, type=int)
 
-    pagination = Submission.query.order_by(desc(Submission.parking_time)).paginate(
+    pagination = Submission.query.order_by(desc(Submission.parking_time)).paginate(  # type: ignore
         page=offset, per_page=limit, count=True
     )
     submissions = pagination.items
@@ -210,7 +212,7 @@ def get_submissions_geo_json(request):
 
 def get_submissions_csv(request):
     """Optional response for GET /submissions. Returns user reports from the bikeparking_submissions table in CSV format. Also breaks out issue types into separate columns for easier analysis."""
-    submissions = Submission.query.order_by(desc(Submission.parking_time)).all()
+    submissions = Submission.query.order_by(desc(Submission.parking_time)).all()  # type: ignore
     submissions_list = []
     for submission in submissions:
         row = []
