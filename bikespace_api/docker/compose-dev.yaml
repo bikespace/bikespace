@@ -5,6 +5,10 @@ services:
     build:
       context: ..
       dockerfile: docker/local.dockerfile
+    volumes:
+      - type: bind
+        source: ..
+        target: /app
     depends_on:
       db:
         condition: service_healthy
@@ -19,10 +23,6 @@ services:
       FLASK_RUN_PORT: 8000
     ports:
       - "8000:8000"
-    develop:
-      watch:
-        - action: rebuild
-          path: ../bikespace_api/
   db:
     image: postgres
     restart: always
