@@ -3,11 +3,12 @@
 from better_profanity import profanity
 from bikespace_api import db
 from bikespace_api.api.models import Submission, IssueType, ParkingDuration
-from flask import Blueprint, jsonify, request, Response, make_response
+from flask import Blueprint, jsonify, request, Response, make_response, url_for
 from geojson import Feature, FeatureCollection, Point
 from io import StringIO
 from sqlalchemy import desc
 from sqlalchemy.exc import IntegrityError
+from sqlalchemy_continuum import count_versions
 import csv
 import geojson
 import json
@@ -52,6 +53,12 @@ def get_submission_with_id(submission_id):
             if submission_with_id.submitted_datetime is not None
             else None
         ),
+        "version": count_versions(submission_with_id),
+        "version_history": url_for(
+            "submissions.get_submission_history_with_id",
+            submission_id=submission_id,
+            _external=True,
+        ),
     }
     return_response = Response(
         response=json.dumps(submission_with_id_json, default=str),
@@ -59,6 +66,31 @@ def get_submission_with_id(submission_id):
         mimetype="application/json",
     )
     return return_response
+
+
+@submissions_blueprint.route("/submissions/<submission_id>/history", methods=["GET"])  # type: ignore
+def get_submission_history_with_id(submission_id):
+    """Operation types are:
+    - 0: Insert
+    - 1: Update
+    - 2: Delete
+    """
+    submission_with_id = Submission.query.filter_by(id=submission_id).first()
+    # TODO handle case where record has been deleted?
+    history = []
+    for version in submission_with_id.versions:
+        history.append(
+            {
+                "version_index": version.index,
+                "operation_type": version.operation_type,
+                "changes": version.changeset,
+            }
+        )
+    return Response(
+        response=json.dumps(history, default=str),
+        status=200,
+        mimetype="application/json",
+    )
 
 
 def get_submissions_json(request):
@@ -90,6 +122,7 @@ def get_submissions_json(request):
                 if submission.submitted_datetime is not None
                 else None
             ),
+            "version": count_versions(submission),
         }
         json_output.append(submission_json)
 
@@ -161,6 +194,7 @@ def get_submissions_geo_json(request):
                     if submission.submitted_datetime is not None
                     else None
                 ),
+                "version": count_versions(submission),
             },
         )
         if point_feature.is_valid:
@@ -194,6 +228,7 @@ def get_submissions_csv(request):
             if submission.submitted_datetime is not None
             else None
         )
+        row.append(count_versions(submission))
         submissions_list.append(row)
 
     string_io = StringIO()
@@ -208,6 +243,7 @@ def get_submissions_csv(request):
         "parking_duration",
         "comments",
         "submitted_datetime",
+        "version",
     ]
     csv_writer.writerow(csv_headers)
     csv_writer.writerows(submissions_list)
