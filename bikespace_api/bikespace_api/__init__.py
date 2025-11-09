@@ -5,7 +5,6 @@ import os
 from flask import Flask, redirect, render_template, url_for
 from flask_admin import Admin
 from flask_admin import helpers as admin_helpers
-from flask_admin.contrib.sqla import ModelView
 from flask_cors import CORS
 from flask_migrate import Migrate
 from flask_security.core import RoleMixin, Security, UserMixin
