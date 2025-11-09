@@ -10,7 +10,7 @@ from flask import Blueprint, Response, jsonify, make_response, request, url_for
 from geojson import Feature, FeatureCollection, Point
 from sqlalchemy import desc
 from sqlalchemy.exc import IntegrityError
-from sqlalchemy_continuum import count_versions
+from sqlalchemy_continuum import count_versions, version_class
 
 from bikespace_api import db  # type: ignore
 from bikespace_api.api.models import IssueType, ParkingDuration, Submission
@@ -77,14 +77,18 @@ def get_submission_history_with_id(submission_id):
     - 1: Update
     - 2: Delete
     """
-    submission_with_id = Submission.query.filter_by(id=submission_id).first()
-    # TODO handle case where record has been deleted?
+    SubmissionVersion = version_class(Submission)
+    submission_versions_with_id = SubmissionVersion.query.filter_by(
+        id=submission_id
+    ).order_by(SubmissionVersion.transaction_id)
     history = []
-    for version in submission_with_id.versions:
+    for version in submission_versions_with_id:
         history.append(
             {
                 "version_index": version.index,
                 "operation_type": version.operation_type,
+                "transaction_user": version.transaction.user_id,
+                "transaction_issued_at": version.transaction.issued_at,
                 "changes": version.changeset,
             }
         )

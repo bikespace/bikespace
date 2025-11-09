@@ -123,3 +123,6 @@ def test_post_submissions(flask_app, test_client, submission_id=5):
     )
     assert new_submission.comments == dummy_submission["comments"]
     assert (current_datetime - new_submission.submitted_datetime).total_seconds() < 1
+
+
+# TODO for submission history handle case where record has been deleted?
