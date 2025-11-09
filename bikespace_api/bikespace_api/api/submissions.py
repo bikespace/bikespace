@@ -56,7 +56,7 @@ def get_submission_with_id(submission_id):
             else None
         ),
         "version": count_versions(submission_with_id),
-        "version_history": url_for(
+        "version_history_url": url_for(
             "submissions.get_submission_history_with_id",
             submission_id=submission_id,
             _external=True,
