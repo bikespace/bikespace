@@ -1,9 +1,9 @@
 import json
 from datetime import datetime, timezone
 
+from bikespace_api.api.models import IssueType, ParkingDuration, Submission
 from pytest import mark
 
-from bikespace_api.api.models import Submission, IssueType, ParkingDuration
 
 
 def test_get_submissions(test_client):
@@ -51,7 +51,7 @@ def test_get_submission_accept_csv(test_client):
     assert response.headers["Content-Type"] == "text/csv"
 
 
-def test_get_sumissions_with_offset_limit(test_client):
+def test_get_submissions_with_offset_limit(test_client):
     target_limit = 2
     response = test_client.get(f"/api/v2/submissions?offset=1&limit={target_limit}")
     res = json.loads(response.get_data())
