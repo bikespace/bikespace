@@ -4,6 +4,7 @@ from datetime import datetime, timezone
 from bikespace_api.api.models import IssueType, ParkingDuration, Submission
 from pytest import mark
 
+from bikespace_api import db  # type: ignore
 
 
 def test_get_submissions(test_client):
@@ -125,4 +126,72 @@ def test_post_submissions(flask_app, test_client, submission_id=5):
     assert (current_datetime - new_submission.submitted_datetime).total_seconds() < 1
 
 
-# TODO for submission history handle case where record has been deleted?
+def test_get_submission_history(flask_app, test_client):
+    """
+    GIVEN a Flask application and a Submission entry configured for testing
+    GIVEN database actions for that Submission to create, update, and delete
+    WHEN the '/api/v2/submissions/{submission_id}/history' data is requested (GET)
+    THEN check that the response is valid for each of the create, update, and delete actions
+    """
+    with flask_app.app_context():
+        # create a new submission for testing
+        initial_comment = "history test - create"
+        db.session.add(
+            Submission(
+                43.1234,
+                -79.1234,
+                [IssueType.ABANDONDED],
+                ParkingDuration.MINUTES,
+                datetime.now(),
+                initial_comment,
+            )
+        )
+        db.session.commit()
+        test_submission = Submission.query.filter_by(comments=initial_comment).first()
+        submission_id = test_submission.id
+
+        # request the edit history - should show one create action
+        response_create = test_client.get(
+            f"/api/v2/submissions/{submission_id}/history"
+        )
+        result_create = json.loads(response_create.get_data())
+        assert response_create.status_code == 200
+        assert response_create.headers["Content-Type"] == "application/json"
+        assert len(result_create) == 1
+        assert all(k in result_create[0] for k in ("operation_type", "changes"))
+        assert result_create[0]["operation_type"] == 0  # create action
+        assert len(result_create[0]["changes"]) > 0
+
+        # modify a property - should show an additional update action
+        test_submission.comments = "history test - update"
+        db.session.commit()
+
+        response_update = test_client.get(
+            f"/api/v2/submissions/{submission_id}/history"
+        )
+        result_update = json.loads(response_update.get_data())
+        assert response_update.status_code == 200
+        assert response_update.headers["Content-Type"] == "application/json"
+        assert len(result_update) == 2
+        assert all(k in result_update[1] for k in ("operation_type", "changes"))
+        assert result_update[1]["operation_type"] == 1  # update action
+        assert len(result_update[1]["changes"]) == 1  # update to comment only
+
+        # delete the submission - should show an additional delete action
+        # confirms that the view queries on the history table, since the submission table will not return a result for a deleted entry
+        db.session.delete(test_submission)
+        db.session.commit()
+
+        response_delete = test_client.get(
+            f"/api/v2/submissions/{submission_id}/history"
+        )
+        result_delete = json.loads(response_delete.get_data())
+
+        assert response_delete.status_code == 200
+        assert response_delete.headers["Content-Type"] == "application/json"
+        assert len(result_delete) == 3
+        assert all(k in result_delete[2] for k in ("operation_type", "changes"))
+        assert result_delete[2]["operation_type"] == 2  # delete action
+        assert (
+            len(result_delete[2]["changes"]) == 0
+        )  # no changes for delete action since it applies record-wide
