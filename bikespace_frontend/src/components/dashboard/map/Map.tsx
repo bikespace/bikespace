@@ -24,11 +24,12 @@ import './leaflet.scss';
 
 export interface MapProps {
   submissions: SubmissionApiPayload[];
+  isPermaLink: boolean
 }
 
 type MarkerRefs = Record<number, LeafletMarker>;
 
-function Map({submissions}: MapProps) {
+function Map({submissions, isPermaLink}: MapProps) {
   const mapRef: React.LegacyRef<lMap> = useRef(null);
   const clusterRef = useRef(null);
   const markerRefs = useRef<MarkerRefs>({});
@@ -49,6 +50,11 @@ function Map({submissions}: MapProps) {
     mapRef.current.invalidateSize();
   }, [isSidebarOpen, currentSidebarTab]);
   useEffect(() => {
+    if (!initialized && isPermaLink && (markersReady && tilesReady)){
+      setInitialized(true)
+      return
+    }
+    
     if (
       !initialized &&
       tilesReady &&

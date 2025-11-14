@@ -88,7 +88,8 @@ export function DashboardPage() {
   return (
     <main className={styles.dashboardPage}>
       <Sidebar />
-      <Map submissions={submissions}/>
+      <Map submissions={submissions}
+      isPermaLink={focusedId !==null} />
     </main>
   );
 }
