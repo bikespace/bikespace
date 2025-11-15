@@ -24,7 +24,7 @@ import './leaflet.scss';
 
 export interface MapProps {
   submissions: SubmissionApiPayload[];
-  isPermaLink: boolean
+  isPermaLink: boolean;
 }
 
 type MarkerRefs = Record<number, LeafletMarker>;
@@ -50,11 +50,11 @@ function Map({submissions, isPermaLink}: MapProps) {
     mapRef.current.invalidateSize();
   }, [isSidebarOpen, currentSidebarTab]);
   useEffect(() => {
-    if (!initialized && isPermaLink && (markersReady && tilesReady)){
-      setInitialized(true)
-      return
+    if (!initialized && isPermaLink && markersReady && tilesReady) {
+      setInitialized(true);
+      return;
     }
-    
+
     if (
       !initialized &&
       tilesReady &&
