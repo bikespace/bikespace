@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: 2.0.1
+  version: 2.0.2
   title: BikeSpace API
   description: BikeSpace API
 
@@ -25,17 +25,17 @@ paths:
             type: integer
       responses:
         "200":
-          description: Successfully returned a list of submissions 
+          description: Successfully returned a list of submissions
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SubmissionOutputs'
+                $ref: "#/components/schemas/SubmissionOutputs"
             application/geo+json:
               schema:
-                $ref: '#/components/schemas/SubmissionOutputs'
+                $ref: "#/components/schemas/SubmissionOutputs"
             text/csv:
               schema:
-                $ref: '#/components/schemas/SubmissionOutputs'
+                $ref: "#/components/schemas/SubmissionOutputs"
         "400":
           description: Invalid request
           content:
@@ -47,16 +47,16 @@ paths:
                     type: string
     post:
       summary: Submit a new submission
-      
+
       requestBody:
         description: Create a new submission
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/SubmissionInputs'
+              $ref: "#/components/schemas/SubmissionInputs"
       responses:
-        '201':
+        "201":
           description: Created
 components:
   schemas:
@@ -71,7 +71,7 @@ components:
         issues:
           type: array
           items:
-            type: string 
+            type: string
             enum:
               - not_provided
               - full
@@ -100,6 +100,3 @@ components:
             submitted_datetime:
               type: string
               format: date-time
-          
-        
-
