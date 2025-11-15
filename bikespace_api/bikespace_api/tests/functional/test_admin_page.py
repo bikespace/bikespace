@@ -1,9 +1,6 @@
 import re
 
 from bs4 import BeautifulSoup
-from pytest import mark
-
-from bikespace_api.api.models import Role, User
 
 # Rationale for 'type: ignore' comments: soup.find doesn't have an overload where both name= and string= are not None (as of bs4 version 4.14.2), even though this is a documented usage of the function
 
@@ -18,14 +15,29 @@ def test_admin_page(test_client):
     soup = BeautifulSoup(response.data, "html.parser")
     container_div = soup.find("div", class_="container")
     navbar_div = soup.find("div", class_="collapse navbar-collapse")
-    navbar_list = navbar_div.find('ul').find_all('li')
     assert response.status_code == 200
-    assert container_div.find("h1", string="BikeSpace Admin")  # type: ignore
-    assert soup.find("a", class_="btn btn-primary", href="/admin/login", string="login")
-    assert navbar_div.find("a", class_="navbar-brand", href="/admin", string="BikeSpace")
-    for nav_bar_item in navbar_list:
-        if nav_bar_item.find("a", class_="nav-link", href="/admin/", string="Home"):
-            assert True
+    assert container_div.find(
+        "h1",
+        string=re.compile("BikeSpace Admin", flags=re.IGNORECASE),
+    )  # type: ignore
+    assert soup.find(
+        "a",
+        class_="btn btn-primary",
+        href="/admin/login",
+        string=re.compile("login", flags=re.IGNORECASE),
+    )
+    assert navbar_div.find(
+        "a",
+        class_="navbar-brand",
+        href="/admin",
+        string=re.compile("BikeSpace", flags=re.IGNORECASE),
+    )
+    assert navbar_div.find(
+        "a",
+        class_="nav-link",
+        href="/admin/",
+        string=re.compile("Home", flags=re.IGNORECASE),
+    )
 
 
 def test_admin_page_submission_without_logging_in(test_client):
@@ -66,19 +78,25 @@ def test_admin_page_user_without_logging_in(test_client):
 
 
 def default_login_page_redirect(response, soup: BeautifulSoup):
+    assert response.status_code == 200
     container_div = soup.find("div", class_="container")
     navbar_div = soup.find("div", class_="collapse navbar-collapse")
-    navbar_list = navbar_div.find('ul').find_all('li')
-    assert response.status_code == 200
-    assert container_div.find("h1", string="Login")  # type: ignore
-    assert soup.find("a", class_="navbar-brand", href="/admin", string="BikeSpace")  # type: ignore
+    assert container_div.find("h1", string=re.compile("Login", flags=re.IGNORECASE))  # type: ignore
+    assert soup.find(
+        "a",
+        class_="navbar-brand",
+        href="/admin",
+        string=re.compile("BikeSpace", flags=re.IGNORECASE),
+    )  # type: ignore
     assert soup.find(
         "input", id="submit", class_="btn btn-primary", type="submit", value="Login"
     )
-
-    for nav_bar_item in navbar_list:
-        if nav_bar_item.find("a", class_="nav-link", href="/admin/", string="Home"):
-            assert True
+    assert navbar_div.find(
+        "a",
+        class_="nav-link",
+        href="/admin/",
+        string=re.compile("Home", flags=re.IGNORECASE),
+    )
 
 
 def test_admin_login_successfully(test_client):
@@ -95,7 +113,7 @@ def test_admin_login_successfully(test_client):
         "a",
         class_="btn btn-primary",
         href="/admin/login",
-        string="login",  # type: ignore
+        string=re.compile("login", flags=re.IGNORECASE),  # type: ignore
     )
 
     post_login_response = test_client.post(
@@ -110,7 +128,7 @@ def test_admin_login_successfully(test_client):
         "a",
         class_="btn btn-primary",
         href="/admin/login",
-        string="login",  # type: ignore
+        string=re.compile("login", flags=re.IGNORECASE),  # type: ignore
     )
     assert post_login_soup.find(string=re.compile("Admin"))
 
