@@ -1,23 +1,32 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {DateTime} from 'luxon';
 
 import {useStore} from '@/states/store';
-
 import {useAllSubmissionsDateRange, useSubmissionsQuery} from '@/hooks';
 
-import warningIcon from '@/assets/icons/exclamation-triangle.svg';
-
-import {Spinner} from './Spinner';
+import {Spinner} from '@/components/shared-ui/spinner';
 
 import styles from './report-summary.module.scss';
 
-export function ReportSummary() {
+import warningIcon from '@/assets/icons/exclamation-triangle.svg';
+
+export function ReportSummary({onReady}: {onReady?: () => void}) {
   const {isFetching} = useSubmissionsQuery();
 
   const {submissions, filters} = useStore(state => ({
     submissions: state.submissions,
     filters: state.filters,
   }));
+
+  const hasFiredReadyRef = useRef(false);
+
+  useEffect(() => {
+    // Guard against calling onReady multiple times
+    if (!isFetching && !hasFiredReadyRef.current) {
+      hasFiredReadyRef.current = true;
+      onReady?.(); // Call onReady only once when all data is fetched
+    }
+  }, [isFetching, onReady]);
 
   const {first, last} = useAllSubmissionsDateRange();
 
@@ -47,8 +56,7 @@ export function ReportSummary() {
   if (isFetching) {
     return (
       <div className={styles.loading}>
-        Loading Reports
-        <Spinner />
+        <Spinner label="Loading reports..." />
       </div>
     );
   }

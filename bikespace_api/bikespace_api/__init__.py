@@ -5,6 +5,7 @@ import os
 from flask import Flask, redirect, render_template, url_for
 from flask_admin import Admin
 from flask_admin import helpers as admin_helpers
+from flask_admin.theme import Bootstrap4Theme
 from flask_cors import CORS
 from flask_migrate import Migrate
 from flask_security.core import RoleMixin, Security, UserMixin
@@ -53,8 +54,7 @@ def create_app(script_info=None):
     admin = Admin(
         app,
         name="BikeSpace",
-        template_mode="bootstrap3",
-        base_template="my_master.html",
+        theme=Bootstrap4Theme(base_template="bikespace-admin-base.html"),
     )
     admin.add_view(AdminRolesModelView(Role, db.session))
     admin.add_view(AdminUsersModelView(User, db.session))
@@ -63,8 +63,9 @@ def create_app(script_info=None):
     @security.context_processor
     def security_context_processor():
         return dict(
-            admin_base_template=admin.base_template,
+            admin_base_template=admin.theme.base_template,
             admin_view=admin.index_view,
+            theme=admin.theme,
             h=admin_helpers,
             get_url=url_for,
         )

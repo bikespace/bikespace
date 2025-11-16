@@ -1,7 +1,6 @@
 import uuid
 
 from flask import abort, redirect, request, url_for
-from flask_admin import AdminIndexView
 from flask_admin.contrib.sqla import ModelView
 from flask_security import current_user  # type: ignore
 from flask_security.utils import hash_password
@@ -15,25 +14,9 @@ datetime_format_with_microseconds = {
 }
 
 
-class MyAdminIndexView(AdminIndexView):
-    def is_accessible(self):
-        return (
-            current_user.is_active
-            and current_user.is_authenticated
-            and current_user.has_role("superuser")
-        )
-
-    def _handle_view(self, name, **kwargs):
-        if not self.is_accessible():
-            abort(403)
-        else:
-            return redirect(url_for("security.login", next=request.url))
-
-    def inaccessible_callback(self, name, **kwargs):
-        return redirect(url_for("security.login", next=request.url))
-
-
 class AdminRolesModelView(ModelView):
+    column_display_pk = True
+
     def is_accessible(self):
         return (
             current_user.is_active

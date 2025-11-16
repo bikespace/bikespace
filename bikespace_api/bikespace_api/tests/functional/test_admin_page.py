@@ -16,11 +16,31 @@ def test_admin_page(test_client):
     """
     response = test_client.get("/admin/")
     soup = BeautifulSoup(response.data, "html.parser")
+    container_div = soup.find("div", class_="container")
+    navbar_div = soup.find("div", class_="collapse navbar-collapse")
     assert response.status_code == 200
-    assert soup.find("h1", string="BikeSpace Admin")  # type: ignore
-    assert soup.find("a", class_="navbar-brand", href="/admin", string="BikeSpace")  # type: ignore
-    assert soup.find("a", class_="btn btn-primary", href="/admin/login", string="login")  # type: ignore
-    assert soup.find("a", href="/admin/", string="Home")  # type: ignore
+    assert container_div.find(
+        "h1",
+        string=re.compile("BikeSpace Admin", flags=re.IGNORECASE),
+    )  # type: ignore
+    assert soup.find(
+        "a",
+        class_="btn btn-primary",
+        href="/admin/login",
+        string=re.compile("login", flags=re.IGNORECASE),
+    )
+    assert navbar_div.find(
+        "a",
+        class_="navbar-brand",
+        href="/admin",
+        string=re.compile("BikeSpace", flags=re.IGNORECASE),
+    )
+    assert navbar_div.find(
+        "a",
+        class_="nav-link",
+        href="/admin/",
+        string=re.compile("Home", flags=re.IGNORECASE),
+    )
 
 
 def test_admin_page_submission_without_logging_in(test_client):
@@ -62,12 +82,24 @@ def test_admin_page_user_without_logging_in(test_client):
 
 def default_login_page_redirect(response, soup: BeautifulSoup):
     assert response.status_code == 200
-    assert soup.find("h1", string="Login")  # type: ignore
-    assert soup.find("a", class_="navbar-brand", href="/admin", string="BikeSpace")  # type: ignore
+    container_div = soup.find("div", class_="container")
+    navbar_div = soup.find("div", class_="collapse navbar-collapse")
+    assert container_div.find("h1", string=re.compile("Login", flags=re.IGNORECASE))  # type: ignore
+    assert soup.find(
+        "a",
+        class_="navbar-brand",
+        href="/admin",
+        string=re.compile("BikeSpace", flags=re.IGNORECASE),
+    )  # type: ignore
     assert soup.find(
         "input", id="submit", class_="btn btn-primary", type="submit", value="Login"
     )
-    assert soup.find("a", href="/admin/", string="Home")  # type: ignore
+    assert navbar_div.find(
+        "a",
+        class_="nav-link",
+        href="/admin/",
+        string=re.compile("Home", flags=re.IGNORECASE),
+    )
 
 
 def test_admin_login_successfully(test_client):
@@ -84,7 +116,7 @@ def test_admin_login_successfully(test_client):
         "a",
         class_="btn btn-primary",
         href="/admin/login",
-        string="login",  # type: ignore
+        string=re.compile("login", flags=re.IGNORECASE),  # type: ignore
     )
 
     post_login_response = test_client.post(
@@ -99,7 +131,7 @@ def test_admin_login_successfully(test_client):
         "a",
         class_="btn btn-primary",
         href="/admin/login",
-        string="login",  # type: ignore
+        string=re.compile("login", flags=re.IGNORECASE),  # type: ignore
     )
     assert post_login_soup.find(string=re.compile("Admin"))
 

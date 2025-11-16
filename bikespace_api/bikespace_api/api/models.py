@@ -73,12 +73,12 @@ roles_users = db.Table(
 
 
 class Role(db.Model, RoleMixin):
-    id = db.Column(db.Integer(), primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), unique=True)
     description = db.Column(db.String(255))
 
     def __str__(self):
-        return self.name
+        return str(self.name or "")
 
 
 class User(db.Model, UserMixin):
@@ -95,4 +95,4 @@ class User(db.Model, UserMixin):
     fs_uniquifier = db.Column(db.String(64), unique=True, nullable=False)
 
     def __str__(self):
-        return self.email
+        return str(self.email or "")
