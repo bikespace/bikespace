@@ -6,7 +6,7 @@ from io import StringIO
 
 import geojson
 from better_profanity import profanity
-from flask import Blueprint, Response, jsonify, make_response, request, url_for
+from flask import Blueprint, Response, make_response, request, url_for
 from geojson import Feature, FeatureCollection, Point
 from sqlalchemy import desc
 from sqlalchemy.exc import IntegrityError

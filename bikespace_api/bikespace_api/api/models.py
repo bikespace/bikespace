@@ -37,8 +37,7 @@ class ParkingDuration(Enum):
 
 class Submission(db.Model):
     __tablename__ = "bikeparking_submissions"
-    __versioned__ = {}
-    # TODO - flask-admin is truncating microseconds on the time values even if no changes are made; should figure out how to fix this
+    __versioned__ = {}  # generate version history log with sqlalchemy-continuum
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     latitude = db.Column(db.Float, nullable=False)

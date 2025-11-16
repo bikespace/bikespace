@@ -85,7 +85,7 @@ class AdminUsersModelView(ModelView):
 
 class AdminSubmissionModelView(ModelView):
     column_display_pk = True
-    form_args = {
+    form_args = {  # type: ignore
         "parking_time": datetime_format_with_microseconds,
         "submitted_datetime": datetime_format_with_microseconds,
     }
