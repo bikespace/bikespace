@@ -2,6 +2,8 @@ import {useSubmissionFormContext} from '../submission-form/schema';
 import Link from 'next/link';
 
 import styles from './summary.module.scss';
+import {SidebarButton} from '@/components/shared-ui/sidebar-button';
+import submissionStyles from '../submission-form-controller/submission-form-controller.module.scss';
 
 export const Summary = () => {
   const {
@@ -41,15 +43,18 @@ export const Summary = () => {
           <h1>Success</h1>
           <p>Your submission has been entered successfully!</p>
           <p>Thank You!</p>
+
           {submissionId ? (
             <Link href={`/dashboard?tab=feed&submission_id=${submissionId}`}>
-              <button className={styles.viewButton}>
+              <button className={submissionStyles.primaryBtn}>
                 View Your Submission
               </button>
             </Link>
           ) : (
             <Link href="/dashboard">
-              <button className={styles.viewButton}>Go to Dashboard</button>
+              <button className={submissionStyles.primaryBtn}>
+                Go to Dashboard
+              </button>
             </Link>
           )}
         </>
