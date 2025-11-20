@@ -9,6 +9,9 @@ services:
       db:
         condition: service_healthy
         restart: true
+    env_file: 
+      - path: "../.env"
+        required: false
     environment:
       APP_SETTINGS: "bikespace_api.config.ProductionConfig"
       DATABASE_URL: "postgresql://postgres:prodpwd@db/bikespace_prodtest"

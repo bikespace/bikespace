@@ -25,6 +25,13 @@
   }
 }
 
+@media (min-width: $wrapper-full-width) {
+  // Add right padding for scrollbar spacing on certain Linux chrome browsers
+  .sideBarContainer {
+    padding-right: 6px;
+  }
+}
+
 .ContentCard {
   width: 100%;
   border-radius: 4px;

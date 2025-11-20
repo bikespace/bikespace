@@ -1,4 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
+
 import {MapContainer, TileLayer} from 'react-leaflet';
 import MarkerClusterGroup from 'react-leaflet-cluster';
 import {Marker as LeafletMarker, Map as lMap} from 'leaflet';
@@ -6,16 +7,17 @@ import {useWindowSize} from '@uidotdev/usehooks';
 
 import {useStore} from '@/states/store';
 import {defaultMapCenter} from '@/utils/map-utils';
-
-import 'leaflet/dist/leaflet.css';
-import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css';
-
 import {SubmissionApiPayload} from '@/interfaces/Submission';
 import {useSidebarTab} from '@/states/url-params';
+
+import {Spinner} from '@/components/shared-ui/spinner';
 
 import {MapMarker} from '../map-marker';
 import {LeafletLocateControl} from '../leaflet-locate-control';
 import {MapHandler} from '../map-handler';
+
+import 'leaflet/dist/leaflet.css';
+import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css';
 
 import styles from './map.module.scss';
 import './leaflet.scss';
@@ -31,7 +33,9 @@ function Map({submissions}: MapProps) {
   const clusterRef = useRef(null);
   const markerRefs = useRef<MarkerRefs>({});
 
-  const [doneLoading, setDoneLoading] = useState(false);
+  const [markersReady, setMarkersReady] = useState(false);
+  const [tilesReady, setTilesReady] = useState(false);
+  const [initialized, setInitialized] = useState(false);
 
   const windowSize = useWindowSize();
 
@@ -44,6 +48,15 @@ function Map({submissions}: MapProps) {
     if (!mapRef.current) return;
     mapRef.current.invalidateSize();
   }, [isSidebarOpen, currentSidebarTab]);
+  useEffect(() => {
+    if (
+      !initialized &&
+      tilesReady &&
+      (submissions.length === 0 || markersReady)
+    ) {
+      setInitialized(true);
+    }
+  }, [initialized, tilesReady, markersReady, submissions.length]);
 
   return (
     <MapContainer
@@ -59,6 +72,17 @@ function Map({submissions}: MapProps) {
         attribution='&copy; Maps <a href="https://www.thunderforest.com/">Thunderforest</a>, &copy; Data <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>'
         url="https://tile.thunderforest.com/atlas/{z}/{x}/{y}.png?apikey=66ccf6226ef54ef38a6b97fe0b0e5d2e"
         maxZoom={20}
+        eventHandlers={{
+          loading: () => {
+            if (!initialized) setTilesReady(false); // first load only
+          },
+          load: () => {
+            if (!initialized) setTilesReady(true);
+          },
+          tileerror: () => {
+            if (!initialized) setTilesReady(true); // treat as “ready enough”
+          },
+        }}
       />
       <MarkerClusterGroup chunkedLoading ref={clusterRef}>
         {submissions.map((submission, index) => {
@@ -67,12 +91,12 @@ function Map({submissions}: MapProps) {
               key={submission.id}
               submission={submission}
               windowWidth={windowSize.width}
-              doneLoading={doneLoading}
+              doneLoading={markersReady}
               clusterRef={clusterRef}
               ref={(m: LeafletMarker) => {
                 markerRefs.current[submission.id] = m;
-                if (index === submissions.length - 1 && !doneLoading) {
-                  setDoneLoading(true);
+                if (index === submissions.length - 1 && !initialized) {
+                  setMarkersReady(true);
                 }
               }}
             />
@@ -80,6 +104,12 @@ function Map({submissions}: MapProps) {
         })}
       </MarkerClusterGroup>
       <MapHandler />
+      <Spinner
+        show={!initialized}
+        overlay
+        label="Loading map..."
+        style={{zIndex: 1000}}
+      />
     </MapContainer>
   );
 }
