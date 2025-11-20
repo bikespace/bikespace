@@ -1,9 +1,11 @@
 @import '@/styles/variables.module.scss';
 
-$even-lighter-grey: #EEE;
+$even-lighter-grey: #eee;
 
-.pageHeader, .pageMain, .pageFooter {
-  font-family: "Open Sans";
+.pageHeader,
+.pageMain,
+.pageFooter {
+  font-family: 'Open Sans';
 }
 
 .pageMain {
@@ -19,12 +21,32 @@ $even-lighter-grey: #EEE;
 
   line-height: 1.4;
 
-  div, iframe, h1, h2, h3, h4, h5, h6, p, ul, ol, blockquote, img, table, pre, figure {
+  div,
+  iframe,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  ul,
+  ol,
+  blockquote,
+  img,
+  table,
+  pre,
+  figure {
     margin-bottom: 1rem;
   }
 
   // prevent floating nav bar from overlapping heading when using anchor links
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     scroll-margin-top: calc(54px + 1rem);
   }
 
@@ -48,11 +70,11 @@ $even-lighter-grey: #EEE;
 
   ul li {
     margin-inline-start: 1.5rem;
-    list-style-type: disc; 
+    list-style-type: disc;
     ul li {
-      list-style-type: circle; 
+      list-style-type: circle;
       ul li {
-        list-style-type: square; 
+        list-style-type: square;
       }
     }
   }
@@ -84,12 +106,12 @@ $even-lighter-grey: #EEE;
     text-decoration-color: $color-primary;
     color: $color-primary-d50p;
     text-decoration-thickness: 2px;
-  
+
     &:visited {
       color: rebeccapurple;
       text-decoration-color: var(--color-primary-d50p);
     }
-  
+
     &:hover {
       color: #25c252;
       text-decoration-thickness: 2px;
@@ -109,4 +131,3 @@ $even-lighter-grey: #EEE;
     max-width: $wrapper-max-width;
   }
 }
-
