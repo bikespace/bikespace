@@ -39,7 +39,7 @@ jobs:
             });
             core.setOutput('head_sha', pr.head.sha);
             core.setOutput('head_ref', pr.head.ref);
-            core.setOuput('head_repo_full_name', pr.head.repo.full_name);
+            core.setOutput('head_repo_full_name', pr.head.repo.full_name);
             core.setOutput('pr_html_url', pr.html_url);
 
       - name: Set "Publish" status to pending
