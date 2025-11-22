@@ -13,6 +13,7 @@ permissions:
   pull-requests: write
   statuses: write
   deployments: write
+  checks: write
 
 jobs:
   publish:
@@ -55,7 +56,7 @@ jobs:
               started_at: new Date().toISOString(),
               output: {
                 title: 'Build preview...',
-                summary: 'Preview build is in progress'
+                summary: 'Preview build is in progress',
               }
             });
             core.setOutput('check_run_id', res.data.id);
