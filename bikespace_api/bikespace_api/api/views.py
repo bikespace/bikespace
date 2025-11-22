@@ -1,9 +1,18 @@
+import uuid
+
 from flask import abort, redirect, request, url_for
 from flask_admin.contrib.sqla import ModelView
 from flask_security import current_user  # type: ignore
 from flask_security.utils import hash_password
 from wtforms import PasswordField
-import uuid
+from wtforms.validators import DataRequired
+
+# use with form_args property of ModelView subclasses to prevent flask-admin from truncating microseconds
+datetime_format_with_microseconds = {
+    "validators": [DataRequired()],
+    "format": "%Y-%m-%d %H:%M:%S.%f",
+}
+
 
 class AdminRolesModelView(ModelView):
     column_display_pk = True
@@ -76,6 +85,10 @@ class AdminUsersModelView(ModelView):
 
 class AdminSubmissionModelView(ModelView):
     column_display_pk = True
+    form_args = {  # type: ignore
+        "parking_time": datetime_format_with_microseconds,
+        "submitted_datetime": datetime_format_with_microseconds,
+    }
 
     def is_accessible(self):
         return (

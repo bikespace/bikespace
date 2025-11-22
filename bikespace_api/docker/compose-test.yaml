@@ -5,11 +5,15 @@ services:
     build:
       context: ..
       dockerfile: docker/local.dockerfile
+    volumes:
+      - type: bind
+        source: ..
+        target: /app
     depends_on:
       db:
         condition: service_healthy
         restart: true
-    env_file: 
+    env_file:
       - path: "../.env"
         required: false
     environment:
@@ -18,11 +22,7 @@ services:
       FLASK_DEBUG: "true"
       FLASK_RUN_PORT: 8000
     ports:
-    - "8001:8000"
-    develop:
-      watch:
-        - action: rebuild
-          path: ../bikespace_api/
+      - "8001:8000"
   db:
     image: postgres
     restart: always

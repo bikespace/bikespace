@@ -2,7 +2,9 @@ import re
 
 from bs4 import BeautifulSoup
 
-# Rationale for 'type: ignore' comments: soup.find doesn't have an overload where both name= and string= are not None (as of bs4 version 4.14.2), even though this is a documented usage of the function
+# Rationale for 'type: ignore' comments:
+# - soup.find doesn't have an overload where both name= and string= are not None (as of bs4 version 4.14.2), even though this is a documented usage of the function
+# - soup.find string= parameter is not typed for regular expressions even though these are a documented input type
 
 
 def test_admin_page(test_client):
@@ -16,27 +18,27 @@ def test_admin_page(test_client):
     container_div = soup.find("div", class_="container")
     navbar_div = soup.find("div", class_="collapse navbar-collapse")
     assert response.status_code == 200
-    assert container_div.find(
+    assert container_div.find(  # type: ignore
         "h1",
-        string=re.compile("BikeSpace Admin", flags=re.IGNORECASE),
+        string=re.compile("BikeSpace Admin", flags=re.IGNORECASE),  # type: ignore
     )  # type: ignore
     assert soup.find(
         "a",
         class_="btn btn-primary",
         href="/admin/login",
-        string=re.compile("login", flags=re.IGNORECASE),
+        string=re.compile("login", flags=re.IGNORECASE),  # type: ignore
     )
-    assert navbar_div.find(
+    assert navbar_div.find(  # type: ignore
         "a",
         class_="navbar-brand",
         href="/admin",
-        string=re.compile("BikeSpace", flags=re.IGNORECASE),
+        string=re.compile("BikeSpace", flags=re.IGNORECASE),  # type: ignore
     )
-    assert navbar_div.find(
+    assert navbar_div.find(  # type: ignore
         "a",
         class_="nav-link",
         href="/admin/",
-        string=re.compile("Home", flags=re.IGNORECASE),
+        string=re.compile("Home", flags=re.IGNORECASE),  # type: ignore
     )
 
 
@@ -86,16 +88,16 @@ def default_login_page_redirect(response, soup: BeautifulSoup):
         "a",
         class_="navbar-brand",
         href="/admin",
-        string=re.compile("BikeSpace", flags=re.IGNORECASE),
+        string=re.compile("BikeSpace", flags=re.IGNORECASE),  # type: ignore
     )  # type: ignore
     assert soup.find(
         "input", id="submit", class_="btn btn-primary", type="submit", value="Login"
     )
-    assert navbar_div.find(
+    assert navbar_div.find(  # type: ignore
         "a",
         class_="nav-link",
         href="/admin/",
-        string=re.compile("Home", flags=re.IGNORECASE),
+        string=re.compile("Home", flags=re.IGNORECASE),  # type: ignore
     )
 
 

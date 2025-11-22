@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: 2.0.2
+  version: 2.0.3
   title: BikeSpace API
   description: BikeSpace API
 
@@ -11,7 +11,7 @@ servers:
 paths:
   /submissions:
     get:
-      description: Returns a list of all the submitted answers
+      description: Returns a list of all the submissions
       parameters:
         - name: limit
           in: query
@@ -29,7 +29,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SubmissionOutputs"
+                type: array
+                items:
+                  $ref: "#/components/schemas/SubmissionOutputs"
             application/geo+json:
               schema:
                 $ref: "#/components/schemas/SubmissionOutputs"
@@ -58,6 +60,60 @@ paths:
       responses:
         "201":
           description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: ["created"]
+                  submission_id:
+                    type: integer
+                    minimum: 1
+
+  /submissions/{submission_id}:
+    get:
+      description: Returns the specified submission
+      parameters:
+        - in: path
+          name: submission_id
+          required: true
+          schema:
+            type: string
+          description: id of the submission to request
+      responses:
+        "200":
+          description: Successfully returned a submission requested by id
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/SubmissionOutputs"
+                  - properties:
+                      version_history_url:
+                        type: string
+                        format: uri
+  /submissions/{submission_id}/history:
+    get:
+      description: Returns the edit history for the specified submission
+      parameters:
+        - in: path
+          name: submission_id
+          required: true
+          schema:
+            type: string
+          description: id of the submission to request
+      responses:
+        "200":
+          description: Successfully returned a submission edit history requested by id
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/SubmissionHistoryOutput"
+
 components:
   schemas:
     SubmissionInputs:
@@ -65,9 +121,11 @@ components:
         latitude:
           type: number
           format: float
+          example: 43.0
         longitude:
           type: number
           format: float
+          example: -79.0
         issues:
           type: array
           items:
@@ -95,8 +153,35 @@ components:
         - properties:
             id:
               type: integer
+              minimum: 1
         - $ref: "#/components/schemas/SubmissionInputs"
         - properties:
             submitted_datetime:
               type: string
               format: date-time
+            version:
+              type: integer
+              minimum: 1
+    SubmissionHistoryOutput:
+      properties:
+        version_index:
+          type: number
+          format: integer
+          minimum: 1
+        operation_type:
+          type: number
+          format: integer
+          enum: [0, 1, 2]
+          description: 0 = insert, 1 = update, 2 = delete
+          example: 1
+        transaction_user:
+          type: number
+          format: integer
+          nullable: true
+          minimum: 1
+        transaction_issued_at:
+          type: string
+          example: "2025-01-01 12:00:00.000000"
+        changes:
+          type: object
+          example: { comments: ["original comment", "edited comment"] }
