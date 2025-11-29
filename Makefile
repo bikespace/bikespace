@@ -90,6 +90,14 @@ $(VENV): check-python-version $(BIKESPACE_API_DIR)/requirements.txt
 pip-freeze: $(BIKESPACE_API_DIR)/requirements.txt
 	$(PIP) freeze > $(BIKESPACE_API_DIR)/requirements.txt
 
+.PHONY: run
+run: detect-docker
+	docker compose --file docker-compose.yaml up --build -d
+
+.PHONY: stop
+stop:
+	docker-compose --file docker-compose.yaml down
+
 .PHONY: dev-api-stop
 dev-api-stop:
 	docker compose --file bikespace_api/docker/compose-dev.yaml down
