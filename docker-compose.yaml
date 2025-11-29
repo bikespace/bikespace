@@ -1,0 +1,37 @@
+name: bikespace
+
+services:
+  bikespace_api:
+    build:
+      context: bikespace_api
+      dockerfile: docker/local.dockerfile
+    volumes:
+      - type: bind
+        source: bikespace_api
+        target: /app
+    depends_on:
+      db:
+        condition: service_healthy
+        restart: true
+    env_file:
+      - path: "bikespace_api/.env"
+        required: false
+    environment:
+      APP_SETTINGS: "bikespace_api.config.DevelopmentConfig"
+      DATABASE_URL: "postgresql://postgres:devpwd@db/bikespace_dev"
+      FLASK_DEBUG: "true"
+      FLASK_RUN_PORT: 8000
+    ports:
+      - "8000:8000"
+  
+  db:
+    image: postgres:15.2
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: "devpwd"
+      POSTGRES_DB: "bikespace_dev"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 1s
+      timeout: 5s
+      retries: 10
