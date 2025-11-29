@@ -1,16 +1,17 @@
-ROOT_PATH := $(abspath $(lastword $(MAKEFILE_LIST)))
-ROOT_DIR :=  $(dir $(ROOT_PATH))
 BIKESPACE_API_DIR := $(ROOT_DIR)bikespace_api
 BIKESPACE_API_FLY_TOML := $(ROOT_DIR)/$(BIKESPACE_API_DIR)/fly.toml
-BIKESPACE_FRONTEND_DIR := $(ROOT_DIR)/bikespace_frontend
 BIKESPACE_DB_MIGRATIONS := $(BIKESPACE_API_DIR)/migrations
+BIKESPACE_FRONTEND_DIR := $(ROOT_DIR)/bikespace_frontend
+CURR_PYTHON_VERSION := $(shell python3 -c 'import platform; print(platform.python_version())')
+DOCKER := $(shell docker --version)
+LOWEST_PYTHON_VERSION := $(shell printf '%s\n' $(MIN_PYTHON_VERSION) $(CURR_PYTHON_VERSION) | sort -V | head -n1)
 MANAGE_PY := $(BIKESPACE_API_DIR)/manage.py
+MIN_PYTHON_VERSION := 3.12.0
 PIP := $(ROOT_DIR)$(VENV)/bin/pip
 PYTHON := $(ROOT_DIR)$(VENV)/bin/python3
 PYTHON_VERSION := 3.12.0
-MIN_PYTHON_VERSION := 3.12.0
-CURR_PYTHON_VERSION := $(shell python3 -c 'import platform; print(platform.python_version())')
-LOWEST_PYTHON_VERSION := $(shell printf '%s\n' $(MIN_PYTHON_VERSION) $(CURR_PYTHON_VERSION) | sort -V | head -n1)
+ROOT_DIR :=  $(dir $(ROOT_PATH))
+ROOT_PATH := $(abspath $(lastword $(MAKEFILE_LIST)))
 VENV := venv
 
 # used by github actions; will be overridden if already set in the environment
@@ -51,9 +52,17 @@ else
 	endif
 endif
 
+.PHONY: detect-os
 detect-os:
 	@echo $(OSFLAG)
 
+.PHONY: detect-docker
+detect-docker:
+ifndef DOCKER
+	$(error "Docker is not installed on your system, see https://docker.com/get-started/ to install docker on your system")
+else
+	@echo "Docker installed: $(DOCKER)"
+endif
 
 .PHONY: setup-py
 setup-py: $(VENV)
@@ -61,7 +70,7 @@ setup-py: $(VENV)
 .PHONY: check-python-version
 check-python-version: 
 ifeq ($(LOWEST_PYTHON_VERSION), $(MIN_PYTHON_VERSION))
-	@echo "Installed Python version is equal or greater than $(MIN_PYTHON_VERSION)"
+	@echo "Installed Python version: $(LOWEST_PYTHON_VERSION) is equal or greater than the minimum required version $(MIN_PYTHON_VERSION)"
 else
 	$(error "Installed Python version $(CURR_PYTHON_VERSION) is less than the required minimum version of $(MIN_PYTHON_VERSION)")
 endif
