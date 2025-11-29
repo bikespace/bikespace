@@ -23,6 +23,12 @@ services:
       FLASK_RUN_PORT: 8000
     ports:
       - "8000:8000"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/"]
+      interval: 1s
+      timeout: 5s
+      retries: 10
+      start_period: 5s
   
   db:
     image: postgres:15.2
@@ -35,3 +41,32 @@ services:
       interval: 1s
       timeout: 5s
       retries: 10
+  
+  bikespace_frontend:
+    build:
+      context: bikespace_frontend
+      dockerfile: Dockerfile
+    volumes:
+      - ./bikespace_frontend/:/app
+      - /app/node_modules
+    depends_on:
+      bikespace_api:
+        condition: service_healthy
+        restart: true
+
+    env_file:
+      - path: "bikespace_frontend/.env.development"
+        required: true
+    ports:
+      - "8080:8080"
+  
+  nginx:
+    build:
+      context: nginx
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+    ports:
+      - "80:80"
+    depends_on:
+      - bikespace_api
+      - bikespace_frontend
