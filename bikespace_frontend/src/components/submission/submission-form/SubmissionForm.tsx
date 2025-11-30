@@ -53,6 +53,9 @@ export function SubmissionForm() {
         form.setError('root.serverError', {
           message: `Error! status: ${response.status}`,
         });
+      } else {
+        const result = await response.json();
+        form.setValue('submissionId', result.submission_id);
       }
     } catch (error) {
       form.setError('root.unexpected', error as Error);
