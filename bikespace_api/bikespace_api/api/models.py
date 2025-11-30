@@ -52,8 +52,15 @@ class Submission(db.Model):
     comments = db.Column(db.Text, default=None, nullable=True)
     submitted_datetime = db.Column(db.DateTime(timezone=True), nullable=True)
 
+    # __init__ params need to have a default value for revert from deleted state to work with sqlalchemy_continuum
     def __init__(
-        self, latitude, longitude, issues, parking_duration, parking_time, comments
+        self,
+        latitude=None,
+        longitude=None,
+        issues=None,
+        parking_duration=None,
+        parking_time=None,
+        comments=None,
     ):
         self.latitude = latitude
         self.longitude = longitude

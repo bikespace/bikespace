@@ -3,6 +3,7 @@ from datetime import datetime, timezone
 
 from bikespace_api.api.models import IssueType, ParkingDuration, Submission
 from pytest import mark
+from sqlalchemy_continuum import version_class
 
 from bikespace_api import db  # type: ignore
 
@@ -195,3 +196,69 @@ def test_get_submission_history(flask_app, test_client):
         assert (
             len(result_delete[2]["changes"]) == 0
         )  # no changes for delete action since it applies record-wide
+
+
+def test_rollback_change(flask_app, test_client):
+    """
+    GIVEN a Flask application and a Submission entry configured for testing
+    GIVEN a history of more than one change to the Submission, including a create, update, and delete
+    WHEN a series of non-sequential reverts is requested for all three operation types using sqlalchemy_continuum
+    THEN check that the Submission and its version history table are properly updated
+    """
+    with flask_app.app_context():
+        # create a new submission for testing
+        initial_comment = "rollback test - create"
+        db.session.add(
+            Submission(
+                43.1234,
+                -79.1234,
+                [IssueType.OTHER],
+                ParkingDuration.MINUTES,
+                datetime.now(),
+                initial_comment,
+            )
+        )
+        db.session.commit()
+        test_submission = Submission.query.filter_by(comments=initial_comment).first()
+        submission_id = test_submission.id
+
+        # set up class and query to get versions
+        # you can also query on Submission.versions but querying on SubmissionVersion is more robust since it still works if the Submission has been deleted
+        SubmissionVersion = version_class(Submission)
+        versions_query = SubmissionVersion.query.filter_by(id=submission_id).order_by(
+            SubmissionVersion.transaction_id
+        )
+        submission_query = Submission.query.filter_by(id=submission_id)
+
+        # modify a property
+        update_comment = "rollback test - update"
+        test_submission.comments = update_comment
+        db.session.commit()
+
+        # delete the submission
+        db.session.delete(test_submission)
+        db.session.commit()
+
+        # at this point there should be three versions: create, update, and delete
+        assert versions_query.count() == 3
+
+        # revert from delete (v3) to create (v1) - adds an additional version
+        versions_query.first().revert()
+        db.session.commit()
+
+        assert submission_query.first().comments == initial_comment
+        assert versions_query.count() == 4
+
+        # v5: revert from v4 to update (v2)
+        versions_query.all()[1].revert()
+        db.session.commit()
+
+        assert submission_query.first().comments == update_comment
+        assert versions_query.count() == 5
+
+        # v6: revert to delete (v3)
+        versions_query.all()[2].revert()
+        db.session.commit()
+
+        assert submission_query.first() is None
+        assert versions_query.count() == 6
