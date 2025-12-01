@@ -51,6 +51,7 @@ class Submission(db.Model):
     parking_time = db.Column(db.DateTime, nullable=False, default=datetime.now())
     comments = db.Column(db.Text, default=None, nullable=True)
     submitted_datetime = db.Column(db.DateTime(timezone=True), nullable=True)
+    test_column = db.Column(db.Text, default=None, nullable=True)
 
     # __init__ params need to have a default value for revert from deleted state to work with sqlalchemy_continuum
     def __init__(
