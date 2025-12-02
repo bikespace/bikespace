@@ -37,7 +37,7 @@ Flask-Limiter==3.3.1
 Flask-Migrate==4.0.4
 Flask-SQLAlchemy==3.0.3
 Flask-Testing==0.8.1
-fonttools==4.55.3
+fonttools==4.61.0
 fqdn==1.5.1
 geojson==3.1.0
 greenlet==3.0.3
