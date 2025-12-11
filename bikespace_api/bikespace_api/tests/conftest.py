@@ -1,11 +1,25 @@
-from bikespace_api import create_app
-from bikespace_api.api.models import Submission, IssueType, ParkingDuration
 from datetime import datetime
-import os
+
 import pytest
+from bikespace_api.api.models import IssueType, ParkingDuration, Submission
+
+from bikespace_api import create_app
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture()
+def flask_app():
+    """Pytest fixture to create an instance of the app for testing."""
+    flask_app = create_app()
+    flask_app.config.from_object("bikespace_api.config.TestingConfig")
+    yield flask_app
+
+
+@pytest.fixture()
+def test_client(flask_app):
+    return flask_app.test_client()
+
+
+@pytest.fixture()
 def new_submission():
     datetime_string = "2023-08-19 15:17:17.234235"
     datetime_object = datetime.strptime(datetime_string, "%Y-%m-%d %H:%M:%S.%f")
@@ -20,12 +34,26 @@ def new_submission():
     return submission
 
 
-@pytest.fixture(scope="module")
-def test_client():
-    # Set the Testing configuration prior to creating the Flask application
-    os.environ["APP_SETTINGS"] = "bikespace_api.config.TestingConfig"
-    flask_app = create_app()
+@pytest.fixture()
+def new_base_user_role():
+    from bikespace_api.api.models import Role
 
-    with flask_app.test_client() as testing_client:
-        with flask_app.app_context():
-            yield testing_client
+    role = Role(id=1, name="user", description="Base user role")
+    return role
+
+
+@pytest.fixture()
+def new_base_user():
+    from bikespace_api.api.models import User
+
+    user = User(
+        id=1,
+        first_name="Test",
+        last_name="User",
+        email="test.user@example.com",
+        password="password",
+        active=True,
+        confirmed_at=datetime.now(),
+        fs_uniquifier="unique12345",
+    )
+    return user
