@@ -38,11 +38,56 @@ class SubmissionSchema(ma.Schema):
     parking_duration = ma.fields.Enum(ParkingDuration, by_value=True)
     parking_time = ma.fields.DateTime(format="iso", required=True)
     comments = ma.fields.String()
-    submitted_datetime = ma.fields.AwareDateTime(format="iso", dump_only=True)
+    submitted_datetime = ma.fields.AwareDateTime(
+        format="iso", dump_only=True, allow_none=True
+    )
 
 
 class SubmissionSchemaWithVersion(SubmissionSchema):
     version = ma.fields.Integer(dump_only=True, validate=validate.Range(min=1))
+
+
+class SubmissionSchemaWithHistoryURL(SubmissionSchemaWithVersion):
+    version_history_url = ma.fields.Url()
+
+
+def get_changeset_fields(schema: ma.Schema) -> ma.Schema:
+    """
+    Returns a SQLAlchemy-Continuum "changeset" version of a marshmallow Schema. Transforms each field into a two-item list where the value can be the original field time or None.
+
+    The format of changeset values is generally a two-item list with the previous and current value of a property:
+
+    ```python
+    # create:
+    {"key": [None, 1]}
+
+    # update:
+    {"key": [1, 2]}
+    ```
+
+    The schema transformation is equivalent to:
+
+    ```python
+    # original
+    class ExampleSchema(Schema):
+        key = fields.Integer()
+
+    # changeset version
+    class ExampleChangesetSchema(Schema):
+        key = fields.List(
+            fields.Integer(allow_none=True),
+            validate=validate.Length(equal=2),
+        )
+    ```
+    """
+    parent_fields = schema._declared_fields
+    for field in parent_fields.values():
+        field.allow_none = True
+    changeset_fields = {
+        k: ma.fields.List(v, validate=validate.Length(equal=2))
+        for k, v in parent_fields.items()
+    }
+    return ma.Schema.from_dict(changeset_fields)  # type: ignore
 
 
 class SubmissionQueryArgsSchema(ma.Schema):
@@ -128,13 +173,10 @@ class Submissions(MethodView):
             return
 
 
-class SubmissionSchemaWithHistoryURL(SubmissionSchemaWithVersion):
-    version_history_url = ma.fields.Url()
-
-
 @submissions_blueprint.route("/submissions/<submission_id>", methods=["GET"])
 @submissions_blueprint.response(200, SubmissionSchemaWithHistoryURL)
 def get_submission_with_id(submission_id):
+    """Return a single submission using its id"""
     query_result = Submission.query.filter_by(id=submission_id).first()
     if query_result is not None:
         query_result.version = count_versions(query_result)
@@ -155,48 +197,36 @@ class OperationType(Enum):
 
 
 class SubmissionHistorySchema(ma.Schema):
-    version_index = ma.fields.Integer()
-    operation_type = ma.fields.Enum(OperationType, by_value=True)
+    version_index = ma.fields.Integer(attribute="index")
+    operation_description = ma.fields.Enum(OperationType)
     transaction_user = ma.fields.Integer(
-        validate=validate.Range(min=1), allow_none=True
+        validate=validate.Range(min=1),
+        allow_none=True,
+        attribute="transaction.user_id",
     )
-    transaction_issued_at = ma.fields.NaiveDateTime(format="iso")
-    changes = ma.fields.Dict(
-        keys=ma.fields.String(
-            validate=validate.OneOf(SubmissionSchema().fields.keys())
-        ),
-        values=ma.fields.List(ma.fields.Raw(), validate=validate.Length(equal=2)),
+    issued_at = ma.fields.NaiveDateTime(format="iso", attribute="transaction.issued_at")
+    changes = ma.fields.Nested(
+        get_changeset_fields(SubmissionSchema),  # type: ignore
+        attribute="changeset",
     )
 
 
 @submissions_blueprint.route("/submissions/<submission_id>/history", methods=["GET"])
 @submissions_blueprint.response(200, SubmissionHistorySchema(many=True))
 def get_submission_history_with_id(submission_id):
-    """Operation types are:
-    - 0: Insert
-    - 1: Update
-    - 2: Delete
-    """
+    """Return the history of changes for a submission
+
+    Changed or created values are listed under "changes" with a list for each value containing the original and updated values. The original value for create operations is None."""
     SubmissionVersion = version_class(Submission)
     submission_versions_with_id = SubmissionVersion.query.filter_by(
         id=submission_id
     ).order_by(SubmissionVersion.transaction_id)
-    history = []
-    for version in submission_versions_with_id:
-        history.append(
-            {
-                "version_index": version.index,
-                "operation_type": version.operation_type,
-                "transaction_user": version.transaction.user_id,
-                "transaction_issued_at": version.transaction.issued_at,
-                "changes": version.changeset,
-            }
-        )
-    return Response(
-        response=json.dumps(history, default=str),
-        status=200,
-        mimetype="application/json",
-    )
+
+    output_versions = [*submission_versions_with_id]
+    for submission in output_versions:
+        submission.operation_description = OperationType(submission.operation_type)
+
+    return output_versions
 
 
 def get_submissions_json(args) -> Response:
