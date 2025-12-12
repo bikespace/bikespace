@@ -13,6 +13,11 @@ datetime_format_with_microseconds = {
     "format": "%Y-%m-%d %H:%M:%S.%f",
 }
 
+nullable_datetime_format_with_microseconds = {
+    "validators": [],
+    "format": "%Y-%m-%d %H:%M:%S.%f",
+}
+
 
 class AdminRolesModelView(ModelView):
     column_display_pk = True
@@ -87,7 +92,7 @@ class AdminSubmissionModelView(ModelView):
     column_display_pk = True
     form_args = {  # type: ignore
         "parking_time": datetime_format_with_microseconds,
-        "submitted_datetime": datetime_format_with_microseconds,
+        "submitted_datetime": nullable_datetime_format_with_microseconds,
     }
 
     def is_accessible(self):
