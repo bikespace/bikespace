@@ -2,6 +2,7 @@
 
 import csv
 import json
+from enum import Enum
 from io import StringIO
 
 import geojson
@@ -40,6 +41,10 @@ class SubmissionSchema(ma.Schema):
     submitted_datetime = ma.fields.AwareDateTime(format="iso", dump_only=True)
 
 
+class SubmissionSchemaWithVersion(SubmissionSchema):
+    version = ma.fields.Integer(dump_only=True, validate=validate.Range(min=1))
+
+
 class SubmissionQueryArgsSchema(ma.Schema):
     limit = ma.fields.Integer()
     offset = ma.fields.Integer()
@@ -70,16 +75,16 @@ class Submissions(MethodView):
         SubmissionQueryArgsSchema,
         location="query",
     )
-    @submissions_blueprint.response(200, SubmissionSchema(many=True))
+    @submissions_blueprint.response(200, SubmissionSchemaWithVersion(many=True))
     @submissions_blueprint.alt_response(
         200,
-        schema=SubmissionSchema,  # placeholder
+        schema=SubmissionSchemaWithVersion,  # placeholder
         content_type="application/geo+json",
         success=True,
     )
     @submissions_blueprint.alt_response(
         200,
-        schema=SubmissionSchema,  # placeholder
+        schema=SubmissionSchemaWithVersion,  # placeholder
         content_type="text/csv",
         success=True,
     )
@@ -123,17 +128,49 @@ class Submissions(MethodView):
             return
 
 
+class SubmissionSchemaWithHistoryURL(SubmissionSchemaWithVersion):
+    version_history_url = ma.fields.Url()
+
+
 @submissions_blueprint.route("/submissions/<submission_id>", methods=["GET"])
-@submissions_blueprint.response(200, SubmissionSchema)
+@submissions_blueprint.response(200, SubmissionSchemaWithHistoryURL)
 def get_submission_with_id(submission_id):
     query_result = Submission.query.filter_by(id=submission_id).first()
     if query_result is not None:
+        query_result.version = count_versions(query_result)
+        query_result.version_history_url = url_for(
+            "submissions.get_submission_history_with_id",
+            submission_id=submission_id,
+            _external=True,
+        )
         return query_result
     else:
         abort(404, message="Item not found")
 
 
+class OperationType(Enum):
+    CREATE = 0
+    UPDATE = 1
+    DELETE = 2
+
+
+class SubmissionHistorySchema(ma.Schema):
+    version_index = ma.fields.Integer()
+    operation_type = ma.fields.Enum(OperationType, by_value=True)
+    transaction_user = ma.fields.Integer(
+        validate=validate.Range(min=1), allow_none=True
+    )
+    transaction_issued_at = ma.fields.NaiveDateTime(format="iso")
+    changes = ma.fields.Dict(
+        keys=ma.fields.String(
+            validate=validate.OneOf(SubmissionSchema().fields.keys())
+        ),
+        values=ma.fields.List(ma.fields.Raw(), validate=validate.Length(equal=2)),
+    )
+
+
 @submissions_blueprint.route("/submissions/<submission_id>/history", methods=["GET"])
+@submissions_blueprint.response(200, SubmissionHistorySchema(many=True))
 def get_submission_history_with_id(submission_id):
     """Operation types are:
     - 0: Insert
