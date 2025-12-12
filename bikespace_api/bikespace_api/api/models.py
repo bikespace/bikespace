@@ -1,11 +1,17 @@
 # bikespace_api/bikespace_api/api/models.py
 
-import sqlalchemy as sa
-import sqlalchemy.dialects.postgresql as pg
-from bikespace_api import db
 from datetime import datetime, timezone
 from enum import Enum
-from flask_security import RoleMixin, UserMixin
+
+import sqlalchemy as sa
+import sqlalchemy.dialects.postgresql as pg
+from flask_security.core import RoleMixin, UserMixin
+from sqlalchemy_continuum import make_versioned
+from sqlalchemy_continuum.plugins import FlaskPlugin
+
+from bikespace_api import db  # type: ignore
+
+make_versioned(plugins=[FlaskPlugin()])
 
 
 class IssueType(Enum):
@@ -31,6 +37,7 @@ class ParkingDuration(Enum):
 
 class Submission(db.Model):
     __tablename__ = "bikeparking_submissions"
+    __versioned__ = {}  # generate version history log with sqlalchemy-continuum
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     latitude = db.Column(db.Float, nullable=False)
@@ -45,8 +52,15 @@ class Submission(db.Model):
     comments = db.Column(db.Text, default=None, nullable=True)
     submitted_datetime = db.Column(db.DateTime(timezone=True), nullable=True)
 
+    # __init__ params need to have a default value for revert from deleted state to work with sqlalchemy_continuum
     def __init__(
-        self, latitude, longitude, issues, parking_duration, parking_time, comments
+        self,
+        latitude=None,
+        longitude=None,
+        issues=None,
+        parking_duration=None,
+        parking_time=None,
+        comments=None,
     ):
         self.latitude = latitude
         self.longitude = longitude

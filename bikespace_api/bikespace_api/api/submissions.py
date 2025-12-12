@@ -7,13 +7,14 @@ from io import StringIO
 import geojson
 import marshmallow as ma
 from better_profanity import profanity
-from flask import Response, make_response, request
+from flask import Response, make_response, request, url_for
 from flask.views import MethodView
 from flask_smorest import Blueprint, abort
 from geojson import Feature, FeatureCollection, Point
 from marshmallow import validate
 from sqlalchemy import desc
 from sqlalchemy.exc import IntegrityError
+from sqlalchemy_continuum import count_versions, version_class
 
 from bikespace_api import db  # type: ignore
 from bikespace_api.api.models import IssueType, ParkingDuration, Submission
@@ -132,6 +133,35 @@ def get_submission_with_id(submission_id):
         abort(404, message="Item not found")
 
 
+@submissions_blueprint.route("/submissions/<submission_id>/history", methods=["GET"])
+def get_submission_history_with_id(submission_id):
+    """Operation types are:
+    - 0: Insert
+    - 1: Update
+    - 2: Delete
+    """
+    SubmissionVersion = version_class(Submission)
+    submission_versions_with_id = SubmissionVersion.query.filter_by(
+        id=submission_id
+    ).order_by(SubmissionVersion.transaction_id)
+    history = []
+    for version in submission_versions_with_id:
+        history.append(
+            {
+                "version_index": version.index,
+                "operation_type": version.operation_type,
+                "transaction_user": version.transaction.user_id,
+                "transaction_issued_at": version.transaction.issued_at,
+                "changes": version.changeset,
+            }
+        )
+    return Response(
+        response=json.dumps(history, default=str),
+        status=200,
+        mimetype="application/json",
+    )
+
+
 def get_submissions_json(args) -> Response:
     """Default response for GET /submissions. Returns user reports from the bikeparking_submissions table in a paginated JSON format."""
     offset = args.get("offset", 1)
@@ -161,6 +191,7 @@ def get_submissions_json(args) -> Response:
                 if submission.submitted_datetime is not None
                 else None
             ),
+            "version": count_versions(submission),
         }
         json_output.append(submission_json)
 
@@ -204,6 +235,7 @@ def get_submissions_geo_json() -> Response:
                     if submission.submitted_datetime is not None
                     else None
                 ),
+                "version": count_versions(submission),
             },
         )
         if point_feature.is_valid:
@@ -237,6 +269,7 @@ def get_submissions_csv() -> Response:
             if submission.submitted_datetime is not None
             else None
         )
+        row.append(count_versions(submission))
         submissions_list.append(row)
 
     string_io = StringIO()
@@ -251,6 +284,7 @@ def get_submissions_csv() -> Response:
         "parking_duration",
         "comments",
         "submitted_datetime",
+        "version",
     ]
     csv_writer.writerow(csv_headers)
     csv_writer.writerows(submissions_list)

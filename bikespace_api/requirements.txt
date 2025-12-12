@@ -64,6 +64,7 @@ rich==13.5.2
 setuptools==78.1.1
 soupsieve==2.8
 SQLAlchemy==2.0.37
+SQLAlchemy-Continuum==1.5.2
 SQLAlchemy-Utils==0.41.2
 tomli==2.0.1
 typing_extensions==4.12.2
