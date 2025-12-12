@@ -4,6 +4,7 @@ import csv
 import json
 from enum import Enum
 from io import StringIO
+from typing import TypedDict, Any
 
 import geojson
 import marshmallow as ma
@@ -51,6 +52,24 @@ class SubmissionSchemaWithHistoryURL(SubmissionSchemaWithVersion):
     version_history_url = ma.fields.Url()
 
 
+class SubmissionQueryArgsSchema(ma.Schema):
+    limit = ma.fields.Integer()
+    offset = ma.fields.Integer()
+
+
+class PaginationSchema(ma.Schema):
+    current_page = ma.fields.Integer(attribute="page")
+    total_items = ma.fields.Integer(attribute="total")
+    total_pages = ma.fields.Integer(attribute="pages")
+    has_next = ma.fields.Boolean()
+    has_prev = ma.fields.Boolean()
+
+
+class PaginatedSubmissionsSchema(ma.Schema):
+    submissions = ma.fields.Nested(SubmissionSchemaWithVersion(many=True))
+    pagination = ma.fields.Nested(PaginationSchema)
+
+
 def get_changeset_fields(schema: ma.Schema) -> ma.Schema:
     """
     Returns a SQLAlchemy-Continuum "changeset" version of a marshmallow Schema. Transforms each field into a two-item list where the value can be the original field time or None.
@@ -90,11 +109,6 @@ def get_changeset_fields(schema: ma.Schema) -> ma.Schema:
     return ma.Schema.from_dict(changeset_fields)  # type: ignore
 
 
-class SubmissionQueryArgsSchema(ma.Schema):
-    limit = ma.fields.Integer()
-    offset = ma.fields.Integer()
-
-
 class SubmissionCreateSchema(SubmissionSchema):
     class Meta(ma.SchemaOpts):
         only = [
@@ -120,7 +134,7 @@ class Submissions(MethodView):
         SubmissionQueryArgsSchema,
         location="query",
     )
-    @submissions_blueprint.response(200, SubmissionSchemaWithVersion(many=True))
+    @submissions_blueprint.response(200, PaginatedSubmissionsSchema)
     @submissions_blueprint.alt_response(
         200,
         schema=SubmissionSchemaWithVersion,  # placeholder
@@ -136,9 +150,7 @@ class Submissions(MethodView):
     def get(self, args):
         """Returns user reports of bicycle parking problems"""
         accept_header = request.headers.get("Accept")
-        if accept_header == "application/json":
-            return get_submissions_json(args)
-        elif accept_header == "application/geo+json":
+        if accept_header == "application/geo+json":
             return get_submissions_geo_json()
         elif accept_header == "text/csv":
             return get_submissions_csv()
@@ -222,14 +234,19 @@ def get_submission_history_with_id(submission_id):
         id=submission_id
     ).order_by(SubmissionVersion.transaction_id)
 
-    output_versions = [*submission_versions_with_id]
+    output_versions = submission_versions_with_id.all()
     for submission in output_versions:
         submission.operation_description = OperationType(submission.operation_type)
 
     return output_versions
 
 
-def get_submissions_json(args) -> Response:
+class SubmissionsJSONResponse(TypedDict):
+    submissions: Any
+    pagination: Any
+
+
+def get_submissions_json(args) -> SubmissionsJSONResponse:
     """Default response for GET /submissions. Returns user reports from the bikeparking_submissions table in a paginated JSON format."""
     offset = args.get("offset", 1)
     limit = args.get("limit", DEFAULT_OFFSET_LIMIT)
@@ -238,47 +255,13 @@ def get_submissions_json(args) -> Response:
         page=offset, per_page=limit, count=True
     )
     submissions = pagination.items
-
-    json_output = []
-
     for submission in submissions:
-        issues = []
-        for issue in submission.issues:
-            issues.append(issue.value)
-        submission_json = {
-            "id": submission.id,
-            "latitude": submission.latitude,
-            "longitude": submission.longitude,
-            "issues": issues,
-            "parking_duration": submission.parking_duration.value,
-            "parking_time": submission.parking_time,
-            "comments": submission.comments,
-            "submitted_datetime": (
-                submission.submitted_datetime.isoformat()
-                if submission.submitted_datetime is not None
-                else None
-            ),
-            "version": count_versions(submission),
-        }
-        json_output.append(submission_json)
+        submission.version = count_versions(submission)
 
-    final_response = {
-        "submissions": json_output,
-        "pagination": {
-            "current_page": pagination.page,
-            "total_items": pagination.total,
-            "total_pages": pagination.pages,
-            "has_next": pagination.has_next,
-            "has_prev": pagination.has_prev,
-        },
+    return {
+        "submissions": submissions,
+        "pagination": pagination,
     }
-
-    return_response = Response(
-        response=json.dumps(final_response, default=str),
-        status=200,
-        mimetype="application/json",
-    )
-    return return_response
 
 
 def get_submissions_geo_json() -> Response:
