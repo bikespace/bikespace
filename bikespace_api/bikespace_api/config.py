@@ -38,8 +38,8 @@ class BaseConfig:
     API_TITLE = "BikeSpace API"
     API_VERSION = "2.0.1"
     OPENAPI_VERSION = "3.1.1"
-    OPENAPI_URL_PREFIX = "/api/v2"
-    OPENAPI_SWAGGER_UI_PATH = "/docs"
+    OPENAPI_URL_PREFIX = "/api/v2/"
+    OPENAPI_SWAGGER_UI_PATH = "docs/"
     OPENAPI_SWAGGER_UI_URL = "https://cdn.jsdelivr.net/npm/swagger-ui-dist@5.30/"
 
 
