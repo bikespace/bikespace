@@ -4,7 +4,6 @@ import csv
 import json
 from enum import Enum
 from io import StringIO
-from typing import Any, TypedDict
 
 import marshmallow as ma
 from better_profanity import profanity
@@ -140,7 +139,25 @@ class Submissions(MethodView):
         elif accept_header == "text/csv":
             return get_submissions_csv()
         else:
-            return get_submissions_json(args)
+            offset = args.get("offset", 1)
+            limit = args.get("limit", DEFAULT_OFFSET_LIMIT)
+            pagination = Submission.query.order_by(
+                desc(Submission.parking_time)  # type: ignore
+            ).paginate(page=offset, per_page=limit, count=True)
+
+            submissions = pagination.items
+            for submission in submissions:
+                submission.version = count_versions(submission)
+                submission.version_history_url = url_for(
+                    "submissions.get_submission_history_with_id",
+                    submission_id=submission.id,
+                    _external=True,
+                )
+
+            return {
+                "submissions": submissions,
+                "pagination": pagination,
+            }
 
     @submissions_blueprint.arguments(SubmissionCreateSchema)
     @submissions_blueprint.response(201, SubmissionCreateConfirmationSchema)
@@ -168,6 +185,68 @@ class Submissions(MethodView):
             db.session.rollback()
             return_response = Response(json.dumps({"status": "Error"}), 500)
             return
+
+
+def get_submissions_geo_json() -> Response:
+    """Optional response for GET /submissions. Returns user reports from the bikeparking_submissions table in GeoJSON format without pagination."""
+    submissions = Submission.query.all()
+
+    for submission in submissions:
+        submission.version = count_versions(submission)
+        submission.version_history_url = url_for(
+            "submissions.get_submission_history_with_id",
+            submission_id=submission.id,
+            _external=True,
+        )
+
+    submission_features = [
+        Feature(
+            geometry=Point((submission.longitude, submission.latitude)),
+            properties=submission,
+        )
+        for submission in submissions
+    ]
+    feature_collection = FeatureCollection(submission_features)
+
+    # validate with geojson
+    feature_collection.errors()
+
+    return_response = Response(
+        GeoJSONSubmissionsSchema().dumps(feature_collection),
+        200,
+        mimetype="application/geo+json",
+    )
+    return return_response
+
+
+def get_submissions_csv() -> Response:
+    """Optional response for GET /submissions. Returns user reports from the bikeparking_submissions table in CSV format. Also breaks out issue types into separate columns for easier analysis."""
+    submissions = Submission.query.order_by(desc(Submission.parking_time)).all()  # type: ignore
+
+    for submission in submissions:
+        submission.version = count_versions(submission)
+        submission.version_history_url = url_for(
+            "submissions.get_submission_history_with_id",
+            submission_id=submission.id,
+            _external=True,
+        )
+        for issue in IssueType:
+            setattr(submission, f"issue_{issue.value}", issue in submission.issues)
+
+    string_io = StringIO()
+    writer = csv.DictWriter(
+        string_io, fieldnames=SubmissionCSVSchema._declared_fields.keys()
+    )
+    writer.writeheader()
+    writer.writerows(SubmissionCSVSchema(many=True).dump(submissions))  # type: ignore
+
+    return_response = make_response(string_io.getvalue())
+    return_response.status = 200
+    return_response.mimetype = "text/csv"
+    return_response.headers["Content-Disposition"] = (
+        "attachment; filename=submissions.csv"
+    )
+    return return_response
 
 
 @submissions_blueprint.route("/submissions/<submission_id>", methods=["GET"])
@@ -262,93 +341,3 @@ def get_submission_history_with_id(submission_id):
         submission.operation_description = OperationType(submission.operation_type)
 
     return output_versions
-
-
-class SubmissionsJSONResponse(TypedDict):
-    submissions: Any
-    pagination: Any
-
-
-def get_submissions_json(args) -> SubmissionsJSONResponse:
-    """Default response for GET /submissions. Returns user reports from the bikeparking_submissions table in a paginated JSON format."""
-    offset = args.get("offset", 1)
-    limit = args.get("limit", DEFAULT_OFFSET_LIMIT)
-
-    pagination = Submission.query.order_by(desc(Submission.parking_time)).paginate(  # type: ignore
-        page=offset, per_page=limit, count=True
-    )
-    submissions = pagination.items
-    for submission in submissions:
-        submission.version = count_versions(submission)
-        submission.version_history_url = url_for(
-            "submissions.get_submission_history_with_id",
-            submission_id=submission.id,
-            _external=True,
-        )
-
-    return {
-        "submissions": submissions,
-        "pagination": pagination,
-    }
-
-
-def get_submissions_geo_json() -> Response:
-    """Optional response for GET /submissions. Returns user reports from the bikeparking_submissions table in GeoJSON format without pagination."""
-    submissions = Submission.query.all()
-
-    for submission in submissions:
-        submission.version = count_versions(submission)
-        submission.version_history_url = url_for(
-            "submissions.get_submission_history_with_id",
-            submission_id=submission.id,
-            _external=True,
-        )
-
-    submission_features = [
-        Feature(
-            geometry=Point((submission.longitude, submission.latitude)),
-            properties=submission,
-        )
-        for submission in submissions
-    ]
-    feature_collection = FeatureCollection(submission_features)
-
-    # validate with geojson
-    feature_collection.errors()
-
-    return_response = Response(
-        GeoJSONSubmissionsSchema().dumps(feature_collection),
-        200,
-        mimetype="application/geo+json",
-    )
-    return return_response
-
-
-def get_submissions_csv() -> Response:
-    """Optional response for GET /submissions. Returns user reports from the bikeparking_submissions table in CSV format. Also breaks out issue types into separate columns for easier analysis."""
-    submissions = Submission.query.order_by(desc(Submission.parking_time)).all()  # type: ignore
-
-    for submission in submissions:
-        submission.version = count_versions(submission)
-        submission.version_history_url = url_for(
-            "submissions.get_submission_history_with_id",
-            submission_id=submission.id,
-            _external=True,
-        )
-        for issue in IssueType:
-            setattr(submission, f"issue_{issue.value}", issue in submission.issues)
-
-    string_io = StringIO()
-    writer = csv.DictWriter(
-        string_io, fieldnames=SubmissionCSVSchema._declared_fields.keys()
-    )
-    writer.writeheader()
-    writer.writerows(SubmissionCSVSchema(many=True).dump(submissions))  # type: ignore
-
-    return_response = make_response(string_io.getvalue())
-    return_response.status = 200
-    return_response.mimetype = "text/csv"
-    return_response.headers["Content-Disposition"] = (
-        "attachment; filename=submissions.csv"
-    )
-    return return_response
