@@ -36,7 +36,7 @@ class BaseConfig:
 
     # flask-smorest
     API_TITLE = "BikeSpace API"
-    API_VERSION = "2.0.1"
+    API_VERSION = "2.0.4"
     OPENAPI_VERSION = "3.1.1"
     OPENAPI_URL_PREFIX = "/api/v2/"
     OPENAPI_SWAGGER_UI_PATH = "docs/"
