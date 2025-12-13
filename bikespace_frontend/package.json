@@ -41,7 +41,7 @@
     "luxon": "^3.7.1",
     "mapbox-gl": "^1.13.3",
     "maplibre-gl": "^4.7.1",
-    "next": "^14.2.32",
+    "next": "^14.2.35",
     "nuqs": "^1.20.0",
     "plotly.js-dist-min": "^2.35.3",
     "pmtiles": "^4.3.0",
