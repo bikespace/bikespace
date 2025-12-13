@@ -4,9 +4,8 @@ import csv
 import json
 from enum import Enum
 from io import StringIO
-from typing import TypedDict, Any
+from typing import Any, TypedDict
 
-import geojson
 import marshmallow as ma
 from better_profanity import profanity
 from flask import Response, make_response, request, url_for
@@ -70,43 +69,25 @@ class PaginatedSubmissionsSchema(ma.Schema):
     pagination = ma.fields.Nested(PaginationSchema)
 
 
-def get_changeset_fields(schema: ma.Schema) -> ma.Schema:
-    """
-    Returns a SQLAlchemy-Continuum "changeset" version of a marshmallow Schema. Transforms each field into a two-item list where the value can be the original field time or None.
+class GeometryPointSchema(ma.Schema):
+    type = ma.fields.Constant("Point")
+    coordinates = ma.fields.List(ma.fields.Float(), validate=validate.Length(equal=2))
 
-    The format of changeset values is generally a two-item list with the previous and current value of a property:
 
-    ```python
-    # create:
-    {"key": [None, 1]}
+class SubmissionSchemaWithVersionNoGeometry(SubmissionSchemaWithVersion):
+    class Meta:
+        exclude = ["latitude", "longitude"]
 
-    # update:
-    {"key": [1, 2]}
-    ```
 
-    The schema transformation is equivalent to:
+class SubmissionGeoJSONFeatureSchema(ma.Schema):
+    type = ma.fields.Constant("Feature")
+    geometry = ma.fields.Nested(GeometryPointSchema)
+    properties = ma.fields.Nested(SubmissionSchemaWithVersionNoGeometry)
 
-    ```python
-    # original
-    class ExampleSchema(Schema):
-        key = fields.Integer()
 
-    # changeset version
-    class ExampleChangesetSchema(Schema):
-        key = fields.List(
-            fields.Integer(allow_none=True),
-            validate=validate.Length(equal=2),
-        )
-    ```
-    """
-    parent_fields = schema._declared_fields
-    for field in parent_fields.values():
-        field.allow_none = True
-    changeset_fields = {
-        k: ma.fields.List(v, validate=validate.Length(equal=2))
-        for k, v in parent_fields.items()
-    }
-    return ma.Schema.from_dict(changeset_fields)  # type: ignore
+class GeoJSONSubmissionsSchema(ma.Schema):
+    type = ma.fields.Constant("FeatureCollection")
+    features = ma.fields.Nested(SubmissionGeoJSONFeatureSchema(many=True))
 
 
 class SubmissionCreateSchema(SubmissionSchema):
@@ -137,7 +118,7 @@ class Submissions(MethodView):
     @submissions_blueprint.response(200, PaginatedSubmissionsSchema)
     @submissions_blueprint.alt_response(
         200,
-        schema=SubmissionSchemaWithVersion,  # placeholder
+        schema=GeoJSONSubmissionsSchema,
         content_type="application/geo+json",
         success=True,
     )
@@ -200,6 +181,45 @@ def get_submission_with_id(submission_id):
         return query_result
     else:
         abort(404, message="Item not found")
+
+
+def get_changeset_fields(schema: ma.Schema) -> ma.Schema:
+    """
+    Returns a SQLAlchemy-Continuum "changeset" version of a marshmallow Schema. Transforms each field into a two-item list where the value can be the original field time or None.
+
+    The format of changeset values is generally a two-item list with the previous and current value of a property:
+
+    ```python
+    # create:
+    {"key": [None, 1]}
+
+    # update:
+    {"key": [1, 2]}
+    ```
+
+    The schema transformation is equivalent to:
+
+    ```python
+    # original
+    class ExampleSchema(Schema):
+        key = fields.Integer()
+
+    # changeset version
+    class ExampleChangesetSchema(Schema):
+        key = fields.List(
+            fields.Integer(allow_none=True),
+            validate=validate.Length(equal=2),
+        )
+    ```
+    """
+    parent_fields = schema._declared_fields
+    for field in parent_fields.values():
+        field.allow_none = True
+    changeset_fields = {
+        k: ma.fields.List(v, validate=validate.Length(equal=2))
+        for k, v in parent_fields.items()
+    }
+    return ma.Schema.from_dict(changeset_fields)  # type: ignore
 
 
 class OperationType(Enum):
@@ -267,34 +287,23 @@ def get_submissions_json(args) -> SubmissionsJSONResponse:
 def get_submissions_geo_json() -> Response:
     """Optional response for GET /submissions. Returns user reports from the bikeparking_submissions table in GeoJSON format without pagination."""
     submissions = Submission.query.all()
-    geojson_features = []
-    for submission in submissions:
-        issues = []
-        for issue in submission.issues:
-            issues.append(issue.value)
-        point_feature = Feature(
-            geometry=Point((submission.longitude, submission.latitude)),
-            properties={
-                "id": submission.id,
-                "comments": submission.comments,
-                "issues": issues,
-                "parking_duration": submission.parking_duration.value,
-                "parking_time": str(submission.parking_time),
-                "submitted_datetime": (
-                    submission.submitted_datetime.isoformat()
-                    if submission.submitted_datetime is not None
-                    else None
-                ),
-                "version": count_versions(submission),
-            },
-        )
-        if point_feature.is_valid:
-            geojson_features.append(point_feature)
 
-    feature_collection = FeatureCollection(geojson_features)
+    submission_features = [
+        Feature(
+            geometry=Point((submission.longitude, submission.latitude)),
+            properties=submission,
+        )
+        for submission in submissions
+    ]
+    feature_collection = FeatureCollection(submission_features)
+
+    # validate with geojson
     feature_collection.errors()
+
     return_response = Response(
-        geojson.dumps(feature_collection), 200, mimetype="application/geo+json"
+        GeoJSONSubmissionsSchema().dumps(feature_collection),
+        200,
+        mimetype="application/geo+json",
     )
     return return_response
 
