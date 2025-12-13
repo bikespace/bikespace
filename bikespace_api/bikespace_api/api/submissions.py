@@ -87,6 +87,13 @@ class GeoJSONSubmissionsSchema(ma.Schema):
     features = ma.fields.Nested(SubmissionGeoJSONFeatureSchema(many=True))
 
 
+SubmissionCSVSchema = ma.Schema.from_dict(
+    SubmissionSchemaWithVersion._declared_fields
+    | {f"issue_{issue.value}": ma.fields.Boolean() for issue in IssueType},
+    name="SubmissionCSVSchema",
+)
+
+
 class SubmissionCreateSchema(SubmissionSchema):
     class Meta(ma.SchemaOpts):
         only = [
@@ -121,7 +128,7 @@ class Submissions(MethodView):
     )
     @submissions_blueprint.alt_response(
         200,
-        schema=SubmissionSchemaWithVersion,  # placeholder
+        schema=SubmissionCSVSchema(many=True),
         content_type="text/csv",
         success=True,
     )
@@ -180,7 +187,7 @@ def get_submission_with_id(submission_id):
         abort(404, message="Item not found")
 
 
-def get_changeset_fields(schema: ma.Schema) -> ma.Schema:
+def get_changeset_fields(schema: type[ma.Schema]) -> type[ma.Schema]:
     """
     Returns a SQLAlchemy-Continuum "changeset" version of a marshmallow Schema. Transforms each field into a two-item list where the value can be the original field time or None.
 
@@ -216,7 +223,7 @@ def get_changeset_fields(schema: ma.Schema) -> ma.Schema:
         k: ma.fields.List(v, validate=validate.Length(equal=2))
         for k, v in parent_fields.items()
     }
-    return ma.Schema.from_dict(changeset_fields)  # type: ignore
+    return ma.Schema.from_dict(changeset_fields, name="SubmissionChangesetSchema")  # type: ignore
 
 
 class OperationType(Enum):
@@ -235,8 +242,7 @@ class SubmissionHistorySchema(ma.Schema):
     )
     issued_at = ma.fields.NaiveDateTime(format="iso", attribute="transaction.issued_at")
     changes = ma.fields.Nested(
-        get_changeset_fields(SubmissionSchema),  # type: ignore
-        attribute="changeset",
+        get_changeset_fields(SubmissionSchema), attribute="changeset"
     )
 
 
@@ -321,46 +327,28 @@ def get_submissions_geo_json() -> Response:
 def get_submissions_csv() -> Response:
     """Optional response for GET /submissions. Returns user reports from the bikeparking_submissions table in CSV format. Also breaks out issue types into separate columns for easier analysis."""
     submissions = Submission.query.order_by(desc(Submission.parking_time)).all()  # type: ignore
-    submissions_list = []
+
     for submission in submissions:
-        row = []
-        row.append(submission.id)
-        row.append(submission.latitude)
-        row.append(submission.longitude)
-        row.append(str(submission.parking_time))
-        row.append(";".join([issue.value for issue in submission.issues]))
-        for issue_type in IssueType:
-            row.append(issue_type in submission.issues)
-        row.append(submission.parking_duration.value)
-        row.append(submission.comments)
-        row.append(
-            submission.submitted_datetime.isoformat()
-            if submission.submitted_datetime is not None
-            else None
+        submission.version = count_versions(submission)
+        submission.version_history_url = url_for(
+            "submissions.get_submission_history_with_id",
+            submission_id=submission.id,
+            _external=True,
         )
-        row.append(count_versions(submission))
-        # todo add history URL also
-        submissions_list.append(row)
+        for issue in IssueType:
+            setattr(submission, f"issue_{issue.value}", issue in submission.issues)
 
     string_io = StringIO()
-    csv_writer = csv.writer(string_io)
-    csv_headers = [
-        "id",
-        "latitude",
-        "longitude",
-        "parking_time",
-        "issues",
-        *["issue_" + t.value for t in IssueType],
-        "parking_duration",
-        "comments",
-        "submitted_datetime",
-        "version",
-    ]
-    csv_writer.writerow(csv_headers)
-    csv_writer.writerows(submissions_list)
+    writer = csv.DictWriter(
+        string_io, fieldnames=SubmissionCSVSchema._declared_fields.keys()
+    )
+    writer.writeheader()
+    writer.writerows(SubmissionCSVSchema(many=True).dump(submissions))  # type: ignore
+
     return_response = make_response(string_io.getvalue())
+    return_response.status = 200
+    return_response.mimetype = "text/csv"
     return_response.headers["Content-Disposition"] = (
         "attachment; filename=submissions.csv"
     )
-    return_response.headers["Content-Type"] = "text/csv"
     return return_response
