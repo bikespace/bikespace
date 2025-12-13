@@ -45,10 +45,7 @@ class SubmissionSchema(ma.Schema):
 
 class SubmissionSchemaWithVersion(SubmissionSchema):
     version = ma.fields.Integer(dump_only=True, validate=validate.Range(min=1))
-
-
-class SubmissionSchemaWithHistoryURL(SubmissionSchemaWithVersion):
-    version_history_url = ma.fields.Url()
+    version_history_url = ma.fields.Url(dump_only=True)
 
 
 class SubmissionQueryArgsSchema(ma.Schema):
@@ -167,7 +164,7 @@ class Submissions(MethodView):
 
 
 @submissions_blueprint.route("/submissions/<submission_id>", methods=["GET"])
-@submissions_blueprint.response(200, SubmissionSchemaWithHistoryURL)
+@submissions_blueprint.response(200, SubmissionSchemaWithVersion)
 def get_submission_with_id(submission_id):
     """Return a single submission using its id"""
     query_result = Submission.query.filter_by(id=submission_id).first()
@@ -277,6 +274,11 @@ def get_submissions_json(args) -> SubmissionsJSONResponse:
     submissions = pagination.items
     for submission in submissions:
         submission.version = count_versions(submission)
+        submission.version_history_url = url_for(
+            "submissions.get_submission_history_with_id",
+            submission_id=submission.id,
+            _external=True,
+        )
 
     return {
         "submissions": submissions,
@@ -287,6 +289,14 @@ def get_submissions_json(args) -> SubmissionsJSONResponse:
 def get_submissions_geo_json() -> Response:
     """Optional response for GET /submissions. Returns user reports from the bikeparking_submissions table in GeoJSON format without pagination."""
     submissions = Submission.query.all()
+
+    for submission in submissions:
+        submission.version = count_versions(submission)
+        submission.version_history_url = url_for(
+            "submissions.get_submission_history_with_id",
+            submission_id=submission.id,
+            _external=True,
+        )
 
     submission_features = [
         Feature(
@@ -329,6 +339,7 @@ def get_submissions_csv() -> Response:
             else None
         )
         row.append(count_versions(submission))
+        # todo add history URL also
         submissions_list.append(row)
 
     string_io = StringIO()
