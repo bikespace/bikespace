@@ -6,6 +6,7 @@ import dynamic from 'next/dynamic';
 import {trackUmamiEvent} from '@/utils';
 
 import {useSubmissionsQuery} from '@/hooks';
+import {useSingleSubmissionQuery} from '@/hooks/use-single-submission-query';
 
 import {useStore} from '@/states/store';
 import {useSubmissionId} from '@/states/url-params';
@@ -26,8 +27,13 @@ const Map = dynamic<MapProps>(() => import('../map/Map'), {
 });
 
 export function DashboardPage() {
-  const queryResult = useSubmissionsQuery();
-  const allSubmissions = queryResult.data || [];
+  const [focusedId] = useSubmissionId();
+
+  const singleSubmissionQuery = useSingleSubmissionQuery(focusedId);
+  const allSubmissionQuery = useSubmissionsQuery();
+
+  const singleSubmission = singleSubmissionQuery.data;
+  const allSubmissions = allSubmissionQuery.data || [];
 
   const {submissions, setSubmissions, filters} = useStore(state => ({
     submissions: state.submissions,
@@ -35,7 +41,12 @@ export function DashboardPage() {
     filters: state.filters,
   }));
 
-  const [focusedId] = useSubmissionId();
+  useEffect(() => {
+    if (focusedId !== null && singleSubmission) {
+      setSubmissions([singleSubmission]);
+      return;
+    }
+  }, [focusedId, singleSubmission]);
 
   // Filter submissions when filters state changes
   useEffect(() => {
@@ -66,7 +77,7 @@ export function DashboardPage() {
       );
 
     setSubmissions(subs);
-  }, [allSubmissions, filters]);
+  }, [allSubmissions, filters, focusedId, setSubmissions]);
 
   useEffect(() => {
     if (focusedId === null) return;
@@ -77,7 +88,7 @@ export function DashboardPage() {
   return (
     <main className={styles.dashboardPage}>
       <Sidebar />
-      <Map submissions={submissions} />
+      <Map submissions={submissions} isPermaLink={focusedId !== null} />
     </main>
   );
 }
