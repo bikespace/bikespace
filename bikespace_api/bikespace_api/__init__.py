@@ -49,7 +49,7 @@ def create_app(script_info=None):
     user_datastore = create_userdatastore(db, User, Role)
     security = Security(app, user_datastore)
 
-    api.register_blueprint(submissions_blueprint)
+    api.register_blueprint(submissions_blueprint, url_prefix="/api/v2/")
 
     admin = Admin(
         app,
