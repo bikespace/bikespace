@@ -39,8 +39,8 @@ class BaseConfig:
     API_VERSION = "2.0.4"
     OPENAPI_VERSION = "3.1.1"
     OPENAPI_URL_PREFIX = "/api/v2/"
-    OPENAPI_SWAGGER_UI_PATH = "docs/"
-    OPENAPI_SWAGGER_UI_URL = "https://cdn.jsdelivr.net/npm/swagger-ui-dist@5.30/"
+    OPENAPI_SWAGGER_UI_PATH = "/docs/"
+    OPENAPI_SWAGGER_UI_URL = "/static/swagger-ui-dist/"
 
 
 class DevelopmentConfig(BaseConfig):

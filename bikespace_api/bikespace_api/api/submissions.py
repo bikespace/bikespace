@@ -22,7 +22,7 @@ from bikespace_api.api.models import IssueType, ParkingDuration, Submission
 submissions_blueprint = Blueprint(
     "submissions",
     __name__,
-    url_prefix="/api/v2",
+    url_prefix="/api/v2/",
     description="User reports of bicycle parking problems",
 )
 
