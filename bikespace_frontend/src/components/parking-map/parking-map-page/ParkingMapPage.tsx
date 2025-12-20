@@ -31,6 +31,7 @@ import {
   BicycleNetworkLayer,
   BicycleNetworkLayerLegend,
 } from '@/components/map-layers/BicycleNetwork';
+import {BasemapControl} from '@/components/map-layers/basemaps';
 
 import type {
   FilterSpecification,
@@ -326,6 +327,10 @@ export function ParkingMapPage() {
         {showBicycleNetwork ? (
           <BicycleNetworkLayer beforeId={parkingFirstLayerId} />
         ) : null}
+        <BasemapControl
+          selectedLayer="cot-aerial-night"
+          setSelectedLayer={() => null}
+        />
         {/* placed here to avoid covering the sidebar */}
         <Spinner show={isMapLoading} overlay label="Loading map..." />
       </Map>
