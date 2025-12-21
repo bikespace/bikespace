@@ -37,9 +37,15 @@ def create_app(script_info=None):
     api = Api(app)
 
     # register blueprints
-    from bikespace_api.api.models import Role, Submission, User
-    from bikespace_api.api.submissions import submissions_blueprint
-    from bikespace_api.api.views import (
+    from bikespace_api.bikespace_api.submissions.submissions_models import (
+        Role,
+        Submission,
+        User,
+    )
+    from bikespace_api.bikespace_api.submissions.submissions_routes import (
+        submissions_blueprint,
+    )
+    from bikespace_api.bikespace_api.admin.admin_views import (
         AdminRolesModelView,
         AdminSubmissionModelView,
         AdminUsersModelView,

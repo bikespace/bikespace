@@ -1,5 +1,3 @@
-# bikespace_api/bikespace_api/api/submissions.py
-
 import csv
 import json
 from enum import Enum
@@ -17,7 +15,11 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy_continuum import count_versions, version_class
 
 from bikespace_api import db  # type: ignore
-from bikespace_api.api.models import IssueType, ParkingDuration, Submission
+from bikespace_api.bikespace_api.submissions.submissions_models import (
+    IssueType,
+    ParkingDuration,
+    Submission,
+)
 
 submissions_blueprint = Blueprint(
     "submissions",
