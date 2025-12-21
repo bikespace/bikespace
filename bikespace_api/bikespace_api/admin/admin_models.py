@@ -1,6 +1,9 @@
+import sqlalchemy.orm as so
+
 from flask_security.core import RoleMixin, UserMixin
 
 from bikespace_api import db  # type: ignore
+
 
 roles_users = db.Table(
     "roles_users",
@@ -19,7 +22,7 @@ class Role(db.Model, RoleMixin):
 
 
 class User(db.Model, UserMixin):
-    id = db.Column(db.Integer, primary_key=True)
+    id: so.Mapped[int] = so.mapped_column(primary_key=True)
     first_name = db.Column(db.String(255))
     last_name = db.Column(db.String(255))
     email = db.Column(db.String(255), unique=True)
@@ -28,6 +31,9 @@ class User(db.Model, UserMixin):
     confirmed_at = db.Column(db.DateTime())
     roles = db.relationship(
         "Role", secondary=roles_users, backref=db.backref("users", lazy="dynamic")
+    )
+    status_updates: so.WriteOnlyMapped[list["StatusUpdate"]] = so.relationship(
+        "StatusUpdate", back_populates="user"
     )
     fs_uniquifier = db.Column(db.String(64), unique=True, nullable=False)
 
