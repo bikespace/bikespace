@@ -6,13 +6,12 @@ from flask.cli import FlaskGroup
 from sqlalchemy_utils import database_exists, create_database, drop_database
 
 from bikespace_api import create_app, db, create_userdatastore
-from bikespace_api.bikespace_api.submissions.submissions_models import (
+from bikespace_api.submissions.submissions_models import (
     Submission,
     IssueType,
     ParkingDuration,
-    User,
-    Role,
 )
+from bikespace_api.admin.admin_models import User, Role
 from datetime import datetime
 from flask_security.utils import hash_password
 import random

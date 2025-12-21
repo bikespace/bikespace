@@ -1,4 +1,4 @@
-from bikespace_api.bikespace_api.submissions.submissions_models import (
+from bikespace_api.submissions.submissions_models import (
     Submission,
     IssueType,
     ParkingDuration,

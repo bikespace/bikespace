@@ -1,7 +1,7 @@
 from datetime import datetime
 
 import pytest
-from bikespace_api.bikespace_api.submissions.submissions_models import (
+from bikespace_api.submissions.submissions_models import (
     IssueType,
     ParkingDuration,
     Submission,
@@ -40,7 +40,7 @@ def new_submission():
 
 @pytest.fixture()
 def new_base_user_role():
-    from bikespace_api.bikespace_api.submissions.submissions_models import Role
+    from bikespace_api.admin.admin_models import Role
 
     role = Role(id=1, name="user", description="Base user role")
     return role
@@ -48,7 +48,7 @@ def new_base_user_role():
 
 @pytest.fixture()
 def new_base_user():
-    from bikespace_api.bikespace_api.submissions.submissions_models import User
+    from bikespace_api.admin.admin_models import User
 
     user = User(
         id=1,

@@ -1,12 +1,12 @@
 import json
 from datetime import datetime, timezone
 
-from bikespace_api.bikespace_api.submissions.submissions_models import (
+from bikespace_api.submissions.submissions_models import (
     IssueType,
     ParkingDuration,
     Submission,
 )
-from bikespace_api.bikespace_api.submissions.submissions_routes import OperationType
+from bikespace_api.submissions.submissions_routes import OperationType
 from pytest import mark
 from sqlalchemy_continuum import version_class
 

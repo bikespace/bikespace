@@ -2,7 +2,7 @@
 
 import os
 
-from flask import Flask, redirect, render_template, url_for
+from flask import Flask, redirect, url_for
 from flask_admin import Admin
 from flask_admin import helpers as admin_helpers
 from flask_admin.theme import Bootstrap4Theme
@@ -36,35 +36,21 @@ def create_app(script_info=None):
     migrate.init_app(app, db)
     api = Api(app)
 
-    # register blueprints
-    from bikespace_api.bikespace_api.submissions.submissions_models import (
-        Role,
-        Submission,
-        User,
-    )
-    from bikespace_api.bikespace_api.submissions.submissions_routes import (
-        submissions_blueprint,
-    )
-    from bikespace_api.bikespace_api.admin.admin_views import (
-        AdminRolesModelView,
-        AdminSubmissionModelView,
-        AdminUsersModelView,
-    )
+    # set up flask-admin
+    from bikespace_api.admin import admin_blueprint
+    from bikespace_api.admin.admin_models import Role, User
 
-    global user_datastore
-    user_datastore = create_userdatastore(db, User, Role)
-    security = Security(app, user_datastore)
-
-    api.register_blueprint(submissions_blueprint, url_prefix="/api/v2/")
-
+    app.register_blueprint(admin_blueprint)
     admin = Admin(
         app,
         name="BikeSpace",
         theme=Bootstrap4Theme(base_template="bikespace-admin-base.html"),
     )
-    admin.add_view(AdminRolesModelView(Role, db.session))
-    admin.add_view(AdminUsersModelView(User, db.session))
-    admin.add_view(AdminSubmissionModelView(Submission, db.session))
+
+    # set up flask-security
+    global user_datastore
+    user_datastore = create_userdatastore(db, User, Role)
+    security = Security(app, user_datastore)
 
     @security.context_processor
     def security_context_processor():
@@ -76,10 +62,21 @@ def create_app(script_info=None):
             get_url=url_for,
         )
 
-    @app.route("/admin/")
-    def admin_index():
-        return render_template("admin/index.html")
+    # add admin views
+    from bikespace_api.admin.admin_views import AdminRolesModelView, AdminUsersModelView
+    from bikespace_api.submissions.submissions_views import AdminSubmissionModelView
+    from bikespace_api.submissions.submissions_models import Submission
 
+    admin.add_view(AdminRolesModelView(Role, db.session))
+    admin.add_view(AdminUsersModelView(User, db.session))
+    admin.add_view(AdminSubmissionModelView(Submission, db.session))
+
+    # set up submissions blueprint
+    from bikespace_api.submissions import submissions_blueprint
+
+    api.register_blueprint(submissions_blueprint, url_prefix="/api/v2/")
+
+    # set up root index redirect
     @app.route("/")
     def api_home_page():
         return redirect("/api/v2/docs/", code=302)

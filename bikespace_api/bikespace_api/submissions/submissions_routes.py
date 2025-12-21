@@ -7,7 +7,7 @@ import marshmallow as ma
 from better_profanity import profanity
 from flask import Response, make_response, request, url_for
 from flask.views import MethodView
-from flask_smorest import Blueprint, abort
+from flask_smorest import abort
 from geojson import Feature, FeatureCollection, Point
 from marshmallow import validate
 from sqlalchemy import desc
@@ -15,17 +15,13 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy_continuum import count_versions, version_class
 
 from bikespace_api import db  # type: ignore
-from bikespace_api.bikespace_api.submissions.submissions_models import (
+from bikespace_api.submissions import submissions_blueprint
+from bikespace_api.submissions.submissions_models import (
     IssueType,
     ParkingDuration,
     Submission,
 )
 
-submissions_blueprint = Blueprint(
-    "submissions",
-    __name__,
-    description="User reports of bicycle parking problems",
-)
 
 DEFAULT_OFFSET_LIMIT = 100
 
