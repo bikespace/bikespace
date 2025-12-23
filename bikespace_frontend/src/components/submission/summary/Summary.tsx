@@ -56,7 +56,7 @@ export const Summary = () => {
             <Link href="/dashboard">
               <button
                 className={submissionStyles.primaryBtn}
-                data-umami-event="view-issue-from-submission-confirmation"
+                data-umami-event="view-dashboard-from-submission-confirmation"
               >
                 Go to Dashboard
               </button>
