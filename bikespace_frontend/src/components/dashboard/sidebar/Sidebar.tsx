@@ -6,13 +6,15 @@ import {SidebarContent} from '../sidebar-content';
 
 import styles from './sidebar.module.scss';
 import {useStore} from '@/states/store';
+import {useSidebarTab} from '@/states/url-params';
 
 function Sidebar() {
   const isMobile = useIsMobile();
   const {isOpen, setIsOpen} = useStore(state => state.ui.sidebar);
+  const [currentTab] = useSidebarTab();
 
   useEffect(() => {
-    if (isMobile) {
+    if (isMobile && !currentTab) {
       setIsOpen(false);
     } else {
       setIsOpen(true);
