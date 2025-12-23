@@ -21,7 +21,7 @@ $header-height: 54px;
     max-height: 100%;
     margin: 0 auto;
   }
-  
+
   .bikespaceLogo {
     flex-grow: 1;
 
@@ -37,7 +37,8 @@ $header-height: 54px;
   /* horizontal align right */
   align-items: center;
 
-  ul, a {
+  ul,
+  a {
     display: flex;
     align-items: center;
   }
@@ -68,7 +69,8 @@ $header-height: 54px;
   }
 }
 
-.navToggle, .navBackdrop {
+.navToggle,
+.navBackdrop {
   display: none;
 }
 
@@ -102,7 +104,9 @@ $header-height: 54px;
     top: $header-height;
     bottom: 0;
     right: calc(0px - $nav-width);
-    transition: visibility .2s, right .2s linear;
+    transition:
+      visibility 0.2s,
+      right 0.2s linear;
 
     ul {
       display: flex;
