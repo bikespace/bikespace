@@ -75,6 +75,9 @@ class Submission(db.Model):
         self.comments = comments
         self.submitted_datetime = datetime.now(timezone.utc)
 
+    def __repr__(self):
+        return f"<Submission {self.id}>"
+
 
 class StatusType(Enum):
     ACTION_REQUIRED = "action_required"
@@ -150,6 +153,9 @@ class StatusUpdate(db.Model):
         sa.Enum(ModerationStatus, native_enum=False), nullable=True
     )
 
+    def __repr__(self):
+        return f"<StatusUpdate {self.id} for Submission {self.status_id}>"
+
 
 class SubmissionComment(db.Model):
     __tablename__ = "bikeparking_comments"
@@ -182,3 +188,6 @@ class SubmissionComment(db.Model):
     moderation_status: so.Mapped[ModerationStatus] = so.mapped_column(
         sa.Enum(ModerationStatus, native_enum=False), nullable=True
     )
+
+    def __repr__(self):
+        return f"<SubmissionComment {self.id} for Submission {self.submission_id}>"
