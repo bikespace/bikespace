@@ -1,14 +1,14 @@
 from datetime import datetime, timezone
 from enum import Enum
+from typing import Optional
 
 import sqlalchemy as sa
-import sqlalchemy.orm as so
 import sqlalchemy.dialects.postgresql as pg
+import sqlalchemy.orm as so
 from sqlalchemy_continuum import make_versioned
 from sqlalchemy_continuum.plugins import FlaskPlugin
 
 from bikespace_api import db  # type: ignore
-
 
 make_versioned(plugins=[FlaskPlugin()])
 
@@ -52,6 +52,9 @@ class Submission(db.Model):
     submitted_datetime = db.Column(db.DateTime(timezone=True), nullable=True)
     status_updates: so.WriteOnlyMapped[list["StatusUpdate"]] = so.relationship(
         back_populates="submission"
+    )
+    submission_comments: so.WriteOnlyMapped[list["SubmissionComment"]] = (
+        so.relationship(back_populates="submission")
     )
 
     # __init__ params need to have a default value for revert from deleted state to work with sqlalchemy-continuum
@@ -128,14 +131,51 @@ class StatusUpdate(db.Model):
     submission: so.Mapped["Submission"] = so.relationship(
         back_populates="status_updates"
     )
-    # comment_id
+    comment: so.Mapped["SubmissionComment"] = so.relationship(
+        back_populates="status_update"
+    )
     user_id: so.Mapped[int] = so.mapped_column(sa.ForeignKey("user.id"), index=True)
     user: so.Mapped["User"] = so.relationship(back_populates="status_updates")
-    status_id: so.Mapped[str] = so.mapped_column(sa.ForeignKey(Status.id), index=True)
+    status_id: so.Mapped[str] = so.mapped_column(
+        sa.ForeignKey("bikeparking_statuses.id"), index=True
+    )
     status: so.Mapped["Status"] = so.relationship(back_populates="status_updates")
     effective_datetime: so.Mapped[datetime] = so.mapped_column(
         sa.DateTime(timezone=True)
     )
+    submitted_datetime: so.Mapped[datetime] = so.mapped_column(
+        sa.DateTime(timezone=True)
+    )
+    moderation_status: so.Mapped[ModerationStatus] = so.mapped_column(
+        sa.Enum(ModerationStatus, native_enum=False), nullable=True
+    )
+
+
+class SubmissionComment(db.Model):
+    __tablename__ = "bikeparking_comments"
+    __versioned__ = {}  # generate version history log with sqlalchemy-continuum
+
+    id: so.Mapped[int] = so.mapped_column(primary_key=True, autoincrement=True)
+    submission_id: so.Mapped[int] = so.mapped_column(
+        sa.ForeignKey("bikeparking_submissions.id")
+    )
+    submission: so.Mapped["Submission"] = so.relationship(
+        back_populates="submission_comments"
+    )
+    status_update_id: so.Mapped[Optional[int]] = so.mapped_column(
+        sa.ForeignKey("bikeparking_status_updates.id"), index=True
+    )
+    status_update: so.Mapped[Optional[StatusUpdate]] = so.relationship(
+        back_populates="comment",
+        foreign_keys=[status_update_id],
+    )
+    user_id: so.Mapped[Optional[int]] = so.mapped_column(
+        sa.ForeignKey("user.id"), index=True
+    )
+    user: so.Mapped[Optional["User"]] = so.relationship(
+        back_populates="submission_comments"
+    )
+    comments: so.Mapped[str]
     submitted_datetime: so.Mapped[datetime] = so.mapped_column(
         sa.DateTime(timezone=True)
     )
