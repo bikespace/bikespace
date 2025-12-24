@@ -74,8 +74,7 @@ class Submission(db.Model):
 
 
 class StatusType(Enum):
-    NO_ACTION_TAKEN = "no_action_taken"
-    ACTIONREQUIRED = "action_required"
+    ACTION_REQUIRED = "action_required"
     RESOLUTION_PENDING = "resolution_pending"
     RESOLVED_SUCCESS = "resolved_success"
     RESOLVED_INFORMATIONAL = "resolved_informational"
@@ -106,6 +105,13 @@ class Status(db.Model):
 
 
 class ModerationStatus(Enum):
+    """
+    Intended usage:
+    - flagged: needs to be reviewed, still viewable
+    - hidden: investigation or decision pending, not viewable
+    - blocked: found not to comply with community standards, not viewable
+    """
+
     FLAGGED = "flagged"
     HIDDEN = "hidden"
     BLOCKED = "blocked"
