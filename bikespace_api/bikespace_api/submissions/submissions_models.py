@@ -34,6 +34,21 @@ class ParkingDuration(Enum):
         return self.name
 
 
+submission_and_status_update_association = sa.Table(
+    "submission_and_status_update_association",
+    db.metadata,
+    sa.Column("submission_id", sa.ForeignKey("bikeparking_submissions.id")),
+    sa.Column("status_update_id", sa.ForeignKey("bikeparking_status_updates.id")),
+)
+
+submission_and_submission_comment_association = sa.Table(
+    "submission_and_submission_comment_association",
+    db.metadata,
+    sa.Column("submission_id", sa.ForeignKey("bikeparking_submissions.id")),
+    sa.Column("submission_comment_id", sa.ForeignKey("bikeparking_comments.id")),
+)
+
+
 class Submission(db.Model):
     __tablename__ = "bikeparking_submissions"
     __versioned__ = {}  # generate version history log with sqlalchemy-continuum
@@ -51,10 +66,12 @@ class Submission(db.Model):
     comments = db.Column(db.Text, default=None, nullable=True)
     submitted_datetime = db.Column(db.DateTime(timezone=True), nullable=True)
     status_updates: so.Mapped[list["StatusUpdate"]] = so.relationship(
-        back_populates="submission"
+        secondary=submission_and_status_update_association,
+        back_populates="submissions",
     )
     submission_comments: so.Mapped[list["SubmissionComment"]] = so.relationship(
-        back_populates="submission"
+        secondary=submission_and_submission_comment_association,
+        back_populates="submissions",
     )
 
     # __init__ params need to have a default value for revert from deleted state to work with sqlalchemy-continuum
@@ -128,12 +145,16 @@ class StatusUpdate(db.Model):
     __versioned__ = {}  # generate version history log with sqlalchemy-continuum
 
     id: so.Mapped[int] = so.mapped_column(primary_key=True, autoincrement=True)
-    submission_id: so.Mapped[int] = so.mapped_column(
-        sa.ForeignKey(Submission.id), index=True
+    # submission_id: so.Mapped[int] = so.mapped_column(
+    #     sa.ForeignKey(Submission.id), index=True
+    # )
+    submissions: so.Mapped[list["Submission"]] = so.relationship(
+        secondary=submission_and_status_update_association,
+        back_populates="status_updates",
     )
-    submission: so.Mapped["Submission"] = so.relationship(
-        back_populates="status_updates"
-    )
+    # comment_id: so.Mapped[int] = so.mapped_column(
+    #     sa.ForeignKey("bikeparking_comments.id"), index=True
+    # )
     comment: so.Mapped["SubmissionComment"] = so.relationship(
         back_populates="status_update"
     )
@@ -162,11 +183,12 @@ class SubmissionComment(db.Model):
     __versioned__ = {}  # generate version history log with sqlalchemy-continuum
 
     id: so.Mapped[int] = so.mapped_column(primary_key=True, autoincrement=True)
-    submission_id: so.Mapped[int] = so.mapped_column(
-        sa.ForeignKey("bikeparking_submissions.id")
-    )
-    submission: so.Mapped["Submission"] = so.relationship(
-        back_populates="submission_comments"
+    # submission_id: so.Mapped[int] = so.mapped_column(
+    #     sa.ForeignKey("bikeparking_submissions.id")
+    # )
+    submissions: so.Mapped[list["Submission"]] = so.relationship(
+        secondary=submission_and_submission_comment_association,
+        back_populates="submission_comments",
     )
     status_update_id: so.Mapped[Optional[int]] = so.mapped_column(
         sa.ForeignKey("bikeparking_status_updates.id"), index=True
