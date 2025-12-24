@@ -33,11 +33,11 @@ class User(db.Model, UserMixin):
         "Role", secondary=roles_users, backref=db.backref("users", lazy="dynamic")
     )
     fs_uniquifier = db.Column(db.String(64), unique=True, nullable=False)
-    status_updates: so.WriteOnlyMapped[list["StatusUpdate"]] = so.relationship(
+    status_updates: so.Mapped[list["StatusUpdate"]] = so.relationship(
         back_populates="user"
     )
-    submission_comments: so.WriteOnlyMapped[list["SubmissionComment"]] = (
-        so.relationship(back_populates="user")
+    submission_comments: so.Mapped[list["SubmissionComment"]] = so.relationship(
+        back_populates="user"
     )
 
     def __str__(self):

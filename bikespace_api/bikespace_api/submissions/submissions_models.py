@@ -50,11 +50,11 @@ class Submission(db.Model):
     parking_time = db.Column(db.DateTime, nullable=False, default=datetime.now())
     comments = db.Column(db.Text, default=None, nullable=True)
     submitted_datetime = db.Column(db.DateTime(timezone=True), nullable=True)
-    status_updates: so.WriteOnlyMapped[list["StatusUpdate"]] = so.relationship(
+    status_updates: so.Mapped[list["StatusUpdate"]] = so.relationship(
         back_populates="submission"
     )
-    submission_comments: so.WriteOnlyMapped[list["SubmissionComment"]] = (
-        so.relationship(back_populates="submission")
+    submission_comments: so.Mapped[list["SubmissionComment"]] = so.relationship(
+        back_populates="submission"
     )
 
     # __init__ params need to have a default value for revert from deleted state to work with sqlalchemy-continuum
@@ -99,7 +99,7 @@ class Status(db.Model):
     status_description: so.Mapped[str]
     status_information: so.Mapped[str]
     hide_by_default: so.Mapped[bool]
-    status_updates: so.WriteOnlyMapped[list["StatusUpdate"]] = so.relationship(
+    status_updates: so.WriteOnlyMapped["StatusUpdate"] = so.relationship(
         back_populates="status"
     )
 
