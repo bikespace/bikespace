@@ -1,23 +1,26 @@
 # bikespace_api/bikespace_api/api/answers.py
 
-from better_profanity import profanity
-from bikespace_api import db
-from bikespace_api.api.models import Submission, IssueType, ParkingDuration
-from flask import Blueprint, jsonify, request, Response, make_response
-from geojson import Feature, FeatureCollection, Point
+import csv
+import json
 from io import StringIO
+
+import geojson
+from better_profanity import profanity
+from flask import Blueprint, Response, make_response, request, url_for
+from geojson import Feature, FeatureCollection, Point
 from sqlalchemy import desc
 from sqlalchemy.exc import IntegrityError
-import csv
-import geojson
-import json
+from sqlalchemy_continuum import count_versions, version_class
+
+from bikespace_api import db  # type: ignore
+from bikespace_api.api.models import IssueType, ParkingDuration, Submission
 
 submissions_blueprint = Blueprint("submissions", __name__)
 
 DEFAULT_OFFSET_LIMIT = 100
 
 
-@submissions_blueprint.route("/submissions", methods=["GET", "POST"])
+@submissions_blueprint.route("/submissions", methods=["GET", "POST"])  # type: ignore
 def handle_submissions():
     if request.method == "GET":
         accept_header = request.headers.get("Accept")
@@ -52,6 +55,12 @@ def get_submission_with_id(submission_id):
             if submission_with_id.submitted_datetime is not None
             else None
         ),
+        "version": count_versions(submission_with_id),
+        "version_history_url": url_for(
+            "submissions.get_submission_history_with_id",
+            submission_id=submission_id,
+            _external=True,
+        ),
     }
     return_response = Response(
         response=json.dumps(submission_with_id_json, default=str),
@@ -61,12 +70,41 @@ def get_submission_with_id(submission_id):
     return return_response
 
 
+@submissions_blueprint.route("/submissions/<submission_id>/history", methods=["GET"])  # type: ignore
+def get_submission_history_with_id(submission_id):
+    """Operation types are:
+    - 0: Insert
+    - 1: Update
+    - 2: Delete
+    """
+    SubmissionVersion = version_class(Submission)
+    submission_versions_with_id = SubmissionVersion.query.filter_by(
+        id=submission_id
+    ).order_by(SubmissionVersion.transaction_id)
+    history = []
+    for version in submission_versions_with_id:
+        history.append(
+            {
+                "version_index": version.index,
+                "operation_type": version.operation_type,
+                "transaction_user": version.transaction.user_id,
+                "transaction_issued_at": version.transaction.issued_at,
+                "changes": version.changeset,
+            }
+        )
+    return Response(
+        response=json.dumps(history, default=str),
+        status=200,
+        mimetype="application/json",
+    )
+
+
 def get_submissions_json(request):
     """Default response for GET /submissions. Returns user reports from the bikeparking_submissions table in a paginated JSON format."""
     offset = request.args.get("offset", 1, type=int)
     limit = request.args.get("limit", DEFAULT_OFFSET_LIMIT, type=int)
 
-    pagination = Submission.query.order_by(desc(Submission.parking_time)).paginate(
+    pagination = Submission.query.order_by(desc(Submission.parking_time)).paginate(  # type: ignore
         page=offset, per_page=limit, count=True
     )
     submissions = pagination.items
@@ -90,6 +128,7 @@ def get_submissions_json(request):
                 if submission.submitted_datetime is not None
                 else None
             ),
+            "version": count_versions(submission),
         }
         json_output.append(submission_json)
 
@@ -161,6 +200,7 @@ def get_submissions_geo_json(request):
                     if submission.submitted_datetime is not None
                     else None
                 ),
+                "version": count_versions(submission),
             },
         )
         if point_feature.is_valid:
@@ -176,7 +216,7 @@ def get_submissions_geo_json(request):
 
 def get_submissions_csv(request):
     """Optional response for GET /submissions. Returns user reports from the bikeparking_submissions table in CSV format. Also breaks out issue types into separate columns for easier analysis."""
-    submissions = Submission.query.order_by(desc(Submission.parking_time)).all()
+    submissions = Submission.query.order_by(desc(Submission.parking_time)).all()  # type: ignore
     submissions_list = []
     for submission in submissions:
         row = []
@@ -194,6 +234,7 @@ def get_submissions_csv(request):
             if submission.submitted_datetime is not None
             else None
         )
+        row.append(count_versions(submission))
         submissions_list.append(row)
 
     string_io = StringIO()
@@ -208,6 +249,7 @@ def get_submissions_csv(request):
         "parking_duration",
         "comments",
         "submitted_datetime",
+        "version",
     ]
     csv_writer.writerow(csv_headers)
     csv_writer.writerows(submissions_list)
