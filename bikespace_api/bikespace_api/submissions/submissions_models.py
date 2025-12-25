@@ -62,7 +62,9 @@ class Submission(db.Model):
     parking_duration = db.Column(
         sa.Enum(ParkingDuration, create_constraint=False, native_enum=False)
     )
-    parking_time = db.Column(db.DateTime, nullable=False, default=datetime.now())
+    parking_time = db.Column(
+        db.DateTime(timezone=True), nullable=False, default=datetime.now(timezone.utc)
+    )
     comments = db.Column(db.Text, default=None, nullable=True)
     submitted_datetime = db.Column(db.DateTime(timezone=True), nullable=True)
     status_updates: so.Mapped[list["StatusUpdate"]] = so.relationship(
