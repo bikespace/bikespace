@@ -221,7 +221,6 @@ def get_submissions_geo_json() -> Response:
 def get_submissions_csv() -> Response:
     """Optional response for GET /submissions. Returns user reports from the bikeparking_submissions table in CSV format. Also breaks out issue types into separate columns for easier analysis."""
     submissions = Submission.query.order_by(desc(Submission.parking_time)).all()  # type: ignore
-
     for submission in submissions:
         submission.version = count_versions(submission)
         submission.version_history_url = url_for(

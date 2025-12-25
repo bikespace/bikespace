@@ -51,7 +51,7 @@ test('Submit an issue', async ({page}, testInfo) => {
   await page.getByRole('button', {name: 'Next'}).click();
 
   // comment entry
-  const testComment = `Comment from end-to-end test "${testInfo.title}" on ${testInfo.project.name}`;
+  const testComment = `Comment from end-to-end test "${testInfo.title}" on ${testInfo.project.name} run ${new Date().toISOString()}`;
   await page.getByRole('textbox').fill(testComment);
   await page.getByRole('button', {name: 'Next'}).click();
 
@@ -84,8 +84,14 @@ test('Submit an issue', async ({page}, testInfo) => {
 
   // check post-submission page
   await expect(page.getByRole('heading')).toHaveText('Success');
+  const closeButton = page.getByRole('button', {name: /close/i});
+  expect(closeButton).toBeVisible();
 
-  // return to home
-  await page.getByRole('button', {name: 'Close'}).click();
-  await expect(page).toHaveURL('/');
+  // use the "View Your Submission" button to navigate to the dashboard
+  await page.getByRole('button', {name: /view your submission/i}).click();
+  const dashboardURLPattern =
+    /\/dashboard\?(?<tabNav>tab=feed)?&?(?<submissionNav>submission_id=(?<submissionId>\d+?))/i;
+  await expect(page).toHaveURL(dashboardURLPattern, {timeout: 15_000});
+
+  await expect(page.getByText(testComment)).toBeVisible();
 });
