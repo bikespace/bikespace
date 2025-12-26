@@ -39,14 +39,13 @@ import {wrapperFullWidth} from '@/styles/variablesTS';
 
 interface MapMarkerProps {
   submission: SubmissionApiPayload;
-  windowWidth: number | null;
   doneLoading: boolean;
   clusterRef: MutableRefObject<LeafletMarkerClusterGroup | null>;
 }
 
 const MapMarker = forwardRef(
   (
-    {submission, windowWidth, doneLoading, clusterRef}: MapMarkerProps,
+    {submission, doneLoading, clusterRef}: MapMarkerProps,
     outerMarkerRef: React.ForwardedRef<LeafletMarker>
   ) => {
     // popupRef for calling openPopup() upon focus change
@@ -106,13 +105,13 @@ const MapMarker = forwardRef(
     };
 
     const handleClick = () => {
-      if (windowWidth && windowWidth <= wrapperFullWidth) {
         // Manually set tab= URL params to prevent excess rerendering from subscribing to tab change
         const params = new URLSearchParams(searchParams);
 
         params.set('tab', SidebarTab.Feed);
 
         replace(`${pathname}?${params.toString()}` as Route);
+      if (window.innerWidth <= wrapperFullWidth) {
         setFocus(submission.id);
         setTab(SidebarTab.Feed);
         setIsOpen(true);

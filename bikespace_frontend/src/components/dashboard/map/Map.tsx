@@ -3,7 +3,6 @@ import React, {useEffect, useRef, useState} from 'react';
 import {MapContainer, TileLayer} from 'react-leaflet';
 import MarkerClusterGroup from 'react-leaflet-cluster';
 import {Marker as LeafletMarker, Map as lMap} from 'leaflet';
-import {useWindowSize} from '@uidotdev/usehooks';
 
 import {useStore} from '@/states/store';
 import {defaultMapCenter} from '@/utils/map-utils';
@@ -37,8 +36,6 @@ function Map({submissions, isPermaLink}: MapProps) {
   const [markersReady, setMarkersReady] = useState(false);
   const [tilesReady, setTilesReady] = useState(false);
   const [initialized, setInitialized] = useState(false);
-
-  const windowSize = useWindowSize();
 
   const [currentSidebarTab] = useSidebarTab();
 
@@ -96,7 +93,6 @@ function Map({submissions, isPermaLink}: MapProps) {
             <MapMarker
               key={submission.id}
               submission={submission}
-              windowWidth={windowSize.width}
               doneLoading={markersReady}
               clusterRef={clusterRef}
               ref={(m: LeafletMarker) => {
