@@ -72,10 +72,12 @@ const MapMarker = forwardRef(
     // check for selected pin when layer finishes loading
     useEffect(() => {
       if (!isFocused || !doneLoading) return;
-      clusterRef.current!.zoomToShowLayer(innerMarkerRef.current!, () => {
-        innerMarkerRef.current!.openPopup();
-      });
-    }, [focus, submissions, doneLoading]);
+      setTimeout(() => {
+        clusterRef.current!.zoomToShowLayer(innerMarkerRef.current!, () => {
+          innerMarkerRef.current!.openPopup();
+        });
+      }, 0);
+    }, [isFocused, submissions, doneLoading]);
 
     const handlePopupClose = () => {
       if (focus === submission.id) setFocus(null);
