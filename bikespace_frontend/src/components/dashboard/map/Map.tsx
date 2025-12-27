@@ -4,10 +4,8 @@ import {MapContainer, TileLayer} from 'react-leaflet';
 import MarkerClusterGroup from 'react-leaflet-cluster';
 import {Marker as LeafletMarker, Map as lMap} from 'leaflet';
 
-import {useStore} from '@/states/store';
 import {defaultMapCenter} from '@/utils/map-utils';
 import {SubmissionApiPayload} from '@/interfaces/Submission';
-import {useSidebarTab} from '@/states/url-params';
 
 import {Spinner} from '@/components/shared-ui/spinner';
 
@@ -37,15 +35,7 @@ function Map({submissions, isPermaLink}: MapProps) {
   const [tilesReady, setTilesReady] = useState(false);
   const [initialized, setInitialized] = useState(false);
 
-  const [currentSidebarTab] = useSidebarTab();
-
-  const isSidebarOpen = useStore(state => state.ui.sidebar.isOpen);
-
-  // Ensure map still fills the available space when sidebar opens/closes
-  useEffect(() => {
-    if (!mapRef.current) return;
-    mapRef.current.invalidateSize();
-  }, [isSidebarOpen, currentSidebarTab]);
+  // Track whether the map is fully loaded using the initialized hook
   useEffect(() => {
     if (!initialized && isPermaLink && markersReady && tilesReady) {
       setInitialized(true);
@@ -95,6 +85,7 @@ function Map({submissions, isPermaLink}: MapProps) {
               submission={submission}
               doneLoading={markersReady}
               clusterRef={clusterRef}
+              // track when the last marker is rendered
               ref={(m: LeafletMarker) => {
                 markerRefs.current[submission.id] = m;
                 if (index === submissions.length - 1 && !initialized) {
