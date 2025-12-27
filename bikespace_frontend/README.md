@@ -71,13 +71,14 @@ Frontend code can be found in the `/src` folder, organized as follows:
 
 To better understand how the app is organized, we highly recommend you read the [routing docs for NextJS](https://nextjs.org/docs/app/building-your-application/routing).
 
-## Notes on Dashboard Structure
+## Notes on Dashboard Structure and State Management
 
 - `dynamic` is used for lazy loading, see: https://nextjs.org/docs/pages/building-your-application/optimizing/lazy-loading#nextdynamic
 - `react-query` is used to manage getting data from the API, see: https://tanstack.com/query/latest/docs/framework/react/overview
   - This requires wrapping the page layout (src/components/dashboard/dashboard-layout/DashboardLayout.tsx) in the `QueryClientProvider` component
 - submissions and filters are managed by the custom `useStore` hook, which creates a `zustand` store (see: src/components/dashboard/dashboard-page/DashboardPage.tsx)
   - This makes `DashboardPage.tsx` the "engine" for applying query filters
+- state that needs to be mirrored in the URL parameters uses the hooks in `@/states/url-params`, which use `useQueryState` from [nuqs](https://nuqs.dev/)
 
 ### Development Tips
 

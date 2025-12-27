@@ -1,9 +1,9 @@
 import React from 'react';
 
+import styles from './sidebar.module.scss';
+
 import chevronUp from '@/assets/icons/chevron-up.svg';
 import chevronDown from '@/assets/icons/chevron-down.svg';
-
-import styles from './sidebar.module.scss';
 
 export function Sidebar({
   children,

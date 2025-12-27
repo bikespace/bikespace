@@ -1,10 +1,11 @@
 import React from 'react';
 
-import issueReporter from '@/assets/images/issue-reporter.svg';
-import dataGuide from '@/assets/images/data-guide.svg';
+import {SidebarLinkButton} from '@/components/shared-ui/sidebar-button';
 
 import styles from './_SidebarContent.module.scss';
-import {SidebarLinkButton} from '@/components/shared-ui/sidebar-button';
+
+import issueReporter from '@/assets/images/issue-reporter.svg';
+import dataGuide from '@/assets/images/data-guide.svg';
 
 export function SidebarContentInfo() {
   return (

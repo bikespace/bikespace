@@ -1,14 +1,14 @@
 import React from 'react';
 
 import {SidebarTab, useSidebarTab} from '@/states/url-params';
+import {useStore} from '@/states/store';
+
+import styles from './sidebar-tabs.module.scss';
 
 import insightsIcon from './icons/insights';
 import filtersIcon from './icons/filters';
 import feedIcon from './icons/feed';
 import infoIcon from './icons/info';
-
-import styles from './sidebar-tabs.module.scss';
-import {useStore} from '@/states/store';
 
 const tabs = [
   {

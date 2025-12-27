@@ -4,9 +4,9 @@ import {useStore} from '@/states/store';
 
 import {SidebarButton} from '@/components/shared-ui/sidebar-button';
 
-import clearFilterIcon from '@/assets/icons/clear-filter.svg';
-
 import styles from './clear-filters-button.module.scss';
+
+import clearFilterIcon from '@/assets/icons/clear-filter.svg';
 
 export function ClearFiltersButton() {
   const {

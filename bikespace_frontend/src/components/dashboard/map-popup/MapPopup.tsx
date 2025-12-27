@@ -1,11 +1,13 @@
 import React, {forwardRef} from 'react';
+
 import {Popup} from 'react-leaflet';
 import {Popup as LeafletPopup} from 'leaflet';
-import {SubmissionApiPayload} from '@/interfaces/Submission';
-
-import {issuePriority} from '@/config/bikespace-api';
 
 import {SidebarTab, useSidebarTab, useSubmissionId} from '@/states/url-params';
+
+import {SubmissionApiPayload} from '@/interfaces/Submission';
+import {issuePriority} from '@/config/bikespace-api';
+
 import {IssueBadge} from '../issue-badge';
 
 import styles from './map-popup.module.scss';

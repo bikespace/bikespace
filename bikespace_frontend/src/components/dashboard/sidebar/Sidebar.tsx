@@ -1,12 +1,13 @@
 import {useEffect} from 'react';
+
 import {useIsMobile} from '@/hooks/use-is-mobile';
+import {useStore} from '@/states/store';
+import {useSidebarTab} from '@/states/url-params';
 
 import {SidebarTabs} from '../sidebar-tabs';
 import {SidebarContent} from '../sidebar-content';
 
 import styles from './sidebar.module.scss';
-import {useStore} from '@/states/store';
-import {useSidebarTab} from '@/states/url-params';
 
 function Sidebar() {
   const isMobile = useIsMobile();

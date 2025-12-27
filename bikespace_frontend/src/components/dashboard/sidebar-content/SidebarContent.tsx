@@ -1,14 +1,15 @@
 import React from 'react';
 
+import {SidebarTab, useSidebarTab} from '@/states/url-params';
+import {useStore} from '@/states/store';
+
 import {ClearFiltersButton} from '../clear-filters-button';
 import {SidebarContentFilters} from './_SidebarContentFilters';
 import {SidebarContentInsights} from './_SidebarContentInsights';
 import {SidebarContentFeed} from './_SidebarContentFeed';
 import {SidebarContentInfo} from './_SidebarContentInfo';
-import {SidebarTab, useSidebarTab} from '@/states/url-params';
 
 import styles from './sidebar-content.module.scss';
-import {useStore} from '@/states/store';
 
 export function SidebarContent() {
   const {setIsOpen} = useStore(state => state.ui.sidebar);
