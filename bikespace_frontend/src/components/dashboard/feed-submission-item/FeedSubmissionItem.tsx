@@ -2,6 +2,7 @@ import React, {useEffect, useRef} from 'react';
 import {DateTime} from 'luxon';
 
 import {SubmissionApiPayload, ParkingDuration} from '@/interfaces/Submission';
+import {useIsMobile} from '@/hooks/use-is-mobile';
 
 import {useSubmissionId} from '@/states/url-params';
 import {useStore} from '@/states/store';
@@ -16,6 +17,7 @@ interface FeedSubmissionItemProps {
 
 export function FeedSubmissionItem({submission}: FeedSubmissionItemProps) {
   const submissions = useStore(state => state.submissions);
+  const isMobile = useIsMobile();
 
   const {
     id,
@@ -41,12 +43,15 @@ export function FeedSubmissionItem({submission}: FeedSubmissionItemProps) {
 
   const [focus, setFocus] = useSubmissionId();
 
-  // scroll selected item into view when focus or submissions change
+  // scroll selected item into view when:
+  // - focus changes
+  // - submissions change (e.g. more are loaded)
+  // - viewport changes from desktop to mobile or vice versa
   useEffect(() => {
     if (!(focus === id)) return;
 
     buttonRef.current?.scrollIntoView();
-  }, [focus, submissions]);
+  }, [focus, submissions, isMobile]);
 
   const handleClick = () => {
     setFocus(id);
