@@ -4,6 +4,7 @@ import {DateTime} from 'luxon';
 import {SubmissionApiPayload, ParkingDuration} from '@/interfaces/Submission';
 
 import {useSubmissionId} from '@/states/url-params';
+import {useStore} from '@/states/store';
 
 import {IssueBadge} from '../issue-badge';
 
@@ -14,6 +15,8 @@ interface FeedSubmissionItemProps {
 }
 
 export function FeedSubmissionItem({submission}: FeedSubmissionItemProps) {
+  const submissions = useStore(state => state.submissions);
+
   const {
     id,
     issues,
@@ -38,11 +41,12 @@ export function FeedSubmissionItem({submission}: FeedSubmissionItemProps) {
 
   const [focus, setFocus] = useSubmissionId();
 
+  // scroll selected item into view when focus or submissions change
   useEffect(() => {
     if (!(focus === id)) return;
 
     buttonRef.current?.scrollIntoView();
-  }, [focus]);
+  }, [focus, submissions]);
 
   const handleClick = () => {
     setFocus(id);

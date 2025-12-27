@@ -53,7 +53,10 @@ const MapMarker = forwardRef(
     useImperativeHandle(outerMarkerRef, () => innerMarkerRef.current!, []);
 
     const [, setTab] = useSidebarTab();
-    const {setIsOpen} = useStore(state => state.ui.sidebar);
+    const {setIsOpen, submissions} = useStore(state => ({
+      setIsOpen: state.ui.sidebar.setIsOpen,
+      submissions: state.submissions,
+    }));
 
     const position: LatLngTuple = [submission.latitude, submission.longitude];
 
@@ -65,13 +68,14 @@ const MapMarker = forwardRef(
     const iconWidth = iconHeight;
 
     // focus pin if selected
-    // also check for selected pin when layer finishes loading
+    // re-focus if submissions change
+    // check for selected pin when layer finishes loading
     useEffect(() => {
       if (!isFocused || !doneLoading) return;
       clusterRef.current!.zoomToShowLayer(innerMarkerRef.current!, () => {
         innerMarkerRef.current!.openPopup();
       });
-    }, [focus, doneLoading]);
+    }, [focus, submissions, doneLoading]);
 
     const handlePopupClose = () => {
       if (focus === submission.id) setFocus(null);
