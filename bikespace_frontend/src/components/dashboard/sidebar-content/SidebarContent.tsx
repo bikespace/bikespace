@@ -13,7 +13,7 @@ import {useStore} from '@/states/store';
 export function SidebarContent() {
   const {setIsOpen} = useStore(state => state.ui.sidebar);
 
-  const [tab] = useSidebarTab();
+  const [tab, setTab] = useSidebarTab();
 
   const renderContent = () => {
     switch (tab) {
@@ -39,7 +39,13 @@ export function SidebarContent() {
         {renderContent()}
       </div>
       <div className={styles.actions}>
-        <button onClick={() => setIsOpen(false)} className={styles.action}>
+        <button
+          onClick={() => {
+            setIsOpen(false);
+            setTab(null);
+          }}
+          className={styles.action}
+        >
           Back to Map
         </button>
       </div>
