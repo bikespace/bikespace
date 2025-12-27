@@ -17,6 +17,7 @@ import {
 
 import {useStore} from '@/states/store';
 import {SidebarTab, useSidebarTab, useSubmissionId} from '@/states/url-params';
+import {useSubmissionsQuery} from '@/hooks';
 
 import {IssueType, SubmissionApiPayload} from '@/interfaces/Submission';
 import {issuePriority} from '@/config/bikespace-api';
@@ -52,6 +53,7 @@ const MapMarker = forwardRef(
     // pass MarkerRef to parent while also allowing it to be used in this component:
     useImperativeHandle(outerMarkerRef, () => innerMarkerRef.current!, []);
 
+    const {dataUpdatedAt} = useSubmissionsQuery();
     const [, setTab] = useSidebarTab();
     const {setIsOpen, submissions} = useStore(state => ({
       setIsOpen: state.ui.sidebar.setIsOpen,
@@ -77,7 +79,7 @@ const MapMarker = forwardRef(
           innerMarkerRef.current!.openPopup();
         });
       }, 0);
-    }, [isFocused, submissions, doneLoading]);
+    }, [isFocused, dataUpdatedAt, doneLoading]);
 
     const handlePopupClose = () => {
       if (focus === submission.id) setFocus(null);
