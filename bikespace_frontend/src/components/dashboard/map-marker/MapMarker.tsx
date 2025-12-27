@@ -46,9 +46,6 @@ const MapMarker = forwardRef(
     {submission, doneLoading, clusterRef}: MapMarkerProps,
     outerMarkerRef: React.ForwardedRef<LeafletMarker>
   ) => {
-    // popupRef for calling openPopup() upon focus change
-    // `Popup` from 'react-leaflet' forwards `Popup` from 'leaflet'
-    const popupRef = useRef<LeafletPopup>(null);
     const innerMarkerRef = useRef<LeafletMarker>(null);
     // pass MarkerRef to parent while also allowing it to be used in this component:
     useImperativeHandle(outerMarkerRef, () => innerMarkerRef.current!, []);
@@ -129,7 +126,7 @@ const MapMarker = forwardRef(
         }}
         ref={innerMarkerRef}
       >
-        <MapPopup submission={submission} ref={popupRef} />
+        <MapPopup submission={submission} />
       </Marker>
     );
   }
