@@ -94,10 +94,8 @@ function Map({submissions}: MapProps) {
                 // markerRefs.current[submission.id] = m;
                 if (index === submissions.length - 1) {
                   setMarkersReady(true);
-                  console.log('Markers ready');
                 } else if (index === 0) {
                   setMarkersReady(false);
-                  console.log('Markers unset');
                 }
               }}
             />

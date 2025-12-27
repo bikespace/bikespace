@@ -70,7 +70,7 @@ const MapMarker = forwardRef(
     const iconWidth = iconHeight;
 
     // focus pin if selected
-    // re-focus if submissions change
+    // re-focus if full submissions query changes
     // check for selected pin when layer finishes loading
     useEffect(() => {
       if (!isFocused || !doneLoading) return;
