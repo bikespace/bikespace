@@ -91,9 +91,13 @@ function Map({submissions}: MapProps) {
               clusterRef={clusterRef}
               // track when the last marker is rendered
               ref={(m: LeafletMarker) => {
-                markerRefs.current[submission.id] = m;
-                if (index === submissions.length - 1 && !initialized) {
+                // markerRefs.current[submission.id] = m;
+                if (index === submissions.length - 1) {
                   setMarkersReady(true);
+                  console.log('Markers ready');
+                } else if (index === 0) {
+                  setMarkersReady(false);
+                  console.log('Markers unset');
                 }
               }}
             />
