@@ -2,7 +2,11 @@ import React, {useEffect, useRef, useState} from 'react';
 
 import {MapContainer, TileLayer} from 'react-leaflet';
 import MarkerClusterGroup from 'react-leaflet-cluster';
-import {Marker as LeafletMarker, Map as lMap} from 'leaflet';
+import {
+  Marker as LeafletMarker,
+  Map as lMap,
+  MarkerClusterGroup as LeafletMarkerClusterGroup,
+} from 'leaflet';
 
 import {useStore} from '@/states/store';
 
@@ -29,7 +33,7 @@ type MarkerRefs = Record<number, LeafletMarker>;
 
 function Map({submissions}: MapProps) {
   const mapRef: React.LegacyRef<lMap> = useRef(null);
-  const clusterRef = useRef(null);
+  const clusterRef = useRef<LeafletMarkerClusterGroup>(null);
   const markerRefs = useRef<MarkerRefs>({});
 
   const [markersReady, setMarkersReady] = useState(false);
