@@ -37,10 +37,33 @@ export function DashboardPage() {
   const allSubmissions = allSubmissionQuery.data || [];
 
   const {submissions, setSubmissions, filters} = useStore(state => ({
+  const {
+    submissions,
+    setSubmissions,
+    filters,
+    setIsFirstMarkerDataLoading,
+    setIsFullDataLoading,
+  } = useStore(state => ({
     submissions: state.submissions,
     setSubmissions: state.setSubmissions,
     filters: state.filters,
+    setIsFirstMarkerDataLoading: state.ui.loading.setIsFirstMarkerDataLoading,
+    setIsFullDataLoading: state.ui.loading.setIsFullDataLoading,
   }));
+
+  // track if enough data has loaded to render the first map markers
+  useEffect(() => {
+    setIsFirstMarkerDataLoading(
+      focusedId
+        ? singleSubmissionQuery.isLoading && allSubmissionQuery.isLoading
+        : allSubmissionQuery.isLoading
+    );
+  }, [singleSubmissionQuery.isLoading, allSubmissionQuery.isLoading]);
+
+  // track if full data has loaded
+  useEffect(() => {
+    setIsFullDataLoading(allSubmissionQuery.isLoading);
+  }, [allSubmissionQuery.isLoading]);
 
   // set tab to 'feed' on page load if a submission ID is specified in the URL
   useEffect(() => {
@@ -95,7 +118,7 @@ export function DashboardPage() {
   return (
     <main className={styles.dashboardPage}>
       <Sidebar />
-      <Map submissions={submissions} isPermaLink={focusedId !== null} />
+      <Map submissions={submissions} />
     </main>
   );
 }

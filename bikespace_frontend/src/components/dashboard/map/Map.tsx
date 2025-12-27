@@ -4,6 +4,8 @@ import {MapContainer, TileLayer} from 'react-leaflet';
 import MarkerClusterGroup from 'react-leaflet-cluster';
 import {Marker as LeafletMarker, Map as lMap} from 'leaflet';
 
+import {useStore} from '@/states/store';
+
 import {defaultMapCenter} from '@/utils/map-utils';
 import {SubmissionApiPayload} from '@/interfaces/Submission';
 
@@ -21,12 +23,11 @@ import './leaflet.scss';
 
 export interface MapProps {
   submissions: SubmissionApiPayload[];
-  isPermaLink: boolean;
 }
 
 type MarkerRefs = Record<number, LeafletMarker>;
 
-function Map({submissions, isPermaLink}: MapProps) {
+function Map({submissions}: MapProps) {
   const mapRef: React.LegacyRef<lMap> = useRef(null);
   const clusterRef = useRef(null);
   const markerRefs = useRef<MarkerRefs>({});
@@ -34,22 +35,21 @@ function Map({submissions, isPermaLink}: MapProps) {
   const [markersReady, setMarkersReady] = useState(false);
   const [tilesReady, setTilesReady] = useState(false);
   const [initialized, setInitialized] = useState(false);
+  const {isQueryLoading} = useStore(state => ({
+    isQueryLoading: state.ui.loading.isFirstMarkerDataLoading,
+  }));
 
   // Track whether the map is fully loaded using the initialized hook
   useEffect(() => {
-    if (!initialized && isPermaLink && markersReady && tilesReady) {
-      setInitialized(true);
-      return;
-    }
-
     if (
       !initialized &&
+      !isQueryLoading &&
       tilesReady &&
       (submissions.length === 0 || markersReady)
     ) {
       setInitialized(true);
     }
-  }, [initialized, tilesReady, markersReady, submissions.length]);
+  }, [isQueryLoading, tilesReady, markersReady, submissions.length]);
 
   return (
     <MapContainer

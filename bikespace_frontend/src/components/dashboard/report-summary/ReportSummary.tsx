@@ -2,7 +2,7 @@ import React, {useState, useEffect, useRef} from 'react';
 import {DateTime} from 'luxon';
 
 import {useStore} from '@/states/store';
-import {useAllSubmissionsDateRange, useSubmissionsQuery} from '@/hooks';
+import {useAllSubmissionsDateRange} from '@/hooks';
 
 import {Spinner} from '@/components/shared-ui/spinner';
 
@@ -11,11 +11,10 @@ import styles from './report-summary.module.scss';
 import warningIcon from '@/assets/icons/exclamation-triangle.svg';
 
 export function ReportSummary({onReady}: {onReady?: () => void}) {
-  const {isFetching} = useSubmissionsQuery();
-
-  const {submissions, filters} = useStore(state => ({
+  const {submissions, filters, isFetching} = useStore(state => ({
     submissions: state.submissions,
     filters: state.filters,
+    isFetching: state.ui.loading.isFullDataLoading,
   }));
 
   const hasFiredReadyRef = useRef(false);
