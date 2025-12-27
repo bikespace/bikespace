@@ -9,7 +9,7 @@ import {useSubmissionsQuery} from '@/hooks';
 import {useSingleSubmissionQuery} from '@/hooks/use-single-submission-query';
 
 import {useStore} from '@/states/store';
-import {useSubmissionId} from '@/states/url-params';
+import {SidebarTab, useSubmissionId, useSidebarTab} from '@/states/url-params';
 
 import {MapProps} from '../map';
 
@@ -28,6 +28,7 @@ const Map = dynamic<MapProps>(() => import('../map/Map'), {
 
 export function DashboardPage() {
   const [focusedId] = useSubmissionId();
+  const [, setSidebarTab] = useSidebarTab();
 
   const singleSubmissionQuery = useSingleSubmissionQuery(focusedId);
   const allSubmissionQuery = useSubmissionsQuery();
@@ -41,6 +42,13 @@ export function DashboardPage() {
     filters: state.filters,
   }));
 
+  // set tab to 'feed' on page load if a submission ID is specified in the URL
+  useEffect(() => {
+    if (focusedId !== null) {
+      setSidebarTab(SidebarTab.Feed);
+    }
+  }, []); // [] = run once on first load
+
   useEffect(() => {
     if (focusedId !== null && singleSubmission) {
       setSubmissions([singleSubmission]);
@@ -53,7 +61,6 @@ export function DashboardPage() {
     if (allSubmissions.length === 0) return;
 
     const {dateRange, parkingDuration, issue, day} = filters;
-
     let subs = allSubmissions.slice();
 
     if (dateRange.from || dateRange.to)
