@@ -1,5 +1,5 @@
 {
-  "extends": "./node_modules/gts/",
+  "extends": ["react-app"],
   "env": {
     "jest": true
   },
