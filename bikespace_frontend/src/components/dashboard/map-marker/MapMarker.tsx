@@ -94,6 +94,7 @@ function MapMarker({
         popupopen: handlePopupOpen,
       }}
       ref={markerRef}
+      alt={`Marker for submission ${submission.id}`}
     >
       <MapPopup submission={submission} />
     </Marker>
