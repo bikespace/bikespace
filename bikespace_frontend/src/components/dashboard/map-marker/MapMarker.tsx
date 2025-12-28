@@ -59,7 +59,7 @@ function MapMarker({
         markerRef.current!.openPopup();
       });
     }, 0);
-  }, [isSelected, submissions.length, clusterRef.current]);
+  }, [isSelected, submissions.length, clusterRef]);
 
   const handlePopupOpen = () => {
     trackUmamiEvent('popupopen', {
