@@ -19,7 +19,10 @@ export function SidebarContentFeed() {
       <div className={styles.ContentHeading}>
         <h2 className={styles.cardHeading}>Latest Submissions</h2>
       </div>
-      <div className={`${styles.ContentCard} ${styles.scrollableCard}`}>
+      <div
+        className={`${styles.ContentCard} ${styles.scrollableCard}`}
+        data-testid="submissions-feed"
+      >
         {[...submissions].reverse().map(submission => (
           <FeedSubmissionItem key={submission.id} submission={submission} />
         ))}
