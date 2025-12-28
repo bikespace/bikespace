@@ -3,7 +3,6 @@ import React, {useEffect, useRef, useState} from 'react';
 import {MapContainer, TileLayer} from 'react-leaflet';
 import MarkerClusterGroup from 'react-leaflet-cluster';
 import {
-  Marker as LeafletMarker,
   Map as lMap,
   MarkerClusterGroup as LeafletMarkerClusterGroup,
 } from 'leaflet';
@@ -29,12 +28,9 @@ export interface MapProps {
   submissions: SubmissionApiPayload[];
 }
 
-type MarkerRefs = Record<number, LeafletMarker>;
-
 function Map({submissions}: MapProps) {
   const mapRef: React.LegacyRef<lMap> = useRef(null);
   const clusterRef = useRef<LeafletMarkerClusterGroup>(null);
-  const markerRefs = useRef<MarkerRefs>({});
 
   const [markersReady, setMarkersReady] = useState(false);
   const [tilesReady, setTilesReady] = useState(false);
@@ -42,6 +38,10 @@ function Map({submissions}: MapProps) {
   const {isQueryLoading} = useStore(state => ({
     isQueryLoading: state.ui.loading.isFirstMarkerDataLoading,
   }));
+
+  useEffect(() => {
+    setMarkersReady(false);
+  }, [submissions.length]);
 
   // Track whether the map is fully loaded using the initialized hook
   useEffect(() => {
@@ -83,21 +83,16 @@ function Map({submissions}: MapProps) {
       />
       <MarkerClusterGroup chunkedLoading ref={clusterRef}>
         {submissions.map((submission, index) => {
+          // track when the last marker is rendered
+          if (index === submissions.length - 1 && !markersReady) {
+            setMarkersReady(true);
+          }
           return (
             <MapMarker
               key={submission.id}
               submission={submission}
               doneLoading={markersReady}
               clusterRef={clusterRef}
-              // track when the last marker is rendered
-              ref={(m: LeafletMarker) => {
-                // markerRefs.current[submission.id] = m;
-                if (index === submissions.length - 1) {
-                  setMarkersReady(true);
-                } else if (index === 0) {
-                  setMarkersReady(false);
-                }
-              }}
             />
           );
         })}
