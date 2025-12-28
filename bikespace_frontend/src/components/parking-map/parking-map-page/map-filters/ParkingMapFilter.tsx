@@ -139,6 +139,7 @@ export function ParkingMapFilter({
   useEffect(() => {
     if (status !== 'success') return;
     setFeatures(data);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [status]);
 
   // process property keys, give them more user-friendly names (if specified), and limit to specified keys if onlyShowEnabledFilterProperties = true
@@ -168,6 +169,7 @@ export function ParkingMapFilter({
         sensitivity: 'base',
       })
     );
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [features]);
 
   // transform and sort property values for the selected key
@@ -185,12 +187,14 @@ export function ParkingMapFilter({
       (enabledFilterPropertiesLookup[filterProperty]
         ?.type as propertyTypeOptions) ?? propertyTypeOptions.String;
     return sortPropertyOptions(newPropertyOptions, propertyType);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [features, filterProperty]);
 
   // update property options and reset filter when features or selection changes
   useEffect(() => {
     setSelectedPropertyOptions(new Set(propertyOptions));
     setFilter(true);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [features, filterProperty]);
 
   // set filter on map layer when user selection changes
@@ -211,6 +215,7 @@ export function ParkingMapFilter({
         ],
       ]);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedPropertyOptions]);
 
   function handleCheckboxChange(

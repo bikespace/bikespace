@@ -46,6 +46,7 @@ export function FilterParkingDuration() {
       default:
         return;
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [durationCategory]);
 
   useEffect(() => {
@@ -71,6 +72,7 @@ export function FilterParkingDuration() {
           : [...(parkingDuration || []), value],
       });
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [parkingDuration]
   );
 

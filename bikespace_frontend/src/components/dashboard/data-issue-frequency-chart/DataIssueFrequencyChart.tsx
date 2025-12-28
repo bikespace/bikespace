@@ -58,6 +58,7 @@ function DataIssueFrequencyChart({
 
       setFilters({issue: issue === point.y ? null : (point.y as IssueType)});
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [issue]
   );
   const handleAfterPlot = useCallback(() => {

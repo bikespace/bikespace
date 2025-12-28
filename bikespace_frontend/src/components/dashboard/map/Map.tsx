@@ -48,7 +48,8 @@ function Map({submissions}: MapProps) {
     if (!initialized && !isQueryLoading && tilesReady && clusterRef.current) {
       setInitialized(true);
     }
-  }, [isQueryLoading, tilesReady, clusterRef.current]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isQueryLoading, tilesReady, clusterRef]);
 
   // handle marker click on mobile
   function handleMarkerClick(submissionId: number) {

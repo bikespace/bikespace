@@ -30,6 +30,7 @@ function Location({handler}: LocationProps) {
         longitude: position.coords.longitude,
       });
     });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

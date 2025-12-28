@@ -59,11 +59,13 @@ export function DashboardPage() {
         ? singleSubmissionQuery.isLoading && allSubmissionQuery.isLoading
         : allSubmissionQuery.isLoading
     );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [singleSubmissionQuery.isLoading, allSubmissionQuery.isLoading]);
 
   // track if full data has loaded
   useEffect(() => {
     setIsFullDataLoading(allSubmissionQuery.isLoading);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [allSubmissionQuery.isLoading]);
 
   // set tab to 'feed' on page load if a submission ID is specified in the URL
@@ -71,6 +73,7 @@ export function DashboardPage() {
     if (focusedId !== null) {
       setSidebarTab(SidebarTab.Feed);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // [] = run once on first load
 
   // Filter submissions when filters state changes
@@ -101,7 +104,8 @@ export function DashboardPage() {
       );
 
     setSubmissions(subs);
-  }, [allSubmissionQuery.data, singleSubmissionQuery.data, filters]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loadedSubmissions, filters]);
 
   useEffect(() => {
     if (focusedId === null) return;

@@ -27,11 +27,11 @@ export function ParkingFeatureDescription({
   handleHover,
   handleUnHover,
 }: ParkingFeatureDescriptionProps) {
+  const [showAllData, setShowAllData] = useState<boolean>(false);
+
   if (!feature.properties) {
     return <p>Feature has no properties</p>;
   }
-
-  const [showAllData, setShowAllData] = useState<boolean>(false);
 
   // main features displayed
   // also includes `cargo_bike` and `capacity:cargo_bike`
@@ -56,6 +56,7 @@ export function ParkingFeatureDescription({
           <a
             href={`https://www.openstreetmap.org/${properties.meta_osm_id}`}
             target="_blank"
+            rel="noreferrer"
           >
             OpenStreetMap
           </a>
@@ -64,6 +65,7 @@ export function ParkingFeatureDescription({
             aria-label="edit on OpenStreetMap"
             href={`https://www.openstreetmap.org/edit?${type}=${id}#hashtags=bikespaceto`}
             target="_blank"
+            rel="noreferrer"
           >
             edit
           </a>
@@ -80,7 +82,7 @@ export function ParkingFeatureDescription({
         <p>
           Source:{' '}
           {sourceUrl ? (
-            <a href={sourceUrl} target="_blank">
+            <a href={sourceUrl} target="_blank" rel="noreferrer">
               City of Toronto
             </a>
           ) : (
@@ -170,7 +172,7 @@ export function ParkingFeatureDescription({
         <span role="img" aria-label="photo link">
           📷
         </span>{' '}
-        <a href={image} target="_blank">
+        <a href={image} target="_blank" rel="noreferrer">
           {image}
         </a>
       </p>

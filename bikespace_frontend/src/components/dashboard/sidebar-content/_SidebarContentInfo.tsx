@@ -21,7 +21,7 @@ export function SidebarContentInfo() {
           parking concerns they come across in the Toronto, Canada area.
         </p>
         <div className={styles.bordered}>
-          <img width="156" src={issueReporter.src} />
+          <img width="156" src={issueReporter.src} alt="" />
           <SidebarLinkButton href="/submission">
             Try BikeSpace Issue Reporter
           </SidebarLinkButton>
@@ -34,7 +34,7 @@ export function SidebarContentInfo() {
           parking submission data schema.
         </p>
         <div className={styles.bordered}>
-          <img width="156" src={dataGuide.src} />
+          <img width="156" src={dataGuide.src} alt="" />
           <SidebarLinkButton href="/BikeSpace Dashboard Dataset Details.pdf">
             View Data Guide PDF
           </SidebarLinkButton>

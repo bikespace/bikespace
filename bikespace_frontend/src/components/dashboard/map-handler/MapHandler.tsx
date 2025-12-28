@@ -41,6 +41,7 @@ export const MapHandler = () => {
           trackUmamiEvent('locationerror', {code: err.code, message});
         });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // [] = run on first render only
 
   // Ensure map still fills the available space when:
@@ -49,6 +50,7 @@ export const MapHandler = () => {
   // - specific submission is selected
   useEffect(() => {
     map.invalidateSize();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSidebarOpen, currentSidebarTab, window.innerWidth, focus]);
 
   return null;

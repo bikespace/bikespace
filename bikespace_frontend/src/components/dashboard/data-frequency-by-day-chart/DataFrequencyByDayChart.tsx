@@ -24,7 +24,6 @@ function DataFrequencyByDayChart({
   onReady,
 }: Pick<PlotParams, 'className'> & {onReady?: () => void}) {
   const queryResult = useSubmissionsQuery();
-  const allSubmissions = queryResult.data || [];
 
   const {submissions, day, setFilters} = useStore(state => ({
     submissions: state.submissions,
@@ -36,6 +35,7 @@ function DataFrequencyByDayChart({
   const [data, setData] = useState<InputData[]>([]);
 
   useEffect(() => {
+    const allSubmissions = queryResult.data || [];
     if (allSubmissions.length === 0 || submissions.length === 0) return;
 
     const inputData = Object.values(Day)
@@ -49,7 +49,7 @@ function DataFrequencyByDayChart({
       }));
 
     setData(inputData);
-  }, [allSubmissions, submissions, day]);
+  }, [queryResult.data, submissions.length, day]);
 
   const handleClick = useCallback(
     (e: PlotMouseEvent) => {
@@ -63,6 +63,7 @@ function DataFrequencyByDayChart({
 
       if (point.x) trackUmamiEvent('daychart', {filter: point.x});
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [day]
   );
 

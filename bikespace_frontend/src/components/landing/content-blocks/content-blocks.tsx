@@ -147,6 +147,7 @@ function EmailSignUp() {
             className={styles.buttondownReferLink}
             href="https://buttondown.email/refer/bikespace"
             target="_blank"
+            rel="noreferrer"
           >
             Powered by Buttondown.
           </a>

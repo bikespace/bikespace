@@ -170,6 +170,7 @@ export function GeocoderSearch({
       setDebouncedInputValue(inputValue);
     }, inputTimeOut);
     return () => clearTimeout(delayInputTimeoutID);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inputValue]);
 
   // Display a marker on the map for selected search result
@@ -185,6 +186,7 @@ export function GeocoderSearch({
     return () => {
       marker.remove();
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedResult]);
 
   // Get location search results using the photon API

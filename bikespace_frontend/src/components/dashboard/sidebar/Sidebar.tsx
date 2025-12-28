@@ -21,6 +21,7 @@ function Sidebar() {
     } else {
       setIsOpen(true);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isMobile]);
 
   const openStyle = isOpen ? styles.Open : '';

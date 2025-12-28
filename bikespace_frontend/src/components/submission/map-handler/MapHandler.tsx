@@ -13,6 +13,7 @@ export const MapHandler = () => {
       map.flyTo(e.latlng);
       map.stopLocate();
     });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useMapEvent('click', e => {

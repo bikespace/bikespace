@@ -61,6 +61,7 @@ export function ParkingLayer({
         );
       }
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [groupSelected]);
 
   const parkingLayerOpacity: ExpressionSpecification = [

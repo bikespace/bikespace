@@ -25,7 +25,6 @@ export function DashboardHeader() {
       ref={clickAwayRef}
     >
       <button
-        role="button"
         className={styles.navToggle}
         tabIndex={0}
         onClick={() => {

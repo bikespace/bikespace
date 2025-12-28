@@ -41,7 +41,7 @@ export function ClearFiltersButton() {
       }}
       umamiEvent="clear-filters"
     >
-      <img src={clearFilterIcon.src} />
+      <img src={clearFilterIcon.src} alt="" />
       <span>Clear Filters</span>
     </SidebarButton>
   );
