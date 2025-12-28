@@ -147,6 +147,7 @@ const MapMarker = forwardRef(
           popupopen: handlePopupOpen,
         }}
         ref={innerMarkerRef}
+        alt={`Marker for submission ${submission.id}`}
       >
         <MapPopup submission={submission} ref={popupRef} />
       </Marker>
