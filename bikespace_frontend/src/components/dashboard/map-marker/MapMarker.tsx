@@ -30,11 +30,10 @@ import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 
 interface MapMarkerProps {
   submission: SubmissionApiPayload;
-  doneLoading: boolean;
   clusterRef: MutableRefObject<LeafletMarkerClusterGroup | null>;
 }
 
-function MapMarker({submission, doneLoading, clusterRef}: MapMarkerProps) {
+function MapMarker({submission, clusterRef}: MapMarkerProps) {
   const markerRef = useRef<LeafletMarker>(null);
 
   const [, setTab] = useSidebarTab();
@@ -55,13 +54,13 @@ function MapMarker({submission, doneLoading, clusterRef}: MapMarkerProps) {
   // check for selected pin when layer finishes loading
 
   useEffect(() => {
-    if (!isFocused || !doneLoading) return;
+    if (!isFocused || !clusterRef.current) return;
     setTimeout(() => {
       clusterRef.current!.zoomToShowLayer(markerRef.current!, () => {
         markerRef.current!.openPopup();
       });
     }, 0);
-  }, [isFocused, submissions.length, doneLoading]);
+  }, [isFocused, submissions.length, clusterRef.current]);
 
   const handlePopupClose = () => {
     if (focus === submission.id) setFocus(null);

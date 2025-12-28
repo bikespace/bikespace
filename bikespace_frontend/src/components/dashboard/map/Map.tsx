@@ -32,28 +32,18 @@ function Map({submissions}: MapProps) {
   const mapRef: React.LegacyRef<lMap> = useRef(null);
   const clusterRef = useRef<LeafletMarkerClusterGroup>(null);
 
-  const [markersReady, setMarkersReady] = useState(false);
   const [tilesReady, setTilesReady] = useState(false);
   const [initialized, setInitialized] = useState(false);
   const {isQueryLoading} = useStore(state => ({
     isQueryLoading: state.ui.loading.isFirstMarkerDataLoading,
   }));
 
-  useEffect(() => {
-    setMarkersReady(false);
-  }, [submissions.length]);
-
   // Track whether the map is fully loaded using the initialized hook
   useEffect(() => {
-    if (
-      !initialized &&
-      !isQueryLoading &&
-      tilesReady &&
-      (submissions.length === 0 || markersReady)
-    ) {
+    if (!initialized && !isQueryLoading && tilesReady && clusterRef.current) {
       setInitialized(true);
     }
-  }, [isQueryLoading, tilesReady, markersReady, submissions.length]);
+  }, [isQueryLoading, tilesReady, clusterRef.current]);
 
   return (
     <MapContainer
@@ -82,16 +72,11 @@ function Map({submissions}: MapProps) {
         }}
       />
       <MarkerClusterGroup chunkedLoading ref={clusterRef}>
-        {submissions.map((submission, index) => {
-          // track when the last marker is rendered
-          if (index === submissions.length - 1 && !markersReady) {
-            setMarkersReady(true);
-          }
+        {submissions.map(submission => {
           return (
             <MapMarker
               key={submission.id}
               submission={submission}
-              doneLoading={markersReady}
               clusterRef={clusterRef}
             />
           );
