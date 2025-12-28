@@ -8,6 +8,7 @@ import {
 } from 'leaflet';
 
 import {useStore} from '@/states/store';
+import {useSubmissionId, SidebarTab, useSidebarTab} from '@/states/url-params';
 
 import {defaultMapCenter} from '@/utils/map-utils';
 import {SubmissionApiPayload} from '@/interfaces/Submission';
@@ -22,6 +23,7 @@ import 'leaflet/dist/leaflet.css';
 import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css';
 
 import styles from './map.module.scss';
+import {wrapperFullWidth} from '@/styles/variablesTS';
 import './leaflet.scss';
 
 export interface MapProps {
@@ -31,11 +33,14 @@ export interface MapProps {
 function Map({submissions}: MapProps) {
   const mapRef: React.LegacyRef<lMap> = useRef(null);
   const clusterRef = useRef<LeafletMarkerClusterGroup>(null);
+  const [selectedSubmissionId, setSelectedSubmissionId] = useSubmissionId();
+  const [, setSidebarTab] = useSidebarTab();
 
   const [tilesReady, setTilesReady] = useState(false);
   const [initialized, setInitialized] = useState(false);
-  const {isQueryLoading} = useStore(state => ({
+  const {isQueryLoading, setIsSidebarOpen} = useStore(state => ({
     isQueryLoading: state.ui.loading.isFirstMarkerDataLoading,
+    setIsSidebarOpen: state.ui.sidebar.setIsOpen,
   }));
 
   // Track whether the map is fully loaded using the initialized hook
@@ -44,6 +49,15 @@ function Map({submissions}: MapProps) {
       setInitialized(true);
     }
   }, [isQueryLoading, tilesReady, clusterRef.current]);
+
+  // handle marker click on mobile
+  function handleMarkerClick(submissionId: number) {
+    if (window.innerWidth <= wrapperFullWidth) {
+      setSelectedSubmissionId(submissionId);
+      setSidebarTab(SidebarTab.Feed);
+      setIsSidebarOpen(true);
+    }
+  }
 
   return (
     <MapContainer
@@ -78,6 +92,8 @@ function Map({submissions}: MapProps) {
               key={submission.id}
               submission={submission}
               clusterRef={clusterRef}
+              isSelected={submission.id === selectedSubmissionId}
+              onClick={() => handleMarkerClick(submission.id)}
             />
           );
         })}

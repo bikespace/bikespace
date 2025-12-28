@@ -9,8 +9,6 @@ import {
 } from 'leaflet';
 
 import {useStore} from '@/states/store';
-import {SidebarTab, useSidebarTab, useSubmissionId} from '@/states/url-params';
-import {useSubmissionsQuery} from '@/hooks';
 
 import {IssueType, SubmissionApiPayload} from '@/interfaces/Submission';
 import {issuePriority} from '@/config/bikespace-api';
@@ -19,7 +17,6 @@ import {trackUmamiEvent} from '@/utils';
 import {MapPopup} from '../map-popup';
 
 import styles from './map-marker.module.scss';
-import {wrapperFullWidth} from '@/styles/variablesTS';
 
 import notProvidedIcon from '@/assets/icons/icon_not_provided.svg';
 import abandonedIcon from '@/assets/icons/icon_abandoned.svg';
@@ -31,54 +28,43 @@ import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 interface MapMarkerProps {
   submission: SubmissionApiPayload;
   clusterRef: MutableRefObject<LeafletMarkerClusterGroup | null>;
+  isSelected: boolean;
+  onClick: () => void;
 }
 
-function MapMarker({submission, clusterRef}: MapMarkerProps) {
+function MapMarker({
+  submission,
+  clusterRef,
+  isSelected,
+  onClick,
+}: MapMarkerProps) {
   const markerRef = useRef<LeafletMarker>(null);
 
-  const [, setTab] = useSidebarTab();
-  const {setIsOpen, submissions} = useStore(state => ({
-    setIsOpen: state.ui.sidebar.setIsOpen,
+  const {submissions} = useStore(state => ({
     submissions: state.submissions,
   }));
-  const [focus, setFocus] = useSubmissionId();
-  const isFocused = focus === submission.id;
 
   const position: LatLngTuple = [submission.latitude, submission.longitude];
   const baseIconHeight = 36;
-  const iconHeight = isFocused ? baseIconHeight * 1.5 : baseIconHeight;
+  const iconHeight = isSelected ? baseIconHeight * 1.5 : baseIconHeight;
   const iconWidth = iconHeight;
 
   // focus pin if selected
   // re-focus if full submissions query changes
   // check for selected pin when layer finishes loading
-
   useEffect(() => {
-    if (!isFocused || !clusterRef.current) return;
+    if (!isSelected || !clusterRef.current) return;
     setTimeout(() => {
       clusterRef.current!.zoomToShowLayer(markerRef.current!, () => {
         markerRef.current!.openPopup();
       });
     }, 0);
-  }, [isFocused, submissions.length, clusterRef.current]);
-
-  const handlePopupClose = () => {
-    if (focus === submission.id) setFocus(null);
-  };
+  }, [isSelected, submissions.length, clusterRef.current]);
 
   const handlePopupOpen = () => {
     trackUmamiEvent('popupopen', {
       submission_id: submission.id,
     });
-  };
-
-  // handle marker click on mobile
-  const handleClick = () => {
-    if (window.innerWidth <= wrapperFullWidth) {
-      setFocus(submission.id);
-      setTab(SidebarTab.Feed);
-      setIsOpen(true);
-    }
   };
 
   // Determine which issue type to use for marker rendering
@@ -104,8 +90,7 @@ function MapMarker({submission, clusterRef}: MapMarkerProps) {
         })
       }
       eventHandlers={{
-        click: handleClick,
-        popupclose: handlePopupClose,
+        click: onClick,
         popupopen: handlePopupOpen,
       }}
       ref={markerRef}
