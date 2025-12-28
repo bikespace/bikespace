@@ -37,10 +37,10 @@ interface MapMarkerProps {
 function MapMarker({submission, doneLoading, clusterRef}: MapMarkerProps) {
   const markerRef = useRef<LeafletMarker>(null);
 
-  const {dataUpdatedAt} = useSubmissionsQuery();
   const [, setTab] = useSidebarTab();
-  const {setIsOpen} = useStore(state => ({
+  const {setIsOpen, submissions} = useStore(state => ({
     setIsOpen: state.ui.sidebar.setIsOpen,
+    submissions: state.submissions,
   }));
   const [focus, setFocus] = useSubmissionId();
   const isFocused = focus === submission.id;
@@ -53,6 +53,7 @@ function MapMarker({submission, doneLoading, clusterRef}: MapMarkerProps) {
   // focus pin if selected
   // re-focus if full submissions query changes
   // check for selected pin when layer finishes loading
+
   useEffect(() => {
     if (!isFocused || !doneLoading) return;
     setTimeout(() => {
@@ -60,7 +61,7 @@ function MapMarker({submission, doneLoading, clusterRef}: MapMarkerProps) {
         markerRef.current!.openPopup();
       });
     }, 0);
-  }, [isFocused, dataUpdatedAt, doneLoading]);
+  }, [isFocused, submissions.length, doneLoading]);
 
   const handlePopupClose = () => {
     if (focus === submission.id) setFocus(null);
