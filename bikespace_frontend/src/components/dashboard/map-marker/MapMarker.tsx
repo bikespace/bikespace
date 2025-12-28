@@ -8,7 +8,6 @@ import React, {
 
 import {Marker} from 'react-leaflet';
 import {
-  Popup as LeafletPopup,
   Marker as LeafletMarker,
   Icon,
   LatLngTuple,
@@ -52,9 +51,8 @@ const MapMarker = forwardRef(
 
     const {dataUpdatedAt} = useSubmissionsQuery();
     const [, setTab] = useSidebarTab();
-    const {setIsOpen, submissions} = useStore(state => ({
+    const {setIsOpen} = useStore(state => ({
       setIsOpen: state.ui.sidebar.setIsOpen,
-      submissions: state.submissions,
     }));
 
     const position: LatLngTuple = [submission.latitude, submission.longitude];
