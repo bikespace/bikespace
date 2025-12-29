@@ -52,7 +52,7 @@ export function FeedSubmissionItem({submission}: FeedSubmissionItemProps) {
 
     buttonRef.current?.scrollIntoView();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [focus, submissions, isMobile]);
+  }, [focus, submissions.length, isMobile]);
 
   const handleClick = () => {
     setFocus(id);

@@ -105,7 +105,7 @@ export function DashboardPage() {
 
     setSubmissions(subs);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loadedSubmissions, filters]);
+  }, [loadedSubmissions.length, filters]);
 
   useEffect(() => {
     if (focusedId === null) return;
