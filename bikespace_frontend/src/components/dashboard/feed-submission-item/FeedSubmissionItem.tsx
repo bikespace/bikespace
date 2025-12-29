@@ -3,6 +3,7 @@ import {DateTime} from 'luxon';
 
 import {SubmissionApiPayload, ParkingDuration} from '@/interfaces/Submission';
 import {useIsMobile} from '@/hooks/use-is-mobile';
+import {trackUmamiEvent} from '@/utils';
 
 import {useSubmissionId} from '@/states/url-params';
 import {useStore} from '@/states/store';
@@ -56,6 +57,7 @@ export function FeedSubmissionItem({submission}: FeedSubmissionItemProps) {
 
   const handleClick = () => {
     setFocus(id);
+    trackUmamiEvent('focus_submission', {submission_id: id});
   };
 
   return (

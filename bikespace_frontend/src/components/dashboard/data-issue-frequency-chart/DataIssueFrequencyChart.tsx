@@ -44,19 +44,19 @@ function DataIssueFrequencyChart({
     setData(inputData);
   }, [submissions, issue]);
 
-  useEffect(() => {
-    if (issue === null) return;
-
-    trackUmamiEvent('issuechart', {filter: issue});
-  }, [issue]);
-
   const handleClick = useCallback(
     (e: PlotMouseEvent) => {
       const point = e.points[0];
-
       if (!point) return;
 
-      setFilters({issue: issue === point.y ? null : (point.y as IssueType)});
+      if (issue === point.y) {
+        // toggle filter off if same issue type re-selected
+        setFilters({issue: null});
+      } else {
+        // set issue type filter
+        setFilters({issue: (point.y as IssueType)});
+        trackUmamiEvent('issuechart', {filter: (point.y as IssueType)});
+      }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [issue]

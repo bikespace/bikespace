@@ -10,6 +10,7 @@ import {
 import {useStore} from '@/states/store';
 import {useSubmissionId, SidebarTab, useSidebarTab} from '@/states/url-params';
 
+import {trackUmamiEvent} from '@/utils';
 import {defaultMapCenter} from '@/utils/map-utils';
 import {SubmissionApiPayload} from '@/interfaces/Submission';
 
@@ -57,6 +58,7 @@ function Map({submissions}: MapProps) {
       setSelectedSubmissionId(submissionId);
       setSidebarTab(SidebarTab.Feed);
       setIsSidebarOpen(true);
+      trackUmamiEvent('focus_submission', {submission_id: submissionId});
     }
   }
 

@@ -3,8 +3,6 @@
 import {useEffect} from 'react';
 import dynamic from 'next/dynamic';
 
-import {trackUmamiEvent} from '@/utils';
-
 import {useSubmissionsQuery} from '@/hooks';
 import {useSingleSubmissionQuery} from '@/hooks/use-single-submission-query';
 
@@ -106,12 +104,6 @@ export function DashboardPage() {
     setSubmissions(subs);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loadedSubmissions.length, filters]);
-
-  useEffect(() => {
-    if (focusedId === null) return;
-
-    trackUmamiEvent('focus_submission', {submission_id: focusedId});
-  }, [focusedId]);
 
   return (
     <main className={styles.dashboardPage}>
