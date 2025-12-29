@@ -47,11 +47,10 @@ export const MapHandler = () => {
   // Ensure map still fills the available space when:
   // - sidebar opens/closes
   // - window width changes
-  // - specific submission is selected
   useEffect(() => {
     map.invalidateSize();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isSidebarOpen, currentSidebarTab, window.innerWidth, focus]);
+  }, [isSidebarOpen, currentSidebarTab, window.innerWidth]);
 
   return null;
 };
