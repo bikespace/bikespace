@@ -38,6 +38,7 @@
     "leaflet": "^1.9.4",
     "leaflet-defaulticon-compatibility": "^0.1.2",
     "leaflet.locatecontrol": "^0.81.1",
+    "leaflet.markercluster": "^1.5.3",
     "luxon": "^3.7.1",
     "mapbox-gl": "^1.13.3",
     "maplibre-gl": "^4.7.1",

@@ -2,8 +2,9 @@ import React, {useEffect, useRef, useState} from 'react';
 
 import {MapContainer, TileLayer} from 'react-leaflet';
 import MarkerClusterGroup from 'react-leaflet-cluster';
+import 'leaflet.markercluster'; // add MarkerClusterGroup to leaflet namespace
 import {
-  Map as lMap,
+  Map as LeafletMap,
   MarkerClusterGroup as LeafletMarkerClusterGroup,
 } from 'leaflet';
 
@@ -22,6 +23,8 @@ import {MapHandler} from '../map-handler';
 
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css';
+import 'react-leaflet-cluster/dist/assets/MarkerCluster.css';
+import 'react-leaflet-cluster/dist/assets/MarkerCluster.Default.css';
 
 import styles from './map.module.scss';
 import {wrapperFullWidth} from '@/styles/variablesTS';
@@ -32,7 +35,7 @@ export interface MapProps {
 }
 
 function Map({submissions}: MapProps) {
-  const mapRef: React.LegacyRef<lMap> = useRef(null);
+  const mapRef = useRef<LeafletMap>(null);
   const clusterRef = useRef<LeafletMarkerClusterGroup>(null);
   const [selectedSubmissionId, setSelectedSubmissionId] = useSubmissionId();
   const [, setSidebarTab] = useSidebarTab();

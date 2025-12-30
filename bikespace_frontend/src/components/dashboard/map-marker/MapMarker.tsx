@@ -1,13 +1,13 @@
-import React, {useEffect, useRef, MutableRefObject} from 'react';
+import React, {useEffect, useRef, RefObject} from 'react';
 
 import {Marker} from 'react-leaflet';
+import 'leaflet.markercluster'; // add MarkerClusterGroup to leaflet namespace
 import {
   Marker as LeafletMarker,
+  MarkerClusterGroup as LeafletMarkerClusterGroup,
   Icon,
   LatLngTuple,
-  MarkerClusterGroup as LeafletMarkerClusterGroup,
 } from 'leaflet';
-
 import {useStore} from '@/states/store';
 
 import {IssueType, SubmissionApiPayload} from '@/interfaces/Submission';
@@ -27,7 +27,7 @@ import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 
 interface MapMarkerProps {
   submission: SubmissionApiPayload;
-  clusterRef: MutableRefObject<LeafletMarkerClusterGroup | null>;
+  clusterRef: RefObject<LeafletMarkerClusterGroup | null>;
   isSelected: boolean;
   onClick: () => void;
 }
