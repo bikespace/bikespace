@@ -52,7 +52,7 @@ function MapMarker({
   // focus pin if selected
   // re-focus if full submissions list to render changes
   useEffect(() => {
-    if (!isSelected || !clusterRef.current) return;
+    if (!isSelected || !clusterRef) return;
     setTimeout(() => {
       clusterRef.current!.zoomToShowLayer(markerRef.current!, () => {
         markerRef.current!.openPopup();
