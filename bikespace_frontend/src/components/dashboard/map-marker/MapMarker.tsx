@@ -50,8 +50,7 @@ function MapMarker({
   const iconWidth = iconHeight;
 
   // focus pin if selected
-  // re-focus if full submissions query changes
-  // check for selected pin when layer finishes loading
+  // re-focus if full submissions list to render changes
   useEffect(() => {
     if (!isSelected || !clusterRef.current) return;
     setTimeout(() => {
