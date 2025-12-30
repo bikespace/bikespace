@@ -8,10 +8,7 @@ const nextConfig = {
   output: 'export',
   // Configure `pageExtensions` to include MDX files
   pageExtensions: ['js', 'jsx', 'mdx', 'ts', 'tsx'],
-  experimental: {
-    typedRoutes: true,
-    missingSuspenseWithCSRBailout: false,
-  },
+  typedRoutes: true,
   env: {
     BIKESPACE_API_URL: process.env.BIKESPACE_API_URL,
     BIKESPACE_API_URL_DASHBOARD: process.env.BIKESPACE_API_URL_DASHBOARD,
