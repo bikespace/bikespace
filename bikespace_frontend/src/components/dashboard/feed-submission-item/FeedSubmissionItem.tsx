@@ -83,9 +83,12 @@ export function FeedSubmissionItem({submission}: FeedSubmissionItemProps) {
         <span className={styles.submissionId}>ID: {submission.id}</span>
       </div>
       <div className={styles.issues}>
-        {[...new Set(issues)].map(issue => (
-          <IssueBadge issue={issue} key={issue} />
-        ))}
+        {
+          // de-duplicate issue list: guard for old incorrect entries where same issue was selected more than once
+          [...new Set(issues)].map(issue => (
+            <IssueBadge issue={issue} key={issue} />
+          ))
+        }
       </div>
       <p>
         <strong>Wanted to park for: </strong>

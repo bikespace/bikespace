@@ -54,11 +54,14 @@ export const MapPopup = ({submission}: MapPopupProps) => {
         <strong>Issues:</strong>
         {issues ? (
           <div className={styles.issues}>
-            {issues
-              .sort((a, b) => issuePriority[a] - issuePriority[b])
-              .map(issue => (
-                <IssueBadge issue={issue} labelForm="long" key={issue} />
-              ))}
+            {
+              // de-duplicate issue list: guard for old incorrect entries where same issue was selected more than once
+              [...new Set(issues)]
+                .sort((a, b) => issuePriority[a] - issuePriority[b])
+                .map(issue => (
+                  <IssueBadge issue={issue} labelForm="long" key={issue} />
+                ))
+            }
           </div>
         ) : (
           <em>none</em>
