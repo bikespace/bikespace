@@ -1,4 +1,4 @@
-@import '@/styles/variables.module.scss';
+@use '@/styles/theme.module.scss';
 
 select.sidebarSelect {
   -webkit-appearance: none;
@@ -16,8 +16,8 @@ select.sidebarSelect {
   background-position: right 0.75rem center;
   background-size: 16px 12px;
   background-color: white;
-  border: 2px solid $color-primary-d50p;
+  border: 2px solid theme.$color-primary-d50p;
   border-radius: 4px;
-  font-family: $body-font-stack;
+  font-family: theme.$body-font-stack;
   font-size: 0.9rem;
 }

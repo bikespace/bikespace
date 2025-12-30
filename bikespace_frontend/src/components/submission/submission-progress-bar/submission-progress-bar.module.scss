@@ -1,4 +1,4 @@
-@import '@/styles/variables.module.scss';
+@use '@/styles/theme.module.scss';
 
 .progressBar {
   position: relative;
@@ -15,19 +15,19 @@
     transform: translateY(-50%);
     width: 100%;
     height: 2px;
-    background-color: $gray-color;
+    background-color: theme.$gray-color;
   }
 
   .step {
     width: 12px;
     height: 12px;
     border-radius: 50%;
-    background-color: $gray-color;
+    background-color: theme.$gray-color;
     transition: background-color 0.3s ease-in-out;
     z-index: 10;
 
     &.active {
-      background-color: $main-color;
+      background-color: theme.$main-color;
     }
   }
 }

@@ -1,4 +1,4 @@
-@import '@/styles/variables.module.scss';
+@use '@/styles/theme.module.scss';
 
 .dateRangeCustom {
   display: flex;
@@ -13,11 +13,11 @@
       color: black;
       height: 2rem;
       background-color: white;
-      border: 2px solid $color-primary-d50p;
+      border: 2px solid theme.$color-primary-d50p;
       border-radius: 4px;
       padding-left: 8px;
       padding-right: 8px;
-      font-family: $body-font-stack;
+      font-family: theme.$body-font-stack;
       font-size: 0.9rem;
     }
   }
@@ -28,6 +28,6 @@
 
   .errorMessages {
     font-size: 0.9rem;
-    color: $color-secondary-red;
+    color: theme.$color-secondary-red;
   }
 }

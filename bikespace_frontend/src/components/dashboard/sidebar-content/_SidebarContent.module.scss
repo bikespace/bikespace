@@ -1,4 +1,4 @@
-@import '@/styles/variables.module.scss';
+@use '@/styles/theme.module.scss';
 
 .ContentHeading {
   width: 100%;
@@ -20,7 +20,7 @@
 h2.cardHeading {
   font-weight: 600;
   font-size: 1.1rem;
-  color: $color-primary-d50p;
+  color: theme.$color-primary-d50p;
 }
 
 .scrollableCard {
@@ -30,7 +30,7 @@ h2.cardHeading {
 }
 
 .bordered {
-  border: 1px solid $color-secondary-med-light-grey;
+  border: 1px solid theme.$color-secondary-med-light-grey;
   padding: 10px;
   display: flex;
   flex-direction: column;
@@ -42,7 +42,7 @@ h2.cardHeading {
     box-sizing: border-box;
     width: 100%;
     padding: 8px 12px;
-    background: $color-primary-d50p;
+    background: theme.$color-primary-d50p;
     color: white;
     border-radius: 6px;
     font-weight: 500;
@@ -51,8 +51,8 @@ h2.cardHeading {
 
     @media (hover: hover) {
       &:hover {
-        background: $color-primary-d50p;
-        color: $color-primary;
+        background: theme.$color-primary-d50p;
+        color: theme.$color-primary;
       }
     }
   }

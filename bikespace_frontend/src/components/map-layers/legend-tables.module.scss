@@ -1,4 +1,4 @@
-@import '@/styles/variables.module.scss';
+@use '@/styles/theme.module.scss';
 
 .legendTable {
   th,
@@ -7,7 +7,7 @@
   }
   th {
     text-align: left;
-    background-color: $color-secondary-light-grey;
+    background-color: theme.$color-secondary-light-grey;
     border: 2px solid white;
   }
   td {

@@ -1,7 +1,7 @@
-@import '@/styles/variables.module.scss';
+@use '@/styles/theme.module.scss';
 
 .sidebar {
-  background-color: $color-primary-20p;
+  background-color: theme.$color-primary-20p;
   box-shadow: 0px 8px 8px rgba(0, 0, 0, 0.5);
   overflow: hidden;
   display: flex;
@@ -19,7 +19,7 @@
   }
 }
 
-@media (min-width: $wrapper-full-width) {
+@media (min-width: theme.$wrapper-full-width) {
   .sidebar {
     width: 340px;
   }
@@ -29,7 +29,7 @@
   }
 }
 
-@media (max-width: $wrapper-full-width) {
+@media (max-width: theme.$wrapper-full-width) {
   .sidebar {
     width: 100%;
     border-radius: 8px 8px 0px 0px;
@@ -42,14 +42,14 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      border: 2px solid $color-primary-20p;
+      border: 2px solid theme.$color-primary-20p;
 
       &:hover {
-        border: 2px solid $color-primary;
+        border: 2px solid theme.$color-primary;
       }
 
       &:active {
-        background-color: $color-primary-d50p;
+        background-color: theme.$color-primary-d50p;
       }
     }
 

@@ -1,4 +1,4 @@
-@import '@/styles/variables.module.scss';
+@use '@/styles/theme.module.scss';
 
 .tabs {
   display: flex;
@@ -11,10 +11,10 @@
   padding: 4px;
   color: black;
 
-  @media (min-width: $wrapper-full-width) {
+  @media (min-width: theme.$wrapper-full-width) {
     width: 85px;
     height: 100%;
-    border-right: 1px solid $color-primary-d50p;
+    border-right: 1px solid theme.$color-primary-d50p;
     flex-direction: column;
     justify-content: flex-start;
     padding: 4px 0 0;
@@ -31,24 +31,24 @@
   width: 100%;
   border-radius: 6px;
 
-  color: $color-primary-d70p;
-  stroke: $color-primary-d70p;
+  color: theme.$color-primary-d70p;
+  stroke: theme.$color-primary-d70p;
 
-  @media (min-width: $wrapper-full-width) {
+  @media (min-width: theme.$wrapper-full-width) {
     height: 60px;
     padding-left: 12px;
     border-radius: 0;
 
     &.active {
-      background-color: $color-primary-50p;
+      background-color: theme.$color-primary-50p;
 
-      @media (min-width: $wrapper-full-width) {
+      @media (min-width: theme.$wrapper-full-width) {
         &:after {
           content: '';
           display: block;
           height: 100%;
           width: 12px;
-          background-color: $color-primary-d50p;
+          background-color: theme.$color-primary-d50p;
           position: absolute;
           top: 0;
           left: 0;
@@ -59,8 +59,8 @@
   @media (hover: hover) {
     &:hover,
     &:focus {
-      color: $color-primary-d50p;
-      stroke: $color-primary-d50p;
+      color: theme.$color-primary-d50p;
+      stroke: theme.$color-primary-d50p;
     }
   }
 

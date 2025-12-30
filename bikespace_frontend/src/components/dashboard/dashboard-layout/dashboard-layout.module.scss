@@ -1,4 +1,4 @@
-@import '@/styles/variables.module.scss';
+@use '@/styles/theme.module.scss';
 
 .dashboardLayout {
   position: relative;
@@ -11,14 +11,14 @@
 
   a {
     text-decoration: none;
-    color: $color-secondary-dark-grey;
+    color: theme.$color-secondary-dark-grey;
 
     p &:visited {
-      color: $color-secondary-dark-grey;
+      color: theme.$color-secondary-dark-grey;
     }
 
     &:hover {
-      color: $color-primary;
+      color: theme.$color-primary;
     }
   }
 

@@ -1,4 +1,4 @@
-@import '@/styles/variables.module.scss';
+@use '@/styles/theme.module.scss';
 
 .categoryButtons {
   width: 100%;
@@ -13,7 +13,7 @@
 
 .durationCheckboxes {
   input[type='checkbox'] {
-    accent-color: $color-primary-d50p;
+    accent-color: theme.$color-primary-d50p;
   }
 }
 

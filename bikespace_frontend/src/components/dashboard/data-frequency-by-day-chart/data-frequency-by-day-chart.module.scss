@@ -1,12 +1,13 @@
-@import '@/styles/variables.module.scss';
+@use 'sass:string';
+@use '@/styles/theme.module.scss';
 
 $colors: (
-  'barColor': $color-primary,
+  'barColor': theme.$color-primary,
 );
 
 // Export variables for plotly.js consumption
 :export {
   @each $color, $value in $colors {
-    #{unquote($color)}: $value;
+    #{string.unquote($color)}: $value;
   }
 }

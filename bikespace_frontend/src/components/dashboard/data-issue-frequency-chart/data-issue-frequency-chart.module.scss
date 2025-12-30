@@ -1,21 +1,22 @@
-@import '@/styles/variables.module.scss';
+@use 'sass:string';
+@use '@/styles/theme.module.scss';
 
 $colors: (
-  'not_provided': $color-secondary-blue,
-  'not_provided_light': $color-secondary-blue-light,
-  'damaged': $color-secondary-red,
-  'damaged_light': $color-secondary-red-light,
-  'abandoned': $color-secondary-yellow-dark,
-  'abandoned_light': $color-secondary-yellow-light,
-  'other': $color-secondary-med-grey,
-  'other_light': $color-secondary-light-grey,
-  'full': $color-secondary-orange,
-  'full_light': $color-secondary-orange-light,
+  'not_provided': theme.$color-secondary-blue,
+  'not_provided_light': theme.$color-secondary-blue-light,
+  'damaged': theme.$color-secondary-red,
+  'damaged_light': theme.$color-secondary-red-light,
+  'abandoned': theme.$color-secondary-yellow-dark,
+  'abandoned_light': theme.$color-secondary-yellow-light,
+  'other': theme.$color-secondary-med-grey,
+  'other_light': theme.$color-secondary-light-grey,
+  'full': theme.$color-secondary-orange,
+  'full_light': theme.$color-secondary-orange-light,
 );
 
 // Export variables for plotly.js consumption
 :export {
   @each $color, $value in $colors {
-    #{unquote($color)}: $value;
+    #{string.unquote($color)}: $value;
   }
 }

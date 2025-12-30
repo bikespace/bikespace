@@ -1,4 +1,4 @@
-@import '@/styles/variables.module.scss';
+@use '@/styles/theme.module.scss';
 
 .submissionTime {
   .checkboxGroup {
@@ -15,7 +15,7 @@
     margin: 0px;
     margin-bottom: 10px;
     padding: 10px;
-    border: 2px solid $gray-color;
+    border: 2px solid theme.$gray-color;
     text-align: left;
     font-size: 1rem;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,

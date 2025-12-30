@@ -1,4 +1,4 @@
-@import '@/styles/variables.module.scss';
+@use '@/styles/theme.module.scss';
 @import '~leaflet.locatecontrol/dist/L.Control.Locate.css';
 
 .leaflet-bottom {
@@ -7,28 +7,28 @@
 
 .marker-cluster {
   &.marker-cluster-small {
-    background-color: $color-primary-50p;
+    background-color: theme.$color-primary-50p;
 
     div {
-      background-color: $color-primary-70p;
+      background-color: theme.$color-primary-70p;
       color: black;
     }
   }
 
   &.marker-cluster-medium {
-    background-color: $color-primary;
+    background-color: theme.$color-primary;
 
     div {
-      background-color: $color-primary-d20p;
+      background-color: theme.$color-primary-d20p;
       color: white;
     }
   }
 
   &.marker-cluster-large {
-    background-color: $color-primary-d20p;
+    background-color: theme.$color-primary-d20p;
 
     div {
-      background-color: $color-primary-d50p;
+      background-color: theme.$color-primary-d50p;
       color: white;
     }
   }

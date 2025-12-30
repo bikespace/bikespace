@@ -1,4 +1,4 @@
-@import '@/styles/variables.module.scss';
+@use '@/styles/theme.module.scss';
 
 /* Sidebar action bar height on mobile */
 $actions-height: 70px;
@@ -11,14 +11,14 @@ $actions-height: 70px;
   left: 0;
   overflow-x: hidden;
   overflow-y: hidden;
-  background: $color-primary-50p;
+  background: theme.$color-primary-50p;
   z-index: 9999;
 
   &.Feed {
-    top: calc(100% - $feed-height);
+    top: calc(100% - theme.$feed-height);
   }
 
-  @media (min-width: $wrapper-full-width) {
+  @media (min-width: theme.$wrapper-full-width) {
     position: relative;
     top: auto;
     left: auto;
@@ -40,16 +40,16 @@ $actions-height: 70px;
   left: 0;
   right: 0;
   height: $actions-height;
-  background: $color-primary-50p;
+  background: theme.$color-primary-50p;
   padding: 6px;
   padding-top: 7px;
-  @media (min-width: $wrapper-full-width) {
+  @media (min-width: theme.$wrapper-full-width) {
     display: none;
   }
 }
 
 .action {
-  background: $color-primary-d50p;
+  background: theme.$color-primary-d50p;
   border-radius: 6px;
   width: 100%;
   display: flex;
@@ -70,7 +70,7 @@ $actions-height: 70px;
   overflow-x: hidden;
   overflow-y: auto;
 
-  @media (min-width: $wrapper-full-width) {
+  @media (min-width: theme.$wrapper-full-width) {
     height: 100%;
   }
 }

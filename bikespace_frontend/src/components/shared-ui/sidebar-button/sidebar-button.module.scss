@@ -1,4 +1,4 @@
-@import '@/styles/variables.module.scss';
+@use '@/styles/theme.module.scss';
 
 .primaryBtn {
   display: flex;
@@ -6,37 +6,37 @@
   justify-content: center;
   height: 2rem;
   background-color: white;
-  border: 2px solid $color-primary-d50p;
+  border: 2px solid theme.$color-primary-d50p;
   border-radius: 4px;
   padding: 0px 8px;
-  font-family: $body-font-stack;
+  font-family: theme.$body-font-stack;
   font-size: 0.9rem;
-  color: $color-secondary-dark-grey;
+  color: theme.$color-secondary-dark-grey;
 
   &:hover {
-    background-color: $color-primary-10p;
-    border-color: $color-primary;
+    background-color: theme.$color-primary-10p;
+    border-color: theme.$color-primary;
   }
 
   &:focus {
-    box-shadow: 0 0 0 0.2rem $color-primary-20p;
+    box-shadow: 0 0 0 0.2rem theme.$color-primary-20p;
   }
 
   &:active {
-    background-color: $color-primary-d50p;
-    border-color: $color-primary;
-    color: $color-primary;
+    background-color: theme.$color-primary-d50p;
+    border-color: theme.$color-primary;
+    color: theme.$color-primary;
   }
 
   &:disabled {
     pointer-events: none;
-    color: $color-secondary-dark-grey;
-    background-color: $color-secondary-light-grey;
-    border-color: $color-secondary-dark-grey;
+    color: theme.$color-secondary-dark-grey;
+    background-color: theme.$color-secondary-light-grey;
+    border-color: theme.$color-secondary-dark-grey;
   }
 
   &.filled {
-    background: $color-primary-d50p;
+    background: theme.$color-primary-d50p;
     color: white;
     cursor: pointer;
   }

@@ -1,4 +1,4 @@
-@import '@/styles/variables.module.scss';
+@use '@/styles/theme.module.scss';
 
 .filterPropertySelectLabel {
   display: block;
@@ -14,6 +14,6 @@
 .styledCheckboxContainer {
   margin: 2px 0;
   input[type='checkbox'] {
-    accent-color: $color-primary-d50p;
+    accent-color: theme.$color-primary-d50p;
   }
 }

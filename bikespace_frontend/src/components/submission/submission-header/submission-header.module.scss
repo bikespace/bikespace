@@ -1,4 +1,4 @@
-@import '@/styles/variables.module.scss';
+@use '@/styles/theme.module.scss';
 
 .header {
   position: sticky;
@@ -22,7 +22,7 @@
     align-items: center;
 
     :hover {
-      color: $main-color;
+      color: theme.$main-color;
     }
 
     :visited {

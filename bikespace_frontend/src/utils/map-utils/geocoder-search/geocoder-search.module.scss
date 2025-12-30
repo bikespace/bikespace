@@ -1,4 +1,4 @@
-@import '@/styles/variables.module.scss';
+@use '@/styles/theme.module.scss';
 
 .geocoderSearchContainer {
   padding: 4px;
@@ -32,7 +32,7 @@
 }
 
 .geocoderResults {
-  border-top: 2px solid $color-secondary-light-grey;
+  border-top: 2px solid theme.$color-secondary-light-grey;
   padding-top: 8px;
 }
 
@@ -76,20 +76,20 @@
     text-align: left;
 
     &:hover {
-      box-shadow: 0 0 0 0.2rem $color-secondary-blue;
+      box-shadow: 0 0 0 0.2rem theme.$color-secondary-blue;
     }
 
     &:focus {
-      box-shadow: 0 0 0 0.2rem $color-secondary-blue;
+      box-shadow: 0 0 0 0.2rem theme.$color-secondary-blue;
     }
 
     &:active {
-      background-color: $color-secondary-light-grey;
-      box-shadow: 0 0 0 0.2rem $color-secondary-blue;
+      background-color: theme.$color-secondary-light-grey;
+      box-shadow: 0 0 0 0.2rem theme.$color-secondary-blue;
     }
   }
 }
 
 .selectedResult > button {
-  box-shadow: 0 0 0 0.2rem $color-secondary-blue;
+  box-shadow: 0 0 0 0.2rem theme.$color-secondary-blue;
 }

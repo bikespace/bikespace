@@ -1,4 +1,4 @@
-@import '@/styles/variables.module.scss';
+@use '@/styles/theme.module.scss';
 
 $even-lighter-grey: #eee;
 
@@ -11,7 +11,7 @@ $even-lighter-grey: #eee;
 .pageMain {
   margin: 0 auto;
   padding: 1rem;
-  max-width: $wrapper-max-width;
+  max-width: theme.$wrapper-max-width;
   justify-content: center;
 
   // prevent long bare urls from breaking page scale
@@ -65,7 +65,7 @@ $even-lighter-grey: #eee;
   blockquote {
     padding-left: 1rem;
     border-left: 4px solid $even-lighter-grey;
-    color: $color-secondary-med-grey;
+    color: theme.$color-secondary-med-grey;
   }
 
   ul li {
@@ -98,13 +98,13 @@ $even-lighter-grey: #eee;
     background-color: $even-lighter-grey;
     border-radius: 4px;
     padding: 4px;
-    border: 1px solid $color-secondary-med-light-grey;
+    border: 1px solid theme.$color-secondary-med-light-grey;
   }
 
   :where(a) {
     text-decoration: underline;
-    text-decoration-color: $color-primary;
-    color: $color-primary-d50p;
+    text-decoration-color: theme.$color-primary;
+    color: theme.$color-primary-d50p;
     text-decoration-thickness: 2px;
 
     &:visited {
@@ -128,6 +128,6 @@ $even-lighter-grey: #eee;
 
   img {
     width: 100%;
-    max-width: $wrapper-max-width;
+    max-width: theme.$wrapper-max-width;
   }
 }

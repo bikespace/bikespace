@@ -1,9 +1,9 @@
-@import '@/styles/variables.module.scss';
+@use '@/styles/theme.module.scss';
 
 .Sidebar {
   width: 100%;
   height: 80px;
-  background-color: $color-primary-20p;
+  background-color: theme.$color-primary-20p;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -11,10 +11,10 @@
   overflow-y: hidden;
 
   &.Open {
-    height: calc($feed-height);
+    height: calc(theme.$feed-height);
   }
 
-  @media (min-width: $wrapper-full-width) {
+  @media (min-width: theme.$wrapper-full-width) {
     width: 430px;
     flex-direction: row;
 

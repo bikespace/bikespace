@@ -1,34 +1,17 @@
 @use 'sass:color';
-@import '@/styles/variables.module.scss';
+@use 'sass:string';
+@use '@/styles/theme.module.scss';
 
 $colors: (
-  'colorScale0':
-    hsla(
-      hue($color-primary),
-      saturation($color-primary),
-      lightness($color-primary),
-      0.1
-    ),
-  'colorScale1':
-    hsla(
-      hue($color-secondary-orange),
-      saturation($color-secondary-orange),
-      lightness($color-secondary-orange),
-      0.7
-    ),
-  'colorScale2':
-    hsla(
-      hue($color-secondary-red),
-      saturation($color-secondary-red),
-      lightness($color-secondary-red),
-      1
-    ),
-  'cellColor': $color-secondary-light-grey,
+  'colorScale0': color.change(theme.$color-primary, $alpha: 0.1),
+  'colorScale1': color.change(theme.$color-secondary-orange, $alpha: 0.7),
+  'colorScale2': color.change(theme.$color-secondary-red, $alpha: 1),
+  'cellColor': theme.$color-secondary-light-grey,
 );
 
 // Export variables for plotly.js consumption
 :export {
   @each $color, $value in $colors {
-    #{unquote($color)}: $value;
+    #{string.unquote($color)}: $value;
   }
 }

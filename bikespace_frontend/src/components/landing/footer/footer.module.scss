@@ -1,10 +1,10 @@
-@import '@/styles/variables.module.scss';
+@use '@/styles/theme.module.scss';
 
 .pageFooter {
   padding: 2rem;
   margin-top: 1rem;
   color: white;
-  background-color: $color-primary-d50p;
+  background-color: theme.$color-primary-d50p;
 
   .footerContent {
     display: flex;
@@ -13,7 +13,7 @@
     justify-content: space-between;
     align-items: baseline;
     gap: 1rem;
-    max-width: $wrapper-max-width;
+    max-width: theme.$wrapper-max-width;
     margin: 0 auto;
   }
 

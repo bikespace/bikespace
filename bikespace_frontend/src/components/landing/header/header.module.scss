@@ -1,4 +1,4 @@
-@import '@/styles/variables.module.scss';
+@use '@/styles/theme.module.scss';
 
 $header-height: 54px;
 
@@ -17,7 +17,7 @@ $header-height: 54px;
     flex-direction: row;
     justify-content: space-between;
 
-    max-width: $wrapper-full-width;
+    max-width: theme.$wrapper-full-width;
     max-height: 100%;
     margin: 0 auto;
   }
@@ -54,7 +54,7 @@ $header-height: 54px;
     gap: 1rem;
     margin: 0;
     padding: 0;
-    color: $color-secondary-dark-grey;
+    color: theme.$color-secondary-dark-grey;
     font-weight: 600;
   }
 
@@ -74,7 +74,7 @@ $header-height: 54px;
   display: none;
 }
 
-@media (max-width: $wrapper-full-width) {
+@media (max-width: theme.$wrapper-full-width) {
   $nav-width: 250px;
 
   .navToggle {

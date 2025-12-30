@@ -1,4 +1,4 @@
-@import '@/styles/variables.module.scss';
+@use '@/styles/theme.module.scss';
 
 @mixin base-feature {
   width: 100%;
@@ -17,13 +17,13 @@
     margin-top: 4px;
     a {
       text-decoration: underline;
-      text-decoration-color: $color-primary;
-      color: $color-primary-d50p;
+      text-decoration-color: theme.$color-primary;
+      color: theme.$color-primary-d50p;
       text-decoration-thickness: 2px;
 
       &:visited {
         color: rebeccapurple;
-        text-decoration-color: $color-primary-d50p;
+        text-decoration-color: theme.$color-primary-d50p;
       }
 
       &:hover {
@@ -41,7 +41,7 @@
 
 .featureDescriptionSelected {
   @include base-feature;
-  border: 3px solid $color-secondary-red;
+  border: 3px solid theme.$color-secondary-red;
 }
 
 .featureDescriptionControls {
@@ -53,7 +53,7 @@
 
   button {
     flex-basis: 100%;
-    border: 2px solid $color-primary-20p;
+    border: 2px solid theme.$color-primary-20p;
     height: 2rem * 0.9;
     font-size: 0.9rem;
   }
@@ -62,7 +62,7 @@
 .featureDescriptionAllData {
   margin-top: 8px;
   font-size: 0.9rem;
-  background-color: $color-secondary-light-grey;
+  background-color: theme.$color-secondary-light-grey;
   border-radius: 4px;
   padding: 4px;
 
@@ -73,7 +73,7 @@
 }
 
 .divider {
-  border-bottom: 2px solid $color-secondary-light-grey;
+  border-bottom: 2px solid theme.$color-secondary-light-grey;
 
   &:last-of-type {
     display: none;

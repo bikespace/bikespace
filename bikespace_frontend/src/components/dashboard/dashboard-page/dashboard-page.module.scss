@@ -1,4 +1,4 @@
-@import '@/styles/variables.module.scss';
+@use '@/styles/theme.module.scss';
 
 .dashboardPage {
   flex-grow: 1;
@@ -6,7 +6,7 @@
   overflow: hidden;
 }
 
-@media (max-width: $wrapper-full-width) {
+@media (max-width: theme.$wrapper-full-width) {
   .dashboardPage {
     flex-direction: column-reverse;
   }

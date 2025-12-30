@@ -1,4 +1,4 @@
-@import '@/styles/variables.module.scss';
+@use '@/styles/theme.module.scss';
 
 .issue {
   display: inline-block;
@@ -8,27 +8,27 @@
   padding: 2px 4px;
 
   &.not_provided {
-    border-color: $color-secondary-blue;
-    background-color: $color-secondary-blue-light;
+    border-color: theme.$color-secondary-blue;
+    background-color: theme.$color-secondary-blue-light;
   }
 
   &.damaged {
-    border-color: $color-secondary-red;
-    background-color: $color-secondary-red-light;
+    border-color: theme.$color-secondary-red;
+    background-color: theme.$color-secondary-red-light;
   }
 
   &.abandoned {
-    border-color: $color-secondary-yellow-dark;
-    background-color: $color-secondary-yellow-light;
+    border-color: theme.$color-secondary-yellow-dark;
+    background-color: theme.$color-secondary-yellow-light;
   }
 
   &.other {
-    border-color: $color-secondary-med-grey;
-    background-color: $color-secondary-light-grey;
+    border-color: theme.$color-secondary-med-grey;
+    background-color: theme.$color-secondary-light-grey;
   }
 
   &.full {
-    border-color: $color-secondary-orange;
-    background-color: $color-secondary-orange-light;
+    border-color: theme.$color-secondary-orange;
+    background-color: theme.$color-secondary-orange-light;
   }
 }

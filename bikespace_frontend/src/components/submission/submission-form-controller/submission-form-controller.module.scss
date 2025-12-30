@@ -1,4 +1,4 @@
-@import '@/styles/variables.module.scss';
+@use '@/styles/theme.module.scss';
 
 .formController {
   display: flex;
@@ -6,7 +6,7 @@
 }
 
 .primaryBtn {
-  background-color: $main-color-bg;
+  background-color: theme.$main-color-bg;
   color: white;
   border: none;
   height: 42px;
@@ -25,14 +25,14 @@
 
   &:disabled {
     pointer-events: none;
-    color: $color-secondary-dark-grey;
-    background-color: $color-secondary-light-grey;
+    color: theme.$color-secondary-dark-grey;
+    background-color: theme.$color-secondary-light-grey;
   }
 }
 
 .primaryBtnNoFill {
   background-color: white;
-  color: $main-color;
+  color: theme.$main-color;
   border: none;
   height: 42px;
   border-radius: 21px;

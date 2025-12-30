@@ -1,4 +1,4 @@
-@import '@/styles/variables.module.scss';
+@use '@/styles/theme.module.scss';
 
 details.sidebarDetailsDisclosure {
   padding: 4px;
@@ -9,7 +9,7 @@ details.sidebarDetailsDisclosure {
     height: 2rem;
     line-height: calc(2rem - 4px); // center text vertically
     font-weight: 600;
-    color: $color-primary-d50p;
+    color: theme.$color-primary-d50p;
     border-bottom: none;
     cursor: pointer;
   }
@@ -17,7 +17,7 @@ details.sidebarDetailsDisclosure {
   &[open] summary {
     margin-bottom: 4px;
     padding-bottom: calc(4px + 3px);
-    border-bottom: 2px solid $color-secondary-light-grey;
+    border-bottom: 2px solid theme.$color-secondary-light-grey;
   }
 }
 

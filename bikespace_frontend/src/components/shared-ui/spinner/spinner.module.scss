@@ -1,4 +1,4 @@
-@import '@/styles/variables.module.scss';
+@use '@/styles/theme.module.scss';
 
 .loadingOverlay {
   position: absolute;
@@ -6,7 +6,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255, 255, 255, 0.6); /* semi-transparent white in loading state */
+  background: rgba(
+    255,
+    255,
+    255,
+    0.6
+  ); /* semi-transparent white in loading state */
   z-index: 100; /* place it on top of the map */
   pointer-events: none; /* allow clicks to pass through */
 }
@@ -14,12 +19,14 @@
 .spinner {
   width: 48px;
   height: 48px;
-  border: 4px solid $color-primary-d50p;
+  border: 4px solid theme.$color-primary-d50p;
   border-top-color: white;
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); } // spinning !
+  to {
+    transform: rotate(360deg);
+  } // spinning !
 }

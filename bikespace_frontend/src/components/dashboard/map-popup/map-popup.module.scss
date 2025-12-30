@@ -1,7 +1,7 @@
-@import '@/styles/variables.module.scss';
+@use '@/styles/theme.module.scss';
 
 .popup {
-  font-family: $body-font-stack;
+  font-family: theme.$body-font-stack;
 }
 
 .submissionId {
@@ -14,26 +14,26 @@
   justify-content: center;
   height: 2rem;
   background-color: white;
-  border: 2px solid $color-primary-d50p;
+  border: 2px solid theme.$color-primary-d50p;
   border-radius: 4px;
   padding: 0px 8px;
   font-size: 0.9rem;
-  color: $color-secondary-dark-grey;
+  color: theme.$color-secondary-dark-grey;
 
   &:hover {
-    background-color: $color-primary-10p;
-    border-color: $color-primary;
+    background-color: theme.$color-primary-10p;
+    border-color: theme.$color-primary;
     cursor: pointer;
   }
 
   &:focus {
-    box-shadow: 0 0 0 0.2rem $color-primary-20p;
+    box-shadow: 0 0 0 0.2rem theme.$color-primary-20p;
   }
 
   &:active {
-    background-color: $color-primary-d50p;
-    border-color: $color-primary;
-    color: $color-primary;
+    background-color: theme.$color-primary-d50p;
+    border-color: theme.$color-primary;
+    color: theme.$color-primary;
   }
 }
 
@@ -49,7 +49,7 @@
   align-items: center;
 }
 
-@media (max-width: $wrapper-full-width) {
+@media (max-width: theme.$wrapper-full-width) {
   .popup {
     display: none;
   }

@@ -1,9 +1,9 @@
-@import '@/styles/variables.module.scss';
+@use '@/styles/theme.module.scss';
 
 .summary {
   padding: 4px 8px;
   border-radius: 4px;
-  background-color: $color-primary-d50p;
+  background-color: theme.$color-primary-d50p;
   color: white;
   font-size: 0.9rem;
 
@@ -25,7 +25,7 @@
   min-height: 72px;
   padding: 4px 8px;
   border-radius: 4px;
-  background-color: $color-primary-d50p;
+  background-color: theme.$color-primary-d50p;
   color: white;
   font-size: 2rem;
   font-weight: 600;
