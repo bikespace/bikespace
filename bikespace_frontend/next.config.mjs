@@ -16,6 +16,7 @@ const nextConfig = {
     DATA_BICYCLE_PARKING: process.env.DATA_BICYCLE_PARKING,
     DATA_BICYCLE_NETWORK: process.env.DATA_BICYCLE_NETWORK,
   },
+  devIndicators: false,
 };
 
 const withMDX = createMDX({
