@@ -41,11 +41,17 @@ const bikeLaneTypes = {
   ],
 };
 
-export function BicycleNetworkLayer({beforeId}: {beforeId?: string}) {
+export function BicycleNetworkLayer({
+  beforeId,
+  firstLayerId = 'bicycle-lanes',
+}: {
+  beforeId?: string;
+  firstLayerId?: string;
+}) {
   const bicycleNetworkURL = process.env.DATA_BICYCLE_NETWORK;
 
   const bicycleLaneLayer: LineLayer = {
-    id: 'bicycle-lanes',
+    id: firstLayerId,
     type: 'line',
     source: 'bicycle-lanes',
     filter: [
@@ -102,7 +108,12 @@ export function BicycleNetworkLayer({beforeId}: {beforeId?: string}) {
   };
 
   return (
-    <Source id="bicycle-network" type="geojson" data={bicycleNetworkURL}>
+    <Source
+      id="bicycle-network"
+      type="geojson"
+      data={bicycleNetworkURL}
+      attribution="City of Toronto"
+    >
       <Layer {...bicycleLaneLayer} beforeId={beforeId} />
       <Layer {...bicycleRouteLayer} beforeId={beforeId} />
     </Source>
