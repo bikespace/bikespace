@@ -105,6 +105,7 @@ const MapMarker = forwardRef(
       });
     };
 
+    // handle marker click on mobile
     const handleClick = () => {
       if (windowWidth && windowWidth <= wrapperFullWidth) {
         // Manually set tab= URL params to prevent excess rerendering from subscribing to tab change
@@ -119,6 +120,7 @@ const MapMarker = forwardRef(
       }
     };
 
+    // Determine which issue type to use for marker rendering
     const priorityIssue = submission.issues.reduce((a: IssueType | null, c) => {
       if (a === null) return c;
 
