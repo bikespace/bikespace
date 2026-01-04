@@ -5,8 +5,6 @@ import React, {
   useImperativeHandle,
   MutableRefObject,
 } from 'react';
-import {Route} from 'next';
-import {usePathname, useSearchParams, useRouter} from 'next/navigation';
 import {Marker} from 'react-leaflet';
 import {
   Popup as LeafletPopup,
@@ -58,10 +56,6 @@ const MapMarker = forwardRef(
     const [, setTab] = useSidebarTab();
     const {setIsOpen} = useStore(state => state.ui.sidebar);
 
-    const searchParams = useSearchParams();
-    const pathname = usePathname();
-    const {replace} = useRouter();
-
     const position: LatLngTuple = [submission.latitude, submission.longitude];
 
     const [focus, setFocus] = useSubmissionId();
@@ -76,24 +70,10 @@ const MapMarker = forwardRef(
     // omits dependencies array to run on every render
     useEffect(() => {
       if (!isFocused || !doneLoading) return;
-      // if (windowWidth && windowWidth <= wrapperFullWidth) {
-      //   console.log('SET');
-      //   setTab(SidebarTab.Feed);
-      //   setIsOpen(true);
-      // }
       clusterRef.current!.zoomToShowLayer(innerMarkerRef.current!, () => {
         innerMarkerRef.current!.openPopup();
       });
     });
-
-    // useEffect(() => {
-    //   if (!isFocused || !doneLoading) return;
-    //   if (windowWidth && windowWidth <= wrapperFullWidth) {
-    //     console.log('SET');
-    //     setTab(SidebarTab.Feed);
-    //     setIsOpen(true);
-    //   }
-    // }, [windowWidth]);
 
     const handlePopupClose = () => {
       if (focus === submission.id) setFocus(null);
@@ -108,12 +88,6 @@ const MapMarker = forwardRef(
     // handle marker click on mobile
     const handleClick = () => {
       if (windowWidth && windowWidth <= wrapperFullWidth) {
-        // Manually set tab= URL params to prevent excess rerendering from subscribing to tab change
-        const params = new URLSearchParams(searchParams);
-
-        params.set('tab', SidebarTab.Feed);
-
-        replace(`${pathname}?${params.toString()}` as Route);
         setFocus(submission.id);
         setTab(SidebarTab.Feed);
         setIsOpen(true);
