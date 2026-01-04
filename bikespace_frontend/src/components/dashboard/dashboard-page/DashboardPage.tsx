@@ -32,15 +32,21 @@ export function DashboardPage() {
 
   const singleSubmissionQuery = useSingleSubmissionQuery(focusedId);
   const allSubmissionQuery = useSubmissionsQuery();
-
-  const singleSubmission = singleSubmissionQuery.data;
-  const allSubmissions = allSubmissionQuery.data || [];
+  const loadedSubmissions = allSubmissionQuery.data
+    ? allSubmissionQuery.data
+    : singleSubmissionQuery.data
+      ? [singleSubmissionQuery.data]
+      : [];
 
   const {submissions, setSubmissions, filters} = useStore(state => ({
     submissions: state.submissions,
     setSubmissions: state.setSubmissions,
     filters: state.filters,
   }));
+
+  const isFirstMarkerDataLoading = focusedId
+    ? singleSubmissionQuery.isLoading && allSubmissionQuery.isLoading
+    : allSubmissionQuery.isLoading;
 
   // set tab to 'feed' on page load if a submission ID is specified in the URL
   useEffect(() => {
@@ -49,19 +55,12 @@ export function DashboardPage() {
     }
   }, []); // [] = run once on first load
 
-  useEffect(() => {
-    if (focusedId !== null && singleSubmission) {
-      setSubmissions([singleSubmission]);
-      return;
-    }
-  }, [focusedId, singleSubmission]);
-
   // Filter submissions when filters state changes
   useEffect(() => {
-    if (allSubmissions.length === 0) return;
+    if (loadedSubmissions.length === 0) return;
 
     const {dateRange, parkingDuration, issue, day} = filters;
-    let subs = allSubmissions.slice();
+    let subs = loadedSubmissions;
 
     if (dateRange.from || dateRange.to)
       subs = subs.filter(s => {
@@ -84,7 +83,7 @@ export function DashboardPage() {
       );
 
     setSubmissions(subs);
-  }, [allSubmissions, filters, focusedId, setSubmissions]);
+  }, [allSubmissionQuery.data, singleSubmissionQuery.data, filters]);
 
   useEffect(() => {
     if (focusedId === null) return;
@@ -95,7 +94,10 @@ export function DashboardPage() {
   return (
     <main className={styles.dashboardPage}>
       <Sidebar />
-      <Map submissions={submissions} isPermaLink={focusedId !== null} />
+      <Map
+        submissions={submissions}
+        isFirstMarkerDataLoading={isFirstMarkerDataLoading}
+      />
     </main>
   );
 }
