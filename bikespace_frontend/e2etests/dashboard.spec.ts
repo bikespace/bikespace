@@ -18,7 +18,6 @@ test.beforeEach(async ({context}) => {
 });
 
 test.describe('Dashboard navigation on mobile viewport size', () => {
-  test.describe.configure({retries: 3});
   test.use({
     viewport: {
       height: 600,
@@ -74,6 +73,16 @@ test.describe('Dashboard navigation on mobile viewport size', () => {
       page.getByRole('button', {name: /marker for submission 1/i, exact: true})
     ).toBeVisible();
   });
+});
+
+test.describe('Dashboard navigation on mobile viewport size (flaky)', () => {
+  test.describe.configure({retries: 3});
+  test.use({
+    viewport: {
+      height: 600,
+      width: 800,
+    },
+  });
 
   test('Mobile: navigate between submissions in the same cluster', async ({
     page,
@@ -124,7 +133,6 @@ test.describe('Dashboard navigation on mobile viewport size', () => {
 });
 
 test.describe('Dashboard navigation on desktop viewport size', () => {
-  test.describe.configure({retries: 3});
   test.use({
     viewport: {
       height: 800,
@@ -172,6 +180,16 @@ test.describe('Dashboard navigation on desktop viewport size', () => {
     await expect(
       page.getByRole('button', {name: /marker for submission 1/i, exact: true})
     ).toBeVisible();
+  });
+});
+
+test.describe('Dashboard navigation on desktop viewport size (flaky)', () => {
+  test.describe.configure({retries: 3});
+  test.use({
+    viewport: {
+      height: 800,
+      width: 1200,
+    },
   });
 
   test('Desktop: navigate between submissions in the same cluster', async ({
