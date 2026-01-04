@@ -1,5 +1,7 @@
 import {test, expect} from '@playwright/test';
 
+const skipFlakyTests = true;
+
 const testLat = 43.76;
 const testLong = -79.43;
 
@@ -103,10 +105,11 @@ test.describe('Dashboard navigation on mobile viewport size (flaky)', () => {
       })
     ).toBeVisible();
 
-    test.fixme(
-      true,
-      'Subsequent interactions known to flake - appears to be a race condition between cluster internal refresh/management and cluster zoomToShowLayer method'
-    );
+    if (skipFlakyTests)
+      test.fixme(
+        true,
+        'Subsequent interactions known to flake - appears to be a race condition between cluster internal refresh/management and cluster zoomToShowLayer method'
+      );
 
     await page.getByRole('button', {name: /id: 2\D/i}).click();
     await expect(
@@ -211,10 +214,11 @@ test.describe('Dashboard navigation on desktop viewport size (flaky)', () => {
       })
     ).toBeVisible();
 
-    test.fixme(
-      true,
-      'Subsequent interactions known to flake - appears to be a race condition between cluster internal refresh/management and cluster zoomToShowLayer method'
-    );
+    if (skipFlakyTests)
+      test.fixme(
+        true,
+        'Subsequent interactions known to flake - appears to be a race condition between cluster internal refresh/management and cluster zoomToShowLayer method'
+      );
 
     await page.getByRole('button', {name: /id: 2\D/i}).click();
     await expect(
