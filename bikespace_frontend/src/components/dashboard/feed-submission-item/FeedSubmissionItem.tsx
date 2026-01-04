@@ -7,6 +7,8 @@ import {useIsMobile} from '@/hooks/use-is-mobile';
 import {useSubmissionId} from '@/states/url-params';
 import {useStore} from '@/states/store';
 
+import {issuePriority} from '@/config/bikespace-api';
+
 import {IssueBadge} from '../issue-badge';
 
 import styles from './feed-submision-item.module.scss';
@@ -80,9 +82,14 @@ export function FeedSubmissionItem({submission}: FeedSubmissionItemProps) {
         <span className={styles.submissionId}>ID: {submission.id}</span>
       </div>
       <div className={styles.issues}>
-        {[...new Set(issues)].map(issue => (
-          <IssueBadge issue={issue} key={issue} />
-        ))}
+        {
+          // de-duplicate issue list: guard for old incorrect entries where same issue was selected more than once
+          [...new Set(issues)]
+            .sort((a, b) => issuePriority[a] - issuePriority[b])
+            .map(issue => (
+              <IssueBadge issue={issue} key={issue} />
+            ))
+        }
       </div>
       <p>
         <strong>Wanted to park for: </strong>
