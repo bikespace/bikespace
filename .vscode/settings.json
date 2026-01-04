@@ -1,10 +1,13 @@
 {
   "files.exclude": {
-    "archive/": true
+    "archive/": true,
+    "bikespace_frontend/.next/": true,
+    "bikespace_frontend/coverage/": true,
+    "bikespace_frontend/.cache/": true,
+    "bikespace_frontend/out/": true,
+    "bikespace_frontend/playwright-report/": true
   },
-  "python.testing.pytestArgs": [
-    "bikespace_api"
-  ],
+  "python.testing.pytestArgs": ["bikespace_api"],
   "python.testing.unittestEnabled": false,
   "python.testing.pytestEnabled": true
 }
