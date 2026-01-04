@@ -6,7 +6,12 @@ import {getCentroid, torontoBBox} from '@/utils/map-utils';
 import {trackUmamiEvent, titleCase} from '@/utils';
 
 import type {RefObject} from 'react';
-import type {Feature, FeatureCollection} from 'geojson';
+import type {
+  Feature,
+  FeatureCollection,
+  GeoJsonProperties,
+  Geometry,
+} from 'geojson';
 import type {LngLatLike, MapRef} from 'react-map-gl/dist/esm/exports-maplibre';
 import type {UseQueryResult} from '@tanstack/react-query';
 
@@ -29,7 +34,7 @@ function getAddress(feature: Feature) {
 
 interface GeocoderResultProps {
   feature: Feature;
-  handleSelect: Function;
+  handleSelect: () => void;
   isDisabled: boolean;
   isSelected: boolean;
 }
@@ -76,7 +81,7 @@ interface SearchResultsProps {
   debouncedInputValue: string;
   query: UseQueryResult<FeatureCollection | null, Error>;
   selectedResult: Feature | null;
-  handleSelect: Function;
+  handleSelect: (f: Feature<Geometry, GeoJsonProperties>) => void;
 }
 
 function SearchResults({
@@ -139,7 +144,7 @@ function SearchResults({
 interface GeocoderSearchProps {
   mapRef: RefObject<MapRef | null>;
   isMinimized: boolean;
-  setIsMinimized: Function;
+  setIsMinimized: (_: boolean) => void;
   inputTimeOut?: number;
   resultsLimit?: number;
   defaultZoom?: number;

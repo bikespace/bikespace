@@ -1,8 +1,7 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {DateTime} from 'luxon';
 
 import {useStore} from '@/states/store';
-import {useAllSubmissionsDateRange} from '@/hooks';
 
 import {Spinner} from '@/components/shared-ui/spinner';
 
@@ -27,30 +26,25 @@ export function ReportSummary({onReady}: {onReady?: () => void}) {
     }
   }, [isFetching, onReady]);
 
-  const {first, last} = useAllSubmissionsDateRange();
-
-  const [dateRange, setDateRange] = useState({
-    from: first!,
-    to: last!,
-  });
-
-  useEffect(() => {
-    if (submissions.length === 0) return;
-
-    setDateRange({
-      from: new Date(submissions[0].parking_time + '+00:00'),
-      to: new Date(submissions[submissions.length - 1].parking_time + '+00:00'),
-    });
-  }, [submissions]);
-
-  const earliestEntry = DateTime.fromJSDate(dateRange.from).toLocaleString(
-    DateTime.DATE_FULL,
-    {locale: 'en-CA'}
-  );
-  const latestEntry = DateTime.fromJSDate(dateRange.to).toLocaleString(
-    DateTime.DATE_FULL,
-    {locale: 'en-CA'}
-  );
+  // relies on submissions from useSubmissionsQuery being pre-sorted by date
+  const dateRangeFrom =
+    submissions.length > 0
+      ? new Date(submissions[0].parking_time + '+00:00')
+      : null;
+  const dateRangeTo =
+    submissions.length > 0
+      ? new Date(submissions[submissions.length - 1].parking_time + '+00:00')
+      : null;
+  const earliestEntry = dateRangeFrom
+    ? DateTime.fromJSDate(dateRangeFrom).toLocaleString(DateTime.DATE_FULL, {
+        locale: 'en-CA',
+      })
+    : 'N/A';
+  const latestEntry = dateRangeTo
+    ? DateTime.fromJSDate(dateRangeTo).toLocaleString(DateTime.DATE_FULL, {
+        locale: 'en-CA',
+      })
+    : 'N/A';
 
   if (isFetching) {
     return (
@@ -75,6 +69,7 @@ export function ReportSummary({onReady}: {onReady?: () => void}) {
           />
         )}
         <span>
+          {' '}
           {submissions.length > 0
             ? ` reports ${
                 filters.dateRange.from === null &&
@@ -84,7 +79,7 @@ export function ReportSummary({onReady}: {onReady?: () => void}) {
                 filters.parkingDuration.length === 0 &&
                 filters.day === null
                   ? ''
-                  : ' (filtered)'
+                  : '(filtered)'
               }`
             : 'No reports match filter criteria'}
         </span>

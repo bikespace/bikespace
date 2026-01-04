@@ -9,7 +9,7 @@ export function NotFoundPage() {
     <main className={styles.page}>
       <h1 className={styles.heading}>Page not found</h1>
       <p className={styles.paragraph}>
-        Sorry 😔, we couldn't find what you were looking for.
+        {`Sorry 😔, we couldn't find what you were looking for.`}
         <br />
         {process.env.NODE_ENV === 'development' ? (
           <>

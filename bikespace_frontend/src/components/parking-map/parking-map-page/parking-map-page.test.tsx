@@ -9,6 +9,7 @@ import {ParkingMapPage, uniqueBy} from './ParkingMapPage';
 
 jest.mock('react-map-gl/maplibre', () => ({
   __esModule: true,
+  // eslint-disable-next-line react/display-name
   default: forwardRef((props, ref) => <></>), // Map is default export
   GeolocateControl: () => <></>,
   NavigationControl: () => <></>,

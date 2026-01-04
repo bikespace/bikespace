@@ -64,7 +64,8 @@ const backupMapStyle: MapStyle = {
   layers: layers('protomaps', namedFlavor('light'), {lang: 'en'}),
 };
 
-export function uniqueBy(a: Array<Object>, getKey: Function): Array<Object> {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function uniqueBy(a: Array<any>, getKey: (a: any) => any): Array<any> {
   const seen = new Set();
   return a.filter(item => {
     const k = getKey(item);
@@ -175,7 +176,7 @@ export function ParkingMapPage() {
   }
 
   function handleFeatureSelection(
-    e: React.MouseEvent<HTMLElement>,
+    e: React.MouseEvent<Element>,
     f: MapGeoJSONFeature
   ) {
     if (e.type === 'click') {
@@ -187,7 +188,7 @@ export function ParkingMapPage() {
   }
 
   function handleFeatureHover(
-    e: React.MouseEvent<HTMLElement>,
+    e: React.MouseEvent<Element>,
     f: MapGeoJSONFeature
   ) {
     // don't apply hover highlighting on touch devices

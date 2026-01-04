@@ -1,3 +1,3 @@
-module.exports = {
-  ...require('gts/.prettierrc.json'),
-};
+import PrettierConfig from 'gts/.prettierrc.json';
+
+export default PrettierConfig;

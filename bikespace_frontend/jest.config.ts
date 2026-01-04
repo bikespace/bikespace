@@ -2,14 +2,15 @@
  * For a detailed explanation regarding each configuration property, visit:
  * https://jestjs.io/docs/configuration
  */
-const nextJest = require('next/jest.js');
+import nextJest from 'next/jest.js';
+import {Config} from '@jest/types';
 
 const createJestConfig = nextJest({
   // Provide the path to your Next.js app to load next.config.js and .env files in your test environment
   dir: './',
 });
 
-const config = {
+const config: Config.InitialOptions = {
   // All imported modules in your tests should be mocked automatically
   // automock: false,
 
@@ -212,8 +213,10 @@ const config = {
 
   // Whether to use watchman for file crawling
   // watchman: true,
+
+  // fixes some issues with jest and nuqs
+  // see: https://nuqs.dev/docs/testing#jest-and-esm
+  extensionsToTreatAsEsm: ['.ts', '.tsx'],
 };
 
-const nextConfig = createJestConfig(config);
-
-module.exports = nextConfig;
+export default createJestConfig(config);
