@@ -5,7 +5,8 @@
     "bikespace_frontend/coverage/": true,
     "bikespace_frontend/.cache/": true,
     "bikespace_frontend/out/": true,
-    "bikespace_frontend/playwright-report/": true
+    "bikespace_frontend/playwright-report/": true,
+    "bikespace_frontend/test-results/": true
   },
   "python.testing.pytestArgs": ["bikespace_api"],
   "python.testing.unittestEnabled": false,
