@@ -34,10 +34,7 @@ export function SidebarContent() {
 
   return (
     <div className={`${styles.SidebarContent} ${feedStyle}`}>
-      <div className={styles.SidebarContentInner}>
-        <ClearFiltersButton />
-        {renderContent()}
-      </div>
+      {/* Back button should come first for accessible tab order, otherwise the user has to tab through all the submissions to navigate back. */}
       <div className={styles.actions}>
         <button
           onClick={() => {
@@ -48,6 +45,10 @@ export function SidebarContent() {
         >
           Back to Map
         </button>
+      </div>
+      <div className={styles.SidebarContentInner}>
+        <ClearFiltersButton />
+        {renderContent()}
       </div>
     </div>
   );
