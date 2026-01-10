@@ -39,7 +39,7 @@ test.describe('Dashboard navigation on mobile viewport size', () => {
     });
 
     // close tab
-    await page.getByRole('button', {name: /back/i}).click();
+    await page.getByRole('button', {name: /back/i}).first().click();
     await expect(page.locator('div.leaflet-container')).toBeVisible();
 
     // open filters tab
@@ -47,7 +47,7 @@ test.describe('Dashboard navigation on mobile viewport size', () => {
     await expect(page.getByText(/date range/i).first()).toBeVisible();
 
     // close tab
-    await page.getByRole('button', {name: /back/i}).click();
+    await page.getByRole('button', {name: /back/i}).first().click();
     await expect(page.locator('div.leaflet-container')).toBeVisible();
 
     // open feed tab
@@ -55,7 +55,7 @@ test.describe('Dashboard navigation on mobile viewport size', () => {
     await expect(page.getByText(/latest submissions/i).first()).toBeVisible();
 
     // close tab
-    await page.getByRole('button', {name: /back/i}).click();
+    await page.getByRole('button', {name: /back/i}).first().click();
     await expect(page.locator('div.leaflet-container')).toBeVisible();
 
     // open info tab
@@ -143,7 +143,9 @@ test.describe('Dashboard navigation on desktop viewport size', () => {
     },
   });
 
-  test('Desktop: dashboard menu nav', async ({page}) => {
+  test('Desktop: dashboard menu nav', async ({page, isMobile}) => {
+    test.skip(isMobile);
+
     // navigate to dashboard page
     await page.goto('/dashboard');
     await page.waitForSelector('div.leaflet-container');
@@ -174,7 +176,10 @@ test.describe('Dashboard navigation on desktop viewport size', () => {
 
   test('Desktop: load a submission on the dashboard using URL param', async ({
     page,
+    isMobile,
   }) => {
+    test.skip(isMobile);
+
     await page.goto('/dashboard?submission_id=1');
     await expect(
       page.getByTestId('submissions-feed').getByText(/id: 1\D/i)
@@ -197,7 +202,10 @@ test.describe('Dashboard navigation on desktop viewport size (flaky)', () => {
 
   test('Desktop: navigate between submissions in the same cluster', async ({
     page,
+    isMobile,
   }) => {
+    test.skip(isMobile);
+
     await page.goto('/dashboard');
     await page.waitForSelector('div.leaflet-container');
 
