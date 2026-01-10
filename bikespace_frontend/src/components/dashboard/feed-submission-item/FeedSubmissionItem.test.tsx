@@ -20,6 +20,10 @@ jest.mock('next/navigation', () => ({
   },
 }));
 
+jest.mock('@/hooks/use-is-mobile', () => ({
+  useIsMobile: jest.fn(),
+}));
+
 const mockSubmission: SubmissionApiPayload = {
   id: 123,
   latitude: defaultMapCenter.latitude,
