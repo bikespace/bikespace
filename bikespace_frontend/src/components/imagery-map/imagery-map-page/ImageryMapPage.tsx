@@ -151,7 +151,7 @@ export function ImageryMapPage() {
         style={{width: '100%', height: '100%'}}
         mapStyle={
           process.env.MAPTILER_API_KEY
-            ? `https://api.maptiler.com/maps/streets/style.json?key=${process.env.MAPTILER_API_KEY}`
+            ? `https://api.maptiler.com/maps/dataviz/style.json?key=${process.env.MAPTILER_API_KEY}`
             : backupMapStyle
         }
         onLoad={handleOnLoad}
