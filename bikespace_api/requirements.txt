@@ -43,7 +43,7 @@ limits==3.5.0
 Mako==1.2.4
 markdown-it-py==3.0.0
 MarkupSafe==2.1.2
-marshmallow==4.0.1
+marshmallow==4.1.2
 mdurl==0.1.2
 mypy-extensions==1.0.0
 ordered-set==4.1.0
