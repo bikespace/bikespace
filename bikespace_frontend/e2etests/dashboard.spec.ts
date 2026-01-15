@@ -1,6 +1,7 @@
 import {test, expect} from '@playwright/test';
 
 const skipFlakyTests = true;
+const enableRetries = false;
 
 const testLat = 43.76;
 const testLong = -79.43;
@@ -35,7 +36,7 @@ test.describe('Dashboard navigation on mobile viewport size', () => {
     // open insights tab
     await page.getByRole('button', {name: /insights/i}).click();
     await expect(page.getByText(/problem type/i).first()).toBeVisible({
-      timeout: 15000, // insight charts can take a while to load
+      timeout: 30 * 1000, // insight charts can take a while to load
     });
 
     // close tab
@@ -78,7 +79,7 @@ test.describe('Dashboard navigation on mobile viewport size', () => {
 });
 
 test.describe('Dashboard navigation on mobile viewport size (flaky)', () => {
-  test.describe.configure({retries: 3});
+  if (enableRetries) test.describe.configure({retries: 3});
   test.use({
     viewport: {
       height: 600,
@@ -152,13 +153,13 @@ test.describe('Dashboard navigation on desktop viewport size', () => {
 
     // insights tab should be shown by default
     await expect(page.getByText(/problem type/i).first()).toBeVisible({
-      timeout: 15000, // insight charts can take a while to load
+      timeout: 30 * 1000, // insight charts can take a while to load
     });
 
     // open insights tab
     await page.getByRole('button', {name: /insights/i}).click();
     await expect(page.getByText(/problem type/i).first()).toBeVisible({
-      timeout: 15000, // insight charts can take a while to load
+      timeout: 30 * 1000, // insight charts can take a while to load
     });
 
     // open filters tab
@@ -192,7 +193,7 @@ test.describe('Dashboard navigation on desktop viewport size', () => {
 });
 
 test.describe('Dashboard navigation on desktop viewport size (flaky)', () => {
-  test.describe.configure({retries: 3});
+  if (enableRetries) test.describe.configure({retries: 3});
   test.use({
     viewport: {
       height: 800,
