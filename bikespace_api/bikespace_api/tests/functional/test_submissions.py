@@ -95,6 +95,18 @@ def test_get_submissions_with_id(test_client, target_id):
     assert type(res["submitted_datetime"]) in (type(None), str)
 
 
+def test_get_nonexistent_submission_with_id(test_client):
+    """
+    GIVEN a Flask application configured for testing
+    GIVEN a submission ID that does not exist
+    WHEN the '/api/v2/submissions/{submission_id}' endpoint is requested (GET)
+    THEN check that the response returns an error to show that the submission was not found
+    """
+    nonexistent_submission_id = 99999
+    response = test_client.get(f"/api/v2/submissions/{nonexistent_submission_id}")
+    assert response.status_code == 404
+
+
 @mark.uses_db
 def test_post_submissions(flask_app, test_client, submission_id=5):
     dummy_submission = {
