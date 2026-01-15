@@ -23,9 +23,9 @@ The development server should now be running at `localhost:8000`
 
 ## API Docs
 
-The api follows an OpenAPI 3.0 Spec, the spec can be found at `bikespace_api/bikespace_api/static/bikespace-open-api.yaml`. When making changes to the database models, the spec should also be edited manually to match.
+The OpenAPI docs are automatically generated using [flask-smorest](https://flask-smorest.readthedocs.io/en/latest/openapi.html), based on the [marshmallow](https://marshmallow.readthedocs.io/en/latest/) schemas used for endpoints.
 
-The swagger-ui to render the OpenAPI spec can be found at `localhost:8000/api/v2/docs`
+The assets used to serve the OpenAPI docs are vendorized (saved to `bikespace_api/bikespace_api/static`). To update these assets, simply copy over the new files from the [swagger-ui `dist` folder](https://github.com/swagger-api/swagger-ui/tree/master/dist).
 
 ## Pytest Tips
 

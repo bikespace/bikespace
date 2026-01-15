@@ -8,6 +8,7 @@ from flask_admin import helpers as admin_helpers
 from flask_admin.theme import Bootstrap4Theme
 from flask_cors import CORS
 from flask_migrate import Migrate
+from flask_smorest import Api
 from flask_security.core import RoleMixin, Security, UserMixin
 from flask_security.datastore import SQLAlchemyUserDatastore
 from flask_sqlalchemy import SQLAlchemy
@@ -33,9 +34,9 @@ def create_app(script_info=None):
     # set up extensions
     db.init_app(app)
     migrate.init_app(app, db)
+    api = Api(app)
 
     # register blueprints
-    from bikespace_api.api.docs import docs_blueprint
     from bikespace_api.api.models import Role, Submission, User
     from bikespace_api.api.submissions import submissions_blueprint
     from bikespace_api.api.views import (
@@ -48,8 +49,7 @@ def create_app(script_info=None):
     user_datastore = create_userdatastore(db, User, Role)
     security = Security(app, user_datastore)
 
-    app.register_blueprint(submissions_blueprint, url_prefix="/api/v2")
-    app.register_blueprint(docs_blueprint, url_prefix="/api/v2")
+    api.register_blueprint(submissions_blueprint, url_prefix="/api/v2/")
 
     admin = Admin(
         app,

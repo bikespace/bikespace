@@ -1,4 +1,5 @@
 alembic==1.9.4
+apispec==6.8.4
 argon2-cffi==23.1.0
 argon2-cffi-bindings==21.2.0
 bcrypt==4.0.1
@@ -23,6 +24,7 @@ Flask-DebugToolbar==0.13.1
 Flask-Limiter==3.3.1
 Flask-Login==0.6.3
 Flask-Migrate==4.0.4
+flask-smorest==0.46.2
 Flask-Principal==0.4.0
 Flask-Security==5.6.1
 Flask-SQLAlchemy==3.1.1
@@ -41,6 +43,7 @@ limits==3.5.0
 Mako==1.2.4
 markdown-it-py==3.0.0
 MarkupSafe==2.1.2
+marshmallow==4.0.1
 mdurl==0.1.2
 mypy-extensions==1.0.0
 ordered-set==4.1.0
@@ -66,6 +69,7 @@ SQLAlchemy-Utils==0.41.2
 tomli==2.0.1
 typing_extensions==4.12.2
 urllib3==2.6.3
+webargs==8.7.1
 Werkzeug==3.1.5
 wrapt==1.15.0
 WTForms==3.2.1

@@ -2,6 +2,7 @@ import json
 from datetime import datetime, timezone
 
 from bikespace_api.api.models import IssueType, ParkingDuration, Submission
+from bikespace_api.api.submissions import OperationType
 from pytest import mark
 from sqlalchemy_continuum import version_class
 
@@ -50,7 +51,7 @@ def test_get_submission_accept_csv(test_client):
     accept_header = {"Accept": "text/csv"}
     response = test_client.get("/api/v2/submissions", headers=accept_header)
     assert response.status_code == 200
-    assert response.headers["Content-Type"] == "text/csv"
+    assert response.mimetype == "text/csv"
 
 
 def test_get_submissions_with_offset_limit(test_client):
@@ -92,6 +93,18 @@ def test_get_submissions_with_id(test_client, target_id):
     assert type(res["parking_time"]) == str
     assert type(res["comments"]) == str
     assert type(res["submitted_datetime"]) in (type(None), str)
+
+
+def test_get_nonexistent_submission_with_id(test_client):
+    """
+    GIVEN a Flask application configured for testing
+    GIVEN a submission ID that does not exist
+    WHEN the '/api/v2/submissions/{submission_id}' endpoint is requested (GET)
+    THEN check that the response returns an error to show that the submission was not found
+    """
+    nonexistent_submission_id = 99999
+    response = test_client.get(f"/api/v2/submissions/{nonexistent_submission_id}")
+    assert response.status_code == 404
 
 
 @mark.uses_db
@@ -162,8 +175,8 @@ def test_get_submission_history(flask_app, test_client):
         assert response_create.status_code == 200
         assert response_create.headers["Content-Type"] == "application/json"
         assert len(result_create) == 1
-        assert all(k in result_create[0] for k in ("operation_type", "changes"))
-        assert result_create[0]["operation_type"] == 0  # create action
+        assert all(k in result_create[0] for k in ("operation_description", "changes"))
+        assert result_create[0]["operation_description"] == OperationType.CREATE.name
         assert len(result_create[0]["changes"]) > 0
 
         # modify a property - should show an additional update action
@@ -177,8 +190,8 @@ def test_get_submission_history(flask_app, test_client):
         assert response_update.status_code == 200
         assert response_update.headers["Content-Type"] == "application/json"
         assert len(result_update) == 2
-        assert all(k in result_update[1] for k in ("operation_type", "changes"))
-        assert result_update[1]["operation_type"] == 1  # update action
+        assert all(k in result_update[1] for k in ("operation_description", "changes"))
+        assert result_update[1]["operation_description"] == OperationType.UPDATE.name
         assert len(result_update[1]["changes"]) == 1  # update to comment only
 
         # delete the submission - should show an additional delete action
@@ -194,8 +207,8 @@ def test_get_submission_history(flask_app, test_client):
         assert response_delete.status_code == 200
         assert response_delete.headers["Content-Type"] == "application/json"
         assert len(result_delete) == 3
-        assert all(k in result_delete[2] for k in ("operation_type", "changes"))
-        assert result_delete[2]["operation_type"] == 2  # delete action
+        assert all(k in result_delete[2] for k in ("operation_description", "changes"))
+        assert result_delete[2]["operation_description"] == OperationType.DELETE.name
         assert (
             len(result_delete[2]["changes"]) == 0
         )  # no changes for delete action since it applies record-wide
