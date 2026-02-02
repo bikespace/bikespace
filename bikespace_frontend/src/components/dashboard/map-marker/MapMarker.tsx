@@ -22,6 +22,7 @@ import {issuePriority} from '@/config/bikespace-api';
 import {trackUmamiEvent} from '@/utils';
 
 import {SidebarTab, useSidebarTab, useSubmissionId} from '@/states/url-params';
+import {useIsMobile} from '@/hooks/use-is-mobile';
 
 import {MapPopup} from '../map-popup';
 
@@ -33,7 +34,6 @@ import otherIcon from '@/assets/icons/icon_other.svg';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 
 import styles from './map-marker.module.scss';
-import {wrapperFullWidth} from '@/styles/variablesTS';
 
 interface MapMarkerProps {
   submission: SubmissionApiPayload;
@@ -53,6 +53,7 @@ const MapMarker = forwardRef(
     const innerMarkerRef = useRef<LeafletMarker>(null);
     // pass MarkerRef to parent while also allowing it to be used in this component:
     useImperativeHandle(outerMarkerRef, () => innerMarkerRef.current!, []);
+    const isMobile = useIsMobile();
     const [, setTab] = useSidebarTab();
     const {setIsOpen} = useStore(state => state.ui.sidebar);
 
@@ -87,7 +88,7 @@ const MapMarker = forwardRef(
 
     // handle marker click on mobile
     const handleClick = () => {
-      if (windowWidth && windowWidth <= wrapperFullWidth) {
+      if (isMobile) {
         setFocus(submission.id);
         setTab(SidebarTab.Feed);
         setIsOpen(true);
