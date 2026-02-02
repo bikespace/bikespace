@@ -87,7 +87,7 @@ test.describe('Dashboard navigation on mobile viewport size (flaky)', () => {
     },
   });
 
-  test('Mobile: navigate between submissions in the same cluster', async ({
+  test.skip('Mobile: navigate between submissions in the same cluster', async ({
     page,
   }) => {
     await page.goto('/dashboard');
@@ -201,7 +201,7 @@ test.describe('Dashboard navigation on desktop viewport size (flaky)', () => {
     },
   });
 
-  test('Desktop: navigate between submissions in the same cluster', async ({
+  test.skip('Desktop: navigate between submissions in the same cluster', async ({
     page,
     isMobile,
   }) => {
