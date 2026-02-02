@@ -13,16 +13,12 @@ import {
   LatLngTuple,
   MarkerClusterGroup as LeafletMarkerClusterGroup,
 } from 'leaflet';
-import {useStore} from '@/states/store';
 
 import {IssueType, SubmissionApiPayload} from '@/interfaces/Submission';
 
 import {issuePriority} from '@/config/bikespace-api';
 
 import {trackUmamiEvent} from '@/utils';
-
-import {SidebarTab, useSidebarTab, useSubmissionId} from '@/states/url-params';
-import {useIsMobile} from '@/hooks/use-is-mobile';
 
 import {MapPopup} from '../map-popup';
 
@@ -37,14 +33,15 @@ import styles from './map-marker.module.scss';
 
 interface MapMarkerProps {
   submission: SubmissionApiPayload;
-  windowWidth: number | null;
   doneLoading: boolean;
   clusterRef: MutableRefObject<LeafletMarkerClusterGroup | null>;
+  isSelected: boolean;
+  onClick: () => void;
 }
 
 const MapMarker = forwardRef(
   (
-    {submission, windowWidth, doneLoading, clusterRef}: MapMarkerProps,
+    {submission, doneLoading, clusterRef, isSelected, onClick}: MapMarkerProps,
     outerMarkerRef: React.ForwardedRef<LeafletMarker>
   ) => {
     // popupRef for calling openPopup() upon focus change
@@ -53,46 +50,26 @@ const MapMarker = forwardRef(
     const innerMarkerRef = useRef<LeafletMarker>(null);
     // pass MarkerRef to parent while also allowing it to be used in this component:
     useImperativeHandle(outerMarkerRef, () => innerMarkerRef.current!, []);
-    const isMobile = useIsMobile();
-    const [, setTab] = useSidebarTab();
-    const {setIsOpen} = useStore(state => state.ui.sidebar);
 
     const position: LatLngTuple = [submission.latitude, submission.longitude];
 
-    const [focus, setFocus] = useSubmissionId();
-
-    const isFocused = focus === submission.id;
-
     const baseIconHeight = 36;
-    const iconHeight = isFocused ? baseIconHeight * 1.5 : baseIconHeight;
+    const iconHeight = isSelected ? baseIconHeight * 1.5 : baseIconHeight;
     const iconWidth = iconHeight;
 
     // focus pin on load if in URL param
     // omits dependencies array to run on every render
     useEffect(() => {
-      if (!isFocused || !doneLoading) return;
+      if (!isSelected || !doneLoading) return;
       clusterRef.current!.zoomToShowLayer(innerMarkerRef.current!, () => {
         innerMarkerRef.current!.openPopup();
       });
     });
 
-    const handlePopupClose = () => {
-      if (focus === submission.id) setFocus(null);
-    };
-
-    const handlePopupOpen = () => {
+    const trackPopupOpen = () => {
       trackUmamiEvent('popupopen', {
         submission_id: submission.id,
       });
-    };
-
-    // handle marker click on mobile
-    const handleClick = () => {
-      if (isMobile) {
-        setFocus(submission.id);
-        setTab(SidebarTab.Feed);
-        setIsOpen(true);
-      }
     };
 
     // Determine which issue type to use for marker rendering
@@ -119,9 +96,8 @@ const MapMarker = forwardRef(
           })
         }
         eventHandlers={{
-          click: handleClick,
-          popupclose: handlePopupClose,
-          popupopen: handlePopupOpen,
+          click: onClick,
+          popupopen: trackPopupOpen,
         }}
         ref={innerMarkerRef}
         alt={`Marker for submission ${submission.id}`}

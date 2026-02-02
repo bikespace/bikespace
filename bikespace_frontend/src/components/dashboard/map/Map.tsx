@@ -7,7 +7,10 @@ import {
   Map as lMap,
   MarkerClusterGroup as LeafletMarkerClusterGroup,
 } from 'leaflet';
-import {useWindowSize} from '@uidotdev/usehooks';
+
+import {useStore} from '@/states/store';
+import {SidebarTab, useSidebarTab, useSubmissionId} from '@/states/url-params';
+import {useIsMobile} from '@/hooks/use-is-mobile';
 
 import {defaultMapCenter} from '@/utils/map-utils';
 import {SubmissionApiPayload} from '@/interfaces/Submission';
@@ -35,12 +38,16 @@ function Map({submissions, isFirstMarkerDataLoading}: MapProps) {
   const mapRef: React.LegacyRef<lMap> = useRef(null);
   const clusterRef = useRef<LeafletMarkerClusterGroup>(null);
   const markerRefs = useRef<MarkerRefs>({});
+  const isMobile = useIsMobile();
+  const [selectedSubmissionId, setSelectedSubmissionId] = useSubmissionId();
+  const [, setSidebarTab] = useSidebarTab();
+  const {setIsSidebarOpen} = useStore(state => ({
+    setIsSidebarOpen: state.ui.sidebar.setIsOpen,
+  }));
 
   const [markersReady, setMarkersReady] = useState(false);
   const [tilesReady, setTilesReady] = useState(false);
   const [initialized, setInitialized] = useState(false);
-
-  const windowSize = useWindowSize();
 
   // Track whether the map is fully loaded using the initialized hook
   useEffect(() => {
@@ -53,6 +60,15 @@ function Map({submissions, isFirstMarkerDataLoading}: MapProps) {
       setInitialized(true);
     }
   }, [isFirstMarkerDataLoading, tilesReady, markersReady, submissions.length]);
+
+  // handle marker click on mobile
+  function handleMarkerClick(submissionId: number) {
+    if (isMobile) {
+      setSelectedSubmissionId(submissionId);
+      setSidebarTab(SidebarTab.Feed);
+      setIsSidebarOpen(true);
+    }
+  }
 
   return (
     <MapContainer
@@ -86,9 +102,10 @@ function Map({submissions, isFirstMarkerDataLoading}: MapProps) {
             <MapMarker
               key={submission.id}
               submission={submission}
-              windowWidth={windowSize.width}
               doneLoading={markersReady}
               clusterRef={clusterRef}
+              isSelected={submission.id == selectedSubmissionId}
+              onClick={() => handleMarkerClick(submission.id)}
               // track when the last marker is rendered
               ref={(m: LeafletMarker) => {
                 markerRefs.current[submission.id] = m;
