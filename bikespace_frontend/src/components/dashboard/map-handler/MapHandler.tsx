@@ -18,7 +18,6 @@ export const MapHandler = () => {
 
   const [focus] = useSubmissionId();
   const isSidebarOpen = useStore(state => state.ui.sidebar.isOpen);
-  const [currentSidebarTab] = useSidebarTab();
 
   // centre map on user location on first load
   // unless a submission is already specified in the URL
