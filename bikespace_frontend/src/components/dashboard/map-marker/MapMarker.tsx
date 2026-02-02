@@ -1,17 +1,10 @@
-import React, {
-  useEffect,
-  useRef,
-  forwardRef,
-  useImperativeHandle,
-  MutableRefObject,
-} from 'react';
+import React, {useRef, forwardRef, useImperativeHandle} from 'react';
 import {Marker} from 'react-leaflet';
 import {
   Popup as LeafletPopup,
   Marker as LeafletMarker,
   Icon,
   LatLngTuple,
-  MarkerClusterGroup as LeafletMarkerClusterGroup,
 } from 'leaflet';
 
 import {IssueType, SubmissionApiPayload} from '@/interfaces/Submission';
@@ -33,15 +26,13 @@ import styles from './map-marker.module.scss';
 
 interface MapMarkerProps {
   submission: SubmissionApiPayload;
-  doneLoading: boolean;
-  clusterRef: MutableRefObject<LeafletMarkerClusterGroup | null>;
   isSelected: boolean;
   onClick: () => void;
 }
 
 const MapMarker = forwardRef(
   (
-    {submission, doneLoading, clusterRef, isSelected, onClick}: MapMarkerProps,
+    {submission, isSelected, onClick}: MapMarkerProps,
     outerMarkerRef: React.ForwardedRef<LeafletMarker>
   ) => {
     // popupRef for calling openPopup() upon focus change
@@ -56,15 +47,6 @@ const MapMarker = forwardRef(
     const baseIconHeight = 36;
     const iconHeight = isSelected ? baseIconHeight * 1.5 : baseIconHeight;
     const iconWidth = iconHeight;
-
-    // focus pin on load if in URL param
-    // omits dependencies array to run on every render
-    useEffect(() => {
-      if (!isSelected || !doneLoading) return;
-      clusterRef.current!.zoomToShowLayer(innerMarkerRef.current!, () => {
-        innerMarkerRef.current!.openPopup();
-      });
-    });
 
     const trackPopupOpen = () => {
       trackUmamiEvent('popupopen', {
