@@ -9,10 +9,8 @@ import {
 } from 'leaflet';
 import {useWindowSize} from '@uidotdev/usehooks';
 
-import {useStore} from '@/states/store';
 import {defaultMapCenter} from '@/utils/map-utils';
 import {SubmissionApiPayload} from '@/interfaces/Submission';
-import {useSidebarTab} from '@/states/url-params';
 
 import {Spinner} from '@/components/shared-ui/spinner';
 
@@ -44,15 +42,7 @@ function Map({submissions, isFirstMarkerDataLoading}: MapProps) {
 
   const windowSize = useWindowSize();
 
-  const [currentSidebarTab] = useSidebarTab();
-
-  const isSidebarOpen = useStore(state => state.ui.sidebar.isOpen);
-
-  // Ensure map still fills the available space when sidebar opens/closes
-  useEffect(() => {
-    if (!mapRef.current) return;
-    mapRef.current.invalidateSize();
-  }, [isSidebarOpen, currentSidebarTab]);
+  // Track whether the map is fully loaded using the initialized hook
   useEffect(() => {
     if (
       !initialized &&
@@ -99,6 +89,7 @@ function Map({submissions, isFirstMarkerDataLoading}: MapProps) {
               windowWidth={windowSize.width}
               doneLoading={markersReady}
               clusterRef={clusterRef}
+              // track when the last marker is rendered
               ref={(m: LeafletMarker) => {
                 markerRefs.current[submission.id] = m;
                 if (index === submissions.length - 1 && !initialized) {
