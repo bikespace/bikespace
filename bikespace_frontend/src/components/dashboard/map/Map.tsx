@@ -70,6 +70,18 @@ function Map({submissions, isFirstMarkerDataLoading}: MapProps) {
     }
   }
 
+  // zoom to pin and open popup when selected via URL param
+  // omits dependencies array to run on every render
+  useEffect(() => {
+    if (!markersReady || !selectedSubmissionId) return;
+    console.log('zooming!!');
+    const currentMarker = markerRefs.current[selectedSubmissionId];
+    clusterRef.current!.zoomToShowLayer(currentMarker, () => {
+      console.log('opening popup');
+      currentMarker.openPopup();
+    });
+  });
+
   return (
     <MapContainer
       center={[defaultMapCenter.latitude, defaultMapCenter.longitude]}
@@ -102,8 +114,6 @@ function Map({submissions, isFirstMarkerDataLoading}: MapProps) {
             <MapMarker
               key={submission.id}
               submission={submission}
-              doneLoading={markersReady}
-              clusterRef={clusterRef}
               isSelected={submission.id == selectedSubmissionId}
               onClick={() => handleMarkerClick(submission.id)}
               // track when the last marker is rendered
