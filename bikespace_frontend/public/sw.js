@@ -7,7 +7,20 @@ const PMTILES_URLS = [
 
 self.addEventListener('install', event => {
   event.waitUntil(
-    caches.open(PMTILES_CACHE).then(cache => cache.addAll(PMTILES_URLS))
+    caches.open(PMTILES_CACHE).then(async cache => {
+      await Promise.all(
+        PMTILES_URLS.map(async url => {
+          try {
+            const response = await fetch(url, {cache: 'reload'});
+            if (response && response.ok) {
+              await cache.put(url, response);
+            }
+          } catch (error) {
+            // ignore prefetch errors to avoid install failure
+          }
+        })
+      );
+    })
   );
   self.skipWaiting();
 });
@@ -33,6 +46,7 @@ self.addEventListener('fetch', event => {
   const url = new URL(request.url);
 
   if (!url.pathname.endsWith('.pmtiles')) return;
+  if (request.headers.get('range')) return;
 
   event.respondWith(
     caches.open(PMTILES_CACHE).then(async cache => {
