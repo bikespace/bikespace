@@ -42,7 +42,8 @@ const backupMapStyle: MapStyle = {
   layers: layers('protomaps', namedFlavor('light'), {lang: 'en'}),
 };
 
-const ltsPmtilesUrl = 'pmtiles://backup_map/lts_toronto_filtered_1_4.pmtiles';
+const ltsPmtilesUrl =
+  'pmtiles://https://pub-04bdbe3e39bc434bb5fae50c14232971.r2.dev/lts_toronto_filtered_1_4.pmtiles';
 const ltsSourceLayer = 'lts_toronto_filtered_1_4';
 
 const ltsLineLayer: LineLayer = {
