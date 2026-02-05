@@ -52,7 +52,7 @@ const ltsLineLayer: LineLayer = {
   source: 'lts',
   'source-layer': ltsSourceLayer,
   paint: {
-    'line-width': 2,
+    'line-width': 3,
     'line-color': [
       'match',
       ['get', 'lts'],
@@ -132,7 +132,7 @@ export function LtsMapPage() {
         style={{width: '100%', height: '100%'}}
         mapStyle={
           process.env.MAPTILER_API_KEY
-            ? `https://api.maptiler.com/maps/streets/style.json?key=${process.env.MAPTILER_API_KEY}`
+            ? `https://api.maptiler.com/maps/dataviz/style.json?key=${process.env.MAPTILER_API_KEY}`
             : backupMapStyle
         }
         onLoad={handleOnLoad}
@@ -144,8 +144,8 @@ export function LtsMapPage() {
         }}
       >
         <Source id="lts" type="vector" url={ltsPmtilesUrl}>
-          <Layer {...ltsLineLayer} />
-          <Layer {...ltsHitLayer} />
+          <Layer {...ltsLineLayer} beforeId="Road labels" />
+          <Layer {...ltsHitLayer} beforeId="Road labels" />
         </Source>
         {selectedFeature && selectedLngLat ? (
           <Popup
