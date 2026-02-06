@@ -52,7 +52,13 @@ const ltsLineLayer: LineLayer = {
   source: 'lts',
   'source-layer': ltsSourceLayer,
   paint: {
-    'line-width': 3,
+    'line-width': {
+      type: 'exponential',
+      stops: [
+        [10, 0.01],
+        [16, 3],
+      ],
+    },
     'line-color': [
       'match',
       ['get', 'lts'],
