@@ -1,6 +1,52 @@
+@import '@/styles/variables.module.scss';
+
 .ltsMapPage {
-  position: relative;
-  flex: 1;
+  flex-grow: 1;
+  display: flex;
+  overflow: hidden;
   width: 100%;
   height: 100%;
+}
+
+@media (max-width: $wrapper-full-width) {
+  .ltsMapPage {
+    flex-direction: column-reverse;
+  }
+}
+
+.filterButtonRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.filterButtonActive {
+  background-color: $color-primary-10p;
+  border-color: $color-primary;
+  color: $color-primary;
+}
+
+.legendList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.legendRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.legendSwatch {
+  width: 16px;
+  height: 16px;
+  border-radius: 3px;
+  border: 1px solid $color-secondary-dark-grey;
+  flex-shrink: 0;
+}
+
+.legendLabel {
+  font-size: 0.9rem;
+  color: $color-secondary-dark-grey;
 }

@@ -1,22 +1,31 @@
 'use client';
 
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import Map, {Layer, Popup, Source} from 'react-map-gl/maplibre';
 import maplibregl from 'maplibre-gl';
 import {Protocol} from 'pmtiles';
 import {layers, namedFlavor} from '@protomaps/basemaps';
 
-import {defaultMapCenter} from '@/utils/map-utils';
+import {defaultMapCenter, GeocoderSearch} from '@/utils/map-utils';
+
+import {Sidebar} from '@/components/parking-map/parking-map-page/sidebar/Sidebar';
+import {
+  SidebarDetailsDisclosure,
+  SidebarDetailsContent,
+} from '@/components/shared-ui/sidebar-details-disclosure';
+import {SidebarButton} from '@/components/shared-ui/sidebar-button';
 
 import type {
   LineLayer,
   MapLayerMouseEvent,
+  MapRef,
   MapStyle,
 } from 'react-map-gl/maplibre';
-import type {MapGeoJSONFeature} from 'maplibre-gl';
+import type {FilterSpecification, MapGeoJSONFeature} from 'maplibre-gl';
 
 import 'maplibre-gl/dist/maplibre-gl.css';
 import styles from './lts-map-page.module.scss';
+import parkingStyles from '@/components/parking-map/parking-map-page/parking-map-page.module.scss';
 
 let pmtilesProtocolAdded = false;
 function ensurePmtilesProtocol() {
@@ -95,6 +104,26 @@ export function LtsMapPage() {
     lng: number;
     lat: number;
   } | null>(null);
+  const [sidebarIsOpen, setSidebarIsOpen] = useState(true);
+  const [geoSearchIsMinimized, setGeoSearchIsMinimized] = useState(false);
+  const [enabledLtsLevels, setEnabledLtsLevels] = useState<number[]>([
+    1, 2, 3, 4,
+  ]);
+  const mapRef = useRef<MapRef>(null);
+
+  const ltsFilter: FilterSpecification =
+    enabledLtsLevels.length === 0
+      ? ['==', ['get', 'lts'], -1]
+      : ['in', ['get', 'lts'], ['literal', enabledLtsLevels]];
+
+  function toggleLtsLevel(level: number) {
+    setEnabledLtsLevels(prev => {
+      if (prev.includes(level)) {
+        return prev.filter(v => v !== level);
+      }
+      return [...prev, level].sort((a, b) => a - b);
+    });
+  }
 
   useEffect(() => {
     ensurePmtilesProtocol();
@@ -120,15 +149,122 @@ export function LtsMapPage() {
     if (features.length > 0) {
       setSelectedFeature(features[0]);
       setSelectedLngLat({lng: event.lngLat.lng, lat: event.lngLat.lat});
+      setGeoSearchIsMinimized(true);
     } else {
       setSelectedFeature(null);
       setSelectedLngLat(null);
+      setGeoSearchIsMinimized(false);
     }
   }
 
   return (
     <main className={styles.ltsMapPage}>
+      <Sidebar isOpen={sidebarIsOpen} setIsOpen={setSidebarIsOpen}>
+        <div className={parkingStyles.sideBarContainer}>
+          <div className={parkingStyles.ContentCard}>
+            <div className={parkingStyles.ContentHeading}>
+              <h2 className={parkingStyles.cardHeading}>
+                Level of Traffic Stress Map (LTS)
+              </h2>
+            </div>
+            <p className={parkingStyles.cardBody}>
+              Click a segment to view LTS details.
+            </p>
+            {selectedFeature ? (
+              <SidebarButton
+                onClick={() => {
+                  setSelectedFeature(null);
+                  setSelectedLngLat(null);
+                  setGeoSearchIsMinimized(false);
+                }}
+              >
+                Clear Selection
+              </SidebarButton>
+            ) : null}
+          </div>
+          <GeocoderSearch
+            mapRef={mapRef}
+            isMinimized={geoSearchIsMinimized}
+            setIsMinimized={setGeoSearchIsMinimized}
+            selectResultEvent="lts-map-select-geosearch-result"
+            clearSearchEvent="lts-map-clear-geosearch"
+            geosearchErrorEvent="lts-map-geosearch-error"
+          />
+
+          <SidebarDetailsDisclosure>
+            <summary>Filters</summary>
+            <SidebarDetailsContent>
+              <div className={parkingStyles.ContentCard}>
+                <div className={styles.filterButtonRow}>
+                  {[1, 2, 3, 4].map(level => {
+                    const isActive = enabledLtsLevels.includes(level);
+                    return (
+                      <SidebarButton
+                        key={level}
+                        className={isActive ? styles.filterButtonActive : ''}
+                        onClick={() => toggleLtsLevel(level)}
+                        aria-pressed={isActive}
+                      >
+                        LTS {level}
+                      </SidebarButton>
+                    );
+                  })}
+                </div>
+                <div className={styles.filterButtonRow}>
+                  <SidebarButton
+                    onClick={() => setEnabledLtsLevels([1, 2, 3, 4])}
+                  >
+                    Show All
+                  </SidebarButton>
+                  <SidebarButton onClick={() => setEnabledLtsLevels([])}>
+                    Clear All
+                  </SidebarButton>
+                </div>
+              </div>
+            </SidebarDetailsContent>
+          </SidebarDetailsDisclosure>
+
+          <SidebarDetailsDisclosure>
+            <summary>Legend</summary>
+            <SidebarDetailsContent>
+              <div className={parkingStyles.ContentCard}>
+                <div className={styles.legendList}>
+                  <div className={styles.legendRow}>
+                    <span
+                      className={styles.legendSwatch}
+                      style={{backgroundColor: '#2e7d32'}}
+                    />
+                    <span className={styles.legendLabel}>LTS 1</span>
+                  </div>
+                  <div className={styles.legendRow}>
+                    <span
+                      className={styles.legendSwatch}
+                      style={{backgroundColor: '#1e88e5'}}
+                    />
+                    <span className={styles.legendLabel}>LTS 2</span>
+                  </div>
+                  <div className={styles.legendRow}>
+                    <span
+                      className={styles.legendSwatch}
+                      style={{backgroundColor: '#fdd835'}}
+                    />
+                    <span className={styles.legendLabel}>LTS 3</span>
+                  </div>
+                  <div className={styles.legendRow}>
+                    <span
+                      className={styles.legendSwatch}
+                      style={{backgroundColor: '#e53935'}}
+                    />
+                    <span className={styles.legendLabel}>LTS 4</span>
+                  </div>
+                </div>
+              </div>
+            </SidebarDetailsContent>
+          </SidebarDetailsDisclosure>
+        </div>
+      </Sidebar>
       <Map
+        ref={mapRef}
         mapLib={maplibregl}
         initialViewState={{
           latitude: defaultLocation.latitude,
@@ -150,8 +286,8 @@ export function LtsMapPage() {
         }}
       >
         <Source id="lts" type="vector" url={ltsPmtilesUrl}>
-          <Layer {...ltsLineLayer} beforeId="Road labels" />
-          <Layer {...ltsHitLayer} beforeId="Road labels" />
+          <Layer {...ltsLineLayer} filter={ltsFilter} beforeId="Road labels" />
+          <Layer {...ltsHitLayer} filter={ltsFilter} beforeId="Road labels" />
         </Source>
         {selectedFeature && selectedLngLat ? (
           <Popup
