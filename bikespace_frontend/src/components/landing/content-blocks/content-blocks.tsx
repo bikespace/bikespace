@@ -40,6 +40,13 @@ function HeroBlock({
             >
               Find bicycle parking
             </a>
+            <a
+              href="/lts-map"
+              className={styles.buttonLink}
+              data-umami-event="lts-map-from-frontpage"
+            >
+              Level of Traffic Stress map
+            </a>
           </div>
         </div>
         <div style={{flex: '1 1 auto'}}>
