@@ -191,7 +191,7 @@ export function LtsMapPage() {
             geosearchErrorEvent="lts-map-geosearch-error"
           />
 
-          <SidebarDetailsDisclosure>
+          <SidebarDetailsDisclosure open>
             <summary>Filters</summary>
             <SidebarDetailsContent>
               <div className={parkingStyles.ContentCard}>
@@ -224,7 +224,7 @@ export function LtsMapPage() {
             </SidebarDetailsContent>
           </SidebarDetailsDisclosure>
 
-          <SidebarDetailsDisclosure>
+          <SidebarDetailsDisclosure open>
             <summary>Legend</summary>
             <SidebarDetailsContent>
               <div className={parkingStyles.ContentCard}>
