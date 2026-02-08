@@ -50,3 +50,13 @@
   font-size: 0.9rem;
   color: $color-secondary-dark-grey;
 }
+
+.selectedFeatureDetails {
+  margin: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 220px;
+  overflow-y: auto;
+  word-break: break-word;
+}

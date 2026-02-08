@@ -1,7 +1,7 @@
 'use client';
 
 import React, {useEffect, useRef, useState} from 'react';
-import Map, {Layer, Popup, Source} from 'react-map-gl/maplibre';
+import Map, {Layer, Source} from 'react-map-gl/maplibre';
 import maplibregl from 'maplibre-gl';
 import {Protocol} from 'pmtiles';
 import {layers, namedFlavor} from '@protomaps/basemaps';
@@ -96,14 +96,26 @@ const ltsHitLayer: LineLayer = {
   },
 };
 
+const ltsSelectedLayer: LineLayer = {
+  id: 'lts-lines-selected',
+  type: 'line',
+  source: 'lts-selected',
+  paint: {
+    'line-width': {
+      type: 'exponential',
+      stops: [
+        [10, 1.5],
+        [16, 6],
+      ],
+    },
+    'line-color': '#ff6f00',
+  },
+};
+
 export function LtsMapPage() {
   const [defaultLocation, setDefaultLocation] = useState(defaultMapCenter);
   const [selectedFeature, setSelectedFeature] =
     useState<MapGeoJSONFeature | null>(null);
-  const [selectedLngLat, setSelectedLngLat] = useState<{
-    lng: number;
-    lat: number;
-  } | null>(null);
   const [sidebarIsOpen, setSidebarIsOpen] = useState(true);
   const [geoSearchIsMinimized, setGeoSearchIsMinimized] = useState(false);
   const [enabledLtsLevels, setEnabledLtsLevels] = useState<number[]>([
@@ -148,14 +160,25 @@ export function LtsMapPage() {
     });
     if (features.length > 0) {
       setSelectedFeature(features[0]);
-      setSelectedLngLat({lng: event.lngLat.lng, lat: event.lngLat.lat});
       setGeoSearchIsMinimized(true);
     } else {
       setSelectedFeature(null);
-      setSelectedLngLat(null);
       setGeoSearchIsMinimized(false);
     }
   }
+
+  const selectedFeatureProperties = selectedFeature?.properties ?? null;
+  const selectedFeatureEntries = selectedFeatureProperties
+    ? Object.entries(selectedFeatureProperties).filter(([key]) => key !== 'lts')
+    : [];
+  const selectedFeatureGeoJSON =
+    selectedFeature?.geometry === undefined
+      ? null
+      : {
+          type: 'Feature' as const,
+          properties: selectedFeature.properties ?? {},
+          geometry: selectedFeature.geometry,
+        };
 
   return (
     <main className={styles.ltsMapPage}>
@@ -170,11 +193,40 @@ export function LtsMapPage() {
             <p className={parkingStyles.cardBody}>
               Click a segment to view LTS details.
             </p>
+            {selectedFeatureProperties ? (
+              <div className={styles.selectedFeatureDetails}>
+                <div>
+                  <strong>LTS:</strong>{' '}
+                  {String(selectedFeatureProperties.lts ?? 'N/A')}
+                </div>
+                <div key="selected-feature-name">
+                  <strong>Name:</strong>{' '}
+                  {String(selectedFeatureProperties.name)}
+                </div>
+                <div key="selected-feature-num-of-lanes">
+                  <strong>Num of lanes:</strong>{' '}
+                  {String(selectedFeatureProperties.lanes)}
+                </div>
+                <div key="selected-feature-max-speed">
+                  <strong>Max Speed (km/h):</strong>{' '}
+                  {String(selectedFeatureProperties.maxspeed)}
+                </div>
+                <div key="selected-feature-road-type">
+                  <strong>Road type:</strong>{' '}
+                  {String(selectedFeatureProperties.highway)}
+                </div>
+                <div key="selected-feature-lts-reasoning">
+                  <strong>LTS reason:</strong>{' '}
+                  {String(selectedFeatureProperties.message)}
+                </div>
+              </div>
+            ) : (
+              <p className={parkingStyles.cardBody}>No segment selected yet.</p>
+            )}
             {selectedFeature ? (
               <SidebarButton
                 onClick={() => {
                   setSelectedFeature(null);
-                  setSelectedLngLat(null);
                   setGeoSearchIsMinimized(false);
                 }}
               >
@@ -289,25 +341,14 @@ export function LtsMapPage() {
           <Layer {...ltsLineLayer} filter={ltsFilter} beforeId="Road labels" />
           <Layer {...ltsHitLayer} filter={ltsFilter} beforeId="Road labels" />
         </Source>
-        {selectedFeature && selectedLngLat ? (
-          <Popup
-            longitude={selectedLngLat.lng}
-            latitude={selectedLngLat.lat}
-            closeOnClick={false}
-            onClose={() => {
-              setSelectedFeature(null);
-              setSelectedLngLat(null);
-            }}
+        {selectedFeatureGeoJSON ? (
+          <Source
+            id="lts-selected"
+            type="geojson"
+            data={selectedFeatureGeoJSON}
           >
-            <div>
-              <div>
-                <strong>LTS:</strong> {String(selectedFeature.properties?.lts)}
-              </div>
-              <pre style={{marginTop: 8, maxHeight: 240, overflow: 'auto'}}>
-                {JSON.stringify(selectedFeature.properties, null, 2)}
-              </pre>
-            </div>
-          </Popup>
+            <Layer {...ltsSelectedLayer} beforeId="Road labels" />
+          </Source>
         ) : null}
       </Map>
     </main>
