@@ -60,3 +60,60 @@
   overflow-y: auto;
   word-break: break-word;
 }
+
+.ltsDescriptionList {
+  margin-top: 8px;
+  padding-left: 18px;
+}
+
+.ltsDescriptionList li {
+  margin-top: 6px;
+}
+
+.ltsTextBlock {
+  margin-top: 8px;
+}
+
+.citation {
+  margin: 4px;
+  font-size: 0.85rem;
+  color: $color-secondary-dark-grey;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.sourceList {
+  margin: 4px 0 0 18px;
+  padding-left: 18px;
+  list-style: decimal;
+}
+
+.sourceList li {
+  list-style: decimal;
+  list-style-position: outside;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.citationRef {
+  margin-left: 4px;
+  font-size: 0.75rem;
+  vertical-align: super;
+}
+
+.ltsMapPage .citationRef,
+.ltsMapPage .citationRef:visited {
+  color: #0b57d0;
+}
+
+.ltsMapPage .citation a,
+.ltsMapPage .citation a:visited {
+  color: #0b57d0;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.ltsMapPage .blueLink,
+.ltsMapPage .blueLink:visited {
+  color: #0b57d0;
+}

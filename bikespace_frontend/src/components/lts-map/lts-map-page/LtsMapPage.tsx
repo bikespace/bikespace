@@ -313,6 +313,152 @@ export function LtsMapPage() {
               </div>
             </SidebarDetailsContent>
           </SidebarDetailsDisclosure>
+          <SidebarDetailsDisclosure>
+            <summary>How is LTS calculated</summary>
+            <SidebarDetailsContent>
+              <div className={parkingStyles.ContentCard}>
+                <p>
+                  Level of Traffic Stress (LTS) is a rating given to a road
+                  segment or crossing indicating the traffic stress it imposes
+                  on bicyclists. Levels of traffic stress range from 1 to 4 as
+                  follow:
+                  <a href="#lts-source-1" className={styles.citationRef}>
+                    [1]
+                  </a>
+                </p>
+                <ul className={styles.ltsDescriptionList}>
+                  <li>
+                    <strong>LTS 1: </strong>Strong separation from all except
+                    low speed, low volume traffic. Simple crossings. Suitable
+                    for children.
+                  </li>
+                  <li>
+                    <strong>LTS 2: </strong>Except in low speed / low volume
+                    traffic situations, cyclists have their own place to ride
+                    that that keeps them from having to interact with traffic
+                    except at formal crossings. Physical separation from higher
+                    speed and multilane traffic. Crossings that are adult to
+                    negotiate. Corresponds to design criteria for Dutch bicycle
+                    route facilities. A level of traffic stress that most adults
+                    can tolerate, particularly those sometimes classified as
+                    "interested but concerned".
+                    <a href="#lts-source-2" className={styles.citationRef}>
+                      [2]
+                    </a>
+                  </li>
+                  <li>
+                    <strong>LTS 3: </strong>
+                    Involves interaction with moderate speed or multilane
+                    traffic, or close proximity to higher speed traffic. A level
+                    of traffic stress acceptable to those classified as
+                    "enthused and confident."
+                    <a href="#lts-source-2" className={styles.citationRef}>
+                      [2]
+                    </a>
+                  </li>
+                  <li>
+                    <strong>LTS 4: </strong>Involves interaction with higher
+                    speed traffic or close proximity to high speed traffic. A
+                    level of stress acceptable only to those classified as
+                    "strong and fearless."
+                    <a href="#lts-source-2" className={styles.citationRef}>
+                      [2]
+                    </a>
+                  </li>
+                </ul>
+                <p className={styles.ltsTextBlock}>
+                  The code for the generation of the LTS data used on this
+                  dashboard is available{' '}
+                  <a
+                    className={styles.blueLink}
+                    href="https://github.com/bikespace/LTS-OSM"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    here
+                  </a>
+                  <a href="#lts-source-3" className={styles.citationRef}>
+                    [3]
+                  </a>
+                </p>
+                <p className={styles.ltsTextBlock}>
+                  The code is a fork of Madeliene Bonsma-Fisher's implementation
+                  of calculating LTS from OSM data.
+                  <a href="#lts-source-4" className={styles.citationRef}>
+                    [4]
+                  </a>
+                </p>
+                <p className={styles.ltsTextBlock}>
+                  Which is adapted from Bike Ottawa's LTS code.
+                  <a href="#lts-source-5" className={styles.citationRef}>
+                    [5]
+                  </a>
+                </p>
+
+                <div className={styles.citation}>
+                  <strong>Sources</strong>
+                  <ol className={styles.sourceList}>
+                    <li id="lts-source-1">
+                      Peter G. Furth,{' '}
+                      <a
+                        href="https://peterfurth.sites.northeastern.edu/level-of-traffic-stress/"
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        Level of Traffic Stress
+                      </a>{' '}
+                      (Northeastern University)
+                    </li>
+                    <li id="lts-source-2">
+                      Dill, J., & McNeil, N. (2013). Four types of cyclists?
+                      Examining a typology to better understand bicycling
+                      behavior and potential. Transportation Research Board 92nd
+                      Annual Meeting.
+                      <a
+                        href="https://www1.coe.neu.edu/~pfurth/Other%20papers/Dill%202013%204%20types%20of%20cyclists%20TRR.pdf"
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        https://www1.coe.neu.edu/~pfurth/Other%20papers/Dill%202013%204%20types%20of%20cyclists%20TRR.pdf
+                      </a>
+                    </li>
+                    <li id="lts-source-3">
+                      bikespace. (n.d.). LTS-OSM [Computer software]. GitHub.
+                      <a
+                        href="https://github.com/bikespace/LTS-OSM"
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        https://github.com/bikespace/LTS-OSM
+                      </a>
+                    </li>
+                    <li id="lts-source-4">
+                      Bonsma, M. (n.d.). LTS-OSM (Version latest) [Computer
+                      software]. GitHub.
+                      <a
+                        href="https://github.com/mbonsma/LTS-OSM"
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        https://github.com/mbonsma/LTS-OSM
+                      </a>
+                    </li>
+                    <li id="lts-source-5">
+                      BikeOttawa. (n.d.). stressmodel [Computer software].
+                      GitHub.
+                      <a
+                        href="https://github.com/BikeOttawa/stressmodel"
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        https://github.com/BikeOttawa/stressmodel
+                      </a>
+                    </li>
+                  </ol>
+                </div>
+              </div>
+            </SidebarDetailsContent>
+          </SidebarDetailsDisclosure>
         </div>
       </Sidebar>
       <Map
