@@ -6,13 +6,13 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "contextily>=1.6.2",
-    "matplotlib>=3.9.2",
+    "matplotlib>=3.10.8",
     "numpy>=2.1.2",
     "pandas>=2.2.3",
     "pillow>=11.0.0",
     "progress>=1.6",
-    "geopandas>=1.0.1",
-    "requests>=2.32.3",
+    "geopandas>=1.1.2",
+    "requests>=2.32.5",
     "xlsxwriter>=3.2.0",
 ]
 
@@ -20,8 +20,8 @@ dependencies = [
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
-[tool.uv]
-dev-dependencies = [
+[dependency-groups]
+dev = [
     "taskipy>=1.14.0",
     "pytest>=8.3.3",
     "ruff>=0.7.1",
