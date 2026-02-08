@@ -393,11 +393,11 @@ def get_date_range_description(dates: DateRange) -> str:
     if dates["date_from"] is None and dates["date_to"] is None:
         return "Includes relevant BikeSpace reports from all dates collected"
     elif dates["date_from"] is None:
-        return f"Includes relevant BikeSpace reports on or before {dates["date_to"].isoformat()}"
+        return f"Includes relevant BikeSpace reports on or before {dates['date_to'].isoformat()}"
     elif dates["date_to"] is None:
-        return f"Includes relevant BikeSpace reports on or after {dates["date_from"].isoformat()}"
+        return f"Includes relevant BikeSpace reports on or after {dates['date_from'].isoformat()}"
     else:
-        return f"Includes relevant BikeSpace reports between and including {dates["date_from"].isoformat()} and {dates["date_to"].isoformat()}"
+        return f"Includes relevant BikeSpace reports between and including {dates['date_from'].isoformat()} and {dates['date_to'].isoformat()}"
 
 
 def get_combined_data_table(matches: list[ReportCityMatch]) -> gpd.GeoDataFrame:
@@ -545,7 +545,7 @@ def export_excel(
         worksheet.write(
             write_row,
             0,
-            f"BIKESPACE REPORT #{report.index.array[0]} ({report["report_date"].iloc[0].isoformat()})",
+            f"BIKESPACE REPORT #{report.index.array[0]} ({report['report_date'].iloc[0].isoformat()})",
             bold,
         )
         write_row += 1
