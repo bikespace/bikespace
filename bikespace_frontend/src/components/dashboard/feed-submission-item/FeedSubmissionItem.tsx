@@ -2,8 +2,12 @@ import React, {useEffect, useRef} from 'react';
 import {DateTime} from 'luxon';
 
 import {SubmissionApiPayload, ParkingDuration} from '@/interfaces/Submission';
+import {useIsMobile} from '@/hooks/use-is-mobile';
 
 import {useSubmissionId} from '@/states/url-params';
+import {useStore} from '@/states/store';
+
+import {issuePriority} from '@/config/bikespace-api';
 
 import {IssueBadge} from '../issue-badge';
 
@@ -14,6 +18,9 @@ interface FeedSubmissionItemProps {
 }
 
 export function FeedSubmissionItem({submission}: FeedSubmissionItemProps) {
+  const submissions = useStore(state => state.submissions);
+  const isMobile = useIsMobile();
+
   const {
     id,
     issues,
@@ -38,11 +45,15 @@ export function FeedSubmissionItem({submission}: FeedSubmissionItemProps) {
 
   const [focus, setFocus] = useSubmissionId();
 
+  // scroll selected item into view when:
+  // - focus changes
+  // - submissions change (e.g. more are loaded)
+  // - viewport changes from desktop to mobile or vice versa
   useEffect(() => {
     if (!(focus === id)) return;
 
     buttonRef.current?.scrollIntoView();
-  }, [focus]);
+  }, [focus, submissions, isMobile]);
 
   const handleClick = () => {
     setFocus(id);
@@ -71,9 +82,14 @@ export function FeedSubmissionItem({submission}: FeedSubmissionItemProps) {
         <span className={styles.submissionId}>ID: {submission.id}</span>
       </div>
       <div className={styles.issues}>
-        {[...new Set(issues)].map(issue => (
-          <IssueBadge issue={issue} key={issue} />
-        ))}
+        {
+          // de-duplicate issue list: guard for old incorrect entries where same issue was selected more than once
+          [...new Set(issues)]
+            .sort((a, b) => issuePriority[a] - issuePriority[b])
+            .map(issue => (
+              <IssueBadge issue={issue} key={issue} />
+            ))
+        }
       </div>
       <p>
         <strong>Wanted to park for: </strong>

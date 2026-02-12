@@ -2,13 +2,18 @@ import React, {useEffect, useRef, useState} from 'react';
 
 import {MapContainer, TileLayer} from 'react-leaflet';
 import MarkerClusterGroup from 'react-leaflet-cluster';
-import {Marker as LeafletMarker, Map as lMap} from 'leaflet';
-import {useWindowSize} from '@uidotdev/usehooks';
+import {
+  Marker as LeafletMarker,
+  Map as lMap,
+  MarkerClusterGroup as LeafletMarkerClusterGroup,
+} from 'leaflet';
 
 import {useStore} from '@/states/store';
+import {SidebarTab, useSidebarTab, useSubmissionId} from '@/states/url-params';
+import {useIsMobile} from '@/hooks/use-is-mobile';
+
 import {defaultMapCenter} from '@/utils/map-utils';
 import {SubmissionApiPayload} from '@/interfaces/Submission';
-import {useSidebarTab} from '@/states/url-params';
 
 import {Spinner} from '@/components/shared-ui/spinner';
 
@@ -24,45 +29,58 @@ import './leaflet.scss';
 
 export interface MapProps {
   submissions: SubmissionApiPayload[];
-  isPermaLink: boolean;
+  isFirstMarkerDataLoading: boolean;
 }
 
 type MarkerRefs = Record<number, LeafletMarker>;
 
-function Map({submissions, isPermaLink}: MapProps) {
+function Map({submissions, isFirstMarkerDataLoading}: MapProps) {
   const mapRef: React.LegacyRef<lMap> = useRef(null);
-  const clusterRef = useRef(null);
+  const clusterRef = useRef<LeafletMarkerClusterGroup>(null);
   const markerRefs = useRef<MarkerRefs>({});
+  const isMobile = useIsMobile();
+  const [selectedSubmissionId, setSelectedSubmissionId] = useSubmissionId();
+  const [, setSidebarTab] = useSidebarTab();
+  const {setIsSidebarOpen} = useStore(state => ({
+    setIsSidebarOpen: state.ui.sidebar.setIsOpen,
+  }));
 
   const [markersReady, setMarkersReady] = useState(false);
   const [tilesReady, setTilesReady] = useState(false);
   const [initialized, setInitialized] = useState(false);
 
-  const windowSize = useWindowSize();
-
-  const [currentSidebarTab] = useSidebarTab();
-
-  const isSidebarOpen = useStore(state => state.ui.sidebar.isOpen);
-
-  // Ensure map still fills the available space when sidebar opens/closes
+  // Track whether the map is fully loaded using the initialized hook
   useEffect(() => {
-    if (!mapRef.current) return;
-    mapRef.current.invalidateSize();
-  }, [isSidebarOpen, currentSidebarTab]);
-  useEffect(() => {
-    if (!initialized && isPermaLink && markersReady && tilesReady) {
-      setInitialized(true);
-      return;
-    }
-
     if (
       !initialized &&
+      !isFirstMarkerDataLoading &&
       tilesReady &&
       (submissions.length === 0 || markersReady)
     ) {
       setInitialized(true);
     }
-  }, [initialized, tilesReady, markersReady, submissions.length]);
+  }, [isFirstMarkerDataLoading, tilesReady, markersReady, submissions.length]);
+
+  // handle marker click on mobile
+  function handleMarkerClick(submissionId: number) {
+    if (isMobile) {
+      setSelectedSubmissionId(submissionId);
+      setSidebarTab(SidebarTab.Feed);
+      setIsSidebarOpen(true);
+    }
+  }
+
+  // zoom to pin and open popup when selected via URL param
+  // omits dependencies array to run on every render
+  useEffect(() => {
+    if (!markersReady || !selectedSubmissionId) return;
+    console.log('zooming!!');
+    const currentMarker = markerRefs.current[selectedSubmissionId];
+    clusterRef.current!.zoomToShowLayer(currentMarker, () => {
+      console.log('opening popup');
+      currentMarker.openPopup();
+    });
+  });
 
   return (
     <MapContainer
@@ -96,9 +114,9 @@ function Map({submissions, isPermaLink}: MapProps) {
             <MapMarker
               key={submission.id}
               submission={submission}
-              windowWidth={windowSize.width}
-              doneLoading={markersReady}
-              clusterRef={clusterRef}
+              isSelected={submission.id == selectedSubmissionId}
+              onClick={() => handleMarkerClick(submission.id)}
+              // track when the last marker is rendered
               ref={(m: LeafletMarker) => {
                 markerRefs.current[submission.id] = m;
                 if (index === submissions.length - 1 && !initialized) {
