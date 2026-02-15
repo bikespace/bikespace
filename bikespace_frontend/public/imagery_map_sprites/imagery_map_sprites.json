@@ -1,0 +1,16 @@
+{
+  "arrow-up-circle-black": {
+    "height": 16,
+    "pixelRatio": 1,
+    "width": 16,
+    "x": 0,
+    "y": 0
+  },
+  "arrow-up-circle-blue": {
+    "height": 16,
+    "pixelRatio": 1,
+    "width": 16,
+    "x": 16,
+    "y": 0
+  }
+}
