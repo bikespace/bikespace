@@ -1,7 +1,12 @@
 'use client';
 
 import React, {useEffect, useRef, useState} from 'react';
-import Map, {Layer, Source} from 'react-map-gl/maplibre';
+import Map, {
+  GeolocateControl,
+  Layer,
+  NavigationControl,
+  Source,
+} from 'react-map-gl/maplibre';
 import maplibregl from 'maplibre-gl';
 import {Protocol} from 'pmtiles';
 import {layers, namedFlavor} from '@protomaps/basemaps';
@@ -483,6 +488,8 @@ export function LtsMapPage() {
           }
         }}
       >
+        <NavigationControl position="top-left" />
+        <GeolocateControl position="top-left" />
         <Source id="lts" type="vector" url={ltsPmtilesUrl}>
           <Layer {...ltsLineLayer} filter={ltsFilter} beforeId="Road labels" />
           <Layer {...ltsHitLayer} filter={ltsFilter} beforeId="Road labels" />
