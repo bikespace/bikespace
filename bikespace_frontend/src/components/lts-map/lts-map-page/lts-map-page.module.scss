@@ -1,4 +1,4 @@
-@import '@/styles/variables.module.scss';
+@use '@/styles/variables.module.scss' as variables;
 
 .ltsMapPage {
   flex-grow: 1;
@@ -8,7 +8,7 @@
   height: 100%;
 }
 
-@media (max-width: $wrapper-full-width) {
+@media (max-width: variables.$wrapper-full-width) {
   .ltsMapPage {
     flex-direction: column-reverse;
   }
@@ -21,9 +21,7 @@
 }
 
 .filterButtonActive {
-  background-color: $color-primary-10p;
-  border-color: $color-primary;
-  color: $color-primary;
+  background-color: variables.$color-primary-20p;
 }
 
 .legendList {
@@ -42,13 +40,13 @@
   width: 16px;
   height: 16px;
   border-radius: 3px;
-  border: 1px solid $color-secondary-dark-grey;
+  border: 1px solid variables.$color-secondary-dark-grey;
   flex-shrink: 0;
 }
 
 .legendLabel {
   font-size: 0.9rem;
-  color: $color-secondary-dark-grey;
+  color: variables.$color-secondary-dark-grey;
 }
 
 .selectedFeatureDetails {
@@ -77,7 +75,7 @@
 .citation {
   margin: 4px;
   font-size: 0.85rem;
-  color: $color-secondary-dark-grey;
+  color: variables.$color-secondary-dark-grey;
   overflow-wrap: anywhere;
   word-break: break-word;
 }

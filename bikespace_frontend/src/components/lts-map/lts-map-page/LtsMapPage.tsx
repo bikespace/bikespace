@@ -32,6 +32,8 @@ import 'maplibre-gl/dist/maplibre-gl.css';
 import styles from './lts-map-page.module.scss';
 import parkingStyles from '@/components/parking-map/parking-map-page/parking-map-page.module.scss';
 
+import checkMark from '@/assets/icons/check-black.svg';
+
 let pmtilesProtocolAdded = false;
 function ensurePmtilesProtocol() {
   if (pmtilesProtocolAdded) return;
@@ -253,21 +255,6 @@ export function LtsMapPage() {
             <SidebarDetailsContent>
               <div className={parkingStyles.ContentCard}>
                 <div className={styles.filterButtonRow}>
-                  {[1, 2, 3, 4].map(level => {
-                    const isActive = enabledLtsLevels.includes(level);
-                    return (
-                      <SidebarButton
-                        key={level}
-                        className={isActive ? styles.filterButtonActive : ''}
-                        onClick={() => toggleLtsLevel(level)}
-                        aria-pressed={isActive}
-                      >
-                        LTS {level}
-                      </SidebarButton>
-                    );
-                  })}
-                </div>
-                <div className={styles.filterButtonRow}>
                   <SidebarButton
                     onClick={() => setEnabledLtsLevels([1, 2, 3, 4])}
                   >
@@ -276,6 +263,28 @@ export function LtsMapPage() {
                   <SidebarButton onClick={() => setEnabledLtsLevels([])}>
                     Clear All
                   </SidebarButton>
+                </div>
+                <div className={styles.filterButtonRow}>
+                  {[1, 2, 3, 4].map(level => {
+                    const isActive = enabledLtsLevels.includes(level);
+                    return (
+                      <SidebarButton
+                        key={level}
+                        className={isActive ? styles.filterButtonActive : ''}
+                        onClick={() => toggleLtsLevel(level)}
+                        aria-pressed={isActive}
+                        style={{
+                          paddingLeft: isActive ? 0 : 18,
+                          paddingRight: 9,
+                        }}
+                      >
+                        {isActive ? (
+                          <img src={checkMark.src} alt="" width={18} />
+                        ) : null}
+                        LTS {level}
+                      </SidebarButton>
+                    );
+                  })}
                 </div>
               </div>
             </SidebarDetailsContent>
@@ -290,29 +299,43 @@ export function LtsMapPage() {
                     <span
                       className={styles.legendSwatch}
                       style={{backgroundColor: '#2e7d32'}}
+                      role="img"
+                      aria-label="green"
                     />
-                    <span className={styles.legendLabel}>LTS 1</span>
+                    <span className={styles.legendLabel}>LTS 1: Very Safe</span>
                   </div>
                   <div className={styles.legendRow}>
                     <span
                       className={styles.legendSwatch}
                       style={{backgroundColor: '#1e88e5'}}
+                      role="img"
+                      aria-label="blue"
                     />
-                    <span className={styles.legendLabel}>LTS 2</span>
+                    <span className={styles.legendLabel}>
+                      LTS 2: Mostly Safe
+                    </span>
                   </div>
                   <div className={styles.legendRow}>
                     <span
                       className={styles.legendSwatch}
                       style={{backgroundColor: '#fdd835'}}
+                      role="img"
+                      aria-label="yellow"
                     />
-                    <span className={styles.legendLabel}>LTS 3</span>
+                    <span className={styles.legendLabel}>
+                      LTS 3: Somewhat Hazardous
+                    </span>
                   </div>
                   <div className={styles.legendRow}>
                     <span
                       className={styles.legendSwatch}
                       style={{backgroundColor: '#e53935'}}
+                      role="img"
+                      aria-label="red"
                     />
-                    <span className={styles.legendLabel}>LTS 4</span>
+                    <span className={styles.legendLabel}>
+                      LTS 4: Very Hazardous
+                    </span>
                   </div>
                 </div>
               </div>
