@@ -346,10 +346,10 @@ export function LtsMapPage() {
             <SidebarDetailsContent>
               <div className={parkingStyles.ContentCard}>
                 <p>
-                  Level of Traffic Stress (LTS) is a rating given to a road
+                  <strong>Level of Traffic Stress (LTS)</strong> is a rating given to a road
                   segment or crossing indicating the traffic stress it imposes
                   on bicyclists. Levels of traffic stress range from 1 to 4 as
-                  follow:
+                  follows:
                   <a href="#lts-source-1" className={styles.citationRef}>
                     [1]
                   </a>
@@ -395,36 +395,34 @@ export function LtsMapPage() {
                   </li>
                 </ul>
                 <p className={styles.ltsTextBlock}>
-                  The code for the generation of the LTS data used on this
-                  dashboard is available{' '}
+                  Source code used to generate the LTS data on this map:{' '}
                   <a
                     className={styles.blueLink}
                     href="https://github.com/bikespace/LTS-OSM"
                     target="_blank"
                     rel="noreferrer"
                   >
-                    here
+                    GitHub: bikespace/LTS-OSM
                   </a>
+                  .
                   <a href="#lts-source-3" className={styles.citationRef}>
                     [3]
                   </a>
                 </p>
                 <p className={styles.ltsTextBlock}>
                   The code is a fork of Madeliene Bonsma-Fisher's implementation
-                  of calculating LTS from OSM data.
+                  of calculating LTS from OSM data
                   <a href="#lts-source-4" className={styles.citationRef}>
                     [4]
                   </a>
-                </p>
-                <p className={styles.ltsTextBlock}>
-                  Which is adapted from Bike Ottawa's LTS code.
+                  , which is itself adapted from Bike Ottawa's LTS code.
                   <a href="#lts-source-5" className={styles.citationRef}>
                     [5]
                   </a>
                 </p>
 
                 <div className={styles.citation}>
-                  <strong>Sources</strong>
+                  <h4>Sources</h4>
                   <ol className={styles.sourceList}>
                     <li id="lts-source-1">
                       Peter G. Furth,{' '}

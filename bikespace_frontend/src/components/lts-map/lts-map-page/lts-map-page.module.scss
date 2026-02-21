@@ -62,6 +62,10 @@
 .ltsDescriptionList {
   margin-top: 8px;
   padding-left: 18px;
+
+  li {
+    list-style-type: disc;
+  }
 }
 
 .ltsDescriptionList li {
@@ -74,19 +78,20 @@
 
 .citation {
   margin: 4px;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   color: variables.$color-secondary-dark-grey;
   overflow-wrap: anywhere;
   word-break: break-word;
 }
 
 .sourceList {
-  margin: 4px 0 0 18px;
+  margin-top: 4px;
   padding-left: 18px;
   list-style: decimal;
 }
 
 .sourceList li {
+  margin-top: 4px;
   list-style: decimal;
   list-style-position: outside;
   overflow-wrap: anywhere;
@@ -95,8 +100,6 @@
 
 .citationRef {
   margin-left: 4px;
-  font-size: 0.75rem;
-  vertical-align: super;
 }
 
 .ltsMapPage .citationRef,
