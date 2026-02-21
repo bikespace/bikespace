@@ -1,1 +1,1 @@
-export {LandingLayout} from './landing-layout';
+export {ContentPageLayout} from './landing-layout';
