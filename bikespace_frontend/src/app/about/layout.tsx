@@ -1,3 +1,3 @@
-import {ContentPageLayout} from '@/components/landing';
+import {ContentPageLayout} from '@/components/content-pages';
 
 export default ContentPageLayout;
