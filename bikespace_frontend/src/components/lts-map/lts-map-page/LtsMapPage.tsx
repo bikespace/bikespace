@@ -346,10 +346,10 @@ export function LtsMapPage() {
             <SidebarDetailsContent>
               <div className={parkingStyles.ContentCard}>
                 <p>
-                  <strong>Level of Traffic Stress (LTS)</strong> is a rating given to a road
-                  segment or crossing indicating the traffic stress it imposes
-                  on bicyclists. Levels of traffic stress range from 1 to 4 as
-                  follows:
+                  <strong>Level of Traffic Stress (LTS)</strong> is a rating
+                  given to a road segment or crossing indicating the traffic
+                  stress it imposes on bicyclists. Levels of traffic stress
+                  range from 1 to 4 as follows:
                   <a href="#lts-source-1" className={styles.citationRef}>
                     [1]
                   </a>
