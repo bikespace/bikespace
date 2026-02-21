@@ -1,3 +1,3 @@
-import {ContentPageLayout} from '@/components/content-pages';
+import {FrontPageLayout} from '@/components/content-pages';
 
-export default ContentPageLayout;
+export default FrontPageLayout;

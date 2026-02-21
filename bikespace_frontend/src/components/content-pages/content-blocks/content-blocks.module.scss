@@ -1,9 +1,10 @@
-@import '@/styles/variables.module.scss';
+@use '@/styles/variables.module.scss' as variables;
 
+// escape max width if needed
 .fullWidth {
-  @media (min-width: $wrapper-max-width) {
-    margin-left: calc(-100vw / 2 + $wrapper-max-width / 2);
-    margin-right: calc(-100vw / 2 + $wrapper-max-width / 2);
+  @media (min-width: variables.$wrapper-max-width) {
+    margin-left: calc(-100vw / 2 + variables.$wrapper-max-width / 2);
+    margin-right: calc(-100vw / 2 + variables.$wrapper-max-width / 2);
     display: flex;
     justify-content: center;
   }
@@ -16,8 +17,7 @@
   align-items: center;
   margin-top: 2rem;
   margin-bottom: 2rem;
-  max-width: $wrapper-full-width;
-  flex: 2 1 400px;
+  flex: 2 1 calc(400px - 1rem);
 
   .heroTagline {
     font-size: 2rem;
@@ -28,7 +28,7 @@
 
   .heroImage {
     width: 100%;
-    max-width: 400px;
+    max-width: calc(400px - 1rem);
   }
 }
 
@@ -56,7 +56,7 @@ a.buttonLink {
     color: black;
   }
   &:hover {
-    border-color: $color-primary;
+    border-color: variables.$color-primary;
   }
   gap: 1rem;
 }
@@ -69,8 +69,8 @@ a.buttonFilled {
   height: 2rem;
   padding: 1.5rem;
 
-  border-color: $color-primary-d50p;
-  background-color: $color-primary-d50p;
+  border-color: variables.$color-primary-d50p;
+  background-color: variables.$color-primary-d50p;
   color: white;
   &:visited {
     color: white;
@@ -86,7 +86,7 @@ a.navLink {
     color: black;
   }
   &:hover {
-    color: $color-primary;
+    color: variables.$color-primary;
   }
 }
 
@@ -104,13 +104,14 @@ a.navLink {
   display: grid;
   grid-template-rows: auto auto 1fr;
 
-  border: 1px solid $color-primary-d50p;
+  border: 1px solid variables.$color-primary-d50p;
   border-radius: 1rem;
-  max-width: 240px;
-  box-shadow: $shadowSize $shadowSize $shadowSize $color-secondary-light-grey;
+  // max-width: 240px;
+  max-width: calc((variables.$wrapper-full-width - 5 * 1rem) / 4);
+  box-shadow: $shadowSize $shadowSize $shadowSize variables.$color-secondary-light-grey;
 
   &:hover {
-    box-shadow: $shadowSize $shadowSize $shadowSize $color-primary-20p;
+    box-shadow: $shadowSize $shadowSize $shadowSize variables.$color-primary-20p;
   }
 
   .featureBoxImage {
@@ -130,7 +131,7 @@ a.navLink {
     text-decoration: none;
     padding: calc($fbPadding / 2) $fbPadding;
     text-align: center;
-    background-color: $color-primary-d50p;
+    background-color: variables.$color-primary-d50p;
     :hover {
       text-decoration: underline;
       text-decoration-color: white;
@@ -146,7 +147,7 @@ a.navLink {
     display: block;
     margin-bottom: 0;
     padding: $fbPadding;
-    background-color: $color-primary-10p;
+    background-color: variables.$color-primary-10p;
     border-radius: 0 0 1rem 1rem;
     text-align: center;
     p {
@@ -161,7 +162,7 @@ a.navLink {
 
   .buttondownEmbeddableForm {
     text-align: center;
-    background-color: $color-primary-10p;
+    background-color: variables.$color-primary-10p;
     padding: 1rem;
     border-radius: 8px;
     max-width: 500px;
@@ -169,15 +170,15 @@ a.navLink {
 
   .buttondownInputs {
     display: inline-block;
-    border: 2px solid $color-primary-d50p;
+    border: 2px solid variables.$color-primary-d50p;
     border-radius: 4px;
-    background-color: $color-primary-d50p;
+    background-color: variables.$color-primary-d50p;
 
     input {
       height: 2.5rem;
       margin: 0;
       box-shadow: none;
-      border: 1px solid $color-primary-d50p;
+      border: 1px solid variables.$color-primary-d50p;
       border-radius: 0;
     }
 
@@ -187,7 +188,7 @@ a.navLink {
     }
 
     .buttondownInputSubmit {
-      background-color: $color-primary-d50p;
+      background-color: variables.$color-primary-d50p;
       color: white;
       padding: 0 0.5rem;
       border-left: 0;
@@ -195,7 +196,7 @@ a.navLink {
       font-weight: 700;
 
       &:hover {
-        background-color: $color-primary;
+        background-color: variables.$color-primary;
       }
     }
   }

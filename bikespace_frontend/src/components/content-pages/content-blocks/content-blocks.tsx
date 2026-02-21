@@ -14,44 +14,35 @@ function HeroBlock({
   imageAlt: string;
 }>) {
   return (
-    <div className={styles.fullWidth}>
-      <div className={styles.heroBlock}>
-        <div style={{flex: '2 1 60%'}}>
-          <div className={styles.heroTagline}>{tagline}</div>
-          <div className={styles.heroButtonContainer}>
-            <a
-              href="/submission"
-              className={`${styles.buttonLink} ${styles.buttonFilled}`}
-              data-umami-event="submission-from-frontpage"
-            >
-              Report a bike parking issue
-            </a>
-            <a
-              href="/dashboard"
-              className={styles.buttonLink}
-              data-umami-event="dashboard-from-frontpage"
-            >
-              View the collected data
-            </a>
-            <a
-              href="/parking-map"
-              className={styles.buttonLink}
-              data-umami-event="parking-map-from-frontpage"
-            >
-              Find bicycle parking
-            </a>
-            {/* <a
-              href="/lts-map"
-              className={styles.buttonLink}
-              data-umami-event="lts-map-from-frontpage"
-            >
-              Level of Traffic Stress map
-            </a> */}
-          </div>
+    <div className={styles.heroBlock}>
+      <div style={{flex: '2 1 60%'}}>
+        <div className={styles.heroTagline}>{tagline}</div>
+        <div className={styles.heroButtonContainer}>
+          <a
+            href="/submission"
+            className={`${styles.buttonLink} ${styles.buttonFilled}`}
+            data-umami-event="submission-from-frontpage"
+          >
+            Report a bike parking issue
+          </a>
+          <a
+            href="/dashboard"
+            className={styles.buttonLink}
+            data-umami-event="dashboard-from-frontpage"
+          >
+            View reported issues
+          </a>
+          <a
+            href="/parking-map"
+            className={styles.buttonLink}
+            data-umami-event="parking-map-from-frontpage"
+          >
+            Find bicycle parking
+          </a>
         </div>
-        <div style={{flex: '1 1 auto'}}>
-          <img src={imageSrc} className={styles.heroImage} alt={imageAlt}></img>
-        </div>
+      </div>
+      <div style={{flex: '1 1 auto'}}>
+        <img src={imageSrc} className={styles.heroImage} alt={imageAlt}></img>
       </div>
     </div>
   );
@@ -83,10 +74,16 @@ function DividerImg({
   );
 }
 
-function FeatureBoxWrapper({children}: Readonly<{children: React.ReactNode}>) {
+function FeatureBoxWrapper({
+  children,
+  style,
+}: Readonly<{
+  children: React.ReactNode;
+  style?: React.CSSProperties;
+}>) {
   return (
-    <div /*className={styles.fullWidth}*/>
-      <div className={styles.featureBoxWrapper}>{children}</div>
+    <div className={styles.featureBoxWrapper} style={style}>
+      {children}
     </div>
   );
 }
@@ -97,6 +94,8 @@ interface FeatureBoxProps {
   imageSrc: string;
   imageAlt: string;
   linksTo: string;
+  umamiEvent?: string;
+  style?: React.CSSProperties;
 }
 
 function FeatureBox({
@@ -105,13 +104,23 @@ function FeatureBox({
   imageSrc,
   imageAlt,
   linksTo,
+  umamiEvent,
+  style,
 }: FeatureBoxProps) {
   return (
-    <div className={styles.featureBox}>
-      <a href={linksTo} className={styles.featureBoxImage}>
+    <div className={styles.featureBox} style={style}>
+      <a
+        href={linksTo}
+        className={styles.featureBoxImage}
+        data-umami-event={umamiEvent}
+      >
         <img src={imageSrc} alt={imageAlt} />
       </a>
-      <a href={linksTo} className={styles.featureBoxTitle}>
+      <a
+        href={linksTo}
+        className={styles.featureBoxTitle}
+        data-umami-event={umamiEvent}
+      >
         <h3>{title}</h3>
       </a>
       <div className={styles.featureBoxDescription}>
