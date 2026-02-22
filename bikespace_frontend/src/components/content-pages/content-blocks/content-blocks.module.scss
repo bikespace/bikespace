@@ -106,7 +106,6 @@ a.navLink {
 
   border: 1px solid variables.$color-primary-d50p;
   border-radius: 1rem;
-  // max-width: 240px;
   max-width: calc((variables.$wrapper-full-width - 5 * 1rem) / 4);
   box-shadow: $shadowSize $shadowSize $shadowSize variables.$color-secondary-light-grey;
 

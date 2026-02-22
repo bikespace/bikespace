@@ -248,7 +248,7 @@ export function ParkingMapPage() {
                 Clear Selection
               </SidebarButton>
             ) : (
-              <p className={styles.cardBody}>
+              <p>
                 Click on a feature to see more information or zoom in for more
                 details
               </p>

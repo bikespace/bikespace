@@ -257,7 +257,7 @@ export function LtsMapPage() {
           <SidebarDetailsDisclosure open>
             <summary>Filters</summary>
             <SidebarDetailsContent>
-              <div className={parkingStyles.ContentCard}>
+              <div>
                 <div className={styles.filterButtonRow}>
                   <SidebarButton
                     onClick={() => setEnabledLtsLevels([1, 2, 3, 4])}
@@ -297,7 +297,7 @@ export function LtsMapPage() {
           <SidebarDetailsDisclosure open>
             <summary>Legend</summary>
             <SidebarDetailsContent>
-              <div className={parkingStyles.ContentCard}>
+              <div>
                 <div className={styles.legendList}>
                   <div className={styles.legendRow}>
                     <span
@@ -348,7 +348,7 @@ export function LtsMapPage() {
           <SidebarDetailsDisclosure>
             <summary>How is LTS calculated</summary>
             <SidebarDetailsContent>
-              <div className={parkingStyles.ContentCard}>
+              <div>
                 <p>
                   <strong>Level of Traffic Stress (LTS)</strong> is a rating
                   given to a road segment or crossing indicating the traffic
