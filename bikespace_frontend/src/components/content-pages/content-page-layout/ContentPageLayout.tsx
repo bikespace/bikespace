@@ -5,13 +5,13 @@ import React from 'react';
 import {Header} from '../header';
 import {Footer} from '../footer';
 
-import styles from './landing-layout.module.scss';
+import styles from './content-page-layout.module.scss';
 
-interface LandingLayoutProps {
+interface ContentPageLayoutProps {
   children: React.ReactNode;
 }
 
-export function LandingLayout({children}: LandingLayoutProps) {
+export function ContentPageLayout({children}: ContentPageLayoutProps) {
   return (
     <>
       <Header />
