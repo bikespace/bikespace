@@ -172,6 +172,7 @@ export function LtsMapPage() {
       if (resultsCardRef.current) {
         resultsCardRef.current.scrollIntoView();
       }
+      setSidebarIsOpen(true);
     } else {
       setSelectedFeature(null);
       setGeoSearchIsMinimized(false);
