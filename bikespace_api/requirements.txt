@@ -71,7 +71,7 @@ tomli==2.0.1
 typing_extensions==4.12.2
 urllib3==2.6.3
 webargs==8.7.1
-Werkzeug==3.1.5
+Werkzeug==3.1.6
 wrapt==1.15.0
 WTForms==3.2.1
 zipp==3.19.1
