@@ -2,7 +2,8 @@
 
 import {useEffect} from 'react';
 
-const SERVICE_WORKER_PATH = '/sw.js';
+const trafficStressUrl = process.env.DATA_LEVEL_OF_TRAFFIC_STRESS ?? '';
+const SERVICE_WORKER_PATH = `/sw.js?ltsDataUrl=${encodeURIComponent(trafficStressUrl)}`;
 
 export function ServiceWorkerRegistration() {
   useEffect(() => {

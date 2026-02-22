@@ -1,9 +1,8 @@
 /* global self */
 
+const scriptUrl = new URL(self.location.href);
 const PMTILES_CACHE = 'pmtiles-cache-v2';
-const PMTILES_URLS = [
-  'https://pub-04bdbe3e39bc434bb5fae50c14232971.r2.dev/lts_toronto_filtered_1_4.pmtiles',
-];
+const PMTILES_URLS = [scriptUrl.searchParams.get('ltsDataUrl')].filter(Boolean);
 
 self.addEventListener('install', event => {
   event.waitUntil(
