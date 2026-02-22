@@ -129,6 +129,7 @@ export function LtsMapPage() {
     1, 2, 3, 4,
   ]);
   const mapRef = useRef<MapRef>(null);
+  const resultsCardRef = useRef<HTMLDivElement>(null);
 
   const ltsFilter: FilterSpecification =
     enabledLtsLevels.length === 0
@@ -168,6 +169,9 @@ export function LtsMapPage() {
     if (features.length > 0) {
       setSelectedFeature(features[0]);
       setGeoSearchIsMinimized(true);
+      if (resultsCardRef.current) {
+        resultsCardRef.current.scrollIntoView();
+      }
     } else {
       setSelectedFeature(null);
       setGeoSearchIsMinimized(false);
@@ -191,7 +195,7 @@ export function LtsMapPage() {
     <main className={styles.ltsMapPage}>
       <Sidebar isOpen={sidebarIsOpen} setIsOpen={setSidebarIsOpen}>
         <div className={parkingStyles.sideBarContainer}>
-          <div className={parkingStyles.ContentCard}>
+          <div className={parkingStyles.ContentCard} ref={resultsCardRef}>
             <div className={parkingStyles.ContentHeading}>
               <h2 className={parkingStyles.cardHeading}>
                 Level of Traffic Stress Map (LTS)
