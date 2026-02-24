@@ -1,0 +1,72 @@
+name: bikespace
+
+services:
+  bikespace_api:
+    build:
+      context: bikespace_api
+      dockerfile: docker/local.dockerfile
+    volumes:
+      - type: bind
+        source: bikespace_api
+        target: /app
+    depends_on:
+      db:
+        condition: service_healthy
+        restart: true
+    env_file:
+      - path: "bikespace_api/.env"
+        required: false
+    environment:
+      APP_SETTINGS: "bikespace_api.config.DevelopmentConfig"
+      DATABASE_URL: "postgresql://postgres:devpwd@db/bikespace_dev"
+      FLASK_DEBUG: "true"
+      FLASK_RUN_PORT: 8000
+    ports:
+      - "8000:8000"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/"]
+      interval: 1s
+      timeout: 5s
+      retries: 10
+      start_period: 5s
+  
+  db:
+    image: postgres:15.2
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: "devpwd"
+      POSTGRES_DB: "bikespace_dev"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 1s
+      timeout: 5s
+      retries: 10
+  
+  bikespace_frontend:
+    build:
+      context: bikespace_frontend
+      dockerfile: Dockerfile
+    volumes:
+      - ./bikespace_frontend/:/app
+      - /app/node_modules
+    depends_on:
+      bikespace_api:
+        condition: service_healthy
+        restart: true
+
+    env_file:
+      - path: "bikespace_frontend/.env.development"
+        required: true
+    ports:
+      - "8080:8080"
+  
+  nginx:
+    build:
+      context: nginx
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+    ports:
+      - "80:80"
+    depends_on:
+      - bikespace_api
+      - bikespace_frontend

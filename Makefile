@@ -1,17 +1,18 @@
-ROOT_PATH := $(abspath $(lastword $(MAKEFILE_LIST)))
-ROOT_DIR :=  $(dir $(ROOT_PATH))
-BIKESPACE_API_DIR = $(ROOT_DIR)bikespace_api
-BIKESPACE_API_FLY_TOML = $(ROOT_DIR)/$(BIKESPACE_API_DIR)/fly.toml
-BIKESPACE_FRONTEND_DIR = $(ROOT_DIR)/bikespace_frontend
-BIKESPACE_DB_MIGRATIONS = $(BIKESPACE_API_DIR)/migrations
-MANAGE_PY = $(BIKESPACE_API_DIR)/manage.py
-PIP = $(ROOT_DIR)$(VENV)/bin/pip
-PYTHON = $(ROOT_DIR)$(VENV)/bin/python3
-PYTHON_VERSION = 3.12.0
-MIN_PYTHON_VERSION = 3.12.0
+BIKESPACE_API_DIR := $(ROOT_DIR)bikespace_api
+BIKESPACE_API_FLY_TOML := $(ROOT_DIR)/$(BIKESPACE_API_DIR)/fly.toml
+BIKESPACE_DB_MIGRATIONS := $(BIKESPACE_API_DIR)/migrations
+BIKESPACE_FRONTEND_DIR := $(ROOT_DIR)/bikespace_frontend
 CURR_PYTHON_VERSION := $(shell python3 -c 'import platform; print(platform.python_version())')
+DOCKER := $(shell docker --version)
 LOWEST_PYTHON_VERSION := $(shell printf '%s\n' $(MIN_PYTHON_VERSION) $(CURR_PYTHON_VERSION) | sort -V | head -n1)
-VENV = venv
+MANAGE_PY := $(BIKESPACE_API_DIR)/manage.py
+MIN_PYTHON_VERSION := 3.12.0
+PIP := $(ROOT_DIR)$(VENV)/bin/pip
+PYTHON := $(ROOT_DIR)$(VENV)/bin/python3
+PYTHON_VERSION := 3.12.0
+ROOT_DIR :=  $(dir $(ROOT_PATH))
+ROOT_PATH := $(abspath $(lastword $(MAKEFILE_LIST)))
+VENV := venv
 
 # used by github actions; will be overridden if already set in the environment
 CI ?= false
@@ -22,13 +23,54 @@ export TEST_DATABASE_URI = postgresql://postgres:postgres@localhost:5432/bikespa
 export FLASK_DEBUG = true
 export FLASK_RUN_PORT = 8000
 
+OSFLAG :=
+ifeq ($(OS),Windows_NT)
+	OSFLAG += WIN32
+	ifeq ($(PROCESSOR_ARCHITECTURE),AMD64)
+		OSFLAG += AMD64
+	endif
+	ifeq ($(PROCESSOR_ARCHITECTURE),x86)
+		OSFLAG += IA32
+	endif
+else
+	UNAME_S := $(shell uname -s)
+	ifeq ($(UNAME_S),Linux)
+		OSFLAG += LINUX
+	endif
+	ifeq ($(UNAME_S),Darwin)
+		OSFLAG += OSX
+	endif
+	UNAME_P := $(shell uname -p)
+	ifeq ($(UNAME_P),x86_64)
+		OSFLAG += AMD64
+	endif
+	ifneq ($(filter %86,$(UNAME_P)),)
+		OSFLAG += IA32
+	endif
+	ifneq ($(filter arm%,$(UNAME_P)),)
+		OSFLAG += ARM
+	endif
+endif
+
+.PHONY: detect-os
+detect-os:
+	@echo $(OSFLAG)
+
+.PHONY: detect-docker
+detect-docker:
+ifndef DOCKER
+	$(error "Docker is not installed on your system, see https://docker.com/get-started/ to install docker on your system")
+else
+	@echo "Docker installed: $(DOCKER)"
+endif
+
 .PHONY: setup-py
 setup-py: $(VENV)
 
 .PHONY: check-python-version
 check-python-version: 
 ifeq ($(LOWEST_PYTHON_VERSION), $(MIN_PYTHON_VERSION))
-	@echo "Installed Python version is equal or greater than $(MIN_PYTHON_VERSION)"
+	@echo "Installed Python version: $(LOWEST_PYTHON_VERSION) is equal or greater than the minimum required version $(MIN_PYTHON_VERSION)"
 else
 	$(error "Installed Python version $(CURR_PYTHON_VERSION) is less than the required minimum version of $(MIN_PYTHON_VERSION)")
 endif
@@ -47,6 +89,14 @@ $(VENV): check-python-version $(BIKESPACE_API_DIR)/requirements.txt
 .PHONY: pip-freeze
 pip-freeze: $(BIKESPACE_API_DIR)/requirements.txt
 	$(PIP) freeze > $(BIKESPACE_API_DIR)/requirements.txt
+
+.PHONY: run
+run: detect-docker
+	docker compose --file docker-compose.yaml up --build -d
+
+.PHONY: stop
+stop:
+	docker-compose --file docker-compose.yaml down
 
 .PHONY: dev-api-stop
 dev-api-stop:
