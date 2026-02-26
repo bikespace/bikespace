@@ -1,7 +1,7 @@
 /* global self */
 
 const scriptUrl = new URL(self.location.href);
-const PMTILES_CACHE = 'pmtiles-cache-v2';
+const PMTILES_CACHE = 'pmtiles-cache-02-26-2026';
 const PMTILES_URLS = [scriptUrl.searchParams.get('ltsDataUrl')].filter(Boolean);
 
 self.addEventListener('install', event => {
