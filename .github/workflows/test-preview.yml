@@ -150,7 +150,7 @@ jobs:
       MAPTILER_API_KEY: ${{ secrets.MAPTILER_API_KEY }}
       DATA_BICYCLE_PARKING: ${{ secrets.DATA_BICYCLE_PARKING }}
       DATA_BICYCLE_NETWORK: ${{ secrets.DATA_BICYCLE_NETWORK }}
-      DATA_LEVEL_OF_TRAFFIC_STRESS: ${{ secrets.DATA_LEVEL_OF_TRAFFIC_STRESS }}
+      DATA_LEVEL_OF_TRAFFIC_STRESS: https://storage.bikespace.ca/lts_toronto_filtered_02_26_2026.pmtiles
     permissions:
       contents: read
       deployments: write
