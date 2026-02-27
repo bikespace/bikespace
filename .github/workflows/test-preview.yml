@@ -151,6 +151,7 @@ jobs:
       DATA_BICYCLE_PARKING: ${{ secrets.DATA_BICYCLE_PARKING }}
       DATA_BICYCLE_NETWORK: ${{ secrets.DATA_BICYCLE_NETWORK }}
       DATA_LEVEL_OF_TRAFFIC_STRESS: https://storage.bikespace.ca/lts_toronto_filtered_02_26_2026.pmtiles
+      DATA_LEVEL_OF_TRAFFIC_STRESS_LAYER_NAME: ${{ secrets.DATA_LEVEL_OF_TRAFFIC_STRESS_LAYER_NAME }} 
     permissions:
       contents: read
       deployments: write
