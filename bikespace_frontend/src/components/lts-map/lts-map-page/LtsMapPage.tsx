@@ -21,6 +21,7 @@ import {
 import {SidebarButton} from '@/components/shared-ui/sidebar-button';
 
 import type {
+  HeatmapLayer,
   LineLayer,
   MapLayerMouseEvent,
   MapRef,
@@ -115,6 +116,40 @@ const ltsSelectedLayer: LineLayer = {
       ],
     },
     'line-color': '#ff6f00',
+  },
+};
+
+const fogOfWarFilter: FilterSpecification = [
+  'in',
+  ['get', 'lts'],
+  ['literal', [1]],
+];
+
+const ltsFogOfWarLayer: HeatmapLayer = {
+  id: 'lts-fog-of-war',
+  type: 'heatmap',
+  source: 'lts',
+  'source-layer': ltsSourceLayer,
+  paint: {
+    'heatmap-intensity': 10,
+    'heatmap-radius': [
+      'interpolate',
+      ['exponential', 2],
+      ['zoom'],
+      10,
+      1,
+      20,
+      2048,
+    ],
+    'heatmap-color': [
+      'interpolate',
+      ['linear'],
+      ['heatmap-density'],
+      0,
+      'rgba(0,0,0,0.5)',
+      1,
+      'rgba(0,0,0,0)',
+    ],
   },
 };
 
@@ -518,6 +553,7 @@ export function LtsMapPage() {
         <Source id="lts" type="vector" url={ltsPmtilesUrl}>
           <Layer {...ltsLineLayer} filter={ltsFilter} beforeId="Road labels" />
           <Layer {...ltsHitLayer} filter={ltsFilter} beforeId="Road labels" />
+          <Layer {...ltsFogOfWarLayer} filter={fogOfWarFilter} />
         </Source>
         {selectedFeatureGeoJSON ? (
           <Source
