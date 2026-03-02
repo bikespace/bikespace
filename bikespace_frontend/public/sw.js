@@ -1,7 +1,7 @@
 /* global self */
 
 const scriptUrl = new URL(self.location.href);
-const PMTILES_CACHE = 'pmtiles-cache-02-27-2026';
+const PMTILES_CACHE = 'pmtiles-cache-03-02-2026';
 const PMTILES_URLS = [scriptUrl.searchParams.get('ltsDataUrl')].filter(Boolean);
 const DEBUG_PMTILES_CACHE =
   scriptUrl.searchParams.get('debugPmtilesCache') === '1';
