@@ -307,6 +307,9 @@ export function LtsMapPage() {
                     );
                   })}
                 </div>
+                <p>
+                  <em>Data Last Updated: 03-02-2026</em>
+                </p>
               </div>
             </SidebarDetailsContent>
           </SidebarDetailsDisclosure>
