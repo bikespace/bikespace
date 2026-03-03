@@ -149,12 +149,29 @@ export function LtsMapPage() {
   }, []);
 
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition(position => {
-      setDefaultLocation({
-        latitude: position.coords.latitude,
-        longitude: position.coords.longitude,
-      });
-    });
+    if (!navigator.geolocation) return;
+
+    navigator.geolocation.getCurrentPosition(
+      position => {
+        const nextLocation = {
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+        };
+        setDefaultLocation(nextLocation);
+
+        mapRef.current?.flyTo({
+          center: [nextLocation.longitude, nextLocation.latitude],
+          zoom: 12,
+          essential: true,
+        });
+      },
+      error => {
+        if (process.env.NODE_ENV !== 'production') {
+          console.warn('Geolocation failed:', error.message);
+        }
+      },
+      {enableHighAccuracy: true, timeout: 10000}
+    );
   }, []);
 
   function handleOnLoad() {
