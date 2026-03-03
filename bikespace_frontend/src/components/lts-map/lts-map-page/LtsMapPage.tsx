@@ -59,7 +59,7 @@ const backupMapStyle: MapStyle = {
 };
 
 const ltsPmtilesUrl = `pmtiles://${process.env.DATA_LEVEL_OF_TRAFFIC_STRESS}`;
-const ltsSourceLayer = 'lts_toronto_filtered_1_4';
+const ltsSourceLayer = 'lts_gta_filtered_1_4';
 
 const ltsLineLayer: LineLayer = {
   id: 'lts-lines',
@@ -149,12 +149,29 @@ export function LtsMapPage() {
   }, []);
 
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition(position => {
-      setDefaultLocation({
-        latitude: position.coords.latitude,
-        longitude: position.coords.longitude,
-      });
-    });
+    if (!navigator.geolocation) return;
+
+    navigator.geolocation.getCurrentPosition(
+      position => {
+        const nextLocation = {
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+        };
+        setDefaultLocation(nextLocation);
+
+        mapRef.current?.flyTo({
+          center: [nextLocation.longitude, nextLocation.latitude],
+          zoom: 12,
+          essential: true,
+        });
+      },
+      error => {
+        if (process.env.NODE_ENV !== 'production') {
+          console.warn('Geolocation failed:', error.message);
+        }
+      },
+      {enableHighAccuracy: true, timeout: 10000}
+    );
   }, []);
 
   function handleOnLoad() {
@@ -290,6 +307,9 @@ export function LtsMapPage() {
                     );
                   })}
                 </div>
+                <p>
+                  <em>Data Last Updated: 03-02-2026</em>
+                </p>
               </div>
             </SidebarDetailsContent>
           </SidebarDetailsDisclosure>
@@ -357,6 +377,9 @@ export function LtsMapPage() {
                   <a href="#lts-source-1" className={styles.citationRef}>
                     [1]
                   </a>
+                  <a href="#lts-source-2" className={styles.citationRef}>
+                    [2]
+                  </a>
                 </p>
                 <ul className={styles.ltsDescriptionList}>
                   <li>
@@ -374,8 +397,8 @@ export function LtsMapPage() {
                     route facilities. A level of traffic stress that most adults
                     can tolerate, particularly those sometimes classified as
                     "interested but concerned".
-                    <a href="#lts-source-2" className={styles.citationRef}>
-                      [2]
+                    <a href="#lts-source-3" className={styles.citationRef}>
+                      [3]
                     </a>
                   </li>
                   <li>
@@ -384,8 +407,8 @@ export function LtsMapPage() {
                     traffic, or close proximity to higher speed traffic. A level
                     of traffic stress acceptable to those classified as
                     "enthused and confident."
-                    <a href="#lts-source-2" className={styles.citationRef}>
-                      [2]
+                    <a href="#lts-source-3" className={styles.citationRef}>
+                      [3]
                     </a>
                   </li>
                   <li>
@@ -393,8 +416,8 @@ export function LtsMapPage() {
                     speed traffic or close proximity to high speed traffic. A
                     level of stress acceptable only to those classified as
                     "strong and fearless."
-                    <a href="#lts-source-2" className={styles.citationRef}>
-                      [2]
+                    <a href="#lts-source-3" className={styles.citationRef}>
+                      [3]
                     </a>
                   </li>
                 </ul>
@@ -409,19 +432,19 @@ export function LtsMapPage() {
                     GitHub: bikespace/LTS-OSM
                   </a>
                   .
-                  <a href="#lts-source-3" className={styles.citationRef}>
-                    [3]
+                  <a href="#lts-source-4" className={styles.citationRef}>
+                    [4]
                   </a>
                 </p>
                 <p className={styles.ltsTextBlock}>
                   The code is a fork of Madeliene Bonsma-Fisher's implementation
                   of calculating LTS from OSM data
-                  <a href="#lts-source-4" className={styles.citationRef}>
-                    [4]
-                  </a>
-                  , which is itself adapted from Bike Ottawa's LTS code.
                   <a href="#lts-source-5" className={styles.citationRef}>
                     [5]
+                  </a>
+                  , which is itself adapted from Bike Ottawa's LTS code.
+                  <a href="#lts-source-6" className={styles.citationRef}>
+                    [6]
                   </a>
                 </p>
 
@@ -429,21 +452,36 @@ export function LtsMapPage() {
                   <h4>Sources</h4>
                   <ol className={styles.sourceList}>
                     <li id="lts-source-1">
-                      Peter G. Furth,{' '}
+                      Peter G. Furth, 2014.
+                      <em> Level of Traffic Stress.</em>
+                      Northeastern University.{' '}
                       <a
                         href="https://peterfurth.sites.northeastern.edu/level-of-traffic-stress/"
                         target="_blank"
                         rel="noreferrer"
                       >
-                        Level of Traffic Stress
-                      </a>{' '}
-                      (Northeastern University)
+                        https://peterfurth.sites.northeastern.edu/level-of-traffic-stress/
+                      </a>
                     </li>
                     <li id="lts-source-2">
-                      Dill, J., & McNeil, N. (2013). Four types of cyclists?
-                      Examining a typology to better understand bicycling
-                      behavior and potential. Transportation Research Board 92nd
-                      Annual Meeting.
+                      Mekuria, M.C., Furth, P.G, & Nixon,H. (2012, May).{' '}
+                      <em>Low-Sress Bicycling and Network Connectivity.</em>{' '}
+                      Mineta Transportation Institute.{' '}
+                      <a
+                        href="https://transweb.sjsu.edu/research/Low-Stress-Bicycling-and-Network-Connectivity"
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        https://transweb.sjsu.edu/research/Low-Stress-Bicycling-and-Network-Connectivity
+                      </a>
+                    </li>
+                    <li id="lts-source-3">
+                      Dill, J., & McNeil, N. (2012).{' '}
+                      <em>
+                        Four types of cyclists? Examining a typology to better
+                        understand bicycling behavior and potential.
+                      </em>{' '}
+                      Northeastern University College of Engineering.{' '}
                       <a
                         href="https://www1.coe.neu.edu/~pfurth/Other%20papers/Dill%202013%204%20types%20of%20cyclists%20TRR.pdf"
                         target="_blank"
@@ -452,7 +490,7 @@ export function LtsMapPage() {
                         https://www1.coe.neu.edu/~pfurth/Other%20papers/Dill%202013%204%20types%20of%20cyclists%20TRR.pdf
                       </a>
                     </li>
-                    <li id="lts-source-3">
+                    <li id="lts-source-4">
                       bikespace. (n.d.). LTS-OSM [Computer software]. GitHub.
                       <a
                         href="https://github.com/bikespace/LTS-OSM"
@@ -462,7 +500,7 @@ export function LtsMapPage() {
                         https://github.com/bikespace/LTS-OSM
                       </a>
                     </li>
-                    <li id="lts-source-4">
+                    <li id="lts-source-5">
                       Bonsma, M. (n.d.). LTS-OSM (Version latest) [Computer
                       software]. GitHub.
                       <a
@@ -473,7 +511,7 @@ export function LtsMapPage() {
                         https://github.com/mbonsma/LTS-OSM
                       </a>
                     </li>
-                    <li id="lts-source-5">
+                    <li id="lts-source-6">
                       BikeOttawa. (n.d.). stressmodel [Computer software].
                       GitHub.
                       <a
