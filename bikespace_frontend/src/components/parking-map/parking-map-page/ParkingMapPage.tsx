@@ -22,7 +22,6 @@ import {
 import {Spinner} from '@/components/shared-ui/spinner';
 import {
   ParkingFeatureDescription,
-  parkingFirstLayerId,
   parkingInteractiveLayers,
   ParkingLayer,
   ParkingLayerLegend,
@@ -84,6 +83,13 @@ export function ParkingMapPage() {
 
   const mapRef = useRef<MapRef>(null);
   const resultsCardRef = useRef<HTMLDivElement>(null);
+
+  const mapStyle = process.env.MAPTILER_API_KEY
+    ? `https://api.maptiler.com/maps/streets/style.json?key=${process.env.MAPTILER_API_KEY}`
+    : backupMapStyle;
+  const mapStyleRoadLabelsLayer = process.env.MAPTILER_API_KEY
+    ? 'road_label'
+    : 'roads_labels_major';
 
   // enable backup map tiles
   useEffect(() => {
@@ -309,11 +315,7 @@ export function ParkingMapPage() {
           zoom: zoomLevel,
         }}
         style={{width: '100%', height: '100%'}}
-        mapStyle={
-          process.env.MAPTILER_API_KEY
-            ? `https://api.maptiler.com/maps/streets/style.json?key=${process.env.MAPTILER_API_KEY}`
-            : backupMapStyle
-        }
+        mapStyle={mapStyle}
         onLoad={handleOnLoad}
         onClick={handleLayerClick}
         // onZoomEnd={() =>
@@ -328,7 +330,7 @@ export function ParkingMapPage() {
           layerFilter={parkingLayerFilter}
         />
         {showBicycleNetwork ? (
-          <BicycleNetworkLayer beforeId={parkingFirstLayerId} />
+          <BicycleNetworkLayer beforeId={mapStyleRoadLabelsLayer} />
         ) : null}
         {/* placed here to avoid covering the sidebar */}
         <Spinner show={isMapLoading} overlay label="Loading map..." />
