@@ -151,6 +151,10 @@ export function ParkingMapPage() {
     });
   }
 
+  function zoomAndFlyToSingleFeature(feature: MapGeoJSONFeature) {
+    zoomAndFlyTo([feature]);
+  }
+
   function handleLayerClick(e: MapLayerMouseEvent) {
     const features = mapRef.current!.queryRenderedFeatures(
       e.point as PointLike,
@@ -268,6 +272,7 @@ export function ParkingMapPage() {
                 handleClick={handleFeatureSelection}
                 handleHover={handleFeatureHover}
                 handleUnHover={handleFeatureUnHover}
+                centerFeatureOnMap={zoomAndFlyToSingleFeature}
               />
             ))}
           </div>

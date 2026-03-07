@@ -17,6 +17,7 @@ export interface ParkingFeatureDescriptionProps {
   handleClick: Function;
   handleHover: Function;
   handleUnHover: Function;
+  centerFeatureOnMap: Function;
 }
 
 export function ParkingFeatureDescription({
@@ -26,6 +27,7 @@ export function ParkingFeatureDescription({
   handleClick,
   handleHover,
   handleUnHover,
+  centerFeatureOnMap,
 }: ParkingFeatureDescriptionProps) {
   if (!feature.properties) {
     return <p>Feature has no properties</p>;
@@ -219,11 +221,13 @@ export function ParkingFeatureDescription({
         <SourceLink feature={feature} />
         <div className={styles.featureDescriptionControls}>
           <SidebarButton
-            onClick={(e: React.MouseEvent) => handleClick(e, feature)}
-            disabled={selected}
+            onClick={(e: React.MouseEvent) => {
+              centerFeatureOnMap(feature);
+              if (!selected) handleClick(e, feature);
+            }}
             umamiEvent="parking-feature-select-on-map"
           >
-            Select{selected ? 'ed' : ''} on Map
+            {selected ? 'Center on Map' : 'Select on Map'}
           </SidebarButton>
           <SidebarButton
             onClick={() => setShowAllData(!showAllData)}
