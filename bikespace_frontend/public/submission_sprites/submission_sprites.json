@@ -1,0 +1,37 @@
+{
+  "icon_abandoned": {
+    "height": 130,
+    "pixelRatio": 1,
+    "width": 130,
+    "x": 0,
+    "y": 0
+  },
+  "icon_damaged": {
+    "height": 130,
+    "pixelRatio": 1,
+    "width": 130,
+    "x": 130,
+    "y": 0
+  },
+  "icon_full": {
+    "height": 130,
+    "pixelRatio": 1,
+    "width": 130,
+    "x": 260,
+    "y": 0
+  },
+  "icon_not_provided": {
+    "height": 130,
+    "pixelRatio": 1,
+    "width": 130,
+    "x": 0,
+    "y": 130
+  },
+  "icon_other": {
+    "height": 130,
+    "pixelRatio": 1,
+    "width": 130,
+    "x": 0,
+    "y": 260
+  }
+}

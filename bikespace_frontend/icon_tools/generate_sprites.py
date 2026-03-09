@@ -13,6 +13,10 @@ import subprocess
 
 TO_PROCESS = [
     ("src/assets/icons/parking_map", "public/parking_sprites/parking_sprites"),
+    (
+        "src/assets/icons/issue_submissions",
+        "public/submission_sprites/submission_sprites",
+    ),
 ]
 
 
@@ -21,6 +25,7 @@ def generate_sprites(src_path: str, out_path: str) -> None:
 
     src = Path(src_path)
     out = Path(out_path)
+    out.parent.mkdir(exist_ok=True)
 
     subprocess.run(
         ["spreet", "--unique", src, out],
