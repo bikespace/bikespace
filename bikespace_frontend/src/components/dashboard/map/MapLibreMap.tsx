@@ -61,9 +61,10 @@ export function DashboardMap({
   isFirstMarkerDataLoading,
 }: DashboardMapProps) {
   const mapRef = useRef<MapRef>(null);
+  const isMobile = useIsMobile();
 
   const [zoomLevel, setZoomLevel] = useState<number>(12);
-  const isMobile = useIsMobile();
+  const [isMapLoading, setIsMapLoading] = useState<boolean>(true);
   const [selectedSubmissionId, setSelectedSubmissionId] = useSubmissionId();
   const [, setSidebarTab] = useSidebarTab();
   const {setIsSidebarOpen} = useStore(state => ({
@@ -115,6 +116,15 @@ export function DashboardMap({
     });
   }
 
+  function handleOnLoad() {
+    // console log required for playwright testing
+    if (process.env.NODE_ENV !== 'production') console.log('map loaded');
+
+    // after styles load
+    const map: MapLibreMap = mapRef.current!.getMap(); // maplibre-gl map instance
+    map?.once('idle', () => setIsMapLoading(false)); // wait for styles to load, then set loading to false
+  }
+
   return (
     <Map
       ref={mapRef}
@@ -132,6 +142,8 @@ export function DashboardMap({
     >
       <NavigationControl position="top-left" />
       <GeolocateControl position="top-left" />
+      {/* placed here to avoid covering the sidebar */}
+      <Spinner show={isMapLoading} overlay label="Loading map..." />
     </Map>
   );
 }
