@@ -11,7 +11,7 @@ import {useStore} from '@/states/store';
 import {SidebarTab, useSubmissionId, useSidebarTab} from '@/states/url-params';
 
 import Sidebar from '../sidebar/Sidebar';
-import {Map} from '../map';
+import {DashboardMap as Map} from '../map/MapLibreMap';
 
 import styles from './dashboard-page.module.scss';
 
