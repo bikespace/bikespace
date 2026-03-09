@@ -1,5 +1,10 @@
 import React, {useEffect, useState, useRef} from 'react';
-import Map, {GeolocateControl, NavigationControl} from 'react-map-gl/maplibre';
+import Map, {
+  GeolocateControl,
+  NavigationControl,
+  Source,
+  Layer,
+} from 'react-map-gl/maplibre';
 import {bbox as getBBox} from '@turf/bbox';
 import {featureCollection as getFeatureCollection} from '@turf/helpers';
 import maplibregl from 'maplibre-gl';
@@ -12,7 +17,11 @@ import {SidebarTab, useSidebarTab, useSubmissionId} from '@/states/url-params';
 import {useIsMobile} from '@/hooks/use-is-mobile';
 
 import {trackUmamiEvent} from '@/utils';
-import {defaultMapCenter, GeocoderSearch} from '@/utils/map-utils';
+import {
+  defaultMapCenter,
+  GeocoderSearch,
+  getGeoJSONFromSubmissions,
+} from '@/utils/map-utils';
 import {SubmissionApiPayload} from '@/interfaces/Submission';
 
 import {Spinner} from '@/components/shared-ui/spinner';
@@ -20,6 +29,8 @@ import {
   BicycleNetworkLayer,
   BicycleNetworkLayerLegend,
 } from '@/components/map-layers/BicycleNetwork';
+
+import {unclusteredSubmissionsLayer} from './_MapLayers';
 
 import type {
   FilterSpecification,
@@ -142,8 +153,18 @@ export function DashboardMap({
     >
       <NavigationControl position="top-left" />
       <GeolocateControl position="top-left" />
+      <Source
+        id="bikeparking-submissions"
+        type="geojson"
+        data={getGeoJSONFromSubmissions(submissions)}
+        // cluster={true}
+        // clusterMaxZoom={14}
+        // clusterRadius={50}
+      >
+        <Layer {...unclusteredSubmissionsLayer} />
+      </Source>
       {/* placed here to avoid covering the sidebar */}
-      <Spinner show={isMapLoading} overlay label="Loading map..." />
+      {/* <Spinner show={isMapLoading} overlay label="Loading map..." /> */}
     </Map>
   );
 }
