@@ -46,6 +46,8 @@ import type {
 
 import 'maplibre-gl/dist/maplibre-gl.css';
 
+const submissionSpritePath = '/submission_sprites/submission_sprites';
+
 const backupMapStyle: MapStyle = {
   version: 8,
   glyphs:
@@ -127,9 +129,14 @@ export function DashboardMap({
     });
   }
 
+  function addSprite() {
+    mapRef.current!.addSprite('submission', submissionSpritePath);
+  }
+
   function handleOnLoad() {
     // console log required for playwright testing
     if (process.env.NODE_ENV !== 'production') console.log('map loaded');
+    addSprite();
 
     // after styles load
     const map: MapLibreMap = mapRef.current!.getMap(); // maplibre-gl map instance
@@ -150,6 +157,7 @@ export function DashboardMap({
           ? `https://api.maptiler.com/maps/streets/style.json?key=${process.env.MAPTILER_API_KEY}`
           : backupMapStyle
       }
+      onLoad={handleOnLoad}
     >
       <NavigationControl position="top-left" />
       <GeolocateControl position="top-left" />
