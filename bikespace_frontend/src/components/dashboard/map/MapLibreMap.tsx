@@ -30,7 +30,11 @@ import {
   BicycleNetworkLayerLegend,
 } from '@/components/map-layers/BicycleNetwork';
 
-import {unclusteredSubmissionsLayer} from './_MapLayers';
+import {
+  clusteredSubmissionsLayer,
+  clusterCountsSubmissionsLayer,
+  unclusteredSubmissionsLayer,
+} from './_MapLayers';
 
 import type {
   FilterSpecification,
@@ -165,10 +169,12 @@ export function DashboardMap({
         id="bikeparking-submissions"
         type="geojson"
         data={getGeoJSONFromSubmissions(submissions)}
-        // cluster={true}
-        // clusterMaxZoom={14}
-        // clusterRadius={50}
+        cluster={true}
+        clusterMaxZoom={20} // never drop clusters if points overlap
+        clusterRadius={20} // default is 50
       >
+        <Layer {...clusteredSubmissionsLayer} />
+        <Layer {...clusterCountsSubmissionsLayer} />
         <Layer {...unclusteredSubmissionsLayer} />
       </Source>
       {/* placed here to avoid covering the sidebar */}
