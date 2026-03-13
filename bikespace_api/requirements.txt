@@ -5,7 +5,7 @@ argon2-cffi-bindings==21.2.0
 bcrypt==4.0.1
 beautifulsoup4==4.14.2
 better-profanity==0.7.0
-black==26.3.1
+black==26.3.1 
 blinker==1.9.0
 certifi==2024.7.4
 cffi==1.17.1
