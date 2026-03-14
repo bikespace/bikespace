@@ -85,10 +85,10 @@ export function ParkingMapPage() {
   const resultsCardRef = useRef<HTMLDivElement>(null);
 
   const mapStyle = process.env.MAPTILER_API_KEY
-    ? `https://api.maptiler.com/maps/streets/style.json?key=${process.env.MAPTILER_API_KEY}`
+    ? `https://api.maptiler.com/maps/dataviz/style.json?key=${process.env.MAPTILER_API_KEY}`
     : backupMapStyle;
   const mapStyleRoadLabelsLayer = process.env.MAPTILER_API_KEY
-    ? 'road_label'
+    ? 'Road labels'
     : 'roads_labels_major';
 
   // enable backup map tiles
