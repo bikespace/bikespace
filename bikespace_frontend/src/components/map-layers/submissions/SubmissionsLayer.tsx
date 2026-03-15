@@ -1,7 +1,7 @@
 import React from 'react';
 import {Layer, Marker, Source, useMap} from 'react-map-gl/maplibre';
 
-import {getGeoJSONFromSubmissions, zoomAndFlyTo} from '@/utils/map-utils';
+import {getGeoJSONFromSubmissions, zoomAndEaseTo} from '@/utils/map-utils';
 
 import {SubmissionApiPayload} from '@/interfaces/Submission';
 
@@ -84,7 +84,7 @@ export async function handleMapClick(
     const zoom = await interactiveSource.getClusterExpansionZoom(
       firstCluster.properties.cluster_id
     );
-    zoomAndFlyTo(clusterFeatures, mapRef, zoom.valueOf());
+    zoomAndEaseTo(clusterFeatures, mapRef, zoom.valueOf());
     // mapRef.current!.easeTo({
     //   // @ts-expect-error: unable to narrow MapGeoJSONFeature coordinates type
     //   center: firstCluster.geometry.coordinates,
@@ -111,7 +111,7 @@ export async function handleMapClick(
 
   // select feature(s) if only marker(s) are selected
   if (clusterFeatures.length === 0 && markerFeatures.length > 0) {
-    zoomAndFlyTo(markerFeatures, mapRef);
+    zoomAndEaseTo(markerFeatures, mapRef);
     // const firstMarker = markerFeatures[0];
     // mapRef.current!.easeTo({
     //   // @ts-expect-error: unable to narrow MapGeoJSONFeature coordinates type

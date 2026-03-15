@@ -21,7 +21,7 @@ export function getCentroid(feature: Feature) {
 /**
  * Helper function for interaction handling. Will zoom in if currently more zoomed out than default zoomLevel unless the points don't fit.
  */
-export function zoomAndFlyTo(
+export function zoomAndEaseTo(
   features: MapGeoJSONFeature[],
   mapRef: React.RefObject<MapRef>,
   zoomLevel = 18
@@ -44,7 +44,7 @@ export function zoomAndFlyTo(
     Math.max(zoomLevel, mapRef.current!.getZoom())
   );
 
-  mapRef.current!.flyTo({
+  mapRef.current!.easeTo({
     center: testCamera?.center,
     zoom: zoomLevel,
   });

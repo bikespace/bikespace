@@ -11,7 +11,7 @@ import {trackUmamiEvent} from '@/utils';
 import {
   defaultMapCenter,
   GeocoderSearch,
-  zoomAndFlyTo,
+  zoomAndEaseTo,
 } from '@/utils/map-utils';
 
 import {ParkingMapFilter} from './map-filters/ParkingMapFilter';
@@ -136,10 +136,10 @@ export function ParkingMapPage() {
       trackUmamiEvent('parking-map-feature-click');
       setGeoSearchIsMinimized(true);
       if (sidebarIsOpen) {
-        zoomAndFlyTo(features, mapRef);
+        zoomAndEaseTo(features, mapRef);
       } else {
         setSidebarIsOpen(true);
-        mapRef.current!.once('resize', () => zoomAndFlyTo(features, mapRef));
+        mapRef.current!.once('resize', () => zoomAndEaseTo(features, mapRef));
       }
       if (resultsCardRef.current) {
         resultsCardRef.current.scrollIntoView();
