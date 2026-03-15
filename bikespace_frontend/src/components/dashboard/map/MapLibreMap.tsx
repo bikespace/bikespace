@@ -178,7 +178,7 @@ export function DashboardMap({
         <Layer {...unclusteredSubmissionsLayer} />
       </Source>
       {/* placed here to avoid covering the sidebar */}
-      {/* <Spinner show={isMapLoading} overlay label="Loading map..." /> */}
+      <Spinner show={isMapLoading} overlay label="Loading map..." />
     </Map>
   );
 }
