@@ -5,13 +5,13 @@ import Map, {GeolocateControl, NavigationControl} from 'react-map-gl/maplibre';
 import maplibregl from 'maplibre-gl';
 import type {Map as MapLibreMap} from 'maplibre-gl';
 import {Protocol} from 'pmtiles';
-import {layers, namedFlavor} from '@protomaps/basemaps';
 
 import {trackUmamiEvent} from '@/utils';
 import {
   defaultMapCenter,
   GeocoderSearch,
   zoomAndEaseTo,
+  backupMapStyle,
 } from '@/utils/map-utils';
 
 import {ParkingMapFilter} from './map-filters/ParkingMapFilter';
@@ -43,28 +43,11 @@ import type {
   MapLayerMouseEvent,
   MapRef,
   PointLike,
-  MapStyle,
 } from 'react-map-gl/maplibre';
 
 import 'maplibre-gl/dist/maplibre-gl.css';
 import styles from './parking-map-page.module.scss';
 const parkingSpritePath = '/parking_sprites/parking_sprites';
-
-const backupMapStyle: MapStyle = {
-  version: 8,
-  glyphs:
-    'https://protomaps.github.io/basemaps-assets/fonts/{fontstack}/{range}.pbf',
-  sprite: 'https://protomaps.github.io/basemaps-assets/sprites/v4/light',
-  sources: {
-    protomaps: {
-      type: 'vector',
-      url: 'pmtiles://backup_map/toronto.pmtiles',
-      attribution:
-        '<a href="https://protomaps.com">Protomaps</a> © <a href="https://openstreetmap.org">OpenStreetMap</a>',
-    },
-  },
-  layers: layers('protomaps', namedFlavor('light'), {lang: 'en'}),
-};
 
 export function uniqueBy(a: Array<Object>, getKey: Function): Array<Object> {
   const seen = new Set();
