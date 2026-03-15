@@ -1,7 +1,18 @@
 import type {LayerProps} from 'react-map-gl/maplibre';
 
+const clusteredSubmissionsLayerId = 'bikeparking-submissions-clustered';
+const clusterCountsSubmissionsLayerId =
+  'bikeparking-submissions-cluster-counts';
+const unclusteredSubmissionsLayerId = 'bikeparking-submissions-unclustered';
+
+export const submissionsInteractiveSource = 'bikeparking-submissions';
+export const submissionsInteractiveLayers = [
+  clusteredSubmissionsLayerId,
+  unclusteredSubmissionsLayerId,
+];
+
 export const clusteredSubmissionsLayer: LayerProps = {
-  id: 'bikeparking-submissions-clustered',
+  id: clusteredSubmissionsLayerId,
   type: 'circle',
   filter: ['has', 'point_count'],
   paint: {
@@ -27,7 +38,7 @@ export const clusteredSubmissionsLayer: LayerProps = {
 };
 
 export const clusterCountsSubmissionsLayer: LayerProps = {
-  id: 'bikeparking-submissions-cluster-counts',
+  id: clusterCountsSubmissionsLayerId,
   type: 'symbol',
   filter: ['has', 'point_count'],
   paint: {
@@ -52,7 +63,7 @@ export const clusterCountsSubmissionsLayer: LayerProps = {
 };
 
 export const unclusteredSubmissionsLayer: LayerProps = {
-  id: 'bikeparking-submissions-unclustered',
+  id: unclusteredSubmissionsLayerId,
   type: 'symbol',
   filter: ['!', ['has', 'point_count']],
   layout: {

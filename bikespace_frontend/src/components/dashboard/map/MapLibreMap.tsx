@@ -34,6 +34,8 @@ import {
   clusteredSubmissionsLayer,
   clusterCountsSubmissionsLayer,
   unclusteredSubmissionsLayer,
+  submissionsInteractiveLayers,
+  submissionsInteractiveSource,
 } from './_MapLayers';
 
 import type {
@@ -102,16 +104,17 @@ function zoomAndFlyTo(
 
 export interface DashboardMapProps {
   submissions: SubmissionApiPayload[];
+  mapRef: React.RefObject<MapRef>;
   isFirstMarkerDataLoading: boolean;
   handleClick: (e: MapLayerMouseEvent) => void;
 }
 
 function DashboardMap({
   submissions,
+  mapRef,
   isFirstMarkerDataLoading,
   handleClick,
 }: DashboardMapProps) {
-  const mapRef = useRef<MapRef>(null);
   const isMobile = useIsMobile();
 
   const [zoomLevel, setZoomLevel] = useState<number>(12);
@@ -147,10 +150,23 @@ function DashboardMap({
     if (!isFirstMarkerDataLoading) setIsMapLoading(false);
   }, [isFirstMarkerDataLoading]);
 
+  // show map pins as interactive when mouse is over them
+  function handleMouseHover() {
+    for (const layer of submissionsInteractiveLayers) {
+      mapRef.current!.on('mouseenter', layer, () => {
+        mapRef.current!.getCanvas().style.cursor = 'pointer';
+      });
+      mapRef.current!.on('mouseleave', layer, () => {
+        mapRef.current!.getCanvas().style.cursor = '';
+      });
+    }
+  }
+
   function handleOnLoad() {
     // console log required for playwright testing
     if (process.env.NODE_ENV !== 'production') console.log('map loaded');
     mapRef.current!.addSprite('submission', submissionSpritePath);
+    handleMouseHover();
   }
 
   return (
@@ -173,7 +189,7 @@ function DashboardMap({
       <NavigationControl position="top-left" />
       <GeolocateControl position="top-left" />
       <Source
-        id="bikeparking-submissions"
+        id={submissionsInteractiveSource}
         type="geojson"
         data={getGeoJSONFromSubmissions(submissions)}
         cluster={true}
