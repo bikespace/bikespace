@@ -68,6 +68,38 @@ const backupMapStyle: MapStyle = {
   layers: layers('protomaps', namedFlavor('light'), {lang: 'en'}),
 };
 
+/**
+ * Helper function for interaction handling. Will zoom in if currently more zoomed out than default zoomLevel unless the points don't fit.
+ */
+function zoomAndFlyTo(
+  features: MapGeoJSONFeature[],
+  mapRef: React.RefObject<MapRef>,
+  zoomLevel = 18
+) {
+  // calculate bounds and test camera fit and center
+  const [minLon, minLat, maxLon, maxLat] = getBBox(
+    getFeatureCollection(features)
+  );
+  const testCamera = mapRef.current!.cameraForBounds(
+    [
+      [minLon, minLat],
+      [maxLon, maxLat],
+    ],
+    {padding: {top: 50, right: 10, left: 10, bottom: 10}}
+  );
+
+  // zoom in if currently more zoomed out than default zoomLevel unless the points don't fit
+  zoomLevel = Math.min(
+    testCamera?.zoom ?? zoomLevel,
+    Math.max(zoomLevel, mapRef.current!.getZoom())
+  );
+
+  mapRef.current!.flyTo({
+    center: testCamera?.center,
+    zoom: zoomLevel,
+  });
+}
+
 export interface DashboardMapProps {
   submissions: SubmissionApiPayload[];
   isFirstMarkerDataLoading: boolean;
@@ -107,31 +139,6 @@ function DashboardMap({
       });
     });
   }, []);
-
-  function zoomAndFlyTo(features: MapGeoJSONFeature[], zoomLevel = 18) {
-    // calculate bounds and test camera fit and center
-    const [minLon, minLat, maxLon, maxLat] = getBBox(
-      getFeatureCollection(features)
-    );
-    const testCamera = mapRef.current!.cameraForBounds(
-      [
-        [minLon, minLat],
-        [maxLon, maxLat],
-      ],
-      {padding: {top: 50, right: 10, left: 10, bottom: 10}}
-    );
-
-    // zoom in if currently more zoomed out than default zoomLevel unless the points don't fit
-    zoomLevel = Math.min(
-      testCamera?.zoom ?? zoomLevel,
-      Math.max(zoomLevel, mapRef.current!.getZoom())
-    );
-
-    mapRef.current!.flyTo({
-      center: testCamera?.center,
-      zoom: zoomLevel,
-    });
-  }
 
   // cancel loading spinner when any number of submissions are loaded
   useEffect(() => {
