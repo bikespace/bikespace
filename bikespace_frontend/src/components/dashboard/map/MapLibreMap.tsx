@@ -103,11 +103,13 @@ function zoomAndFlyTo(
 export interface DashboardMapProps {
   submissions: SubmissionApiPayload[];
   isFirstMarkerDataLoading: boolean;
+  handleClick: (e: MapLayerMouseEvent) => void;
 }
 
 function DashboardMap({
   submissions,
   isFirstMarkerDataLoading,
+  handleClick,
 }: DashboardMapProps) {
   const mapRef = useRef<MapRef>(null);
   const isMobile = useIsMobile();
@@ -166,6 +168,7 @@ function DashboardMap({
           : backupMapStyle
       }
       onLoad={handleOnLoad}
+      onClick={handleClick}
     >
       <NavigationControl position="top-left" />
       <GeolocateControl position="top-left" />

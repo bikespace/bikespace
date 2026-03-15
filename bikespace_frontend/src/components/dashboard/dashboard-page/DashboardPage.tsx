@@ -88,18 +88,15 @@ export function DashboardPage() {
     setSubmissions(subs);
   }, [allSubmissionQuery.data, singleSubmissionQuery.data, filters]);
 
-  useEffect(() => {
-    if (focusedId === null) return;
-
-    trackUmamiEvent('focus_submission', {submission_id: focusedId});
-  }, [focusedId]);
-
   return (
     <main className={styles.dashboardPage}>
       <Sidebar />
       <DashboardMap
         submissions={submissions}
         isFirstMarkerDataLoading={isFirstMarkerDataLoading}
+        handleClick={e => {
+          return;
+        }}
       />
     </main>
   );

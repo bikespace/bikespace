@@ -1,12 +1,13 @@
 import React, {useEffect, useRef} from 'react';
 import {DateTime} from 'luxon';
 
-import {SubmissionApiPayload, ParkingDuration} from '@/interfaces/Submission';
 import {useIsMobile} from '@/hooks/use-is-mobile';
+import {trackUmamiEvent} from '@/utils';
 
 import {useSubmissionId} from '@/states/url-params';
 import {useStore} from '@/states/store';
 
+import {SubmissionApiPayload, ParkingDuration} from '@/interfaces/Submission';
 import {issuePriority} from '@/config/bikespace-api';
 
 import {IssueBadge} from '../issue-badge';
@@ -57,6 +58,7 @@ export function FeedSubmissionItem({submission}: FeedSubmissionItemProps) {
 
   const handleClick = () => {
     setFocus(id);
+    trackUmamiEvent('focus_submission', {submission_id: id});
   };
 
   return (
