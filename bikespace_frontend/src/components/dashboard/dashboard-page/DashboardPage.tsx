@@ -11,7 +11,7 @@ import {useStore} from '@/states/store';
 import {SidebarTab, useSubmissionId, useSidebarTab} from '@/states/url-params';
 
 import Sidebar from '../sidebar/Sidebar';
-import {DashboardMap as Map} from '../map/MapLibreMap';
+import {DashboardMap} from '../map/MapLibreMap';
 
 import styles from './dashboard-page.module.scss';
 
@@ -83,7 +83,7 @@ export function DashboardPage() {
   return (
     <main className={styles.dashboardPage}>
       <Sidebar />
-      <Map
+      <DashboardMap
         submissions={submissions}
         isFirstMarkerDataLoading={isFirstMarkerDataLoading}
       />

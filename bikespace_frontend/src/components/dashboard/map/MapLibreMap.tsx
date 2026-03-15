@@ -133,18 +133,17 @@ export function DashboardMap({
     });
   }
 
-  function addSprite() {
-    mapRef.current!.addSprite('submission', submissionSpritePath);
-  }
+  // cancel loading spinner when any number of submissions are loaded
+  useEffect(() => {
+    if (!isFirstMarkerDataLoading) {
+      mapRef.current!.once('idle', () => setIsMapLoading(false));
+    }
+  }, [isFirstMarkerDataLoading]);
 
   function handleOnLoad() {
     // console log required for playwright testing
     if (process.env.NODE_ENV !== 'production') console.log('map loaded');
-    addSprite();
-
-    // after styles load
-    const map: MapLibreMap = mapRef.current!.getMap(); // maplibre-gl map instance
-    map?.once('idle', () => setIsMapLoading(false)); // wait for styles to load, then set loading to false
+    mapRef.current!.addSprite('submission', submissionSpritePath);
   }
 
   return (
