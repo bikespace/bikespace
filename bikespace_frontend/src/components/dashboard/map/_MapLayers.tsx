@@ -42,6 +42,7 @@ export const clusterCountsSubmissionsLayer: LayerProps = {
     ],
   },
   layout: {
+    'text-overlap': 'always',
     'text-field': '{point_count_abbreviated}',
     'text-size': 12,
     'text-font': process.env.MAPTILER_API_KEY

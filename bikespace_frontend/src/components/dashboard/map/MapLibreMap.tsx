@@ -168,7 +168,7 @@ function DashboardMap({
         data={getGeoJSONFromSubmissions(submissions)}
         cluster={true}
         clusterMaxZoom={20} // never drop clusters if points overlap
-        clusterRadius={20} // default is 50
+        clusterRadius={40} // default is 50
       >
         <Layer {...clusteredSubmissionsLayer} />
         <Layer {...clusterCountsSubmissionsLayer} />
