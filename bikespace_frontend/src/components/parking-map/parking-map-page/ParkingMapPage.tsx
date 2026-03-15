@@ -2,15 +2,17 @@
 
 import React, {useEffect, useState, useRef} from 'react';
 import Map, {GeolocateControl, NavigationControl} from 'react-map-gl/maplibre';
-import {bbox as getBBox} from '@turf/bbox';
-import {featureCollection as getFeatureCollection} from '@turf/helpers';
 import maplibregl from 'maplibre-gl';
 import type {Map as MapLibreMap} from 'maplibre-gl';
 import {Protocol} from 'pmtiles';
 import {layers, namedFlavor} from '@protomaps/basemaps';
 
 import {trackUmamiEvent} from '@/utils';
-import {defaultMapCenter, GeocoderSearch} from '@/utils/map-utils';
+import {
+  defaultMapCenter,
+  GeocoderSearch,
+  zoomAndFlyTo,
+} from '@/utils/map-utils';
 
 import {ParkingMapFilter} from './map-filters/ParkingMapFilter';
 import {Sidebar} from './sidebar/Sidebar';
@@ -120,31 +122,6 @@ export function ParkingMapPage() {
     });
   }, []);
 
-  function zoomAndFlyTo(features: MapGeoJSONFeature[], zoomLevel = 18) {
-    // calculate bounds and test camera fit and center
-    const [minLon, minLat, maxLon, maxLat] = getBBox(
-      getFeatureCollection(features)
-    );
-    const testCamera = mapRef.current!.cameraForBounds(
-      [
-        [minLon, minLat],
-        [maxLon, maxLat],
-      ],
-      {padding: {top: 50, right: 10, left: 10, bottom: 10}}
-    );
-
-    // zoom in if currently more zoomed out than default zoomLevel unless the points don't fit
-    zoomLevel = Math.min(
-      testCamera?.zoom ?? zoomLevel,
-      Math.max(zoomLevel, mapRef.current!.getZoom())
-    );
-
-    mapRef.current!.flyTo({
-      center: testCamera?.center,
-      zoom: zoomLevel,
-    });
-  }
-
   function handleLayerClick(e: MapLayerMouseEvent) {
     const features = mapRef.current!.queryRenderedFeatures(
       e.point as PointLike,
@@ -159,10 +136,10 @@ export function ParkingMapPage() {
       trackUmamiEvent('parking-map-feature-click');
       setGeoSearchIsMinimized(true);
       if (sidebarIsOpen) {
-        zoomAndFlyTo(features);
+        zoomAndFlyTo(features, mapRef);
       } else {
         setSidebarIsOpen(true);
-        mapRef.current!.once('resize', () => zoomAndFlyTo(features));
+        mapRef.current!.once('resize', () => zoomAndFlyTo(features, mapRef));
       }
       if (resultsCardRef.current) {
         resultsCardRef.current.scrollIntoView();

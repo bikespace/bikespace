@@ -26,24 +26,20 @@ import {SubmissionApiPayload} from '@/interfaces/Submission';
 
 import {Spinner} from '@/components/shared-ui/spinner';
 import {
+  SubmissionsLayer,
+  handleMouseHover,
+} from '@/components/map-layers/submissions';
+import {
   BicycleNetworkLayer,
   BicycleNetworkLayerLegend,
 } from '@/components/map-layers/BicycleNetwork';
 
-import {
-  clusteredSubmissionsLayer,
-  clusterCountsSubmissionsLayer,
-  unclusteredSubmissionsLayer,
-  submissionsInteractiveLayers,
-  submissionsInteractiveSource,
-} from './_MapLayers';
-
 import type {
   FilterSpecification,
-  MapGeoJSONFeature,
   QueryRenderedFeaturesOptions,
 } from 'maplibre-gl';
 import type {
+  MapGeoJSONFeature,
   MapLayerMouseEvent,
   MapRef,
   PointLike,
@@ -70,38 +66,6 @@ const backupMapStyle: MapStyle = {
   layers: layers('protomaps', namedFlavor('light'), {lang: 'en'}),
 };
 
-/**
- * Helper function for interaction handling. Will zoom in if currently more zoomed out than default zoomLevel unless the points don't fit.
- */
-function zoomAndFlyTo(
-  features: MapGeoJSONFeature[],
-  mapRef: React.RefObject<MapRef>,
-  zoomLevel = 18
-) {
-  // calculate bounds and test camera fit and center
-  const [minLon, minLat, maxLon, maxLat] = getBBox(
-    getFeatureCollection(features)
-  );
-  const testCamera = mapRef.current!.cameraForBounds(
-    [
-      [minLon, minLat],
-      [maxLon, maxLat],
-    ],
-    {padding: {top: 50, right: 10, left: 10, bottom: 10}}
-  );
-
-  // zoom in if currently more zoomed out than default zoomLevel unless the points don't fit
-  zoomLevel = Math.min(
-    testCamera?.zoom ?? zoomLevel,
-    Math.max(zoomLevel, mapRef.current!.getZoom())
-  );
-
-  mapRef.current!.flyTo({
-    center: testCamera?.center,
-    zoom: zoomLevel,
-  });
-}
-
 export interface DashboardMapProps {
   submissions: SubmissionApiPayload[];
   mapRef: React.RefObject<MapRef>;
@@ -119,6 +83,11 @@ function DashboardMap({
 
   const [zoomLevel, setZoomLevel] = useState<number>(12);
   const [isMapLoading, setIsMapLoading] = useState<boolean>(true);
+  const [selectedSubmission, setSelectedSubmission] =
+    useState<MapGeoJSONFeature | null>(null);
+  const [multiSelectedSubmissions, setMultiSelectedSubmissions] = useState<
+    MapGeoJSONFeature[] | null
+  >(null);
   const [selectedSubmissionId, setSelectedSubmissionId] = useSubmissionId();
   const [, setSidebarTab] = useSidebarTab();
   const {setIsSidebarOpen} = useStore(state => ({
@@ -150,23 +119,11 @@ function DashboardMap({
     if (!isFirstMarkerDataLoading) setIsMapLoading(false);
   }, [isFirstMarkerDataLoading]);
 
-  // show map pins as interactive when mouse is over them
-  function handleMouseHover() {
-    for (const layer of submissionsInteractiveLayers) {
-      mapRef.current!.on('mouseenter', layer, () => {
-        mapRef.current!.getCanvas().style.cursor = 'pointer';
-      });
-      mapRef.current!.on('mouseleave', layer, () => {
-        mapRef.current!.getCanvas().style.cursor = '';
-      });
-    }
-  }
-
   function handleOnLoad() {
     // console log required for playwright testing
     if (process.env.NODE_ENV !== 'production') console.log('map loaded');
     mapRef.current!.addSprite('submission', submissionSpritePath);
-    handleMouseHover();
+    handleMouseHover(mapRef);
   }
 
   return (
@@ -188,18 +145,11 @@ function DashboardMap({
     >
       <NavigationControl position="top-left" />
       <GeolocateControl position="top-left" />
-      <Source
-        id={submissionsInteractiveSource}
-        type="geojson"
-        data={getGeoJSONFromSubmissions(submissions)}
-        cluster={true}
-        clusterMaxZoom={20} // never drop clusters if points overlap
-        clusterRadius={40} // default is 50
-      >
-        <Layer {...clusteredSubmissionsLayer} />
-        <Layer {...clusterCountsSubmissionsLayer} />
-        <Layer {...unclusteredSubmissionsLayer} />
-      </Source>
+      <SubmissionsLayer
+        submissions={submissions}
+        singleSelected={selectedSubmission}
+        multiSelected={multiSelectedSubmissions}
+      />
       {/* placed here to avoid covering the sidebar */}
       <Spinner show={isMapLoading} overlay label="Loading map..." />
     </Map>

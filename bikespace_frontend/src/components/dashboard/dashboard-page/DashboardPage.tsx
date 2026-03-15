@@ -3,6 +3,8 @@
 import {useEffect, useRef} from 'react';
 import dynamic from 'next/dynamic';
 
+import {handleMapClick} from '@/components/map-layers/submissions';
+
 import {trackUmamiEvent} from '@/utils';
 
 import {useSubmissionsQuery} from '@/hooks';
@@ -12,10 +14,6 @@ import {useStore} from '@/states/store';
 import {SidebarTab, useSubmissionId, useSidebarTab} from '@/states/url-params';
 
 import {DashboardMapProps} from '../map/MapLibreMap';
-import {
-  submissionsInteractiveLayers,
-  submissionsInteractiveSource,
-} from '../map/_MapLayers';
 
 import type {
   GeoJSONSource,
@@ -106,54 +104,15 @@ export function DashboardPage() {
     setSubmissions(subs);
   }, [allSubmissionQuery.data, singleSubmissionQuery.data, filters]);
 
-  async function handleMapClick(e: MapLayerMouseEvent) {
-    const interactiveSource: GeoJSONSource = mapRef.current!.getSource(
-      submissionsInteractiveSource
-    )!;
-    const features = mapRef.current!.queryRenderedFeatures(
-      e.point as PointLike,
-      {
-        layers: submissionsInteractiveLayers,
-      } as QueryRenderedFeaturesOptions
-    );
+  async function handleClick(e: MapLayerMouseEvent) {
+    const {singleSelected, multiSelected} = await handleMapClick(e, mapRef);
 
-    const clusterFeatures = features.filter(
-      feature => feature.properties?.cluster
-    );
-    const markerFeatures = features.filter(
-      feature => !feature.properties?.cluster
-    );
-
-    // zoom in to reveal more detail if cluster is selected
-    if (clusterFeatures.length > 0) {
-      const firstCluster = clusterFeatures[0];
-      const zoom = await interactiveSource.getClusterExpansionZoom(
-        firstCluster.properties.cluster_id
-      );
-      // handle if zoom is 20
-      mapRef.current!.easeTo({
-        // @ts-expect-error: unable to narrow MapGeoJSONFeature coordinates type
-        center: firstCluster.geometry.coordinates,
-        zoom,
-        duration: 500,
-      });
+    if (singleSelected) {
+      setFocusedId(singleSelected.properties.id);
+      // mapRef.current!.once('idle', () =>
+      //   setFocusedId(singleSelected.properties.id)
+      // );
     }
-
-    // select feature(s) if only marker(s) are selected
-    if (clusterFeatures.length === 0 && markerFeatures.length > 0) {
-      const firstMarker = markerFeatures[0];
-      mapRef.current!.easeTo({
-        // @ts-expect-error: unable to narrow MapGeoJSONFeature coordinates type
-        center: firstMarker.geometry.coordinates,
-        zoom: 18,
-        duration: 500,
-      });
-      mapRef.current!.once('idle', () =>
-        setFocusedId(firstMarker.properties.id)
-      );
-    }
-
-    // TODO handle map canvas click (!features.length)
   }
 
   return (
@@ -163,7 +122,7 @@ export function DashboardPage() {
         submissions={submissions}
         mapRef={mapRef}
         isFirstMarkerDataLoading={isFirstMarkerDataLoading}
-        handleClick={handleMapClick}
+        handleClick={handleClick}
       />
     </main>
   );
