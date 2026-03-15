@@ -73,7 +73,7 @@ export interface DashboardMapProps {
   isFirstMarkerDataLoading: boolean;
 }
 
-export function DashboardMap({
+function DashboardMap({
   submissions,
   isFirstMarkerDataLoading,
 }: DashboardMapProps) {
@@ -135,9 +135,7 @@ export function DashboardMap({
 
   // cancel loading spinner when any number of submissions are loaded
   useEffect(() => {
-    if (!isFirstMarkerDataLoading) {
-      mapRef.current!.once('idle', () => setIsMapLoading(false));
-    }
+    if (!isFirstMarkerDataLoading) setIsMapLoading(false);
   }, [isFirstMarkerDataLoading]);
 
   function handleOnLoad() {
@@ -181,3 +179,6 @@ export function DashboardMap({
     </Map>
   );
 }
+
+export default DashboardMap;
+export {DashboardMap};
