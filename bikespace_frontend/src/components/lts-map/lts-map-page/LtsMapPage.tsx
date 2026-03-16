@@ -116,6 +116,13 @@ export function LtsMapPage() {
   const mapRef = useRef<MapRef>(null);
   const resultsCardRef = useRef<HTMLDivElement>(null);
 
+  const mapStyle = process.env.MAPTILER_API_KEY
+    ? `https://api.maptiler.com/maps/dataviz/style.json?key=${process.env.MAPTILER_API_KEY}`
+    : backupMapStyle;
+  const mapStyleRoadLabelsLayer = process.env.MAPTILER_API_KEY
+    ? 'Road labels'
+    : 'roads_labels_major';
+
   const ltsFilter: FilterSpecification =
     enabledLtsLevels.length === 0
       ? ['==', ['get', 'lts'], -1]
@@ -524,11 +531,7 @@ export function LtsMapPage() {
           zoom: 12,
         }}
         style={{width: '100%', height: '100%'}}
-        mapStyle={
-          process.env.MAPTILER_API_KEY
-            ? `https://api.maptiler.com/maps/dataviz/style.json?key=${process.env.MAPTILER_API_KEY}`
-            : backupMapStyle
-        }
+        mapStyle={mapStyle}
         onLoad={handleOnLoad}
         onClick={handleMapClick}
         onError={event => {
@@ -540,8 +543,16 @@ export function LtsMapPage() {
         <NavigationControl position="top-left" />
         <GeolocateControl position="top-left" />
         <Source id="lts" type="vector" url={ltsPmtilesUrl}>
-          <Layer {...ltsLineLayer} filter={ltsFilter} beforeId="Road labels" />
-          <Layer {...ltsHitLayer} filter={ltsFilter} beforeId="Road labels" />
+          <Layer
+            {...ltsLineLayer}
+            filter={ltsFilter}
+            beforeId={mapStyleRoadLabelsLayer}
+          />
+          <Layer
+            {...ltsHitLayer}
+            filter={ltsFilter}
+            beforeId={mapStyleRoadLabelsLayer}
+          />
         </Source>
         {selectedFeatureGeoJSON ? (
           <Source
@@ -549,7 +560,7 @@ export function LtsMapPage() {
             type="geojson"
             data={selectedFeatureGeoJSON}
           >
-            <Layer {...ltsSelectedLayer} beforeId="Road labels" />
+            <Layer {...ltsSelectedLayer} beforeId={mapStyleRoadLabelsLayer} />
           </Source>
         ) : null}
       </Map>
