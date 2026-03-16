@@ -1,11 +1,23 @@
 'use client';
 
-import {useEffect, useRef} from 'react';
+import {useEffect, useRef, useState} from 'react';
 import dynamic from 'next/dynamic';
 
-import {handleMapClick} from '@/components/map-layers/submissions';
+import Map, {GeolocateControl, NavigationControl} from 'react-map-gl/maplibre';
+
+import {
+  SubmissionsLayer,
+  handleMouseHover,
+  handleMapClick as handleMapClickBase,
+} from '@/components/map-layers/submissions';
+import {Spinner} from '@/components/shared-ui/spinner';
 
 import {trackUmamiEvent} from '@/utils';
+import {
+  defaultMapCenter,
+  backupMapStyle,
+  addPMTilesProtocol,
+} from '@/utils/map-utils';
 
 import {useSubmissionsQuery} from '@/hooks';
 import {useSingleSubmissionQuery} from '@/hooks/use-single-submission-query';
@@ -13,18 +25,10 @@ import {useSingleSubmissionQuery} from '@/hooks/use-single-submission-query';
 import {useStore} from '@/states/store';
 import {SidebarTab, useSubmissionId, useSidebarTab} from '@/states/url-params';
 
-import {DashboardMapProps} from '../map/MapLibreMap';
-
-import type {
-  GeoJSONSource,
-  MapGeoJSONFeature,
-  Point,
-  QueryRenderedFeaturesOptions,
-} from 'maplibre-gl';
 import type {
   MapLayerMouseEvent,
   MapRef,
-  PointLike,
+  MapGeoJSONFeature,
 } from 'react-map-gl/maplibre';
 
 import styles from './dashboard-page.module.scss';
@@ -35,18 +39,20 @@ const Sidebar = dynamic(() => import('../sidebar/Sidebar'), {
   ssr: false,
 });
 
-const DashboardMap = dynamic<DashboardMapProps>(
-  () => import('../map/MapLibreMap'),
-  {
-    loading: () => <></>,
-    ssr: false,
-  }
-);
+import 'maplibre-gl/dist/maplibre-gl.css';
+
+const submissionSpritePath = '/submission_sprites/submission_sprites';
 
 export function DashboardPage() {
   const mapRef = useRef<MapRef>(null);
 
+  const [zoomLevel, setZoomLevel] = useState<number>(12);
   const [focusedId, setFocusedId] = useSubmissionId();
+  const [selectedSubmission, setSelectedSubmission] =
+    useState<MapGeoJSONFeature | null>(null);
+  const [multiSelectedSubmissions, setMultiSelectedSubmissions] = useState<
+    MapGeoJSONFeature[] | null
+  >(null);
   const [, setSidebarTab] = useSidebarTab();
 
   const singleSubmissionQuery = useSingleSubmissionQuery(focusedId);
@@ -57,11 +63,32 @@ export function DashboardPage() {
       ? [singleSubmissionQuery.data]
       : [];
 
-  const {submissions, setSubmissions, filters} = useStore(state => ({
-    submissions: state.submissions,
-    setSubmissions: state.setSubmissions,
-    filters: state.filters,
-  }));
+  const {submissions, setSubmissions, filters, setIsSidebarOpen} = useStore(
+    state => ({
+      submissions: state.submissions,
+      setSubmissions: state.setSubmissions,
+      filters: state.filters,
+      setIsSidebarOpen: state.ui.sidebar.setIsOpen,
+    })
+  );
+
+  // enable backup map tiles
+  useEffect(() => addPMTilesProtocol(), []);
+
+  const mapStyle = process.env.MAPTILER_API_KEY
+    ? `https://api.maptiler.com/maps/streets/style.json?key=${process.env.MAPTILER_API_KEY}`
+    : backupMapStyle;
+
+  // set starting zoom and position
+  const [defaultLocation, setDefaultLocation] = useState(defaultMapCenter);
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(position => {
+      setDefaultLocation({
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude,
+      });
+    });
+  }, []);
 
   const isFirstMarkerDataLoading = focusedId
     ? singleSubmissionQuery.isLoading && allSubmissionQuery.isLoading
@@ -104,8 +131,15 @@ export function DashboardPage() {
     setSubmissions(subs);
   }, [allSubmissionQuery.data, singleSubmissionQuery.data, filters]);
 
-  async function handleClick(e: MapLayerMouseEvent) {
-    const {singleSelected, multiSelected} = await handleMapClick(e, mapRef);
+  function handleOnLoad() {
+    // console log required for playwright testing
+    if (process.env.NODE_ENV !== 'production') console.log('map loaded');
+    mapRef.current!.addSprite('submission', submissionSpritePath);
+    handleMouseHover(mapRef);
+  }
+
+  async function handleMapClick(e: MapLayerMouseEvent) {
+    const {singleSelected, multiSelected} = await handleMapClickBase(e, mapRef);
 
     if (singleSelected) {
       mapRef.current!.once('idle', () =>
@@ -117,12 +151,32 @@ export function DashboardPage() {
   return (
     <main className={styles.dashboardPage}>
       <Sidebar />
-      <DashboardMap
-        submissions={submissions}
-        mapRef={mapRef}
-        isFirstMarkerDataLoading={isFirstMarkerDataLoading}
-        handleClick={handleClick}
-      />
+      <Map
+        ref={mapRef}
+        initialViewState={{
+          latitude: defaultLocation.latitude,
+          longitude: defaultLocation.longitude,
+          zoom: zoomLevel,
+        }}
+        style={{width: '100%', height: '100%'}}
+        mapStyle={mapStyle}
+        onLoad={handleOnLoad}
+        onClick={handleMapClick}
+      >
+        <NavigationControl position="top-left" />
+        <GeolocateControl position="top-left" />
+        <SubmissionsLayer
+          submissions={submissions}
+          singleSelected={selectedSubmission}
+          multiSelected={multiSelectedSubmissions}
+        />
+        {/* placed here to avoid covering the sidebar */}
+        <Spinner
+          show={isFirstMarkerDataLoading}
+          overlay
+          label="Loading map..."
+        />
+      </Map>
     </main>
   );
 }
