@@ -108,10 +108,9 @@ export function DashboardPage() {
     const {singleSelected, multiSelected} = await handleMapClick(e, mapRef);
 
     if (singleSelected) {
-      setFocusedId(singleSelected.properties.id);
-      // mapRef.current!.once('idle', () =>
-      //   setFocusedId(singleSelected.properties.id)
-      // );
+      mapRef.current!.once('idle', () =>
+        setFocusedId(singleSelected.properties.id)
+      );
     }
   }
 
