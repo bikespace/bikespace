@@ -16,7 +16,10 @@ import styles from './_SidebarContent.module.scss';
 type ItemRef = Record<number, HTMLButtonElement>;
 
 export function SidebarContentFeed() {
-  const submissions = useStore(state => state.submissions);
+  const {submissions, selectFeatureOnMap} = useStore(state => ({
+    submissions: state.submissions,
+    selectFeatureOnMap: state.ui.map.selectFeature,
+  }));
   const [focusedSubmissionId, setFocusedSubmissionId] = useSubmissionId();
   const {isLoading} = useSubmissionsQuery();
   const isMobile = useIsMobile();
@@ -46,6 +49,11 @@ export function SidebarContentFeed() {
             isFocused={submission.id === focusedSubmissionId}
             onClick={() => {
               setFocusedSubmissionId(submission.id);
+              selectFeatureOnMap(
+                submission.id,
+                submission.latitude,
+                submission.longitude
+              );
               trackUmamiEvent('focus_submission', {
                 submission_id: submission.id,
               });

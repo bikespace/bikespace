@@ -1,9 +1,19 @@
 import type {StateCreator} from 'zustand';
 
+type SelectFeatureFunction = (
+  submissionId: number,
+  latitude: number,
+  longitude: number
+) => void;
+
 export interface UiState {
   sidebar: {
     isOpen: boolean;
     setIsOpen: (isOpen: boolean) => void;
+  };
+  map: {
+    selectFeature: SelectFeatureFunction;
+    setSelectFeature: (selectFeature: SelectFeatureFunction) => void;
   };
 }
 
@@ -22,6 +32,20 @@ export const createUiSlice: StateCreator<UiSlice, [], [], UiSlice> = set => ({
             sidebar: {
               ...state.ui.sidebar,
               isOpen,
+            },
+          },
+        }));
+      },
+    },
+    map: {
+      selectFeature: () => {},
+      setSelectFeature: (selectFeature: SelectFeatureFunction) => {
+        set(state => ({
+          ui: {
+            ...state.ui,
+            map: {
+              ...state.ui.map,
+              selectFeature,
             },
           },
         }));

@@ -9,6 +9,7 @@ import {
   SubmissionsLayer,
   handleMouseHover,
   handleMapClick as handleMapClickBase,
+  submissionsInteractiveSource,
 } from '@/components/map-layers/submissions';
 import {Spinner} from '@/components/shared-ui/spinner';
 
@@ -17,6 +18,7 @@ import {
   defaultMapCenter,
   backupMapStyle,
   addPMTilesProtocol,
+  zoomAndEaseTo,
 } from '@/utils/map-utils';
 
 import {useSubmissionsQuery} from '@/hooks';
@@ -63,14 +65,19 @@ export function DashboardPage() {
       ? [singleSubmissionQuery.data]
       : [];
 
-  const {submissions, setSubmissions, filters, setIsSidebarOpen} = useStore(
-    state => ({
-      submissions: state.submissions,
-      setSubmissions: state.setSubmissions,
-      filters: state.filters,
-      setIsSidebarOpen: state.ui.sidebar.setIsOpen,
-    })
-  );
+  const {
+    submissions,
+    setSubmissions,
+    filters,
+    setIsSidebarOpen,
+    setSelectFeatureOnMap,
+  } = useStore(state => ({
+    submissions: state.submissions,
+    setSubmissions: state.setSubmissions,
+    filters: state.filters,
+    setIsSidebarOpen: state.ui.sidebar.setIsOpen,
+    setSelectFeatureOnMap: state.ui.map.setSelectFeature,
+  }));
 
   // enable backup map tiles
   useEffect(() => addPMTilesProtocol(), []);
@@ -136,10 +143,33 @@ export function DashboardPage() {
     if (process.env.NODE_ENV !== 'production') console.log('map loaded');
     mapRef.current!.addSprite('submission', submissionSpritePath);
     handleMouseHover(mapRef);
+    setSelectFeatureOnMap(
+      (submissionId: number, latitude: number, longitude: number) => {
+        mapRef.current!.easeTo({
+          center: [longitude, latitude],
+          zoom: 18,
+        });
+        const matchingFeatures = mapRef
+          .current!.querySourceFeatures(submissionsInteractiveSource)
+          .filter(feature => feature.properties.id === submissionId);
+        console.log(matchingFeatures.map(feature => feature.properties.id));
+        // not quite working, need to figure this out
+
+        // zoomAndEaseTo(
+        //   [
+        //     {
+        //       geometry: {coordinates: [longitude, latitude]},
+        //     } as MapGeoJSONFeature,
+        //   ],
+        //   mapRef
+        // );
+      }
+    );
   }
 
   async function handleMapClick(e: MapLayerMouseEvent) {
     const {singleSelected, multiSelected} = await handleMapClickBase(e, mapRef);
+    console.log(singleSelected);
 
     if (singleSelected) {
       mapRef.current!.once('idle', () =>
