@@ -2,9 +2,7 @@
 
 import React, {useEffect, useState, useRef} from 'react';
 import Map, {GeolocateControl, NavigationControl} from 'react-map-gl/maplibre';
-import maplibregl from 'maplibre-gl';
 import type {Map as MapLibreMap} from 'maplibre-gl';
-import {Protocol} from 'pmtiles';
 
 import {trackUmamiEvent} from '@/utils';
 import {
@@ -12,6 +10,7 @@ import {
   GeocoderSearch,
   zoomAndEaseTo,
   backupMapStyle,
+  addPMTilesProtocol,
 } from '@/utils/map-utils';
 
 import {ParkingMapFilter} from './map-filters/ParkingMapFilter';
@@ -71,13 +70,7 @@ export function ParkingMapPage() {
   const resultsCardRef = useRef<HTMLDivElement>(null);
 
   // enable backup map tiles
-  useEffect(() => {
-    const protocol = new Protocol();
-    maplibregl.addProtocol('pmtiles', protocol.tile);
-    return () => {
-      maplibregl.removeProtocol('pmtiles');
-    };
-  }, []);
+  useEffect(() => addPMTilesProtocol(), []);
 
   // manage state of selected features
   const [parkingGroupSelected, setParkingGroupSelected] = useState<

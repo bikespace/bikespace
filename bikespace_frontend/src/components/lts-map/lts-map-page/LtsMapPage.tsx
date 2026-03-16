@@ -8,12 +8,12 @@ import Map, {
   Source,
 } from 'react-map-gl/maplibre';
 import maplibregl from 'maplibre-gl';
-import {Protocol} from 'pmtiles';
 
 import {
   defaultMapCenter,
   GeocoderSearch,
   backupMapStyle,
+  addPMTilesProtocol,
 } from '@/utils/map-utils';
 
 import {Sidebar} from '@/components/parking-map/parking-map-page/sidebar/Sidebar';
@@ -35,14 +35,6 @@ import styles from './lts-map-page.module.scss';
 import parkingStyles from '@/components/parking-map/parking-map-page/parking-map-page.module.scss';
 
 import checkMark from '@/assets/icons/check-black.svg';
-
-let pmtilesProtocolAdded = false;
-function ensurePmtilesProtocol() {
-  if (pmtilesProtocolAdded) return;
-  const protocol = new Protocol();
-  maplibregl.addProtocol('pmtiles', protocol.tile);
-  pmtilesProtocolAdded = true;
-}
 
 const ltsPmtilesUrl = `pmtiles://${process.env.DATA_LEVEL_OF_TRAFFIC_STRESS}`;
 const ltsSourceLayer = 'lts_gta_filtered_1_4';
@@ -137,9 +129,8 @@ export function LtsMapPage() {
     });
   }
 
-  useEffect(() => {
-    ensurePmtilesProtocol();
-  }, []);
+  // add pmtiles protocol
+  useEffect(() => addPMTilesProtocol(), []);
 
   useEffect(() => {
     if (!navigator.geolocation) return;

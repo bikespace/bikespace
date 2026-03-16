@@ -7,9 +7,7 @@ import Map, {
 } from 'react-map-gl/maplibre';
 import {bbox as getBBox} from '@turf/bbox';
 import {featureCollection as getFeatureCollection} from '@turf/helpers';
-import maplibregl from 'maplibre-gl';
 import type {Map as MapLibreMap} from 'maplibre-gl';
-import {Protocol} from 'pmtiles';
 
 import {useStore} from '@/states/store';
 import {SidebarTab, useSidebarTab, useSubmissionId} from '@/states/url-params';
@@ -21,6 +19,7 @@ import {
   GeocoderSearch,
   getGeoJSONFromSubmissions,
   backupMapStyle,
+  addPMTilesProtocol,
 } from '@/utils/map-utils';
 import {SubmissionApiPayload} from '@/interfaces/Submission';
 
@@ -78,13 +77,7 @@ function DashboardMap({
   }));
 
   // enable backup map tiles
-  useEffect(() => {
-    const protocol = new Protocol();
-    maplibregl.addProtocol('pmtiles', protocol.tile);
-    return () => {
-      maplibregl.removeProtocol('pmtiles');
-    };
-  }, []);
+  useEffect(() => addPMTilesProtocol(), []);
 
   // set starting zoom and position
   const [defaultLocation, setDefaultLocation] = useState(defaultMapCenter);
