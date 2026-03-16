@@ -149,11 +149,8 @@ export function DashboardPage() {
           center: [longitude, latitude],
           zoom: 18,
         });
-        const matchingFeatures = mapRef
-          .current!.querySourceFeatures(submissionsInteractiveSource)
-          .filter(feature => feature.properties.id === submissionId);
-        console.log(matchingFeatures.map(feature => feature.properties.id));
-        // not quite working, need to figure this out
+        // TODO next step is to make the easeTo match the other implementation and implement the manual pins
+        // may want to rename state functions since it just zooms
 
         // zoomAndEaseTo(
         //   [
