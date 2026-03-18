@@ -9,7 +9,7 @@ services:
       db:
         condition: service_healthy
         restart: true
-    env_file: 
+    env_file:
       - path: "../.env"
         required: false
     environment:
@@ -17,8 +17,12 @@ services:
       DATABASE_URL: "postgresql://postgres:prodpwd@db/bikespace_prodtest"
       FLASK_DEBUG: "false"
       FLASK_RUN_PORT: 8000
+      BIKESPACE_SECRET_KEY: ${BIKESPACE_SECRET_KEY}
+      BIKESPACE_SECURITY_PASSWORD_SALT: ${BIKESPACE_SECURITY_PASSWORD_SALT}
+      SEED_USER_EMAIL: ${SEED_USER_EMAIL}
+      SEED_USER_PASSWORD: ${SEED_USER_PASSWORD}
     ports:
-    - "8002:8000"
+      - "8002:8000"
     develop:
       watch:
         - action: rebuild

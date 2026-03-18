@@ -41,7 +41,7 @@ OUTPUT_EXCEL_NAME = "damage_bikespace_city_matches"
 
 BIKESPACE_API_URL = "https://api-dev.bikespace.ca/api/v2/submissions"
 BIKESPACE_API_PAGE_SIZE = 5000
-BIKESPACE_API_DATE_FORMAT = "%Y-%m-%d %H:%M:%S"
+BIKESPACE_API_DATE_FORMAT = "%Y-%m-%dT%H:%M:%S"
 
 CLEANUP_SHEET_FILENAME = "BikeSpace Data Notes and Cleanup - Data.csv"
 CLEANUP_SHEET_COLUMNS = [
@@ -140,7 +140,7 @@ def filter_by_date(
 
 
 def get_bikespace_reports() -> gpd.GeoDataFrame:
-    """The [BikeSpace app](https://bikespace.ca/) allows users to report issues with bicycle parking in Toronto, including parking features that are damaged. User reports can be viewed on the [BikeSpace dashboard](https://app.bikespace.ca/dashboard) or downloaded via the API.
+    """The [BikeSpace app](https://bikespace.ca/) allows users to report issues with bicycle parking in Toronto, including parking features that are damaged. User reports can be viewed on the [BikeSpace dashboard](https://bikespace.ca/dashboard) or downloaded via the API.
 
     Details on the bikespace API can be found at [api-dev.bikespace.ca](https://api-dev.bikespace.ca/api/v2/docs).
     """
@@ -225,7 +225,7 @@ def get_city_data() -> gpd.GeoDataFrame:
 
 def get_dashboard_permalink(id: str) -> str:
     """Generate permalink to BikeSpace dashboard based on submission_id"""
-    return f"https://app.bikespace.ca/dashboard?submission_id={id}"
+    return f"https://bikespace.ca/dashboard?submission_id={id}"
 
 
 def get_city_bikespace_matches(
@@ -393,11 +393,11 @@ def get_date_range_description(dates: DateRange) -> str:
     if dates["date_from"] is None and dates["date_to"] is None:
         return "Includes relevant BikeSpace reports from all dates collected"
     elif dates["date_from"] is None:
-        return f"Includes relevant BikeSpace reports on or before {dates["date_to"].isoformat()}"
+        return f"Includes relevant BikeSpace reports on or before {dates['date_to'].isoformat()}"
     elif dates["date_to"] is None:
-        return f"Includes relevant BikeSpace reports on or after {dates["date_from"].isoformat()}"
+        return f"Includes relevant BikeSpace reports on or after {dates['date_from'].isoformat()}"
     else:
-        return f"Includes relevant BikeSpace reports between and including {dates["date_from"].isoformat()} and {dates["date_to"].isoformat()}"
+        return f"Includes relevant BikeSpace reports between and including {dates['date_from'].isoformat()} and {dates['date_to'].isoformat()}"
 
 
 def get_combined_data_table(matches: list[ReportCityMatch]) -> gpd.GeoDataFrame:
@@ -545,7 +545,7 @@ def export_excel(
         worksheet.write(
             write_row,
             0,
-            f"BIKESPACE REPORT #{report.index.array[0]} ({report["report_date"].iloc[0].isoformat()})",
+            f"BIKESPACE REPORT #{report.index.array[0]} ({report['report_date'].iloc[0].isoformat()})",
             bold,
         )
         write_row += 1

@@ -5,13 +5,22 @@ from flask_admin.contrib.sqla import ModelView
 from flask_security import current_user  # type: ignore
 from flask_security.utils import hash_password
 from wtforms import PasswordField
-from wtforms.validators import DataRequired
+from wtforms.fields import DateTimeField
 
-# use with form_args property of ModelView subclasses to prevent flask-admin from truncating microseconds
-datetime_format_with_microseconds = {
-    "validators": [DataRequired()],
-    "format": "%Y-%m-%d %H:%M:%S.%f",
-}
+
+class DateTimeWithMicrosecondsField(DateTimeField):
+    """
+    Modified version of DateTimeField to prevent truncation of microseconds (and therefore data loss) that happens with default wtforms widget used by flask-admin.
+
+    Required input format is YYYY-MM-DDTHH:MM:SS.ssssss
+    """
+
+    def __init__(
+        self, label=None, validators=None, format="%Y-%m-%dT%H:%M:%S.%f", **kwargs
+    ):
+        super(DateTimeWithMicrosecondsField, self).__init__(
+            label, validators, format=format, **kwargs
+        )
 
 
 class AdminRolesModelView(ModelView):
@@ -85,10 +94,11 @@ class AdminUsersModelView(ModelView):
 
 class AdminSubmissionModelView(ModelView):
     column_display_pk = True
-    form_args = {  # type: ignore
-        "parking_time": datetime_format_with_microseconds,
-        "submitted_datetime": datetime_format_with_microseconds,
+    form_overrides = {
+        "parking_time": DateTimeWithMicrosecondsField,
+        "submitted_datetime": DateTimeWithMicrosecondsField,
     }
+    form_args = {"submitted_datetime": {"validators": []}}  # make nullable
 
     def is_accessible(self):
         return (

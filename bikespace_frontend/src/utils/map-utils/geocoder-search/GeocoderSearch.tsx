@@ -77,6 +77,7 @@ interface SearchResultsProps {
   query: UseQueryResult<FeatureCollection | null, Error>;
   selectedResult: Feature | null;
   handleSelect: Function;
+  geosearchErrorEvent: string;
 }
 
 function SearchResults({
@@ -87,6 +88,7 @@ function SearchResults({
   query,
   selectedResult,
   handleSelect,
+  geosearchErrorEvent,
 }: SearchResultsProps) {
   if (inputValue.length === 0) return null;
 
@@ -126,7 +128,7 @@ function SearchResults({
     searchResults = (
       <div className={styles.geocoderResultPlaceholder}>Search Error</div>
     );
-    trackUmamiEvent('parking-map-geosearch-error', {
+    trackUmamiEvent(geosearchErrorEvent, {
       query: debouncedInputValue,
       apiErrorName: query.error?.name ?? '',
       apiErrorMessage: query.error?.message ?? '',
@@ -144,6 +146,9 @@ interface GeocoderSearchProps {
   resultsLimit?: number;
   defaultZoom?: number;
   bbox?: string;
+  selectResultEvent?: string;
+  clearSearchEvent?: string;
+  geosearchErrorEvent?: string;
 }
 
 export function GeocoderSearch({
@@ -154,6 +159,9 @@ export function GeocoderSearch({
   resultsLimit = 5,
   defaultZoom = 17,
   bbox = torontoBBox.getURLParams(),
+  selectResultEvent = 'parking-map-select-geosearch-result',
+  clearSearchEvent = 'parking-map-clear-geosearch',
+  geosearchErrorEvent = 'parking-map-geosearch-error',
 }: GeocoderSearchProps) {
   const map = mapRef.current;
 
@@ -198,7 +206,7 @@ export function GeocoderSearch({
 
   function handleSelect(feature: Feature) {
     setSelectedResult(feature);
-    trackUmamiEvent('parking-map-select-geosearch-result');
+    trackUmamiEvent(selectResultEvent);
   }
 
   function handleClearSearch() {
@@ -206,7 +214,7 @@ export function GeocoderSearch({
     setInputValue('');
     setSelectedResult(null);
     setIsMinimized(false);
-    trackUmamiEvent('parking-map-clear-geosearch');
+    trackUmamiEvent(clearSearchEvent);
   }
 
   return (
@@ -232,6 +240,7 @@ export function GeocoderSearch({
         query={query}
         selectedResult={selectedResult}
         handleSelect={handleSelect}
+        geosearchErrorEvent={geosearchErrorEvent}
       />
     </div>
   );

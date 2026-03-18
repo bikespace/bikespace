@@ -93,5 +93,5 @@ test('Submit an issue', async ({page}, testInfo) => {
     /\/dashboard\?(?<tabNav>tab=feed)?&?(?<submissionNav>submission_id=(?<submissionId>\d+?))/i;
   await expect(page).toHaveURL(dashboardURLPattern, {timeout: 15_000});
 
-  await expect(page.getByText(testComment)).toBeVisible();
+  await expect(page.getByText(testComment).first()).toBeVisible();
 });

@@ -83,6 +83,7 @@ export function ParkingMapPage() {
   const [showBicycleNetwork, setShowBicycleNetwork] = useState<boolean>(true);
 
   const mapRef = useRef<MapRef>(null);
+  const resultsCardRef = useRef<HTMLDivElement>(null);
 
   // enable backup map tiles
   useEffect(() => {
@@ -163,6 +164,9 @@ export function ParkingMapPage() {
         setSidebarIsOpen(true);
         mapRef.current!.once('resize', () => zoomAndFlyTo(features));
       }
+      if (resultsCardRef.current) {
+        resultsCardRef.current.scrollIntoView();
+      }
     } else {
       setGeoSearchIsMinimized(false);
     }
@@ -232,7 +236,7 @@ export function ParkingMapPage() {
       <Sidebar isOpen={sidebarIsOpen} setIsOpen={setSidebarIsOpen}>
         <div className={styles.sideBarContainer}>
           {/* <p>{`Zoom: ${zoomLevel}`}</p> */}
-          <div className={styles.ContentCard}>
+          <div className={styles.ContentCard} ref={resultsCardRef}>
             <div className={styles.ContentHeading}>
               <h2 className={styles.cardHeading}>Bike Parking Map</h2>
             </div>
@@ -244,7 +248,7 @@ export function ParkingMapPage() {
                 Clear Selection
               </SidebarButton>
             ) : (
-              <p className={styles.cardBody}>
+              <p>
                 Click on a feature to see more information or zoom in for more
                 details
               </p>

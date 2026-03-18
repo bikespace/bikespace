@@ -21,6 +21,10 @@ services:
       DATABASE_URL: "postgresql://postgres:devpwd@db/bikespace_dev"
       FLASK_DEBUG: "true"
       FLASK_RUN_PORT: 8000
+      BIKESPACE_SECRET_KEY: ${BIKESPACE_SECRET_KEY}
+      BIKESPACE_SECURITY_PASSWORD_SALT: ${BIKESPACE_SECURITY_PASSWORD_SALT}
+      SEED_USER_EMAIL: ${SEED_USER_EMAIL}
+      SEED_USER_PASSWORD: ${SEED_USER_PASSWORD}
     ports:
       - "8000:8000"
   db:
