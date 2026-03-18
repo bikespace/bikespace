@@ -5,7 +5,7 @@ import {useWindowSize} from '@uidotdev/usehooks';
 import {trackUmamiEvent} from '@/utils';
 
 import {useStore} from '@/states/store';
-import {useSubmissionId, useSidebarTab} from '@/states/url-params';
+import {useSubmissionId} from '@/states/url-params';
 
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-defaulticon-compatibility';

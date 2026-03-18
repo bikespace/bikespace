@@ -114,7 +114,7 @@ function Map({submissions, isFirstMarkerDataLoading}: MapProps) {
             <MapMarker
               key={submission.id}
               submission={submission}
-              isSelected={submission.id == selectedSubmissionId}
+              isSelected={submission.id === selectedSubmissionId}
               onClick={() => handleMarkerClick(submission.id)}
               // track when the last marker is rendered
               ref={(m: LeafletMarker) => {
