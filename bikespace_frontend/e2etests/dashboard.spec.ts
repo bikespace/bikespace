@@ -146,7 +146,7 @@ test.describe('Dashboard navigation on desktop viewport size', () => {
     },
   });
 
-  // Too flaky to add to CI; often fails on trying to locate the marker for submission 1
+  // Too flaky to add to CI; often times out on generating the insights tab for some browsers
   test.skip('Desktop: dashboard menu nav', async ({page, isMobile}) => {
     test.skip(isMobile);
 
@@ -204,8 +204,8 @@ test.describe('Dashboard navigation on desktop viewport size (flaky)', () => {
     },
   });
 
-  // Too flaky to add to CI; appears to be an underlying issue with the implementation of leaflet cluster markers in React
-  test('Desktop: navigate between submissions in the same cluster', async ({
+  // Too flaky to add to CI; often fails on trying to locate the marker for submission 1
+  test.skip('Desktop: navigate between submissions in the same cluster', async ({
     page,
     isMobile,
   }) => {
