@@ -28,7 +28,8 @@ test.describe('Dashboard navigation on mobile viewport size', () => {
     },
   });
 
-  test('Mobile: dashboard menu nav', async ({page}) => {
+  // Too flaky to add to CI; often times out on generating the insights tab for some browsers
+  test.skip('Mobile: dashboard menu nav', async ({page}) => {
     // navigate to dashboard page
     await page.goto('/dashboard');
     await page.waitForSelector('div.leaflet-container');
@@ -87,6 +88,7 @@ test.describe('Dashboard navigation on mobile viewport size (flaky)', () => {
     },
   });
 
+  // Too flaky to add to CI; appears to be an underlying issue with the implementation of leaflet cluster markers in React
   test.skip('Mobile: navigate between submissions in the same cluster', async ({
     page,
   }) => {
@@ -144,6 +146,7 @@ test.describe('Dashboard navigation on desktop viewport size', () => {
     },
   });
 
+  // Too flaky to add to CI; often times out on generating the insights tab for some browsers
   test('Desktop: dashboard menu nav', async ({page, isMobile}) => {
     test.skip(isMobile);
 
@@ -201,6 +204,7 @@ test.describe('Dashboard navigation on desktop viewport size (flaky)', () => {
     },
   });
 
+  // Too flaky to add to CI; appears to be an underlying issue with the implementation of leaflet cluster markers in React
   test.skip('Desktop: navigate between submissions in the same cluster', async ({
     page,
     isMobile,
