@@ -84,7 +84,7 @@ function Map({submissions, isFirstMarkerDataLoading}: MapProps) {
       console.log('opening popup');
       currentMarker.openPopup();
     });
-  });
+  }, [selectedSubmission, submissions, markersReady]);
 
   return (
     <MapContainer
