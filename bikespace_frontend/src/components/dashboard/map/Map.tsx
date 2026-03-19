@@ -39,11 +39,14 @@ function Map({submissions, isFirstMarkerDataLoading}: MapProps) {
   const clusterRef = useRef<LeafletMarkerClusterGroup>(null);
   const markerRefs = useRef<MarkerRefs>({});
   const isMobile = useIsMobile();
-  const [selectedSubmissionId, setSelectedSubmissionId] = useSubmissionId();
+  const [, setSelectedSubmissionInURL] = useSubmissionId();
   const [, setSidebarTab] = useSidebarTab();
-  const {setIsSidebarOpen} = useStore(state => ({
-    setIsSidebarOpen: state.ui.sidebar.setIsOpen,
-  }));
+  const {setIsSidebarOpen, selectedSubmission, setSelectedSubmission} =
+    useStore(state => ({
+      setIsSidebarOpen: state.ui.sidebar.setIsOpen,
+      selectedSubmission: state.ui.submissions.selectedSubmission,
+      setSelectedSubmission: state.ui.submissions.setSelectedSubmission,
+    }));
 
   const [markersReady, setMarkersReady] = useState(false);
   const [tilesReady, setTilesReady] = useState(false);
@@ -64,7 +67,8 @@ function Map({submissions, isFirstMarkerDataLoading}: MapProps) {
   // handle marker click on mobile
   function handleMarkerClick(submissionId: number) {
     if (isMobile) {
-      setSelectedSubmissionId(submissionId);
+      setSelectedSubmission(submissionId);
+      // setSelectedSubmissionInURL(submissionId);
       setSidebarTab(SidebarTab.Feed);
       setIsSidebarOpen(true);
     }
@@ -73,9 +77,9 @@ function Map({submissions, isFirstMarkerDataLoading}: MapProps) {
   // zoom to pin and open popup when selected via URL param
   // omits dependencies array to run on every render
   useEffect(() => {
-    if (!markersReady || !selectedSubmissionId) return;
+    if (!markersReady || !selectedSubmission) return;
     console.log('zooming!!');
-    const currentMarker = markerRefs.current[selectedSubmissionId];
+    const currentMarker = markerRefs.current[selectedSubmission];
     clusterRef.current!.zoomToShowLayer(currentMarker, () => {
       console.log('opening popup');
       currentMarker.openPopup();
@@ -114,7 +118,7 @@ function Map({submissions, isFirstMarkerDataLoading}: MapProps) {
             <MapMarker
               key={submission.id}
               submission={submission}
-              isSelected={submission.id === selectedSubmissionId}
+              isSelected={submission.id === selectedSubmission}
               onClick={() => handleMarkerClick(submission.id)}
               // track when the last marker is rendered
               ref={(m: LeafletMarker) => {

@@ -16,8 +16,14 @@ import styles from './_SidebarContent.module.scss';
 type ItemRef = Record<number, HTMLButtonElement>;
 
 export function SidebarContentFeed() {
-  const submissions = useStore(state => state.submissions);
-  const [focusedSubmissionId, setFocusedSubmissionId] = useSubmissionId();
+  const {submissions, selectedSubmission, setSelectedSubmission} = useStore(
+    state => ({
+      submissions: state.submissions,
+      selectedSubmission: state.ui.submissions.selectedSubmission,
+      setSelectedSubmission: state.ui.submissions.setSelectedSubmission,
+    })
+  );
+  const [, setSelectedSubmissionInURL] = useSubmissionId();
   const {isLoading} = useSubmissionsQuery();
   const isMobile = useIsMobile();
 
@@ -28,10 +34,10 @@ export function SidebarContentFeed() {
   // - submissions change (e.g. more are loaded)
   // - viewport changes from desktop to mobile or vice versa
   useEffect(() => {
-    if (!focusedSubmissionId) return;
+    if (!selectedSubmission) return;
 
-    itemRefs.current[focusedSubmissionId]?.scrollIntoView();
-  }, [focusedSubmissionId, submissions, isMobile]);
+    itemRefs.current[selectedSubmission]?.scrollIntoView();
+  }, [selectedSubmission, submissions, isMobile]);
 
   return (
     <>
@@ -46,9 +52,10 @@ export function SidebarContentFeed() {
           <FeedSubmissionItem
             key={submission.id}
             submission={submission}
-            isFocused={submission.id === focusedSubmissionId}
+            isFocused={submission.id === selectedSubmission}
             onClick={() => {
-              setFocusedSubmissionId(submission.id);
+              setSelectedSubmission(submission.id);
+              // setSelectedSubmissionInURL(submission.id);
               trackUmamiEvent('focus_submission', {
                 submission_id: submission.id,
               });

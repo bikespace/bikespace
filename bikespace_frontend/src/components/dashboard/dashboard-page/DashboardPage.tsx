@@ -27,10 +27,24 @@ const Map = dynamic<MapProps>(() => import('../map/Map'), {
 });
 
 export function DashboardPage() {
-  const [focusedId] = useSubmissionId();
+  const [selectedSubmissionInURL, setSelectedSubmissionInURL] =
+    useSubmissionId();
   const [, setSidebarTab] = useSidebarTab();
+  const {
+    submissions,
+    setSubmissions,
+    selectedSubmission,
+    setSelectedSubmission,
+    filters,
+  } = useStore(state => ({
+    submissions: state.submissions,
+    setSubmissions: state.setSubmissions,
+    selectedSubmission: state.ui.submissions.selectedSubmission,
+    setSelectedSubmission: state.ui.submissions.setSelectedSubmission,
+    filters: state.filters,
+  }));
 
-  const singleSubmissionQuery = useSingleSubmissionQuery(focusedId);
+  const singleSubmissionQuery = useSingleSubmissionQuery(selectedSubmission);
   const allSubmissionQuery = useSubmissionsQuery();
   const loadedSubmissions = allSubmissionQuery.data
     ? allSubmissionQuery.data
@@ -38,20 +52,17 @@ export function DashboardPage() {
       ? [singleSubmissionQuery.data]
       : [];
 
-  const {submissions, setSubmissions, filters} = useStore(state => ({
-    submissions: state.submissions,
-    setSubmissions: state.setSubmissions,
-    filters: state.filters,
-  }));
-
-  const isFirstMarkerDataLoading = focusedId
+  const isFirstMarkerDataLoading = selectedSubmission
     ? singleSubmissionQuery.isLoading && allSubmissionQuery.isLoading
     : allSubmissionQuery.isLoading;
 
-  // set tab to 'feed' on page load if a submission ID is specified in the URL
+  // if a submission ID is specified in the URL on page load,
+  // then set submission value from URL and set tab to 'feed'
   useEffect(() => {
-    if (focusedId !== null) {
+    if (selectedSubmissionInURL !== null) {
       setSidebarTab(SidebarTab.Feed);
+      setSelectedSubmission(selectedSubmissionInURL);
+      setSelectedSubmissionInURL(null);
     }
   }, []); // [] = run once on first load
 
@@ -86,10 +97,10 @@ export function DashboardPage() {
   }, [allSubmissionQuery.data, singleSubmissionQuery.data, filters]);
 
   useEffect(() => {
-    if (focusedId === null) return;
+    if (selectedSubmission === null) return;
 
-    trackUmamiEvent('focus_submission', {submission_id: focusedId});
-  }, [focusedId]);
+    trackUmamiEvent('focus_submission', {submission_id: selectedSubmission});
+  }, [selectedSubmission]);
 
   return (
     <main className={styles.dashboardPage}>
