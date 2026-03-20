@@ -205,7 +205,7 @@ test.describe('Dashboard navigation on desktop viewport size (flaky)', () => {
   });
 
   // Too flaky to add to CI; often fails on trying to locate the marker for submission 1
-  test('Desktop: navigate between submissions in the same cluster', async ({
+  test.skip('Desktop: navigate between submissions in the same cluster', async ({
     page,
     isMobile,
   }) => {
