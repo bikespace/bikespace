@@ -27,8 +27,7 @@ const Map = dynamic<MapProps>(() => import('../map/Map'), {
 });
 
 export function DashboardPage() {
-  const [selectedSubmissionInURL, setSelectedSubmissionInURL] =
-    useSubmissionId();
+  const [selectedSubmissionInURL] = useSubmissionId();
   const [, setSidebarTab] = useSidebarTab();
   const {
     submissions,
@@ -62,7 +61,6 @@ export function DashboardPage() {
     if (selectedSubmissionInURL !== null) {
       setSidebarTab(SidebarTab.Feed);
       setSelectedSubmission(selectedSubmissionInURL);
-      setSelectedSubmissionInURL(null);
     }
   }, []); // [] = run once on first load
 

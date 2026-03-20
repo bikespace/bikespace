@@ -55,7 +55,7 @@ export function SidebarContentFeed() {
             isFocused={submission.id === selectedSubmission}
             onClick={() => {
               setSelectedSubmission(submission.id);
-              // setSelectedSubmissionInURL(submission.id);
+              setSelectedSubmissionInURL(submission.id);
               trackUmamiEvent('focus_submission', {
                 submission_id: submission.id,
               });

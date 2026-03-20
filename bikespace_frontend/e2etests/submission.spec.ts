@@ -89,9 +89,8 @@ test('Submit an issue', async ({page}, testInfo) => {
 
   // use the "View Your Submission" button to navigate to the dashboard
   await page.getByRole('button', {name: /view your submission/i}).click();
-  // const dashboardURLPattern =
-  //   /\/dashboard\?(?<tabNav>tab=feed)?&?(?<submissionNav>submission_id=(?<submissionId>\d+?))/i;
-  const dashboardURLPattern = /\/dashboard/i;
+  const dashboardURLPattern =
+    /\/dashboard\?(?<tabNav>tab=feed)?&?(?<submissionNav>submission_id=(?<submissionId>\d+?))/i;
   await expect(page).toHaveURL(dashboardURLPattern, {timeout: 15_000});
 
   await expect(page.getByText(testComment).first()).toBeVisible();

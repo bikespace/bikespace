@@ -68,7 +68,7 @@ function Map({submissions, isFirstMarkerDataLoading}: MapProps) {
   function handleMarkerClick(submissionId: number) {
     if (isMobile) {
       setSelectedSubmission(submissionId);
-      // setSelectedSubmissionInURL(submissionId);
+      setSelectedSubmissionInURL(submissionId);
       setSidebarTab(SidebarTab.Feed);
       setIsSidebarOpen(true);
     }

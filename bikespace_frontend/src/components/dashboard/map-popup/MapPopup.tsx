@@ -85,7 +85,7 @@ export const MapPopup = forwardRef<LeafletPopup, MapPopupProps>(
             onClick={() => {
               setTab(SidebarTab.Feed);
               setSelectedSubmission(id);
-              // setSelectedSubmissionInURL(id);
+              setSelectedSubmissionInURL(id);
             }}
             data-umami-event="issue-map_open_in_sidebar"
             data-umami-event-id={id}
