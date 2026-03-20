@@ -1,7 +1,7 @@
 import {test, expect} from '@playwright/test';
 
-const skipFlakyTests = true;
-const enableRetries = false;
+const stopClusterNavAfterFirstSubmission = true;
+const retriesForKnownFlakyTests: number = 3;
 
 const testLat = 43.76;
 const testLong = -79.43;
@@ -80,7 +80,7 @@ test.describe('Dashboard navigation on mobile viewport size', () => {
 });
 
 test.describe('Dashboard navigation on mobile viewport size (flaky)', () => {
-  if (enableRetries) test.describe.configure({retries: 3});
+  if (retriesForKnownFlakyTests > 0) test.describe.configure({retries: 3});
   test.use({
     viewport: {
       height: 600,
@@ -89,7 +89,7 @@ test.describe('Dashboard navigation on mobile viewport size (flaky)', () => {
   });
 
   // Too flaky to add to CI; often fails on trying to locate the marker for submission 1
-  test.skip('Mobile: navigate between submissions in the same cluster', async ({
+  test('Mobile: navigate between submissions in the same cluster', async ({
     page,
   }) => {
     await page.goto('/dashboard');
@@ -108,7 +108,7 @@ test.describe('Dashboard navigation on mobile viewport size (flaky)', () => {
       })
     ).toBeVisible();
 
-    if (skipFlakyTests)
+    if (stopClusterNavAfterFirstSubmission)
       test.fixme(
         true,
         'Subsequent interactions known to flake - appears to be a race condition between cluster internal refresh/management and cluster zoomToShowLayer method'
@@ -196,7 +196,7 @@ test.describe('Dashboard navigation on desktop viewport size', () => {
 });
 
 test.describe('Dashboard navigation on desktop viewport size (flaky)', () => {
-  if (enableRetries) test.describe.configure({retries: 3});
+  if (retriesForKnownFlakyTests > 0) test.describe.configure({retries: 3});
   test.use({
     viewport: {
       height: 800,
@@ -227,7 +227,7 @@ test.describe('Dashboard navigation on desktop viewport size (flaky)', () => {
       })
     ).toBeVisible();
 
-    if (skipFlakyTests)
+    if (stopClusterNavAfterFirstSubmission)
       test.fixme(
         true,
         'Subsequent interactions known to flake - appears to be a race condition between cluster internal refresh/management and cluster zoomToShowLayer method'
