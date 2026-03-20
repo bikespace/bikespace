@@ -89,7 +89,7 @@ test.describe('Dashboard navigation on mobile viewport size (flaky)', () => {
   });
 
   // Too flaky to add to CI; often fails on trying to locate the marker for submission 1
-  test('Mobile: navigate between submissions in the same cluster', async ({
+  test.skip('Mobile: navigate between submissions in the same cluster', async ({
     page,
   }) => {
     await page.goto('/dashboard');
