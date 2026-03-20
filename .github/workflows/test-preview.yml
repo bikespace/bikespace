@@ -148,9 +148,6 @@ jobs:
     runs-on: ubuntu-latest
     env:
       MAPTILER_API_KEY: ${{ secrets.MAPTILER_API_KEY }}
-      # DATA_BICYCLE_PARKING: ${{ secrets.DATA_BICYCLE_PARKING }}
-      # DATA_BICYCLE_NETWORK: ${{ secrets.DATA_BICYCLE_NETWORK }}
-      # DATA_LEVEL_OF_TRAFFIC_STRESS: ${{ secrets.DATA_LEVEL_OF_TRAFFIC_STRESS }}
     permissions:
       contents: read
       deployments: write
