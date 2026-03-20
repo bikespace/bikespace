@@ -2,24 +2,25 @@ import React, {useEffect, useRef, useState} from 'react';
 
 import {MapContainer, TileLayer} from 'react-leaflet';
 import MarkerClusterGroup from 'react-leaflet-cluster';
-import {
-  Marker as LeafletMarker,
-  Map as lMap,
-  MarkerClusterGroup as LeafletMarkerClusterGroup,
-} from 'leaflet';
 
 import {useStore} from '@/states/store';
 import {SidebarTab, useSidebarTab, useSubmissionId} from '@/states/url-params';
 import {useIsMobile} from '@/hooks/use-is-mobile';
 
 import {defaultMapCenter} from '@/utils/map-utils';
-import {SubmissionApiPayload} from '@/interfaces/Submission';
 
 import {Spinner} from '@/components/shared-ui/spinner';
 
 import {MapMarker} from '../map-marker';
 import {LeafletLocateControl} from '../leaflet-locate-control';
 import {MapHandler} from '../map-handler';
+
+import type {
+  Marker as LeafletMarker,
+  Map as lMap,
+  MarkerClusterGroup as LeafletMarkerClusterGroup,
+} from 'leaflet';
+import type {SubmissionApiPayload} from '@/interfaces/Submission';
 
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css';
@@ -38,9 +39,11 @@ function Map({submissions, isFirstMarkerDataLoading}: MapProps) {
   const mapRef: React.LegacyRef<lMap> = useRef(null);
   const clusterRef = useRef<LeafletMarkerClusterGroup>(null);
   const markerRefs = useRef<MarkerRefs>({});
+
   const isMobile = useIsMobile();
   const [, setSelectedSubmissionInURL] = useSubmissionId();
   const [, setSidebarTab] = useSidebarTab();
+
   const {setIsSidebarOpen, selectedSubmission, setSelectedSubmission} =
     useStore(state => ({
       setIsSidebarOpen: state.ui.sidebar.setIsOpen,
