@@ -26,13 +26,13 @@ import styles from './map-marker.module.scss';
 
 interface MapMarkerProps {
   submission: SubmissionApiPayload;
-  isSelected: boolean;
+  // isSelected: boolean;
   onClick: () => void;
 }
 
 const MapMarker = forwardRef(
   (
-    {submission, isSelected, onClick}: MapMarkerProps,
+    {submission, onClick}: MapMarkerProps,
     outerMarkerRef: React.ForwardedRef<LeafletMarker>
   ) => {
     // popupRef for calling openPopup() upon focus change
@@ -45,7 +45,7 @@ const MapMarker = forwardRef(
     const position: LatLngTuple = [submission.latitude, submission.longitude];
 
     const baseIconHeight = 36;
-    const iconHeight = isSelected ? baseIconHeight * 1.5 : baseIconHeight;
+    const iconHeight = baseIconHeight;
     const iconWidth = iconHeight;
 
     const trackPopupOpen = () => {
