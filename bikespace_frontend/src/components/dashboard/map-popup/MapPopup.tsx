@@ -93,7 +93,7 @@ export const MapPopup = forwardRef<LeafletPopup, MapPopupProps>(
 
           <span className={styles.submissionId}>
             <a
-              href={`${window.location.host}${window.location.pathname}?submission_id=${submission.id}`}
+              href={`${window.location.pathname}?submission_id=${submission.id}`}
             >
               ID: {id}
             </a>
