@@ -13,6 +13,7 @@ const testParkingData = testParkingDataSrc as FeatureCollection;
 const mockHandleClick = jest.fn();
 const mockHandleHover = jest.fn();
 const mockHandleUnHover = jest.fn();
+const mockCenterFeatureOnMap = jest.fn();
 
 function ContextMock() {
   const [selected, setSelected] = useState<boolean>(false);
@@ -26,12 +27,13 @@ function ContextMock() {
       handleClick={handleClick}
       handleHover={mockHandleHover}
       handleUnHover={mockHandleUnHover}
+      centerFeatureOnMap={mockCenterFeatureOnMap}
     />
   );
 }
 
 describe('ParkingFeatureDescription', () => {
-  test('Selecting the feature should lock the select button', async () => {
+  test('Selecting the feature should change the select button to map centering', async () => {
     const user = userEvent.setup();
     render(<ContextMock />);
 
@@ -39,7 +41,7 @@ describe('ParkingFeatureDescription', () => {
       selector: 'button',
     });
     await user.click(selectFeatureButton);
-    expect(selectFeatureButton).toBeDisabled();
+    expect(selectFeatureButton).toHaveTextContent(/center/i);
   });
 
   test('Toggling show/hide all data should show/hide all data', async () => {
@@ -52,6 +54,7 @@ describe('ParkingFeatureDescription', () => {
         handleClick={mockHandleClick}
         handleHover={mockHandleHover}
         handleUnHover={mockHandleUnHover}
+        centerFeatureOnMap={mockCenterFeatureOnMap}
       />
     );
 

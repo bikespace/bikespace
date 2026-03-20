@@ -15,6 +15,14 @@
     font-size: medium;
   }
 
+  // prevent long words (e.g. urls) from breaking the layout
+  p {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    // specific fix for Safari on iOS
+    word-break: break-word;
+  }
+
   .subHeader {
     width: 100%;
     display: flex;
