@@ -2,6 +2,15 @@
 
 .popup {
   font-family: $body-font-stack;
+
+  // prevent long words (e.g. urls) from breaking the layout
+  p {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    // specific fix for Safari on iOS
+    // unlikely that this is needed, since the viewport would have to be full-screen size to show pop-ups, but just in case (e.g. big iPads)
+    word-break: break-word;
+  }
 }
 
 .submissionId {
