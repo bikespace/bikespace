@@ -58,7 +58,7 @@ function Map({submissions, isFirstMarkerDataLoading}: MapProps) {
       !initialized &&
       !isFirstMarkerDataLoading &&
       tilesReady &&
-      (submissions.length === 0 || markersReady)
+      markersReady
     ) {
       setInitialized(true);
     }
