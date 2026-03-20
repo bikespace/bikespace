@@ -68,7 +68,6 @@ function Map({submissions, isFirstMarkerDataLoading}: MapProps) {
   function handleMarkerClick(submissionId: number) {
     if (isMobile) {
       setSelectedSubmission(submissionId);
-      setSelectedSubmissionInURL(submissionId);
       setSidebarTab(SidebarTab.Feed);
       setIsSidebarOpen(true);
     }
@@ -85,6 +84,11 @@ function Map({submissions, isFirstMarkerDataLoading}: MapProps) {
       currentMarker.openPopup();
     });
   }, [selectedSubmission, submissions, markersReady]);
+
+  // keep URL param up to date with current submission
+  useEffect(() => {
+    setSelectedSubmissionInURL(selectedSubmission);
+  }, [selectedSubmission]);
 
   return (
     <MapContainer

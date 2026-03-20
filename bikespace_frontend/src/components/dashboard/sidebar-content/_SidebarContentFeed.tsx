@@ -3,7 +3,6 @@ import React, {useEffect, useRef} from 'react';
 import {useStore} from '@/states/store';
 import {useSubmissionsQuery} from '@/hooks';
 import {useIsMobile} from '@/hooks/use-is-mobile';
-import {useSubmissionId} from '@/states/url-params';
 
 import {trackUmamiEvent} from '@/utils';
 
@@ -23,7 +22,6 @@ export function SidebarContentFeed() {
       setSelectedSubmission: state.ui.submissions.setSelectedSubmission,
     })
   );
-  const [, setSelectedSubmissionInURL] = useSubmissionId();
   const {isLoading} = useSubmissionsQuery();
   const isMobile = useIsMobile();
 
@@ -55,7 +53,6 @@ export function SidebarContentFeed() {
             isFocused={submission.id === selectedSubmission}
             onClick={() => {
               setSelectedSubmission(submission.id);
-              setSelectedSubmissionInURL(submission.id);
               trackUmamiEvent('focus_submission', {
                 submission_id: submission.id,
               });

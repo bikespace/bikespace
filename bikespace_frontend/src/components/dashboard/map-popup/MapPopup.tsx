@@ -5,7 +5,7 @@ import {SubmissionApiPayload} from '@/interfaces/Submission';
 
 import {issuePriority} from '@/config/bikespace-api';
 
-import {SidebarTab, useSidebarTab, useSubmissionId} from '@/states/url-params';
+import {SidebarTab, useSidebarTab} from '@/states/url-params';
 import {useStore} from '@/states/store';
 
 import {IssueBadge} from '../issue-badge';
@@ -18,7 +18,6 @@ interface MapPopupProps {
 
 export const MapPopup = forwardRef<LeafletPopup, MapPopupProps>(
   ({submission}: MapPopupProps, ref) => {
-    const [, setSelectedSubmissionInURL] = useSubmissionId();
     const setSelectedSubmission = useStore(
       state => state.ui.submissions.setSelectedSubmission
     );
@@ -85,7 +84,6 @@ export const MapPopup = forwardRef<LeafletPopup, MapPopupProps>(
             onClick={() => {
               setTab(SidebarTab.Feed);
               setSelectedSubmission(id);
-              setSelectedSubmissionInURL(id);
             }}
             data-umami-event="issue-map_open_in_sidebar"
             data-umami-event-id={id}
