@@ -328,7 +328,8 @@ class SubmissionHistorySchema(ma.Schema):
 def get_submission_history_with_id(submission_id):
     """Return the history of changes for a submission
 
-    Changed or created values are listed under "changes" with a list for each value containing the original and updated values. The original value for create operations is None."""
+    Changed or created values are listed under "changes" with a list for each value containing the original and updated values. The original value for create operations is None.
+    """
     SubmissionVersion = version_class(Submission)
     submission_versions_with_id = SubmissionVersion.query.filter_by(
         id=submission_id
