@@ -84,13 +84,6 @@ function Map({submissions, isFirstMarkerDataLoading}: MapProps) {
       console.log('opening popup');
       currentMarker.openPopup();
     });
-
-    // update marker size
-    const icon = currentMarker.options.icon;
-    if (icon) {
-      icon.options.iconSize = [36 * 1.5, 36 * 1.5];
-      currentMarker.setIcon(icon);
-    }
   }, [selectedSubmission, submissions, markersReady]);
 
   return (
@@ -125,7 +118,7 @@ function Map({submissions, isFirstMarkerDataLoading}: MapProps) {
             <MapMarker
               key={submission.id}
               submission={submission}
-              // isSelected={submission.id === selectedSubmission}
+              isSelected={submission.id === selectedSubmission}
               onClick={() => handleMarkerClick(submission.id)}
               // track when the last marker is rendered
               ref={(m: LeafletMarker) => {
