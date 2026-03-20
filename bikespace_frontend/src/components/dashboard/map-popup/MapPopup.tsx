@@ -90,7 +90,14 @@ export const MapPopup = forwardRef<LeafletPopup, MapPopupProps>(
           >
             Focus in Sidebar
           </button>
-          <span className={styles.submissionId}>ID: {id}</span>
+
+          <span className={styles.submissionId}>
+            <a
+              href={`${window.location.host}${window.location.pathname}?submission_id=${submission.id}`}
+            >
+              ID: {id}
+            </a>
+          </span>
         </div>
       </Popup>
     );

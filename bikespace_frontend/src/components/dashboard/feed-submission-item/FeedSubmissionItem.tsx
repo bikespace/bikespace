@@ -66,7 +66,14 @@ export const FeedSubmissionItem = forwardRef(
               {locale: 'en-CA'}
             )}
           </span>
-          <span className={styles.submissionId}>ID: {submission.id}</span>
+
+          <span className={styles.submissionId}>
+            <a
+              href={`${window.location.host}${window.location.pathname}?submission_id=${submission.id}`}
+            >
+              ID: {submission.id}
+            </a>
+          </span>
         </div>
         <div className={styles.issues}>
           {

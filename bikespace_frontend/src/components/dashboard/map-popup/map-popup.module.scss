@@ -4,8 +4,18 @@
   font-family: $body-font-stack;
 }
 
-.submissionId {
+// duplicated class selector helps to override leaflet css without using !important
+.submissionId.submissionId {
   font-style: italic;
+  a {
+    color: $color-secondary-dark-grey;
+    &:visited {
+      color: $color-secondary-dark-grey;
+    }
+    &:hover {
+      color: $color-primary;
+    }
+  }
 }
 
 .sidebarButton {

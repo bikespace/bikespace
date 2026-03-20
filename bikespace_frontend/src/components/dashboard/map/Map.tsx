@@ -4,7 +4,7 @@ import {MapContainer, TileLayer} from 'react-leaflet';
 import MarkerClusterGroup from 'react-leaflet-cluster';
 
 import {useStore} from '@/states/store';
-import {SidebarTab, useSidebarTab, useSubmissionId} from '@/states/url-params';
+import {SidebarTab, useSidebarTab} from '@/states/url-params';
 import {useIsMobile} from '@/hooks/use-is-mobile';
 
 import {defaultMapCenter} from '@/utils/map-utils';
@@ -41,7 +41,6 @@ function Map({submissions, isFirstMarkerDataLoading}: MapProps) {
   const markerRefs = useRef<MarkerRefs>({});
 
   const isMobile = useIsMobile();
-  const [, setSelectedSubmissionInURL] = useSubmissionId();
   const [, setSidebarTab] = useSidebarTab();
 
   const {setIsSidebarOpen, selectedSubmission, setSelectedSubmission} =
@@ -76,22 +75,14 @@ function Map({submissions, isFirstMarkerDataLoading}: MapProps) {
     }
   }
 
-  // zoom to pin and open popup when selected via URL param
-  // omits dependencies array to run on every render
+  // zoom to pin and open popup when a new submission is selected
   useEffect(() => {
     if (!markersReady || !selectedSubmission) return;
-    console.log('zooming!!');
     const currentMarker = markerRefs.current[selectedSubmission];
     clusterRef.current!.zoomToShowLayer(currentMarker, () => {
-      console.log('opening popup');
       currentMarker.openPopup();
     });
   }, [selectedSubmission, submissions, markersReady]);
-
-  // keep URL param up to date with current submission
-  useEffect(() => {
-    setSelectedSubmissionInURL(selectedSubmission);
-  }, [selectedSubmission]);
 
   return (
     <MapContainer

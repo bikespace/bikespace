@@ -17,12 +17,15 @@ export const MapHandler = () => {
   const window = useWindowSize();
 
   const [selectedSubmissionInURL] = useSubmissionId();
-  const isSidebarOpen = useStore(state => state.ui.sidebar.isOpen);
+  const {isSidebarOpen, selectedSubmission} = useStore(state => ({
+    isSidebarOpen: state.ui.sidebar.isOpen,
+    selectedSubmission: state.ui.submissions.selectedSubmission,
+  }));
 
   // centre map on user location on first load
-  // unless a submission is already specified in the URL
+  // unless a submission is already specified
   useEffect(() => {
-    if (selectedSubmissionInURL === null) {
+    if (selectedSubmissionInURL === null && selectedSubmission === null) {
       map
         .locate()
         .on('locationfound', e => {
