@@ -1,6 +1,8 @@
 import React from 'react';
 import {render, screen} from '@testing-library/react';
 
+import {NuqsTestingAdapter} from 'nuqs/adapters/testing';
+
 import {SidebarTabs} from './SidebarTabs';
 
 jest.mock('next/navigation', () => ({
@@ -16,7 +18,11 @@ jest.mock('next/navigation', () => ({
 
 describe('SidebarTabs', () => {
   beforeEach(() => {
-    render(<SidebarTabs />);
+    render(
+      <NuqsTestingAdapter>
+        <SidebarTabs />
+      </NuqsTestingAdapter>
+    );
   });
 
   test('should render tab labels', () => {

@@ -13,6 +13,7 @@ function Sidebar() {
   const {isOpen, setIsOpen} = useStore(state => state.ui.sidebar);
   const [currentTab] = useSidebarTab();
 
+  // sidebar should be closed on mobile unless there is a current tab specified
   useEffect(() => {
     if (isMobile && !currentTab) {
       setIsOpen(false);
