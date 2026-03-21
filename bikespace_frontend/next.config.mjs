@@ -20,6 +20,7 @@ const nextConfig = {
     DATA_BICYCLE_NETWORK: process.env.DATA_BICYCLE_NETWORK,
     DATA_LEVEL_OF_TRAFFIC_STRESS: process.env.DATA_LEVEL_OF_TRAFFIC_STRESS,
   },
+  transpilePackages: ['nuqs'],
 };
 
 const withMDX = createMDX({

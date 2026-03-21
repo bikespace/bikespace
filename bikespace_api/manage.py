@@ -1,16 +1,20 @@
 import os
-import time
-
-from dotenv import load_dotenv
-from flask.cli import FlaskGroup
-from sqlalchemy_utils import database_exists, create_database, drop_database
-
-from bikespace_api import create_app, db, create_userdatastore
-from bikespace_api.api.models import Submission, IssueType, ParkingDuration, User, Role
-from datetime import datetime
-from flask_security.utils import hash_password
 import random
 import string
+import time
+from datetime import datetime
+
+from dotenv import load_dotenv
+from faker import Faker
+from flask.cli import FlaskGroup
+from flask_security.utils import hash_password
+import sqlalchemy as sa
+from sqlalchemy_utils import create_database, database_exists, drop_database
+
+from bikespace_api import create_app, create_userdatastore, db
+from bikespace_api.api.models import IssueType, ParkingDuration, Role, Submission, User
+
+LOAD_TESTING_NUMBER_OF_SUBMISSIONS = 1500
 
 load_dotenv()
 app = create_app()
@@ -136,6 +140,7 @@ def seed_db():
     submitted_datetime_null.submitted_datetime = None
     db.session.commit()
 
+    # add additional users
     first_names = [
         "Harry",
         "Amelia",
@@ -165,6 +170,27 @@ def seed_db():
                 user_role,
             ],
         )
+    db.session.commit()
+
+    # add additional submissions to test at similar load levels to production
+    # creates a cluster of 100 points
+    fake = Faker(locale="en_CA")
+    Faker.seed(12345)
+    load_testing_submissions = [
+        dict(
+            latitude=43.662 if index < 100 else fake.latitude(),
+            longitude=-79.391 if index < 100 else fake.longitude(),
+            issues=[fake.enum(IssueType)],
+            parking_duration=fake.enum(ParkingDuration),
+            parking_time=fake.date_time_this_year(),
+            comments=fake.text(max_nb_chars=250),
+        )
+        for index in range(LOAD_TESTING_NUMBER_OF_SUBMISSIONS)
+    ]
+    db.session.execute(
+        sa.insert(Submission),
+        load_testing_submissions,
+    )
     db.session.commit()
 
 

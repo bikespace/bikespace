@@ -13,7 +13,7 @@ import {useStore} from '@/states/store';
 export function SidebarContent() {
   const {setIsOpen} = useStore(state => state.ui.sidebar);
 
-  const [tab] = useSidebarTab();
+  const [tab, setTab] = useSidebarTab();
 
   const renderContent = () => {
     switch (tab) {
@@ -34,14 +34,21 @@ export function SidebarContent() {
 
   return (
     <div className={`${styles.SidebarContent} ${feedStyle}`}>
+      {/* Back button should come first for accessible tab order, otherwise the user has to tab through all the submissions to navigate back. */}
+      <div className={styles.actions}>
+        <button
+          onClick={() => {
+            setIsOpen(false);
+            setTab(null);
+          }}
+          className={styles.action}
+        >
+          Back to Map
+        </button>
+      </div>
       <div className={styles.SidebarContentInner}>
         <ClearFiltersButton />
         {renderContent()}
-      </div>
-      <div className={styles.actions}>
-        <button onClick={() => setIsOpen(false)} className={styles.action}>
-          Back to Map
-        </button>
       </div>
     </div>
   );

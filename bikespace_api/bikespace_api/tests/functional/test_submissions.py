@@ -108,7 +108,7 @@ def test_get_nonexistent_submission_with_id(test_client):
 
 
 @mark.uses_db
-def test_post_submissions(flask_app, test_client, submission_id=5):
+def test_post_submissions(flask_app, test_client):
     dummy_submission = {
         "latitude": 43.6532,
         "longitude": -79.3832,
@@ -122,12 +122,11 @@ def test_post_submissions(flask_app, test_client, submission_id=5):
         response = test_client.post("/api/v2/submissions", json=dummy_submission)
         res = json.loads(response.get_data())
         current_datetime = datetime.now(timezone.utc)
-        new_submission = Submission.query.filter_by(id=submission_id).first()
+        # submission_id property from post-submit response used here for testing but is also used by frontend to display post-submission link to dashboard
+        new_submission = Submission.query.filter_by(id=res["submission_id"]).first()
 
     assert response.status_code == 201
     assert res["status"] == "created"
-    # used by frontend to display post-submission link to dashboard:
-    assert res["submission_id"] == submission_id
     assert new_submission.latitude == dummy_submission["latitude"]
     assert new_submission.longitude == dummy_submission["longitude"]
     assert new_submission.issues == [

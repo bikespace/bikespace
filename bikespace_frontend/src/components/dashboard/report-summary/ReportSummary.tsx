@@ -11,7 +11,7 @@ import styles from './report-summary.module.scss';
 import warningIcon from '@/assets/icons/exclamation-triangle.svg';
 
 export function ReportSummary({onReady}: {onReady?: () => void}) {
-  const {isFetching} = useSubmissionsQuery();
+  const {isLoading} = useSubmissionsQuery();
 
   const {submissions, filters} = useStore(state => ({
     submissions: state.submissions,
@@ -22,11 +22,11 @@ export function ReportSummary({onReady}: {onReady?: () => void}) {
 
   useEffect(() => {
     // Guard against calling onReady multiple times
-    if (!isFetching && !hasFiredReadyRef.current) {
+    if (!isLoading && !hasFiredReadyRef.current) {
       hasFiredReadyRef.current = true;
       onReady?.(); // Call onReady only once when all data is fetched
     }
-  }, [isFetching, onReady]);
+  }, [isLoading, onReady]);
 
   const {first, last} = useAllSubmissionsDateRange();
 
@@ -53,7 +53,7 @@ export function ReportSummary({onReady}: {onReady?: () => void}) {
     {locale: 'en-CA'}
   );
 
-  if (isFetching) {
+  if (isLoading) {
     return (
       <div className={styles.loading}>
         <Spinner label="Loading reports..." />
