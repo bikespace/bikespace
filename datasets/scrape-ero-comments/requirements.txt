@@ -107,7 +107,7 @@ psycopg2-binary==2.9.9
 ptyprocess==0.7.0
 pure_eval==0.2.3
 pycparser==2.22
-Pygments==2.16.1
+Pygments==2.20.0
 pyparsing==3.2.0
 pytest==7.4.0
 pytest-cov==4.1.0
