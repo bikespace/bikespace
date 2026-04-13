@@ -109,7 +109,7 @@ pure_eval==0.2.3
 pycparser==2.22
 Pygments==2.16.1
 pyparsing==3.2.0
-pytest==7.4.0
+pytest==9.0.3
 pytest-cov==4.1.0
 python-dateutil==2.9.0.post0
 python-json-logger==3.2.1
