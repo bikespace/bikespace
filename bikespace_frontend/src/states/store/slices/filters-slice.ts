@@ -1,6 +1,6 @@
 import type {StateCreator} from 'zustand';
 
-import {SubmissionFilters} from '@/interfaces/Submission';
+import {IssueFilterMode, SubmissionFilters} from '@/interfaces/Submission';
 
 export interface FiltersSlice {
   filters: SubmissionFilters;
@@ -12,7 +12,8 @@ export const defaultFilter = {
   dateRange: {from: null, to: null},
   dateRangeInterval: null,
   day: null,
-  issue: null,
+  issues: [],
+  issueFilterMode: IssueFilterMode.Any,
 };
 
 export const createFiltersSlice: StateCreator<

@@ -71,7 +71,7 @@ export function DashboardPage() {
   useEffect(() => {
     if (loadedSubmissions.length === 0) return;
 
-    const {dateRange, parkingDuration, issue, day} = filters;
+    const {dateRange, parkingDuration, issues, issueFilterMode, day} = filters;
     let subs = loadedSubmissions;
 
     if (dateRange.from || dateRange.to)
@@ -87,7 +87,14 @@ export function DashboardPage() {
     if (parkingDuration.length !== 0)
       subs = subs.filter(s => parkingDuration.includes(s.parking_duration));
 
-    if (issue !== null) subs = subs.filter(s => s.issues.includes(issue));
+    if (issues.length !== 0)
+      subs = subs.filter(s => {
+        if (issueFilterMode === 'exclude')
+          return !s.issues.some(i => issues.includes(i));
+        if (issueFilterMode === 'all')
+          return issues.every(i => s.issues.includes(i));
+        return s.issues.some(i => issues.includes(i));
+      });
 
     if (day !== null)
       subs = subs.filter(

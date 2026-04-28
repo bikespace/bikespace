@@ -1,0 +1,75 @@
+@import '@/styles/variables.module.scss';
+
+.chipContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 1.75rem;
+  padding: 0px 10px;
+  background-color: white;
+  border: 1px solid $color-primary-d50p;
+  border-radius: 6px;
+  font-family: $body-font-stack;
+  font-size: 14px;
+  color: $color-secondary-dark-grey;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: $color-primary-10p;
+    border-color: $color-primary;
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 0.2rem $color-primary-20p;
+    outline: none;
+  }
+}
+
+.chipIcon {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+}
+
+.chipSelected {
+  background-color: $color-primary-d50p;
+  border-color: $color-primary;
+  color: white;
+
+  &:hover {
+    background-color: $color-primary;
+  }
+}
+
+.filterModeRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+  font-size: 14px;
+  color: $color-secondary-dark-grey;
+}
+
+.filterModeSelect {
+  flex: 1;
+  padding: 2px 6px;
+  border: 1px solid $color-primary-d50p;
+  border-radius: 4px;
+  font-family: $body-font-stack;
+  font-size: 14px;
+  color: $color-secondary-dark-grey;
+  background-color: white;
+  cursor: pointer;
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 0.2rem $color-primary-20p;
+  }
+}
