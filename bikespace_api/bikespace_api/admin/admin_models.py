@@ -18,6 +18,9 @@ class Role(db.Model, RoleMixin):
     id: so.Mapped[int] = so.mapped_column(primary_key=True)
     name: so.Mapped[str] = so.mapped_column(sa.String(80), unique=True)
     description: so.Mapped[str | None] = so.mapped_column(sa.String(255), nullable=True)
+    users: so.Mapped[list["User"]] = so.relationship(
+        "User", secondary=roles_users, back_populates="roles"
+    )
 
     def __str__(self):
         return str(self.name or "")
@@ -35,8 +38,8 @@ class User(db.Model, UserMixin):
     confirmed_at: so.Mapped[datetime | None] = so.mapped_column(
         sa.DateTime, nullable=True
     )
-    roles = db.relationship(
-        "Role", secondary=roles_users, backref=db.backref("users", lazy="dynamic")
+    roles: so.Mapped[list["Role"]] = so.relationship(
+        "Role", secondary=roles_users, back_populates="users"
     )
     fs_uniquifier: so.Mapped[str] = so.mapped_column(
         sa.String(64), unique=True, nullable=False
