@@ -2,6 +2,7 @@ import json
 from datetime import datetime, timezone
 from unittest.mock import patch
 
+import pytest
 from bikespace_api.submissions.submissions_models import (
     IssueType,
     ParkingDuration,
@@ -13,6 +14,18 @@ from sqlalchemy.exc import IntegrityError as SaIntegrityError
 from sqlalchemy_continuum import version_class
 
 from bikespace_api import db  # type: ignore
+
+
+@pytest.fixture()
+def dummy_submission():
+    return {
+        "latitude": 43.6532,
+        "longitude": -79.3832,
+        "issues": ["full"],
+        "parking_duration": "minutes",
+        "parking_time": "2023-08-19 15:17:17.234235",
+        "comments": "test1",
+    }
 
 
 def test_get_submissions(test_client):
@@ -136,16 +149,7 @@ def test_get_nonexistent_submission_with_id(test_client):
 
 
 @mark.uses_db
-def test_post_submissions(flask_app, test_client):
-    dummy_submission = {
-        "latitude": 43.6532,
-        "longitude": -79.3832,
-        "issues": ["full"],
-        "parking_duration": "minutes",
-        "parking_time": "2023-08-19 15:17:17.234235",
-        "comments": "test1",
-    }
-
+def test_post_submissions(flask_app, test_client, dummy_submission):
     with flask_app.app_context():
         response = test_client.post("/api/v2/submissions", json=dummy_submission)
         res = json.loads(response.get_data())
@@ -169,20 +173,12 @@ def test_post_submissions(flask_app, test_client):
 
 
 @mark.uses_db
-def test_post_submissions_integrity_error(flask_app, test_client):
+def test_post_submissions_integrity_error(flask_app, test_client, dummy_submission):
     """
     GIVEN a Flask application configured for testing
     WHEN a POST to '/api/v2/submissions' triggers a database IntegrityError
     THEN check that the response returns a 500 error status
     """
-    dummy_submission = {
-        "latitude": 43.6532,
-        "longitude": -79.3832,
-        "issues": ["full"],
-        "parking_duration": "minutes",
-        "parking_time": "2023-08-19 15:17:17.234235",
-        "comments": "test1",
-    }
     with flask_app.app_context():
         with patch(
             "bikespace_api.submissions.submissions_routes.db.session.commit",
