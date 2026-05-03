@@ -194,6 +194,7 @@ def test_post_submissions_integrity_error(flask_app, test_client):
     assert json.loads(response.get_data())["status"] == "Error"
 
 
+@mark.uses_db
 def test_get_submission_history(flask_app, test_client):
     """
     GIVEN a Flask application and a Submission entry configured for testing
@@ -265,6 +266,7 @@ def test_get_submission_history(flask_app, test_client):
         )  # no changes for delete action since it applies record-wide
 
 
+@mark.uses_db
 def test_rollback_change(flask_app, test_client):
     """
     GIVEN a Flask application and a Submission entry configured for testing
