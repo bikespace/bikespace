@@ -50,7 +50,7 @@ class Submission(db.Model):
         nullable=True,
     )
     parking_time: so.Mapped[datetime] = so.mapped_column(
-        sa.DateTime, nullable=False, default=datetime.now()
+        sa.DateTime, nullable=False, default=datetime.now
     )
     comments: so.Mapped[str | None] = so.mapped_column(
         sa.Text,
