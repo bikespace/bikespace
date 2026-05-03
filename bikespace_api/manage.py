@@ -21,7 +21,9 @@ from bikespace_api.admin.admin_models import Role, User
 
 LOAD_TESTING_NUMBER_OF_SUBMISSIONS = 1500
 
+# used by the remaining make commands that do not use docker, e.g. test-api, test-api-terminal
 load_dotenv()
+
 app = create_app()
 cli = FlaskGroup(create_app=create_app)
 user_datastore = create_userdatastore(db, User, Role)

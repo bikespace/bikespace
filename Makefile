@@ -55,7 +55,7 @@ dev-api-stop:
 # port 8000
 .PHONY: dev-api
 dev-api: dev-api-stop
-	docker compose --file bikespace_api/docker/compose-dev.yaml up --build --force-recreate
+	docker compose --file bikespace_api/docker/compose-dev.yaml --env-file bikespace_api/.env up --build --force-recreate
 
 .PHONY: dev-api-test-stop
 dev-api-test-stop:
@@ -64,7 +64,7 @@ dev-api-test-stop:
 # port 8001
 .PHONY: dev-api-test
 dev-api-test: dev-api-test-stop
-	docker compose --file bikespace_api/docker/compose-test.yaml up --build --force-recreate
+	docker compose --file bikespace_api/docker/compose-test.yaml --env-file bikespace_api/.env up --build --force-recreate
 
 .PHONY: prodtest-api-stop
 prodtest-api-stop:
@@ -73,7 +73,7 @@ prodtest-api-stop:
 # port 8002
 .PHONY: prodtest-api
 prodtest-api: prodtest-api-stop
-	docker compose --file bikespace_api/docker/compose-prodtest.yaml up --build --force-recreate
+	docker compose --file bikespace_api/docker/compose-prodtest.yaml --env-file bikespace_api/.env up --build --force-recreate
 
 .PHONY: test-api
 test-api: setup-py launch-db db-test-server
