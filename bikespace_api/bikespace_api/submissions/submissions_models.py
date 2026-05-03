@@ -1,7 +1,9 @@
 from datetime import datetime, timezone
 from enum import Enum
+from typing import List
 
 import sqlalchemy as sa
+import sqlalchemy.orm as so
 import sqlalchemy.dialects.postgresql as pg
 from sqlalchemy_continuum import make_versioned
 from sqlalchemy_continuum.plugins import FlaskPlugin
@@ -36,28 +38,38 @@ class Submission(db.Model):
     __tablename__ = "bikeparking_submissions"
     __versioned__ = {}  # generate version history log with sqlalchemy-continuum
 
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    latitude = db.Column(db.Float, nullable=False)
-    longitude = db.Column(db.Float, nullable=False)
-    issues = db.Column(
-        pg.ARRAY(sa.Enum(IssueType, create_constraint=False, native_enum=False))
+    id: so.Mapped[int] = so.mapped_column(primary_key=True, autoincrement=True)
+    latitude: so.Mapped[float] = so.mapped_column(nullable=False)
+    longitude: so.Mapped[float] = so.mapped_column(nullable=False)
+    issues: so.Mapped[List[IssueType] | None] = so.mapped_column(
+        pg.ARRAY(sa.Enum(IssueType, create_constraint=False, native_enum=False)),
+        nullable=True,
     )
-    parking_duration = db.Column(
-        sa.Enum(ParkingDuration, create_constraint=False, native_enum=False)
+    parking_duration: so.Mapped[ParkingDuration | None] = so.mapped_column(
+        sa.Enum(ParkingDuration, create_constraint=False, native_enum=False),
+        nullable=True,
     )
-    parking_time = db.Column(db.DateTime, nullable=False, default=datetime.now())
-    comments = db.Column(db.Text, default=None, nullable=True)
-    submitted_datetime = db.Column(db.DateTime(timezone=True), nullable=True)
+    parking_time: so.Mapped[datetime] = so.mapped_column(
+        sa.DateTime, nullable=False, default=datetime.now()
+    )
+    comments: so.Mapped[str | None] = so.mapped_column(
+        sa.Text,
+        default=None,
+        nullable=True,
+    )
+    submitted_datetime: so.Mapped[datetime] = so.mapped_column(
+        sa.DateTime(timezone=True), nullable=True
+    )
 
     # __init__ params need to have a default value for revert from deleted state to work with sqlalchemy_continuum
     def __init__(
         self,
-        latitude=None,
-        longitude=None,
-        issues=None,
-        parking_duration=None,
-        parking_time=None,
-        comments=None,
+        latitude: float = None,  # type: ignore
+        longitude: float = None,  # type: ignore
+        issues: List[IssueType] = None,  # type: ignore
+        parking_duration: ParkingDuration = None,  # type: ignore
+        parking_time: datetime = None,  # type: ignore
+        comments: str | None = None,
     ):
         self.latitude = latitude
         self.longitude = longitude

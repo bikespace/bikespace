@@ -70,7 +70,6 @@ class AdminUsersModelView(ModelView):
             model.password = hash_password(form.password.data)
             model.fs_uniquifier = uuid.uuid4().hex
         else:
-            old_password = form.password.object_data
             # If password has been changed, hash password
-            if not old_password == model.password:
+            if form.password.data:
                 model.password = hash_password(form.password.data)

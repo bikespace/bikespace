@@ -182,7 +182,13 @@ def test_create_and_update_a_user(test_client):
     # update the new user's password
     update_response = test_client.post(
         user_edit_url,
-        data=dict(password="testupdatedpassword"),
+        data=dict(
+            first_name=new_user_properties["first_name"],
+            last_name=new_user_properties["last_name"],
+            email=new_user_properties["email"],
+            active=new_user_properties["active"],
+            password="testupdatedpassword",
+        ),
         follow_redirects=True,
     )
 
