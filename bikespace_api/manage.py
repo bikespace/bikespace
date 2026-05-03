@@ -12,7 +12,12 @@ import sqlalchemy as sa
 from sqlalchemy_utils import create_database, database_exists, drop_database
 
 from bikespace_api import create_app, create_userdatastore, db
-from bikespace_api.api.models import IssueType, ParkingDuration, Role, Submission, User
+from bikespace_api.submissions.submissions_models import (
+    IssueType,
+    ParkingDuration,
+    Submission,
+)
+from bikespace_api.admin.admin_models import Role, User
 
 LOAD_TESTING_NUMBER_OF_SUBMISSIONS = 1500
 

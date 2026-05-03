@@ -1,5 +1,3 @@
-# bikespace_api/bikespace_api/config.py
-
 import os
 
 # Determine the folder of the top-level directory of this project
