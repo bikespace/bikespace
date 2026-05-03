@@ -199,6 +199,92 @@ def test_create_and_update_a_user(test_client):
     )
 
 
+def test_admin_submission_create_form_renders(test_client):
+    """
+    GIVEN a logged-in superuser
+    WHEN the admin submission create form is requested
+    THEN the form renders successfully (exercising DateTimeWithMicrosecondsField.__init__)
+    """
+    test_client.post(
+        "/admin/login",
+        data=dict(email="admin@example.com", password="admin"),
+        follow_redirects=True,
+    )
+    response = test_client.get("/admin/submission/new/")
+    assert response.status_code == 200
+    soup = BeautifulSoup(response.data, "html.parser")
+    assert soup.find("form")
+
+
+def test_admin_roles_accessible_as_superuser(test_client):
+    """
+    GIVEN a logged-in superuser
+    WHEN the admin roles list page is requested
+    THEN the page loads successfully (covering the _handle_view is_accessible True branch)
+    """
+    test_client.post(
+        "/admin/login",
+        data=dict(email="admin@example.com", password="admin"),
+        follow_redirects=True,
+    )
+    response = test_client.get("/admin/role/")
+    assert response.status_code == 200
+    soup = BeautifulSoup(response.data, "html.parser")
+    assert soup.find("table")
+
+
+def test_update_user_without_changing_password(test_client):
+    """
+    GIVEN a logged-in superuser and an existing user
+    WHEN the user is updated without supplying a new password
+    THEN the update succeeds and the password field is left unchanged
+    """
+    test_client.post(
+        "/admin/login",
+        data=dict(email="admin@example.com", password="admin"),
+        follow_redirects=True,
+    )
+
+    # create a user to edit
+    test_client.post(
+        "/admin/user/new/",
+        data=dict(
+            first_name="No",
+            last_name="Password",
+            email="nopasswordchange@example.com",
+            password="originalpassword",
+            roles=["user"],
+            active=True,
+        ),
+    )
+
+    # find the edit URL for the new user
+    read_response = test_client.get("/admin/user/")
+    read_soup = BeautifulSoup(read_response.text, "html.parser")
+    user_edit_url = (
+        read_soup.find("td", string=re.compile("nopasswordchange@example.com"))  # type: ignore
+        .parent.find("a", title="Edit Record")
+        .get("href")
+    )
+
+    # update the user without providing a new password
+    update_response = test_client.post(
+        user_edit_url,
+        data=dict(
+            first_name="No",
+            last_name="Password",
+            email="nopasswordchange@example.com",
+            active=True,
+            password="",  # empty password → on_model_change skips hashing
+        ),
+        follow_redirects=True,
+    )
+    assert update_response.status_code == 200
+    assert BeautifulSoup(update_response.data, "html.parser").find(
+        string=re.compile("record was successfully saved", flags=re.IGNORECASE)
+    )
+
+
 def test_allowed_pages_for_regular_users(test_client):
     """
     GIVEN the flask application configured for testing and

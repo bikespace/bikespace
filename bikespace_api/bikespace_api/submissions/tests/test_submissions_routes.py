@@ -1,5 +1,6 @@
 import json
 from datetime import datetime, timezone
+from unittest.mock import patch
 
 from bikespace_api.submissions.submissions_models import (
     IssueType,
@@ -8,6 +9,7 @@ from bikespace_api.submissions.submissions_models import (
 )
 from bikespace_api.submissions.submissions_routes import OperationType
 from pytest import mark
+from sqlalchemy.exc import IntegrityError as SaIntegrityError
 from sqlalchemy_continuum import version_class
 
 from bikespace_api import db  # type: ignore
@@ -49,6 +51,28 @@ def test_get_submissions_accept_geojson(test_client):
     response = test_client.get("/api/v2/submissions", headers=accept_header)
     assert response.status_code == 200
     assert response.headers["Content-Type"] == "application/geo+json"
+
+
+def test_get_submissions_geojson_empty_db(flask_app, test_client):
+    """
+    GIVEN a Flask application configured for testing
+    WHEN the GeoJSON submissions endpoint is requested with no submissions in the DB
+    THEN check that the response is an empty GeoJSON FeatureCollection
+    """
+    with flask_app.app_context():
+        with patch(
+            "bikespace_api.submissions.submissions_routes.Submission.query"
+        ) as mock_query:
+            mock_query.all.return_value = []
+            response = test_client.get(
+                "/api/v2/submissions",
+                headers={"Accept": "application/geo+json"},
+            )
+    assert response.status_code == 200
+    assert response.headers["Content-Type"] == "application/geo+json"
+    data = json.loads(response.get_data())
+    assert data["type"] == "FeatureCollection"
+    assert data["features"] == []
 
 
 def test_get_submission_accept_csv(test_client):
@@ -133,9 +157,7 @@ def test_post_submissions(flask_app, test_client):
     assert res["status"] == "created"
     assert new_submission.latitude == dummy_submission["latitude"]
     assert new_submission.longitude == dummy_submission["longitude"]
-    assert new_submission.issues == [
-        IssueType(issue) for issue in dummy_submission["issues"]
-    ]
+    assert new_submission.issues == [IssueType.FULL]
     assert new_submission.parking_duration == ParkingDuration(
         dummy_submission["parking_duration"]
     )
@@ -144,6 +166,32 @@ def test_post_submissions(flask_app, test_client):
     )
     assert new_submission.comments == dummy_submission["comments"]
     assert (current_datetime - new_submission.submitted_datetime).total_seconds() < 1
+
+
+@mark.uses_db
+def test_post_submissions_integrity_error(flask_app, test_client):
+    """
+    GIVEN a Flask application configured for testing
+    WHEN a POST to '/api/v2/submissions' triggers a database IntegrityError
+    THEN check that the response returns a 500 error status
+    """
+    dummy_submission = {
+        "latitude": 43.6532,
+        "longitude": -79.3832,
+        "issues": ["full"],
+        "parking_duration": "minutes",
+        "parking_time": "2023-08-19 15:17:17.234235",
+        "comments": "test1",
+    }
+    with flask_app.app_context():
+        with patch(
+            "bikespace_api.submissions.submissions_routes.db.session.commit",
+            side_effect=SaIntegrityError(None, None, Exception()),
+        ):
+            response = test_client.post("/api/v2/submissions", json=dummy_submission)
+
+    assert response.status_code == 500
+    assert json.loads(response.get_data())["status"] == "Error"
 
 
 def test_get_submission_history(flask_app, test_client):

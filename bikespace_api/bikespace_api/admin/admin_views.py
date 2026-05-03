@@ -5,6 +5,7 @@ from flask_admin.contrib.sqla import ModelView
 from flask_security import current_user  # type: ignore
 from flask_security.utils import hash_password
 from wtforms import PasswordField
+from wtforms.validators import Optional
 
 
 class AdminRolesModelView(ModelView):
@@ -44,6 +45,7 @@ class AdminUsersModelView(ModelView):
     form_excluded_columns = "fs_uniquifier"
 
     form_overrides = {"password": PasswordField}
+    form_args = {"password": {"validators": [Optional()]}}
 
     def is_accessible(self):
         return (
