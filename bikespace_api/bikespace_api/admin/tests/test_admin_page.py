@@ -236,18 +236,25 @@ def test_admin_roles_accessible_as_superuser(logged_in_admin_client):
 def test_update_user_without_changing_password(logged_in_admin_client):
     """
     GIVEN a logged-in superuser and an existing user
-    WHEN the user is updated without supplying a new password
-    THEN the update succeeds and the password field is left unchanged
+    WHEN a non-password field is updated without supplying a new password
+    THEN the field change is saved and the original password hash is preserved
     """
+    from flask_security.utils import verify_password
+
+    from bikespace_api import db
+    from bikespace_api.admin.admin_models import User
+
     test_client = logged_in_admin_client
+    original_password = "originalpassword"
+
     # create a user to edit
     test_client.post(
         "/admin/user/new/",
         data=dict(
-            first_name="No",
+            first_name="Original",
             last_name="Password",
             email="nopasswordchange@example.com",
-            password="originalpassword",
+            password=original_password,
             roles=["user"],
             active=True,
         ),
@@ -262,11 +269,11 @@ def test_update_user_without_changing_password(logged_in_admin_client):
         .get("href")
     )
 
-    # update the user without providing a new password
+    # update first_name without providing a new password
     update_response = test_client.post(
         user_edit_url,
         data=dict(
-            first_name="No",
+            first_name="Updated",
             last_name="Password",
             email="nopasswordchange@example.com",
             active=True,
@@ -278,6 +285,18 @@ def test_update_user_without_changing_password(logged_in_admin_client):
     assert BeautifulSoup(update_response.data, "html.parser").find(
         string=re.compile("record was successfully saved", flags=re.IGNORECASE)
     )
+
+    # verify the name change appears in the list view
+    list_soup = BeautifulSoup(test_client.get("/admin/user/").data, "html.parser")
+    assert list_soup.find(string=re.compile("Updated"))
+
+    # verify the original password hash was not touched
+    app = test_client.application
+    with app.app_context():
+        user = db.session.execute(
+            db.select(User).filter_by(email="nopasswordchange@example.com")
+        ).scalar_one()
+        assert verify_password(original_password, user.password)
 
 
 @mark.uses_db

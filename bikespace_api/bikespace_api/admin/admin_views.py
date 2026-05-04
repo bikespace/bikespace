@@ -67,11 +67,17 @@ class AdminUsersModelView(ModelView):
                 # login
                 return redirect(url_for("security.login", next=request.url))
 
+    def update_model(self, form, model):
+        self._original_password = model.password
+        return super().update_model(form, model)
+
     def on_model_change(self, form, model, is_created):
         if is_created:
             model.password = hash_password(form.password.data)
             model.fs_uniquifier = uuid.uuid4().hex
         else:
-            # If password has been changed, hash password
             if form.password.data:
                 model.password = hash_password(form.password.data)
+            else:
+                # populate_obj already cleared model.password; restore original hash
+                model.password = self._original_password
