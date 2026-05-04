@@ -16,6 +16,9 @@ VENV = venv
 # used by github actions; will be overridden if already set in the environment
 CI ?= false
 
+# Pass --env-file to docker compose only when bikespace_api/.env exists
+ENV_FILE_FLAG = $(shell [ -f bikespace_api/.env ] && echo "--env-file bikespace_api/.env")
+
 export APP_SETTINGS = bikespace_api.config.DevelopmentConfig
 export DATABASE_URL = postgresql://postgres:postgres@localhost:5432/bikespace_dev
 export TEST_DATABASE_URI = postgresql://postgres:postgres@localhost:5432/bikespace_test
@@ -55,7 +58,7 @@ dev-api-stop:
 # port 8000
 .PHONY: dev-api
 dev-api: dev-api-stop
-	docker compose --file bikespace_api/docker/compose-dev.yaml --env-file bikespace_api/.env up --build --force-recreate
+	docker compose --file bikespace_api/docker/compose-dev.yaml $(ENV_FILE_FLAG) up --build --force-recreate
 
 .PHONY: dev-api-test-stop
 dev-api-test-stop:
@@ -64,7 +67,7 @@ dev-api-test-stop:
 # port 8001
 .PHONY: dev-api-test
 dev-api-test: dev-api-test-stop
-	docker compose --file bikespace_api/docker/compose-test.yaml --env-file bikespace_api/.env up --build --force-recreate
+	docker compose --file bikespace_api/docker/compose-test.yaml $(ENV_FILE_FLAG) up --build --force-recreate
 
 .PHONY: prodtest-api-stop
 prodtest-api-stop:
@@ -73,7 +76,7 @@ prodtest-api-stop:
 # port 8002
 .PHONY: prodtest-api
 prodtest-api: prodtest-api-stop
-	docker compose --file bikespace_api/docker/compose-prodtest.yaml --env-file bikespace_api/.env up --build --force-recreate
+	docker compose --file bikespace_api/docker/compose-prodtest.yaml $(ENV_FILE_FLAG) up --build --force-recreate
 
 .PHONY: test-api
 test-api: setup-py launch-db db-test-server
