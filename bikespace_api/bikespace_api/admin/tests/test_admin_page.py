@@ -2,6 +2,7 @@ import re
 
 import pytest
 from bs4 import BeautifulSoup
+from pytest import mark
 
 # Rationale for 'type: ignore' comments:
 # - soup.find doesn't have an overload where both name= and string= are not None (as of bs4 version 4.14.2), even though this is a documented usage of the function
@@ -9,7 +10,7 @@ from bs4 import BeautifulSoup
 
 
 @pytest.fixture()
-def logged_in_admin_client(test_client):
+def logged_in_admin_client(test_client, clean_db):
     test_client.post(
         "/admin/login",
         data=dict(email="admin@example.com", password="admin"),
@@ -112,7 +113,8 @@ def default_login_page_redirect(response, soup: BeautifulSoup):
     )
 
 
-def test_admin_login_successfully(test_client):
+@mark.uses_db
+def test_admin_login_successfully(test_client, clean_db):
     """
     GIVEN the flask application configured for testing
     WHEN the '/admin/login' page is posted to (POST) with valid credentials
@@ -146,6 +148,7 @@ def test_admin_login_successfully(test_client):
     assert post_login_soup.find(string=re.compile("Admin"))
 
 
+@mark.uses_db
 def test_create_and_update_a_user(logged_in_admin_client):
     """
     GIVEN the flask application configured for testing
@@ -203,6 +206,7 @@ def test_create_and_update_a_user(logged_in_admin_client):
     )
 
 
+@mark.uses_db
 def test_admin_submission_create_form_renders(logged_in_admin_client):
     """
     GIVEN a logged-in superuser
@@ -215,6 +219,7 @@ def test_admin_submission_create_form_renders(logged_in_admin_client):
     assert soup.find("form")
 
 
+@mark.uses_db
 def test_admin_roles_accessible_as_superuser(logged_in_admin_client):
     """
     GIVEN a logged-in superuser
@@ -227,6 +232,7 @@ def test_admin_roles_accessible_as_superuser(logged_in_admin_client):
     assert soup.find("table")
 
 
+@mark.uses_db
 def test_update_user_without_changing_password(logged_in_admin_client):
     """
     GIVEN a logged-in superuser and an existing user
@@ -274,7 +280,8 @@ def test_update_user_without_changing_password(logged_in_admin_client):
     )
 
 
-def test_allowed_pages_for_regular_users(test_client):
+@mark.uses_db
+def test_allowed_pages_for_regular_users(test_client, clean_db):
     """
     GIVEN the flask application configured for testing and
     GIVEN a user logged in with the "user" role but not "superuser"

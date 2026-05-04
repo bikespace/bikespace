@@ -149,7 +149,7 @@ def test_get_nonexistent_submission_with_id(test_client):
 
 
 @mark.uses_db
-def test_post_submissions(flask_app, test_client, dummy_submission):
+def test_post_submissions(flask_app, test_client, dummy_submission, clean_db):
     with flask_app.app_context():
         response = test_client.post("/api/v2/submissions", json=dummy_submission)
         res = json.loads(response.get_data())
@@ -173,7 +173,7 @@ def test_post_submissions(flask_app, test_client, dummy_submission):
 
 
 @mark.uses_db
-def test_post_submissions_integrity_error(flask_app, test_client, dummy_submission):
+def test_post_submissions_integrity_error(flask_app, test_client, dummy_submission, clean_db):
     """
     GIVEN a Flask application configured for testing
     WHEN a POST to '/api/v2/submissions' triggers a database IntegrityError
@@ -191,7 +191,7 @@ def test_post_submissions_integrity_error(flask_app, test_client, dummy_submissi
 
 
 @mark.uses_db
-def test_get_submission_history(flask_app, test_client):
+def test_get_submission_history(flask_app, test_client, clean_db):
     """
     GIVEN a Flask application and a Submission entry configured for testing
     GIVEN database actions for that Submission to create, update, and delete
@@ -263,7 +263,7 @@ def test_get_submission_history(flask_app, test_client):
 
 
 @mark.uses_db
-def test_rollback_change(flask_app, test_client):
+def test_rollback_change(flask_app, test_client, clean_db):
     """
     GIVEN a Flask application and a Submission entry configured for testing
     GIVEN a history of more than one change to the Submission, including a create, update, and delete

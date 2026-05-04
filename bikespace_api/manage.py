@@ -147,12 +147,6 @@ def _seed_base_data():
 
 
 @cli.command()
-def seed_test_db():
-    """Seeds the database with minimal fixture data for unit tests"""
-    _seed_base_data()
-
-
-@cli.command()
 def seed_dev_db():
     """Seeds the database with full dev/load-testing data"""
     _seed_base_data()
