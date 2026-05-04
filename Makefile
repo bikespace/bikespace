@@ -115,6 +115,10 @@ migrate-db: setup-py launch-db db-test-server
 	$(PYTHON) $(MANAGE_PY) db migrate --directory $(BIKESPACE_DB_MIGRATIONS)
 
 # applies all the migration scripts to update the database to the newest schema
+# prerequisite: Postgres must be running with bikespace_dev created, but NOT via `make dev-api`
+# (dev-api binds port 8000 and conflicts). Instead run:
+#   make launch-db
+#   docker exec bikespace_db psql -U postgres -c "CREATE DATABASE bikespace_dev;"
 .PHONY: upgrade-db
 upgrade-db:
 	$(PYTHON) $(MANAGE_PY) db upgrade --directory $(BIKESPACE_DB_MIGRATIONS)
