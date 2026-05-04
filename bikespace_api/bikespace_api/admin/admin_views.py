@@ -67,6 +67,14 @@ class AdminUsersModelView(ModelView):
                 # login
                 return redirect(url_for("security.login", next=request.url))
 
+    def edit_form(self, obj=None):
+        # Flask-Admin auto-appends InputRequired for NOT NULL columns, setting
+        # flags.required=True which renders <input required> in the browser.
+        # Clear it here so admins can update other fields without re-entering a password.
+        form = super().edit_form(obj)
+        form.password.flags.required = False
+        return form
+
     def update_model(self, form, model):
         self._original_password = model.password
         return super().update_model(form, model)
