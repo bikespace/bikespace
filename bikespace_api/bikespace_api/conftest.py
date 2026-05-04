@@ -3,7 +3,7 @@ from datetime import datetime, timezone
 import pytest
 from sqlalchemy import text
 
-from sqlalchemy_utils import create_database, database_exists
+from sqlalchemy_utils import create_database, database_exists, drop_database
 
 from bikespace_api import create_app, db
 from bikespace_api.admin.admin_models import Role, User
@@ -26,9 +26,9 @@ def _setup_database():
     app.config.from_object("bikespace_api.config.TestingConfig")
     with app.app_context():
         db_uri = app.config["SQLALCHEMY_DATABASE_URI"]
-        if not database_exists(db_uri):
-            create_database(db_uri)
-        db.drop_all()
+        if database_exists(db_uri):  # pragma: no branch
+            drop_database(db_uri)
+        create_database(db_uri)
         db.create_all()
         seed_base_data()
 
