@@ -18,6 +18,12 @@ jest.mock('@/utils/map-utils/geocoder-search/_useGeocoderQuery', () => ({
   useGeocoderQuery: jest.fn(),
 }));
 
+jest.mock('next/navigation', () => ({
+  useRouter: () => ({
+    push: jest.fn(),
+  }),
+}));
+
 describe('uniqueBy', () => {
   test('uniqueBy returns a Set of unique objects based on comparing the value returned by a custom function', () => {
     interface TestObject {

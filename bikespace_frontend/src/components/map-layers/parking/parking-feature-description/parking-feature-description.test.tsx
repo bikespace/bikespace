@@ -14,6 +14,7 @@ const mockHandleClick = jest.fn();
 const mockHandleHover = jest.fn();
 const mockHandleUnHover = jest.fn();
 const mockCenterFeatureOnMap = jest.fn();
+const mockReportIssue = jest.fn();
 
 function ContextMock() {
   const [selected, setSelected] = useState<boolean>(false);
@@ -28,6 +29,7 @@ function ContextMock() {
       handleHover={mockHandleHover}
       handleUnHover={mockHandleUnHover}
       centerFeatureOnMap={mockCenterFeatureOnMap}
+      onReportIssue={mockReportIssue}
     />
   );
 }
@@ -55,6 +57,7 @@ describe('ParkingFeatureDescription', () => {
         handleHover={mockHandleHover}
         handleUnHover={mockHandleUnHover}
         centerFeatureOnMap={mockCenterFeatureOnMap}
+        onReportIssue={mockReportIssue}
       />
     );
 
