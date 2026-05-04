@@ -82,7 +82,7 @@ test-api: setup-py launch-db db-test-server
 	cd $(BIKESPACE_API_DIR) && \
 	$(PYTHON) $(MANAGE_PY) recreate-db && \
 	$(PYTHON) $(MANAGE_PY) db upgrade --directory $(BIKESPACE_DB_MIGRATIONS) && \
-	$(PYTHON) $(MANAGE_PY) seed-db && \
+	$(PYTHON) $(MANAGE_PY) seed-test-db && \
 	$(PYTHON) -m pytest --cov=bikespace_api --cov-report lcov --cov-branch
 
 .PHONY: test-api-terminal
@@ -92,7 +92,7 @@ test-api-terminal: setup-py launch-db db-test-server
 	cd $(BIKESPACE_API_DIR) && \
 	$(PYTHON) $(MANAGE_PY) recreate-db && \
 	$(PYTHON) $(MANAGE_PY) db upgrade --directory $(BIKESPACE_DB_MIGRATIONS) && \
-	$(PYTHON) $(MANAGE_PY) seed-db && \
+	$(PYTHON) $(MANAGE_PY) seed-test-db && \
 	$(PYTHON) -m pytest -s --cov=bikespace_api --cov-report term-missing --cov-branch
 
 .PHONY: lint-py
