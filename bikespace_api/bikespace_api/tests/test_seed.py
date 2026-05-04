@@ -25,4 +25,4 @@ def test_seed_base_data_skips_existing_roles(flask_app):
         seed_base_data()
 
         roles = db.session.query(Role).all()
-        assert {r.name for r in roles} == {"user", "superuser"}
+        assert {r.name for r in roles} == {"user", "superuser"}  # pragma: no branch
