@@ -13,6 +13,7 @@ import {LocationProps} from '../location';
 
 interface SubmissionFormContentProps {
   step: number;
+  useUrlLocation: boolean;
 }
 
 const Location = dynamic<LocationProps>(() => import('../location/Location'), {
@@ -20,12 +21,20 @@ const Location = dynamic<LocationProps>(() => import('../location/Location'), {
   ssr: false,
 });
 
-export function SubmissionFormContent({step}: SubmissionFormContentProps) {
+export function SubmissionFormContent({
+  step,
+  useUrlLocation,
+}: SubmissionFormContentProps) {
   switch (formOrder[step]) {
     case 'issues':
       return <Issue />;
     case 'location':
-      return <Location handler={<MapHandler />} />;
+      return (
+        <Location
+          handler={<MapHandler useUrlLocation={useUrlLocation} />}
+          useUrlLocation={useUrlLocation}
+        />
+      );
     case 'parkingTime':
       return <Time />;
     case 'comments':

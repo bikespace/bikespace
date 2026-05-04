@@ -3,12 +3,18 @@ import {useMapEvent, useMap} from 'react-leaflet';
 
 import {useSubmissionFormContext} from '../submission-form/schema';
 
-export const MapHandler = () => {
+export interface MapHandlerProps {
+  useUrlLocation: boolean;
+}
+
+export function MapHandler({useUrlLocation}: MapHandlerProps) {
   const {setValue} = useSubmissionFormContext();
 
   const map = useMap();
 
   useEffect(() => {
+    if (useUrlLocation) return;
+
     map.locate().on('locationfound', e => {
       map.flyTo(e.latlng);
       map.stopLocate();
@@ -30,4 +36,4 @@ export const MapHandler = () => {
   });
 
   return <div hidden aria-hidden />;
-};
+}

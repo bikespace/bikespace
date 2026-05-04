@@ -10,7 +10,7 @@ import {Protocol} from 'pmtiles';
 import {layers, namedFlavor} from '@protomaps/basemaps';
 
 import {trackUmamiEvent} from '@/utils';
-import {defaultMapCenter, GeocoderSearch} from '@/utils/map-utils';
+import {defaultMapCenter, GeocoderSearch, getCentroid} from '@/utils/map-utils';
 
 import {ParkingMapFilter} from './map-filters/ParkingMapFilter';
 import {Sidebar} from './sidebar/Sidebar';
@@ -20,6 +20,7 @@ import {
   SidebarDetailsContent,
 } from '@/components/shared-ui/sidebar-details-disclosure';
 import {Spinner} from '@/components/shared-ui/spinner';
+import {useSubmissionPrefill} from '@/components/submission/submission-form-controller/SubmissionFormController';
 import {
   ParkingFeatureDescription,
   parkingInteractiveLayers,
@@ -42,6 +43,7 @@ import type {
   PointLike,
   MapStyle,
 } from 'react-map-gl/maplibre';
+import type {Feature} from 'geojson';
 
 import 'maplibre-gl/dist/maplibre-gl.css';
 import styles from './parking-map-page.module.scss';
@@ -241,6 +243,12 @@ export function ParkingMapPage() {
     map?.once('idle', () => setIsMapLoading(false)); // wait for styles to load, then set loading to false
   }
 
+  const openSubmission = useSubmissionPrefill();
+  function handleReportIssue(feature: Feature) {
+    const [lon, lat] = getCentroid(feature);
+    openSubmission(lat, lon);
+  }
+
   return (
     <main className={styles.parkingMapPage}>
       <Sidebar isOpen={sidebarIsOpen} setIsOpen={setSidebarIsOpen}>
@@ -273,6 +281,7 @@ export function ParkingMapPage() {
                 handleHover={handleFeatureHover}
                 handleUnHover={handleFeatureUnHover}
                 centerFeatureOnMap={zoomAndFlyToSingleFeature}
+                onReportIssue={handleReportIssue}
               />
             ))}
           </div>

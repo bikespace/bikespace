@@ -18,6 +18,7 @@ export interface ParkingFeatureDescriptionProps {
   handleHover: Function;
   handleUnHover: Function;
   centerFeatureOnMap: Function;
+  onReportIssue: (feature: Feature) => void;
 }
 
 export function ParkingFeatureDescription({
@@ -28,6 +29,7 @@ export function ParkingFeatureDescription({
   handleHover,
   handleUnHover,
   centerFeatureOnMap,
+  onReportIssue,
 }: ParkingFeatureDescriptionProps) {
   if (!feature.properties) {
     return <p>Feature has no properties</p>;
@@ -228,6 +230,12 @@ export function ParkingFeatureDescription({
             umamiEvent="parking-feature-select-on-map"
           >
             {selected ? 'Center on Map' : 'Select on Map'}
+          </SidebarButton>
+          <SidebarButton
+            onClick={() => onReportIssue(feature)}
+            umamiEvent="parking-feature-report-issue"
+          >
+            Report Issue
           </SidebarButton>
           <SidebarButton
             onClick={() => setShowAllData(!showAllData)}
