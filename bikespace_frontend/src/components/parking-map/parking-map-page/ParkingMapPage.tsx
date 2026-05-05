@@ -4,7 +4,7 @@ import React, {useEffect, useState, useRef} from 'react';
 import Map, {GeolocateControl, NavigationControl} from 'react-map-gl/maplibre';
 import {bbox as getBBox} from '@turf/bbox';
 import {featureCollection as getFeatureCollection} from '@turf/helpers';
-import maplibregl from 'maplibre-gl';
+import maplibregl, {Marker} from 'maplibre-gl';
 import type {Map as MapLibreMap} from 'maplibre-gl';
 import {Protocol} from 'pmtiles';
 import {layers, namedFlavor} from '@protomaps/basemaps';
@@ -47,6 +47,7 @@ import type {Feature} from 'geojson';
 
 import 'maplibre-gl/dist/maplibre-gl.css';
 import styles from './parking-map-page.module.scss';
+import sidebarDescStyles from '@/components/map-layers/parking/feature-description.module.scss';
 const parkingSpritePath = '/parking_sprites/parking_sprites';
 
 const backupMapStyle: MapStyle = {
@@ -116,6 +117,24 @@ export function ParkingMapPage() {
     [...parkingSelected, ...parkingHovered],
     (f: MapGeoJSONFeature) => f.id
   ) as Array<MapGeoJSONFeature>;
+  const [emptyLocationSelected, setEmptyLocationSelected] = useState<{
+    lat: number;
+    lon: number;
+  } | null>(null);
+  useEffect(() => {
+    if (!emptyLocationSelected || !mapRef.current) return;
+    const coords = {
+      lon: emptyLocationSelected.lon,
+      lat: emptyLocationSelected.lat,
+    };
+    const marker = new Marker({color: '#a000cc'})
+      .setLngLat(coords)
+      .addTo(mapRef.current.getMap());
+    mapRef.current.flyTo({center: coords});
+    return () => {
+      marker.remove();
+    };
+  }, [emptyLocationSelected]);
 
   // set starting zoom and position
   const [defaultLocation, setDefaultLocation] = useState(defaultMapCenter);
@@ -166,6 +185,7 @@ export function ParkingMapPage() {
     );
     setParkingGroupSelected(features);
     setParkingSelected(features.length === 1 ? features : []);
+    setEmptyLocationSelected(null);
 
     if (features.length > 0) {
       trackUmamiEvent('parking-map-feature-click');
@@ -176,17 +196,27 @@ export function ParkingMapPage() {
         setSidebarIsOpen(true);
         mapRef.current!.once('resize', () => zoomAndFlyTo(features));
       }
-      if (resultsCardRef.current) {
-        resultsCardRef.current.scrollIntoView();
-      }
     } else {
+      const lngLat = mapRef.current!.unproject(e.point as PointLike);
+      setEmptyLocationSelected({lat: lngLat.lat, lon: lngLat.lng});
+      setParkingGroupSelected([]);
+      setParkingSelected([]);
       setGeoSearchIsMinimized(false);
+
+      if (!sidebarIsOpen) {
+        setSidebarIsOpen(true);
+      }
+    }
+
+    if (resultsCardRef.current) {
+      resultsCardRef.current.scrollIntoView();
     }
   }
 
   function handleFeatureSelectionClear() {
     setParkingGroupSelected([]);
     setParkingSelected([]);
+    setEmptyLocationSelected(null);
     setGeoSearchIsMinimized(false);
   }
 
@@ -258,7 +288,7 @@ export function ParkingMapPage() {
             <div className={styles.ContentHeading}>
               <h2 className={styles.cardHeading}>Bike Parking Map</h2>
             </div>
-            {parkingGroupSelected.length > 0 ? (
+            {parkingGroupSelected.length > 0 || emptyLocationSelected ? (
               <SidebarButton
                 onClick={handleFeatureSelectionClear}
                 umamiEvent="parking-map-clear-selection"
@@ -284,6 +314,31 @@ export function ParkingMapPage() {
                 onReportIssue={handleReportIssue}
               />
             ))}
+            {emptyLocationSelected && parkingGroupSelected.length === 0 && (
+              <div className={styles.ContentCard}>
+                <h3>Selected location has no parking.</h3>
+                <div className={sidebarDescStyles.featureDescriptionControls}>
+                  <SidebarButton
+                    onClick={() =>
+                      handleReportIssue({
+                        type: 'Feature',
+                        geometry: {
+                          type: 'Point',
+                          coordinates: [
+                            emptyLocationSelected.lon,
+                            emptyLocationSelected.lat,
+                          ],
+                        },
+                        properties: {},
+                      })
+                    }
+                    umamiEvent="empty-location-report-issue"
+                  >
+                    Report Issue
+                  </SidebarButton>
+                </div>
+              </div>
+            )}
           </div>
           <GeocoderSearch
             mapRef={mapRef}
