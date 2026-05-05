@@ -5,7 +5,7 @@ import type {Feature} from 'geojson';
 import {SidebarButton} from '@/components/shared-ui/sidebar-button';
 
 import {bicycleParkingDescriptions as bpDesc} from './bicycle_parkingDescriptions';
-import styles from './parking-feature-description.module.scss';
+import styles from '../feature-description.module.scss';
 
 import chevronUp from '@/assets/icons/chevron-up.svg';
 import chevronDown from '@/assets/icons/chevron-down.svg';
