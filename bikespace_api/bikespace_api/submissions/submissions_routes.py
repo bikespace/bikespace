@@ -9,7 +9,7 @@ import marshmallow as ma
 from better_profanity import profanity
 from flask import Response, make_response, request, url_for
 from flask.views import MethodView
-from flask_smorest import Blueprint, abort
+from flask_smorest import abort
 from geojson import Feature, FeatureCollection, Point
 from marshmallow import validate
 from sqlalchemy import desc
@@ -17,12 +17,11 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy_continuum import count_versions, version_class
 
 from bikespace_api import db  # type: ignore
-from bikespace_api.api.models import IssueType, ParkingDuration, Submission
-
-submissions_blueprint = Blueprint(
-    "submissions",
-    __name__,
-    description="User reports of bicycle parking problems",
+from bikespace_api.submissions import submissions_blueprint
+from bikespace_api.submissions.submissions_models import (
+    IssueType,
+    ParkingDuration,
+    Submission,
 )
 
 DEFAULT_OFFSET_LIMIT = 100
@@ -87,7 +86,10 @@ class GeoJSONSubmissionsSchema(ma.Schema):
 
 SubmissionCSVSchema = ma.Schema.from_dict(
     SubmissionSchemaWithVersion._declared_fields
-    | {f"issue_{issue.value}": ma.fields.Boolean() for issue in IssueType},
+    | {
+        f"issue_{issue.value}": ma.fields.Boolean()
+        for issue in IssueType  # pragma: no cover
+    },
     name="SubmissionCSVSchema",
 )
 
@@ -183,7 +185,7 @@ class Submissions(MethodView):
         except IntegrityError:
             db.session.rollback()
             return_response = Response(json.dumps({"status": "Error"}), 500)
-            return
+            return return_response
 
 
 def get_submissions_geo_json() -> Response:
@@ -203,7 +205,7 @@ def get_submissions_geo_json() -> Response:
             geometry=Point((submission.longitude, submission.latitude)),
             properties=submission,
         )
-        for submission in submissions
+        for submission in submissions  # pragma: no cover
     ]
     feature_collection = FeatureCollection(submission_features)
 
@@ -298,7 +300,7 @@ def get_changeset_fields(schema: type[ma.Schema]) -> type[ma.Schema]:
         field.allow_none = True
     changeset_fields = {
         k: ma.fields.List(v, validate=validate.Length(equal=2))
-        for k, v in parent_fields.items()
+        for k, v in parent_fields.items()  # pragma: no cover
     }
     return ma.Schema.from_dict(changeset_fields, name="SubmissionChangesetSchema")  # type: ignore
 

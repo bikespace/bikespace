@@ -1,10 +1,22 @@
 import re
 
+import pytest
 from bs4 import BeautifulSoup
+from pytest import mark
 
 # Rationale for 'type: ignore' comments:
 # - soup.find doesn't have an overload where both name= and string= are not None (as of bs4 version 4.14.2), even though this is a documented usage of the function
 # - soup.find string= parameter is not typed for regular expressions even though these are a documented input type
+
+
+@pytest.fixture()
+def logged_in_admin_client(test_client, clean_db):
+    test_client.post(
+        "/admin/login",
+        data=dict(email="admin@example.com", password="admin"),
+        follow_redirects=True,
+    )
+    return test_client
 
 
 def test_admin_page(test_client):
@@ -101,7 +113,8 @@ def default_login_page_redirect(response, soup: BeautifulSoup):
     )
 
 
-def test_admin_login_successfully(test_client):
+@mark.uses_db
+def test_admin_login_successfully(test_client, clean_db):
     """
     GIVEN the flask application configured for testing
     WHEN the '/admin/login' page is posted to (POST) with valid credentials
@@ -135,20 +148,14 @@ def test_admin_login_successfully(test_client):
     assert post_login_soup.find(string=re.compile("Admin"))
 
 
-def test_create_and_update_a_user(test_client):
+@mark.uses_db
+def test_create_and_update_a_user(logged_in_admin_client):
     """
     GIVEN the flask application configured for testing
     WHEN the flask-admin endpoints are used to create a user and then update their password
     THEN check that the user is created and the password update is successful
     """
-    # log in a superuser
-    login_response = test_client.post(
-        "/admin/login",
-        data=dict(email="admin@example.com", password="admin"),
-        follow_redirects=True,
-    )
-    assert login_response.status_code == 200
-
+    test_client = logged_in_admin_client
     # create a new regular user using the flask-admin endpoint
     new_user_properties = dict(
         first_name="Test",
@@ -182,7 +189,13 @@ def test_create_and_update_a_user(test_client):
     # update the new user's password
     update_response = test_client.post(
         user_edit_url,
-        data=dict(password="testupdatedpassword"),
+        data=dict(
+            first_name=new_user_properties["first_name"],
+            last_name=new_user_properties["last_name"],
+            email=new_user_properties["email"],
+            active=new_user_properties["active"],
+            password="testupdatedpassword",
+        ),
         follow_redirects=True,
     )
 
@@ -193,7 +206,101 @@ def test_create_and_update_a_user(test_client):
     )
 
 
-def test_allowed_pages_for_regular_users(test_client):
+@mark.uses_db
+def test_admin_submission_create_form_renders(logged_in_admin_client):
+    """
+    GIVEN a logged-in superuser
+    WHEN the admin submission create form is requested
+    THEN the form renders successfully (exercising DateTimeWithMicrosecondsField.__init__)
+    """
+    response = logged_in_admin_client.get("/admin/submission/new/")
+    assert response.status_code == 200
+    soup = BeautifulSoup(response.data, "html.parser")
+    assert soup.find("form")
+
+
+@mark.uses_db
+def test_admin_roles_accessible_as_superuser(logged_in_admin_client):
+    """
+    GIVEN a logged-in superuser
+    WHEN the admin roles list page is requested
+    THEN the page loads successfully (covering the _handle_view is_accessible True branch)
+    """
+    response = logged_in_admin_client.get("/admin/role/")
+    assert response.status_code == 200
+    soup = BeautifulSoup(response.data, "html.parser")
+    assert soup.find("table")
+
+
+@mark.uses_db
+def test_update_user_without_changing_password(logged_in_admin_client):
+    """
+    GIVEN a logged-in superuser and an existing user
+    WHEN a non-password field is updated without supplying a new password
+    THEN the field change is saved and the original password hash is preserved
+    """
+    from flask_security.utils import verify_password
+
+    from bikespace_api import db
+    from bikespace_api.admin.admin_models import User
+
+    test_client = logged_in_admin_client
+    original_password = "originalpassword"
+
+    # create a user to edit
+    test_client.post(
+        "/admin/user/new/",
+        data=dict(
+            first_name="Original",
+            last_name="Password",
+            email="nopasswordchange@example.com",
+            password=original_password,
+            roles=["user"],
+            active=True,
+        ),
+    )
+
+    # find the edit URL for the new user
+    read_response = test_client.get("/admin/user/")
+    read_soup = BeautifulSoup(read_response.text, "html.parser")
+    user_edit_url = (
+        read_soup.find("td", string=re.compile("nopasswordchange@example.com"))  # type: ignore
+        .parent.find("a", title="Edit Record")
+        .get("href")
+    )
+
+    # update first_name without providing a new password
+    update_response = test_client.post(
+        user_edit_url,
+        data=dict(
+            first_name="Updated",
+            last_name="Password",
+            email="nopasswordchange@example.com",
+            active=True,
+            password="",  # empty password → on_model_change skips hashing
+        ),
+        follow_redirects=True,
+    )
+    assert update_response.status_code == 200
+    assert BeautifulSoup(update_response.data, "html.parser").find(
+        string=re.compile("record was successfully saved", flags=re.IGNORECASE)
+    )
+
+    # verify the name change appears in the list view
+    list_soup = BeautifulSoup(test_client.get("/admin/user/").data, "html.parser")
+    assert list_soup.find(string=re.compile("Updated"))
+
+    # verify the original password hash was not touched
+    app = test_client.application
+    with app.app_context():
+        user = db.session.execute(
+            db.select(User).filter_by(email="nopasswordchange@example.com")
+        ).scalar_one()
+        assert verify_password(original_password, user.password)
+
+
+@mark.uses_db
+def test_allowed_pages_for_regular_users(test_client, clean_db):
     """
     GIVEN the flask application configured for testing and
     GIVEN a user logged in with the "user" role but not "superuser"
