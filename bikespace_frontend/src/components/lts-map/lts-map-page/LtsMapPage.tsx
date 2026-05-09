@@ -59,7 +59,7 @@ const backupMapStyle: MapStyle = {
 };
 
 const ltsPmtilesUrl = `pmtiles://${process.env.DATA_LEVEL_OF_TRAFFIC_STRESS}`;
-const ltsSourceLayer = 'lts_gta_filtered_1_4';
+const ltsSourceLayer = 'lts_gta';
 
 const ltsLineLayer: LineLayer = {
   id: 'lts-lines',
@@ -315,7 +315,7 @@ export function LtsMapPage() {
                   })}
                 </div>
                 <p>
-                  <em>Data Last Updated: 03-02-2026</em>
+                  <em>Data Last Updated: 2026-05-09</em>
                 </p>
               </div>
             </SidebarDetailsContent>
