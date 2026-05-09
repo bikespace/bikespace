@@ -7,8 +7,9 @@ from io import StringIO
 
 import marshmallow as ma
 from better_profanity import profanity
-from flask import Response, make_response, request, url_for
+from flask import Response, current_app, make_response, request, url_for
 from flask.views import MethodView
+from flask_security import current_user, auth_required  # type: ignore
 from flask_smorest import abort
 from geojson import Feature, FeatureCollection, Point
 from marshmallow import validate
@@ -132,6 +133,7 @@ class Submissions(MethodView):
         content_type="text/csv",
         success=True,
     )
+    @auth_required()
     def get(self, args):
         """Returns user reports of bicycle parking problems"""
         accept_header = request.headers.get("Accept")
@@ -164,6 +166,11 @@ class Submissions(MethodView):
     @submissions_blueprint.response(201, SubmissionCreateConfirmationSchema)
     def post(self, new_data):
         """Create a new submission"""
+        if current_user:
+            current_app.logger.info(f"{current_user}")
+        else:
+            current_app.logger.info("No current user")
+
         profanity.load_censor_words()
         censored_comments = profanity.censor(new_data["comments"])
         try:
