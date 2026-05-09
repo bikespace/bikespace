@@ -21,8 +21,19 @@ class BaseConfig:
 
     # flask-security configuration
     SECURITY_PASSWORD_SALT = os.environ.get("BIKESPACE_SECURITY_PASSWORD_SALT")
-    SECURITY_REGISTERABLE = False  # whether to create a user registration endpoint
     SECURITY_SEND_REGISTER_EMAIL = False
+
+    # flask-security endpoints
+    SECURITY_REGISTERABLE = False  # enable user registration; default False
+    SECURITY_RECOVERABLE = False  # enable password reset/recover; default False
+    SECURITY_TRACKABLE = (
+        False  # track user login statistics, requires additional set-up; default False
+    )
+    SECURITY_CHANGEABLE = False  # enable change password; default False
+    SECURITY_CONFIRMABLE = (
+        False  # require email confirmation in registration flow; default False
+    )
+    SECURITY_UNIFIED_SIGNIN = False  # enable login with TOTP; default False
 
     # flask-security routes
     SECURITY_URL_PREFIX = "/admin/"  # default None
@@ -34,6 +45,28 @@ class BaseConfig:
     SECURITY_POST_REGISTER_VIEW = (
         "/admin/"  # default None (falls back to SECURITY_POST_LOGIN_VIEW)
     )
+
+    SECURITY_REDIRECT_BEHAVIOR = "spa"
+    SECURITY_POST_CONFIRM_VIEW = "/confirmed/"
+    SECURITY_CONFIRM_ERROR_VIEW = "/confirm-error/"
+    SECURITY_RESET_VIEW = "/reset-password/"
+    SECURITY_RESET_ERROR_VIEW = "/reset-password-error/"
+    SECURITY_LOGIN_ERROR_VIEW = "/login-error/"
+    # SECURITY_POST_CHANGE_EMAIL_VIEW
+    # SECURITY_CHANGE_EMAIL_ERROR_VIEW
+    # SECURITY_POST_OAUTH_LOGIN_VIEW = "/post-oauth-login/"
+    # SECURITY_POST_OAUTH_VERIFY_VIEW = "/post-oauth-verify/"
+    # SECURITY_VERIFY_ERROR_VIEW = "/verify-error/"
+
+    # enforce CSRF protection for session / browser - but allow token-based
+    # API calls to go through
+    SECURITY_CSRF_PROTECT_MECHANISMS = ["session", "basic"]
+    SECURITY_CSRF_IGNORE_UNAUTH_ENDPOINTS = True
+
+    # Send Cookie with csrf-token. This is the default for Axios and Angular.
+    SECURITY_CSRF_COOKIE_NAME = "XSRF-TOKEN"
+    WTF_CSRF_CHECK_DEFAULT = False  # TODO read the "patterns" doc section
+    WTF_CSRF_TIME_LIMIT = None
 
     # flask-smorest
     API_TITLE = "BikeSpace API"
