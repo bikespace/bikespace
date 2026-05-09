@@ -22,6 +22,7 @@ class BaseConfig:
     # flask-security configuration
     SECURITY_PASSWORD_SALT = os.environ.get("BIKESPACE_SECURITY_PASSWORD_SALT")
     SECURITY_SEND_REGISTER_EMAIL = False
+    SECURITY_ANONYMOUS_USER_DISABLED = True
 
     # flask-security endpoints
     SECURITY_REGISTERABLE = False  # enable user registration; default False

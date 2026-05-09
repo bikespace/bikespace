@@ -28,6 +28,8 @@ class AdminSubmissionModelView(ModelView):
     form_args = {"submitted_datetime": {"validators": []}}  # make nullable
 
     def is_accessible(self):
+        if not current_user:
+            return False
         return (
             current_user.is_active
             and current_user.is_authenticated
@@ -40,7 +42,7 @@ class AdminSubmissionModelView(ModelView):
         accessible.
         """
         if not self.is_accessible():
-            if current_user.is_authenticated:
+            if current_user and current_user.is_authenticated:
                 # permission denied
                 abort(403)
             else:

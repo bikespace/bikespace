@@ -12,6 +12,8 @@ class AdminRolesModelView(ModelView):
     column_display_pk = True
 
     def is_accessible(self):
+        if not current_user:
+            return False
         return (
             current_user.is_active
             and current_user.is_authenticated
@@ -24,7 +26,7 @@ class AdminRolesModelView(ModelView):
         accessible.
         """
         if not self.is_accessible():
-            if current_user.is_authenticated:
+            if current_user and current_user.is_authenticated:
                 # permission denied
                 abort(403)
             else:
@@ -48,6 +50,8 @@ class AdminUsersModelView(ModelView):
     form_args = {"password": {"validators": [Optional()]}}
 
     def is_accessible(self):
+        if not current_user:
+            return False
         return (
             current_user.is_active
             and current_user.is_authenticated
@@ -60,7 +64,7 @@ class AdminUsersModelView(ModelView):
         accessible.
         """
         if not self.is_accessible():
-            if current_user.is_authenticated:
+            if current_user and current_user.is_authenticated:
                 # permission denied
                 abort(403)
             else:
