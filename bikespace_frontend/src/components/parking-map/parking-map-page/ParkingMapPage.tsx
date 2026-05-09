@@ -4,13 +4,13 @@ import React, {useEffect, useState, useRef} from 'react';
 import Map, {GeolocateControl, NavigationControl} from 'react-map-gl/maplibre';
 import {bbox as getBBox} from '@turf/bbox';
 import {featureCollection as getFeatureCollection} from '@turf/helpers';
-import maplibregl from 'maplibre-gl';
+import maplibregl, {Marker} from 'maplibre-gl';
 import type {Map as MapLibreMap} from 'maplibre-gl';
 import {Protocol} from 'pmtiles';
 import {layers, namedFlavor} from '@protomaps/basemaps';
 
 import {trackUmamiEvent} from '@/utils';
-import {defaultMapCenter, GeocoderSearch} from '@/utils/map-utils';
+import {defaultMapCenter, GeocoderSearch, getCentroid} from '@/utils/map-utils';
 
 import {ParkingMapFilter} from './map-filters/ParkingMapFilter';
 import {Sidebar} from './sidebar/Sidebar';
@@ -20,6 +20,7 @@ import {
   SidebarDetailsContent,
 } from '@/components/shared-ui/sidebar-details-disclosure';
 import {Spinner} from '@/components/shared-ui/spinner';
+import {useSubmissionPrefill} from '@/components/submission/submission-form-controller/SubmissionFormController';
 import {
   ParkingFeatureDescription,
   parkingInteractiveLayers,
@@ -42,9 +43,11 @@ import type {
   PointLike,
   MapStyle,
 } from 'react-map-gl/maplibre';
+import type {Feature} from 'geojson';
 
 import 'maplibre-gl/dist/maplibre-gl.css';
 import styles from './parking-map-page.module.scss';
+import sidebarDescStyles from '@/components/map-layers/parking/feature-description.module.scss';
 const parkingSpritePath = '/parking_sprites/parking_sprites';
 
 const backupMapStyle: MapStyle = {
@@ -114,6 +117,24 @@ export function ParkingMapPage() {
     [...parkingSelected, ...parkingHovered],
     (f: MapGeoJSONFeature) => f.id
   ) as Array<MapGeoJSONFeature>;
+  const [emptyLocationSelected, setEmptyLocationSelected] = useState<{
+    lat: number;
+    lon: number;
+  } | null>(null);
+  useEffect(() => {
+    if (!emptyLocationSelected || !mapRef.current) return;
+    const coords = {
+      lon: emptyLocationSelected.lon,
+      lat: emptyLocationSelected.lat,
+    };
+    const marker = new Marker({color: '#a000cc'})
+      .setLngLat(coords)
+      .addTo(mapRef.current.getMap());
+    mapRef.current.flyTo({center: coords});
+    return () => {
+      marker.remove();
+    };
+  }, [emptyLocationSelected]);
 
   // set starting zoom and position
   const [defaultLocation, setDefaultLocation] = useState(defaultMapCenter);
@@ -164,6 +185,7 @@ export function ParkingMapPage() {
     );
     setParkingGroupSelected(features);
     setParkingSelected(features.length === 1 ? features : []);
+    setEmptyLocationSelected(null);
 
     if (features.length > 0) {
       trackUmamiEvent('parking-map-feature-click');
@@ -174,17 +196,27 @@ export function ParkingMapPage() {
         setSidebarIsOpen(true);
         mapRef.current!.once('resize', () => zoomAndFlyTo(features));
       }
-      if (resultsCardRef.current) {
-        resultsCardRef.current.scrollIntoView();
-      }
     } else {
+      const lngLat = mapRef.current!.unproject(e.point as PointLike);
+      setEmptyLocationSelected({lat: lngLat.lat, lon: lngLat.lng});
+      setParkingGroupSelected([]);
+      setParkingSelected([]);
       setGeoSearchIsMinimized(false);
+
+      if (!sidebarIsOpen) {
+        setSidebarIsOpen(true);
+      }
+    }
+
+    if (resultsCardRef.current) {
+      resultsCardRef.current.scrollIntoView();
     }
   }
 
   function handleFeatureSelectionClear() {
     setParkingGroupSelected([]);
     setParkingSelected([]);
+    setEmptyLocationSelected(null);
     setGeoSearchIsMinimized(false);
   }
 
@@ -241,6 +273,12 @@ export function ParkingMapPage() {
     map?.once('idle', () => setIsMapLoading(false)); // wait for styles to load, then set loading to false
   }
 
+  const openSubmission = useSubmissionPrefill();
+  function handleReportIssue(feature: Feature) {
+    const [lon, lat] = getCentroid(feature);
+    openSubmission(lat, lon);
+  }
+
   return (
     <main className={styles.parkingMapPage}>
       <Sidebar isOpen={sidebarIsOpen} setIsOpen={setSidebarIsOpen}>
@@ -250,7 +288,7 @@ export function ParkingMapPage() {
             <div className={styles.ContentHeading}>
               <h2 className={styles.cardHeading}>Bike Parking Map</h2>
             </div>
-            {parkingGroupSelected.length > 0 ? (
+            {parkingGroupSelected.length > 0 || emptyLocationSelected ? (
               <SidebarButton
                 onClick={handleFeatureSelectionClear}
                 umamiEvent="parking-map-clear-selection"
@@ -273,8 +311,34 @@ export function ParkingMapPage() {
                 handleHover={handleFeatureHover}
                 handleUnHover={handleFeatureUnHover}
                 centerFeatureOnMap={zoomAndFlyToSingleFeature}
+                onReportIssue={handleReportIssue}
               />
             ))}
+            {emptyLocationSelected && parkingGroupSelected.length === 0 && (
+              <div className={styles.ContentCard}>
+                <h3>Selected location has no parking.</h3>
+                <div className={sidebarDescStyles.featureDescriptionControls}>
+                  <SidebarButton
+                    onClick={() =>
+                      handleReportIssue({
+                        type: 'Feature',
+                        geometry: {
+                          type: 'Point',
+                          coordinates: [
+                            emptyLocationSelected.lon,
+                            emptyLocationSelected.lat,
+                          ],
+                        },
+                        properties: {},
+                      })
+                    }
+                    umamiEvent="empty-location-report-issue"
+                  >
+                    Report Issue
+                  </SidebarButton>
+                </div>
+              </div>
+            )}
           </div>
           <GeocoderSearch
             mapRef={mapRef}
