@@ -36,8 +36,16 @@ class AdminRolesModelView(ModelView):
 
 class AdminUsersModelView(ModelView):
     column_hide_backrefs = False
-    column_list = ("first_name", "last_name", "email", "active", "roles")
+    column_list = (
+        "username",
+        "first_name",
+        "last_name",
+        "email",
+        "active",
+        "roles",
+    )
     column_labels = {
+        "username": "Username",
         "first_name": "First Name",
         "last_name": "Last Name",
         "email": "Email",

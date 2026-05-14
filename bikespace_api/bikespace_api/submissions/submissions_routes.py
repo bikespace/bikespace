@@ -133,7 +133,7 @@ class Submissions(MethodView):
         content_type="text/csv",
         success=True,
     )
-    @auth_required()
+    # @auth_required()
     def get(self, args):
         """Returns user reports of bicycle parking problems"""
         accept_header = request.headers.get("Accept")

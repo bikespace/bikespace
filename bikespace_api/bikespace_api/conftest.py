@@ -85,6 +85,7 @@ def new_base_user_role():
 def new_base_user():
     user = User(
         id=1,
+        username="test_user",
         first_name="Test",
         last_name="User",
         email="test.user@example.com",

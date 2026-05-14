@@ -23,6 +23,7 @@ class BaseConfig:
     SECURITY_PASSWORD_SALT = os.environ.get("BIKESPACE_SECURITY_PASSWORD_SALT")
     SECURITY_SEND_REGISTER_EMAIL = False
     SECURITY_ANONYMOUS_USER_DISABLED = True
+    SECURITY_USERNAME_ENABLE = True
 
     # flask-security endpoints
     SECURITY_REGISTERABLE = False  # enable user registration; default False
@@ -35,6 +36,9 @@ class BaseConfig:
         False  # require email confirmation in registration flow; default False
     )
     SECURITY_UNIFIED_SIGNIN = False  # enable login with TOTP; default False
+    SECURITY_USERNAME_RECOVERY = (
+        False  # enable username recovery with email; default False
+    )
 
     # flask-security routes
     SECURITY_URL_PREFIX = "/admin/"  # default None
@@ -46,6 +50,7 @@ class BaseConfig:
     SECURITY_POST_REGISTER_VIEW = (
         "/admin/"  # default None (falls back to SECURITY_POST_LOGIN_VIEW)
     )
+    # SECURITY_USERNAME_RECOVERY_URL = "/recover-username/"
 
     SECURITY_REDIRECT_BEHAVIOR = "spa"
     SECURITY_POST_CONFIRM_VIEW = "/confirmed/"

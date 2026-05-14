@@ -60,6 +60,7 @@ def add_seed_user():
     # create seed user only if no superusers are in the db
     if db.session.query(User).join(Role, Role == super_user_role).first() is None:
         user_datastore.create_user(
+            username="seed_admin",
             first_name="Seed",
             last_name="Admin",
             email=app.config["SEED_USER_EMAIL"],

@@ -9,7 +9,11 @@ from flask_security.utils import hash_password
 
 from bikespace_api import create_userdatastore, db
 from bikespace_api.admin.admin_models import Role, User
-from bikespace_api.submissions.submissions_models import IssueType, ParkingDuration, Submission
+from bikespace_api.submissions.submissions_models import (
+    IssueType,
+    ParkingDuration,
+    Submission,
+)
 
 
 def seed_base_data():
@@ -73,6 +77,7 @@ def seed_base_data():
             db.session.commit()
 
     user_datastore.create_user(
+        username="admin_user",
         first_name="Admin",
         last_name="User",
         email="admin@example.com",
@@ -82,6 +87,7 @@ def seed_base_data():
     db.session.commit()
 
     user_datastore.create_user(
+        username="non_admin_user",
         first_name="Not an Admin",
         last_name="User",
         email="notanadmin@example.com",

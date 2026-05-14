@@ -12,7 +12,7 @@ from pytest import mark
 @pytest.fixture()
 def logged_in_admin_client(test_client, clean_db):
     test_client.post(
-        "/admin/login",
+        "/admin/login/",
         data=dict(email="admin@example.com", password="admin"),
         follow_redirects=True,
     )
@@ -37,7 +37,7 @@ def test_admin_page(test_client):
     assert soup.find(
         "a",
         class_="btn btn-primary",
-        href="/admin/login",
+        href="/admin/login/",
         string=re.compile("login", flags=re.IGNORECASE),  # type: ignore
     )
     assert navbar_div.find(  # type: ignore
@@ -117,7 +117,7 @@ def default_login_page_redirect(response, soup: BeautifulSoup):
 def test_admin_login_successfully(test_client, clean_db):
     """
     GIVEN the flask application configured for testing
-    WHEN the '/admin/login' page is posted to (POST) with valid credentials
+    WHEN the '/admin/login/' page is posted to (POST) with valid credentials
     THEN check that the response is a redirection to the admin home page
     """
     pre_login_response = test_client.get("/admin/")
@@ -127,12 +127,12 @@ def test_admin_login_successfully(test_client, clean_db):
     assert pre_login_soup.find(
         "a",
         class_="btn btn-primary",
-        href="/admin/login",
+        href="/admin/login/",
         string=re.compile("login", flags=re.IGNORECASE),  # type: ignore
     )
 
     post_login_response = test_client.post(
-        "/admin/login",
+        "/admin/login/",
         data=dict(email="admin@example.com", password="admin"),
         follow_redirects=True,
     )
@@ -142,7 +142,7 @@ def test_admin_login_successfully(test_client, clean_db):
     assert not post_login_soup.find(
         "a",
         class_="btn btn-primary",
-        href="/admin/login",
+        href="/admin/login/",
         string=re.compile("login", flags=re.IGNORECASE),  # type: ignore
     )
     assert post_login_soup.find(string=re.compile("Admin"))
@@ -158,8 +158,7 @@ def test_create_and_update_a_user(logged_in_admin_client):
     test_client = logged_in_admin_client
     # create a new regular user using the flask-admin endpoint
     new_user_properties = dict(
-        first_name="Test",
-        last_name="New User",
+        username="test_user",
         email="testnewuser@example.com",
         password="testnewuserpassword",
         roles=["user"],
@@ -173,7 +172,7 @@ def test_create_and_update_a_user(logged_in_admin_client):
     # confirm the new user was created
     read_response_1 = test_client.get("/admin/user/")
     read_soup_1 = BeautifulSoup(read_response_1.text, "html.parser")
-    assert read_soup_1.find(string=re.compile(str(new_user_properties["email"])))
+    assert read_soup_1.find(string=re.compile(str(new_user_properties["username"])))
 
     # get the edit endpoint for the new user
     # (i.e. `/admin/user/edit/?id={{user_id}}&url=/admin/user/`)
@@ -186,12 +185,13 @@ def test_create_and_update_a_user(logged_in_admin_client):
         .get("href")
     )
 
-    # update the new user's password
+    # update the new user's password and add First and Last name
     update_response = test_client.post(
         user_edit_url,
         data=dict(
-            first_name=new_user_properties["first_name"],
-            last_name=new_user_properties["last_name"],
+            username=new_user_properties["username"],
+            first_name="Test",
+            last_name="New User",
             email=new_user_properties["email"],
             active=new_user_properties["active"],
             password="testupdatedpassword",
@@ -251,6 +251,7 @@ def test_update_user_without_changing_password(logged_in_admin_client):
     test_client.post(
         "/admin/user/new/",
         data=dict(
+            username="user_update_no_pwd",
             first_name="Original",
             last_name="Password",
             email="nopasswordchange@example.com",
@@ -273,6 +274,7 @@ def test_update_user_without_changing_password(logged_in_admin_client):
     update_response = test_client.post(
         user_edit_url,
         data=dict(
+            username="user_update_no_pwd",
             first_name="Updated",
             last_name="Password",
             email="nopasswordchange@example.com",
@@ -310,7 +312,7 @@ def test_allowed_pages_for_regular_users(test_client, clean_db):
 
     # login the non-admin user
     login_response = test_client.post(
-        "/admin/login",
+        "/admin/login/",
         data=dict(email="notanadmin@example.com", password="notanadmin"),
         follow_redirects=True,
     )

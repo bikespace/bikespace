@@ -30,8 +30,9 @@ class User(db.Model, UserMixin):
     """The confirmed_at value indicates when the user confirmed their email."""
 
     id: so.Mapped[int] = so.mapped_column(primary_key=True)
-    first_name: so.Mapped[str] = so.mapped_column(sa.String(255))
-    last_name: so.Mapped[str] = so.mapped_column(sa.String(255))
+    username: so.Mapped[str] = so.mapped_column(sa.String(255))
+    first_name: so.Mapped[str | None] = so.mapped_column(sa.String(255), nullable=True)
+    last_name: so.Mapped[str | None] = so.mapped_column(sa.String(255), nullable=True)
     email: so.Mapped[str] = so.mapped_column(sa.String(255), unique=True)
     password: so.Mapped[str] = so.mapped_column(sa.String(255))
     active: so.Mapped[bool] = so.mapped_column(sa.Boolean)
@@ -46,4 +47,4 @@ class User(db.Model, UserMixin):
     )
 
     def __str__(self):
-        return str(self.email or "")
+        return str(self.username or "")
