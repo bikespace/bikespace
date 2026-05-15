@@ -61,16 +61,16 @@ def clean_db(flask_app):
 
 
 @pytest.fixture()
-def new_submission():
+def new_submission_without_user():
     datetime_string = "2023-08-19 15:17:17.234235"
     datetime_object = datetime.strptime(datetime_string, "%Y-%m-%d %H:%M:%S.%f")
     submission = Submission(
-        43.6532,
-        -79.3832,
-        [IssueType.ABANDONDED],
-        ParkingDuration.MINUTES,
-        datetime_object,
-        "comments",
+        latitude=43.6532,
+        longitude=-79.3832,
+        issues=[IssueType.ABANDONDED],
+        parking_duration=ParkingDuration.MINUTES,
+        parking_time=datetime_object,
+        comments="comments",
     )
     return submission
 
@@ -95,3 +95,19 @@ def new_base_user():
         fs_uniquifier="unique12345",
     )
     return user
+
+
+@pytest.fixture()
+def new_submission_with_user(new_base_user):
+    datetime_string = "2026-01-02 15:17:17.234235"
+    datetime_object = datetime.strptime(datetime_string, "%Y-%m-%d %H:%M:%S.%f")
+    submission = Submission(
+        latitude=43.7532,
+        longitude=-79.4832,
+        issues=[IssueType.ABANDONDED],
+        parking_duration=ParkingDuration.MINUTES,
+        parking_time=datetime_object,
+        comments="comments submission with user",
+        user_id=new_base_user.id,
+    )
+    return submission

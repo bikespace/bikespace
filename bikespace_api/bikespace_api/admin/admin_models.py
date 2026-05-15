@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import Optional
 
 import sqlalchemy as sa
 import sqlalchemy.orm as so
@@ -17,7 +18,9 @@ roles_users = db.Table(
 class Role(db.Model, RoleMixin):
     id: so.Mapped[int] = so.mapped_column(primary_key=True)
     name: so.Mapped[str] = so.mapped_column(sa.String(80), unique=True)
-    description: so.Mapped[str | None] = so.mapped_column(sa.String(255), nullable=True)
+    description: so.Mapped[Optional[str]] = so.mapped_column(
+        sa.String(255), nullable=True
+    )
     users: so.Mapped[list["User"]] = so.relationship(
         "User", secondary=roles_users, back_populates="roles"
     )
@@ -31,17 +34,22 @@ class User(db.Model, UserMixin):
 
     id: so.Mapped[int] = so.mapped_column(primary_key=True)
     username: so.Mapped[str] = so.mapped_column(sa.String(255))
-    first_name: so.Mapped[str | None] = so.mapped_column(sa.String(255), nullable=True)
-    last_name: so.Mapped[str | None] = so.mapped_column(sa.String(255), nullable=True)
+    first_name: so.Mapped[Optional[str]] = so.mapped_column(
+        sa.String(255), nullable=True
+    )
+    last_name: so.Mapped[Optional[str]] = so.mapped_column(
+        sa.String(255), nullable=True
+    )
     email: so.Mapped[str] = so.mapped_column(sa.String(255), unique=True)
     password: so.Mapped[str] = so.mapped_column(sa.String(255))
     active: so.Mapped[bool] = so.mapped_column(sa.Boolean)
-    confirmed_at: so.Mapped[datetime | None] = so.mapped_column(
+    confirmed_at: so.Mapped[Optional[datetime]] = so.mapped_column(
         sa.DateTime, nullable=True
     )
     roles: so.Mapped[list["Role"]] = so.relationship(
         "Role", secondary=roles_users, back_populates="users"
     )
+    submissions: so.Mapped[list["Submission"]] = so.relationship(back_populates="user")
     fs_uniquifier: so.Mapped[str] = so.mapped_column(
         sa.String(64), unique=True, nullable=False
     )

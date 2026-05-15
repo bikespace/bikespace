@@ -14,6 +14,7 @@ from sqlalchemy.exc import IntegrityError as SaIntegrityError
 from sqlalchemy_continuum import version_class
 
 from bikespace_api import db  # type: ignore
+from bikespace_api.admin.tests.test_admin_page import logged_in_admin_client
 
 
 @pytest.fixture()
@@ -149,7 +150,14 @@ def test_get_nonexistent_submission_with_id(test_client):
 
 
 @mark.uses_db
-def test_post_submissions(flask_app, test_client, dummy_submission, clean_db):
+def test_post_submissions_without_user(
+    flask_app, test_client, dummy_submission, clean_db
+):
+    """
+    GIVEN a Flask application configured for testing
+    WHEN a new submission is posted without a user being logged in
+    THEN the correct response is received and the submission is entered into the database
+    """
     with flask_app.app_context():
         response = test_client.post("/api/v2/submissions", json=dummy_submission)
         res = json.loads(response.get_data())
@@ -170,10 +178,47 @@ def test_post_submissions(flask_app, test_client, dummy_submission, clean_db):
     )
     assert new_submission.comments == dummy_submission["comments"]
     assert (current_datetime - new_submission.submitted_datetime).total_seconds() < 1
+    assert new_submission.user_id is None
 
 
 @mark.uses_db
-def test_post_submissions_integrity_error(flask_app, test_client, dummy_submission, clean_db):
+def test_post_submissions_with_user(
+    flask_app, logged_in_admin_client, dummy_submission, clean_db
+):
+    """
+    GIVEN a Flask application configured for testing
+    WHEN a new submission is posted with a user being logged in
+    THEN the correct response is received and the submission is entered into the database
+    """
+    with flask_app.app_context():
+        response = logged_in_admin_client.post(
+            "/api/v2/submissions", json=dummy_submission
+        )
+        res = json.loads(response.get_data())
+        current_datetime = datetime.now(timezone.utc)
+        # submission_id property from post-submit response used here for testing but is also used by frontend to display post-submission link to dashboard
+        new_submission = Submission.query.filter_by(id=res["submission_id"]).first()
+
+    assert response.status_code == 201
+    assert res["status"] == "created"
+    assert new_submission.latitude == dummy_submission["latitude"]
+    assert new_submission.longitude == dummy_submission["longitude"]
+    assert new_submission.issues == [IssueType.FULL]
+    assert new_submission.parking_duration == ParkingDuration(
+        dummy_submission["parking_duration"]
+    )
+    assert new_submission.parking_time == datetime.strptime(
+        dummy_submission["parking_time"], "%Y-%m-%d %H:%M:%S.%f"
+    )
+    assert new_submission.comments == dummy_submission["comments"]
+    assert (current_datetime - new_submission.submitted_datetime).total_seconds() < 1
+    assert isinstance(new_submission.user_id, int)
+
+
+@mark.uses_db
+def test_post_submissions_integrity_error(
+    flask_app, test_client, dummy_submission, clean_db
+):
     """
     GIVEN a Flask application configured for testing
     WHEN a POST to '/api/v2/submissions' triggers a database IntegrityError

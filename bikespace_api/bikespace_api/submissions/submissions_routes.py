@@ -41,9 +41,15 @@ class SubmissionSchema(ma.Schema):
     )
 
 
+class UserSchema(ma.Schema):
+    id = ma.fields.Integer(dump_only=True)
+    username = ma.fields.String(allow_none=True)
+
+
 class SubmissionSchemaWithVersion(SubmissionSchema):
     version = ma.fields.Integer(dump_only=True, validate=validate.Range(min=1))
     version_history_url = ma.fields.Url(dump_only=True)
+    user = ma.fields.Pluck(UserSchema, "username")
 
 
 class SubmissionQueryArgsSchema(ma.Schema):
@@ -96,15 +102,10 @@ SubmissionCSVSchema = ma.Schema.from_dict(
 
 
 class SubmissionCreateSchema(SubmissionSchema):
-    class Meta(ma.SchemaOpts):
-        only = [
-            "latitude",
-            "longitude",
-            "issues",
-            "parking_duration",
-            "parking_time",
-            "comments",
-        ]
+    """Add fields to exclude below. `dump_only=True` fields, e.g. id, submitted_datetime are already excluded by default."""
+
+    class Meta:
+        exclude = []
 
 
 class SubmissionCreateConfirmationSchema(ma.Schema):
@@ -166,21 +167,17 @@ class Submissions(MethodView):
     @submissions_blueprint.response(201, SubmissionCreateConfirmationSchema)
     def post(self, new_data):
         """Create a new submission"""
-        if current_user:
-            current_app.logger.info(f"{current_user}")
-        else:
-            current_app.logger.info("No current user")
-
         profanity.load_censor_words()
         censored_comments = profanity.censor(new_data["comments"])
         try:
             new_submission = Submission(
-                new_data["latitude"],
-                new_data["longitude"],
-                new_data["issues"],
-                new_data["parking_duration"],
-                new_data["parking_time"],
-                censored_comments,
+                latitude=new_data["latitude"],
+                longitude=new_data["longitude"],
+                issues=new_data["issues"],
+                parking_duration=new_data["parking_duration"],
+                parking_time=new_data["parking_time"],
+                comments=censored_comments,
+                user_id=current_user.id if current_user else None,
             )
             db.session.add(new_submission)
             db.session.commit()

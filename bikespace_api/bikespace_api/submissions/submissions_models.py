@@ -1,6 +1,6 @@
 from datetime import datetime, timezone
 from enum import Enum
-from typing import List
+from typing import List, Optional
 
 import sqlalchemy as sa
 import sqlalchemy.orm as so
@@ -41,18 +41,18 @@ class Submission(db.Model):
     id: so.Mapped[int] = so.mapped_column(primary_key=True, autoincrement=True)
     latitude: so.Mapped[float] = so.mapped_column(nullable=False)
     longitude: so.Mapped[float] = so.mapped_column(nullable=False)
-    issues: so.Mapped[List[IssueType] | None] = so.mapped_column(
+    issues: so.Mapped[Optional[List[IssueType]]] = so.mapped_column(
         pg.ARRAY(sa.Enum(IssueType, create_constraint=False, native_enum=False)),
         nullable=True,
     )
-    parking_duration: so.Mapped[ParkingDuration | None] = so.mapped_column(
+    parking_duration: so.Mapped[Optional[ParkingDuration]] = so.mapped_column(
         sa.Enum(ParkingDuration, create_constraint=False, native_enum=False),
         nullable=True,
     )
     parking_time: so.Mapped[datetime] = so.mapped_column(
         sa.DateTime, nullable=False, default=datetime.now
     )
-    comments: so.Mapped[str | None] = so.mapped_column(
+    comments: so.Mapped[Optional[str]] = so.mapped_column(
         sa.Text,
         default=None,
         nullable=True,
@@ -60,6 +60,10 @@ class Submission(db.Model):
     submitted_datetime: so.Mapped[datetime] = so.mapped_column(
         sa.DateTime(timezone=True), nullable=True
     )
+    user_id: so.Mapped[Optional[int]] = so.mapped_column(
+        sa.ForeignKey("user.id"), index=True
+    )
+    user: so.Mapped[Optional["User"]] = so.relationship(back_populates="submissions")
 
     # __init__ params need to have a default value for revert from deleted state to work with sqlalchemy_continuum
     def __init__(
@@ -69,7 +73,8 @@ class Submission(db.Model):
         issues: List[IssueType] = None,  # type: ignore
         parking_duration: ParkingDuration = None,  # type: ignore
         parking_time: datetime = None,  # type: ignore
-        comments: str | None = None,
+        comments: Optional[str] = None,
+        user_id: Optional[int] = None,
     ):
         self.latitude = latitude
         self.longitude = longitude
@@ -78,3 +83,4 @@ class Submission(db.Model):
         self.parking_time = parking_time
         self.comments = comments
         self.submitted_datetime = datetime.now(timezone.utc)
+        self.user_id = user_id
