@@ -3,6 +3,7 @@
 import csv
 import json
 from enum import Enum
+from http import HTTPStatus
 from io import StringIO
 
 import marshmallow as ma
@@ -42,6 +43,8 @@ class SubmissionSchema(ma.Schema):
 
 
 class UserSchema(ma.Schema):
+    """Partial schema for User fields used by Submission handling"""
+
     id = ma.fields.Integer(dump_only=True)
     username = ma.fields.String(allow_none=True)
 
@@ -121,20 +124,19 @@ class Submissions(MethodView):
         SubmissionQueryArgsSchema,
         location="query",
     )
-    @submissions_blueprint.response(200, PaginatedSubmissionsSchema)
+    @submissions_blueprint.response(HTTPStatus.OK, PaginatedSubmissionsSchema)
     @submissions_blueprint.alt_response(
-        200,
+        HTTPStatus.OK,
         schema=GeoJSONSubmissionsSchema,
         content_type="application/geo+json",
         success=True,
     )
     @submissions_blueprint.alt_response(
-        200,
+        HTTPStatus.OK,
         schema=SubmissionCSVSchema(many=True),
         content_type="text/csv",
         success=True,
     )
-    # @auth_required()
     def get(self, args):
         """Returns user reports of bicycle parking problems"""
         accept_header = request.headers.get("Accept")
@@ -164,8 +166,11 @@ class Submissions(MethodView):
             }
 
     @submissions_blueprint.arguments(SubmissionCreateSchema)
-    @submissions_blueprint.response(201, SubmissionCreateConfirmationSchema)
+    @submissions_blueprint.response(
+        HTTPStatus.CREATED, SubmissionCreateConfirmationSchema
+    )
     @submissions_blueprint.doc(security=[{"apiKeyAuth": []}])
+    # authentication optional
     def post(self, new_data):
         """Create a new submission"""
         profanity.load_censor_words()
@@ -184,12 +189,15 @@ class Submissions(MethodView):
             db.session.commit()
             return_response = Response(
                 json.dumps({"status": "created", "submission_id": new_submission.id}),
-                201,
+                HTTPStatus.CREATED,
             )
             return return_response
         except IntegrityError:
             db.session.rollback()
-            return_response = Response(json.dumps({"status": "Error"}), 500)
+            return_response = Response(
+                json.dumps({"status": "Error"}),
+                HTTPStatus.INTERNAL_SERVER_ERROR,
+            )
             return return_response
 
 
@@ -219,7 +227,7 @@ def get_submissions_geo_json() -> Response:
 
     return_response = Response(
         GeoJSONSubmissionsSchema().dumps(feature_collection),
-        200,
+        HTTPStatus.OK,
         mimetype="application/geo+json",
     )
     return return_response
@@ -246,7 +254,7 @@ def get_submissions_csv() -> Response:
     writer.writerows(SubmissionCSVSchema(many=True).dump(submissions))  # type: ignore
 
     return_response = make_response(string_io.getvalue())
-    return_response.status = 200
+    return_response.status = HTTPStatus.OK
     return_response.mimetype = "text/csv"
     return_response.headers["Content-Disposition"] = (
         "attachment; filename=submissions.csv"
@@ -255,7 +263,7 @@ def get_submissions_csv() -> Response:
 
 
 @submissions_blueprint.route("/submissions/<submission_id>", methods=["GET"])
-@submissions_blueprint.response(200, SubmissionSchemaWithVersion)
+@submissions_blueprint.response(HTTPStatus.OK, SubmissionSchemaWithVersion)
 def get_submission_with_id(submission_id):
     """Return a single submission using its id"""
     query_result = Submission.query.filter_by(id=submission_id).first()
@@ -268,7 +276,7 @@ def get_submission_with_id(submission_id):
         )
         return query_result
     else:
-        abort(404, message="Item not found")
+        abort(HTTPStatus.NOT_FOUND, message="Item not found")
 
 
 def get_changeset_fields(schema: type[ma.Schema]) -> type[ma.Schema]:
@@ -331,7 +339,7 @@ class SubmissionHistorySchema(ma.Schema):
 
 
 @submissions_blueprint.route("/submissions/<submission_id>/history", methods=["GET"])
-@submissions_blueprint.response(200, SubmissionHistorySchema(many=True))
+@submissions_blueprint.response(HTTPStatus.OK, SubmissionHistorySchema(many=True))
 def get_submission_history_with_id(submission_id):
     """Return the history of changes for a submission
 
