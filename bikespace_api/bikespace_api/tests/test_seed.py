@@ -1,5 +1,4 @@
 import pytest
-from pytest import mark
 from sqlalchemy import text
 
 from bikespace_api import db
@@ -8,7 +7,7 @@ from bikespace_api.admin.roles import ApplicationRoles
 from bikespace_api.seed import seed_base_data
 
 
-@mark.uses_db
+@pytest.mark.uses_db
 def test_seed_base_data_skips_existing_roles(flask_app):
     """The role guard (line 71) takes the False branch when roles already exist."""
     with flask_app.app_context():

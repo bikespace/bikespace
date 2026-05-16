@@ -9,12 +9,10 @@ from bikespace_api.submissions.submissions_models import (
     Submission,
 )
 from bikespace_api.submissions.submissions_routes import OperationType
-from pytest import mark
 from sqlalchemy.exc import IntegrityError as SaIntegrityError
 from sqlalchemy_continuum import version_class
 
 from bikespace_api import db  # type: ignore
-from bikespace_api.admin.tests.test_admin_page import logged_in_admin_client
 
 
 @pytest.fixture()
@@ -109,7 +107,7 @@ class TestGetSubmissions:
 class TestGetSubmissionsWithID:
     """Tests for GET /api/v2/submissions/{submission_id}"""
 
-    @mark.parametrize("target_id", [1, 4])
+    @pytest.mark.parametrize("target_id", [1, 4])
     def test_get_submissions_with_id(self, test_client, target_id):
         response = test_client.get(f"/api/v2/submissions/{target_id}")
         res = json.loads(response.get_data())
@@ -152,7 +150,7 @@ class TestGetSubmissionsWithID:
 class TestPostSubmission:
     """Tests for POST /api/v2/submissions"""
 
-    @mark.uses_db
+    @pytest.mark.uses_db
     def test_post_submissions_without_user(
         self, flask_app, test_client, dummy_submission, clean_db
     ):
@@ -185,7 +183,7 @@ class TestPostSubmission:
         ).total_seconds() < 1
         assert new_submission.user_id is None
 
-    @mark.uses_db
+    @pytest.mark.uses_db
     def test_post_submissions_with_user(
         self, flask_app, logged_in_admin_client, dummy_submission, clean_db
     ):
@@ -220,7 +218,7 @@ class TestPostSubmission:
         ).total_seconds() < 1
         assert isinstance(new_submission.user_id, int)
 
-    @mark.uses_db
+    @pytest.mark.uses_db
     def test_post_submissions_integrity_error(
         self, flask_app, test_client, dummy_submission, clean_db
     ):
@@ -251,7 +249,7 @@ class TestPatchSubmission:
 class TestGetSubmissionHistory:
     """Tests for GET /api/v2/submissions/{submission_id}/history"""
 
-    @mark.uses_db
+    @pytest.mark.uses_db
     def test_get_submission_history(self, flask_app, test_client, clean_db):
         """
         GIVEN a Flask application and a Submission entry configured for testing
@@ -340,7 +338,7 @@ class TestGetSubmissionHistory:
 class TestRollback:
     """Tests rollback functionality. Not currently implemented in routes."""
 
-    @mark.uses_db
+    @pytest.mark.uses_db
     def test_rollback_change(self, flask_app, test_client, clean_db):
         """
         GIVEN a Flask application and a Submission entry configured for testing

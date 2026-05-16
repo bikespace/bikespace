@@ -111,3 +111,13 @@ def new_submission_with_user(new_base_user):
         user_id=new_base_user.id,
     )
     return submission
+
+
+@pytest.fixture()
+def logged_in_admin_client(test_client, clean_db):
+    test_client.post(
+        "/admin/login/",
+        data=dict(email="admin@example.com", password="admin"),
+        follow_redirects=True,
+    )
+    return test_client
