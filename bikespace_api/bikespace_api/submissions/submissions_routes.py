@@ -313,7 +313,7 @@ class SingleSubmission(MethodView):
     )
     @auth_required()
     @submissions_blueprint.doc(security=[{"apiKeyAuth": []}])
-    def patch(self, submission_id, new_data):
+    def patch(self, new_data, submission_id):
         """
         Update an existing submission
 
