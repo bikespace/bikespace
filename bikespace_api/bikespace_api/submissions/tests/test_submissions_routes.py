@@ -242,6 +242,12 @@ class TestPostSubmission:
         assert json.loads(response.get_data())["status"] == "Error"
 
 
+class TestPatchSubmission:
+    """Tests for PATCH /api/v2/submissions"""
+
+    # TODO
+
+
 class TestGetSubmissionHistory:
     """Tests for GET /api/v2/submissions/{submission_id}/history"""
 
