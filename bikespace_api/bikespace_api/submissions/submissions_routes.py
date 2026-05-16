@@ -165,6 +165,7 @@ class Submissions(MethodView):
 
     @submissions_blueprint.arguments(SubmissionCreateSchema)
     @submissions_blueprint.response(201, SubmissionCreateConfirmationSchema)
+    @submissions_blueprint.doc(security=[{"apiKeyAuth": []}])
     def post(self, new_data):
         """Create a new submission"""
         profanity.load_censor_words()

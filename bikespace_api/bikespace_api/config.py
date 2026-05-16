@@ -81,6 +81,18 @@ class BaseConfig:
     OPENAPI_URL_PREFIX = "/api/v2/"
     OPENAPI_SWAGGER_UI_PATH = "/docs/"
     OPENAPI_SWAGGER_UI_URL = "/static/swagger-ui-dist/"
+    API_SPEC_OPTIONS = {
+        "components": {
+            "securitySchemes": {
+                "apiKeyAuth": {
+                    "type": "apiKey",
+                    "in": "header",
+                    "name": "Authentication-Token",
+                    "description": "Instructions: enter authentication_token from a successful request to /admin/login/",
+                }
+            }
+        },
+    }
 
     # Seed User
     SEED_USER_EMAIL = os.environ.get("SEED_USER_EMAIL")
