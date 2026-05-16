@@ -198,18 +198,16 @@ class Submissions(MethodView):
             )
             db.session.add(new_submission)
             db.session.commit()
-            return_response = Response(
-                json.dumps({"status": "created", "submission_id": new_submission.id}),
+            return (
+                {
+                    "status": "created",
+                    "submission_id": new_submission.id,
+                },
                 HTTPStatus.CREATED,
             )
-            return return_response
         except IntegrityError:
             db.session.rollback()
-            return_response = Response(
-                json.dumps({"status": "Error"}),
-                HTTPStatus.INTERNAL_SERVER_ERROR,
-            )
-            return return_response
+            return ({"status": "Error"}, HTTPStatus.INTERNAL_SERVER_ERROR)
 
 
 def get_submissions_geo_json() -> Response:
@@ -334,19 +332,17 @@ class SingleSubmission(MethodView):
 
             db.session.add(submission)
             db.session.commit()
-            return_response = Response(
-                json.dumps({"status": "updated", "submission_id": submission.id}),
+            return (
+                {
+                    "status": "updated",
+                    "submission_id": submission.id,
+                },
                 HTTPStatus.ACCEPTED,
             )
-            return return_response
 
         except IntegrityError:
             db.session.rollback()
-            return_response = Response(
-                json.dumps({"status": "Error"}),
-                HTTPStatus.INTERNAL_SERVER_ERROR,
-            )
-            return return_response
+            return ({"status": "Error"}, HTTPStatus.INTERNAL_SERVER_ERROR)
 
     # DELETE /submissions/<submission_id>
     @submissions_blueprint.response(

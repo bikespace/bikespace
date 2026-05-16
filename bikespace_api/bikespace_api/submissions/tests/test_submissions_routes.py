@@ -1,5 +1,6 @@
 import json
 from datetime import datetime, timezone
+from http import HTTPStatus
 from unittest.mock import patch
 
 import pytest
@@ -185,7 +186,12 @@ class TestPostSubmission:
 
     @pytest.mark.uses_db
     def test_post_submissions_with_user(
-        self, flask_app, logged_in_admin_client, dummy_submission, clean_db
+        self,
+        flask_app,
+        test_client,
+        token_auth_headers_admin,
+        dummy_submission,
+        clean_db,
     ):
         """
         GIVEN a Flask application configured for testing
@@ -193,8 +199,10 @@ class TestPostSubmission:
         THEN the correct response is received and the submission is entered into the database
         """
         with flask_app.app_context():
-            response = logged_in_admin_client.post(
-                "/api/v2/submissions", json=dummy_submission
+            response = test_client.post(
+                "/api/v2/submissions",
+                json=dummy_submission,
+                headers=token_auth_headers_admin,
             )
             res = json.loads(response.get_data())
             current_datetime = datetime.now(timezone.utc)
@@ -240,10 +248,52 @@ class TestPostSubmission:
         assert json.loads(response.get_data())["status"] == "Error"
 
 
-class TestPatchSubmission:
-    """Tests for PATCH /api/v2/submissions"""
+class TestPatchOrDeleteSubmission:
+    """Tests for PATCH/DELETE /api/v2/submissions"""
 
-    # TODO
+    @pytest.mark.uses_db
+    def test_patch_submission(
+        self,
+        flask_app,
+        test_client,
+        token_auth_headers_admin,
+        dummy_submission,
+        clean_db,
+    ):
+        """
+        GIVEN a Flask application configured for testing
+        WHEN a submission is patched (including the comment field)
+        THEN the correct response is received and the submission is updated in the database
+        """
+        with flask_app.app_context():
+            response_create = test_client.post(
+                "/api/v2/submissions",
+                json=dummy_submission,
+                headers=token_auth_headers_admin,
+            )
+        assert response_create.status_code == 201
+        submission_id = response_create.json["submission_id"]
+
+        with flask_app.app_context():
+            updated_issues = [IssueType.NOT_PROVIDED, IssueType.DAMAGED]
+            updated_content = {  # pragma: no cover
+                "comments": "updated comment",
+                "issues": [str(issue.value) for issue in updated_issues],
+            }
+            response_update = test_client.patch(
+                f"/api/v2/submissions/{submission_id}",
+                json=updated_content,
+                headers=token_auth_headers_admin,
+            )
+        assert response_update.status_code == HTTPStatus.ACCEPTED
+        assert response_update.json["status"] == "updated"
+        assert response_update.json["submission_id"] == submission_id
+
+        with flask_app.app_context():
+            updated_submission = Submission.query.filter_by(id=submission_id).first()
+        assert updated_submission.comments == updated_content["comments"]
+        assert updated_submission.issues == updated_issues
+        # todo - check versioning
 
 
 class TestGetSubmissionHistory:

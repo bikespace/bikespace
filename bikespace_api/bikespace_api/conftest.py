@@ -121,3 +121,21 @@ def logged_in_admin_client(test_client, clean_db):
         follow_redirects=True,
     )
     return test_client
+
+
+@pytest.fixture()
+def token_auth_headers_admin(test_client, clean_db):
+    auth_response = test_client.post(
+        "/admin/login/",
+        json=dict(email="admin@example.com", password="admin"),
+        query_string=dict(include_auth_token=""),
+        follow_redirects=False,
+    )
+    response_data = auth_response.json
+    csrf_token = response_data["response"]["csrf_token"]
+    authentication_token = response_data["response"]["user"]["authentication_token"]
+
+    return {
+        "X-CSRF-Token": csrf_token,
+        "Authentication-Token": authentication_token,
+    }
