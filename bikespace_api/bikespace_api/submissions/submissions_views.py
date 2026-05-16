@@ -3,6 +3,8 @@ from flask_admin.contrib.sqla import ModelView
 from flask_security import current_user  # type: ignore
 from wtforms.fields import DateTimeField
 
+from bikespace_api.admin.roles import ApplicationRoles
+
 
 class DateTimeWithMicrosecondsField(DateTimeField):
     """
@@ -28,12 +30,13 @@ class AdminSubmissionModelView(ModelView):
     form_args = {"submitted_datetime": {"validators": []}}  # make nullable
 
     def is_accessible(self):
+        allowed_roles = [ApplicationRoles.SUPERUSER, ApplicationRoles.EDITOR]
         if not current_user:
             return False
         return (
             current_user.is_active
             and current_user.is_authenticated
-            and current_user.has_role("superuser")
+            and any(current_user.has_role(role) for role in allowed_roles)
         )
 
     def _handle_view(self, name, **kwargs):

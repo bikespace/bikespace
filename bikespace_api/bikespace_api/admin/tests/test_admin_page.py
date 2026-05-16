@@ -4,6 +4,8 @@ import pytest
 from bs4 import BeautifulSoup
 from pytest import mark
 
+from bikespace_api.admin.roles import ApplicationRoles
+
 # Rationale for 'type: ignore' comments:
 # - soup.find doesn't have an overload where both name= and string= are not None (as of bs4 version 4.14.2), even though this is a documented usage of the function
 # - soup.find string= parameter is not typed for regular expressions even though these are a documented input type
@@ -161,7 +163,7 @@ def test_create_and_update_a_user(logged_in_admin_client):
         username="test_user",
         email="testnewuser@example.com",
         password="testnewuserpassword",
-        roles=["user"],
+        roles=[ApplicationRoles.USER],
         active=True,
     )
     create_response = test_client.post(
@@ -241,7 +243,7 @@ def test_update_user_without_changing_password(logged_in_admin_client):
     """
     from flask_security.utils import verify_password
 
-    from bikespace_api import db
+    from bikespace_api import db  # type: ignore
     from bikespace_api.admin.admin_models import User
 
     test_client = logged_in_admin_client
@@ -256,7 +258,7 @@ def test_update_user_without_changing_password(logged_in_admin_client):
             last_name="Password",
             email="nopasswordchange@example.com",
             password=original_password,
-            roles=["user"],
+            roles=[ApplicationRoles.USER],
             active=True,
         ),
     )

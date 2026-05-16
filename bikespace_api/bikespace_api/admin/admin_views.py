@@ -7,6 +7,8 @@ from flask_security.utils import hash_password
 from wtforms import PasswordField
 from wtforms.validators import Optional
 
+from bikespace_api.admin.roles import ApplicationRoles
+
 
 class AdminRolesModelView(ModelView):
     column_display_pk = True
@@ -17,7 +19,7 @@ class AdminRolesModelView(ModelView):
         return (
             current_user.is_active
             and current_user.is_authenticated
-            and current_user.has_role("superuser")
+            and current_user.has_role(ApplicationRoles.SUPERUSER)
         )
 
     def _handle_view(self, name, **kwargs):
@@ -63,7 +65,7 @@ class AdminUsersModelView(ModelView):
         return (
             current_user.is_active
             and current_user.is_authenticated
-            and current_user.has_role("superuser")
+            and current_user.has_role(ApplicationRoles.SUPERUSER)
         )
 
     def _handle_view(self, name, **kwargs):

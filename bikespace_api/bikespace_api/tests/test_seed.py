@@ -4,6 +4,7 @@ from sqlalchemy import text
 
 from bikespace_api import db
 from bikespace_api.admin.admin_models import Role
+from bikespace_api.admin.roles import ApplicationRoles
 from bikespace_api.seed import seed_base_data
 
 
@@ -18,11 +19,16 @@ def test_seed_base_data_skips_existing_roles(flask_app):
         )
         db.session.commit()
 
-        db.session.add(Role(name="user"))
-        db.session.add(Role(name="superuser"))
+        db.session.add(Role(name=ApplicationRoles.USER))
+        db.session.add(Role(name=ApplicationRoles.EDITOR))
+        db.session.add(Role(name=ApplicationRoles.SUPERUSER))
         db.session.commit()
 
         seed_base_data()
 
         roles = db.session.query(Role).all()
-        assert {r.name for r in roles} == {"user", "superuser"}  # pragma: no branch
+        assert {r.name for r in roles} == {  # pragma: no branch
+            ApplicationRoles.USER,
+            ApplicationRoles.EDITOR,
+            ApplicationRoles.SUPERUSER,
+        }

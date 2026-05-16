@@ -10,7 +10,7 @@ import marshmallow as ma
 from better_profanity import profanity
 from flask import Response, current_app, make_response, request, url_for
 from flask.views import MethodView
-from flask_security import current_user, auth_required  # type: ignore
+from flask_security import current_user, auth_required, roles_accepted  # type: ignore
 from flask_smorest import abort
 from geojson import Feature, FeatureCollection, Point
 from marshmallow import validate
@@ -19,6 +19,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy_continuum import count_versions, version_class
 
 from bikespace_api import db  # type: ignore
+from bikespace_api.admin.roles import ApplicationRoles
 from bikespace_api.submissions import submissions_blueprint
 from bikespace_api.submissions.submissions_models import (
     IssueType,
@@ -312,6 +313,7 @@ class SingleSubmission(MethodView):
         HTTPStatus.ACCEPTED, SubmissionUpdateConfirmationSchema
     )
     @auth_required()
+    @roles_accepted(ApplicationRoles.SUPERUSER, ApplicationRoles.EDITOR)
     @submissions_blueprint.doc(security=[{"apiKeyAuth": []}])
     def patch(self, new_data, submission_id):
         """
@@ -351,6 +353,7 @@ class SingleSubmission(MethodView):
         HTTPStatus.ACCEPTED, SubmissionDeleteConfirmationSchema
     )
     @auth_required()
+    @roles_accepted(ApplicationRoles.SUPERUSER, ApplicationRoles.EDITOR)
     @submissions_blueprint.doc(security=[{"apiKeyAuth": []}])
     def delete(self, submission_id):
         """

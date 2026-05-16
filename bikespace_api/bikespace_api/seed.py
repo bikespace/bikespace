@@ -9,6 +9,7 @@ from flask_security.utils import hash_password
 
 from bikespace_api import create_userdatastore, db
 from bikespace_api.admin.admin_models import Role, User
+from bikespace_api.admin.roles import ApplicationRoles
 from bikespace_api.submissions.submissions_models import (
     IssueType,
     ParkingDuration,
@@ -69,8 +70,8 @@ def seed_base_data():
     null_submission.submitted_datetime = None
     db.session.commit()
 
-    user_role = Role(name="user")
-    super_user_role = Role(name="superuser")
+    user_role = Role(name=ApplicationRoles.USER)
+    super_user_role = Role(name=ApplicationRoles.SUPERUSER)
     for role in [user_role, super_user_role]:
         if db.session.query(Role).filter_by(name=role.name).first() is None:
             db.session.add(role)

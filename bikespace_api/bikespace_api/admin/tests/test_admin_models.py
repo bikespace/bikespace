@@ -1,5 +1,7 @@
 from datetime import datetime
 
+from bikespace_api.admin.roles import ApplicationRoles
+
 
 def test_role_creation(new_base_user_role):
     """
@@ -8,7 +10,7 @@ def test_role_creation(new_base_user_role):
     THEN check the id, name, and description fields are set correctly
     """
     assert new_base_user_role.id == 1
-    assert new_base_user_role.name == "user"
+    assert new_base_user_role.name == ApplicationRoles.USER
     assert new_base_user_role.description == "Base user role"
 
 
@@ -18,7 +20,7 @@ def test_role_str(new_base_user_role):
     WHEN __str__ is called
     THEN check that the role name is returned
     """
-    assert str(new_base_user_role) == "user"
+    assert str(new_base_user_role) == ApplicationRoles.USER
 
 
 def test_base_user_creation(new_base_user, new_base_user_role):
