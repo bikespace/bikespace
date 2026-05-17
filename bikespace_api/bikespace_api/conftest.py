@@ -132,10 +132,8 @@ def token_auth_headers_admin(test_client, clean_db):
         follow_redirects=False,
     )
     response_data = auth_response.json
-    csrf_token = response_data["response"]["csrf_token"]
     authentication_token = response_data["response"]["user"]["authentication_token"]
 
     return {
-        "X-CSRF-Token": csrf_token,
         "Authentication-Token": authentication_token,
     }
