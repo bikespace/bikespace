@@ -294,16 +294,18 @@ class SingleSubmission(MethodView):
     def get(self, submission_id):
         """Return a single submission using its id"""
         query_result = Submission.query.filter_by(id=submission_id).first()
-        if query_result is not None:
-            query_result.version = count_versions(query_result)
-            query_result.version_history_url = url_for(
-                "submissions.get_submission_history_with_id",
-                submission_id=submission_id,
-                _external=True,
-            )
-            return query_result
-        else:
+        if query_result is None:
             abort(HTTPStatus.NOT_FOUND, message="Item not found")
+
+        query_result.version = count_versions(query_result)
+        query_result.version_history_url = url_for(
+            "submissions.get_submission_history_with_id",
+            submission_id=submission_id,
+            _external=True,
+        )
+        return query_result
+
+    # TODO patch and delete should fail when submission does not exist
 
     # PATCH /submissions/<submission_id>
     @submissions_blueprint.arguments(SubmissionUpdateSchema(partial=True))
@@ -318,6 +320,8 @@ class SingleSubmission(MethodView):
         Only updates the fields submitted and leaves the other fields untouched. Past values are viewable through the version history endpoint.
         """
         submission = Submission.query.filter_by(id=submission_id).first()
+        if submission is None:
+            abort(HTTPStatus.NOT_FOUND, message="Item not found")
 
         try:
             for attr in new_data:
@@ -354,6 +358,8 @@ class SingleSubmission(MethodView):
         The submission will still be viewable through the version history endpoint.
         """
         submission = Submission.query.filter_by(id=submission_id).first()
+        if submission is None:
+            abort(HTTPStatus.NOT_FOUND, message="Item not found")
 
         try:
             db.session.delete(submission)
