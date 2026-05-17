@@ -286,7 +286,7 @@ class TestPatchOrDeleteSubmission:
                 json=updated_content,
                 headers=token_auth_headers_admin,
             )
-            assert response_update.status_code == HTTPStatus.ACCEPTED
+            assert response_update.status_code == HTTPStatus.OK
             assert response_update.json["status"] == "updated"
             assert response_update.json["submission_id"] == submission_id
 
@@ -295,6 +295,50 @@ class TestPatchOrDeleteSubmission:
             assert updated_submission.comments == updated_content["comments"]
             assert updated_submission.issues == updated_issues
             assert count_versions(updated_submission) == 2
+
+    @pytest.mark.uses_db
+    def test_delete_submission(
+        self,
+        flask_app,
+        test_client,
+        token_auth_headers_admin,
+        dummy_submission,
+        clean_db,
+    ):
+        """
+        GIVEN a Flask application configured for testing
+        WHEN a submission is deleted
+        THEN the correct response is received, the submission is deleted in the database, but remains in the version history
+        """
+        with flask_app.app_context():
+            # create new submission
+            response_create = test_client.post(
+                "/api/v2/submissions",
+                json=dummy_submission,
+                headers=token_auth_headers_admin,
+            )
+            assert response_create.status_code == 201
+            submission_id = response_create.json["submission_id"]
+
+            # delete submission
+            response_delete = test_client.delete(
+                f"/api/v2/submissions/{submission_id}",
+                headers=token_auth_headers_admin,
+            )
+            assert response_delete.status_code == HTTPStatus.OK
+            assert response_delete.json["status"] == "deleted"
+            assert response_delete.json["submission_id"] == submission_id
+
+            # check submission is deleted
+            updated_submission = Submission.query.filter_by(id=submission_id).first()
+            assert updated_submission is None
+
+            # check submission still returns version history
+            response_history = test_client.get(
+                f"/api/v2/submissions/{submission_id}/history"
+            )
+            assert response_history.status_code == HTTPStatus.OK
+            assert len(response_history.json[0]) > 1
 
 
 class TestGetSubmissionHistory:

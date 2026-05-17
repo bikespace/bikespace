@@ -307,9 +307,7 @@ class SingleSubmission(MethodView):
 
     # PATCH /submissions/<submission_id>
     @submissions_blueprint.arguments(SubmissionUpdateSchema(partial=True))
-    @submissions_blueprint.response(
-        HTTPStatus.ACCEPTED, SubmissionUpdateConfirmationSchema
-    )
+    @submissions_blueprint.response(HTTPStatus.OK, SubmissionUpdateConfirmationSchema)
     @auth_required()
     @roles_accepted(ApplicationRoles.SUPERUSER, ApplicationRoles.EDITOR)
     @submissions_blueprint.doc(security=[{"apiKeyAuth": []}])
@@ -337,7 +335,7 @@ class SingleSubmission(MethodView):
                     "status": "updated",
                     "submission_id": submission.id,
                 },
-                HTTPStatus.ACCEPTED,
+                HTTPStatus.OK,
             )
 
         except IntegrityError:
@@ -345,9 +343,7 @@ class SingleSubmission(MethodView):
             return ({"status": "Error"}, HTTPStatus.INTERNAL_SERVER_ERROR)
 
     # DELETE /submissions/<submission_id>
-    @submissions_blueprint.response(
-        HTTPStatus.ACCEPTED, SubmissionDeleteConfirmationSchema
-    )
+    @submissions_blueprint.response(HTTPStatus.OK, SubmissionDeleteConfirmationSchema)
     @auth_required()
     @roles_accepted(ApplicationRoles.SUPERUSER, ApplicationRoles.EDITOR)
     @submissions_blueprint.doc(security=[{"apiKeyAuth": []}])
@@ -362,18 +358,13 @@ class SingleSubmission(MethodView):
         try:
             db.session.delete(submission)
             db.session.commit()
-            return_response = Response(
-                json.dumps({"status": "deleted", "submission_id": submission_id}),
-                HTTPStatus.NO_CONTENT,
+            return (
+                {"status": "deleted", "submission_id": submission_id},
+                HTTPStatus.OK,
             )
-            return return_response
         except IntegrityError:
             db.session.rollback()
-            return_response = Response(
-                json.dumps({"status": "Error"}),
-                HTTPStatus.INTERNAL_SERVER_ERROR,
-            )
-            return return_response
+            return ({"status": "Error"}, HTTPStatus.INTERNAL_SERVER_ERROR)
 
 
 def get_changeset_fields(schema: type[ma.Schema]) -> type[ma.Schema]:
