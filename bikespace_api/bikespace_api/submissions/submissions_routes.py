@@ -1,14 +1,13 @@
 # bikespace_api/bikespace_api/api/submissions.py
 
 import csv
-import json
 from enum import Enum
 from http import HTTPStatus
 from io import StringIO
 
 import marshmallow as ma
 from better_profanity import profanity
-from flask import Response, current_app, make_response, request, url_for
+from flask import Response, make_response, request, url_for
 from flask.views import MethodView
 from flask_security import current_user, auth_required, roles_accepted  # type: ignore
 from flask_smorest import abort
@@ -113,7 +112,7 @@ class SubmissionCreateSchema(SubmissionSchema):
 
 
 class SubmissionCreateConfirmationSchema(ma.Schema):
-    status = ma.fields.String(validate=validate.OneOf(["created", "Error"]))
+    status = ma.fields.String(validate=validate.OneOf(["created", "error"]))
     submission_id = ma.fields.Integer()
 
 
@@ -207,7 +206,7 @@ class Submissions(MethodView):
             )
         except IntegrityError:
             db.session.rollback()
-            return ({"status": "Error"}, HTTPStatus.INTERNAL_SERVER_ERROR)
+            return ({"status": "error"}, HTTPStatus.INTERNAL_SERVER_ERROR)
 
 
 def get_submissions_geo_json() -> Response:
@@ -276,12 +275,12 @@ class SubmissionUpdateSchema(SubmissionCreateSchema):
 
 
 class SubmissionUpdateConfirmationSchema(ma.Schema):
-    status = ma.fields.String(validate=validate.OneOf(["updated", "Error"]))
+    status = ma.fields.String(validate=validate.OneOf(["updated", "error"]))
     submission_id = ma.fields.Integer()
 
 
 class SubmissionDeleteConfirmationSchema(ma.Schema):
-    status = ma.fields.String(validate=validate.OneOf(["deleted", "Error"]))
+    status = ma.fields.String(validate=validate.OneOf(["deleted", "error"]))
     submission_id = ma.fields.Integer()
 
 
@@ -304,8 +303,6 @@ class SingleSubmission(MethodView):
             _external=True,
         )
         return query_result
-
-    # TODO patch and delete should fail when submission does not exist
 
     # PATCH /submissions/<submission_id>
     @submissions_blueprint.arguments(SubmissionUpdateSchema(partial=True))
@@ -334,17 +331,11 @@ class SingleSubmission(MethodView):
 
             db.session.add(submission)
             db.session.commit()
-            return (
-                {
-                    "status": "updated",
-                    "submission_id": submission.id,
-                },
-                HTTPStatus.OK,
-            )
+            return {"status": "updated", "submission_id": submission.id}
 
         except IntegrityError:
             db.session.rollback()
-            return ({"status": "Error"}, HTTPStatus.INTERNAL_SERVER_ERROR)
+            return ({"status": "error"}, HTTPStatus.INTERNAL_SERVER_ERROR)
 
     # DELETE /submissions/<submission_id>
     @submissions_blueprint.response(HTTPStatus.OK, SubmissionDeleteConfirmationSchema)
@@ -364,13 +355,10 @@ class SingleSubmission(MethodView):
         try:
             db.session.delete(submission)
             db.session.commit()
-            return (
-                {"status": "deleted", "submission_id": submission_id},
-                HTTPStatus.OK,
-            )
+            return {"status": "deleted", "submission_id": submission_id}
         except IntegrityError:
             db.session.rollback()
-            return ({"status": "Error"}, HTTPStatus.INTERNAL_SERVER_ERROR)
+            return ({"status": "error"}, HTTPStatus.INTERNAL_SERVER_ERROR)
 
 
 def get_changeset_fields(schema: type[ma.Schema]) -> type[ma.Schema]:

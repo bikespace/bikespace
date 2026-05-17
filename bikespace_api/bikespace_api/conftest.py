@@ -26,7 +26,7 @@ def _setup_database():
     app.config.from_object("bikespace_api.config.TestingConfig")
     with app.app_context():
         db_uri = app.config["SQLALCHEMY_DATABASE_URI"]
-        if database_exists(db_uri):  # pragma: no branch
+        if database_exists(db_uri):  # pragma: no cover
             drop_database(db_uri)
         create_database(db_uri)
         db.create_all()

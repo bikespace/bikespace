@@ -34,36 +34,40 @@ class TestGetSubmissions:
     def test_get_submissions(self, test_client):
         """
         GIVEN a Flask application configured for testing
-        WHEN the '/api/v2/submissions' page is requested (GET)
-        THEN check that the response is Valid
+        WHEN GET '/api/v2/submissions' page is requested
+        THEN check that the response is valid
         """
         response = test_client.get("/api/v2/submissions")
-        res = json.loads(response.get_data())
-        assert response.status_code == 200
+        assert response.status_code == HTTPStatus.OK
         assert response.headers["Content-Type"] == "application/json"
-        assert all(k in res for k in ("pagination", "submissions"))
-        assert type(res["pagination"]) == dict
-        assert type(res["submissions"]) == list
+        assert all(k in response.json for k in ("pagination", "submissions"))
+        assert isinstance(response.json["pagination"], dict)
+        assert isinstance(response.json["submissions"], list)
 
     def test_get_submissions_accept_json(self, test_client):
         """
         GIVEN a Flask application configured for testing
-        WHEN the '/api/v2/submissions' page is requested (GET)
-        THEN check that the response is Valid
+        WHEN GET '/api/v2/submissions' page is requested
+        THEN check that the response is valid
         """
         accept_header = {"Accept": "application/json"}
         response = test_client.get("/api/v2/submissions", headers=accept_header)
-        res = json.loads(response.get_data())
-        assert response.status_code == 200
+        response = test_client.get("/api/v2/submissions")
+        assert response.status_code == HTTPStatus.OK
         assert response.headers["Content-Type"] == "application/json"
-        assert all(k in res for k in ("pagination", "submissions"))
-        assert type(res["pagination"]) == dict
-        assert type(res["submissions"]) == list
+        assert all(k in response.json for k in ("pagination", "submissions"))
+        assert isinstance(response.json["pagination"], dict)
+        assert isinstance(response.json["submissions"], list)
 
     def test_get_submissions_accept_geojson(self, test_client):
+        """
+        GIVEN a Flask application configured for testing
+        WHEN GET '/api/v2/submissions' page is requested with mimetype "application/geo+json"
+        THEN check that the response is valid
+        """
         accept_header = {"Accept": "application/geo+json"}
         response = test_client.get("/api/v2/submissions", headers=accept_header)
-        assert response.status_code == 200
+        assert response.status_code == HTTPStatus.OK
         assert response.headers["Content-Type"] == "application/geo+json"
 
     def test_get_submissions_geojson_empty_db(self, flask_app, test_client):
@@ -81,71 +85,37 @@ class TestGetSubmissions:
                     "/api/v2/submissions",
                     headers={"Accept": "application/geo+json"},
                 )
-        assert response.status_code == 200
+        assert response.status_code == HTTPStatus.OK
         assert response.headers["Content-Type"] == "application/geo+json"
         data = json.loads(response.get_data())
         assert data["type"] == "FeatureCollection"
         assert data["features"] == []
 
     def test_get_submission_accept_csv(self, test_client):
+        """
+        GIVEN a Flask application configured for testing
+        WHEN GET '/api/v2/submissions' page is requested with mimetype "text/csv"
+        THEN check that the response is valid
+        """
         accept_header = {"Accept": "text/csv"}
         response = test_client.get("/api/v2/submissions", headers=accept_header)
-        assert response.status_code == 200
+        assert response.status_code == HTTPStatus.OK
         assert response.mimetype == "text/csv"
 
     def test_get_submissions_with_offset_limit(self, test_client):
-        target_limit = 2
-        response = test_client.get(f"/api/v2/submissions?offset=1&limit={target_limit}")
-        res = json.loads(response.get_data())
-        assert response.status_code == 200
-        assert response.headers["Content-Type"] == "application/json"
-        assert all(k in res for k in ("pagination", "submissions"))
-        assert type(res["pagination"]) == dict
-        assert type(res["submissions"]) == list
-        assert len(res["submissions"]) == target_limit
-
-
-class TestGetSubmissionsWithID:
-    """Tests for GET /api/v2/submissions/{submission_id}"""
-
-    @pytest.mark.parametrize("target_id", [1, 4])
-    def test_get_submissions_with_id(self, test_client, target_id):
-        response = test_client.get(f"/api/v2/submissions/{target_id}")
-        res = json.loads(response.get_data())
-        assert response.status_code == 200
-        assert response.headers["Content-Type"] == "application/json"
-        assert all(
-            k in res
-            for k in (
-                "id",
-                "latitude",
-                "longitude",
-                "issues",
-                "parking_duration",
-                "parking_time",
-                "comments",
-                "submitted_datetime",
-            )
-        )
-        assert res["id"] == target_id
-        assert type(res["latitude"]) == float
-        assert type(res["longitude"]) == float
-        assert type(res["issues"]) == list
-        assert type(res["parking_duration"]) == str
-        assert type(res["parking_time"]) == str
-        assert type(res["comments"]) == str
-        assert type(res["submitted_datetime"]) in (type(None), str)
-
-    def test_get_nonexistent_submission_with_id(self, test_client):
         """
         GIVEN a Flask application configured for testing
-        GIVEN a submission ID that does not exist
-        WHEN the '/api/v2/submissions/{submission_id}' endpoint is requested (GET)
-        THEN check that the response returns an error to show that the submission was not found
+        WHEN GET '/api/v2/submissions' page is requested with the "offset" url parameter specified
+        THEN check that the response is valid
         """
-        nonexistent_submission_id = 99999
-        response = test_client.get(f"/api/v2/submissions/{nonexistent_submission_id}")
-        assert response.status_code == 404
+        target_limit = 2
+        response = test_client.get(f"/api/v2/submissions?offset=1&limit={target_limit}")
+        assert response.status_code == HTTPStatus.OK
+        assert response.headers["Content-Type"] == "application/json"
+        assert all(k in response.json for k in ("pagination", "submissions"))
+        assert isinstance(response.json["pagination"], dict)
+        assert isinstance(response.json["submissions"], list)
+        assert len(response.json["submissions"]) == target_limit
 
 
 class TestPostSubmission:
@@ -162,13 +132,14 @@ class TestPostSubmission:
         """
         with flask_app.app_context():
             response = test_client.post("/api/v2/submissions", json=dummy_submission)
-            res = json.loads(response.get_data())
             current_datetime = datetime.now(timezone.utc)
             # submission_id property from post-submit response used here for testing but is also used by frontend to display post-submission link to dashboard
-            new_submission = Submission.query.filter_by(id=res["submission_id"]).first()
+            new_submission = Submission.query.filter_by(
+                id=response.json["submission_id"]
+            ).first()
 
-        assert response.status_code == 201
-        assert res["status"] == "created"
+        assert response.status_code == HTTPStatus.CREATED
+        assert response.json["status"] == "created"
         assert new_submission.latitude == dummy_submission["latitude"]
         assert new_submission.longitude == dummy_submission["longitude"]
         assert new_submission.issues == [IssueType.FULL]
@@ -204,13 +175,14 @@ class TestPostSubmission:
                 json=dummy_submission,
                 headers=token_auth_headers_admin,
             )
-            res = json.loads(response.get_data())
             current_datetime = datetime.now(timezone.utc)
             # submission_id property from post-submit response used here for testing but is also used by frontend to display post-submission link to dashboard
-            new_submission = Submission.query.filter_by(id=res["submission_id"]).first()
+            new_submission = Submission.query.filter_by(
+                id=response.json["submission_id"]
+            ).first()
 
-        assert response.status_code == 201
-        assert res["status"] == "created"
+        assert response.status_code == HTTPStatus.CREATED
+        assert response.json["status"] == "created"
         assert new_submission.latitude == dummy_submission["latitude"]
         assert new_submission.longitude == dummy_submission["longitude"]
         assert new_submission.issues == [IssueType.FULL]
@@ -244,8 +216,55 @@ class TestPostSubmission:
                     "/api/v2/submissions", json=dummy_submission
                 )
 
-        assert response.status_code == 500
-        assert json.loads(response.get_data())["status"] == "Error"
+        assert response.status_code == HTTPStatus.INTERNAL_SERVER_ERROR
+        assert json.loads(response.get_data())["status"] == "error"
+
+
+class TestGetSubmissionsWithID:
+    """Tests for GET /api/v2/submissions/{submission_id}"""
+
+    @pytest.mark.parametrize("target_id", [1, 4])
+    def test_get_submissions_with_id(self, test_client, target_id):
+        response = test_client.get(f"/api/v2/submissions/{target_id}")
+        assert response.status_code == HTTPStatus.OK
+        assert response.headers["Content-Type"] == "application/json"
+        assert all(
+            k in response.json
+            for k in (
+                "id",
+                "latitude",
+                "longitude",
+                "issues",
+                "parking_duration",
+                "parking_time",
+                "comments",
+                "submitted_datetime",
+            )
+        )
+        assert response.json["id"] == target_id
+        assert isinstance(response.json["latitude"], float)
+        assert isinstance(response.json["longitude"], float)
+        assert isinstance(response.json["issues"], list)
+        assert isinstance(response.json["parking_duration"], str)
+        assert isinstance(response.json["parking_time"], str)
+        assert isinstance(response.json["comments"], str)
+        assert isinstance(response.json["submitted_datetime"], (type(None), str))
+
+    def test_get_nonexistent_submission_with_id(self, test_client, flask_app):
+        """
+        GIVEN a Flask application configured for testing
+        GIVEN a submission ID that does not exist
+        WHEN GET '/api/v2/submissions/{submission_id}' endpoint is requested
+        THEN check that the response returns an error to show that the submission was not found
+        """
+        nonexistent_submission_id = 99999
+        with flask_app.app_context():
+            assert (
+                Submission.query.filter_by(id=nonexistent_submission_id).first() is None
+            )
+
+        response = test_client.get(f"/api/v2/submissions/{nonexistent_submission_id}")
+        assert response.status_code == HTTPStatus.NOT_FOUND
 
 
 class TestPatchOrDeleteSubmission:
@@ -272,7 +291,7 @@ class TestPatchOrDeleteSubmission:
                 json=dummy_submission,
                 headers=token_auth_headers_admin,
             )
-            assert response_create.status_code == 201
+            assert response_create.status_code == HTTPStatus.CREATED
             submission_id = response_create.json["submission_id"]
 
             # patch submission
@@ -297,6 +316,73 @@ class TestPatchOrDeleteSubmission:
             assert count_versions(updated_submission) == 2
 
     @pytest.mark.uses_db
+    def test_patch_nonexistent_submission(
+        self,
+        flask_app,
+        test_client,
+        token_auth_headers_admin,
+        clean_db,
+    ):
+        """
+        GIVEN a Flask application configured for testing
+        GIVEN a submission ID that does not exist
+        WHEN PATCH '/api/v2/submissions/{submission_id}' endpoint is requested
+        THEN check that the response returns an error to show that the submission was not found
+        """
+        nonexistent_submission_id = 99999
+        with flask_app.app_context():
+            assert (
+                Submission.query.filter_by(id=nonexistent_submission_id).first() is None
+            )
+
+        updated_content = {"comments": "This submission does not exist!"}
+        response = test_client.patch(
+            f"/api/v2/submissions/{nonexistent_submission_id}",
+            json=updated_content,
+            headers=token_auth_headers_admin,
+        )
+        assert response.status_code == HTTPStatus.NOT_FOUND
+
+    @pytest.mark.uses_db
+    def test_patch_submission_integrity_error(
+        self,
+        flask_app,
+        test_client,
+        dummy_submission,
+        token_auth_headers_admin,
+        clean_db,
+    ):
+        """
+        GIVEN a Flask application configured for testing
+        WHEN PATCH '/api/v2/submissions/{submission_id}' triggers a database IntegrityError
+        THEN check that the response returns a 500 error status
+        """
+        with flask_app.app_context():
+            # create new submission
+            response_create = test_client.post(
+                "/api/v2/submissions",
+                json=dummy_submission,
+                headers=token_auth_headers_admin,
+            )
+            assert response_create.status_code == HTTPStatus.CREATED
+            submission_id = response_create.json["submission_id"]
+
+            # call PATCH endpoint with integrity error
+            with patch(
+                "bikespace_api.submissions.submissions_routes.db.session.commit",
+                side_effect=SaIntegrityError(None, None, Exception()),
+            ):
+                updated_content = {"comments": "This submission does not exist!"}
+                response_patch = test_client.patch(
+                    f"/api/v2/submissions/{submission_id}",
+                    json=updated_content,
+                    headers=token_auth_headers_admin,
+                )
+
+            assert response_patch.status_code == HTTPStatus.INTERNAL_SERVER_ERROR
+            assert response_patch.json["status"] == "error"
+
+    @pytest.mark.uses_db
     def test_delete_submission(
         self,
         flask_app,
@@ -317,7 +403,7 @@ class TestPatchOrDeleteSubmission:
                 json=dummy_submission,
                 headers=token_auth_headers_admin,
             )
-            assert response_create.status_code == 201
+            assert response_create.status_code == HTTPStatus.CREATED
             submission_id = response_create.json["submission_id"]
 
             # delete submission
@@ -340,6 +426,69 @@ class TestPatchOrDeleteSubmission:
             assert response_history.status_code == HTTPStatus.OK
             assert len(response_history.json[0]) > 1
 
+    @pytest.mark.uses_db
+    def test_delete_nonexistent_submission(
+        self,
+        flask_app,
+        test_client,
+        token_auth_headers_admin,
+        clean_db,
+    ):
+        """
+        GIVEN a Flask application configured for testing
+        GIVEN a submission ID that does not exist
+        WHEN DELETE '/api/v2/submissions/{submission_id}' endpoint is requested
+        THEN check that the response returns an error to show that the submission was not found
+        """
+        nonexistent_submission_id = 99999
+        with flask_app.app_context():
+            assert (
+                Submission.query.filter_by(id=nonexistent_submission_id).first() is None
+            )
+
+        response = test_client.delete(
+            f"/api/v2/submissions/{nonexistent_submission_id}",
+            headers=token_auth_headers_admin,
+        )
+        assert response.status_code == HTTPStatus.NOT_FOUND
+
+    @pytest.mark.uses_db
+    def test_delete_submission_integrity_error(
+        self,
+        flask_app,
+        test_client,
+        dummy_submission,
+        token_auth_headers_admin,
+        clean_db,
+    ):
+        """
+        GIVEN a Flask application configured for testing
+        WHEN DELETE '/api/v2/submissions/{submission_id}' triggers a database IntegrityError
+        THEN check that the response returns a 500 error status
+        """
+        with flask_app.app_context():
+            # create new submission
+            response_create = test_client.post(
+                "/api/v2/submissions",
+                json=dummy_submission,
+                headers=token_auth_headers_admin,
+            )
+            assert response_create.status_code == HTTPStatus.CREATED
+            submission_id = response_create.json["submission_id"]
+
+            # call DELETE endpoint with integrity error
+            with patch(
+                "bikespace_api.submissions.submissions_routes.db.session.commit",
+                side_effect=SaIntegrityError(None, None, Exception()),
+            ):
+                response_patch = test_client.delete(
+                    f"/api/v2/submissions/{submission_id}",
+                    headers=token_auth_headers_admin,
+                )
+
+            assert response_patch.status_code == HTTPStatus.INTERNAL_SERVER_ERROR
+            assert response_patch.json["status"] == "error"
+
 
 class TestGetSubmissionHistory:
     """Tests for GET /api/v2/submissions/{submission_id}/history"""
@@ -349,7 +498,7 @@ class TestGetSubmissionHistory:
         """
         GIVEN a Flask application and a Submission entry configured for testing
         GIVEN database actions for that Submission to create, update, and delete
-        WHEN the '/api/v2/submissions/{submission_id}/history' data is requested (GET)
+        WHEN GET '/api/v2/submissions/{submission_id}/history' data is requested
         THEN check that the response is valid for each of the create, update, and delete actions
         """
         with flask_app.app_context():
@@ -376,7 +525,7 @@ class TestGetSubmissionHistory:
                 f"/api/v2/submissions/{submission_id}/history"
             )
             result_create = json.loads(response_create.get_data())
-            assert response_create.status_code == 200
+            assert response_create.status_code == HTTPStatus.OK
             assert response_create.headers["Content-Type"] == "application/json"
             assert len(result_create) == 1
             assert all(
@@ -395,7 +544,7 @@ class TestGetSubmissionHistory:
                 f"/api/v2/submissions/{submission_id}/history"
             )
             result_update = json.loads(response_update.get_data())
-            assert response_update.status_code == 200
+            assert response_update.status_code == HTTPStatus.OK
             assert response_update.headers["Content-Type"] == "application/json"
             assert len(result_update) == 2
             assert all(
@@ -416,7 +565,7 @@ class TestGetSubmissionHistory:
             )
             result_delete = json.loads(response_delete.get_data())
 
-            assert response_delete.status_code == 200
+            assert response_delete.status_code == HTTPStatus.OK
             assert response_delete.headers["Content-Type"] == "application/json"
             assert len(result_delete) == 3
             assert all(
