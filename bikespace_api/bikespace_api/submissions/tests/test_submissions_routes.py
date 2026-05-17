@@ -11,7 +11,7 @@ from bikespace_api.submissions.submissions_models import (
 )
 from bikespace_api.submissions.submissions_routes import OperationType
 from sqlalchemy.exc import IntegrityError as SaIntegrityError
-from sqlalchemy_continuum import version_class
+from sqlalchemy_continuum import version_class, count_versions
 
 from bikespace_api import db  # type: ignore
 
@@ -266,15 +266,16 @@ class TestPatchOrDeleteSubmission:
         THEN the correct response is received and the submission is updated in the database
         """
         with flask_app.app_context():
+            # create new submission
             response_create = test_client.post(
                 "/api/v2/submissions",
                 json=dummy_submission,
                 headers=token_auth_headers_admin,
             )
-        assert response_create.status_code == 201
-        submission_id = response_create.json["submission_id"]
+            assert response_create.status_code == 201
+            submission_id = response_create.json["submission_id"]
 
-        with flask_app.app_context():
+            # patch submission
             updated_issues = [IssueType.NOT_PROVIDED, IssueType.DAMAGED]
             updated_content = {  # pragma: no cover
                 "comments": "updated comment",
@@ -285,15 +286,15 @@ class TestPatchOrDeleteSubmission:
                 json=updated_content,
                 headers=token_auth_headers_admin,
             )
-        assert response_update.status_code == HTTPStatus.ACCEPTED
-        assert response_update.json["status"] == "updated"
-        assert response_update.json["submission_id"] == submission_id
+            assert response_update.status_code == HTTPStatus.ACCEPTED
+            assert response_update.json["status"] == "updated"
+            assert response_update.json["submission_id"] == submission_id
 
-        with flask_app.app_context():
+            # get submission from database
             updated_submission = Submission.query.filter_by(id=submission_id).first()
-        assert updated_submission.comments == updated_content["comments"]
-        assert updated_submission.issues == updated_issues
-        # todo - check versioning
+            assert updated_submission.comments == updated_content["comments"]
+            assert updated_submission.issues == updated_issues
+            assert count_versions(updated_submission) == 2
 
 
 class TestGetSubmissionHistory:
