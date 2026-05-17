@@ -315,7 +315,7 @@ export function LtsMapPage() {
                   })}
                 </div>
                 <p>
-                  <em>Data Last Updated: 2026-05-09</em>
+                  <em>Data Last Updated: 2026-05-16</em>
                 </p>
               </div>
             </SidebarDetailsContent>
