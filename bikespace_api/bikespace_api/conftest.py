@@ -128,7 +128,10 @@ def token_auth_headers_admin(flask_app, clean_db):
     with flask_app.app_context():
         user = User.query.filter_by(email="admin@example.com").first()
         token = user.get_auth_token()
-    return {"Authentication-Token": token}
+    return {
+        "Authentication-Token": token,
+        "Accept": "application/json",
+    }
 
 
 @pytest.fixture()
@@ -136,4 +139,7 @@ def token_auth_headers_regular_user(flask_app, clean_db):
     with flask_app.app_context():
         user = User.query.filter_by(email="notanadmin@example.com").first()
         token = user.get_auth_token()
-    return {"Authentication-Token": token}
+    return {
+        "Authentication-Token": token,
+        "Accept": "application/json",
+    }

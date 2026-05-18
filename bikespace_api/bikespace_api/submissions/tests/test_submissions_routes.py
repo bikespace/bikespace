@@ -316,6 +316,90 @@ class TestPatchOrDeleteSubmission:
             assert count_versions(updated_submission) == 2
 
     @pytest.mark.uses_db
+    def test_patch_submission_fails_without_auth(
+        self,
+        flask_app,
+        test_client,
+        dummy_submission,
+        clean_db,
+    ):
+        """
+        GIVEN a Flask application configured for testing
+        WHEN a PATCH request for a submission is sent with authentication
+        THEN the endpoint returns a 401 Unauthorized and does not change the submission
+        """
+        with flask_app.app_context():
+            # create new submission
+            response_create = test_client.post(
+                "/api/v2/submissions",
+                json=dummy_submission,
+            )
+            assert response_create.status_code == HTTPStatus.CREATED
+            submission_id = response_create.json["submission_id"]
+
+            # patch submission without auth
+            updated_issues = [IssueType.NOT_PROVIDED, IssueType.DAMAGED]
+            updated_content = {  # pragma: no cover
+                "comments": "updated comment",
+                "issues": [str(issue.value) for issue in updated_issues],
+            }
+            response_update = test_client.patch(
+                f"/api/v2/submissions/{submission_id}",
+                json=updated_content,
+                # no token header
+            )
+            assert response_update.status_code == HTTPStatus.UNAUTHORIZED
+
+            # get submission from database
+            updated_submission = Submission.query.filter_by(id=submission_id).first()
+            assert updated_submission.comments == dummy_submission["comments"]
+            assert updated_submission.issues == [IssueType.FULL]
+            assert count_versions(updated_submission) == 1
+
+    @pytest.mark.uses_db
+    def test_patch_submission_fails_without_correct_role(
+        self,
+        flask_app,
+        test_client,
+        dummy_submission,
+        token_auth_headers_regular_user,
+        clean_db,
+    ):
+        """
+        GIVEN a Flask application configured for testing
+        WHEN a PATCH request for a submission is sent with authentication for a user without the correct role
+        THEN the endpoint returns a 403 Forbidden and does not change the submission
+        """
+        with flask_app.app_context():
+            # create new submission
+            response_create = test_client.post(
+                "/api/v2/submissions",
+                json=dummy_submission,
+                headers=token_auth_headers_regular_user,
+            )
+            assert response_create.status_code == HTTPStatus.CREATED
+            submission_id = response_create.json["submission_id"]
+
+            # patch submission without auth
+            updated_issues = [IssueType.NOT_PROVIDED, IssueType.DAMAGED]
+            updated_content = {  # pragma: no cover
+                "comments": "updated comment",
+                "issues": [str(issue.value) for issue in updated_issues],
+            }
+            response_update = test_client.patch(
+                f"/api/v2/submissions/{submission_id}",
+                json=updated_content,
+                headers=token_auth_headers_regular_user,
+            )
+            assert response_update.status_code == HTTPStatus.FORBIDDEN
+
+            # get submission from database
+            updated_submission = Submission.query.filter_by(id=submission_id).first()
+            assert updated_submission.comments == dummy_submission["comments"]
+            assert updated_submission.issues == [IssueType.FULL]
+            assert count_versions(updated_submission) == 1
+
+    @pytest.mark.uses_db
     def test_patch_nonexistent_submission(
         self,
         flask_app,
@@ -425,6 +509,74 @@ class TestPatchOrDeleteSubmission:
             )
             assert response_history.status_code == HTTPStatus.OK
             assert len(response_history.json[0]) > 1
+
+    @pytest.mark.uses_db
+    def test_delete_submission_fails_without_auth(
+        self,
+        flask_app,
+        test_client,
+        dummy_submission,
+        clean_db,
+    ):
+        """
+        GIVEN a Flask application configured for testing
+        WHEN a DELETE request for a submission is made without authentication
+        THEN the endpoint returns a 401 Unauthorized and does not delete the submission
+        """
+        with flask_app.app_context():
+            # create new submission
+            response_create = test_client.post(
+                "/api/v2/submissions",
+                json=dummy_submission,
+            )
+            assert response_create.status_code == HTTPStatus.CREATED
+            submission_id = response_create.json["submission_id"]
+
+            # delete submission
+            response_delete = test_client.delete(
+                f"/api/v2/submissions/{submission_id}",
+                headers={"Accept": "application/json"},
+            )
+            assert response_delete.status_code == HTTPStatus.UNAUTHORIZED
+
+            # check submission is not deleted
+            updated_submission = Submission.query.filter_by(id=submission_id).first()
+            assert updated_submission is not None
+
+    @pytest.mark.uses_db
+    def test_delete_submission_fails_without_correct_role(
+        self,
+        flask_app,
+        test_client,
+        dummy_submission,
+        token_auth_headers_regular_user,
+        clean_db,
+    ):
+        """
+        GIVEN a Flask application configured for testing
+        WHEN a DELETE request for a submission is made by a user without the proper role
+        THEN the endpoint returns a 403 Forbidden and does not delete the submission
+        """
+        with flask_app.app_context():
+            # create new submission
+            response_create = test_client.post(
+                "/api/v2/submissions",
+                json=dummy_submission,
+                headers=token_auth_headers_regular_user,
+            )
+            assert response_create.status_code == HTTPStatus.CREATED
+            submission_id = response_create.json["submission_id"]
+
+            # delete submission
+            response_delete = test_client.delete(
+                f"/api/v2/submissions/{submission_id}",
+                headers=token_auth_headers_regular_user,
+            )
+            assert response_delete.status_code == HTTPStatus.FORBIDDEN
+
+            # check submission is not deleted
+            updated_submission = Submission.query.filter_by(id=submission_id).first()
+            assert updated_submission is not None
 
     @pytest.mark.uses_db
     def test_delete_nonexistent_submission(
