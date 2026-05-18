@@ -41,9 +41,9 @@ class Submission(db.Model):
     id: so.Mapped[int] = so.mapped_column(primary_key=True, autoincrement=True)
     latitude: so.Mapped[float] = so.mapped_column(nullable=False)
     longitude: so.Mapped[float] = so.mapped_column(nullable=False)
-    issues: so.Mapped[Optional[List[IssueType]]] = so.mapped_column(
+    issues: so.Mapped[List[IssueType]] = so.mapped_column(
         pg.ARRAY(sa.Enum(IssueType, create_constraint=False, native_enum=False)),
-        nullable=True,
+        nullable=False,
     )
     parking_duration: so.Mapped[Optional[ParkingDuration]] = so.mapped_column(
         sa.Enum(ParkingDuration, create_constraint=False, native_enum=False),
