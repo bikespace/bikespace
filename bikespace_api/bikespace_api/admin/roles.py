@@ -8,8 +8,8 @@ class ApplicationRoles(StrEnum):
     Intended permissions:
 
     - USER: ability to manage own submissions (not implemented) and own account
-    - EDITOR: ability to manage submissions and updates plus USER privileges
-    - SUPERUSER: ability to manage users and roles, plus EDITOR privileges
+    - EDITOR: ability to manage all submissions and updates plus USER privileges
+    - SUPERUSER: ability to manage all users and roles, plus EDITOR privileges
     """
 
     USER = "user"
