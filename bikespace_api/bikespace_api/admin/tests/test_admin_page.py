@@ -149,7 +149,7 @@ def test_create_and_update_a_user(logged_in_admin_client):
     test_client = logged_in_admin_client
     # create a new regular user using the flask-admin endpoint
     new_user_properties = dict(
-        username="test_user",
+        username="testuser",
         email="testnewuser@example.com",
         password="testnewuserpassword",
         roles=[ApplicationRoles.USER],
@@ -242,7 +242,7 @@ def test_update_user_without_changing_password(logged_in_admin_client):
     test_client.post(
         "/admin/user/new/",
         data=dict(
-            username="user_update_no_pwd",
+            username="userupdatenopwd",
             first_name="Original",
             last_name="Password",
             email="nopasswordchange@example.com",
@@ -265,7 +265,7 @@ def test_update_user_without_changing_password(logged_in_admin_client):
     update_response = test_client.post(
         user_edit_url,
         data=dict(
-            username="user_update_no_pwd",
+            username="userupdatenopwd",
             first_name="Updated",
             last_name="Password",
             email="nopasswordchange@example.com",

@@ -30,13 +30,13 @@ def upgrade():
         )
 
     # backfill username
-    # e.g. first_name="Test My", last_name="User", id=3 --> username=test_my_user_3
+    # e.g. first_name="Test My", last_name="User", id=3 --> username=testmyuser3
     op.execute(
         sa.text("""
             UPDATE "user" 
             SET username = LOWER(REPLACE(
-                CONCAT(first_name, '_', last_name, '_', id::text),
-                ' ', '_'
+                CONCAT(first_name, last_name, id::text),
+                ' ', ''
             ))
             WHERE username IS NULL
        """)

@@ -30,7 +30,7 @@ def test_base_user_creation(new_base_user, new_base_user_role):
     THEN check the id, username, first_name, last_name, email, password, active, confirmed_at and roles fields are set correctly and that the string representation of the user is their email
     """
     assert new_base_user.id == 1
-    assert new_base_user.username == "test_user"
+    assert new_base_user.username == "testuser"
     assert new_base_user.first_name == "Test"
     assert new_base_user.last_name == "User"
     assert new_base_user.email == "test.user@example.com"

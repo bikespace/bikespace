@@ -78,7 +78,7 @@ def seed_base_data():
             db.session.commit()
 
     user_datastore.create_user(
-        username="admin_user",
+        username="adminuser",
         first_name="Admin",
         last_name="User",
         email="admin@example.com",
@@ -88,7 +88,7 @@ def seed_base_data():
     db.session.commit()
 
     user_datastore.create_user(
-        username="non_admin_user",
+        username="nonadminuser",
         first_name="Not an Admin",
         last_name="User",
         email="notanadmin@example.com",
