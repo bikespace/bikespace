@@ -2,21 +2,12 @@ import re
 
 import pytest
 from bs4 import BeautifulSoup
-from pytest import mark
+
+from bikespace_api.admin.roles import ApplicationRoles
 
 # Rationale for 'type: ignore' comments:
 # - soup.find doesn't have an overload where both name= and string= are not None (as of bs4 version 4.14.2), even though this is a documented usage of the function
 # - soup.find string= parameter is not typed for regular expressions even though these are a documented input type
-
-
-@pytest.fixture()
-def logged_in_admin_client(test_client, clean_db):
-    test_client.post(
-        "/admin/login",
-        data=dict(email="admin@example.com", password="admin"),
-        follow_redirects=True,
-    )
-    return test_client
 
 
 def test_admin_page(test_client):
@@ -37,7 +28,7 @@ def test_admin_page(test_client):
     assert soup.find(
         "a",
         class_="btn btn-primary",
-        href="/admin/login",
+        href="/admin/login/",
         string=re.compile("login", flags=re.IGNORECASE),  # type: ignore
     )
     assert navbar_div.find(  # type: ignore
@@ -113,11 +104,11 @@ def default_login_page_redirect(response, soup: BeautifulSoup):
     )
 
 
-@mark.uses_db
+@pytest.mark.uses_db
 def test_admin_login_successfully(test_client, clean_db):
     """
     GIVEN the flask application configured for testing
-    WHEN the '/admin/login' page is posted to (POST) with valid credentials
+    WHEN the '/admin/login/' page is posted to (POST) with valid credentials
     THEN check that the response is a redirection to the admin home page
     """
     pre_login_response = test_client.get("/admin/")
@@ -127,12 +118,12 @@ def test_admin_login_successfully(test_client, clean_db):
     assert pre_login_soup.find(
         "a",
         class_="btn btn-primary",
-        href="/admin/login",
+        href="/admin/login/",
         string=re.compile("login", flags=re.IGNORECASE),  # type: ignore
     )
 
     post_login_response = test_client.post(
-        "/admin/login",
+        "/admin/login/",
         data=dict(email="admin@example.com", password="admin"),
         follow_redirects=True,
     )
@@ -142,13 +133,13 @@ def test_admin_login_successfully(test_client, clean_db):
     assert not post_login_soup.find(
         "a",
         class_="btn btn-primary",
-        href="/admin/login",
+        href="/admin/login/",
         string=re.compile("login", flags=re.IGNORECASE),  # type: ignore
     )
     assert post_login_soup.find(string=re.compile("Admin"))
 
 
-@mark.uses_db
+@pytest.mark.uses_db
 def test_create_and_update_a_user(logged_in_admin_client):
     """
     GIVEN the flask application configured for testing
@@ -158,11 +149,10 @@ def test_create_and_update_a_user(logged_in_admin_client):
     test_client = logged_in_admin_client
     # create a new regular user using the flask-admin endpoint
     new_user_properties = dict(
-        first_name="Test",
-        last_name="New User",
+        username="testuser",
         email="testnewuser@example.com",
         password="testnewuserpassword",
-        roles=["user"],
+        roles=[ApplicationRoles.USER],
         active=True,
     )
     create_response = test_client.post(
@@ -173,7 +163,7 @@ def test_create_and_update_a_user(logged_in_admin_client):
     # confirm the new user was created
     read_response_1 = test_client.get("/admin/user/")
     read_soup_1 = BeautifulSoup(read_response_1.text, "html.parser")
-    assert read_soup_1.find(string=re.compile(str(new_user_properties["email"])))
+    assert read_soup_1.find(string=re.compile(str(new_user_properties["username"])))
 
     # get the edit endpoint for the new user
     # (i.e. `/admin/user/edit/?id={{user_id}}&url=/admin/user/`)
@@ -186,12 +176,13 @@ def test_create_and_update_a_user(logged_in_admin_client):
         .get("href")
     )
 
-    # update the new user's password
+    # update the new user's password and add First and Last name
     update_response = test_client.post(
         user_edit_url,
         data=dict(
-            first_name=new_user_properties["first_name"],
-            last_name=new_user_properties["last_name"],
+            username=new_user_properties["username"],
+            first_name="Test",
+            last_name="New User",
             email=new_user_properties["email"],
             active=new_user_properties["active"],
             password="testupdatedpassword",
@@ -206,7 +197,7 @@ def test_create_and_update_a_user(logged_in_admin_client):
     )
 
 
-@mark.uses_db
+@pytest.mark.uses_db
 def test_admin_submission_create_form_renders(logged_in_admin_client):
     """
     GIVEN a logged-in superuser
@@ -219,7 +210,7 @@ def test_admin_submission_create_form_renders(logged_in_admin_client):
     assert soup.find("form")
 
 
-@mark.uses_db
+@pytest.mark.uses_db
 def test_admin_roles_accessible_as_superuser(logged_in_admin_client):
     """
     GIVEN a logged-in superuser
@@ -232,7 +223,7 @@ def test_admin_roles_accessible_as_superuser(logged_in_admin_client):
     assert soup.find("table")
 
 
-@mark.uses_db
+@pytest.mark.uses_db
 def test_update_user_without_changing_password(logged_in_admin_client):
     """
     GIVEN a logged-in superuser and an existing user
@@ -241,7 +232,7 @@ def test_update_user_without_changing_password(logged_in_admin_client):
     """
     from flask_security.utils import verify_password
 
-    from bikespace_api import db
+    from bikespace_api import db  # type: ignore
     from bikespace_api.admin.admin_models import User
 
     test_client = logged_in_admin_client
@@ -251,11 +242,12 @@ def test_update_user_without_changing_password(logged_in_admin_client):
     test_client.post(
         "/admin/user/new/",
         data=dict(
+            username="userupdatenopwd",
             first_name="Original",
             last_name="Password",
             email="nopasswordchange@example.com",
             password=original_password,
-            roles=["user"],
+            roles=[ApplicationRoles.USER],
             active=True,
         ),
     )
@@ -273,6 +265,7 @@ def test_update_user_without_changing_password(logged_in_admin_client):
     update_response = test_client.post(
         user_edit_url,
         data=dict(
+            username="userupdatenopwd",
             first_name="Updated",
             last_name="Password",
             email="nopasswordchange@example.com",
@@ -299,7 +292,7 @@ def test_update_user_without_changing_password(logged_in_admin_client):
         assert verify_password(original_password, user.password)
 
 
-@mark.uses_db
+@pytest.mark.uses_db
 def test_allowed_pages_for_regular_users(test_client, clean_db):
     """
     GIVEN the flask application configured for testing and
@@ -310,7 +303,7 @@ def test_allowed_pages_for_regular_users(test_client, clean_db):
 
     # login the non-admin user
     login_response = test_client.post(
-        "/admin/login",
+        "/admin/login/",
         data=dict(email="notanadmin@example.com", password="notanadmin"),
         follow_redirects=True,
     )

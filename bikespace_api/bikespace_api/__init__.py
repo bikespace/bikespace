@@ -12,6 +12,7 @@ from flask_smorest import Api
 from flask_security.core import RoleMixin, Security, UserMixin
 from flask_security.datastore import SQLAlchemyUserDatastore
 from flask_sqlalchemy import SQLAlchemy
+from flask_wtf import CSRFProtect
 
 # instantiate the db
 db = SQLAlchemy()
@@ -26,6 +27,7 @@ def create_app(script_info=None):
     # instantiate the app
     app = Flask(__name__)
     CORS(app)
+    CSRFProtect(app)
 
     # set config
     app_settings = os.getenv("APP_SETTINGS")

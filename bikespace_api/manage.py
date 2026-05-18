@@ -15,6 +15,7 @@ from bikespace_api.submissions.submissions_models import (
     Submission,
 )
 from bikespace_api.admin.admin_models import Role, User
+from bikespace_api.admin.roles import ApplicationRoles
 from bikespace_api.seed import seed_base_data
 
 LOAD_TESTING_NUMBER_OF_SUBMISSIONS = 1500
@@ -52,14 +53,18 @@ def recreate_db():
 def add_seed_user():
     """Add a seed admin user to the database if there are no admins"""
     # create superuser role if it does not yet exist
-    super_user_role = Role(name="superuser")
-    if db.session.query(Role).filter_by(name="superuser").first() is None:
+    super_user_role = Role(name=ApplicationRoles.SUPERUSER)
+    if (
+        db.session.query(Role).filter_by(name=ApplicationRoles.SUPERUSER).first()
+        is None
+    ):
         db.session.add(super_user_role)
         db.session.commit()
 
     # create seed user only if no superusers are in the db
     if db.session.query(User).join(Role, Role == super_user_role).first() is None:
         user_datastore.create_user(
+            username="seedadmin",
             first_name="Seed",
             last_name="Admin",
             email=app.config["SEED_USER_EMAIL"],
