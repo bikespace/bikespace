@@ -34,7 +34,7 @@ class User(db.Model, UserMixin):
 
     id: so.Mapped[int] = so.mapped_column(primary_key=True)
     # flask-security only allows usernames with unicode letters and numbers
-    username: so.Mapped[str] = so.mapped_column(sa.String(255))
+    username: so.Mapped[str] = so.mapped_column(sa.String(255), unique=True)
     first_name: so.Mapped[Optional[str]] = so.mapped_column(
         sa.String(255), nullable=True
     )

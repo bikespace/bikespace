@@ -47,6 +47,7 @@ def upgrade():
         batch_op.alter_column(
             "username", existing_type=sa.String(length=255), nullable=False
         )
+        batch_op.create_unique_constraint(None, ["username"])
 
     # ### end Alembic commands ###
 
