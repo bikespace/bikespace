@@ -77,6 +77,20 @@ class BaseConfig:
     OPENAPI_URL_PREFIX = "/api/v2/"
     OPENAPI_SWAGGER_UI_PATH = "/docs/"
     OPENAPI_SWAGGER_UI_URL = "/static/swagger-ui-dist/"
+    login_instructions = "\n".join(
+        (
+            "---",
+            "### Instructions:",
+            "Make a POST request to /admin/login/ to get an authentication token to enter below, e.g.:",
+            "```bash",
+            "curl -X 'POST' \\",
+            "'http://localhost:8000/admin/login/?include_auth_token' \\",
+            "-H 'Content-Type: application/json' \\",
+            '-d \'{"email": "email@example.com","password": "mypassword"}\'',
+            "```",
+            "---",
+        )
+    )
     API_SPEC_OPTIONS = {
         "components": {
             "securitySchemes": {
@@ -84,7 +98,7 @@ class BaseConfig:
                     "type": "apiKey",
                     "in": "header",
                     "name": "Authentication-Token",
-                    "description": "Instructions: enter authentication_token from a successful request to /admin/login/",
+                    "description": login_instructions,
                 }
             }
         },
