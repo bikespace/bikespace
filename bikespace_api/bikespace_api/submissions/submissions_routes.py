@@ -36,7 +36,7 @@ class SubmissionSchema(ma.Schema):
     issues = ma.fields.List(ma.fields.Enum(IssueType, by_value=True), required=True)
     parking_duration = ma.fields.Enum(ParkingDuration, by_value=True)
     parking_time = ma.fields.DateTime(format="iso", required=True)
-    comments = ma.fields.String()
+    comments = ma.fields.String(validate=validate.Length(max=5000))
     submitted_datetime = ma.fields.AwareDateTime(
         format="iso", dump_only=True, allow_none=True
     )
