@@ -24,6 +24,12 @@ class BaseConfig:
     SECURITY_SEND_REGISTER_EMAIL = False
     SECURITY_ANONYMOUS_USER_DISABLED = True
     SECURITY_USERNAME_ENABLE = True
+    SECURITY_TOKEN_MAX_AGE = 3600  # token time to expiry, in seconds
+    # enforce CSRF protection for session / browser - but allow token-based API calls to go through
+    SECURITY_CSRF_PROTECT_MECHANISMS = ["session", "basic"]
+    # Enable/disable pre-request CSRF; must be set to False if CSRF_PROTECT_MECHANISMS is set
+    WTF_CSRF_CHECK_DEFAULT = False
+    SECURITY_CSRF_IGNORE_UNAUTH_ENDPOINTS = True  # allow API-based login
 
     # flask-security endpoints
     SECURITY_REGISTERABLE = False  # enable user registration; default False
@@ -63,12 +69,6 @@ class BaseConfig:
     # SECURITY_POST_OAUTH_LOGIN_VIEW = "/post-oauth-login/"
     # SECURITY_POST_OAUTH_VERIFY_VIEW = "/post-oauth-verify/"
     # SECURITY_VERIFY_ERROR_VIEW = "/verify-error/"
-
-    # enforce CSRF protection for session / browser - but allow token-based API calls to go through
-    SECURITY_CSRF_PROTECT_MECHANISMS = ["session", "basic"]
-    # Enable/disable pre-request CSRF; must be set to False if CSRF_PROTECT_MECHANISMS is set
-    WTF_CSRF_CHECK_DEFAULT = False
-    SECURITY_CSRF_IGNORE_UNAUTH_ENDPOINTS = True  # allow API-based login
 
     # flask-smorest
     API_TITLE = "BikeSpace API"
