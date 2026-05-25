@@ -46,16 +46,20 @@
 
 .featureDescriptionControls {
   display: flex;
-  flex-direction: row;
+  flex-wrap: wrap;
   gap: 4px;
   width: 100%;
   margin-top: 8px;
 
   button {
-    flex-basis: 100%;
+    flex: 1 1 calc(50% - 2px);
     border: 2px solid $color-primary-20p;
     height: 2rem * 0.9;
     font-size: 0.85rem;
+
+    &:nth-last-child {
+      flex: 1 1 100%;
+    }
   }
 }
 

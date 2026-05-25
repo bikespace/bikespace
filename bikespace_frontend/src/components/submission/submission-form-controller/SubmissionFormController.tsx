@@ -84,3 +84,12 @@ export function SubmissionFormController({
     </div>
   );
 }
+
+export function useSubmissionPrefill() {
+  const router = useRouter();
+  return (latitude: number, longitude: number) => {
+    router.push(
+      `/submission?lat=${encodeURIComponent(latitude)}&lon=${encodeURIComponent(longitude)}`
+    );
+  };
+}
