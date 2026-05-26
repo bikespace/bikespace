@@ -23,7 +23,7 @@ def upgrade():
     op.execute(
         sa.text("""
             UPDATE "bikeparking_submissions" 
-            SET issues = '{NOT_PROVIDED}'
+            SET issues = '{OTHER}'
             WHERE issues IS NULL
        """)
     )
