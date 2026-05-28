@@ -26,7 +26,7 @@ def _setup_database():
     app.config.from_object("bikespace_api.config.TestingConfig")
     with app.app_context():
         db_uri = app.config["SQLALCHEMY_DATABASE_URI"]
-        if database_exists(db_uri):  # pragma: no branch
+        if database_exists(db_uri):  # pragma: no cover
             drop_database(db_uri)
         create_database(db_uri)
         db.create_all()
@@ -61,16 +61,16 @@ def clean_db(flask_app):
 
 
 @pytest.fixture()
-def new_submission():
+def new_submission_without_user():
     datetime_string = "2023-08-19 15:17:17.234235"
     datetime_object = datetime.strptime(datetime_string, "%Y-%m-%d %H:%M:%S.%f")
     submission = Submission(
-        43.6532,
-        -79.3832,
-        [IssueType.ABANDONDED],
-        ParkingDuration.MINUTES,
-        datetime_object,
-        "comments",
+        latitude=43.6532,
+        longitude=-79.3832,
+        issues=[IssueType.ABANDONDED],
+        parking_duration=ParkingDuration.MINUTES,
+        parking_time=datetime_object,
+        comments="comments",
     )
     return submission
 
@@ -85,6 +85,7 @@ def new_base_user_role():
 def new_base_user():
     user = User(
         id=1,
+        username="testuser",
         first_name="Test",
         last_name="User",
         email="test.user@example.com",
@@ -94,3 +95,51 @@ def new_base_user():
         fs_uniquifier="unique12345",
     )
     return user
+
+
+@pytest.fixture()
+def new_submission_with_user(new_base_user):
+    datetime_string = "2026-01-02 15:17:17.234235"
+    datetime_object = datetime.strptime(datetime_string, "%Y-%m-%d %H:%M:%S.%f")
+    submission = Submission(
+        latitude=43.7532,
+        longitude=-79.4832,
+        issues=[IssueType.ABANDONDED],
+        parking_duration=ParkingDuration.MINUTES,
+        parking_time=datetime_object,
+        comments="comments submission with user",
+        user_id=new_base_user.id,
+    )
+    return submission
+
+
+@pytest.fixture()
+def logged_in_admin_client(test_client, clean_db):
+    test_client.post(
+        "/admin/login/",
+        data=dict(email="admin@example.com", password="admin"),
+        follow_redirects=True,
+    )
+    return test_client
+
+
+@pytest.fixture()
+def token_auth_headers_admin(flask_app, clean_db):
+    with flask_app.app_context():
+        user = User.query.filter_by(email="admin@example.com").first()
+        token = user.get_auth_token()
+    return {
+        "Authentication-Token": token,
+        "Accept": "application/json",
+    }
+
+
+@pytest.fixture()
+def token_auth_headers_regular_user(flask_app, clean_db):
+    with flask_app.app_context():
+        user = User.query.filter_by(email="notanadmin@example.com").first()
+        token = user.get_auth_token()
+    return {
+        "Authentication-Token": token,
+        "Accept": "application/json",
+    }

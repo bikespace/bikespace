@@ -1,14 +1,15 @@
 # bikespace_api/bikespace_api/api/submissions.py
 
 import csv
-import json
 from enum import Enum
+from http import HTTPStatus
 from io import StringIO
 
 import marshmallow as ma
 from better_profanity import profanity
 from flask import Response, make_response, request, url_for
 from flask.views import MethodView
+from flask_security import current_user, auth_required, roles_accepted  # type: ignore
 from flask_smorest import abort
 from geojson import Feature, FeatureCollection, Point
 from marshmallow import validate
@@ -17,6 +18,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy_continuum import count_versions, version_class
 
 from bikespace_api import db  # type: ignore
+from bikespace_api.admin.roles import ApplicationRoles
 from bikespace_api.submissions import submissions_blueprint
 from bikespace_api.submissions.submissions_models import (
     IssueType,
@@ -31,18 +33,30 @@ class SubmissionSchema(ma.Schema):
     id = ma.fields.Integer(dump_only=True)
     latitude = ma.fields.Float(required=True)
     longitude = ma.fields.Float(required=True)
-    issues = ma.fields.List(ma.fields.Enum(IssueType, by_value=True))
+    issues = ma.fields.List(
+        ma.fields.Enum(IssueType, by_value=True),
+        required=True,
+        validate=validate.Length(max=len(IssueType)),
+    )
     parking_duration = ma.fields.Enum(ParkingDuration, by_value=True)
     parking_time = ma.fields.DateTime(format="iso", required=True)
-    comments = ma.fields.String()
+    comments = ma.fields.String(validate=validate.Length(max=5000))
     submitted_datetime = ma.fields.AwareDateTime(
         format="iso", dump_only=True, allow_none=True
     )
 
 
+class UserSchema(ma.Schema):
+    """Partial schema for User fields used by Submission handling"""
+
+    id = ma.fields.Integer(dump_only=True)
+    username = ma.fields.String(allow_none=True)
+
+
 class SubmissionSchemaWithVersion(SubmissionSchema):
     version = ma.fields.Integer(dump_only=True, validate=validate.Range(min=1))
     version_history_url = ma.fields.Url(dump_only=True)
+    user = ma.fields.Pluck(UserSchema, "username")
 
 
 class SubmissionQueryArgsSchema(ma.Schema):
@@ -95,19 +109,14 @@ SubmissionCSVSchema = ma.Schema.from_dict(
 
 
 class SubmissionCreateSchema(SubmissionSchema):
-    class Meta(ma.SchemaOpts):
-        only = [
-            "latitude",
-            "longitude",
-            "issues",
-            "parking_duration",
-            "parking_time",
-            "comments",
-        ]
+    """Add fields to exclude below. `dump_only=True` fields, e.g. id, submitted_datetime are already excluded by default."""
+
+    class Meta:
+        exclude = []
 
 
 class SubmissionCreateConfirmationSchema(ma.Schema):
-    status = ma.fields.String(validate=validate.OneOf(["created", "Error"]))
+    status = ma.fields.String(validate=validate.OneOf(["created", "error"]))
     submission_id = ma.fields.Integer()
 
 
@@ -115,25 +124,26 @@ class SubmissionCreateConfirmationSchema(ma.Schema):
 class Submissions(MethodView):
     """Main functions for reading and creating user reports of bicycle parking problems"""
 
+    # GET /submissions
     @submissions_blueprint.arguments(
         SubmissionQueryArgsSchema,
         location="query",
     )
-    @submissions_blueprint.response(200, PaginatedSubmissionsSchema)
+    @submissions_blueprint.response(HTTPStatus.OK, PaginatedSubmissionsSchema)
     @submissions_blueprint.alt_response(
-        200,
+        HTTPStatus.OK,
         schema=GeoJSONSubmissionsSchema,
         content_type="application/geo+json",
         success=True,
     )
     @submissions_blueprint.alt_response(
-        200,
+        HTTPStatus.OK,
         schema=SubmissionCSVSchema(many=True),
         content_type="text/csv",
         success=True,
     )
     def get(self, args):
-        """Returns user reports of bicycle parking problems"""
+        """Returns a collection of submissions in various formats"""
         accept_header = request.headers.get("Accept")
         if accept_header == "application/geo+json":
             return get_submissions_geo_json()
@@ -160,32 +170,47 @@ class Submissions(MethodView):
                 "pagination": pagination,
             }
 
+    # POST /submissions
     @submissions_blueprint.arguments(SubmissionCreateSchema)
-    @submissions_blueprint.response(201, SubmissionCreateConfirmationSchema)
+    @submissions_blueprint.response(
+        HTTPStatus.CREATED, SubmissionCreateConfirmationSchema
+    )
+    @submissions_blueprint.doc(
+        security=[
+            {},  # authentication optional
+            {"apiKeyAuth": []},
+        ]
+    )
     def post(self, new_data):
-        """Create a new submission"""
+        """
+        Create a new submission
+
+        Authentication is optional and allows the user to associate their account with the submission.
+        """
         profanity.load_censor_words()
         censored_comments = profanity.censor(new_data["comments"])
         try:
             new_submission = Submission(
-                new_data["latitude"],
-                new_data["longitude"],
-                new_data["issues"],
-                new_data["parking_duration"],
-                new_data["parking_time"],
-                censored_comments,
+                latitude=new_data["latitude"],
+                longitude=new_data["longitude"],
+                issues=new_data["issues"],
+                parking_duration=new_data["parking_duration"],
+                parking_time=new_data["parking_time"],
+                comments=censored_comments,
+                user_id=current_user.id if current_user else None,
             )
             db.session.add(new_submission)
             db.session.commit()
-            return_response = Response(
-                json.dumps({"status": "created", "submission_id": new_submission.id}),
-                201,
+            return (
+                {
+                    "status": "created",
+                    "submission_id": new_submission.id,
+                },
+                HTTPStatus.CREATED,
             )
-            return return_response
         except IntegrityError:
             db.session.rollback()
-            return_response = Response(json.dumps({"status": "Error"}), 500)
-            return return_response
+            return ({"status": "error"}, HTTPStatus.INTERNAL_SERVER_ERROR)
 
 
 def get_submissions_geo_json() -> Response:
@@ -214,7 +239,7 @@ def get_submissions_geo_json() -> Response:
 
     return_response = Response(
         GeoJSONSubmissionsSchema().dumps(feature_collection),
-        200,
+        HTTPStatus.OK,
         mimetype="application/geo+json",
     )
     return return_response
@@ -241,7 +266,7 @@ def get_submissions_csv() -> Response:
     writer.writerows(SubmissionCSVSchema(many=True).dump(submissions))  # type: ignore
 
     return_response = make_response(string_io.getvalue())
-    return_response.status = 200
+    return_response.status = HTTPStatus.OK
     return_response.mimetype = "text/csv"
     return_response.headers["Content-Disposition"] = (
         "attachment; filename=submissions.csv"
@@ -249,12 +274,32 @@ def get_submissions_csv() -> Response:
     return return_response
 
 
-@submissions_blueprint.route("/submissions/<submission_id>", methods=["GET"])
-@submissions_blueprint.response(200, SubmissionSchemaWithVersion)
-def get_submission_with_id(submission_id):
-    """Return a single submission using its id"""
-    query_result = Submission.query.filter_by(id=submission_id).first()
-    if query_result is not None:
+class SubmissionUpdateSchema(SubmissionCreateSchema):
+    pass
+
+
+class SubmissionUpdateConfirmationSchema(ma.Schema):
+    status = ma.fields.String(validate=validate.OneOf(["updated", "error"]))
+    submission_id = ma.fields.Integer()
+
+
+class SubmissionDeleteConfirmationSchema(ma.Schema):
+    status = ma.fields.String(validate=validate.OneOf(["deleted", "error"]))
+    submission_id = ma.fields.Integer()
+
+
+@submissions_blueprint.route("/submissions/<submission_id>")
+class SingleSubmission(MethodView):
+    """Functions for reading, updating, and deleting a single user report of bicycle parking problems"""
+
+    # GET /submissions/<submission_id>
+    @submissions_blueprint.response(HTTPStatus.OK, SubmissionSchemaWithVersion)
+    def get(self, submission_id):
+        """Return a single submission using its id"""
+        query_result = Submission.query.filter_by(id=submission_id).first()
+        if query_result is None:
+            abort(HTTPStatus.NOT_FOUND, message="Item not found")
+
         query_result.version = count_versions(query_result)
         query_result.version_history_url = url_for(
             "submissions.get_submission_history_with_id",
@@ -262,8 +307,62 @@ def get_submission_with_id(submission_id):
             _external=True,
         )
         return query_result
-    else:
-        abort(404, message="Item not found")
+
+    # PATCH /submissions/<submission_id>
+    @submissions_blueprint.arguments(SubmissionUpdateSchema(partial=True))
+    @submissions_blueprint.response(HTTPStatus.OK, SubmissionUpdateConfirmationSchema)
+    @auth_required()
+    @roles_accepted(ApplicationRoles.SUPERUSER, ApplicationRoles.EDITOR)
+    @submissions_blueprint.doc(security=[{"apiKeyAuth": []}])
+    def patch(self, new_data, submission_id):
+        """
+        Update an existing submission
+
+        Only updates the fields submitted and leaves the other fields untouched. Past values are viewable through the version history endpoint.
+        """
+        submission = Submission.query.filter_by(id=submission_id).first()
+        if submission is None:
+            abort(HTTPStatus.NOT_FOUND, message="Item not found")
+
+        try:
+            for attr in new_data:
+                if attr == "comments":
+                    profanity.load_censor_words()
+                    censored_comments = profanity.censor(new_data[attr])
+                    setattr(submission, attr, censored_comments)
+                else:
+                    setattr(submission, attr, new_data[attr])
+
+            db.session.add(submission)
+            db.session.commit()
+            return {"status": "updated", "submission_id": submission.id}
+
+        except IntegrityError:
+            db.session.rollback()
+            return ({"status": "error"}, HTTPStatus.INTERNAL_SERVER_ERROR)
+
+    # DELETE /submissions/<submission_id>
+    @submissions_blueprint.response(HTTPStatus.OK, SubmissionDeleteConfirmationSchema)
+    @auth_required()
+    @roles_accepted(ApplicationRoles.SUPERUSER, ApplicationRoles.EDITOR)
+    @submissions_blueprint.doc(security=[{"apiKeyAuth": []}])
+    def delete(self, submission_id):
+        """
+        Delete an existing submission
+
+        The submission will still be viewable through the version history endpoint.
+        """
+        submission = Submission.query.filter_by(id=submission_id).first()
+        if submission is None:
+            abort(HTTPStatus.NOT_FOUND, message="Item not found")
+
+        try:
+            db.session.delete(submission)
+            db.session.commit()
+            return {"status": "deleted", "submission_id": submission_id}
+        except IntegrityError:
+            db.session.rollback()
+            return ({"status": "error"}, HTTPStatus.INTERNAL_SERVER_ERROR)
 
 
 def get_changeset_fields(schema: type[ma.Schema]) -> type[ma.Schema]:
@@ -326,7 +425,7 @@ class SubmissionHistorySchema(ma.Schema):
 
 
 @submissions_blueprint.route("/submissions/<submission_id>/history", methods=["GET"])
-@submissions_blueprint.response(200, SubmissionHistorySchema(many=True))
+@submissions_blueprint.response(HTTPStatus.OK, SubmissionHistorySchema(many=True))
 def get_submission_history_with_id(submission_id):
     """Return the history of changes for a submission
 
