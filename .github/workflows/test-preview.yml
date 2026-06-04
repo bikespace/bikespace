@@ -91,7 +91,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: "22"
+          node-version: "24"
           cache: "npm"
           cache-dependency-path: bikespace_frontend/package-lock.json
       - name: Check code style
@@ -130,7 +130,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: "22"
+          node-version: "24"
           cache: "npm"
           cache-dependency-path: bikespace_frontend/package-lock.json
       - name: Install frontend dependencies
@@ -177,7 +177,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: "22"
+          node-version: "24"
           cache: "npm"
           cache-dependency-path: bikespace_frontend/package-lock.json
       - name: Build static frontend
