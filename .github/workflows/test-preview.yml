@@ -5,6 +5,7 @@ on:
     paths:
       - bikespace_api/**
       - bikespace_frontend/**
+      - .github/workflows/test-preview.yml
 jobs:
   apitest:
     name: API tests
