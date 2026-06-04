@@ -1,7 +1,7 @@
 name: Test and Preview
 on:
   pull_request:
-    types: [opened, synchronize, edited, ready_for_review]
+    types: [opened, synchronize, ready_for_review]
     paths:
       - bikespace_api/**
       - bikespace_frontend/**
