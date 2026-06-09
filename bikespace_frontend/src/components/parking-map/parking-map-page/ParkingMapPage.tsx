@@ -51,7 +51,8 @@ import type {
 
 import 'maplibre-gl/dist/maplibre-gl.css';
 import styles from './parking-map-page.module.scss';
-const parkingSpritePath = '/parking_sprites/parking_sprites';
+const parkingSpritePath =
+  window.location.origin + '/parking_sprites/parking_sprites';
 
 const bicycleNetworkFirstLayerId = 'bicycle-network-first';
 const parkingFirstLayerId = 'parking-layer-first';
