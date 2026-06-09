@@ -28,7 +28,7 @@ test.beforeEach(async ({context}) => {
 });
 
 test('Navigate bike parking map', async ({page, browserName}, testInfo) => {
-  test.skip(
+  test.fixme(
     browserName === 'firefox',
     'WIP - need to reconfigure to allow headed mode on Linux to pass CI'
   );

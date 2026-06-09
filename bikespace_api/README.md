@@ -10,7 +10,7 @@ To develop the API locally you'll require the following things:
 
 Several tasks (e.g. running the API locally, running certain tests) require a database to be running, but the make targets will take care of launching a Postgres container for you as long as you have Docker running.
 
-To stop the Postgres container, just run `make stop-db`.
+To stop the API containers, run `make dev-api-stop`.
 
 ## Running the API service
 
@@ -23,9 +23,9 @@ The development server should now be running at `localhost:8000`
 
 ## API Docs
 
-The api follows an OpenAPI 3.0 Spec, the spec can be found at `bikespace_api/bikespace_api/static/bikespace-open-api.yaml`. When making changes to the database models, the spec should also be edited manually to match.
+The OpenAPI docs are automatically generated using [flask-smorest](https://flask-smorest.readthedocs.io/en/latest/openapi.html), based on the [marshmallow](https://marshmallow.readthedocs.io/en/latest/) schemas used for endpoints.
 
-The swagger-ui to render the OpenAPI spec can be found at `localhost:8000/api/v2/docs`
+The assets used to serve the OpenAPI docs are vendorized (saved to `bikespace_api/bikespace_api/static`). To update these assets, simply copy over the new files from the [swagger-ui `dist` folder](https://github.com/swagger-api/swagger-ui/tree/master/dist).
 
 ## Pytest Tips
 
@@ -77,7 +77,7 @@ In production, migrations are automatically applied on deployment. In developmen
 
 Creating and applying a migration script:
 
-1. Make and save schema changes, e.g. in `./bikespace_api/bikespace_api/api/models.py`
+1. Make and save schema changes, e.g. in `./bikespace_api/bikespace_api/submissions/submissions_models.py` or `./bikespace_api/bikespace_api/admin/admin_models.py`
 2. Run `make migrate-db`. (A migration file will be generated, you can optionally add a descriptive title using the docstring at the top.)
 3. Run `make upgrade-db` to apply the schema changes to your database.
 

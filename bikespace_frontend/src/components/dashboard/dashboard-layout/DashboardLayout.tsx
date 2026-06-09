@@ -2,6 +2,7 @@
 
 import React from 'react';
 import {QueryClientProvider} from '@tanstack/react-query';
+import {NuqsAdapter} from 'nuqs/adapters/next/app';
 
 import {queryClient} from '@/config/query-client';
 
@@ -17,11 +18,13 @@ interface DashboardLayoutProps {
 export function DashboardLayout({children}: DashboardLayoutProps) {
   return (
     <QueryClientProvider client={queryClient}>
-      <div className={styles.dashboardLayout}>
-        <DashboardHeader />
-        {children}
-        <Noscript />
-      </div>
+      <NuqsAdapter>
+        <div className={styles.dashboardLayout}>
+          <DashboardHeader />
+          {children}
+          <Noscript />
+        </div>
+      </NuqsAdapter>
     </QueryClientProvider>
   );
 }

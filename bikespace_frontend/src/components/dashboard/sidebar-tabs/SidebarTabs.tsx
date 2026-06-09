@@ -35,17 +35,18 @@ const tabs = [
 
 export function SidebarTabs() {
   const {setIsOpen} = useStore(state => state.ui.sidebar);
-  const [tab, setTab] = useSidebarTab();
+  const [selectedTab, setSelectedTab] = useSidebarTab();
+  const selectedTabOrDefault = selectedTab ?? SidebarTab.Insights;
 
   return (
     <nav className={styles.tabs}>
       {tabs.map(t => (
         <button
           key={t.name}
-          className={`${styles.tab} ${t.name === tab ? styles.active : ''}`}
+          className={`${styles.tab} ${t.name === selectedTabOrDefault ? styles.active : ''}`}
           onClick={() => {
             setIsOpen(true);
-            setTab(t.name);
+            setSelectedTab(t.name);
           }}
         >
           <t.icon />

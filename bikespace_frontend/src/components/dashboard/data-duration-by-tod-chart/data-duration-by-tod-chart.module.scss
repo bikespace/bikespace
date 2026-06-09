@@ -2,24 +2,27 @@
 @import '@/styles/variables.module.scss';
 
 $colors: (
-  'colorScale0': hsla(
-    hue($color-primary),
-    saturation($color-primary),
-    lightness($color-primary),
-    0.1
-  ),
-  'colorScale1': hsla(
-    hue($color-secondary-orange),
-    saturation($color-secondary-orange),
-    lightness($color-secondary-orange),
-    0.7
-  ),
-  'colorScale2': hsla(
-    hue($color-secondary-red),
-    saturation($color-secondary-red),
-    lightness($color-secondary-red),
-    1
-  ),
+  'colorScale0':
+    hsla(
+      hue($color-primary),
+      saturation($color-primary),
+      lightness($color-primary),
+      0.1
+    ),
+  'colorScale1':
+    hsla(
+      hue($color-secondary-orange),
+      saturation($color-secondary-orange),
+      lightness($color-secondary-orange),
+      0.7
+    ),
+  'colorScale2':
+    hsla(
+      hue($color-secondary-red),
+      saturation($color-secondary-red),
+      lightness($color-secondary-red),
+      1
+    ),
   'cellColor': $color-secondary-light-grey,
 );
 

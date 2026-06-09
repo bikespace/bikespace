@@ -1,5 +1,6 @@
 import {useState} from 'react';
 import {useForm, FormProvider} from 'react-hook-form';
+import {useSearchParams} from 'next/navigation';
 
 import {ParkingDuration} from '@/interfaces/Submission';
 import {defaultMapCenter} from '@/utils/map-utils';
@@ -13,10 +14,18 @@ import {SubmissionFormContent} from '../submission-form-content';
 import styles from './submission-form.module.scss';
 
 export function SubmissionForm() {
+  const searchParams = useSearchParams();
+  const lat = searchParams.get('lat');
+  const lon = searchParams.get('lon');
+  const urlLocation =
+    lat !== null && lon !== null
+      ? {latitude: Number(lat), longitude: Number(lon)}
+      : null;
+
   const form = useForm<SubmissionSchema>({
     defaultValues: {
       issues: [],
-      location: defaultMapCenter,
+      location: urlLocation ?? defaultMapCenter,
       parkingTime: {
         date: new Date(),
         parkingDuration: ParkingDuration.Minutes,
@@ -53,6 +62,9 @@ export function SubmissionForm() {
         form.setError('root.serverError', {
           message: `Error! status: ${response.status}`,
         });
+      } else {
+        const result = await response.json();
+        form.setValue('submissionId', result.submission_id);
       }
     } catch (error) {
       form.setError('root.unexpected', error as Error);
@@ -69,7 +81,10 @@ export function SubmissionForm() {
           <SubmissionProgressBar step={step} />
         </header>
         <section className={styles.mainContentBody}>
-          <SubmissionFormContent step={step} />
+          <SubmissionFormContent
+            step={step}
+            useUrlLocation={urlLocation !== null}
+          />
         </section>
         <footer>
           <SubmissionFormController step={step} setStep={setStep} />

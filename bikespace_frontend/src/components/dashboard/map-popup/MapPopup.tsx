@@ -5,7 +5,9 @@ import {SubmissionApiPayload} from '@/interfaces/Submission';
 
 import {issuePriority} from '@/config/bikespace-api';
 
-import {SidebarTab, useSidebarTab, useSubmissionId} from '@/states/url-params';
+import {SidebarTab, useSidebarTab} from '@/states/url-params';
+import {useStore} from '@/states/store';
+
 import {IssueBadge} from '../issue-badge';
 
 import styles from './map-popup.module.scss';
@@ -16,7 +18,9 @@ interface MapPopupProps {
 
 export const MapPopup = forwardRef<LeafletPopup, MapPopupProps>(
   ({submission}: MapPopupProps, ref) => {
-    const [, setSubmissionId] = useSubmissionId();
+    const setSelectedSubmission = useStore(
+      state => state.ui.submissions.setSelectedSubmission
+    );
     const [, setTab] = useSidebarTab();
 
     const {
@@ -52,11 +56,14 @@ export const MapPopup = forwardRef<LeafletPopup, MapPopupProps>(
           <strong>Issues:</strong>
           {issues ? (
             <div className={styles.issues}>
-              {issues
-                .sort((a, b) => issuePriority[a] - issuePriority[b])
-                .map(issue => (
-                  <IssueBadge issue={issue} labelForm="long" key={issue} />
-                ))}
+              {
+                // de-duplicate issue list: guard for old incorrect entries where same issue was selected more than once
+                [...new Set(issues)]
+                  .sort((a, b) => issuePriority[a] - issuePriority[b])
+                  .map(issue => (
+                    <IssueBadge issue={issue} labelForm="long" key={issue} />
+                  ))
+              }
             </div>
           ) : (
             <em>none</em>
@@ -76,14 +83,21 @@ export const MapPopup = forwardRef<LeafletPopup, MapPopupProps>(
             className={styles.sidebarButton}
             onClick={() => {
               setTab(SidebarTab.Feed);
-              setSubmissionId(id);
+              setSelectedSubmission(id);
             }}
             data-umami-event="issue-map_open_in_sidebar"
             data-umami-event-id={id}
           >
             Focus in Sidebar
           </button>
-          <span className={styles.submissionId}>ID: {id}</span>
+
+          <span className={styles.submissionId}>
+            <a
+              href={`${window.location.pathname}?submission_id=${submission.id}`}
+            >
+              ID: {id}
+            </a>
+          </span>
         </div>
       </Popup>
     );

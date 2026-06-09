@@ -74,3 +74,10 @@ h2.cardHeading {
   overflow: hidden;
   background-color: white;
 }
+
+.loadingIndicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 1rem;
+}

@@ -10,7 +10,7 @@ export function useSingleSubmissionQuery(submissionId: number | null) {
         `${process.env.BIKESPACE_API_URL_DASHBOARD}/submissions/${submissionId}`
       );
       const data = await res.json();
-      return data.submission as SubmissionApiPayload;
+      return data as SubmissionApiPayload;
     },
   });
   return query;

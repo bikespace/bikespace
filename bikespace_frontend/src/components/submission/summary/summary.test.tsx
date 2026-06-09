@@ -127,4 +127,31 @@ describe('Summary', () => {
 
     expect(screen.getByText(/Something went wrong beyond our expectations/));
   });
+
+  test('View Your Submission button links to correct dashboard URL when submissionId is present', async () => {
+    render(
+      <MockSummary
+        onSubmit={(form: UseFormReturn<SubmissionSchema>) => {
+          // simulate successful submission response including submissionId
+          form.setValue('submissionId', '123');
+        }}
+      />
+    );
+
+    const user = userEvent.setup();
+
+    // submit the form to reach the success state
+    await user.click(screen.getByText('Submit'));
+
+    // find the "View Your Submission" button text
+    const buttonText = screen.getByText('View Your Submission');
+
+    // get the surrounding link
+    const link = buttonText.closest('a');
+
+    expect(link).toHaveAttribute(
+      'href',
+      '/dashboard?tab=feed&submission_id=123'
+    );
+  });
 });

@@ -2,13 +2,12 @@ import {createWithEqualityFn} from 'zustand/traditional';
 import {shallow} from 'zustand/shallow';
 
 import {
-  FiltersSlice,
   createFiltersSlice,
-  SubmissionsSlice,
   createSubmissionsSlice,
   createUiSlice,
-  UiSlice,
 } from './slices';
+
+import type {FiltersSlice, SubmissionsSlice, UiSlice} from './slices';
 
 type StoreSlice = FiltersSlice & SubmissionsSlice & UiSlice;
 

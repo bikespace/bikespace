@@ -2,17 +2,27 @@ import os
 import time
 
 from dotenv import load_dotenv
+from faker import Faker
 from flask.cli import FlaskGroup
-from sqlalchemy_utils import database_exists, create_database, drop_database
-
-from bikespace_api import create_app, db, create_userdatastore
-from bikespace_api.api.models import Submission, IssueType, ParkingDuration, User, Role
-from datetime import datetime
 from flask_security.utils import hash_password
-import random
-import string
+import sqlalchemy as sa
+from sqlalchemy_utils import create_database, database_exists, drop_database
 
+from bikespace_api import create_app, create_userdatastore, db
+from bikespace_api.submissions.submissions_models import (
+    IssueType,
+    ParkingDuration,
+    Submission,
+)
+from bikespace_api.admin.admin_models import Role, User
+from bikespace_api.admin.roles import ApplicationRoles
+from bikespace_api.seed import seed_base_data
+
+LOAD_TESTING_NUMBER_OF_SUBMISSIONS = 1500
+
+# used by the remaining make commands that do not use docker, e.g. test-api, test-api-terminal
 load_dotenv()
+
 app = create_app()
 cli = FlaskGroup(create_app=create_app)
 user_datastore = create_userdatastore(db, User, Role)
@@ -43,15 +53,20 @@ def recreate_db():
 def add_seed_user():
     """Add a seed admin user to the database if there are no admins"""
     # create superuser role if it does not yet exist
-    super_user_role = Role(name="superuser")
-    if db.session.query(Role).filter_by(name="superuser").first() is None:
+    super_user_role = Role(name=ApplicationRoles.SUPERUSER)
+    if (
+        db.session.query(Role).filter_by(name=ApplicationRoles.SUPERUSER).first()
+        is None
+    ):
         db.session.add(super_user_role)
         db.session.commit()
 
     # create seed user only if no superusers are in the db
     if db.session.query(User).join(Role, Role == super_user_role).first() is None:
         user_datastore.create_user(
-            first_name="Seed Admin",
+            username="seedadmin",
+            first_name="Seed",
+            last_name="Admin",
             email=app.config["SEED_USER_EMAIL"],
             password=hash_password(app.config["SEED_USER_PASSWORD"]),
             roles=[super_user_role],
@@ -60,111 +75,29 @@ def add_seed_user():
 
 
 @cli.command()
-def seed_db():
-    """Seeds the database"""
-    db.session.add(
-        Submission(
-            43.6532,
-            -79.3832,
-            [IssueType.ABANDONDED],
-            ParkingDuration.MINUTES,
-            datetime.now(),
-            "comments1",
+def seed_dev_db():
+    """Seeds the database with full dev/load-testing data"""
+    seed_base_data()
+
+    # add additional submissions to test at similar load levels to production
+    # creates a cluster of 100 points
+    fake = Faker(locale="en_CA")
+    Faker.seed(12345)
+    load_testing_submissions = [
+        dict(
+            latitude=43.662 if index < 100 else fake.latitude(),
+            longitude=-79.391 if index < 100 else fake.longitude(),
+            issues=[fake.enum(IssueType)],
+            parking_duration=fake.enum(ParkingDuration),
+            parking_time=fake.date_time_this_year(),
+            comments=fake.text(max_nb_chars=250),
         )
-    )
-    db.session.add(
-        Submission(
-            43.6532,
-            -79.3832,
-            [IssueType.NOT_PROVIDED, IssueType.DAMAGED],
-            ParkingDuration.HOURS,
-            datetime.now(),
-            "comments2",
-        )
-    )
-    db.session.add(
-        Submission(
-            43.6532,
-            -79.3832,
-            [IssueType.NOT_PROVIDED, IssueType.FULL, IssueType.ABANDONDED],
-            ParkingDuration.MULTIDAY,
-            datetime.now(),
-            "comments2",
-        )
-    )
-    db.session.add(
-        Submission(
-            43.65,
-            -79.40,
-            [IssueType.OTHER],
-            ParkingDuration.MINUTES,
-            datetime.now(),
-            "Example of null submitted_datetime",
-        )
-    )
-    db.session.commit()
-
-    # add roles for seeded users if they do not yet exist
-    user_role = Role(name="user")
-    super_user_role = Role(name="superuser")
-    for role in [user_role, super_user_role]:
-        if db.session.query(Role).filter_by(name=role.name).first() is None:
-            db.session.add(role)
-            db.session.commit()
-
-    user_datastore.create_user(
-        first_name="Admin",
-        email="admin@example.com",
-        password=hash_password("admin"),
-        roles=[user_role, super_user_role],
-    )
-    db.session.commit()
-
-    # add a non-admin user for testing
-    user_datastore.create_user(
-        first_name="Not an Admin",
-        email="notanadmin@example.com",
-        password=hash_password("notanadmin"),
-        roles=[user_role],
-    )
-    db.session.commit()
-
-    # have to manually null out submitted_datetime to replicate grandfathered database entry
-    submitted_datetime_null = db.session.execute(
-        db.select(Submission).filter_by(comments="Example of null submitted_datetime")
-    ).scalar_one()
-    submitted_datetime_null.submitted_datetime = None
-    db.session.commit()
-
-    first_names = [
-        "Harry",
-        "Amelia",
-        "Oliver",
-        "Jack",
+        for index in range(LOAD_TESTING_NUMBER_OF_SUBMISSIONS)
     ]
-    last_names = [
-        "Brown",
-        "Smith",
-        "Patel",
-        "Jones",
-    ]
-
-    for i in range(len(first_names)):
-        tmp_email = (
-            first_names[i].lower() + "." + last_names[i].lower() + "@example.com"
-        )
-        tmp_pass = "".join(
-            random.choice(string.ascii_lowercase + string.digits) for i in range(10)
-        )
-        user_datastore.create_user(
-            first_name=first_names[i],
-            last_name=last_names[i],
-            email=tmp_email,
-            password=hash_password(tmp_pass),
-            roles=[
-                user_role,
-            ],
-        )
+    db.session.execute(
+        sa.insert(Submission),
+        load_testing_submissions,
+    )
     db.session.commit()
 
 

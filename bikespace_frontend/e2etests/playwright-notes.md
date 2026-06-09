@@ -58,17 +58,23 @@ For navigation links, sometimes page hydration may interrupt the navigation acti
 
 ```tsx
 await expect(async () => {
-    await page.getByRole('link', {name: 'Report a bike parking issue'}).click();
-    await expect(page).toHaveURL('/submission', {timeout: 100});
-  }).toPass();
+  await page.getByRole('link', {name: 'Report a bike parking issue'}).click();
+  await expect(page).toHaveURL('/submission', {timeout: 100});
+}).toPass();
 ```
 
 `.toPass` must have an action and then an `expect` statement to be resolved as a result of that action.
 
-
 ### Quirks with toMatchAriaSnapshot
 
 `.toMatchAriaSnapshot` doesn't like regexes with colons in them (this is a known limitation of the YAML format). Use the HTML escape code instead, e.g. instead of `/Example: some text/`, use `/Example&#58; some text/`. Other special regex characters also need double escaping, though the generator should do this for you.
+
+### Using Image Snapshots
+
+When using the `.toHaveScreenshot` check, it will compare the screenshot taken with the references in `bikespace_frontend/e2etests/parking-map.spec.ts-snapshots`. To set up the snapshot, you will have to:
+
+- Run the end to end tests locally to generate the snapshot (make sure to check it to make sure it looks correct)
+- If you are not working on a Linux machine (e.g. on a mac), you will have to make copies of the snapshots and replace the suffix on the filename with `-linux`. The CI checks use Linux runners, so without these copies, it will think that no reference snapshot has been saved for the test and will fail.
 
 ### Testing Map Libraries
 
