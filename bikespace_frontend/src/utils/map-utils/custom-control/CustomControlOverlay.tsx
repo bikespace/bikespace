@@ -1,7 +1,7 @@
 import {ReactElement, cloneElement, memo} from 'react';
 import {createPortal} from 'react-dom';
 
-import {useControl} from 'react-map-gl';
+import {useControl} from 'react-map-gl/maplibre';
 
 import type {ControlPosition, IControl, Map} from 'maplibre-gl';
 
