@@ -41,13 +41,17 @@ const bikeLaneTypes = {
   ],
 };
 
+interface BicycleNetworkLayerProps {
+  beforeId?: string;
+  firstLayerId?: string;
+  background?: 'light' | 'dark';
+}
+
 export function BicycleNetworkLayer({
   beforeId,
   firstLayerId = 'bicycle-lanes',
-}: {
-  beforeId?: string;
-  firstLayerId?: string;
-}) {
+  background = 'light',
+}: BicycleNetworkLayerProps) {
   const bicycleNetworkURL = process.env.DATA_BICYCLE_NETWORK;
 
   const bicycleLaneLayer: LineLayer = {
