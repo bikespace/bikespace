@@ -57,6 +57,7 @@ const parkingSpritePath =
   window.location.origin + '/parking_sprites/parking_sprites';
 
 const bicycleNetworkFirstLayerId = 'bicycle-network-first';
+const bicycleNetworkLastLayerId = 'bicycle-network-last';
 const parkingFirstLayerId = 'parking-layer-first';
 
 const backupMapStyle: MapStyle = {
@@ -80,12 +81,12 @@ const baseMapOptions: BaseMapOption[] = [
   {
     id: 'cotAerialLatest',
     name: 'Satellite',
-    component: <COTAerialLatestLayer beforeId={bicycleNetworkFirstLayerId} />,
+    component: <COTAerialLatestLayer beforeId={bicycleNetworkLastLayerId} />,
   },
   {
     id: 'cotAerialNight',
     name: 'Night',
-    component: <COTAerialNightLayer beforeId={bicycleNetworkFirstLayerId} />,
+    component: <COTAerialNightLayer beforeId={bicycleNetworkLastLayerId} />,
   },
 ];
 
@@ -438,6 +439,7 @@ export function ParkingMapPage() {
           <BicycleNetworkLayer
             beforeId={parkingFirstLayerId}
             firstLayerId={bicycleNetworkFirstLayerId}
+            lastLayerId={bicycleNetworkLastLayerId}
           />
         ) : null}
         {/* placed here to avoid covering the sidebar */}

@@ -44,17 +44,19 @@ const bikeLaneTypes = {
 interface BicycleNetworkLayerProps {
   beforeId?: string;
   firstLayerId?: string;
+  lastLayerId?: string;
   background?: 'light' | 'dark';
 }
 
 export function BicycleNetworkLayer({
   beforeId,
-  firstLayerId = 'bicycle-lanes',
+  firstLayerId = 'bicycle-lanes-first',
+  lastLayerId = 'bicycle-lanes-last',
   background = 'light',
 }: BicycleNetworkLayerProps) {
   const bicycleNetworkURL = process.env.DATA_BICYCLE_NETWORK;
 
-  const bicycleLaneLayer: LineLayerSpecification = {
+  const bikespaceStyleLight: LineLayerSpecification = {
     id: firstLayerId,
     type: 'line',
     source: 'bicycle-lanes',
@@ -86,6 +88,73 @@ export function BicycleNetworkLayer({
     },
   };
 
+  const mississaugaStyle: LineLayerSpecification = {
+    id: firstLayerId,
+    type: 'line',
+    source: 'bicycle-lanes',
+    layout: {
+      'line-cap': 'round',
+      'line-sort-key': [
+        'match',
+        ['get', 'INFRA_HIGHORDER'],
+        bikeLaneTypes.protected,
+        4,
+        bikeLaneTypes.multiUseTrails,
+        3,
+        bikeLaneTypes.painted,
+        2,
+        bikeLaneTypes.unprotectedConnectors,
+        1,
+        0,
+      ],
+    },
+    paint: {
+      'line-width': 3,
+      'line-dasharray': [
+        'match',
+        ['get', 'INFRA_HIGHORDER'],
+        bikeLaneTypes.unprotectedConnectors,
+        ['literal', [1, 2]],
+        ['literal', [1, 0]], // no dash
+      ],
+      'line-color': [
+        'match',
+        ['get', 'INFRA_HIGHORDER'],
+        bikeLaneTypes.protected,
+        'rgb(162, 166, 169)',
+        bikeLaneTypes.multiUseTrails,
+        'rgb(223, 237, 211)',
+        bikeLaneTypes.painted,
+        'rgb(1, 164, 80)',
+        bikeLaneTypes.unprotectedConnectors,
+        'rgb(1, 164, 80)',
+        '#2c3b42',
+      ],
+    },
+  };
+
+  const mississaugaStyleOutline: LineLayerSpecification = {
+    id: lastLayerId,
+    type: 'line',
+    source: 'bicycle-lanes',
+    filter: [
+      'in',
+      ['get', 'INFRA_HIGHORDER'],
+      [
+        'literal',
+        [...bikeLaneTypes.protected, ...bikeLaneTypes.multiUseTrails],
+      ],
+    ],
+    layout: {
+      'line-cap': 'round',
+    },
+    paint: {
+      'line-width': 2,
+      'line-gap-width': 3,
+      'line-color': 'rgb(1, 164, 80)',
+    },
+  };
+
   return (
     <Source
       id="bicycle-network"
@@ -93,7 +162,8 @@ export function BicycleNetworkLayer({
       data={bicycleNetworkURL!}
       attribution="City of Toronto"
     >
-      <Layer {...bicycleLaneLayer} beforeId={beforeId} />
+      <Layer {...mississaugaStyleOutline} beforeId={beforeId} />
+      <Layer {...mississaugaStyle} beforeId={beforeId} />
     </Source>
   );
 }
