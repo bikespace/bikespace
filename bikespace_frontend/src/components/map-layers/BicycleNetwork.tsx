@@ -1,7 +1,7 @@
 import React from 'react';
 import {Layer, Source} from 'react-map-gl/maplibre';
 
-import type {LineLayer} from 'react-map-gl/maplibre';
+import type {LineLayerSpecification} from 'react-map-gl/maplibre';
 
 import styles from './legend-tables.module.scss';
 
@@ -54,22 +54,22 @@ export function BicycleNetworkLayer({
 }: BicycleNetworkLayerProps) {
   const bicycleNetworkURL = process.env.DATA_BICYCLE_NETWORK;
 
-  const bicycleLaneLayer: LineLayer = {
+  const bicycleLaneLayer: LineLayerSpecification = {
     id: firstLayerId,
     type: 'line',
     source: 'bicycle-lanes',
-    filter: [
-      'match',
-      ['get', 'INFRA_HIGHORDER'],
-      bikeLaneTypes.unprotectedConnectors,
-      false,
-      true,
-    ],
     layout: {
       'line-cap': 'round',
     },
     paint: {
       'line-width': 3,
+      'line-dasharray': [
+        'match',
+        ['get', 'INFRA_HIGHORDER'],
+        bikeLaneTypes.unprotectedConnectors,
+        ['literal', [1, 2]],
+        ['literal', [1, 0]], // no dash
+      ],
       'line-color': [
         'match',
         ['get', 'INFRA_HIGHORDER'],
@@ -79,31 +79,6 @@ export function BicycleNetworkLayer({
         '#8c5535',
         bikeLaneTypes.painted,
         'hsl(137, 68%, 36%)',
-        '#2c3b42',
-      ],
-    },
-  };
-
-  const bicycleRouteLayer: LineLayer = {
-    id: 'bicycle-routes',
-    type: 'line',
-    source: 'bicycle-lanes',
-    filter: [
-      'match',
-      ['get', 'INFRA_HIGHORDER'],
-      bikeLaneTypes.unprotectedConnectors,
-      true,
-      false,
-    ],
-    layout: {
-      'line-cap': 'round',
-    },
-    paint: {
-      'line-width': 3,
-      'line-dasharray': [1, 2],
-      'line-color': [
-        'match',
-        ['get', 'INFRA_HIGHORDER'],
         bikeLaneTypes.unprotectedConnectors,
         'hsl(137, 56%, 62%)',
         '#2c3b42',
@@ -115,11 +90,10 @@ export function BicycleNetworkLayer({
     <Source
       id="bicycle-network"
       type="geojson"
-      data={bicycleNetworkURL}
+      data={bicycleNetworkURL!}
       attribution="City of Toronto"
     >
       <Layer {...bicycleLaneLayer} beforeId={beforeId} />
-      <Layer {...bicycleRouteLayer} beforeId={beforeId} />
     </Source>
   );
 }
