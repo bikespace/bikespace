@@ -440,6 +440,7 @@ export function ParkingMapPage() {
             beforeId={parkingFirstLayerId}
             firstLayerId={bicycleNetworkFirstLayerId}
             lastLayerId={bicycleNetworkLastLayerId}
+            background="dark"
           />
         ) : null}
         {/* placed here to avoid covering the sidebar */}

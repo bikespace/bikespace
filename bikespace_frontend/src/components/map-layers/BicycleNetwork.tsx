@@ -114,7 +114,9 @@ export function BicycleNetworkLayer({
         'match',
         ['get', 'INFRA_HIGHORDER'],
         bikeLaneTypes.unprotectedConnectors,
-        ['literal', [1, 2]],
+        // [dash, gap]; both are scaled by line width
+        // round line-cap adds 1 width to dash and subtracts 1 width to gap
+        ['literal', [(6 - 3) / 3, (6 + 3) / 3]],
         ['literal', [1, 0]], // no dash
       ],
       'line-color': [
@@ -134,7 +136,10 @@ export function BicycleNetworkLayer({
   };
 
   const mississaugaStyleOutline: LineLayerSpecification = {
-    id: lastLayerId,
+    id:
+      background === 'dark'
+        ? 'bicycle-network-mississauga-style-outline'
+        : lastLayerId,
     type: 'line',
     source: 'bicycle-lanes',
     filter: [
@@ -155,6 +160,41 @@ export function BicycleNetworkLayer({
     },
   };
 
+  const contrastOutline: LineLayerSpecification = {
+    id: lastLayerId,
+    type: 'line',
+    source: 'bicycle-lanes',
+    layout: {
+      'line-cap': 'round',
+    },
+    paint: {
+      'line-width': 1,
+      'line-gap-width': [
+        'match',
+        ['get', 'INFRA_HIGHORDER'],
+        bikeLaneTypes.protected,
+        7,
+        bikeLaneTypes.multiUseTrails,
+        7,
+        bikeLaneTypes.painted,
+        3,
+        bikeLaneTypes.unprotectedConnectors,
+        3,
+        3,
+      ],
+      'line-color': 'white',
+      'line-dasharray': [
+        'match',
+        ['get', 'INFRA_HIGHORDER'],
+        bikeLaneTypes.unprotectedConnectors,
+        // [dash, gap]; both are scaled by line width
+        // round line-cap adds 1 width to dash and subtracts 1 width to gap
+        ['literal', [(6 - 3) / 1, (6 + 3) / 1]],
+        ['literal', [1, 0]], // no dash
+      ],
+    },
+  };
+
   return (
     <Source
       id="bicycle-network"
@@ -162,6 +202,9 @@ export function BicycleNetworkLayer({
       data={bicycleNetworkURL!}
       attribution="City of Toronto"
     >
+      {background === 'dark' ? (
+        <Layer {...contrastOutline} beforeId={beforeId} />
+      ) : null}
       <Layer {...mississaugaStyleOutline} beforeId={beforeId} />
       <Layer {...mississaugaStyle} beforeId={beforeId} />
     </Source>
