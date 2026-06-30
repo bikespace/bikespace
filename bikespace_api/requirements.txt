@@ -27,7 +27,7 @@ Flask-Limiter==3.3.1
 Flask-Login==0.6.3
 Flask-Migrate==4.0.4
 Flask-Principal==0.4.0
-Flask-Security==5.7.1
+Flask-Security==5.8.1
 flask-smorest==0.46.2
 Flask-SQLAlchemy==3.1.1
 Flask-Testing==0.8.1
