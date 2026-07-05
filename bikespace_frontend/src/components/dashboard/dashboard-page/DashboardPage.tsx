@@ -10,6 +10,7 @@ import {useSingleSubmissionQuery} from '@/hooks/use-single-submission-query';
 
 import {useStore} from '@/states/store';
 import {SidebarTab, useSubmissionId, useSidebarTab} from '@/states/url-params';
+import {IssueFilterMode} from '@/interfaces/Submission';
 
 import {MapProps} from '../map';
 
@@ -89,10 +90,11 @@ export function DashboardPage() {
 
     if (issues.length !== 0)
       subs = subs.filter(s => {
-        if (issueFilterMode === 'exclude')
+        if (issueFilterMode === IssueFilterMode.Exclude)
           return !s.issues.some(i => issues.includes(i));
-        if (issueFilterMode === 'all')
+        if (issueFilterMode === IssueFilterMode.All)
           return issues.every(i => s.issues.includes(i));
+        // default: IssueFilterMode.Any
         return s.issues.some(i => issues.includes(i));
       });
 

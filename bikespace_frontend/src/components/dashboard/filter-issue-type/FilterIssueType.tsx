@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react';
+import React from 'react';
 
 import {IssueFilterMode, IssueType} from '@/interfaces/Submission';
 
@@ -6,6 +6,7 @@ import {trackUmamiEvent} from '@/utils';
 
 import {useStore} from '@/states/store';
 
+import {SidebarSelect} from '@/components/shared-ui/sidebar-select';
 import {
   SidebarDetailsDisclosure,
   SidebarDetailsContent,
@@ -34,18 +35,15 @@ export function FilterIssueType() {
     setFilters: state.setFilters,
   }));
 
-  const handleChipClick = useCallback(
-    (value: IssueType) => {
-      const newIssues = issues.includes(value)
-        ? issues.filter(v => v !== value)
-        : [...issues, value];
+  const handleChipClick = (value: IssueType) => {
+    const newIssues = issues.includes(value)
+      ? issues.filter(v => v !== value)
+      : [...issues, value];
 
-      setFilters({issues: newIssues});
+    setFilters({issues: newIssues});
 
-      trackUmamiEvent('issuefilter', {[value]: value});
-    },
-    [issues]
-  );
+    trackUmamiEvent('issuefilter', {[value]: value});
+  };
 
   return (
     <SidebarDetailsDisclosure open>
@@ -69,25 +67,29 @@ export function FilterIssueType() {
             </button>
           ))}
         </div>
-        {issues.length > 0 && (
-          <div className={styles.filterModeRow}>
-            <label htmlFor="issue-filter-mode">Filter mode</label>
-            <select
-              id="issue-filter-mode"
-              className={styles.filterModeSelect}
-              value={issueFilterMode}
-              onChange={e =>
-                setFilters({
-                  issueFilterMode: e.target.value as IssueFilterMode,
-                })
-              }
-            >
-              <option value={IssueFilterMode.Any}>Match any</option>
-              <option value={IssueFilterMode.All}>Match all</option>
-              <option value={IssueFilterMode.Exclude}>Exclude</option>
-            </select>
-          </div>
-        )}
+        <div className={styles.filterModeRow}>
+          <label htmlFor="issue-filter-mode" className={styles.filterModeLabel}>
+            Filter mode
+          </label>
+          <SidebarSelect
+            id="issue-filter-mode"
+            value={issueFilterMode}
+            disabled={issues.length === 0}
+            onChange={e => {
+              const newIssueFilterMode = e.target.value as IssueFilterMode;
+
+              setFilters({issueFilterMode: newIssueFilterMode});
+
+              trackUmamiEvent('issuefiltermode', {
+                mode: newIssueFilterMode,
+              });
+            }}
+          >
+            <option value={IssueFilterMode.Any}>Match any selected</option>
+            <option value={IssueFilterMode.All}>Match all selected</option>
+            <option value={IssueFilterMode.Exclude}>Exclude selected</option>
+          </SidebarSelect>
+        </div>
       </SidebarDetailsContent>
     </SidebarDetailsDisclosure>
   );

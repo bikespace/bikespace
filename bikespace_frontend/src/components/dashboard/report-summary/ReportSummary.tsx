@@ -81,7 +81,7 @@ export function ReportSummary({onReady}: {onReady?: () => void}) {
                 filters.dateRange.from === null &&
                 filters.dateRange.to === null &&
                 filters.dateRangeInterval === null &&
-                filters.issue === null &&
+                filters.issues.length === 0 &&
                 filters.parkingDuration.length === 0 &&
                 filters.day === null
                   ? ''

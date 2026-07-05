@@ -5,8 +5,6 @@ import {layout, config} from '@/config/plotly';
 
 import {IssueType} from '@/interfaces/Submission';
 
-import {trackUmamiEvent} from '@/utils';
-
 import {useStore} from '@/states/store';
 
 import styles from './data-issue-frequency-chart.module.scss';
@@ -44,12 +42,6 @@ function DataIssueFrequencyChart({
 
     setData(inputData);
   }, [submissions, issues]);
-
-  useEffect(() => {
-    if (issues.length === 0) return;
-
-    trackUmamiEvent('issuechart', {filter: issues.join(',')});
-  }, [issues]);
 
   const handleAfterPlot = useCallback(() => {
     if (firedRef.current) return; // Guard against multiple calls
