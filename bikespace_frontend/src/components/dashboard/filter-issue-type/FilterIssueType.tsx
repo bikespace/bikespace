@@ -56,6 +56,7 @@ export function FilterIssueType() {
               className={`${styles.chip} ${
                 issues.includes(value) ? styles.chipSelected : ''
               }`}
+              aria-pressed={issues.includes(value)}
               onClick={() => handleChipClick(value)}
             >
               <img

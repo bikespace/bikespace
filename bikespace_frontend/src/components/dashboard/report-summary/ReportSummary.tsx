@@ -65,7 +65,10 @@ export function ReportSummary({onReady}: {onReady?: () => void}) {
     <div className={styles.summary}>
       <div>
         {submissions.length > 0 ? (
-          <span className={styles.entryCount}>
+          <span
+            className={styles.entryCount}
+            data-testid="report-summary-count"
+          >
             {submissions.length.toLocaleString('en-CA')}
           </span>
         ) : (
@@ -75,7 +78,7 @@ export function ReportSummary({onReady}: {onReady?: () => void}) {
             alt="warning icon"
           />
         )}
-        <span>
+        <span data-testid="report-summary-label">
           {submissions.length > 0
             ? ` reports ${
                 filters.dateRange.from === null &&
