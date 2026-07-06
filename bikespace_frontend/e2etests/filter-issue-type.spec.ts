@@ -10,11 +10,20 @@ test.beforeEach(async ({context, page}) => {
 
   await page.goto('/dashboard?tab=filters');
   await page.waitForSelector('div.leaflet-container');
-  await expect(page.getByTestId('report-summary-count')).toBeVisible();
+  // initial load renders 1500+ submissions; can be slow in CI, especially webkit
+  await expect(page.getByTestId('report-summary-count')).toBeVisible({
+    timeout: 15 * 1000,
+  });
 });
 
 async function getReportCount(page: Page): Promise<number> {
-  const text = await page.getByTestId('report-summary-count').innerText();
+  const countLocator = page.getByTestId('report-summary-count');
+
+  // when no submissions match the current filters, ReportSummary renders a
+  // warning icon instead of the count element
+  if ((await countLocator.count()) === 0) return 0;
+
+  const text = await countLocator.innerText();
   return Number(text.replace(/,/g, ''));
 }
 
