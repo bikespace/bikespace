@@ -6,7 +6,7 @@ bcrypt==4.0.1
 beautifulsoup4==4.14.2
 better-profanity==0.7.0
 black==26.3.1
-bleach==6.3.0
+bleach==6.4.0
 blinker==1.9.0
 certifi==2024.7.4
 cffi==1.17.1
@@ -15,7 +15,7 @@ click==8.1.3
 coverage==7.2.1
 Deprecated==1.2.14
 dnspython==2.7.0
-email_validator==2.2.0
+email_validator==2.3.0
 exceptiongroup==1.1.3
 Faker==40.1.2
 Flask==3.1.3
@@ -27,7 +27,7 @@ Flask-Limiter==3.3.1
 Flask-Login==0.6.3
 Flask-Migrate==4.0.4
 Flask-Principal==0.4.0
-Flask-Security==5.7.1
+Flask-Security==5.8.1
 flask-smorest==0.46.2
 Flask-SQLAlchemy==3.1.1
 Flask-Testing==0.8.1
@@ -65,7 +65,7 @@ pytokens==0.4.1
 requests==2.33.0
 rich==13.5.2
 setuptools==78.1.1
-soupsieve==2.8
+soupsieve==2.8.4
 SQLAlchemy==2.0.37
 SQLAlchemy-Continuum==1.5.2
 SQLAlchemy-Utils==0.41.2
