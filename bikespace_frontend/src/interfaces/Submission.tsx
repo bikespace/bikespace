@@ -71,6 +71,12 @@ export enum DateRangeInterval {
   CustomRange = 'custom_range',
 }
 
+export enum IssueFilterMode {
+  Any = 'any',
+  All = 'all',
+  Exclude = 'exclude',
+}
+
 export interface SubmissionFilters {
   dateRange: {
     from: Date | null;
@@ -78,7 +84,8 @@ export interface SubmissionFilters {
   };
   dateRangeInterval: DateRangeInterval | null;
   parkingDuration: ParkingDuration[];
-  issue: IssueType | null;
+  issues: IssueType[];
+  issueFilterMode: IssueFilterMode;
   day: Day | null;
 }
 

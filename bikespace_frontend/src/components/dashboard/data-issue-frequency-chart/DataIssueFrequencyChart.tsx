@@ -1,12 +1,9 @@
 import React, {useCallback, useState, useEffect, useRef} from 'react';
 import Plotly, {PlotParams} from 'react-plotly.js';
-import {PlotMouseEvent} from 'plotly.js-dist-min';
 
 import {layout, config} from '@/config/plotly';
 
 import {IssueType} from '@/interfaces/Submission';
-
-import {trackUmamiEvent} from '@/utils';
 
 import {useStore} from '@/states/store';
 
@@ -22,44 +19,30 @@ function DataIssueFrequencyChart({
   className,
   onReady,
 }: Pick<PlotParams, 'className'> & {onReady?: () => void}) {
-  const {submissions, issue, setFilters} = useStore(state => ({
+  const {submissions, issues} = useStore(state => ({
     submissions: state.submissions,
-    issue: state.filters.issue,
-    setFilters: state.setFilters,
+    issues: state.filters.issues,
   }));
   const firedRef = useRef(false);
 
   const [data, setData] = useState<InputData[]>([]);
 
   useEffect(() => {
-    const issues = Object.keys(issueLabels) as IssueType[];
+    const issueTypes = Object.keys(issueLabels) as IssueType[];
 
-    const inputData = issues.map(i => ({
+    const inputData = issueTypes.map(i => ({
       type: i,
       count: submissions.filter(submission => submission.issues.includes(i))
         .length,
-      color: styles[!issue || issue === i ? i : `${i}_light`],
+      color:
+        issues.length === 0 || issues.includes(i)
+          ? styles[i]
+          : styles[`${i}_light`],
     }));
 
     setData(inputData);
-  }, [submissions, issue]);
+  }, [submissions, issues]);
 
-  useEffect(() => {
-    if (issue === null) return;
-
-    trackUmamiEvent('issuechart', {filter: issue});
-  }, [issue]);
-
-  const handleClick = useCallback(
-    (e: PlotMouseEvent) => {
-      const point = e.points[0];
-
-      if (!point) return;
-
-      setFilters({issue: issue === point.y ? null : (point.y as IssueType)});
-    },
-    [issue]
-  );
   const handleAfterPlot = useCallback(() => {
     if (firedRef.current) return; // Guard against multiple calls
     firedRef.current = true;
@@ -107,7 +90,6 @@ function DataIssueFrequencyChart({
         height: 200,
       }}
       config={config}
-      onClick={handleClick}
       onAfterPlot={handleAfterPlot}
     />
   );
