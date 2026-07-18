@@ -1,3 +1,7 @@
+// maplibre-gl v5+ uses TextDecoder at module load time; jsdom does not provide it
+import {TextDecoder, TextEncoder} from 'util';
+Object.assign(global, {TextDecoder, TextEncoder});
+
 // mock navigator.geolocation
 const clearWatchMock = jest.fn();
 const getCurrentPositionMock = jest.fn().mockImplementationOnce(success =>

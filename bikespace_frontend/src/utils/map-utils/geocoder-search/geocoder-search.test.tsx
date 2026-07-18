@@ -5,7 +5,7 @@ import {userEvent} from '@testing-library/user-event';
 import {Map} from 'maplibre-gl';
 
 import type {RefObject} from 'react';
-import type {MapRef} from 'react-map-gl/dist/esm/exports-maplibre';
+import type {MapRef} from 'react-map-gl/maplibre';
 import type {DefinedUseQueryResult} from '@tanstack/react-query';
 
 import {defaultMapCenter} from '@/utils/map-utils';

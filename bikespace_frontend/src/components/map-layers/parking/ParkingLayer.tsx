@@ -17,7 +17,6 @@ import parkingSpriteImage from '@/public/parking_sprites/parking_sprites@2x.png'
 import parkingSpriteJSON from '@/public/parking_sprites/parking_sprites@2x.json';
 
 export const parkingSourceId = 'bicycle-parking';
-export const parkingFirstLayerId = 'bicycle-parking-dense';
 export const parkingInteractiveLayers = ['bicycle-parking'];
 
 // access=* values that indicate that bicycle parking is open to the public
@@ -27,12 +26,14 @@ interface ParkingLayerProps {
   selected: MapGeoJSONFeature[];
   groupSelected: MapGeoJSONFeature[];
   layerFilter?: FilterSpecification;
+  firstLayerId?: string;
 }
 
 export function ParkingLayer({
   selected,
   groupSelected,
   layerFilter = true,
+  firstLayerId = 'bicycle-parking-dense',
 }: ParkingLayerProps) {
   const bicycleParkingURL = process.env.DATA_BICYCLE_PARKING;
 
@@ -122,7 +123,7 @@ export function ParkingLayer({
     0,
   ];
   const parkingLayerDense: CircleLayer = {
-    id: 'bicycle-parking-dense',
+    id: firstLayerId,
     type: 'circle',
     source: parkingSourceId,
     filter: layerFilter,
@@ -157,6 +158,7 @@ export function ParkingLayer({
         type="geojson"
         data={bicycleParkingURL}
         generateId={true}
+        attribution="City of Toronto"
       >
         <Layer {...parkingLayerDense} />
         <Layer {...parkingLayer} />

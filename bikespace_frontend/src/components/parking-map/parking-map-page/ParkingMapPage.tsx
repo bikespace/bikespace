@@ -31,6 +31,12 @@ import {
   BicycleNetworkLayer,
   BicycleNetworkLayerLegend,
 } from '@/components/map-layers/BicycleNetwork';
+import {
+  BasemapControl,
+  BaseMapOption,
+  COTAerialNightLayer,
+  COTAerialLatestLayer,
+} from '@/components/map-layers/basemaps';
 
 import type {
   FilterSpecification,
@@ -47,8 +53,12 @@ import type {Feature} from 'geojson';
 
 import 'maplibre-gl/dist/maplibre-gl.css';
 import styles from './parking-map-page.module.scss';
-import sidebarDescStyles from '@/components/map-layers/parking/feature-description.module.scss';
-const parkingSpritePath = '/parking_sprites/parking_sprites';
+const parkingSpritePath =
+  window.location.origin + '/parking_sprites/parking_sprites';
+
+const bicycleNetworkFirstLayerId = 'bicycle-network-first';
+const bicycleNetworkLastLayerId = 'bicycle-network-last';
+const parkingFirstLayerId = 'parking-layer-first';
 
 const backupMapStyle: MapStyle = {
   version: 8,
@@ -65,6 +75,20 @@ const backupMapStyle: MapStyle = {
   },
   layers: layers('protomaps', namedFlavor('light'), {lang: 'en'}),
 };
+
+const baseMapOptions: BaseMapOption[] = [
+  {id: 'default', name: 'Map', component: null},
+  {
+    id: 'cotAerialLatest',
+    name: 'Satellite',
+    component: <COTAerialLatestLayer beforeId={bicycleNetworkLastLayerId} />,
+  },
+  {
+    id: 'cotAerialNight',
+    name: 'Night',
+    component: <COTAerialNightLayer beforeId={bicycleNetworkLastLayerId} />,
+  },
+];
 
 export function uniqueBy(a: Array<Object>, getKey: Function): Array<Object> {
   const seen = new Set();
@@ -83,6 +107,9 @@ export function ParkingMapPage() {
   const [parkingLayerFilter, setParkingLayerFilter] =
     useState<FilterSpecification>(true);
   const [showBicycleNetwork, setShowBicycleNetwork] = useState<boolean>(true);
+  const [baseMapLayerName, setBaseMapLayerName] = useState<string>(
+    baseMapOptions[0].id
+  );
 
   const mapRef = useRef<MapRef>(null);
   const resultsCardRef = useRef<HTMLDivElement>(null);
@@ -389,15 +416,32 @@ export function ParkingMapPage() {
         //   setZoomLevel(Math.round((mapRef.current!.getZoom() ?? 0) * 10) / 10)
         // }
       >
+        {/* controls */}
         <NavigationControl position="top-left" />
         <GeolocateControl position="top-left" />
+        <BasemapControl
+          layerOptions={baseMapOptions}
+          selectedLayer={baseMapLayerName}
+          setSelectedLayer={setBaseMapLayerName}
+        />
+        {/* display layers */}
+        {baseMapLayerName
+          ? baseMapOptions.filter(baseMap => baseMap.id === baseMapLayerName)[0]
+              .component
+          : null}
         <ParkingLayer
           selected={parkingSelectedOrHovered}
           groupSelected={parkingGroupSelected}
           layerFilter={parkingLayerFilter}
+          firstLayerId={parkingFirstLayerId}
         />
         {showBicycleNetwork ? (
-          <BicycleNetworkLayer beforeId={mapStyleRoadLabelsLayer} />
+          <BicycleNetworkLayer
+            beforeId={parkingFirstLayerId}
+            firstLayerId={bicycleNetworkFirstLayerId}
+            lastLayerId={bicycleNetworkLastLayerId}
+            background="dark"
+          />
         ) : null}
         {/* placed here to avoid covering the sidebar */}
         <Spinner show={isMapLoading} overlay label="Loading map..." />
