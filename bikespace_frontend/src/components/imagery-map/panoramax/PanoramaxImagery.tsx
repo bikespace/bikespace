@@ -77,7 +77,7 @@ export function PanoramaxImageryLayer() {
     <Source
       id="panoramax-imagery"
       type="vector"
-      tiles={['https://api.panoramax.xyz/api/map/{z}/{x}/{y}.mvt']}
+      tiles={['https://panoramax.bikespaceproject.ca/api/map/{z}/{x}/{y}.mvt']}
     >
       <Layer {...imageryLineOutlineLayer} />
       <Layer {...imageryLineLayer} />
