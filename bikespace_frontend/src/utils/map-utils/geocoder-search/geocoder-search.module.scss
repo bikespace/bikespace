@@ -43,11 +43,12 @@
 }
 
 @keyframes wave {
-  0%, 60% {
-      transform: translateY(0);
+  0%,
+  60% {
+    transform: translateY(0);
   }
   30% {
-      transform: translateY(-2px);
+    transform: translateY(-2px);
   }
 }
 
@@ -77,11 +78,11 @@
     &:hover {
       box-shadow: 0 0 0 0.2rem $color-secondary-blue;
     }
-  
+
     &:focus {
       box-shadow: 0 0 0 0.2rem $color-secondary-blue;
     }
-  
+
     &:active {
       background-color: $color-secondary-light-grey;
       box-shadow: 0 0 0 0.2rem $color-secondary-blue;

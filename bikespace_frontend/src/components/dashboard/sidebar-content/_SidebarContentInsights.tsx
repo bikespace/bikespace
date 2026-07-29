@@ -1,13 +1,15 @@
-import React from 'react';
+import React, {useState} from 'react';
 import dynamic from 'next/dynamic';
 
 import {PlotParams} from 'react-plotly.js';
+
+import {Spinner} from '@/components/shared-ui/spinner';
 
 import {ReportSummary} from '../report-summary';
 
 import styles from './_SidebarContent.module.scss';
 
-type ChartProps = Pick<PlotParams, 'className'>;
+type ChartProps = Pick<PlotParams, 'className'> & {onReady: () => void};
 
 const DataIssueFrequencyChart = dynamic<ChartProps>(
   () => import('../data-issue-frequency-chart/DataIssueFrequencyChart'),
@@ -32,12 +34,27 @@ const DataDurationByTodChart = dynamic<ChartProps>(
 );
 
 export function SidebarContentInsights() {
+  const TOTAL = 4; // Number of child components
+  const [readyCount, setReadyCount] = useState(0);
+
+  const markReady = () => {
+    setReadyCount(c => (c < TOTAL ? c + 1 : c)); // Gets called exactly once per child component
+  };
+  const allReady = readyCount >= TOTAL;
   return (
-    <>
-      <ReportSummary />
-      <DataIssueFrequencyChart className={styles.chart} />
-      <DataFrequencyByDayChart className={styles.chart} />
-      <DataDurationByTodChart className={styles.chart} />
-    </>
+    <div>
+      {!allReady && (
+        <Spinner overlay label="Loading insights..." style={{zIndex: 3000}} />
+      )}
+      <div
+        className={styles.InnerMultipleSidebarContent}
+        style={{visibility: allReady ? 'visible' : 'hidden'}}
+      >
+        <ReportSummary onReady={markReady} />
+        <DataIssueFrequencyChart className={styles.chart} onReady={markReady} />
+        <DataFrequencyByDayChart className={styles.chart} onReady={markReady} />
+        <DataDurationByTodChart className={styles.chart} onReady={markReady} />
+      </div>
+    </div>
   );
 }

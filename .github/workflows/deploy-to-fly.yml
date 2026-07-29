@@ -10,6 +10,11 @@ jobs:
   apitest:
     name: API tests
     runs-on: ubuntu-latest
+    env:
+      BIKESPACE_SECURITY_PASSWORD_SALT: ${{ secrets.BIKESPACE_SECURITY_PASSWORD_SALT }}
+      BIKESPACE_SECRET_KEY: ${{ secrets.BIKESPACE_SECRET_KEY }}
+      SEED_USER_EMAIL: ${{ secrets.SEED_USER_EMAIL }}
+      SEED_USER_PASSWORD: ${{ secrets.SEED_USER_PASSWORD }}
     # Service containers to run with `container-job`
     services:
       # Label used to access the service container
@@ -33,14 +38,21 @@ jobs:
       - name: Setup python
         uses: actions/setup-python@v4
         with:
-          python-version : '3.12.0'
+          python-version: "3.12.0"
       - name: Run pytest
         run: make test-api
       - name: Coveralls
         uses: coverallsapp/github-action@v2
+        with:
+          fail-on-error: false
   api-migration-test:
     name: Test if database migrations need to be generated for API
     runs-on: ubuntu-latest
+    env:
+      BIKESPACE_SECURITY_PASSWORD_SALT: ${{ secrets.BIKESPACE_SECURITY_PASSWORD_SALT }}
+      BIKESPACE_SECRET_KEY: ${{ secrets.BIKESPACE_SECRET_KEY }}
+      SEED_USER_EMAIL: ${{ secrets.SEED_USER_EMAIL }}
+      SEED_USER_PASSWORD: ${{ secrets.SEED_USER_PASSWORD }}
     services:
       # Label used to access the service container
       postgres:
@@ -63,20 +75,20 @@ jobs:
       - name: Setup python
         uses: actions/setup-python@v4
         with:
-          python-version : '3.12.0'
+          python-version: "3.12.0"
       - name: Run migration check
         run: make migrate-test-db
   deploy-to-fly:
-      name: Deploy to fly.io
-      needs: [apitest, api-migration-test]
-      runs-on: ubuntu-latest
-      permissions:
-        contents: read
-        deployments: write
-      steps:
-        - uses: actions/checkout@v3
-        - uses: superfly/flyctl-actions/setup-flyctl@master
-        - run: flyctl deploy 
-          working-directory: ./bikespace_api
-          env:
-            FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+    name: Deploy to fly.io
+    needs: [apitest, api-migration-test]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      deployments: write
+    steps:
+      - uses: actions/checkout@v3
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+      - run: flyctl deploy
+        working-directory: ./bikespace_api
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}

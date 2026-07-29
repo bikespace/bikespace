@@ -10,7 +10,7 @@ import styles from './clear-filters-button.module.scss';
 
 export function ClearFiltersButton() {
   const {
-    filters: {dateRange, parkingDuration, issue, day, dateRangeInterval},
+    filters: {dateRange, parkingDuration, issues, day, dateRangeInterval},
     setFilters,
   } = useStore(state => ({
     filters: state.filters,
@@ -21,7 +21,7 @@ export function ClearFiltersButton() {
     parkingDuration.length === 0 &&
     dateRange.from === null &&
     dateRange.to === null &&
-    !issue &&
+    issues.length === 0 &&
     day === null &&
     dateRangeInterval === null
   )
@@ -35,7 +35,7 @@ export function ClearFiltersButton() {
           dateRange: {from: null, to: null},
           dateRangeInterval: null,
           parkingDuration: [],
-          issue: null,
+          issues: [],
           day: null,
         });
       }}

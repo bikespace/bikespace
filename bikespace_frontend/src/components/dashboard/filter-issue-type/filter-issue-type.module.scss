@@ -1,0 +1,60 @@
+@import '@/styles/variables.module.scss';
+
+.chipContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 1.75rem;
+  padding: 0px 10px;
+  background-color: white;
+  border: 1px solid $color-primary-d50p;
+  border-radius: 6px;
+  font-family: $body-font-stack;
+  font-size: 0.9rem;
+  color: $color-secondary-dark-grey;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: $color-primary-10p;
+    border-color: $color-primary;
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 0.2rem $color-primary-20p;
+    outline: none;
+  }
+}
+
+.chipIcon {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+}
+
+.chipSelected {
+  border: 2px solid $color-primary;
+  background-color: $color-primary-10p;
+  color: $color-secondary-dark-grey;
+
+  &:hover {
+    background-color: $color-primary-20p;
+  }
+}
+
+.filterModeRow {
+  margin-top: 8px;
+}
+
+.filterModeLabel {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 0.9rem;
+  color: $color-secondary-dark-grey;
+}

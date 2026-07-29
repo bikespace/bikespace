@@ -16,12 +16,19 @@
   overflow-y: scroll;
   margin: 4px;
 
-  &> * {
+  & > * {
     margin-bottom: 8px;
   }
 
-  &> p {
+  & > p {
     padding: 4px;
+  }
+}
+
+@media (min-width: $wrapper-full-width) {
+  // Add right padding for scrollbar spacing on certain Linux chrome browsers
+  .sideBarContainer {
+    padding-right: 6px;
   }
 }
 
@@ -32,13 +39,12 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
-  padding: 4px;
+  padding: 12px;
 }
 
 .ContentHeading {
   width: 100%;
   border-radius: 4px;
-  margin: 4px;
   background-color: white;
 }
 
@@ -48,12 +54,7 @@ h2.cardHeading {
   color: $color-primary-d50p;
 }
 
-p.cardBody {
-  margin: 4px;
-  margin-top: 0px;
-}
-
-.legendContent{
+.legendContent {
   background-color: white;
   margin: 4px;
   margin-bottom: 8px;

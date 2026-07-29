@@ -37,7 +37,3 @@ $wrapper-full-width: 1024px;
 
 /* Sidebar feed module height % of screen on mobile */
 $feed-height: 60%;
-
-:export {
-  wrapperFullWidth: $wrapper-full-width;
-}

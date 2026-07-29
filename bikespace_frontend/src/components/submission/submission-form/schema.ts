@@ -17,6 +17,7 @@ export const submissionSchema = z.object({
     parkingDuration: z.nativeEnum(ParkingDuration),
   }),
   comments: z.string(),
+  submissionId: z.string().optional(),
 });
 
 export type SubmissionSchema = z.infer<typeof submissionSchema>;

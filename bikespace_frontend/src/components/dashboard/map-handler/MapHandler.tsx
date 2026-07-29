@@ -4,6 +4,7 @@ import {useWindowSize} from '@uidotdev/usehooks';
 
 import {trackUmamiEvent} from '@/utils';
 
+import {useStore} from '@/states/store';
 import {useSubmissionId} from '@/states/url-params';
 
 import 'leaflet/dist/leaflet.css';
@@ -15,10 +16,16 @@ export const MapHandler = () => {
 
   const window = useWindowSize();
 
-  const [focus] = useSubmissionId();
+  const [selectedSubmissionInURL] = useSubmissionId();
+  const {isSidebarOpen, selectedSubmission} = useStore(state => ({
+    isSidebarOpen: state.ui.sidebar.isOpen,
+    selectedSubmission: state.ui.submissions.selectedSubmission,
+  }));
 
+  // centre map on user location on first load
+  // unless a submission is already specified
   useEffect(() => {
-    if (focus === null) {
+    if (selectedSubmissionInURL === null && selectedSubmission === null) {
       map
         .locate()
         .on('locationfound', e => {
@@ -41,9 +48,12 @@ export const MapHandler = () => {
     }
   }, []); // [] = run on first render only
 
+  // Ensure map still fills the available space when:
+  // - sidebar opens/closes
+  // - window size changes
   useEffect(() => {
     map.invalidateSize();
-  }, [window, focus]);
+  }, [window, isSidebarOpen]);
 
   return null;
 };

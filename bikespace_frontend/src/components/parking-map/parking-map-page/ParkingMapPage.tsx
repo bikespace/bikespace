@@ -4,12 +4,13 @@ import React, {useEffect, useState, useRef} from 'react';
 import Map, {GeolocateControl, NavigationControl} from 'react-map-gl/maplibre';
 import {bbox as getBBox} from '@turf/bbox';
 import {featureCollection as getFeatureCollection} from '@turf/helpers';
-import maplibregl from 'maplibre-gl';
+import maplibregl, {Marker} from 'maplibre-gl';
+import type {Map as MapLibreMap} from 'maplibre-gl';
 import {Protocol} from 'pmtiles';
 import {layers, namedFlavor} from '@protomaps/basemaps';
 
 import {trackUmamiEvent} from '@/utils';
-import {defaultMapCenter, GeocoderSearch} from '@/utils/map-utils';
+import {defaultMapCenter, GeocoderSearch, getCentroid} from '@/utils/map-utils';
 
 import {ParkingMapFilter} from './map-filters/ParkingMapFilter';
 import {Sidebar} from './sidebar/Sidebar';
@@ -18,9 +19,10 @@ import {
   SidebarDetailsDisclosure,
   SidebarDetailsContent,
 } from '@/components/shared-ui/sidebar-details-disclosure';
+import {Spinner} from '@/components/shared-ui/spinner';
+import {useSubmissionPrefill} from '@/components/submission/submission-form-controller/SubmissionFormController';
 import {
   ParkingFeatureDescription,
-  parkingFirstLayerId,
   parkingInteractiveLayers,
   ParkingLayer,
   ParkingLayerLegend,
@@ -36,16 +38,16 @@ import type {
   QueryRenderedFeaturesOptions,
 } from 'maplibre-gl';
 import type {
-  LngLatLike,
   MapLayerMouseEvent,
   MapRef,
   PointLike,
   MapStyle,
 } from 'react-map-gl/maplibre';
+import type {Feature} from 'geojson';
 
 import 'maplibre-gl/dist/maplibre-gl.css';
 import styles from './parking-map-page.module.scss';
-
+import sidebarDescStyles from '@/components/map-layers/parking/feature-description.module.scss';
 const parkingSpritePath = '/parking_sprites/parking_sprites';
 
 const backupMapStyle: MapStyle = {
@@ -75,6 +77,7 @@ export function uniqueBy(a: Array<Object>, getKey: Function): Array<Object> {
 export function ParkingMapPage() {
   const [zoomLevel, setZoomLevel] = useState<number>(12);
   const [sidebarIsOpen, setSidebarIsOpen] = useState<boolean>(true);
+  const [isMapLoading, setIsMapLoading] = useState<boolean>(true);
   const [geoSearchIsMinimized, setGeoSearchIsMinimized] =
     useState<boolean>(false);
   const [parkingLayerFilter, setParkingLayerFilter] =
@@ -82,6 +85,14 @@ export function ParkingMapPage() {
   const [showBicycleNetwork, setShowBicycleNetwork] = useState<boolean>(true);
 
   const mapRef = useRef<MapRef>(null);
+  const resultsCardRef = useRef<HTMLDivElement>(null);
+
+  const mapStyle = process.env.MAPTILER_API_KEY
+    ? `https://api.maptiler.com/maps/streets/style.json?key=${process.env.MAPTILER_API_KEY}`
+    : backupMapStyle;
+  const mapStyleRoadLabelsLayer = process.env.MAPTILER_API_KEY
+    ? 'road_label'
+    : 'roads_labels_major';
 
   // enable backup map tiles
   useEffect(() => {
@@ -106,6 +117,24 @@ export function ParkingMapPage() {
     [...parkingSelected, ...parkingHovered],
     (f: MapGeoJSONFeature) => f.id
   ) as Array<MapGeoJSONFeature>;
+  const [emptyLocationSelected, setEmptyLocationSelected] = useState<{
+    lat: number;
+    lon: number;
+  } | null>(null);
+  useEffect(() => {
+    if (!emptyLocationSelected || !mapRef.current) return;
+    const coords = {
+      lon: emptyLocationSelected.lon,
+      lat: emptyLocationSelected.lat,
+    };
+    const marker = new Marker({color: '#ed145b'})
+      .setLngLat(coords)
+      .addTo(mapRef.current.getMap());
+    mapRef.current.flyTo({center: coords});
+    return () => {
+      marker.remove();
+    };
+  }, [emptyLocationSelected]);
 
   // set starting zoom and position
   const [defaultLocation, setDefaultLocation] = useState(defaultMapCenter);
@@ -143,6 +172,10 @@ export function ParkingMapPage() {
     });
   }
 
+  function zoomAndFlyToSingleFeature(feature: MapGeoJSONFeature) {
+    zoomAndFlyTo([feature]);
+  }
+
   function handleLayerClick(e: MapLayerMouseEvent) {
     const features = mapRef.current!.queryRenderedFeatures(
       e.point as PointLike,
@@ -152,6 +185,7 @@ export function ParkingMapPage() {
     );
     setParkingGroupSelected(features);
     setParkingSelected(features.length === 1 ? features : []);
+    setEmptyLocationSelected(null);
 
     if (features.length > 0) {
       trackUmamiEvent('parking-map-feature-click');
@@ -163,13 +197,26 @@ export function ParkingMapPage() {
         mapRef.current!.once('resize', () => zoomAndFlyTo(features));
       }
     } else {
+      const lngLat = mapRef.current!.unproject(e.point as PointLike);
+      setEmptyLocationSelected({lat: lngLat.lat, lon: lngLat.lng});
+      setParkingGroupSelected([]);
+      setParkingSelected([]);
       setGeoSearchIsMinimized(false);
+
+      if (!sidebarIsOpen) {
+        setSidebarIsOpen(true);
+      }
+    }
+
+    if (resultsCardRef.current) {
+      resultsCardRef.current.scrollIntoView();
     }
   }
 
   function handleFeatureSelectionClear() {
     setParkingGroupSelected([]);
     setParkingSelected([]);
+    setEmptyLocationSelected(null);
     setGeoSearchIsMinimized(false);
   }
 
@@ -220,6 +267,16 @@ export function ParkingMapPage() {
     if (process.env.NODE_ENV !== 'production') console.log('map loaded');
     addSprite();
     handleMouseHover();
+
+    // after styles load
+    const map: MapLibreMap = mapRef.current!.getMap(); // maplibre-gl map instance
+    map?.once('idle', () => setIsMapLoading(false)); // wait for styles to load, then set loading to false
+  }
+
+  const openSubmission = useSubmissionPrefill();
+  function handleReportIssue(feature: Feature) {
+    const [lon, lat] = getCentroid(feature);
+    openSubmission(lat, lon);
   }
 
   return (
@@ -227,11 +284,11 @@ export function ParkingMapPage() {
       <Sidebar isOpen={sidebarIsOpen} setIsOpen={setSidebarIsOpen}>
         <div className={styles.sideBarContainer}>
           {/* <p>{`Zoom: ${zoomLevel}`}</p> */}
-          <div className={styles.ContentCard}>
+          <div className={styles.ContentCard} ref={resultsCardRef}>
             <div className={styles.ContentHeading}>
               <h2 className={styles.cardHeading}>Bike Parking Map</h2>
             </div>
-            {parkingGroupSelected.length > 0 ? (
+            {parkingGroupSelected.length > 0 || emptyLocationSelected ? (
               <SidebarButton
                 onClick={handleFeatureSelectionClear}
                 umamiEvent="parking-map-clear-selection"
@@ -239,7 +296,7 @@ export function ParkingMapPage() {
                 Clear Selection
               </SidebarButton>
             ) : (
-              <p className={styles.cardBody}>
+              <p>
                 Click on a feature to see more information or zoom in for more
                 details
               </p>
@@ -253,8 +310,33 @@ export function ParkingMapPage() {
                 handleClick={handleFeatureSelection}
                 handleHover={handleFeatureHover}
                 handleUnHover={handleFeatureUnHover}
+                centerFeatureOnMap={zoomAndFlyToSingleFeature}
+                onReportIssue={handleReportIssue}
               />
             ))}
+            {emptyLocationSelected && parkingGroupSelected.length === 0 && (
+              <div className={styles.ContentCard}>
+                <h3>No known bicycle parking here.</h3>
+                <SidebarButton
+                  onClick={() =>
+                    handleReportIssue({
+                      type: 'Feature',
+                      geometry: {
+                        type: 'Point',
+                        coordinates: [
+                          emptyLocationSelected.lon,
+                          emptyLocationSelected.lat,
+                        ],
+                      },
+                      properties: {},
+                    })
+                  }
+                  umamiEvent="empty-location-report-issue"
+                >
+                  Report Issue
+                </SidebarButton>
+              </div>
+            )}
           </div>
           <GeocoderSearch
             mapRef={mapRef}
@@ -300,11 +382,7 @@ export function ParkingMapPage() {
           zoom: zoomLevel,
         }}
         style={{width: '100%', height: '100%'}}
-        mapStyle={
-          process.env.MAPTILER_API_KEY
-            ? `https://api.maptiler.com/maps/streets/style.json?key=${process.env.MAPTILER_API_KEY}`
-            : backupMapStyle
-        }
+        mapStyle={mapStyle}
         onLoad={handleOnLoad}
         onClick={handleLayerClick}
         // onZoomEnd={() =>
@@ -319,8 +397,10 @@ export function ParkingMapPage() {
           layerFilter={parkingLayerFilter}
         />
         {showBicycleNetwork ? (
-          <BicycleNetworkLayer beforeId={parkingFirstLayerId} />
+          <BicycleNetworkLayer beforeId={mapStyleRoadLabelsLayer} />
         ) : null}
+        {/* placed here to avoid covering the sidebar */}
+        <Spinner show={isMapLoading} overlay label="Loading map..." />
       </Map>
     </main>
   );

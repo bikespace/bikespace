@@ -1,4 +1,4 @@
 export const umamiConfig = {
-  websiteId: 'd56aa43e-3009-4f6d-9975-c82af706c3be',
-  hostUrl: 'https://us.umami.is/script.js',
+  websiteId: '1a10973e-d4de-4ac1-98d6-23019ffe60bf',
+  hostUrl: 'https://analytics.bikespaceproject.ca/script.js',
 };

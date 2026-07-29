@@ -6,6 +6,7 @@ import type {Metadata, Viewport} from 'next';
 import {umamiConfig} from '@/config/umami';
 
 import '@/styles/global.scss';
+import {ServiceWorkerRegistration} from '@/components/service-worker/ServiceWorkerRegistration';
 
 const siteTitle = 'BikeSpace';
 const siteDescription = 'Digital tools to improve bicycle parking in Toronto';
@@ -51,7 +52,10 @@ export default async function RootLayout({
         <meta name="apple-mobile-web-app-title" content="BikeSpace" />
         <link rel="manifest" href="/site.webmanifest" />
       </head>
-      <body>{children}</body>
+      <body>
+        {children}
+        <ServiceWorkerRegistration />
+      </body>
       {
         // Disable tracking during development
         process.env.NODE_ENV === 'development' ? null : (

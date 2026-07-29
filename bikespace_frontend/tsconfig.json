@@ -2,11 +2,7 @@
   "extends": "./node_modules/gts/tsconfig-google.json",
   "compilerOptions": {
     "target": "esnext",
-    "lib": [
-      "DOM",
-      "DOM.Iterable",
-      "EsNext",
-    ],
+    "lib": ["DOM", "DOM.Iterable", "EsNext"],
     "jsx": "preserve",
     "module": "esnext",
     "rootDir": ".",
@@ -22,22 +18,12 @@
     ],
     "baseUrl": "./src",
     "paths": {
-      "@/*": [
-        "./*"
-      ],
-      "@/public/*": [
-        "../public/*"
-      ],
-      "@/__test__/*": [
-        "../__test__/*"
-      ]
+      "@/*": ["./*"],
+      "@/public/*": ["../public/*"],
+      "@/__test__/*": ["../__test__/*"]
     },
     "skipLibCheck": true,
-    "types": [
-      "node",
-      "jest",
-      "@testing-library/jest-dom"
-    ],
+    "types": ["node", "jest", "@testing-library/jest-dom"],
     "allowJs": true,
     "noEmit": true,
     "incremental": true,
@@ -52,7 +38,5 @@
     ".next/types/**/*.ts",
     "build/types/**/*.ts"
   ],
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules"]
 }

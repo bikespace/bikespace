@@ -2,10 +2,10 @@
 
 The BikeSpace frontend is React application written in TypeScript. [NextJS](https://nextjs.org/) is utilized to serve it as a static site.
 
-
 ## Running the frontend application
 
 Running the frontend (see note below about running the API locally):
+
 ```shell
 make dev-frontend
 ```
@@ -13,6 +13,7 @@ make dev-frontend
 The development frontend server should be running at `localhost:8080`
 
 Testing the frontend:
+
 ```shell
 # front-end unit tests
 make test-frontend
@@ -24,6 +25,7 @@ make test-e2e
 More documentation on the end-to-end testing can be found in `bikespace_frontend/e2etests/`.
 
 Linting (first option shows suggested changes, second option automatically edits):
+
 ```shell
 make lint-frontend
 make lint-and-fix-frontend
@@ -37,16 +39,14 @@ These `.env` files are used for configuration only. **Do not commit secrets (e.g
 
 The production website uses [MapTiler](https://www.maptiler.com/) to serve global vector tiles at all zoom levels. This requires that an API key be set using the `MAPTILER_API_KEY` environment variable. If no key is set, it falls back to using a set of [ProtoMaps](https://docs.protomaps.com/) tiles that only have detail in the Toronto area. If you want to develop using MapTiler tiles, you can sign up for a free account, create an API key to use for this project, and e.g. create an `.env.development.local` file in `/bikespace_frontend` and set a value for `MAPTILER_API_KEY=`.
 
-NextJS documentation: 
+NextJS documentation:
 
 - [Configuring Environment Variables](https://nextjs.org/docs/pages/building-your-application/configuring/environment-variables)
 - [next.config.js Options > env](https://nextjs.org/docs/pages/api-reference/next-config-js/env)
 
-
 ### Running the API Locally
 
 Certain development tasks (e.g. testing a form submission) also require the API to be running locally. See the instructions in [`bikespace_api/README.md`](https://github.com/bikespace/bikespace/blob/main/bikespace_api/README.md) for more details.
-
 
 ## Contributing Guide
 
@@ -55,7 +55,6 @@ The BikeSpace project is developed and maintained by volunteers from [Civic Tech
 If you would like to request a feature or report a bug with the dashboard, please [open an issue](https://github.com/bikespace/bikespace/issues) on this repository.
 
 If you would like to add a feature or contribute a bugfix, please feel free to submit a [pull request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests). Please also reach out for help and advice via the [BikeSpace Civic Tech TO slack channel](http://link.civictech.ca/slack) or at one of the [Civic Tech TO Meetups](https://www.meetup.com/civic-tech-toronto/).
-
 
 ## Overall Structure
 
@@ -70,9 +69,7 @@ Frontend code can be found in the `/src` folder, organized as follows:
 - `/styles` - top level stylesheets (component-specific stylesheets are in `/components`)
 - `/utils` - utility functions (e.g. for analytics)
 
-
 To better understand how the app is organized, we highly recommend you read the [routing docs for NextJS](https://nextjs.org/docs/app/building-your-application/routing).
-
 
 ## Notes on Dashboard Structure
 
@@ -81,7 +78,6 @@ To better understand how the app is organized, we highly recommend you read the 
   - This requires wrapping the page layout (src/components/dashboard/dashboard-layout/DashboardLayout.tsx) in the `QueryClientProvider` component
 - submissions and filters are managed by the custom `useStore` hook, which creates a `zustand` store (see: src/components/dashboard/dashboard-page/DashboardPage.tsx)
   - This makes `DashboardPage.tsx` the "engine" for applying query filters
-
 
 ### Development Tips
 
@@ -93,7 +89,6 @@ Some things to think about when writing components:
 - think about whether the component needs to interact with the URL params
 - ensure that any key interactions are included in analytics using the `trackUmamiEvent` function or the proper [data attributes in links or buttons](https://umami.is/docs/track-events).
 - [accessibility (A11y) testing](https://developer.mozilla.org/en-US/docs/Web/Accessibility), e.g. in the interaction options offered and colour selection
-
 
 ### Jest Testing Tips
 

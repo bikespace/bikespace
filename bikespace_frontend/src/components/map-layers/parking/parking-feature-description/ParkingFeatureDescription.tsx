@@ -5,7 +5,7 @@ import type {Feature} from 'geojson';
 import {SidebarButton} from '@/components/shared-ui/sidebar-button';
 
 import {bicycleParkingDescriptions as bpDesc} from './bicycle_parkingDescriptions';
-import styles from './parking-feature-description.module.scss';
+import styles from '../feature-description.module.scss';
 
 import chevronUp from '@/assets/icons/chevron-up.svg';
 import chevronDown from '@/assets/icons/chevron-down.svg';
@@ -17,6 +17,8 @@ export interface ParkingFeatureDescriptionProps {
   handleClick: Function;
   handleHover: Function;
   handleUnHover: Function;
+  centerFeatureOnMap: Function;
+  onReportIssue: (feature: Feature) => void;
 }
 
 export function ParkingFeatureDescription({
@@ -26,6 +28,8 @@ export function ParkingFeatureDescription({
   handleClick,
   handleHover,
   handleUnHover,
+  centerFeatureOnMap,
+  onReportIssue,
 }: ParkingFeatureDescriptionProps) {
   if (!feature.properties) {
     return <p>Feature has no properties</p>;
@@ -219,11 +223,19 @@ export function ParkingFeatureDescription({
         <SourceLink feature={feature} />
         <div className={styles.featureDescriptionControls}>
           <SidebarButton
-            onClick={(e: React.MouseEvent) => handleClick(e, feature)}
-            disabled={selected}
+            onClick={(e: React.MouseEvent) => {
+              centerFeatureOnMap(feature);
+              if (!selected) handleClick(e, feature);
+            }}
             umamiEvent="parking-feature-select-on-map"
           >
-            Select{selected ? 'ed' : ''} on Map
+            {selected ? 'Center on Map' : 'Select on Map'}
+          </SidebarButton>
+          <SidebarButton
+            onClick={() => onReportIssue(feature)}
+            umamiEvent="parking-feature-report-issue"
+          >
+            Report Issue
           </SidebarButton>
           <SidebarButton
             onClick={() => setShowAllData(!showAllData)}

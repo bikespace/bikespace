@@ -1,6 +1,8 @@
 import {useSubmissionFormContext} from '../submission-form/schema';
+import Link from 'next/link';
 
 import styles from './summary.module.scss';
+import submissionStyles from '../submission-form-controller/submission-form-controller.module.scss';
 
 export const Summary = () => {
   const {
@@ -9,6 +11,7 @@ export const Summary = () => {
   } = useSubmissionFormContext();
 
   const submission = watch();
+  const submissionId = watch('submissionId');
 
   const renderSummary = () => {
     if (errors.root?.serverError) {
@@ -39,6 +42,26 @@ export const Summary = () => {
           <h1>Success</h1>
           <p>Your submission has been entered successfully!</p>
           <p>Thank You!</p>
+
+          {submissionId ? (
+            <Link href={`/dashboard?tab=feed&submission_id=${submissionId}`}>
+              <button
+                className={submissionStyles.primaryBtn}
+                data-umami-event="view-issue-from-submission-confirmation"
+              >
+                View Your Submission
+              </button>
+            </Link>
+          ) : (
+            <Link href="/dashboard">
+              <button
+                className={submissionStyles.primaryBtn}
+                data-umami-event="view-dashboard-from-submission-confirmation"
+              >
+                Go to Dashboard
+              </button>
+            </Link>
+          )}
         </>
       );
     }

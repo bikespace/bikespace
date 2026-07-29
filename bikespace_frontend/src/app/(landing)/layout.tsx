@@ -1,3 +1,3 @@
-import {LandingLayout} from '@/components/landing';
+import {FrontPageLayout} from '@/components/content-pages';
 
-export default LandingLayout;
+export default FrontPageLayout;

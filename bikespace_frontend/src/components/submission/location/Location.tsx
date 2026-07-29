@@ -14,16 +14,21 @@ import styles from './location.module.scss';
 
 export interface LocationProps {
   handler: React.ReactNode;
+  useUrlLocation: boolean;
 }
 
-function Location({handler}: LocationProps) {
+function Location({handler, useUrlLocation}: LocationProps) {
   const {setValue, watch} = useSubmissionFormContext();
 
   const location = watch('location');
-
   const position = [location.latitude, location.longitude] as LatLngTuple;
+  const descText = useUrlLocation
+    ? 'You selected this location in the parking map.'
+    : 'Pin the location.';
 
   useEffect(() => {
+    if (useUrlLocation) return;
+
     navigator.geolocation?.getCurrentPosition(position => {
       setValue('location', {
         latitude: position.coords.latitude,
@@ -36,7 +41,7 @@ function Location({handler}: LocationProps) {
     <div className={styles.location}>
       <FormSectionHeader
         title="Where was the problem?"
-        description="Pin the location"
+        description={descText}
         name="location"
       />
       <section className={styles.outerMapContainer} role="application">

@@ -1,0 +1,6 @@
+@use '@/styles/variables.module.scss' as variables;
+@use '../content-page-layout/content-page-layout.module.scss';
+
+.pageMain {
+  max-width: variables.$wrapper-full-width;
+}

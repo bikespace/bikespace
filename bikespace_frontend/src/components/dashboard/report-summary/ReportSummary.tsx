@@ -1,23 +1,32 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {DateTime} from 'luxon';
 
 import {useStore} from '@/states/store';
-
 import {useAllSubmissionsDateRange, useSubmissionsQuery} from '@/hooks';
 
-import warningIcon from '@/assets/icons/exclamation-triangle.svg';
-
-import {Spinner} from './Spinner';
+import {Spinner} from '@/components/shared-ui/spinner';
 
 import styles from './report-summary.module.scss';
 
-export function ReportSummary() {
-  const {isFetching} = useSubmissionsQuery();
+import warningIcon from '@/assets/icons/exclamation-triangle.svg';
+
+export function ReportSummary({onReady}: {onReady?: () => void}) {
+  const {isLoading} = useSubmissionsQuery();
 
   const {submissions, filters} = useStore(state => ({
     submissions: state.submissions,
     filters: state.filters,
   }));
+
+  const hasFiredReadyRef = useRef(false);
+
+  useEffect(() => {
+    // Guard against calling onReady multiple times
+    if (!isLoading && !hasFiredReadyRef.current) {
+      hasFiredReadyRef.current = true;
+      onReady?.(); // Call onReady only once when all data is fetched
+    }
+  }, [isLoading, onReady]);
 
   const {first, last} = useAllSubmissionsDateRange();
 
@@ -44,11 +53,10 @@ export function ReportSummary() {
     {locale: 'en-CA'}
   );
 
-  if (isFetching) {
+  if (isLoading) {
     return (
       <div className={styles.loading}>
-        Loading Reports
-        <Spinner />
+        <Spinner label="Loading reports..." />
       </div>
     );
   }
@@ -57,7 +65,10 @@ export function ReportSummary() {
     <div className={styles.summary}>
       <div>
         {submissions.length > 0 ? (
-          <span className={styles.entryCount}>
+          <span
+            className={styles.entryCount}
+            data-testid="report-summary-count"
+          >
             {submissions.length.toLocaleString('en-CA')}
           </span>
         ) : (
@@ -67,13 +78,13 @@ export function ReportSummary() {
             alt="warning icon"
           />
         )}
-        <span>
+        <span data-testid="report-summary-label">
           {submissions.length > 0
             ? ` reports ${
                 filters.dateRange.from === null &&
                 filters.dateRange.to === null &&
                 filters.dateRangeInterval === null &&
-                filters.issue === null &&
+                filters.issues.length === 0 &&
                 filters.parkingDuration.length === 0 &&
                 filters.day === null
                   ? ''

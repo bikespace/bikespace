@@ -58,6 +58,13 @@ h2.cardHeading {
   }
 }
 
+.InnerMultipleSidebarContent {
+  display: flex;
+  flex-direction: column;
+  // Added subtle baseline offset for chrome browsers on linux, ensures consistent visual spacing across platforms.
+  gap: 6px;
+}
+
 .chart {
   flex-shrink: 0;
   width: 100%;
@@ -66,4 +73,11 @@ h2.cardHeading {
   padding: 4px;
   overflow: hidden;
   background-color: white;
+}
+
+.loadingIndicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 1rem;
 }

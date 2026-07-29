@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext, useCallback} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 
 import {ParkingDuration} from '@/interfaces/Submission';
 

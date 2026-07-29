@@ -5,7 +5,12 @@ The API service is a python Flask application paired with a Postgres database.
 
 To develop the API locally you'll require the following things:
  - Python version 3.12.0 or greater
- - Docker (docker daemon) running to launch API and database containers with docker compose
+ - Docker (docker daemon) running to launch Postgres database container
+ - Set up local secrets used by flask-security using a `.env` file (see instructions in `/example.env`)
+
+Several tasks (e.g. running the API locally, running certain tests) require a database to be running, but the make targets will take care of launching a Postgres container for you as long as you have Docker running.
+
+To stop the API containers, run `make dev-api-stop`.
 
 ## Running the API service
 
@@ -18,9 +23,15 @@ The development server should now be running at `localhost:8000`
 
 ## API Docs
 
-The api follows an OpenAPI 3.0 Spec, the spec can be found at `bikespace_api/bikespace_api/static/bikespace-open-api.yaml`. When making changes to the database models, the spec should also be edited manually to match.
+The OpenAPI docs are automatically generated using [flask-smorest](https://flask-smorest.readthedocs.io/en/latest/openapi.html), based on the [marshmallow](https://marshmallow.readthedocs.io/en/latest/) schemas used for endpoints.
 
-The swagger-ui to render the OpenAPI spec can be found at `localhost:8000/api/v2/docs`
+The assets used to serve the OpenAPI docs are vendorized (saved to `bikespace_api/bikespace_api/static`). To update these assets, simply copy over the new files from the [swagger-ui `dist` folder](https://github.com/swagger-api/swagger-ui/tree/master/dist).
+
+## Pytest Tips
+
+Common items needed by tests (e.g. a configured instance of the Flask application) are provided via [pytest fixtures](https://docs.pytest.org/en/stable/how-to/fixtures.html). Fixtures specified in `conftest.py` can be used by adding them to the test function parameters and do not need to be imported (see: [fixtures reference](https://docs.pytest.org/en/stable/reference/fixtures.html#conftest-py-sharing-fixtures-across-multiple-files)).
+
+When developing locally, you can use `make test-api-terminal` command to show the coverage breakdown.
 
 ## Observing the database directly
 
@@ -66,7 +77,7 @@ In production, migrations are automatically applied on deployment. In developmen
 
 Creating and applying a migration script:
 
-1. Make and save schema changes, e.g. in `./bikespace_api/bikespace_api/api/models.py`
+1. Make and save schema changes, e.g. in `./bikespace_api/bikespace_api/submissions/submissions_models.py` or `./bikespace_api/bikespace_api/admin/admin_models.py`
 2. Run `make migrate-db`. (A migration file will be generated, you can optionally add a descriptive title using the docstring at the top.)
 3. Run `make upgrade-db` to apply the schema changes to your database.
 

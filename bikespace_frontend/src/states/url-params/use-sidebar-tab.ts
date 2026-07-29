@@ -10,8 +10,6 @@ export enum SidebarTab {
 export const useSidebarTab = () => {
   return useQueryState(
     'tab',
-    parseAsStringEnum<SidebarTab>(Object.values(SidebarTab)).withDefault(
-      SidebarTab.Insights
-    )
+    parseAsStringEnum<SidebarTab>(Object.values(SidebarTab))
   );
 };
