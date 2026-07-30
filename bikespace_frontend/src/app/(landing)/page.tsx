@@ -16,6 +16,7 @@ export default function Page() {
         imageSrc={bikespaceIntro.src}
         imageAlt="An illustration of different types of bicycle parking, ranging from sidewalk bike stands to a secure bike shed"
       ></HeroBlock>
+      <a href="/imagery-map">Imagery Quest Map</a>
     </>
   );
 }
