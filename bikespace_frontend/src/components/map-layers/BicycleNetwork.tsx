@@ -1,6 +1,8 @@
 import React from 'react';
 import {Layer, Source} from 'react-map-gl/maplibre';
 
+import {CustomControlOverlay} from '@/utils/map-utils';
+
 import type {LineLayer} from 'react-map-gl/maplibre';
 
 import styles from './legend-tables.module.scss';
@@ -11,20 +13,28 @@ import networkTrail from '@/assets/icons/bicycle_network/network_park_multiuse_t
 import networkUnknown from '@/assets/icons/bicycle_network/network_unknown_lane.svg';
 import networkSharrow from '@/assets/icons/bicycle_network/network_sharrow_unprotected.svg';
 
-const bikeLaneTypes = {
-  protected: [
+export enum bikeLaneTypes {
+  Protected = 'protected',
+  Painted = 'painted',
+  MultiUseTrails = 'multiUseTrails',
+  UnprotectedConnectors = 'unprotectedConnectors',
+  Unknown = 'unknown',
+}
+
+const bikeLaneTypeLabels = {
+  [bikeLaneTypes.Protected]: [
     'Cycle Track',
     'Cycle Track - Contraflow',
     'Bi-Directional Cycle Track',
   ],
-  painted: [
+  [bikeLaneTypes.Painted]: [
     'Bike Lane',
     'Bike Lane - Buffered',
     'Bike Lane - Contraflow',
     'Contra-Flow Bike Lane',
     'Contraflow',
   ],
-  multiUseTrails: [
+  [bikeLaneTypes.MultiUseTrails]: [
     'Multi-Use Trail',
     'Multi-Use Trail - Boulevard',
     'Multi-Use Trail - Connector',
@@ -32,7 +42,7 @@ const bikeLaneTypes = {
     'Multi-Use Trail - Existing Connector',
     'Park Road',
   ],
-  unprotectedConnectors: [
+  [bikeLaneTypes.UnprotectedConnectors]: [
     'Sharrows',
     'Sharrows - Arterial',
     'Sharrows - Arterial - Connector',
@@ -41,19 +51,40 @@ const bikeLaneTypes = {
   ],
 };
 
-export function BicycleNetworkLayer({beforeId}: {beforeId?: string}) {
+interface BicycleNetworkLayerProps {
+  showBikeLaneTypes?: bikeLaneTypes[];
+  beforeId?: string;
+}
+
+export function BicycleNetworkLayer({
+  beforeId,
+  showBikeLaneTypes = Object.values(bikeLaneTypes),
+}: BicycleNetworkLayerProps) {
   const bicycleNetworkURL = process.env.DATA_BICYCLE_NETWORK;
 
   const bicycleLaneLayer: LineLayer = {
     id: 'bicycle-lanes',
     type: 'line',
     source: 'bicycle-lanes',
+    // excludes unprotected connectors, which are rendered by bicycleRouteLayer
     filter: [
-      'match',
+      'in',
       ['get', 'INFRA_HIGHORDER'],
-      bikeLaneTypes.unprotectedConnectors,
-      false,
-      true,
+      [
+        'literal',
+        [
+          ...(showBikeLaneTypes.includes(bikeLaneTypes.Protected)
+            ? bikeLaneTypeLabels[bikeLaneTypes.Protected]
+            : []),
+          ...(showBikeLaneTypes.includes(bikeLaneTypes.Painted)
+            ? bikeLaneTypeLabels[bikeLaneTypes.Painted]
+            : []),
+          ...(showBikeLaneTypes.includes(bikeLaneTypes.MultiUseTrails)
+            ? bikeLaneTypeLabels[bikeLaneTypes.MultiUseTrails]
+            : []),
+          ...(showBikeLaneTypes.includes(bikeLaneTypes.Unknown) ? [null] : []),
+        ],
+      ],
     ],
     layout: {
       'line-cap': 'round',
@@ -63,13 +94,13 @@ export function BicycleNetworkLayer({beforeId}: {beforeId?: string}) {
       'line-color': [
         'match',
         ['get', 'INFRA_HIGHORDER'],
-        bikeLaneTypes.protected,
+        bikeLaneTypeLabels[bikeLaneTypes.Protected],
         'hsl(137, 68%, 23%)',
-        bikeLaneTypes.multiUseTrails,
+        bikeLaneTypeLabels[bikeLaneTypes.MultiUseTrails],
         '#8c5535',
-        bikeLaneTypes.painted,
+        bikeLaneTypeLabels[bikeLaneTypes.Painted],
         'hsl(137, 68%, 36%)',
-        '#2c3b42',
+        '#2c3b42', // unknown or fallback value
       ],
     },
   };
@@ -79,11 +110,14 @@ export function BicycleNetworkLayer({beforeId}: {beforeId?: string}) {
     type: 'line',
     source: 'bicycle-lanes',
     filter: [
-      'match',
+      'in',
       ['get', 'INFRA_HIGHORDER'],
-      bikeLaneTypes.unprotectedConnectors,
-      true,
-      false,
+      [
+        'literal',
+        showBikeLaneTypes.includes(bikeLaneTypes.UnprotectedConnectors)
+          ? bikeLaneTypeLabels[bikeLaneTypes.UnprotectedConnectors]
+          : [],
+      ],
     ],
     layout: {
       'line-cap': 'round',
@@ -94,7 +128,7 @@ export function BicycleNetworkLayer({beforeId}: {beforeId?: string}) {
       'line-color': [
         'match',
         ['get', 'INFRA_HIGHORDER'],
-        bikeLaneTypes.unprotectedConnectors,
+        bikeLaneTypeLabels[bikeLaneTypes.UnprotectedConnectors],
         'hsl(137, 56%, 62%)',
         '#2c3b42',
       ],
@@ -112,31 +146,31 @@ export function BicycleNetworkLayer({beforeId}: {beforeId?: string}) {
 export function BicycleNetworkLayerLegend() {
   const legendEntries = [
     {
-      key: 'protected',
+      key: bikeLaneTypes.Protected,
       icon: networkProtected.src,
       alt: 'dark green line',
       description: 'Protected bike lane',
     },
     {
-      key: 'painted',
+      key: bikeLaneTypes.Painted,
       icon: networkPainted.src,
       alt: 'green line',
       description: 'Painted bike lane',
     },
     {
-      key: 'trail',
+      key: bikeLaneTypes.MultiUseTrails,
       icon: networkTrail.src,
       alt: 'brown line',
       description: 'Multi-use or park trail',
     },
     {
-      key: 'sharrow',
+      key: bikeLaneTypes.UnprotectedConnectors,
       icon: networkSharrow.src,
       alt: 'light green dashed line',
       description: 'Unprotected bike route (e.g. sharrows)',
     },
     {
-      key: 'unknown',
+      key: bikeLaneTypes.Unknown,
       icon: networkUnknown.src,
       alt: 'dark grey line',
       description: 'Unknown bike lane type',
@@ -164,5 +198,45 @@ export function BicycleNetworkLayerLegend() {
         </tbody>
       </table>
     </>
+  );
+}
+
+interface BicycleNetworkLayerControlProps {
+  selectedTypes: bikeLaneTypes[];
+  setSelectedTypes: React.Dispatch<React.SetStateAction<bikeLaneTypes[]>>;
+}
+
+export function BicycleNetworkLayerControl({
+  selectedTypes,
+  setSelectedTypes,
+}: BicycleNetworkLayerControlProps) {
+  function toggleType(laneType: bikeLaneTypes) {
+    if (selectedTypes.includes(laneType)) {
+      setSelectedTypes(selectedTypes.filter(x => x !== laneType));
+    } else {
+      setSelectedTypes([...selectedTypes, laneType]);
+    }
+  }
+
+  return (
+    <CustomControlOverlay position="bottom-left">
+      <div style={{padding: 4}}>
+        <fieldset>
+          <legend>Cycling Network:</legend>
+          {Object.values(bikeLaneTypes).map(laneType => (
+            <div key={laneType}>
+              <input
+                type="checkbox"
+                id={laneType}
+                name={laneType}
+                checked={selectedTypes.includes(laneType)}
+                onChange={e => toggleType(e.target.name as bikeLaneTypes)}
+              />
+              <label htmlFor={laneType}>{laneType}</label>
+            </div>
+          ))}
+        </fieldset>
+      </div>
+    </CustomControlOverlay>
   );
 }
