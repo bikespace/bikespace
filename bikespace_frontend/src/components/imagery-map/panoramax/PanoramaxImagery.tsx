@@ -78,6 +78,7 @@ export function PanoramaxImageryLayer() {
       id="panoramax-imagery"
       type="vector"
       tiles={['https://panoramax.bikespaceproject.ca/api/map/{z}/{x}/{y}.mvt']}
+      maxzoom={15}
     >
       <Layer {...imageryLineOutlineLayer} />
       <Layer {...imageryLineLayer} />
