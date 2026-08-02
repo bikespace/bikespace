@@ -13,7 +13,7 @@ import {
 import type {RefObject} from 'react';
 import type {Feature, Geometry, GeoJsonProperties} from 'geojson';
 import type {FilterSpecification} from 'maplibre-gl';
-import type {MapRef} from 'react-map-gl/dist/esm/exports-maplibre';
+import type {MapRef} from 'react-map-gl/maplibre';
 
 import styles from './parking-map-filter.module.scss';
 

@@ -10,7 +10,7 @@ import {defaultEnabledFilterProperties} from './parking-map-filter-default-prope
 import testParkingData from '@/__test__/test_data/testParkingData.json';
 
 import type {RefObject} from 'react';
-import type {MapRef} from 'react-map-gl/dist/esm/exports-maplibre';
+import type {MapRef} from 'react-map-gl/maplibre';
 import type {DefinedUseQueryResult} from '@tanstack/react-query';
 
 jest.mock('maplibre-gl', () => {
