@@ -7,7 +7,7 @@ export const COTAerialNightLayer = ({beforeId}: {beforeId: string}) => (
     id="cot-aerial-night"
     type="raster"
     tiles={[
-      'https://gis.toronto.ca/arcgis/rest/services/basemap/cot_2020_NightTimeLight_20cm/MapServer/export?bbox={bbox-epsg-3857}&format=png&transparent=true&timeRelation=esriTimeRelationOverlaps&f=image',
+      'https://gis.toronto.ca/arcgis/rest/services/basemap/cot_2020_NightTimeLight_20cm/MapServer/tile/{z}/{y}/{x}',
     ]}
     tileSize={256}
     attribution="City of Toronto"
@@ -26,7 +26,7 @@ export const COTAerialLatestLayer = ({beforeId}: {beforeId: string}) => (
     id="cot-aerial-latest"
     type="raster"
     tiles={[
-      'https://gis.toronto.ca/arcgis/rest/services/basemap/cot_ortho/MapServer/export?bbox={bbox-epsg-3857}&format=png&transparent=true&timeRelation=esriTimeRelationOverlaps&f=image',
+      'https://gis.toronto.ca/arcgis/rest/services/basemap/cot_ortho/MapServer/tile/{z}/{y}/{x}',
     ]}
     tileSize={256}
     attribution="City of Toronto"
