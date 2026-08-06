@@ -7,7 +7,7 @@ export function useSingleSubmissionQuery(submissionId: number | null) {
     enabled: Boolean(submissionId),
     queryFn: async () => {
       const res = await fetch(
-        `${process.env.BIKESPACE_API_URL_DASHBOARD}/submissions/${submissionId}`
+        `${process.env.BIKESPACE_API_URL_DASHBOARD}/api/v2/submissions/${submissionId}`
       );
       const data = await res.json();
       return data as SubmissionApiPayload;

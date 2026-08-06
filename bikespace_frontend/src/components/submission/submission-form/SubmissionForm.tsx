@@ -40,7 +40,7 @@ export function SubmissionForm() {
   const onSubmit = async (data: SubmissionSchema) => {
     try {
       const response = await fetch(
-        `${process.env.BIKESPACE_API_URL}/submissions`,
+        `${process.env.BIKESPACE_API_URL}/api/v2/submissions`,
         {
           method: 'POST',
           body: JSON.stringify({

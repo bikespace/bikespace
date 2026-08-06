@@ -2,8 +2,7 @@ import {test, expect} from '@playwright/test';
 
 const testLat = 43.76;
 const testLong = -79.43;
-const apiURL: string =
-  process.env.BIKESPACE_API_URL ?? 'http://localhost:8001/api/v2';
+const apiURL: string = process.env.BIKESPACE_API_URL ?? 'http://localhost:8001';
 
 test.use({
   geolocation: {
@@ -70,7 +69,7 @@ test('Submit an issue', async ({page}, testInfo) => {
   await expect(submitSummary).toContainText(`Comments: ${testComment}`);
 
   // check API call on submission
-  const requestPromise = page.waitForRequest(apiURL + '/submissions');
+  const requestPromise = page.waitForRequest(apiURL + '/api/v2/submissions');
   await page.getByRole('button', {name: 'Submit'}).click();
   const request = await requestPromise;
   expect(request.postDataJSON()).toMatchObject({

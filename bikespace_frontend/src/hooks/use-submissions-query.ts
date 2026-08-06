@@ -7,13 +7,13 @@ export function useSubmissionsQuery() {
     queryKey: ['submissions'],
     queryFn: async () => {
       const countRes = await fetch(
-        `${process.env.BIKESPACE_API_URL_DASHBOARD}/submissions?limit=1`
+        `${process.env.BIKESPACE_API_URL_DASHBOARD}/api/v2/submissions?limit=1`
       );
       const countData = await countRes.json();
       const total_items = countData.pagination.total_items;
 
       const res = await fetch(
-        `${process.env.BIKESPACE_API_URL_DASHBOARD}/submissions?limit=${total_items}`
+        `${process.env.BIKESPACE_API_URL_DASHBOARD}/api/v2/submissions?limit=${total_items}`
       );
       const data = await res.json();
 
