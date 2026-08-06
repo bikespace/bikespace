@@ -1,0 +1,14 @@
+@import '@/styles/variables.module.scss';
+
+.loginForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 300px;
+  gap: 1rem;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+}
