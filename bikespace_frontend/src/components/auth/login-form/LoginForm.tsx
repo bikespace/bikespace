@@ -15,7 +15,7 @@ type LoginInputs = {
   password: string;
 };
 
-export function LoginForm() {
+export default function LoginForm() {
   const {authToken, setAuthToken, username, setUsername} = useAuthStore(
     state => ({
       authToken: state.authToken,

@@ -71,9 +71,23 @@ Frontend code can be found in the `/src` folder, organized as follows:
 
 To better understand how the app is organized, we highly recommend you read the [routing docs for NextJS](https://nextjs.org/docs/app/building-your-application/routing).
 
+`next/dynamic` is used for lazy loading or to prevent rendering before hydration with the `ssr: false` option; see: https://nextjs.org/docs/pages/building-your-application/optimizing/lazy-loading#nextdynamic
+
+Example below; for typing, the component should be a default export from its source file.
+
+```ts
+import dynamic from 'next/dynamic';
+
+...
+
+const MyComponent = dynamic(() => import('../my-component/MyComponent'), {
+  loading: () => <Spinner />, // optional loading state
+  ssr: false, // prevent rendering before hydration
+});
+```
+
 ## Notes on Dashboard Structure
 
-- `dynamic` is used for lazy loading, see: https://nextjs.org/docs/pages/building-your-application/optimizing/lazy-loading#nextdynamic
 - `react-query` is used to manage getting data from the API, see: https://tanstack.com/query/latest/docs/framework/react/overview
   - This requires wrapping the page layout (src/components/dashboard/dashboard-layout/DashboardLayout.tsx) in the `QueryClientProvider` component
 - submissions and filters are managed by the custom `useStore` hook, which creates a `zustand` store (see: src/components/dashboard/dashboard-page/DashboardPage.tsx)
