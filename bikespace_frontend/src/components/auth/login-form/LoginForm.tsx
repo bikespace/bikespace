@@ -2,6 +2,8 @@ import {useState} from 'react';
 import {useForm, SubmitHandler} from 'react-hook-form';
 import {useSearchParams} from 'next/navigation';
 
+import {useAuthStore} from '@/states/store';
+
 // ...
 
 import styles from './login-form.module.scss';
@@ -12,7 +14,13 @@ type LoginInputs = {
 };
 
 export function LoginForm() {
+  const {authToken, setAuthToken} = useAuthStore(state => ({
+    authToken: state.authToken,
+    setAuthToken: state.setAuthToken,
+  }));
+
   const f = useForm<LoginInputs>();
+
   const onSubmit: SubmitHandler<LoginInputs> = async data => {
     console.log(data, process.env.BIKESPACE_API_URL);
     try {
@@ -30,8 +38,10 @@ export function LoginForm() {
           },
         }
       );
-      console.log(response.json());
+      const responseData = await response.json();
+      setAuthToken(responseData.response.user.authentication_token);
     } catch (error) {
+      // TODO improve error handling
       f.setError('root.unexpected', error as Error);
     }
   };
@@ -50,6 +60,7 @@ export function LoginForm() {
         </div>
         <input type="submit" value="Login" />
       </form>
+      <p>{authToken ? 'Logged in!' : 'Not logged in'}</p>
     </>
   );
 }
