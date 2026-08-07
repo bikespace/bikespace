@@ -4,6 +4,8 @@ import {useSearchParams} from 'next/navigation';
 
 import {useAuthStore} from '@/states/store';
 
+import {SidebarButton} from '@/components/shared-ui/sidebar-button';
+
 // ...
 
 import styles from './login-form.module.scss';
@@ -14,15 +16,18 @@ type LoginInputs = {
 };
 
 export function LoginForm() {
-  const {authToken, setAuthToken} = useAuthStore(state => ({
-    authToken: state.authToken,
-    setAuthToken: state.setAuthToken,
-  }));
+  const {authToken, setAuthToken, username, setUsername} = useAuthStore(
+    state => ({
+      authToken: state.authToken,
+      setAuthToken: state.setAuthToken,
+      username: state.username,
+      setUsername: state.setUsername,
+    })
+  );
 
   const f = useForm<LoginInputs>();
 
   const onSubmit: SubmitHandler<LoginInputs> = async data => {
-    console.log(data, process.env.BIKESPACE_API_URL);
     try {
       const response = await fetch(
         `${process.env.BIKESPACE_API_URL}/admin/login/?include_auth_token`,
@@ -39,6 +44,7 @@ export function LoginForm() {
         }
       );
       const responseData = await response.json();
+      setUsername(data.email);
       setAuthToken(responseData.response.user.authentication_token);
     } catch (error) {
       // TODO improve error handling
@@ -46,7 +52,17 @@ export function LoginForm() {
     }
   };
 
-  return (
+  function handleLogout() {
+    setAuthToken(null);
+    setUsername(null);
+  }
+
+  return authToken ? (
+    <>
+      <h1>Logged in as {username}</h1>
+      <SidebarButton onClick={handleLogout}>Log Out</SidebarButton>
+    </>
+  ) : (
     <>
       <h1>Login</h1>
       <form className={styles.loginForm} onSubmit={f.handleSubmit(onSubmit)}>
@@ -60,7 +76,6 @@ export function LoginForm() {
         </div>
         <input type="submit" value="Login" />
       </form>
-      <p>{authToken ? 'Logged in!' : 'Not logged in'}</p>
     </>
   );
 }

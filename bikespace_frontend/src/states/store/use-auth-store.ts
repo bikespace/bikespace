@@ -5,6 +5,8 @@ import {shallow} from 'zustand/shallow';
 interface AuthStore {
   authToken: string | null;
   setAuthToken: (newToken: string | null) => void;
+  username: string | null;
+  setUsername: (newUsername: string | null) => void;
 }
 
 export const useAuthStore = createWithEqualityFn<AuthStore>()(
@@ -12,6 +14,8 @@ export const useAuthStore = createWithEqualityFn<AuthStore>()(
     set => ({
       authToken: null,
       setAuthToken: newToken => set({authToken: newToken}),
+      username: null,
+      setUsername: newUsername => set({username: newUsername}),
     }),
     {name: 'auth-token'}
   ),
