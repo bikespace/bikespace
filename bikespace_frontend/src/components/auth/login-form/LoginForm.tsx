@@ -1,11 +1,7 @@
 import {useForm, SubmitHandler} from 'react-hook-form';
 
 import {useAuthStore} from '@/states/store';
-import {useUserQuery} from '@/hooks/use-user-query';
-
 import {SidebarButton} from '@/components/shared-ui/sidebar-button';
-
-// ...
 
 import styles from './login-form.module.scss';
 
@@ -19,8 +15,6 @@ export default function LoginForm() {
     authToken: state.authToken,
     setAuthToken: state.setAuthToken,
   }));
-
-  const userQuery = useUserQuery();
 
   const f = useForm<LoginInputs>();
 
@@ -53,24 +47,28 @@ export default function LoginForm() {
   }
 
   return authToken ? (
-    <>
-      <h1>Logged in as {userQuery.data?.username}</h1>
-      <SidebarButton onClick={handleLogout}>Log Out</SidebarButton>
-    </>
+    <div className={styles.loginForm}>
+      <div className={styles.actionButton}>
+        <SidebarButton onClick={handleLogout}>Log Out</SidebarButton>
+      </div>
+    </div>
   ) : (
-    <>
-      <h1>Login</h1>
-      <form className={styles.loginForm} onSubmit={f.handleSubmit(onSubmit)}>
+    <div className={styles.loginForm}>
+      <form className={styles.formArea} onSubmit={f.handleSubmit(onSubmit)}>
         <div className={styles.inputGroup}>
           <label htmlFor="email">Email</label>
-          <input id="email" {...f.register('email')} />
+          <input id="email" type="text" {...f.register('email')} />
         </div>
         <div className={styles.inputGroup}>
           <label htmlFor="password">Password</label>
           <input id="password" type="password" {...f.register('password')} />
         </div>
-        <input type="submit" value="Login" />
+        <div className={styles.actionButton}>
+          <SidebarButton type="submit">Login</SidebarButton>
+        </div>
       </form>
-    </>
+    </div>
   );
 }
+
+export {LoginForm};

@@ -8,20 +8,20 @@ import {queryClient} from '@/config/query-client';
 import {Spinner} from '@/components/shared-ui/spinner';
 import {SubmissionHeader} from '@/components/submission/submission-header';
 
-import styles from './login-page.module.scss';
+import styles from './profile-page.module.scss';
 
-const LoginForm = dynamic(() => import('../login-form/LoginForm'), {
-  loading: () => <Spinner />,
-  ssr: false,
-});
+const ProfileDetails = dynamic(
+  () => import('../profile-details/ProfileDetails'),
+  {loading: () => <Spinner />, ssr: false}
+);
 
 export function UserProfilePage() {
   return (
     <QueryClientProvider client={queryClient}>
-      <div className={styles.loginPage}>
+      <div className={styles.profilePage}>
         <SubmissionHeader />
         <main>
-          <LoginForm />
+          <ProfileDetails />
         </main>
       </div>
     </QueryClientProvider>

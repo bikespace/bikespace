@@ -1,12 +1,15 @@
 @import '@/styles/variables.module.scss';
 
-.loginPage {
+.profilePage {
+  height: 100vh;
+  background-color: $color-primary-20p;
+
   main {
-    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 1rem;
+    padding: 2rem 1rem;
   }
 }
