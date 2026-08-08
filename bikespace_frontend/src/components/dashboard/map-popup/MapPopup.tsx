@@ -30,6 +30,7 @@ export const MapPopup = forwardRef<LeafletPopup, MapPopupProps>(
       parking_duration,
       parking_time,
       submitted_datetime,
+      user,
     } = submission;
 
     const parkingTime = new Date(parking_time + '+00:00');
@@ -70,7 +71,7 @@ export const MapPopup = forwardRef<LeafletPopup, MapPopupProps>(
           )}
         </div>
         <p>
-          This person wanted to park for{' '}
+          {user ? user : 'This person'} wanted to park for{' '}
           <strong>{durationDescription[parking_duration]}</strong> on{' '}
           <strong title={timeDescriptionTitle}>{formattedParkingTime}</strong>
         </p>

@@ -21,6 +21,36 @@ def seed_base_data():
     """Seed the 4 canonical submissions and 2 test users. Requires an active app context."""
     user_datastore = create_userdatastore(db, User, Role)
 
+    # create user roles
+    user_role = Role(name=ApplicationRoles.USER)
+    super_user_role = Role(name=ApplicationRoles.SUPERUSER)
+    for role in [user_role, super_user_role]:
+        if db.session.query(Role).filter_by(name=role.name).first() is None:
+            db.session.add(role)
+            db.session.commit()
+
+    # create users
+    user_datastore.create_user(
+        username="adminuser",
+        first_name="Admin",
+        last_name="User",
+        email="admin@example.com",
+        password=hash_password("admin"),
+        roles=[user_role, super_user_role],
+    )
+    db.session.commit()
+
+    user_datastore.create_user(
+        username="nonadminuser",
+        first_name="Not an Admin",
+        last_name="User",
+        email="notanadmin@example.com",
+        password=hash_password("notanadmin"),
+        roles=[user_role],
+    )
+    db.session.commit()
+
+    # create submissions
     db.session.add(
         Submission(
             43.6532,
@@ -29,6 +59,7 @@ def seed_base_data():
             ParkingDuration.MINUTES,
             datetime.now(),
             "comments1",
+            User.query.filter_by(username="nonadminuser").first().id,
         )
     )
     db.session.add(
@@ -39,6 +70,7 @@ def seed_base_data():
             ParkingDuration.HOURS,
             datetime.now(),
             "comments2",
+            User.query.filter_by(username="adminuser").first().id,
         )
     )
     db.session.add(
@@ -68,31 +100,4 @@ def seed_base_data():
         db.select(Submission).filter_by(comments="Example of null submitted_datetime")
     ).scalar_one()
     null_submission.submitted_datetime = None
-    db.session.commit()
-
-    user_role = Role(name=ApplicationRoles.USER)
-    super_user_role = Role(name=ApplicationRoles.SUPERUSER)
-    for role in [user_role, super_user_role]:
-        if db.session.query(Role).filter_by(name=role.name).first() is None:
-            db.session.add(role)
-            db.session.commit()
-
-    user_datastore.create_user(
-        username="adminuser",
-        first_name="Admin",
-        last_name="User",
-        email="admin@example.com",
-        password=hash_password("admin"),
-        roles=[user_role, super_user_role],
-    )
-    db.session.commit()
-
-    user_datastore.create_user(
-        username="nonadminuser",
-        first_name="Not an Admin",
-        last_name="User",
-        email="notanadmin@example.com",
-        password=hash_password("notanadmin"),
-        roles=[user_role],
-    )
     db.session.commit()

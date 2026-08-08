@@ -4,6 +4,7 @@ import {DateTime} from 'luxon';
 import {SubmissionApiPayload, ParkingDuration} from '@/interfaces/Submission';
 import {issuePriority} from '@/config/bikespace-api';
 
+import {sentenceCase} from '@/utils';
 import {IssueBadge} from '../issue-badge';
 
 import styles from './feed-submission-item.module.scss';
@@ -33,6 +34,7 @@ export const FeedSubmissionItem = forwardRef(
       parking_duration,
       comments,
       submitted_datetime,
+      user,
     } = submission;
 
     const parkingTime = new Date(parking_time + '+00:00');
@@ -60,7 +62,10 @@ export const FeedSubmissionItem = forwardRef(
         </h3>
         <div className={styles.subHeader}>
           <span>
-            {DateTime.fromJSDate(parkingTime).toRelativeCalendar()} •{' '}
+            {sentenceCase(
+              DateTime.fromJSDate(parkingTime).toRelativeCalendar()
+            )}{' '}
+            •{' '}
             {DateTime.fromJSDate(parkingTime).toLocaleString(
               DateTime.TIME_SIMPLE,
               {locale: 'en-CA'}
@@ -95,6 +100,7 @@ export const FeedSubmissionItem = forwardRef(
             {comments}
           </p>
         )}
+        {user && <p className={styles.user}>Submitted by {user}</p>}
       </button>
     );
   }
