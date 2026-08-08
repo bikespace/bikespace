@@ -1,8 +1,7 @@
-import {useState} from 'react';
 import {useForm, SubmitHandler} from 'react-hook-form';
-import {useSearchParams} from 'next/navigation';
 
 import {useAuthStore} from '@/states/store';
+import {useUserQuery} from '@/hooks/use-user-query';
 
 import {SidebarButton} from '@/components/shared-ui/sidebar-button';
 
@@ -16,14 +15,12 @@ type LoginInputs = {
 };
 
 export default function LoginForm() {
-  const {authToken, setAuthToken, username, setUsername} = useAuthStore(
-    state => ({
-      authToken: state.authToken,
-      setAuthToken: state.setAuthToken,
-      username: state.username,
-      setUsername: state.setUsername,
-    })
-  );
+  const {authToken, setAuthToken} = useAuthStore(state => ({
+    authToken: state.authToken,
+    setAuthToken: state.setAuthToken,
+  }));
+
+  const userQuery = useUserQuery();
 
   const f = useForm<LoginInputs>();
 
@@ -44,22 +41,20 @@ export default function LoginForm() {
         }
       );
       const responseData = await response.json();
-      setUsername(data.email);
       setAuthToken(responseData.response.user.authentication_token);
     } catch (error) {
-      // TODO improve error handling
+      // TODO improve error handling and change this fetch to a mutate
       f.setError('root.unexpected', error as Error);
     }
   };
 
   function handleLogout() {
     setAuthToken(null);
-    setUsername(null);
   }
 
   return authToken ? (
     <>
-      <h1>Logged in as {username}</h1>
+      <h1>Logged in as {userQuery.data?.username}</h1>
       <SidebarButton onClick={handleLogout}>Log Out</SidebarButton>
     </>
   ) : (
