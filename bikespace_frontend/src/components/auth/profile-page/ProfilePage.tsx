@@ -15,7 +15,7 @@ const LoginForm = dynamic(() => import('../login-form/LoginForm'), {
   ssr: false,
 });
 
-export function LoginPage() {
+export function UserProfilePage() {
   return (
     <QueryClientProvider client={queryClient}>
       <div className={styles.loginPage}>

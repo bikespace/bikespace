@@ -1,1 +1,1 @@
-export {LoginPage} from './login-page/LoginPage';
+export {UserProfilePage} from './profile-page/ProfilePage';

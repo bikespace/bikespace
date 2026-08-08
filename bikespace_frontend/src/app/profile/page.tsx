@@ -1,9 +1,9 @@
 import React from 'react';
 
-import {LoginPage} from '@/components/auth';
+import {UserProfilePage} from '@/components/auth';
 
-const LoginRoute = () => {
-  return <LoginPage />;
+const UserProfileRoute = () => {
+  return <UserProfilePage />;
 };
 
-export default LoginRoute;
+export default UserProfileRoute;
