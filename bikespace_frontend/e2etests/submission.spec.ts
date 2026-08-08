@@ -22,7 +22,7 @@ test.beforeEach(async ({context}) => {
   await context.route(/https?:\/\/(?!localhost).+/, route => route.abort());
 });
 
-test('Submit an issue', async ({page}, testInfo) => {
+test('Submit an issue (not logged in)', async ({page}, testInfo) => {
   // navigate to /submissions from home page
   await page.goto('/');
 
@@ -92,4 +92,106 @@ test('Submit an issue', async ({page}, testInfo) => {
   await expect(page).toHaveURL(dashboardURLPattern, {timeout: 15_000});
 
   await expect(page.getByText(testComment).first()).toBeVisible();
+});
+
+test('Log in, submit an issue, log out', async ({page}, testInfo) => {
+  const nonAdminUser = {
+    username: 'nonadminuser',
+    email: 'notanadmin@example.com',
+    password: 'notanadmin',
+  };
+
+  // navigate to /login
+  await page.goto('/login');
+
+  // enter credentials
+  await page.getByLabel(/email/i).fill(nonAdminUser.email);
+  await page.getByLabel(/password/i).fill(nonAdminUser.password);
+  await page.getByRole('button', {name: /log\s?in/i}).click();
+
+  // confirm login was successful
+  await expect(page.getByText(nonAdminUser.username).first()).toBeVisible();
+  await expect(page.getByRole('button', {name: /log\s?out/i})).toBeVisible();
+
+  // navigate to /submissions
+  await page.goto('/submission');
+
+  // issue entry - 'next' button should be disabled until an issue is selected
+  await expect(page.getByRole('button', {name: 'Next'})).toBeDisabled();
+  await page.getByText('Bicycle parking is not provided').click();
+  await page.getByRole('button', {name: 'Next'}).click();
+
+  // location entry
+  await page.waitForSelector('div.leaflet-container');
+  await page
+    .locator('div.leaflet-container')
+    .click({position: {x: 100, y: 100}});
+  await page.getByRole('button', {name: 'Next'}).click();
+
+  // parking_time, parking_duration entry
+  await page.getByLabel('When did this happen?').fill('2023-01-01T12:30');
+  await page.getByText('hours').click();
+  await page.getByRole('button', {name: 'Next'}).click();
+
+  // comment entry
+  const testComment = `Comment from end-to-end test "${testInfo.title}" on ${testInfo.project.name} run ${new Date().toISOString()}`;
+  await page.getByRole('textbox').fill(testComment);
+  await page.getByRole('button', {name: 'Next'}).click();
+
+  // check summary content
+  const submitSummary = page.locator('#submission-summary');
+  await expect(submitSummary).toContainText(nonAdminUser.username);
+  await expect(submitSummary).toContainText('Issues: not_provided');
+  await expect(submitSummary).toContainText(
+    /Location: \d{2}\.\d+, -\d{2}\.\d+/
+  );
+  // Should be slightly different location than browser if map interaction successful
+  await expect(submitSummary).not.toContainText(
+    `Location: ${testLat}, ${testLong}`
+  );
+  await expect(submitSummary).toContainText(/Time: Sun Jan \d?1 2023/);
+  await expect(submitSummary).toContainText('Parking duration needed: hours');
+  await expect(submitSummary).toContainText(`Comments: ${testComment}`);
+
+  // check API call on submission
+  const requestPromise = page.waitForRequest(apiURL + '/api/v2/submissions');
+  await page.getByRole('button', {name: 'Submit'}).click();
+  const request = await requestPromise;
+  expect(request.postDataJSON()).toMatchObject({
+    issues: ['not_provided'],
+    parking_time: '2023-01-01T17:30:00.000Z',
+    parking_duration: 'hours',
+    comments: testComment,
+  });
+  expect(request.postDataJSON()).toHaveProperty('latitude');
+  expect(request.postDataJSON()).toHaveProperty('longitude');
+
+  // check post-submission page
+  await expect(page.getByRole('heading')).toHaveText('Success');
+  const closeButton = page.getByRole('button', {name: /close/i});
+  expect(closeButton).toBeVisible();
+
+  // use the "View Your Submission" button to navigate to the dashboard
+  await page.getByRole('button', {name: /view your submission/i}).click();
+  const dashboardURLPattern = /\/dashboard/i;
+  await expect(page).toHaveURL(dashboardURLPattern, {timeout: 15_000});
+
+  // Confirm that the issue card shows the username
+  const issueDetailsCardComment = page.getByText(testComment).first();
+  await expect(page.getByText(testComment).first()).toBeVisible();
+  const issueDetailsCard = page
+    .getByRole('button')
+    .filter({has: issueDetailsCardComment});
+  await expect(
+    issueDetailsCard.getByText(nonAdminUser.username).first()
+  ).toBeVisible();
+
+  // navigate to /login
+  await page.goto('/login');
+
+  // log out
+  await page.getByRole('button', {name: /log\s?out/i}).click();
+
+  // confirm that log out was successful
+  await expect(page.getByRole('button', {name: /log\s?in/i})).toBeVisible();
 });

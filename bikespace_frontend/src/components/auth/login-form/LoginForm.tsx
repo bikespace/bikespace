@@ -63,11 +63,11 @@ export default function LoginForm() {
       <form className={styles.loginForm} onSubmit={f.handleSubmit(onSubmit)}>
         <div className={styles.inputGroup}>
           <label htmlFor="email">Email</label>
-          <input {...f.register('email')} />
+          <input id="email" {...f.register('email')} />
         </div>
         <div className={styles.inputGroup}>
           <label htmlFor="password">Password</label>
-          <input type="password" {...f.register('password')} />
+          <input id="password" type="password" {...f.register('password')} />
         </div>
         <input type="submit" value="Login" />
       </form>

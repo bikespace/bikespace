@@ -1,6 +1,10 @@
 import {useSubmissionFormContext} from '../submission-form/schema';
 import Link from 'next/link';
 
+import {useUserQuery} from '@/hooks/use-user-query';
+
+import {FormSectionHeader} from '../form-section-header';
+
 import styles from './summary.module.scss';
 import submissionStyles from '../submission-form-controller/submission-form-controller.module.scss';
 
@@ -9,6 +13,7 @@ export const Summary = () => {
     watch,
     formState: {isSubmitSuccessful, errors},
   } = useSubmissionFormContext();
+  const userQuery = useUserQuery();
 
   const submission = watch();
   const submissionId = watch('submissionId');
@@ -17,7 +22,7 @@ export const Summary = () => {
     if (errors.root?.serverError) {
       return (
         <>
-          <h1>Oops!</h1>
+          <h2>Oops!</h2>
           <p>
             Something went wrong on our end processing your submission, please
             try again later!
@@ -27,7 +32,7 @@ export const Summary = () => {
     } else if (errors.root?.unexpected) {
       return (
         <>
-          <h1>Oops!</h1>
+          <h2>Oops!</h2>
           <p>
             Something went wrong beyond our expectations. Please try again
             later, and report this bug to the developers :
@@ -39,7 +44,7 @@ export const Summary = () => {
     if (isSubmitSuccessful) {
       return (
         <>
-          <h1>Success</h1>
+          <h2>Success</h2>
           <p>Your submission has been entered successfully!</p>
           <p>Thank You!</p>
 
@@ -68,8 +73,14 @@ export const Summary = () => {
 
     return (
       <>
-        <h1>Summary</h1>
+        <h2>Summary</h2>
         <div>
+          {userQuery.isSuccess ? (
+            <p>
+              <strong>Submitting as: </strong>
+              {userQuery.data.username}
+            </p>
+          ) : null}
           <p>
             <strong>Issues: </strong>
             {submission.issues.join(', ')}

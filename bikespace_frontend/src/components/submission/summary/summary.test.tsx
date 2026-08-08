@@ -7,6 +7,9 @@ import {
 import {render, screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
+import {QueryClientProvider} from '@tanstack/react-query';
+import {queryClient} from '@/config/query-client';
+
 import {ParkingDuration, IssueType} from '@/interfaces/Submission';
 import {defaultMapCenter} from '@/utils/map-utils';
 
@@ -59,9 +62,13 @@ jest.mock('next/navigation', () => ({
 
 describe('Summary', () => {
   test('Summary text should render correctly', () => {
-    const {unmount} = render(<MockSummary />);
+    const {unmount} = render(
+      <QueryClientProvider client={queryClient}>
+        <MockSummary />
+      </QueryClientProvider>
+    );
 
-    expect(screen.getByRole('heading', {level: 1})).toHaveTextContent(
+    expect(screen.getByRole('heading', {level: 2})).toHaveTextContent(
       'Summary'
     );
     expect(screen.getByText(/Issues:/i));
@@ -75,7 +82,11 @@ describe('Summary', () => {
   });
 
   test('Success response status should render correct message', async () => {
-    render(<MockSummary />);
+    render(
+      <QueryClientProvider client={queryClient}>
+        <MockSummary />
+      </QueryClientProvider>
+    );
 
     const submitButton = screen.getByText('Submit');
 
@@ -83,18 +94,20 @@ describe('Summary', () => {
 
     await user.click(submitButton);
 
-    expect(screen.getByRole('heading', {level: 1})).toHaveTextContent(
+    expect(screen.getByRole('heading', {level: 2})).toHaveTextContent(
       'Success'
     );
   });
 
   test('Error response status should render correct message', async () => {
     render(
-      <MockSummary
-        onSubmit={(form: UseFormReturn<SubmissionSchema>) => {
-          form.setError('root.serverError', {message: 'Error'});
-        }}
-      />
+      <QueryClientProvider client={queryClient}>
+        <MockSummary
+          onSubmit={(form: UseFormReturn<SubmissionSchema>) => {
+            form.setError('root.serverError', {message: 'Error'});
+          }}
+        />
+      </QueryClientProvider>
     );
 
     const submitButton = screen.getByText('Submit');
@@ -112,11 +125,13 @@ describe('Summary', () => {
 
   test('Unexpected response status should render correct message', async () => {
     render(
-      <MockSummary
-        onSubmit={(form: UseFormReturn<SubmissionSchema>) => {
-          form.setError('root.unexpected', {message: 'Error'});
-        }}
-      />
+      <QueryClientProvider client={queryClient}>
+        <MockSummary
+          onSubmit={(form: UseFormReturn<SubmissionSchema>) => {
+            form.setError('root.unexpected', {message: 'Error'});
+          }}
+        />
+      </QueryClientProvider>
     );
 
     const submitButton = screen.getByText('Submit');
@@ -130,12 +145,14 @@ describe('Summary', () => {
 
   test('View Your Submission button links to correct dashboard URL when submissionId is present', async () => {
     render(
-      <MockSummary
-        onSubmit={(form: UseFormReturn<SubmissionSchema>) => {
-          // simulate successful submission response including submissionId
-          form.setValue('submissionId', '123');
-        }}
-      />
+      <QueryClientProvider client={queryClient}>
+        <MockSummary
+          onSubmit={(form: UseFormReturn<SubmissionSchema>) => {
+            // simulate successful submission response including submissionId
+            form.setValue('submissionId', '123');
+          }}
+        />
+      </QueryClientProvider>
     );
 
     const user = userEvent.setup();
