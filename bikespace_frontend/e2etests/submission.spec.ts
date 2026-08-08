@@ -101,8 +101,8 @@ test('Log in, submit an issue, log out', async ({page}, testInfo) => {
     password: 'notanadmin',
   };
 
-  // navigate to /login
-  await page.goto('/login');
+  // navigate to /profile
+  await page.goto('/profile');
 
   // enter credentials
   await page.getByLabel(/email/i).fill(nonAdminUser.email);
@@ -186,8 +186,8 @@ test('Log in, submit an issue, log out', async ({page}, testInfo) => {
     issueDetailsCard.getByText(nonAdminUser.username).first()
   ).toBeVisible();
 
-  // navigate to /login
-  await page.goto('/login');
+  // navigate to /profile
+  await page.goto('/profile');
 
   // log out
   await page.getByRole('button', {name: /log\s?out/i}).click();
