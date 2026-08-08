@@ -9,7 +9,7 @@ import marshmallow as ma
 from better_profanity import profanity
 from flask import Response, make_response, request, url_for
 from flask.views import MethodView
-from flask_security import current_user, auth_required, roles_accepted  # type: ignore
+from flask_security import auth_required, current_user, roles_accepted  # type: ignore
 from flask_smorest import abort
 from geojson import Feature, FeatureCollection, Point
 from marshmallow import validate

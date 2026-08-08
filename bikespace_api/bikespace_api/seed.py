@@ -16,6 +16,23 @@ from bikespace_api.submissions.submissions_models import (
     Submission,
 )
 
+admin_user = {
+    "username": "adminuser",
+    "first_name": "Admin",
+    "last_name": "User",
+    "email": "admin@example.com",
+    "password": "admin",
+    "roles": [ApplicationRoles.USER, ApplicationRoles.SUPERUSER],
+}
+non_admin_user = {
+    "username": "nonadminuser",
+    "first_name": "Not an Admin",
+    "last_name": "User",
+    "email": "notanadmin@example.com",
+    "password": "notanadmin",
+    "roles": [ApplicationRoles.USER],
+}
+
 
 def seed_base_data():
     """Seed the 4 canonical submissions and 2 test users. Requires an active app context."""
@@ -31,22 +48,26 @@ def seed_base_data():
 
     # create users
     user_datastore.create_user(
-        username="adminuser",
-        first_name="Admin",
-        last_name="User",
-        email="admin@example.com",
-        password=hash_password("admin"),
-        roles=[user_role, super_user_role],
+        username=admin_user["username"],
+        first_name=admin_user["first_name"],
+        last_name=admin_user["last_name"],
+        email=admin_user["email"],
+        password=hash_password(admin_user["password"]),
+        roles=[
+            Role(name=role_name) for role_name in admin_user["roles"]
+        ],  # pragma: no cover
     )
     db.session.commit()
 
     user_datastore.create_user(
-        username="nonadminuser",
-        first_name="Not an Admin",
-        last_name="User",
-        email="notanadmin@example.com",
-        password=hash_password("notanadmin"),
-        roles=[user_role],
+        username=non_admin_user["username"],
+        first_name=non_admin_user["first_name"],
+        last_name=non_admin_user["last_name"],
+        email=non_admin_user["email"],
+        password=hash_password(non_admin_user["password"]),
+        roles=[
+            Role(name=role_name) for role_name in non_admin_user["roles"]
+        ],  # pragma: no cover
     )
     db.session.commit()
 
@@ -59,7 +80,7 @@ def seed_base_data():
             ParkingDuration.MINUTES,
             datetime.now(),
             "comments1",
-            User.query.filter_by(username="nonadminuser").first().id,
+            User.query.filter_by(username=non_admin_user["username"]).first().id,
         )
     )
     db.session.add(
@@ -70,7 +91,7 @@ def seed_base_data():
             ParkingDuration.HOURS,
             datetime.now(),
             "comments2",
-            User.query.filter_by(username="adminuser").first().id,
+            User.query.filter_by(username=admin_user["username"]).first().id,
         )
     )
     db.session.add(
