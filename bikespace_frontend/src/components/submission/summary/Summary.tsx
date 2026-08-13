@@ -3,8 +3,6 @@ import Link from 'next/link';
 
 import {useUserQuery} from '@/hooks/use-user-query';
 
-import {FormSectionHeader} from '../form-section-header';
-
 import styles from './summary.module.scss';
 import submissionStyles from '../submission-form-controller/submission-form-controller.module.scss';
 
