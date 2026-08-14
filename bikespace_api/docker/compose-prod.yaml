@@ -19,7 +19,7 @@ services:
       SEED_USER_EMAIL: ${SEED_USER_EMAIL:?}
       SEED_USER_PASSWORD: ${SERVICE_PASSWORD_64_SEEDUSERPASSWORD}
     ports:
-      - "80:8000"
+      - 8000
     restart: always
 
   db:
