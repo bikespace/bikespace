@@ -1,0 +1,43 @@
+name: bikespace_prod
+
+services:
+  bikespace_api:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    depends_on:
+      db:
+        condition: service_healthy
+        restart: true
+    environment:
+      APP_SETTINGS: "bikespace_api.config.ProductionConfig"
+      DATABASE_URL: "postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db/${POSTGRES_DB}"
+      FLASK_DEBUG: "false"
+      FLASK_RUN_PORT: 8000
+      BIKESPACE_SECRET_KEY: ${SERVICE_PASSWORD_64_BIKESPACESECRETKEY}
+      BIKESPACE_SECURITY_PASSWORD_SALT: ${SERVICE_PASSWORD_64_PASSWORDSALT}
+      SEED_USER_EMAIL: ${SEED_USER_EMAIL:?}
+      SEED_USER_PASSWORD: ${SERVICE_PASSWORD_64_SEEDUSERPASSWORD}
+    ports:
+      - "80:8000"
+    restart: always
+
+  db:
+    image: postgres:${POSTGRES_IMAGE_TAG:-latest}
+    volumes:
+      - "postgres_data:/var/lib/postgresql/data"
+    restart: always
+    user: ${POSTGRES_USER}
+    environment:
+      POSTGRES_USER: ${SERVICE_USER_POSTGRES}
+      POSTGRES_PASSWORD: ${SERVICE_PASSWORD_64_POSTGRES}
+      POSTGRES_DB: ${POSTGRES_DB:-bikespace}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 1s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  postgres_data:
+    name: bikespace_postgres_data
