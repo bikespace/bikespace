@@ -17,7 +17,7 @@ export default function ProfileDetails() {
 
   return userQuery.isLoading ? (
     <div className={styles.profileDetails}>
-      <Spinner />
+      <Spinner className={styles.loadingIndicator} />
     </div>
   ) : userQuery.isSuccess ? (
     <div className={styles.profileDetails}>
@@ -38,6 +38,11 @@ export default function ProfileDetails() {
         </div>
       </dl>
       <LoginForm />
+    </div>
+  ) : userQuery.isError ? (
+    <div className={styles.profileDetails}>
+      <h2>Error fetching user details</h2>
+      <p>{`${userQuery.failureReason}`}</p>
     </div>
   ) : (
     <div className={styles.profileDetails}>

@@ -19,6 +19,9 @@ export function useUserQuery() {
           },
         }
       );
+      if (!response.ok) {
+        throw new Error(`Error ${response.status}: ${response.statusText}`);
+      }
       const data = await response.json();
       return data as UserApiPayload;
     },

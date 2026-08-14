@@ -3,6 +3,8 @@ import Link from 'next/link';
 
 import {useUserQuery} from '@/hooks/use-user-query';
 
+import {AnimatedEllipses} from '@/components/shared-ui/animated-ellipses';
+
 import styles from './summary.module.scss';
 import submissionStyles from '../submission-form-controller/submission-form-controller.module.scss';
 
@@ -73,10 +75,20 @@ export const Summary = () => {
       <>
         <h2>Summary</h2>
         <div>
-          {userQuery.isSuccess ? (
+          {userQuery.isFetching ? (
+            <p>
+              <strong>Submitting as: </strong>
+              <AnimatedEllipses />
+            </p>
+          ) : userQuery.isSuccess ? (
             <p>
               <strong>Submitting as: </strong>
               {userQuery.data.username}
+            </p>
+          ) : userQuery.isError ? (
+            <p>
+              <strong>Submitting as: </strong>
+              <p>{`Error fetching user details: ${userQuery.failureReason}`}</p>
             </p>
           ) : null}
           <p>
