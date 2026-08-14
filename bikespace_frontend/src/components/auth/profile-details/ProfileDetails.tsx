@@ -43,6 +43,7 @@ export default function ProfileDetails() {
     <div className={styles.profileDetails}>
       <h2>Error fetching user details</h2>
       <p>{`${userQuery.failureReason}`}</p>
+      <LoginForm />
     </div>
   ) : (
     <div className={styles.profileDetails}>
