@@ -23,6 +23,7 @@ services:
     restart: always
 
   db:
+    # Minimum version 18
     image: postgres:${POSTGRES_IMAGE_TAG:-latest}
     volumes:
       - "postgres_data:/var/lib/postgresql"
@@ -31,8 +32,7 @@ services:
     environment:
       POSTGRES_USER: ${SERVICE_USER_POSTGRES}
       POSTGRES_PASSWORD: ${SERVICE_PASSWORD_64_POSTGRES}
-      # Minimum version 18
-      POSTGRES_DB: ${POSTGRES_DB:-latest}
+      POSTGRES_DB: ${POSTGRES_DB:-bikespace}
     healthcheck:
       test: ["CMD-SHELL", "pg_isready"]
       interval: 1s
