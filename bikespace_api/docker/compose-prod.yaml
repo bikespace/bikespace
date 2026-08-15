@@ -11,7 +11,8 @@ services:
         restart: true
     environment:
       APP_SETTINGS: "bikespace_api.config.ProductionConfig"
-      DATABASE_URL: "postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db/${POSTGRES_DB}"
+      POSTGRES_DB: ${POSTGRES_DB:-bikespace}
+      DATABASE_URL: "postgresql://${SERVICE_USER_POSTGRES}:${SERVICE_PASSWORD_64_POSTGRES}@db/${POSTGRES_DB:-bikespace}"
       FLASK_DEBUG: "false"
       FLASK_RUN_PORT: 8000
       BIKESPACE_SECRET_KEY: ${SERVICE_PASSWORD_64_BIKESPACESECRETKEY}
@@ -28,11 +29,10 @@ services:
     volumes:
       - "postgres_data:/var/lib/postgresql"
     restart: always
-    user: ${POSTGRES_USER}
+    user: ${SERVICE_USER_POSTGRES}
     environment:
       POSTGRES_USER: ${SERVICE_USER_POSTGRES}
       POSTGRES_PASSWORD: ${SERVICE_PASSWORD_64_POSTGRES}
-      POSTGRES_DB: ${POSTGRES_DB:-bikespace}
     healthcheck:
       test: ["CMD-SHELL", "pg_isready"]
       interval: 1s
