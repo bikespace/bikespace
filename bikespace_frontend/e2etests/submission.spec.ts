@@ -1,5 +1,7 @@
 import {test, expect} from '@playwright/test';
 
+import {nonAdminUser} from './constants';
+
 const testLat = 43.76;
 const testLong = -79.43;
 const apiURL: string = process.env.BIKESPACE_API_URL ?? 'http://localhost:8001';
@@ -95,12 +97,6 @@ test('Submit an issue (not logged in)', async ({page}, testInfo) => {
 });
 
 test('Log in, submit an issue, log out', async ({page}, testInfo) => {
-  const nonAdminUser = {
-    username: 'nonadminuser',
-    email: 'notanadmin@example.com',
-    password: 'notanadmin',
-  };
-
   // navigate to /profile
   await page.goto('/profile');
 
