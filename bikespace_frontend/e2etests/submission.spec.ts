@@ -1,23 +1,10 @@
 import {test, expect} from '@playwright/test';
 
-import {nonAdminUser} from './constants';
+import {defaultTestOptions, nonAdminUser, testLat, testLong} from './constants';
 
-const testLat = 43.76;
-const testLong = -79.43;
 const apiURL: string = process.env.BIKESPACE_API_URL ?? 'http://localhost:8001';
 
-test.use({
-  geolocation: {
-    latitude: testLat,
-    longitude: testLong,
-  },
-  permissions: ['geolocation'],
-  timezoneId: 'America/Toronto',
-  viewport: {
-    height: 600,
-    width: 800,
-  },
-});
+test.use(defaultTestOptions);
 
 test.beforeEach(async ({context}) => {
   // test isolation: block all network requests except for localhost
