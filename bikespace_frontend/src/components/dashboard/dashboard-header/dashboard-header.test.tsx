@@ -15,7 +15,7 @@ describe('DashboardHeader', () => {
       screen
         .getAllByRole('img')
         .map(img => img.getAttribute('alt') ?? img.getAttribute('aria-label'))
-    ).toBeTruthy();
+    ).not.toContain(null);
   });
 
   test('Nav menu toggle has correct accessibility descriptions', async () => {
