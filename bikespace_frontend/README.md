@@ -125,7 +125,7 @@ TZ='America/Toronto' jest --coverage=false PATH_TO_TEST_FILE
 To run tests on all changes in a branch compared to main, you can run:
 
 ```shell
-jest --coverage --changedSince=origin/main PATH_TO_TEST_FILE
+jest --coverage --changedSince=origin/main
 ```
 
 You may need to make sure that Jest is in your global path. More instructions on using the Jest CLI can be found here: https://jestjs.io/docs/getting-started#running-from-command-line
