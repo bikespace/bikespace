@@ -57,10 +57,9 @@ describe('FeedSubmissionItem', () => {
       />
     );
     const itemTitle = screen.getByRole('heading');
-    expect(itemTitle.textContent === 'Wednesday, January 1, 2025');
-    expect(
-      itemTitle.getAttribute('title') ===
-        'Encountered:  1/1/2025, 6:00:00 PM \nSubmitted:  1/31/2025, 8:00:00 PM'
+    expect(itemTitle.textContent).toEqual('Wednesday, January 1, 2025');
+    expect(itemTitle.getAttribute('title')).toEqual(
+      'Encountered:  1/1/2025, 6:00:00 PM \nSubmitted:  1/31/2025, 8:00:00 PM'
     );
   });
 
@@ -81,9 +80,8 @@ describe('FeedSubmissionItem', () => {
       screen.queryByText(/wanted to park for/i)?.parentElement?.textContent
     ).toMatch(/unknown/i);
     const itemTitle = screen.getByRole('heading');
-    expect(
-      itemTitle.getAttribute('title') ===
-        'Encountered:  1/1/2025, 6:00:00 PM \nSubmitted:  Not Recorded'
+    expect(itemTitle.getAttribute('title')).toEqual(
+      'Encountered:  1/1/2025, 6:00:00 PM \nSubmitted:  Not Recorded'
     );
   });
 

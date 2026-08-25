@@ -23,8 +23,8 @@ describe('FilterDateRange', () => {
 
   test('should render a select control with all the DateRangeInterval options', () => {
     const dateFilterSelect = screen.getByRole('combobox');
-    expect(dateFilterSelect.tagName === 'select');
-    expect(dateFilterSelect.getAttribute('name') === 'dateRange');
+    expect(dateFilterSelect.tagName).toMatch(/select/i);
+    expect(dateFilterSelect.getAttribute('name')).toEqual('dateRange');
 
     const dateFilterOptions = screen.getAllByRole('option');
     expect(dateFilterOptions.map(opt => opt.getAttribute('value'))).toEqual(

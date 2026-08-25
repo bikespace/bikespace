@@ -71,11 +71,11 @@ describe('Summary', () => {
     expect(screen.getByRole('heading', {level: 2})).toHaveTextContent(
       'Summary'
     );
-    expect(screen.getByText(/Issues:/i));
-    expect(screen.getByText(/Location:/i));
-    expect(screen.getByText(/Time:/i));
-    expect(screen.getByText(/Parking duration needed:/i));
-    expect(screen.getByText(/Comments:/i));
+    expect(screen.getByText(/Issues:/i)).toBeInTheDocument();
+    expect(screen.getByText(/Location:/i)).toBeInTheDocument();
+    expect(screen.getByText(/Time:/i)).toBeInTheDocument();
+    expect(screen.getByText(/Parking duration needed:/i)).toBeInTheDocument();
+    expect(screen.getByText(/Comments:/i)).toBeInTheDocument();
 
     // prevent state update 'act' error from form validation
     unmount();
@@ -118,9 +118,9 @@ describe('Summary', () => {
 
     expect(
       screen.getByText(
-        /Something went wrong on our end processing your submission/
+        /something went wrong on our end processing your submission/i
       )
-    );
+    ).toBeInTheDocument();
   });
 
   test('Unexpected response status should render correct message', async () => {
@@ -140,7 +140,9 @@ describe('Summary', () => {
 
     await user.click(submitButton);
 
-    expect(screen.getByText(/Something went wrong beyond our expectations/));
+    expect(
+      screen.getByText(/something went wrong beyond our expectations/i)
+    ).toBeInTheDocument();
   });
 
   test('View Your Submission button links to correct dashboard URL when submissionId is present', async () => {
