@@ -1,4 +1,3 @@
-import React from 'react';
 import {render, screen} from '@testing-library/react';
 
 import {QueryClientProvider} from '@tanstack/react-query';
