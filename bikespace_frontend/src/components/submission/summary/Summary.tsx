@@ -88,7 +88,7 @@ export const Summary = () => {
           ) : userQuery.isError ? (
             <p>
               <strong>Submitting as: </strong>
-              <p>{`Error fetching user details: ${userQuery.failureReason}`}</p>
+              <span role="status">{`Error fetching user details: ${userQuery.failureReason}`}</span>
             </p>
           ) : null}
           <p>

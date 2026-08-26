@@ -34,6 +34,22 @@ jest.mock('@/states/store', () => ({
 }));
 
 describe('ProfileDetails', () => {
+  test('When user details are being queried, a loading indicator is shown', () => {
+    // render with mocked user details
+    (useUserQuery as jest.Mock).mockReturnValue({
+      isLoading: true,
+      isSuccess: false,
+      isError: false,
+    });
+    render(
+      <QueryClientProvider client={queryClient}>
+        <ProfileDetails />
+      </QueryClientProvider>
+    );
+
+    expect(screen.getByRole('status', {name: /loading/i})).toBeInTheDocument();
+  });
+
   test('Logged in user has a first and last name', () => {
     // render with mocked user details
     (useUserQuery as jest.Mock).mockReturnValue({
