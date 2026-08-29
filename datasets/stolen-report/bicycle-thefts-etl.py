@@ -45,6 +45,18 @@ STATUS_MAP = {
     "UNKNOWN": "unknown",
 }
 
+LOCATION_TYPE_MAP = {
+    "OUTSIDE": "Outside",
+    "OTHER": "Other",
+    "APARTMENT": "Apartment",
+    "COMMERCIAL": "Commercial",
+    "HOUSE": "House",
+    "TRANSIT": "Transit",
+    "EDUCATIONAL": "Educational",
+}
+
+EXCLUDED_PREMISES = {"APARTMENT", "COMMERCIAL", "HOUSE"}
+
 
 def normalize_color(raw_color: str) -> str:
     """Look up color code or attempt to clean raw value."""
@@ -88,16 +100,14 @@ def build_description(props: dict) -> str:
 
     return ", ".join(parts) if parts else "No description available"
 
-
+# Function to populate the location
 def build_location_label(props: dict) -> str:
-    """Use division + location type as a rough location label."""
-    division = props.get("DIVISION", "")
-    premises = props.get("PREMISES_TYPE", "")
-    if division and premises:
-        return f"{premises} ({division})"
-    return division or premises or "Unknown location"
+    premises = props.get("PREMISES_TYPE", "").strip().upper()
+    if premises and premises.lower() != "none":
+        return LOCATION_TYPE_MAP.get(premises, premises.title() or "Unknown")
+    return "Unknown location"               # DIVISION is never touched
 
-
+# Function to transform data
 def convert_feature(feature: dict) -> dict:
     props = feature["properties"]
 
@@ -132,11 +142,22 @@ def convert_geojson(input_path: str, output_path: str) -> None:
         geojson = json.load(f)
 
     features = geojson.get("features", [])
-    reports = [convert_feature(f) for f in features]
+    
+    # Filter out excluded properties
+    reports = []
+    for f in features:
+        
+        # Check the premises type and skip if it's in the excluded list
+        premises = f["properties"].get("PREMISES_TYPE", "").strip().upper()
+        if premises in EXCLUDED_PREMISES:
+            continue
+        reports.append(convert_feature(f))
 
+    # Convert to JSON
     with open(output_path, "w", encoding="utf-8") as f:
         json.dump(reports, f, indent=2, ensure_ascii=False)
 
+    # Display to the total records
     print(f"Converted {len(reports)} records → {output_path}")
 
 
