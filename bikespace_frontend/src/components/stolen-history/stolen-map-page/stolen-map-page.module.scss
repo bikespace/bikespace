@@ -122,3 +122,65 @@
 .stolenHistoryMapPage .blueLink:visited {
   color: #0b57d0;
 }
+
+// Year month data filter styling
+.dateFilterRow {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.dateFilterLabel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 1rem;
+
+  span {
+    min-width: 100px;
+    color: var(--colour-text-secondary, #555);
+  }
+}
+
+.dateFilterSelect {
+  flex: 1;
+  padding: 5px 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  background-color: #fff;
+  //max-width: 160px;
+  cursor: pointer;
+
+  &:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    background-color: #f5f5f5;
+  }
+
+  &:focus {
+    outline: 2px solid #1976d2;
+    outline-offset: 1px;
+  }
+}
+
+// Location filter styling
+.locationFilterSelect {
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 0.875rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
+  color: #333;
+}
+
+.locationFilterSelect:focus {
+  border-color: #0066cc;
+  box-shadow: 0 0 0 2px rgba(0, 102, 204, 0.2);
+}
+
+.locationFilterSelect:hover {
+  border-color: #999;
+}

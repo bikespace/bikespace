@@ -23,8 +23,6 @@ import type {
   MapStyle,
 } from 'react-map-gl/maplibre';
 
-// Todo: Add Filter, date, location, bike type
-
 // Show the zoom in-out/current locaiton
 import 'maplibre-gl/dist/maplibre-gl.css';
 import styles from './stolen-map-page.module.scss';
@@ -202,6 +200,95 @@ export function StolenHistoryMapPage() {
     'all' | 'stolen' | 'recovered'
   >('all');
 
+  // Year-month-date filters and set current year and month as default
+  const [yearFilter, setYearFilter] = useState<string>(
+    String(new Date().getFullYear())
+  );
+  const [monthFilter, setMonthFilter] = useState<string>('all');
+  const [dayFilter, setDayFilter] = useState<string>('all');
+
+  // Location filter
+  const [locationFilter, setLocationFilter] = useState('Outside'); // Default to "Outdoor" as per the dataset
+
+  // --- Derive available filter options from data ---
+  const availableYears = React.useMemo(() => {
+    const years = new Set(stolenBikeReports.map(r => r.date.slice(0, 4)));
+    return Array.from(years).sort((a, b) => b.localeCompare(a));
+  }, []);
+
+  // Add this after availableYears:
+  const availableLocations = React.useMemo(() => {
+    const locations = new Set(stolenBikeReports.map(r => r.location));
+    return Array.from(locations).sort();
+  }, []);
+
+  const availableMonths = React.useMemo(() => {
+    const source =
+      yearFilter === 'all'
+        ? stolenBikeReports
+        : stolenBikeReports.filter(r => r.date.slice(0, 4) === yearFilter);
+    const months = new Set(source.map(r => r.date.slice(5, 7)));
+    return Array.from(months).sort();
+  }, [yearFilter]);
+
+  const availableDays = React.useMemo(() => {
+    const source = stolenBikeReports.filter(r => {
+      if (yearFilter !== 'all' && r.date.slice(0, 4) !== yearFilter)
+        return false;
+      if (monthFilter !== 'all' && r.date.slice(5, 7) !== monthFilter)
+        return false;
+      return true;
+    });
+    const days = new Set(source.map(r => r.date.slice(8, 10)));
+    return Array.from(days).sort();
+  }, [yearFilter, monthFilter]);
+
+  const MONTH_NAMES = [
+    '',
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ];
+
+  const filteredReports = React.useMemo(() => {
+    return stolenBikeReports.filter(r => {
+      if (statusFilter !== 'all' && r.status !== statusFilter) return false;
+      if (yearFilter !== 'all' && r.date.slice(0, 4) !== yearFilter)
+        return false;
+      if (monthFilter !== 'all' && r.date.slice(5, 7) !== monthFilter)
+        return false;
+      if (dayFilter !== 'all' && r.date.slice(8, 10) !== dayFilter)
+        return false;
+      if (locationFilter !== 'all' && r.location !== locationFilter)
+        return false;
+      return true;
+    });
+  }, [statusFilter, yearFilter, monthFilter, dayFilter, locationFilter]);
+
+  // Reset child filters when parent changes
+  function handleYearChange(y: string) {
+    setYearFilter(y);
+    setMonthFilter('all');
+    setDayFilter('all');
+  }
+
+  function handleMonthChange(m: string) {
+    setMonthFilter(m);
+    setDayFilter('all');
+  }
+
+  // --- End of year month data on the function ---
+
+  // Map card
   const mapRef = useRef<MapRef>(null);
   const resultsCardRef = useRef<HTMLDivElement>(null);
 
@@ -212,11 +299,6 @@ export function StolenHistoryMapPage() {
   const mapStyleRoadLabelsLayer = process.env.MAPTILER_API_KEY
     ? 'Road labels'
     : 'roads_labels_major';
-
-  const filteredReports =
-    statusFilter === 'all'
-      ? stolenBikeReports
-      : stolenBikeReports.filter(r => r.status === statusFilter);
 
   const allPinsGeoJSON = reportsToGeoJSON(filteredReports);
   const selectedPinGeoJSON = selectedReport
@@ -334,6 +416,7 @@ export function StolenHistoryMapPage() {
             <summary>Filters</summary>
             <SidebarDetailsContent>
               <div>
+                {/* Status */}
                 <p style={{marginBottom: 6, fontWeight: 600}}>Status</p>
                 <div className={styles.filterButtonRow}>
                   {(['all', 'stolen', 'recovered'] as const).map(s => (
@@ -349,10 +432,97 @@ export function StolenHistoryMapPage() {
                     </SidebarButton>
                   ))}
                 </div>
+
+                {/* Date filters */}
+                <p style={{marginTop: 14, marginBottom: 6, fontWeight: 600}}>
+                  Date
+                </p>
+                <div className={styles.dateFilterRow}>
+                  {/* Year */}
+                  <label className={styles.dateFilterLabel}>
+                    <span>Year</span>
+                    <select
+                      className={styles.dateFilterSelect}
+                      value={yearFilter}
+                      onChange={e => handleYearChange(e.target.value)}
+                    >
+                      <option value="all">All</option>
+                      {availableYears.map(y => (
+                        <option key={y} value={y}>
+                          {y}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+
+                  {/* Month — only enabled once a year is chosen */}
+                  <label className={styles.dateFilterLabel}>
+                    <span>Month</span>
+                    <select
+                      className={styles.dateFilterSelect}
+                      value={monthFilter}
+                      onChange={e => handleMonthChange(e.target.value)}
+                      disabled={yearFilter === 'all'}
+                    >
+                      <option value="all">All</option>
+                      {availableMonths.map(m => (
+                        <option key={m} value={m}>
+                          {MONTH_NAMES[parseInt(m, 10)]}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+
+                  {/* Day — only enabled once a month is chosen */}
+                  <label className={styles.dateFilterLabel}>
+                    <span>Day</span>
+                    <select
+                      className={styles.dateFilterSelect}
+                      value={dayFilter}
+                      onChange={e => setDayFilter(e.target.value)}
+                      disabled={monthFilter === 'all'}
+                    >
+                      <option value="all">All</option>
+                      {availableDays.map(d => (
+                        <option key={d} value={d}>
+                          {parseInt(d, 10)}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                </div>
+
+                {/* Location filter */}
+                <p style={{marginTop: 14, marginBottom: 6, fontWeight: 600}}>
+                  Property Location
+                </p>
+                <label
+                  className={styles.locationFilterLabel}
+                  style={{width: '100%'}}
+                >
+                  <select
+                    className={styles.locationFilterSelect}
+                    style={{width: '100%'}}
+                    value={locationFilter}
+                    onChange={e => setLocationFilter(e.target.value)}
+                    aria-label="Filter by location"
+                  >
+                    <option value="all">All</option>
+                    {availableLocations.map(loc => (
+                      <option key={loc} value={loc}>
+                        {loc}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+
+                {/* Number of reports */}
                 <p style={{marginTop: 10}}>
                   Showing <strong>{filteredReports.length}</strong> report
                   {filteredReports.length !== 1 ? 's' : ''}
                 </p>
+
+                <p style={{marginTop: 10}}></p>
               </div>
             </SidebarDetailsContent>
           </SidebarDetailsDisclosure>
