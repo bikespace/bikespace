@@ -77,7 +77,7 @@ export function DashboardPage() {
 
     if (dateRange.from || dateRange.to)
       subs = subs.filter(s => {
-        const d = new Date(s.parking_time + '+00:00');
+        const d = new Date(s.parking_time);
 
         return (
           (dateRange.from ? d >= dateRange.from : true) &&
@@ -100,7 +100,7 @@ export function DashboardPage() {
 
     if (day !== null)
       subs = subs.filter(
-        s => new Date(s.parking_time + '+00:00').getDay() === day
+        s => new Date(s.parking_time).getDay() === day
       );
 
     setSubmissions(subs);

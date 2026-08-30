@@ -32,13 +32,13 @@ export const MapPopup = forwardRef<LeafletPopup, MapPopupProps>(
       submitted_datetime,
     } = submission;
 
-    const parkingTime = new Date(parking_time + '+00:00');
+    const parkingTime = new Date(parking_time);
     const submittedDateTime = submitted_datetime
       ? new Date(submitted_datetime) // submitted_datetime already has a tz offset
       : 'Not Recorded';
 
     const formattedParkingTime = new Date(
-      parking_time + '+00:00'
+      parking_time
     ).toLocaleString('en-CA', {
       dateStyle: 'full',
       timeStyle: 'short',

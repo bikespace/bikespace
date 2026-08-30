@@ -29,7 +29,7 @@ const mockSubmission: SubmissionApiPayload = {
   latitude: defaultMapCenter.latitude,
   longitude: defaultMapCenter.longitude,
   issues: [IssueType.Damaged],
-  parking_time: '2025-01-01 23:00:00', // assumes UTC time
+  parking_time: '2025-01-01T23:00:00+00:00', // assumes UTC time
   parking_duration: ParkingDuration.Minutes,
   comments: 'test comment',
   submitted_datetime: '2025-02-01T01:00:00+00:00',

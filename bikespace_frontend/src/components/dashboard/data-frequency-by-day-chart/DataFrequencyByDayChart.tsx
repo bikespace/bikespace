@@ -44,7 +44,7 @@ function DataFrequencyByDayChart({
         name: d as Day,
         count: allSubmissions.filter(
           submission =>
-            new Date(submission.parking_time + '+00:00').getDay() === d
+            new Date(submission.parking_time).getDay() === d
         ).length,
       }));
 

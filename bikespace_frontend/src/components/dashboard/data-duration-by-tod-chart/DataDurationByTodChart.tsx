@@ -28,7 +28,7 @@ function DataDurationByTodChart({
         interval =>
           submissions.filter(submission => {
             const parkingHour = new Date(
-              submission.parking_time + '+00:00'
+              submission.parking_time
             ).getHours();
 
             return (

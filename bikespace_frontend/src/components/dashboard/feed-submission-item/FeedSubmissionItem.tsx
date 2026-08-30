@@ -35,7 +35,7 @@ export const FeedSubmissionItem = forwardRef(
       submitted_datetime,
     } = submission;
 
-    const parkingTime = new Date(parking_time + '+00:00');
+    const parkingTime = new Date(parking_time);
     const submittedDateTime = submitted_datetime
       ? new Date(submitted_datetime) // submitted_datetime already has a tz offset
       : 'Not Recorded';
