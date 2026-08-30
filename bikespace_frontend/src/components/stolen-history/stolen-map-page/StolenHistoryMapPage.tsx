@@ -208,7 +208,7 @@ export function StolenHistoryMapPage() {
   const [dayFilter, setDayFilter] = useState<string>('all');
 
   // Location filter
-  const [locationFilter, setLocationFilter] = useState('Outside'); // Default to "Outdoor" as per the dataset
+  const [locationFilter, setLocationFilter] = useState('all'); // Default to "Outdoor" as per the dataset
 
   // --- Derive available filter options from data ---
   const availableYears = React.useMemo(() => {
