@@ -18,8 +18,7 @@ export function FilterDateRangeCustom() {
     setFilters: state.setFilters,
   }));
 
-  const today = new Date();
-  const todayDate = today.toISOString().substring(0, 10);
+  const todayDate = DateTime.local().toISODate();
 
   const form = useForm<CustomDateRangeSchema>({
     resolver: customDateRangeSchemaResolver,
@@ -32,12 +31,14 @@ export function FilterDateRangeCustom() {
   const onSubmit = (data: CustomDateRangeSchema) => {
     setFilters({
       dateRange: {
-        from: DateTime.fromJSDate(data.from)
-          .setZone('local')
+        from: DateTime.fromISO(data.from.toISOString().substring(0, 10), {
+          zone: 'local',
+        })
           .startOf('day')
           .toJSDate(),
-        to: DateTime.fromJSDate(data.to)
-          .setZone('local')
+        to: DateTime.fromISO(data.to.toISOString().substring(0, 10), {
+          zone: 'local',
+        })
           .endOf('day')
           .toJSDate(),
       },

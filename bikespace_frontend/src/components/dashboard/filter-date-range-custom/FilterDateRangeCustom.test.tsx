@@ -7,7 +7,7 @@ import {DateRangeInterval} from '@/interfaces/Submission';
 import {FilterDateRangeCustom} from './FilterDateRangeCustom';
 
 // Mock timing to set failure state where the date corresponding to the current time differs between UTC and ET
-const todayDate = new Date('2024-12-31T22:00:00');
+const todayDate = new Date('2025-01-01T00:00:00');
 jest.useFakeTimers({advanceTimers: true}).setSystemTime(todayDate);
 
 const mockTrackUmamiEvent = jest.fn().mockName('mockTrackUmamiEvent');
