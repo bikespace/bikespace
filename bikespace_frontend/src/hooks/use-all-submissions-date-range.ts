@@ -13,8 +13,7 @@ export const useAllSubmissionsDateRange = (): SubmissionsDateRange => {
         last: null,
       }
     : {
-        first: new Date(allSubmissions[0].parking_time ),
-        last: new Date(
-          allSubmissions[allSubmissions.length - 1].parking_time),
+        first: new Date(allSubmissions[0].parking_time),
+        last: new Date(allSubmissions[allSubmissions.length - 1].parking_time),
       };
 };

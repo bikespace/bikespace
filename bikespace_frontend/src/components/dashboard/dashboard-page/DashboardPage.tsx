@@ -99,9 +99,7 @@ export function DashboardPage() {
       });
 
     if (day !== null)
-      subs = subs.filter(
-        s => new Date(s.parking_time).getDay() === day
-      );
+      subs = subs.filter(s => new Date(s.parking_time).getDay() === day);
 
     setSubmissions(subs);
   }, [allSubmissionQuery.data, singleSubmissionQuery.data, filters]);
