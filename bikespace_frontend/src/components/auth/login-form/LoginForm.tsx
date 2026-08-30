@@ -1,6 +1,7 @@
 import {useForm, SubmitHandler} from 'react-hook-form';
 
 import {useAuthStore} from '@/states/store';
+import {useUserQuery} from '@/hooks/use-user-query';
 import {SidebarButton} from '@/components/shared-ui/sidebar-button';
 
 import styles from './login-form.module.scss';
@@ -13,10 +14,8 @@ type LoginInputs = {
 const inputKeys = ['email', 'password'];
 
 export default function LoginForm() {
-  const {authToken, setAuthToken} = useAuthStore(state => ({
-    authToken: state.authToken,
-    setAuthToken: state.setAuthToken,
-  }));
+  const userQuery = useUserQuery();
+  const setAuthToken = useAuthStore(state => state.setAuthToken);
 
   const {
     formState: {errors},
@@ -87,7 +86,7 @@ export default function LoginForm() {
       : null,
   ];
 
-  return authToken ? (
+  return userQuery.isSuccess ? (
     <div className={styles.loginForm}>
       <div className={styles.actionButton}>
         <SidebarButton onClick={handleLogout}>Log Out</SidebarButton>
