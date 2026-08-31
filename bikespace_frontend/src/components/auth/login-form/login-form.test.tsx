@@ -95,12 +95,128 @@ describe('LoginForm', () => {
       })
     );
   });
+
+  test('A password field error from the API is correctly shown to the user', async () => {
+    (useUserQuery as jest.Mock).mockReturnValue({
+      isSuccess: false,
+    });
+    render(
+      <QueryClientProvider client={queryClient}>
+        <LoginForm />
+      </QueryClientProvider>
+    );
+
+    expect(screen.getByRole('button', {name: /log\s?in/i})).toBeInTheDocument();
+
+    fetchMock.mockReturnValue(
+      mockJsonResponse(false, {
+        response: {
+          errors: ['Invalid password'],
+          field_errors: {
+            password: ['Invalid password'],
+          },
+        },
+      })
+    );
+
+    const user = userEvent.setup();
+    const testEmail = 'testuser@test.com';
+    const testPassword = 'wrongpassword';
+
+    await user.type(screen.getByRole('textbox', {name: /email/i}), testEmail);
+    await user.type(screen.getByLabelText(/password/i), testPassword);
+    await user.click(screen.getByRole('button', {name: /log\s?in/i}));
+
+    expect(screen.getByText(/invalid password/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/password/i)).toBeInvalid();
+    expect(
+      screen.getByLabelText(/password/i).getAttribute('aria-describedby')
+    ).toEqual(screen.getByText(/invalid password/i).id);
+  });
+
+  test('A username field error from the API is correctly shown to the user', async () => {
+    (useUserQuery as jest.Mock).mockReturnValue({
+      isSuccess: false,
+    });
+    render(
+      <QueryClientProvider client={queryClient}>
+        <LoginForm />
+      </QueryClientProvider>
+    );
+
+    expect(screen.getByRole('button', {name: /log\s?in/i})).toBeInTheDocument();
+
+    fetchMock.mockReturnValue(
+      mockJsonResponse(false, {
+        response: {
+          errors: ['Specified user does not exist'],
+          field_errors: {
+            email: ['Specified user does not exist'],
+          },
+        },
+      })
+    );
+
+    const user = userEvent.setup();
+    const testEmail = 'wronguser@test.com';
+    const testPassword = 'testpassword';
+
+    await user.type(screen.getByRole('textbox', {name: /email/i}), testEmail);
+    await user.type(screen.getByLabelText(/password/i), testPassword);
+    await user.click(screen.getByRole('button', {name: /log\s?in/i}));
+
+    expect(screen.getByText(/user does not exist/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/email/i)).toBeInvalid();
+    expect(
+      screen.getByLabelText(/email/i).getAttribute('aria-describedby')
+    ).toEqual(screen.getByText(/user does not exist/i).id);
+  });
+
+  // TODO update this test to exercise the proper error branching
+  test('A ??? field error from the API is correctly shown to the user', async () => {
+    (useUserQuery as jest.Mock).mockReturnValue({
+      isSuccess: false,
+    });
+    render(
+      <QueryClientProvider client={queryClient}>
+        <LoginForm />
+      </QueryClientProvider>
+    );
+
+    expect(screen.getByRole('button', {name: /log\s?in/i})).toBeInTheDocument();
+
+    fetchMock.mockReturnValue(
+      mockJsonResponse(false, {
+        response: {
+          errors: ['Specified user does not exist'],
+          field_errors: {
+            email: ['Specified user does not exist'],
+          },
+        },
+      })
+    );
+
+    const user = userEvent.setup();
+    const testEmail = 'wronguser@test.com';
+    const testPassword = 'testpassword';
+
+    await user.type(screen.getByRole('textbox', {name: /email/i}), testEmail);
+    await user.type(screen.getByLabelText(/password/i), testPassword);
+    await user.click(screen.getByRole('button', {name: /log\s?in/i}));
+
+    expect(screen.getByText(/user does not exist/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/email/i)).toBeInvalid();
+    expect(
+      screen.getByLabelText(/email/i).getAttribute('aria-describedby')
+    ).toEqual(screen.getByText(/user does not exist/i).id);
+  });
 });
 
 // cases to cover:
 // [x] logout calls clear token (already in e2e)
 // [x] login calls api (already in e2e)
-// [ ] password field error
-// [ ] username field error
+// [x] password field error
+// [x] username field error
+// [ ] what happens if it's just an error field in the API response and not a field error?
 // [ ] other unknown error with 200 response
 // [ ] error response
