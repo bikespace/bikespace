@@ -1,4 +1,4 @@
-"""empty message
+"""change parking_time to timezone-aware datetime
 
 Revision ID: dea75e305cf6
 Revises: 4467bcb63285
@@ -22,14 +22,13 @@ def upgrade():
         batch_op.alter_column('parking_time',
                existing_type=postgresql.TIMESTAMP(),
                type_=sa.DateTime(timezone=True),
-               existing_nullable=False)
+               existing_nullable=True,)
 
     with op.batch_alter_table('bikeparking_submissions_version', schema=None) as batch_op:
         batch_op.alter_column('parking_time',
                existing_type=postgresql.TIMESTAMP(),
                type_=sa.DateTime(timezone=True),
-               existing_nullable=True,
-               autoincrement=False)
+               existing_nullable=True)
 
     # ### end Alembic commands ###
 
@@ -40,13 +39,12 @@ def downgrade():
         batch_op.alter_column('parking_time',
                existing_type=sa.DateTime(timezone=True),
                type_=postgresql.TIMESTAMP(),
-               existing_nullable=True,
-               autoincrement=False)
+               existing_nullable=True)
 
     with op.batch_alter_table('bikeparking_submissions', schema=None) as batch_op:
         batch_op.alter_column('parking_time',
                existing_type=sa.DateTime(timezone=True),
                type_=postgresql.TIMESTAMP(),
-               existing_nullable=False)
+               existing_nullable=True)
 
     # ### end Alembic commands ###
