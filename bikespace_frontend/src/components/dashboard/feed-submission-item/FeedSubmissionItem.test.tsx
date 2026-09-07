@@ -33,16 +33,77 @@ const mockSubmission: SubmissionApiPayload = {
   parking_duration: ParkingDuration.Minutes,
   comments: 'test comment',
   submitted_datetime: '2025-02-01T01:00:00+00:00',
+  user: null,
 };
 
 describe('FeedSubmissionItem', () => {
-  test('Feed Submission Item date information should render correctly', () => {
-    render(<FeedSubmissionItem submission={mockSubmission} />);
-    const itemTitle = screen.getByRole('heading');
-    expect(itemTitle.textContent === 'Wednesday, January 1, 2025');
-    expect(
-      itemTitle.getAttribute('title') ===
-        'Encountered:  1/1/2025, 6:00:00 PM \nSubmitted:  1/31/2025, 8:00:00 PM'
+  test('Feed Submission Item adds style class when focused', () => {
+    render(
+      <FeedSubmissionItem
+        submission={mockSubmission}
+        isFocused={true}
+        onClick={jest.fn()}
+      />
     );
+    expect(screen.getByRole('button')).toHaveClass('focused');
+  });
+
+  test('Feed Submission Item date information should render correctly', () => {
+    render(
+      <FeedSubmissionItem
+        submission={mockSubmission}
+        isFocused={false}
+        onClick={jest.fn()}
+      />
+    );
+    const itemTitle = screen.getByRole('heading');
+    expect(itemTitle.textContent).toEqual('Wednesday, January 1, 2025');
+    expect(itemTitle.getAttribute('title')).toEqual(
+      'Encountered:  1/1/2025, 6:00:00 PM \nSubmitted:  1/31/2025, 8:00:00 PM'
+    );
+  });
+
+  test('Feed Submission Item with null parking_duration and submitted_datetime handles the missing values gracefully', () => {
+    render(
+      <FeedSubmissionItem
+        submission={{
+          ...mockSubmission,
+          // @ts-expect-error 2322
+          parking_duration: null,
+          submitted_datetime: null,
+        }}
+        isFocused={false}
+        onClick={jest.fn()}
+      />
+    );
+    expect(
+      screen.queryByText(/wanted to park for/i)?.parentElement?.textContent
+    ).toMatch(/unknown/i);
+    const itemTitle = screen.getByRole('heading');
+    expect(itemTitle.getAttribute('title')).toEqual(
+      'Encountered:  1/1/2025, 6:00:00 PM \nSubmitted:  Not Recorded'
+    );
+  });
+
+  test('Feed Submission Item without user does not render user line at all', () => {
+    render(
+      <FeedSubmissionItem
+        submission={mockSubmission}
+        isFocused={false}
+        onClick={jest.fn()}
+      />
+    );
+    expect(screen.queryByText(/submitted by/i)).not.toBeInTheDocument();
+  });
+
+  test('Feed Submission Item with user renders the username', () => {
+    render(
+      <FeedSubmissionItem
+        submission={{...mockSubmission, user: 'testuser'}}
+        isFocused={false}
+        onClick={jest.fn()}
+      />
+    );
+    expect(screen.queryByText(/submitted by testuser/i)).toBeInTheDocument();
   });
 });

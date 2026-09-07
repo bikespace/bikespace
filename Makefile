@@ -60,6 +60,12 @@ dev-api-stop:
 dev-api: dev-api-stop
 	docker compose --file bikespace_api/docker/compose-dev.yaml $(ENV_FILE_FLAG) up --build --force-recreate
 
+# usage: `make dev-api-force-logout-user USER_TO_LOGOUT=username`
+.PHONY: dev-api-force-logout-user
+dev-api-force-logout-user:
+	docker compose --file bikespace_api/docker/compose-dev.yaml $(ENV_FILE_FLAG) \
+	exec bikespace_api python manage.py force-logout-user $(USER_TO_LOGOUT)
+
 .PHONY: dev-api-test-stop
 dev-api-test-stop:
 	docker compose --file bikespace_api/docker/compose-test.yaml down
@@ -68,6 +74,12 @@ dev-api-test-stop:
 .PHONY: dev-api-test
 dev-api-test: dev-api-test-stop
 	docker compose --file bikespace_api/docker/compose-test.yaml $(ENV_FILE_FLAG) up --build --force-recreate
+
+# usage: `make dev-api-test-force-logout-user USER_TO_LOGOUT=username`
+.PHONY: dev-api-test-force-logout-user
+dev-api-test-force-logout-user:
+	docker compose --file bikespace_api/docker/compose-test.yaml $(ENV_FILE_FLAG) \
+	exec bikespace_api python manage.py force-logout-user $(USER_TO_LOGOUT)
 
 .PHONY: prodtest-api-stop
 prodtest-api-stop:

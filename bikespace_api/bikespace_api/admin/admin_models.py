@@ -3,7 +3,6 @@ from typing import Optional
 
 import sqlalchemy as sa
 import sqlalchemy.orm as so
-
 from flask_security.core import RoleMixin, UserMixin
 
 from bikespace_api import db  # type: ignore

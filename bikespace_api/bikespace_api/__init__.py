@@ -42,7 +42,7 @@ def create_app(script_info=None):
     from bikespace_api.admin import admin_blueprint
     from bikespace_api.admin.admin_models import Role, User
 
-    app.register_blueprint(admin_blueprint)
+    api.register_blueprint(admin_blueprint)
     admin = Admin(
         app,
         name="BikeSpace",
