@@ -90,12 +90,14 @@ export default function LoginForm() {
       }
     } catch (error) {
       // display errors when no API response is received
+      const errorMessage =
+        error instanceof Error && error.message
+          ? error.message
+          : 'Login failed. Please try again.';
+
       setError('root.serverError', {
         type: 'server',
-        message:
-          error instanceof Error
-            ? error.message
-            : 'Login failed. Please try again.',
+        message: errorMessage,
       });
     }
   };

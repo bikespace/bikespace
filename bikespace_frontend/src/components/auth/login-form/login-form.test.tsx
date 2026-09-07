@@ -1,4 +1,4 @@
-import {render, screen, waitFor} from '@testing-library/react';
+import {render, screen} from '@testing-library/react';
 import {userEvent} from '@testing-library/user-event';
 
 import {QueryClientProvider} from '@tanstack/react-query';
@@ -221,7 +221,7 @@ describe('LoginForm', () => {
     fetchMock.mockReturnValue(
       mockJsonResponse(false, {
         response: {
-          errors: ['You are already authenticated...'],
+          errors: ['Generic error message'],
         },
       })
     );
@@ -234,9 +234,61 @@ describe('LoginForm', () => {
     await user.type(screen.getByLabelText(/password/i), testPassword);
     await user.click(screen.getByRole('button', {name: /log\s?in/i}));
 
-    expect(
-      screen.getByText(/you are already authenticated/i)
-    ).toBeInTheDocument();
+    expect(screen.getByText(/generic error message/i)).toBeInTheDocument();
+  });
+
+  test('A client side error is thrown; no API response', async () => {
+    (useUserQuery as jest.Mock).mockReturnValue({
+      isSuccess: false,
+    });
+    render(
+      <QueryClientProvider client={queryClient}>
+        <LoginForm />
+      </QueryClientProvider>
+    );
+
+    expect(screen.getByRole('button', {name: /log\s?in/i})).toBeInTheDocument();
+
+    fetchMock.mockImplementation(() => {
+      throw new Error('Client side error');
+    });
+
+    const user = userEvent.setup();
+    const testEmail = 'testuser@test.com';
+    const testPassword = 'testpassword';
+
+    await user.type(screen.getByRole('textbox', {name: /email/i}), testEmail);
+    await user.type(screen.getByLabelText(/password/i), testPassword);
+    await user.click(screen.getByRole('button', {name: /log\s?in/i}));
+
+    expect(screen.getByText(/client side error/i)).toBeInTheDocument();
+  });
+
+  test('A client side error with no message is thrown; no API response', async () => {
+    (useUserQuery as jest.Mock).mockReturnValue({
+      isSuccess: false,
+    });
+    render(
+      <QueryClientProvider client={queryClient}>
+        <LoginForm />
+      </QueryClientProvider>
+    );
+
+    expect(screen.getByRole('button', {name: /log\s?in/i})).toBeInTheDocument();
+
+    fetchMock.mockImplementation(() => {
+      throw new Error();
+    });
+
+    const user = userEvent.setup();
+    const testEmail = 'testuser@test.com';
+    const testPassword = 'testpassword';
+
+    await user.type(screen.getByRole('textbox', {name: /email/i}), testEmail);
+    await user.type(screen.getByLabelText(/password/i), testPassword);
+    await user.click(screen.getByRole('button', {name: /log\s?in/i}));
+
+    expect(screen.getByText(/login failed/i)).toBeInTheDocument();
   });
 });
 
@@ -246,5 +298,5 @@ describe('LoginForm', () => {
 // [x] password field error
 // [x] username field error
 // [x] what happens if it's just an error field in the API response and not a field error? - use errors: ['You are already authenticated...']
-// [ ] error with no API response
+// [x] error with no API response
 // [x] document somewhere that the form of the error response is set by flask-security
