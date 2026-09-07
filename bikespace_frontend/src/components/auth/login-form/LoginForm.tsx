@@ -6,6 +6,21 @@ import {SidebarButton} from '@/components/shared-ui/sidebar-button';
 
 import styles from './login-form.module.scss';
 
+/*
+Expected error response format:
+
+The error repsonse from the /login/ endpoint is handled by Flask-Security-Too (https://github.com/pallets-eco/flask-security/) and generally takes the shape of:
+
+{
+  // list of error messages, including field errors
+  errors: ['generic error', 'field error'],
+  // field-specific error messages from WTForms, keyed by field id
+  field_errors: {
+    my_field: ['field error'],
+  },
+}
+*/
+
 // form field ids should match API fields to ensure proper error handling
 type LoginInputs = {
   email: string;
@@ -46,22 +61,35 @@ export default function LoginForm() {
         // save auth token on successful response
         setAuthToken(responseData.response.user.authentication_token);
       } else {
-        // display form error(s) from API validation error response
-        for (const serverError of Object.entries(
-          responseData?.response?.field_errors
-        )) {
-          const [errorName, errorMessage] = serverError;
+        // set errors from response body on unsuccessful response
+        // collect field errors plus any additional error messages in 'errors' array
+        const fieldErrors: Record<string, string[]> =
+          responseData?.response?.field_errors ?? {};
+        const fieldErrorMessages = Object.values(fieldErrors).flat();
+        const allErrorMessages: string[] = responseData?.response?.errors ?? [];
+        const nonFieldErrors = allErrorMessages.filter(
+          errorMessage => !fieldErrorMessages.includes(errorMessage)
+        );
+
+        // display field errors
+        for (const fieldError of Object.entries(fieldErrors)) {
+          const [errorName, errorMessage] = fieldError;
           const errorKey = inputKeys.includes(errorName)
             ? errorName
-            : 'root.serverError';
+            : 'root.unknownFieldError';
           // @ts-expect-error 2345 - TS does not recognize .includes narrowing
           setError(errorKey, {
             message: (errorMessage as string[]).join('; '),
           });
         }
+
+        // display any other error messages
+        if (nonFieldErrors.length > 0) {
+          setError('root.serverError', {message: nonFieldErrors.join('; ')});
+        }
       }
     } catch (error) {
-      // display errors when no API validation response is received
+      // display errors when no API response is received
       setError('root.serverError', {
         type: 'server',
         message:
@@ -80,6 +108,12 @@ export default function LoginForm() {
     errors.email ? {key: 'email', message: errors.email?.message} : null,
     errors.password
       ? {key: 'password', message: errors.password?.message}
+      : null,
+    errors.root?.unknownFieldError
+      ? {
+          key: 'root.unknownFieldError',
+          message: errors.root?.unknownFieldError?.message,
+        }
       : null,
     errors.root?.serverError
       ? {key: 'root.serverError', message: errors.root?.serverError?.message}

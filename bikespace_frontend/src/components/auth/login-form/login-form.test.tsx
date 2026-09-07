@@ -172,8 +172,7 @@ describe('LoginForm', () => {
     ).toEqual(screen.getByText(/user does not exist/i).id);
   });
 
-  // TODO update this test to exercise the proper error branching
-  test('A ??? field error from the API is correctly shown to the user', async () => {
+  test('An unknown field error from the API is still shown to the user', async () => {
     (useUserQuery as jest.Mock).mockReturnValue({
       isSuccess: false,
     });
@@ -188,27 +187,56 @@ describe('LoginForm', () => {
     fetchMock.mockReturnValue(
       mockJsonResponse(false, {
         response: {
-          errors: ['Specified user does not exist'],
+          errors: ['Unknown field error'],
           field_errors: {
-            email: ['Specified user does not exist'],
+            unknown_field: ['Unknown field error'],
           },
         },
       })
     );
 
     const user = userEvent.setup();
-    const testEmail = 'wronguser@test.com';
+    const testEmail = 'testuser@test.com';
     const testPassword = 'testpassword';
 
     await user.type(screen.getByRole('textbox', {name: /email/i}), testEmail);
     await user.type(screen.getByLabelText(/password/i), testPassword);
     await user.click(screen.getByRole('button', {name: /log\s?in/i}));
 
-    expect(screen.getByText(/user does not exist/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/email/i)).toBeInvalid();
+    expect(screen.getByText(/unknown field error/i)).toBeInTheDocument();
+  });
+
+  test('A plain error response from the API (not a field error) is still shown to the user', async () => {
+    (useUserQuery as jest.Mock).mockReturnValue({
+      isSuccess: false,
+    });
+    render(
+      <QueryClientProvider client={queryClient}>
+        <LoginForm />
+      </QueryClientProvider>
+    );
+
+    expect(screen.getByRole('button', {name: /log\s?in/i})).toBeInTheDocument();
+
+    fetchMock.mockReturnValue(
+      mockJsonResponse(false, {
+        response: {
+          errors: ['You are already authenticated...'],
+        },
+      })
+    );
+
+    const user = userEvent.setup();
+    const testEmail = 'testuser@test.com';
+    const testPassword = 'testpassword';
+
+    await user.type(screen.getByRole('textbox', {name: /email/i}), testEmail);
+    await user.type(screen.getByLabelText(/password/i), testPassword);
+    await user.click(screen.getByRole('button', {name: /log\s?in/i}));
+
     expect(
-      screen.getByLabelText(/email/i).getAttribute('aria-describedby')
-    ).toEqual(screen.getByText(/user does not exist/i).id);
+      screen.getByText(/you are already authenticated/i)
+    ).toBeInTheDocument();
   });
 });
 
@@ -217,6 +245,6 @@ describe('LoginForm', () => {
 // [x] login calls api (already in e2e)
 // [x] password field error
 // [x] username field error
-// [ ] what happens if it's just an error field in the API response and not a field error?
-// [ ] other unknown error with 200 response
-// [ ] error response
+// [x] what happens if it's just an error field in the API response and not a field error? - use errors: ['You are already authenticated...']
+// [ ] error with no API response
+// [x] document somewhere that the form of the error response is set by flask-security
