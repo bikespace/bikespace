@@ -2,6 +2,8 @@ import {useEffect} from 'react';
 import {MapContainer, TileLayer, Marker} from 'react-leaflet';
 import {LatLngTuple} from 'leaflet';
 
+import {getRasterTileLayerProps} from '@/utils/map-utils';
+
 import {useSubmissionFormContext} from '../submission-form/schema';
 
 import 'leaflet/dist/leaflet.css';
@@ -19,6 +21,7 @@ export interface LocationProps {
 
 function Location({handler, useUrlLocation}: LocationProps) {
   const {setValue, watch} = useSubmissionFormContext();
+  const tileLayerProps = getRasterTileLayerProps(process.env.MAPTILER_API_KEY);
 
   const location = watch('location');
   const position = [location.latitude, location.longitude] as LatLngTuple;
@@ -51,10 +54,7 @@ function Location({handler, useUrlLocation}: LocationProps) {
           scrollWheelZoom={false}
           style={{height: '100%'}}
         >
-          <TileLayer
-            attribution='&copy; <a href="https://www.maptiler.com/copyright/" target="_blank" rel="noopener">MapTiler</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            url={`https://api.maptiler.com/maps/streets-v4/256/{z}/{x}/{y}.png?key=${process.env.MAPTILER_API_KEY}`}
-          />
+          <TileLayer {...tileLayerProps} />
           <Marker position={position} />
           {handler}
         </MapContainer>
