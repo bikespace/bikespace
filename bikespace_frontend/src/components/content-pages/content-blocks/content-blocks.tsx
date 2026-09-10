@@ -46,6 +46,13 @@ function HeroBlock({
           >
             Level of Traffic Stress map
           </a>
+          <a
+            href="/stolen-history-map"
+            className={styles.buttonLink}
+            data-umami-event="bike-stolen-map-from-frontpage"
+          >
+            Bike stolen history
+          </a>
         </div>
       </div>
       <div style={{flex: '1 1 auto'}}>
