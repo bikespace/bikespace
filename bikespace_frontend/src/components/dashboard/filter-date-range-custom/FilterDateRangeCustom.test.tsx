@@ -1,6 +1,6 @@
-import React from 'react';
 import {render, screen} from '@testing-library/react';
 import {userEvent} from '@testing-library/user-event';
+import {DateTime} from 'luxon';
 
 import {DateRangeInterval} from '@/interfaces/Submission';
 
@@ -49,7 +49,7 @@ describe('FilterDateRangeCustom', () => {
   test('initial date input values should be today', () => {
     const {unmount} = render(<FilterDateRangeCustom />);
 
-    const todayDate = today.toISOString().substring(0, 10);
+    const todayDate = DateTime.fromJSDate(today).toISODate();
 
     const startDateInput = screen.getByLabelText('Start date:');
     expect(startDateInput).toHaveValue(todayDate);

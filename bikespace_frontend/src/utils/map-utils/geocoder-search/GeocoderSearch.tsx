@@ -4,6 +4,7 @@ import {Marker} from 'maplibre-gl';
 import {useGeocoderQuery} from './_useGeocoderQuery';
 import {getCentroid, torontoBBox} from '@/utils/map-utils';
 import {trackUmamiEvent, titleCase} from '@/utils';
+import {AnimatedEllipses} from '@/components/shared-ui/animated-ellipses';
 
 import type {RefObject} from 'react';
 import type {Feature, FeatureCollection} from 'geojson';
@@ -56,16 +57,6 @@ function GeocoderResult({
         {address}
       </button>
     </div>
-  );
-}
-
-function AnimatedEllipses() {
-  return (
-    <span className={styles.animatedEllipses}>
-      <span>.</span>
-      <span>.</span>
-      <span>.</span>
-    </span>
   );
 }
 

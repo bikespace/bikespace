@@ -1,6 +1,8 @@
 """Shared seed data used by both manage.py (seed_dev_db) and the pytest session fixture.
 
-Keep this as the single source of truth for canonical test/dev submissions and users.
+Keep this as the source of truth for canonical test/dev submissions and users. Make sure to keep the following files synced to changes in this file:
+
+- bikespace_frontend/e2etests/constants.ts
 """
 
 from datetime import datetime

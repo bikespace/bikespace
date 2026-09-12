@@ -1,25 +1,12 @@
 import {test, expect} from '@playwright/test';
 
+import {defaultTestOptions} from './constants';
 import testParkingDataSrc from '@/__test__/test_data/testParkingData.json';
 
-const testLat = 43.76;
-const testLong = -79.43;
-
-test.use({
-  geolocation: {
-    latitude: testLat,
-    longitude: testLong,
-  },
-  permissions: ['geolocation'],
-  timezoneId: 'America/Toronto',
-  viewport: {
-    height: 600,
-    width: 800,
-  },
-});
+test.use(defaultTestOptions);
 
 test.beforeEach(async ({context}) => {
-  await context.route(process.env.DATA_BICYCLE_PARKING, async route => {
+  await context.route(process.env.DATA_BICYCLE_PARKING!, async route => {
     const body = JSON.stringify(testParkingDataSrc);
     await route.fulfill({body});
   });

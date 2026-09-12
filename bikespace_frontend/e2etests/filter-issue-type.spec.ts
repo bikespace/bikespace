@@ -1,7 +1,9 @@
 import {test, expect, Page} from '@playwright/test';
 
+import {testDesktopViewport} from './constants';
+
 test.use({
-  viewport: {height: 800, width: 1200},
+  viewport: testDesktopViewport,
 });
 
 test.beforeEach(async ({context, page}) => {

@@ -1,4 +1,3 @@
-import React from 'react';
 import {render, screen, fireEvent, act} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {FormProvider, useForm} from 'react-hook-form';
@@ -32,21 +31,21 @@ describe('Time', () => {
   test('Page title is rendered correctly', () => {
     render(<MockForm />);
     expect(
-      screen.getAllByRole('heading', {
+      screen.getByRole('heading', {
         level: 2,
         name: /when did this happen\?/i,
       })
-    );
+    ).toBeInTheDocument();
     expect(
-      screen.getAllByRole('heading', {
+      screen.getByRole('heading', {
         level: 2,
         name: /how long did you need to park\?/i,
       })
-    );
-    expect(screen.getByText(/minutes/i));
-    expect(screen.getByText(/hours/i));
-    expect(screen.getByText(/overnight/i));
-    expect(screen.getByText(/multiday/i));
+    ).toBeInTheDocument();
+    expect(screen.getByText(/minutes/i)).toBeInTheDocument();
+    expect(screen.getByText(/hours/i)).toBeInTheDocument();
+    expect(screen.getByText(/overnight/i)).toBeInTheDocument();
+    expect(screen.getByText(/multiday/i)).toBeInTheDocument();
   });
 
   test('Changing parking duration correctly updates state', async () => {
