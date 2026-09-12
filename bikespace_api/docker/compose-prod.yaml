@@ -30,7 +30,7 @@ services:
 
   db:
     # Minimum version 18
-    image: postgres:${POSTGRES_IMAGE_TAG:-latest}
+    image: postgres:${POSTGRES_IMAGE_TAG:-18}
     volumes:
       - "postgres_data:/var/lib/postgresql"
     restart: always

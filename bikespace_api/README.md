@@ -65,10 +65,10 @@ $ lsof -i :5432
 $ sudo -u postgres pg_ctl -D /Library/PostgreSQL/$VERSION/data stop
 ```
 
-If `postgres` or `pg_ctl` don't work for you, you might need to add postgres to your `.bash_profile` or `.zshrc` file by adding a line like this (replace 17 with your version number):
+If `postgres` or `pg_ctl` don't work for you, you might need to add postgres to your `.bash_profile` or `.zshrc` file by adding a line like this (replace 18 with your version number):
 
 ```
-export PATH="/Library/PostgreSQL/17/bin/:$PATH"
+export PATH="/Library/PostgreSQL/18/bin/:$PATH"
 ```
 
 ## Adding and Testing Database Migrations
