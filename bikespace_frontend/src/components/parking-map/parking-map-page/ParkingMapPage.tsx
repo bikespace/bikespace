@@ -31,6 +31,7 @@ import {
   BicycleNetworkLayer,
   BicycleNetworkLayerLegend,
 } from '@/components/map-layers/BicycleNetwork';
+import {TheftRateLayer, TheftRateLayerLegend} from '@/components/map-layers/TheftRate';
 
 import type {
   FilterSpecification,
@@ -83,6 +84,7 @@ export function ParkingMapPage() {
   const [parkingLayerFilter, setParkingLayerFilter] =
     useState<FilterSpecification>(true);
   const [showBicycleNetwork, setShowBicycleNetwork] = useState<boolean>(true);
+  const [showTheftRate, setShowTheftRate] = useState<boolean>(false);
 
   const mapRef = useRef<MapRef>(null);
   const resultsCardRef = useRef<HTMLDivElement>(null);
@@ -357,6 +359,7 @@ export function ParkingMapPage() {
             <SidebarDetailsContent className={styles.legendContent}>
               <ParkingLayerLegend />
               <BicycleNetworkLayerLegend />
+              {showTheftRate ? <TheftRateLayerLegend /> : null}
             </SidebarDetailsContent>
           </SidebarDetailsDisclosure>
           <SidebarDetailsDisclosure>
@@ -369,6 +372,14 @@ export function ParkingMapPage() {
                 {(showBicycleNetwork ? 'Hide' : 'Show') +
                   ' ' +
                   'Bicycle Network'}
+              </SidebarButton>
+              <SidebarButton
+                onClick={() => setShowTheftRate(!showTheftRate)}
+                style={{margin: '1rem 0'}}
+              >
+                {(showTheftRate ? 'Hide' : 'Show') +
+                  ' ' +
+                  'Bicycle Theft Rate (beta)'}
               </SidebarButton>
             </SidebarDetailsContent>
           </SidebarDetailsDisclosure>
@@ -396,6 +407,9 @@ export function ParkingMapPage() {
           groupSelected={parkingGroupSelected}
           layerFilter={parkingLayerFilter}
         />
+        {showTheftRate ? (
+          <TheftRateLayer beforeId={mapStyleRoadLabelsLayer} />
+        ) : null}
         {showBicycleNetwork ? (
           <BicycleNetworkLayer beforeId={mapStyleRoadLabelsLayer} />
         ) : null}
