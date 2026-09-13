@@ -7,6 +7,6 @@ export BACKUP_CRON_CHECK="${BACKUP_CRON_CHECK:-0 4 * * 0}"
 envsubst < /etc/crontab.template > /etc/crontab
 
 # run restic init if needed
-restic cat config >/dev/null 2>&1 || restic init
+restic snapshots >/dev/null 2>&1 || restic init
 
 exec supercronic -no-reap /etc/crontab
