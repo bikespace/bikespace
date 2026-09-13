@@ -1,0 +1,4 @@
+# min hour dom mon dow  command
+${BACKUP_CRON_DB}       backup-db.sh         # db -> backup S3 (encrypted)
+${BACKUP_CRON_CONFIG}   backup-config.sh     # secrets -> backup S3 (encrypted)
+${BACKUP_CRON_CHECK}    restic-check.sh      # integrity check (optional)

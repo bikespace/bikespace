@@ -7,9 +7,18 @@ on:
       - bikespace_frontend/**
       - .github/workflows/test-preview.yml
 jobs:
+  # variables are only available in workflow steps, so this config job is used to set shared config variables
+  config:
+    runs-on: ubuntu-latest
+    outputs:
+      postgres-image: postgres:18
+    steps:
+      - run: ":"
+
   apitest:
     name: API tests
     runs-on: ubuntu-latest
+    needs: config
     env:
       BIKESPACE_SECURITY_PASSWORD_SALT: ${{ secrets.BIKESPACE_SECURITY_PASSWORD_SALT }}
       BIKESPACE_SECRET_KEY: ${{ secrets.BIKESPACE_SECRET_KEY }}
@@ -19,8 +28,8 @@ jobs:
     services:
       # Label used to access the service container
       postgres:
-        # Docker Hub image
-        image: postgres:15
+        # Docker Hub image set by config job
+        image: ${{ needs.config.outputs.postgres-image }}
         # Provide the password for postgres
         env:
           POSTGRES_PASSWORD: postgres
@@ -50,6 +59,7 @@ jobs:
   api-migration-test:
     name: Test if database migrations need to be generated for API
     runs-on: ubuntu-latest
+    needs: config
     env:
       BIKESPACE_SECURITY_PASSWORD_SALT: ${{ secrets.BIKESPACE_SECURITY_PASSWORD_SALT }}
       BIKESPACE_SECRET_KEY: ${{ secrets.BIKESPACE_SECRET_KEY }}
@@ -58,8 +68,8 @@ jobs:
     services:
       # Label used to access the service container
       postgres:
-        # Docker Hub image
-        image: postgres:15
+        # Docker Hub image set by config job
+        image: ${{ needs.config.outputs.postgres-image }}
         # Provide the password for postgres
         env:
           POSTGRES_PASSWORD: postgres
@@ -102,6 +112,7 @@ jobs:
     name: Frontend end-to-end tests
     timeout-minutes: 10
     runs-on: ubuntu-latest
+    needs: config
     env:
       BIKESPACE_SECURITY_PASSWORD_SALT: ${{ secrets.BIKESPACE_SECURITY_PASSWORD_SALT }}
       BIKESPACE_SECRET_KEY: ${{ secrets.BIKESPACE_SECRET_KEY }}
@@ -111,8 +122,8 @@ jobs:
     services:
       # Label used to access the service container
       postgres:
-        # Docker Hub image
-        image: postgres:15
+        # Docker Hub image set by config job
+        image: ${{ needs.config.outputs.postgres-image }}
         # Provide the password for postgres
         env:
           POSTGRES_PASSWORD: postgres
