@@ -44,6 +44,49 @@ services:
       timeout: 5s
       retries: 10
 
+  backup:
+    build: ./backup
+    restart: unless-stopped
+    init: true # tini as PID 1; supercronic runs with -no-reap (see entrypoint.sh)
+    depends_on: [db]
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-bikespace}
+      POSTGRES_USER: ${SERVICE_USER_POSTGRES}
+      POSTGRES_PASSWORD: ${SERVICE_PASSWORD_64_POSTGRES}
+      # Hardcoded, not Coolify-settable: Coolify injects app-level env vars
+      # into ALL services, so a PGHOST set here previously broke db's own init script.
+      PGHOST: db
+      BIKESPACE_SECRET_KEY: ${SERVICE_PASSWORD_64_BIKESPACESECRETKEY}
+      BIKESPACE_SECURITY_PASSWORD_SALT: ${SERVICE_PASSWORD_64_PASSWORDSALT}
+      SEED_USER_EMAIL: ${SEED_USER_EMAIL:?}
+      SEED_USER_PASSWORD: ${SERVICE_PASSWORD_64_SEEDUSERPASSWORD}
+      RESTIC_PASSWORD: ${RESTIC_PASSWORD:?}
+      RESTIC_REPOSITORY: s3:${BACKUP_S3_ENDPOINT:?}/${BACKUP_S3_BUCKET:?}/restic
+      AWS_ACCESS_KEY_ID: ${BACKUP_S3_ACCESS_KEY:?} # restic's S3 backend reads these names
+      AWS_SECRET_ACCESS_KEY: ${BACKUP_S3_SECRET_KEY:?}
+      AWS_DEFAULT_REGION: ${BACKUP_S3_REGION}
+      BACKUP_S3_ACCESS_KEY: ${BACKUP_S3_ACCESS_KEY:?} # TODO is this needed? note is "used directly by backup-images.sh (rclone)" which is not part of this backup
+      BACKUP_S3_SECRET_KEY: ${BACKUP_S3_SECRET_KEY:?}
+      BACKUP_S3_ENDPOINT: ${BACKUP_S3_ENDPOINT:?}
+      BACKUP_S3_REGION: ${BACKUP_S3_REGION}
+      BACKUP_S3_BUCKET: ${BACKUP_S3_BUCKET:?}
+      BACKUP_CRON_IMAGES: ${BACKUP_CRON_IMAGES:-0 2 * * *}
+      BACKUP_CRON_DB: ${BACKUP_CRON_DB:-30 2 * * *}
+      BACKUP_CRON_CONFIG: ${BACKUP_CRON_CONFIG:-45 2 * * *}
+      BACKUP_CRON_CHECK: ${BACKUP_CRON_CHECK:-0 4 * * 0}
+      RESTIC_KEEP_DAILY: ${RESTIC_KEEP_DAILY:-7}
+      RESTIC_KEEP_WEEKLY: ${RESTIC_KEEP_WEEKLY:-5}
+      RESTIC_KEEP_MONTHLY: ${RESTIC_KEEP_MONTHLY:-12}
+    healthcheck:
+      test: ["CMD", "backup-healthcheck.sh"]
+      interval: 1h
+      timeout: 10s
+      retries: 1
+      start_period: 26h
+    volumes:
+      - backup_scratch:/backups
+
 volumes:
   postgres_data:
     name: bikespace_postgres_data
+  backup_scratch:
