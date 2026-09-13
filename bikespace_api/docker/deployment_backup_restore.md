@@ -37,14 +37,6 @@ restic restore latest --tag config --target ~/bikespace-restore
 cat ~/bikespace-restore/backups/config/secrets.env
 ```
 
-Once you've copied every value into the Coolify UI (step 2), securely delete the restored file so the plaintext secrets don't linger on disk:
-
-```bash
-shred -u ~/bikespace-restore/backups/config/secrets.env
-# shred isn't available everywhere (e.g. macOS) — there, just remove the dir:
-rm -rf ~/bikespace-restore
-```
-
 ### 2. Deploy the full stack, then restore the databases.
 
 Set up the new instance by following the deployment instructions — Coolify application settings, backup S3 bucket, and environment variables — using the secrets you recovered in step 1. If you are restoring onto new storage (e.g. for restore testing or if changing S3-compatible storage providers), you will need to create the new backup bucket from scratch.
@@ -59,9 +51,17 @@ Set up the new instance by following the deployment instructions — Coolify app
 > | `POSTGRES_PASSWORD`                | `SERVICE_PASSWORD_64_POSTGRES`           |
 > | `SEED_USER_PASSWORD`               | `SERVICE_PASSWORD_64_SEEDUSERPASSWORD`   |
 >
-> Then **double-check every pasted value.** `RESTIC_PASSWORD` is *not* a magic variable — enter the one you recovered in step 0 the same as any normal variable.
+> Then **double-check every pasted value.** `RESTIC_PASSWORD` is *not* a magic variable — enter the one you recovered in step 0 or a new one, depending on whether you want to re-use the existing backup bucket or not.
 
 With everything configured, launch the fresh instance.
+
+Once you've copied every value into the Coolify UI, securely delete the restored file so the plaintext secrets don't linger on disk:
+
+```bash
+shred -u ~/bikespace-restore/backups/config/secrets.env
+# shred isn't available everywhere (e.g. macOS) — there, just remove the dir:
+rm -rf ~/bikespace-restore
+```
 
 To restore, you will then overwrite the databases with the backup data. Run the restore itself inside the running **`backup`** container — it already bundles `restic`, `psql`, and `pg_restore` and sits on the same Docker network as `db`, so no extra tooling or file-copying between machines is needed:
 
@@ -102,7 +102,7 @@ Restore the `bikespace` database, which includes the data for the api. You will 
 
 ```bash
 # bikespace — schema already exists (created by the migrations service), so overwrite it
-pg_restore -v -h db -U $POSTGRES_USER -d bikespace --clean --if-exists /tmp/restore/backups/pg/geovisio.dump
+pg_restore -v -h db -U $POSTGRES_USER -d bikespace --clean --if-exists /tmp/restore/backups/pg/bikespace.dump
 ```
 
 Once the restore has loaded, remove the dumps from the container's `/tmp` — they contain the Postgres role-password hashes. (Lower risk than step 1 since the `backup` container is single-tenant and ephemeral, but still worth not leaving behind.)
