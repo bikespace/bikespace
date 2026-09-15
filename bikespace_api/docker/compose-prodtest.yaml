@@ -25,7 +25,7 @@ services:
         - action: rebuild
           path: ../bikespace_api/
   db:
-    image: postgres
+    image: postgres:18
     restart: always
     user: postgres
     environment:
