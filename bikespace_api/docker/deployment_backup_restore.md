@@ -2,11 +2,89 @@
 
 ## Deployment
 
-**TODO**
+Instructions below are for [Coolify](https://coolify.io/docs/applications/build-packs/docker-compose) but the steps should be similar for a regular docker compose deployment. For a non-Coolify deployment, you will have to generate your own secrets for the `SERVICE_USER_POSTGRES` and `SERVICE_PASSWORD_64_` values.
+
+1. Set up an S3-compatible bucket to store the backups as well as access credentials scoped to just that bucket and write down the key details in a secure place. You should have one value for each `BACKUP_S3_*` environment variable, though `BACKUP_S3_REGION` is optional for some providers. The backups bucket should be encrypted and it should not be public.
+2. Follow the [instructions for a Coolify docker compose deployment](https://coolify.io/docs/applications/build-packs/docker-compose), pointing Coolify at this repository with the following settings:
+
+   - Git source: https://github.com/bikespace/bikespace.git
+   - Base directory: `bikespace_api/docker/`
+   - Docker compose location: `compose-prod.yaml`
+
+3. Add a domain for the service, connecting Coolify's proxy to port `8000` (e.g. `https://bikespace.mydomain.ca:8000`)
+4. Fill in the following environment variables:
+
+   - `SEED_USER_EMAIL`: email address for the superuser account you can use for initial setup, e.g. adding additional users. The password for this account will be automatically generated in `SERVICE_PASSWORD_64_SEEDUSERPASSWORD`.
+   - `RESTIC_PASSWORD`: generate this for yourself (e.g. with `python3 -c "import secrets; print(secrets.token_hex(64))"`) and **save it outside of Coolify in a password manager!** Without this, you will not be able to use your backups.
+   - `BACKUP_S3_*` variables: fill these out using the information from step 1.
+   - `BACKUP_CRON_*` and `RESTIC_KEEP_*` variables can optionally be changed if you want a different backup and retention schedule than the default. See notes in the backup section.
+
+5. Deploy the service
+6. Check the deployment:
+
+   - Deployment should indicate "success/finished"
+   - Container healthchecks should be passing
+   - Check the runtime logs to confirm there are no errors in start-up or database migration
+   - You should be able to navigate to the api URL and successfully make a request using the docs page (e.g. to `/api/v2/submissions`)
+   - You should be able to log in at `/admin` using the seed user account
+
+7. Run a one-off backup and confirm it was successful (see instructions in the backup section).
+8. Change the seed user password using the User admin panel at `admin/user/`
+
 
 ## Backup
 
-**TODO**
+The `backup` container in `compose-prod.yaml` will automatically back up secrets and the postgres database so that your production instance can be restored or rolled back if needed. The backups are managed and encrypted by [restic](https://restic.net/) and saved to an S3-compatible file storage bucket.
+
+
+### Schedule and Retention
+
+The backup schedule and retention periods can optionally be customized. Make sure to re-start the containers after updating any of these values:
+
+| Variable              | Default      | Description                             |
+| --------------------- | ------------ | --------------------------------------- |
+| `BACKUP_CRON_DB`      | `30 2 * * *` | When to back up the databases.          |
+| `BACKUP_CRON_CONFIG`  | `45 2 * * *` | When to back up secrets.                |
+| `BACKUP_CRON_CHECK`   | `0 4 * * 0`  | When to run the restic integrity check. |
+| `RESTIC_KEEP_DAILY`   | `7`          | Daily restic snapshots to retain.       |
+| `RESTIC_KEEP_WEEKLY`  | `5`          | Weekly restic snapshots to retain.      |
+| `RESTIC_KEEP_MONTHLY` | `12`         | Monthly restic snapshots to retain.     |
+
+
+### Running a one-off backup
+
+```sh
+# ssh into host machine
+
+# find the backup container name, e.g. with
+docker ps --format "table {{.ID}}\t{{.CreatedAt}}\t{{.Names}}" | grep backup
+
+# run the backup now script
+docker exec <container_name> backup-now.sh
+
+# verify that the backup ran correctly
+docker exec <container_name> restic-check.sh
+```
+
+You can also use the 'terminal' menu in Coolify and connect to the backup container that way. From there you can just run `backup-now.sh` and then `restic-check.sh`.
+
+
+### Saving a copy to an external hard drive
+
+To fully implement the [3-2-1 backup strategy](https://www.backblaze.com/blog/the-3-2-1-backup-strategy/), you can copy the backup files to an external hard drive, e.g. once a week.
+
+To do this, you can set up a script like this on the backup disk:
+
+```sh
+# `,region='${BACKUP_S3_REGION}'` is optional on some providers
+BACKUP=":s3,provider=Other,access_key_id=${BACKUP_S3_ACCESS_KEY},secret_access_key=${BACKUP_S3_SECRET_KEY},endpoint='${BACKUP_S3_ENDPOINT}',region='${BACKUP_S3_REGION}':${BACKUP_S3_BUCKET}"
+
+# Encrypted DB/secrets: copy the restic repo
+# Change `/mnt/hdd/bikespace/restic` to your desired path
+rclone sync "$BACKUP/restic" /mnt/hdd/bikespace/restic \
+  --transfers 16 --checkers 32 --fast-list --progress
+```
+
 
 ## Restore
 
