@@ -17,6 +17,7 @@ from bikespace_api.submissions.submissions_models import (
     ParkingDuration,
     Submission,
 )
+from bikespace_api.statuses.statuses_models import BikeParkingStatus, StatusName
 
 admin_user = {
     "username": "adminuser",
@@ -36,9 +37,40 @@ non_admin_user = {
 }
 
 
+BIKEPARKING_STATUSES = [
+    ("new_report", StatusName.ACTION_REQUIRED, "Issue has been reported but no action taken yet", False),
+    ("needs_survey", StatusName.ACTION_REQUIRED, "Nature of issue is unclear from report details; area should be surveyed in-person", False),
+    ("reported_to_city", StatusName.RESOLUTION_PENDING, "Issue has been reported to the City of Toronto", False),
+    ("reported_to_operator", StatusName.RESOLUTION_PENDING, "Issue has been reported to the organization or person responsible for maintaining the bicycle parking", False),
+    ("resolution_pending", StatusName.RESOLUTION_PENDING, "Operator/city has initiated but not completed the process to resolve the issue", False),
+    ("resolved", StatusName.RESOLVED_SUCCESS, "Issue reported by the user was fully resolved with some action taken", False),
+    ("partially_resolved", StatusName.RESOLVED_SUCCESS, "Issue was partially resolved; original issue closed, new issue opened for permanent fix", False),
+    ("noted_for_information", StatusName.RESOLVED_INFORMATIONAL, "Issue does not require specific action; helps indicate a broader pattern", False),
+    ("archived", StatusName.CLOSED_UNRESOLVED, "Issue closed; no recent action taken", True),
+    ("unable_to_resolve", StatusName.CLOSED_UNRESOLVED, "Action taken but did not resolve the issue; no additional actions planned", False),
+    ("app_feedback", StatusName.RESOLVED_INFORMATIONAL, "About the app, not about bike parking", False),
+    ("data_caution", StatusName.ACTION_REQUIRED, "Unclear whether this is a valid issue report; extra scrutiny applied", False),
+    ("data_invalid", StatusName.INVALID_SUBMISSION, "Not a valid issue report, e.g. a duplicate or test entry", True),
+    ("duplicate_report", StatusName.INVALID_SUBMISSION, "Same submission as a previously submitted report", True),
+]
+
+
 def seed_base_data():
-    """Seed the 4 canonical submissions and 2 test users. Requires an active app context."""
+    """Seed the 4 canonical submissions, 2 test users, and 14 bike parking statuses. Requires an active app context."""
     user_datastore = create_userdatastore(db, User, Role)
+
+    # seed bikeparking statuses
+    for status_type, status_name, status_description, hide_by_default in BIKEPARKING_STATUSES:
+        if db.session.query(BikeParkingStatus).filter_by(status_type=status_type).first() is None:
+            db.session.add(
+                BikeParkingStatus(
+                    status_type=status_type,
+                    status_name=status_name,
+                    status_description=status_description,
+                    hide_by_default=hide_by_default,
+                )
+            )
+    db.session.commit()
 
     # create user roles
     user_role = Role(name=ApplicationRoles.USER)

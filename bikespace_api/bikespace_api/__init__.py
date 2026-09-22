@@ -68,15 +68,23 @@ def create_app(script_info=None):
     from bikespace_api.admin.admin_views import AdminRolesModelView, AdminUsersModelView
     from bikespace_api.submissions.submissions_views import AdminSubmissionModelView
     from bikespace_api.submissions.submissions_models import Submission
+    from bikespace_api.statuses.statuses_views import AdminBikeParkingStatusModelView
+    from bikespace_api.statuses.statuses_models import BikeParkingStatus
 
     admin.add_view(AdminRolesModelView(Role, db.session))
     admin.add_view(AdminUsersModelView(User, db.session))
     admin.add_view(AdminSubmissionModelView(Submission, db.session))
+    admin.add_view(AdminBikeParkingStatusModelView(BikeParkingStatus, db.session))
 
     # set up submissions blueprint
     from bikespace_api.submissions.submissions_routes import submissions_blueprint
 
     api.register_blueprint(submissions_blueprint, url_prefix="/api/v2/")
+
+    # set up statuses blueprint
+    from bikespace_api.statuses.statuses_routes import statuses_blueprint
+
+    api.register_blueprint(statuses_blueprint, url_prefix="/api/v2/")
 
     # set up route index redirect
     @app.route("/")
