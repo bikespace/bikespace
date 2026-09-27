@@ -24,11 +24,11 @@ class BikeParkingStatus(db.Model):
     __versioned__ = {}
 
     id: so.Mapped[int] = so.mapped_column(primary_key=True, autoincrement=True)
-    status_type: so.Mapped[str] = so.mapped_column(sa.String, nullable=False, unique=True)
-    status_name: so.Mapped[StatusName] = so.mapped_column(
+    status_type: so.Mapped[StatusName] = so.mapped_column(
         sa.Enum(StatusName, create_constraint=False, native_enum=False),
         nullable=False,
     )
+    status_name: so.Mapped[str] = so.mapped_column(sa.String, nullable=False, unique=True)
     status_description: so.Mapped[str] = so.mapped_column(sa.Text, nullable=False)
     hide_by_default: so.Mapped[bool] = so.mapped_column(
         sa.Boolean, nullable=False, default=False
@@ -45,8 +45,8 @@ class BikeParkingStatus(db.Model):
 
     def __init__(
         self,
-        status_type: str = None,  # type: ignore
-        status_name: StatusName = None,  # type: ignore
+        status_type: StatusName = None,  # type: ignore
+        status_name: str = None,  # type: ignore
         status_description: str = None,  # type: ignore
         hide_by_default: bool = False,
     ):

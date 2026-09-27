@@ -5,16 +5,16 @@ from bikespace_api.statuses.statuses_models import BikeParkingStatus, StatusName
 
 
 VISIBLE_STATUS = {
-    "status_type": "new_report",
-    "status_name": StatusName.ACTION_REQUIRED,
-    "status_description": "Issue has been reported but no action taken yet",
+    "status_type": StatusName.ACTION_REQUIRED,
+    "status_name": "test_visible",
+    "status_description": "Test visible status",
     "hide_by_default": False,
 }
 
 HIDDEN_STATUS = {
-    "status_type": "archived",
-    "status_name": StatusName.CLOSED_UNRESOLVED,
-    "status_description": "Issue closed; no recent action taken",
+    "status_type": StatusName.CLOSED_UNRESOLVED,
+    "status_name": "test_hidden",
+    "status_description": "Test hidden status",
     "hide_by_default": True,
 }
 
@@ -46,9 +46,9 @@ class TestGetBikeParkingStatuses:
 
         response = test_client.get("/api/v2/bikeparking-statuses")
         assert response.status_code == HTTPStatus.OK
-        returned_types = [s["status_type"] for s in response.json]
-        assert VISIBLE_STATUS["status_type"] in returned_types
-        assert HIDDEN_STATUS["status_type"] not in returned_types
+        returned_names = [s["status_name"] for s in response.json]
+        assert VISIBLE_STATUS["status_name"] in returned_names
+        assert HIDDEN_STATUS["status_name"] not in returned_names
 
     def test_get_statuses_includes_hidden_with_param(self, flask_app, test_client, clean_db):
         """
@@ -63,9 +63,9 @@ class TestGetBikeParkingStatuses:
 
         response = test_client.get("/api/v2/bikeparking-statuses?include_hidden=true")
         assert response.status_code == HTTPStatus.OK
-        returned_types = [s["status_type"] for s in response.json]
-        assert VISIBLE_STATUS["status_type"] in returned_types
-        assert HIDDEN_STATUS["status_type"] in returned_types
+        returned_names = [s["status_name"] for s in response.json]
+        assert VISIBLE_STATUS["status_name"] in returned_names
+        assert HIDDEN_STATUS["status_name"] in returned_names
 
     def test_get_statuses_response_shape(self, flask_app, test_client, clean_db):
         """
@@ -108,7 +108,7 @@ class TestGetBikeParkingStatuses:
         assert response.status_code == HTTPStatus.OK
         assert response.json == []
 
-    def test_get_statuses_seed_data_loaded(self, test_client):
+    def test_get_statuses_seed_data_loaded(self, flask_app, test_client, clean_db):
         """
         GIVEN a Flask application with seed data loaded
         WHEN GET '/api/v2/bikeparking-statuses?include_hidden=true' is requested

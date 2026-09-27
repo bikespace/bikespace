@@ -21,14 +21,14 @@ def test_new_bikeparking_status_defaults():
     """
     before = datetime.now(timezone.utc)
     status = BikeParkingStatus(
-        status_type="new_report",
-        status_name=StatusName.ACTION_REQUIRED,
+        status_type=StatusName.ACTION_REQUIRED,
+        status_name="new_report",
         status_description="Issue has been reported but no action taken yet",
     )
     after = datetime.now(timezone.utc)
 
-    assert status.status_type == "new_report"
-    assert status.status_name == StatusName.ACTION_REQUIRED
+    assert status.status_type == StatusName.ACTION_REQUIRED
+    assert status.status_name == "new_report"
     assert status.status_description == "Issue has been reported but no action taken yet"
     assert status.hide_by_default is False
     assert before <= status.created_at <= after
@@ -42,8 +42,8 @@ def test_new_bikeparking_status_hide_by_default_true():
     THEN the field is stored correctly
     """
     status = BikeParkingStatus(
-        status_type="archived",
-        status_name=StatusName.CLOSED_UNRESOLVED,
+        status_type=StatusName.CLOSED_UNRESOLVED,
+        status_name="archived",
         status_description="Issue closed; no recent action taken",
         hide_by_default=True,
     )
