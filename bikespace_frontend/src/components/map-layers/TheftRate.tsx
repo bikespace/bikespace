@@ -6,20 +6,32 @@ import type {ExpressionSpecification} from 'maplibre-gl';
 
 import styles from './legend-tables.module.scss';
 
-// Neighbourhoods with fewer estimated daily bike trips than this are too noisy to rate
-// reliably — matches min_bike_trips in the parking-map-data pipeline
+// Zones with fewer estimated daily bike trips than this are too noisy to rate
+// reliably — matches the min_bike_trips default in the parking-map-data pipeline
 // (src/bikespace_data/bicycle_theft/run_theft_rate_zones.py)
-const MIN_RELIABLE_BIKE_TRIPS = 10;
+const MIN_RELIABLE_BIKE_TRIPS = 100;
 const unreliableColor = '#d9d9d9';
 
-const theftRateBreaks = [
-  {upTo: 0.5, color: '#fff5f0', label: '< 0.5'},
-  {upTo: 1, color: '#fcbba1', label: '0.5 – 1'},
-  {upTo: 1.5, color: '#fc9272', label: '1 – 1.5'},
-  {upTo: 2, color: '#fb6a4a', label: '1.5 – 2'},
-  {upTo: 3, color: '#de2d26', label: '2 – 3'},
-  {upTo: Infinity, color: '#a50f15', label: '3+'},
+// Thefts per 1000 daily bike trips. Static breaks sitting near the 20th/40th/60th/80th/95th
+// percentiles of the reliable zones; revisit if the pipeline's rate scale changes.
+const theftRateStops = [0.018, 0.03, 0.045, 0.08, 0.16];
+const theftRateColors = [
+  '#fff5f0',
+  '#fcbba1',
+  '#fc9272',
+  '#fb6a4a',
+  '#de2d26',
+  '#a50f15',
 ];
+const theftRateBreaks = theftRateColors.map((color, i) => ({
+  color,
+  label:
+    i === 0
+      ? `< ${theftRateStops[0]}`
+      : i === theftRateStops.length
+        ? `${theftRateStops[i - 1]}+`
+        : `${theftRateStops[i - 1]} – ${theftRateStops[i]}`,
+}));
 
 // maplibre's ExpressionSpecification union can't be inferred from a plain nested-array
 // literal like this one — the runtime shape is valid maplibre expression syntax, so we
@@ -35,15 +47,8 @@ const theftRateFillColor = [
   [
     'step',
     ['get', 'theft_per_1000_trips'],
-    theftRateBreaks[0].color,
-    theftRateBreaks[0].upTo,
-    theftRateBreaks[1].color,
-    theftRateBreaks[1].upTo,
-    theftRateBreaks[2].color,
-    theftRateBreaks[2].upTo,
-    theftRateBreaks[3].color,
-    theftRateBreaks[3].upTo,
-    theftRateBreaks[4].color,
+    theftRateColors[0],
+    ...theftRateStops.flatMap((stop, i) => [stop, theftRateColors[i + 1]]),
   ],
 ] as unknown as ExpressionSpecification;
 
@@ -85,7 +90,7 @@ export function TheftRateLayerLegend() {
   return (
     <>
       <h3>Estimated Bicycle Theft Rate</h3>
-      <p>Est. thefts per 1000 bike trips, typical day, by neighbourhood</p>
+      <p>Est. thefts per 1000 bike trips, typical day, by area</p>
       <table className={styles.legendTable}>
         <thead>
           <tr>
