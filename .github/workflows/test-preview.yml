@@ -183,10 +183,9 @@ jobs:
       - name: Build static frontend
         run: make build-frontend
       - name: Publish to Cloudflare Pages
-        uses: cloudflare/pages-action@v1
+        uses: cloudflare/wrangler-action@v4
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          projectName: bikespace-v2
-          directory: bikespace_frontend/out
+          command: pages deploy bikespace_frontend/out --project-name=bikespace-v2
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
