@@ -82,7 +82,7 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy pages deploy bikespace_frontend/out --project-name=bikespace-v2 --branch=${{ github.head_ref || github.ref_name }} --commit-dirty=true
+          command: pages deploy bikespace_frontend/out --project-name=bikespace-v2 --branch=${{ github.head_ref || github.ref_name }} --commit-dirty=true
           githubToken: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set "Publish to Cloudflare Pages" check to success
