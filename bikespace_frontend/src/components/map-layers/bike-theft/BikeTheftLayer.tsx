@@ -24,13 +24,17 @@ function reportsToGeoJSON(reports: StolenBikeReport[]) {
     statuses.add(report.status);
     locationStatuses.set(key, statuses);
   }
+  // Function to check if a location has both 'stolen' and 'recovered' reports
   function locationStatus(report: StolenBikeReport) {
     const statuses = locationStatuses.get(
       JSON.stringify([report.longitude, report.latitude])
     )!;
-    return statuses.has('stolen') && statuses.has('recovered')
+    return (statuses.has('stolen') || statuses.has('unknown')) &&
+      statuses.has('recovered')
       ? 'mixed'
-      : report.status;
+      : statuses.has('stolen') && statuses.has('unknown')
+        ? 'stolen'
+        : report.status;
   }
 
   return {
@@ -114,10 +118,12 @@ export function BikeTheftLayer({
           recoveredCount: [
             '+',
             ['case', ['==', ['get', 'status'], 'recovered'], 1, 0],
+            ['case', ['==', ['get', 'status'], 'unknown'], 1, 0],
           ],
           stolenCount: [
             '+',
             ['case', ['==', ['get', 'status'], 'stolen'], 1, 0],
+            ['case', ['==', ['get', 'status'], 'unknown'], 1, 0],
           ],
         }}
       >

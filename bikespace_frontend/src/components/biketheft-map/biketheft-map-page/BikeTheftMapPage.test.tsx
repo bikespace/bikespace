@@ -249,20 +249,58 @@ it('expands a clicked cluster to its expansion zoom', async () => {
   ).not.toBeInTheDocument();
 });
 
-it('applies dataset-based date presets and clears their active state for custom dates', async () => {
+it('applies calendar-year presets and clears their active state for custom dates', async () => {
+  jest.useFakeTimers({now: new Date('2026-09-29T12:00:00-04:00')});
+  const user = userEvent.setup({advanceTimers: jest.advanceTimersByTime});
+  try {
+    render(<BikeTheftMapPage />);
+    await user.selectOptions(
+      screen.getByLabelText('Filter by location'),
+      'all'
+    );
+    await user.click(screen.getByRole('button', {name: 'This year'}));
+    expect(screen.getByLabelText('From')).toHaveValue('2026-01-01');
+    expect(screen.getByLabelText('To')).toHaveValue('2026-12-31');
+    expect(
+      JSON.parse(screen.getByTestId('stolen-bikes').textContent!).features
+    ).toEqual([]);
+    expect(screen.getByRole('button', {name: 'This year'})).toHaveAttribute(
+      'aria-pressed',
+      'true'
+    );
+    await user.click(screen.getByRole('button', {name: 'Last year'}));
+    expect(screen.getByLabelText('From')).toHaveValue('2025-01-01');
+    expect(screen.getByLabelText('To')).toHaveValue('2025-12-31');
+    expect(screen.getByTestId('stolen-bikes')).toHaveTextContent(
+      'Blue road bike'
+    );
+    expect(screen.getByTestId('stolen-bikes')).not.toHaveTextContent(
+      'Red mountain bike'
+    );
+    expect(screen.getByRole('button', {name: 'Last year'})).toHaveAttribute(
+      'aria-pressed',
+      'true'
+    );
+    expect(screen.getByRole('button', {name: 'This year'})).toHaveAttribute(
+      'aria-pressed',
+      'false'
+    );
+    fireEvent.change(screen.getByLabelText('From'), {
+      target: {value: '2025-02-01'},
+    });
+    expect(screen.getByRole('button', {name: 'Last year'})).toHaveAttribute(
+      'aria-pressed',
+      'false'
+    );
+  } finally {
+    jest.useRealTimers();
+  }
+});
+
+it('preserves the dataset-based three-year preset and supports clearing dates', async () => {
   const user = userEvent.setup();
   render(<BikeTheftMapPage />);
   await user.selectOptions(screen.getByLabelText('Filter by location'), 'all');
-  await user.click(screen.getByRole('button', {name: 'Last year'}));
-  expect(screen.getByLabelText('From')).toHaveValue('2025-01-01');
-  expect(screen.getByLabelText('To')).toHaveValue('2025-12-31');
-  expect(screen.getByTestId('stolen-bikes')).not.toHaveTextContent(
-    'Red mountain bike'
-  );
-  expect(screen.getByRole('button', {name: 'Last year'})).toHaveAttribute(
-    'aria-pressed',
-    'true'
-  );
   await user.click(screen.getByRole('button', {name: 'Last 3 years'}));
   expect(screen.getByLabelText('From')).toHaveValue('2023-01-01');
   expect(screen.getByLabelText('To')).toHaveValue('2025-12-31');

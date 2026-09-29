@@ -33,13 +33,19 @@ export function BikeTheftFilters({
   const latestYear = latestReportDate
     ? Number(latestReportDate.slice(0, 4))
     : null;
-  // Use calendar years ending in the dataset's latest year, not today's year.
+  const currentYear = new Date().getFullYear();
   const presets = [
     {
+      label: 'This year',
+      start: `${currentYear}-01-01`,
+      end: `${currentYear}-12-31`,
+      disabled: false,
+    },
+    {
       label: 'Last year',
-      start: latestYear ? `${latestYear}-01-01` : '',
-      end: latestYear ? `${latestYear}-12-31` : '',
-      disabled: latestYear === null,
+      start: `${currentYear - 1}-01-01`,
+      end: `${currentYear - 1}-12-31`,
+      disabled: false,
     },
     {
       label: 'Last 3 years',

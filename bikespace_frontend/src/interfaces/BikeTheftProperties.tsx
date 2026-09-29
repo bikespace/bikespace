@@ -11,7 +11,7 @@ export interface StolenBikeReport {
   bikeType: string; // e.g. "Road bike", "Mountain bike"
   color: string;
   description: string;
-  status: 'stolen' | 'recovered';
+  status: 'stolen' | 'recovered' | 'unknown';
   latitude: number;
   longitude: number;
 }
