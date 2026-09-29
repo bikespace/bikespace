@@ -1,8 +1,8 @@
-import React from "react";
+import React from 'react';
 
-import { HeroBlock } from "@/components/content-pages/content-blocks";
+import { HeroBlock } from '@/components/content-pages/content-blocks';
 
-import bikespaceIntro from "@/assets/images/Hero_Concept_v2_web.jpg";
+import bikespaceIntro from '@/assets/images/Hero_Concept_v2_web.jpg';
 
 export const metadata = {
   title: "BikeSpace - Toronto's Bike Parking App",
