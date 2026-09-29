@@ -1,4 +1,5 @@
 name: Test and Preview
+
 on:
   pull_request:
     types: [opened, synchronize, ready_for_review]
@@ -6,10 +7,22 @@ on:
       - bikespace_api/**
       - bikespace_frontend/**
       - .github/workflows/test-preview.yml
+
 jobs:
+  # variables are only available in workflow steps, so this config job is used to set shared config variables
+  config:
+    runs-on: ubuntu-latest
+    outputs:
+      python-version: "3.12.0"
+      node-version: "24"
+      postgres-image: postgres:15
+    steps:
+      - run: ":"
+
   apitest:
     name: API tests
     runs-on: ubuntu-latest
+    needs: config
     env: &api_env
       BIKESPACE_SECURITY_PASSWORD_SALT: ${{ secrets.BIKESPACE_SECURITY_PASSWORD_SALT || 'fallback_salt_for_forked_prs' }}
       BIKESPACE_SECRET_KEY: ${{ secrets.BIKESPACE_SECRET_KEY || 'fallback_secret_key_for_forked_prs' }}
@@ -19,7 +32,7 @@ jobs:
     services:
       # Label used to access the service container
       postgres: &api_postgres_service # Docker Hub image
-        image: postgres:15
+        image: ${{ needs.config.outputs.postgres-image }}
         # Provide the password for postgres
         env:
           POSTGRES_PASSWORD: postgres
@@ -37,7 +50,7 @@ jobs:
       - name: Setup python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.12.0"
+          python-version: ${{ needs.config.outputs.python-version }}
           cache: "pip"
           cache-dependency-path: bikespace_api/requirements.txt
       - name: Run pytest
@@ -46,9 +59,11 @@ jobs:
         uses: coverallsapp/github-action@v2
         with:
           fail-on-error: false
+
   api-migration-test:
     name: Test if database migrations need to be generated for API
     runs-on: ubuntu-latest
+    needs: config
     env: *api_env
     services:
       # Label used to access the service container
@@ -59,31 +74,35 @@ jobs:
       - name: Setup python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.12.0"
+          python-version: ${{ needs.config.outputs.python-version }}
           cache: "pip"
           cache-dependency-path: bikespace_api/requirements.txt
       - name: Run migration check
         run: make migrate-test-db
+
   test-frontend:
     name: Lint and Test Frontend
     runs-on: ubuntu-latest
+    needs: config
     steps:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: "24"
+          node-version: ${{ needs.config.outputs.node-version }}
           cache: "npm"
           cache-dependency-path: bikespace_frontend/package-lock.json
       - name: Check code style
         run: make lint-frontend
       - name: Run Jest tests
         run: make test-frontend
+
   test-e2e:
     name: Frontend end-to-end tests
     timeout-minutes: 10
     runs-on: ubuntu-latest
+    needs: config
     env: *api_env
     # Service containers to run with `container-job`
     services:
@@ -95,7 +114,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: "24"
+          node-version: ${{ needs.config.outputs.node-version }}
           cache: "npm"
           cache-dependency-path: bikespace_frontend/package-lock.json
       - name: Install frontend dependencies
@@ -124,11 +143,12 @@ jobs:
           name: playwright-report
           path: bikespace_frontend/playwright-report/
           retention-days: 30
+
   publish:
     # Only publish previews for PRs from the same repository
     if: ${{ github.event.pull_request.head.repo.full_name == github.repository}}
     name: Publish to Cloudflare Pages
-    needs: [test-frontend, test-e2e]
+    needs: [test-frontend, test-e2e, config]
     runs-on: ubuntu-latest
     env:
       MAPTILER_API_KEY: ${{ secrets.MAPTILER_API_KEY }}
@@ -142,7 +162,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: "24"
+          node-version: ${{ needs.config.outputs.node-version }}
           cache: "npm"
           cache-dependency-path: bikespace_frontend/package-lock.json
       - name: Build static frontend
