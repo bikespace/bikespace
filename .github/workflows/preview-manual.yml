@@ -20,10 +20,10 @@ jobs:
     name: Publish to Cloudflare Pages
     runs-on: ubuntu-latest
     env:
-        MAPTILER_API_KEY: ${{ secrets.MAPTILER_API_KEY }}
-        DATA_BICYCLE_PARKING: ${{ secrets.DATA_BICYCLE_PARKING }}
-        DATA_BICYCLE_NETWORK: ${{ secrets.DATA_BICYCLE_NETWORK }}
-        DATA_LEVEL_OF_TRAFFIC_STRESS: ${{ secrets.DATA_LEVEL_OF_TRAFFIC_STRESS }}
+      MAPTILER_API_KEY: ${{ secrets.MAPTILER_API_KEY }}
+      # DATA_BICYCLE_PARKING: ${{ secrets.DATA_BICYCLE_PARKING }}
+      # DATA_BICYCLE_NETWORK: ${{ secrets.DATA_BICYCLE_NETWORK }}
+      # DATA_LEVEL_OF_TRAFFIC_STRESS: ${{ secrets.DATA_LEVEL_OF_TRAFFIC_STRESS }}
     steps:
       - name: Get PR data
         id: pr
@@ -71,19 +71,19 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v4
         with:
-            node-version: lts/*
-            cache: "npm"
-            cache-dependency-path: bikespace_frontend/package-lock.json
+          node-version: lts/*
+          cache: "npm"
+          cache-dependency-path: bikespace_frontend/package-lock.json
       - name: Build static frontend
         run: make build-frontend
       - name: Publish to Cloudflare Pages
-        uses: cloudflare/pages-action@v1
+        uses: cloudflare/wrangler-action@v4
+        id: deploy
         with:
-            apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-            accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-            projectName: bikespace-v2
-            directory: bikespace_frontend/out
-            githubToken: ${{ secrets.GITHUB_TOKEN }}
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy pages deploy bikespace_frontend/out --project-name=bikespace-v2 --branch=${{ github.head_ref || github.ref_name }} --commit-dirty=true
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set "Publish to Cloudflare Pages" check to success
         if: success()
@@ -99,7 +99,7 @@ jobs:
               completed_at: new Date().toISOString(),
               output: {
                 title: 'Preview published successfully',
-                summary: 'Preview: ${{ steps.publish.outputs.preview_url }}'
+                summary: 'Preview: ${{ steps.deploy.outputs.deployment-url }}'
               }
             });
       - name: Set "Publish to Cloudflare Pages" check to failure
