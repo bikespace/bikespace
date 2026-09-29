@@ -39,7 +39,10 @@ import {
   BicycleNetworkLayer,
   BicycleNetworkLayerLegend,
 } from '@/components/map-layers/BicycleNetwork';
-import {ReportedIssuesLayer} from '@/components/map-layers/ReportedIssuesLayer';
+import {
+  ReportedIssuesLayer,
+  ReportedIssuesLegend,
+} from '@/components/map-layers/ReportedIssuesLayer';
 
 import type {
   FilterSpecification,
@@ -56,7 +59,6 @@ import type {Feature} from 'geojson';
 
 import 'maplibre-gl/dist/maplibre-gl.css';
 import styles from './parking-map-page.module.scss';
-import sidebarDescStyles from '@/components/map-layers/parking/feature-description.module.scss';
 const parkingSpritePath = '/parking_sprites/parking_sprites';
 
 const backupMapStyle: MapStyle = {
@@ -297,7 +299,9 @@ export function ParkingMapPage() {
   const reportedFeatures: Feature[] = (parkingFeatures ?? [])
     .map((feature): Feature | null => {
       const [lon, lat] = getCentroid(feature);
-      const reports = matchedReports.get(parkingFeatureKey(lon, lat)) ?? [];
+      const reports =
+        matchedReports.get(parkingFeatureKey(feature.properties, lon, lat)) ??
+        [];
       return reports.length > 0
         ? {
             type: 'Feature',
@@ -344,7 +348,7 @@ export function ParkingMapPage() {
                   centerFeatureOnMap={zoomAndFlyToSingleFeature}
                   onReportIssue={handleReportIssue}
                   linkedReports={matchedReports.get(
-                    parkingFeatureKey(lon, lat)
+                    parkingFeatureKey(f.properties, lon, lat)
                   )}
                 />
               );
@@ -391,6 +395,7 @@ export function ParkingMapPage() {
             <summary>Legend</summary>
             <SidebarDetailsContent className={styles.legendContent}>
               <ParkingLayerLegend />
+              <ReportedIssuesLegend />
               <BicycleNetworkLayerLegend />
             </SidebarDetailsContent>
           </SidebarDetailsDisclosure>

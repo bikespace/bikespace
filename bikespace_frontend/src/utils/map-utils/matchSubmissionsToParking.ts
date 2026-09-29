@@ -1,7 +1,7 @@
 import {distance} from '@turf/distance';
 import {point} from '@turf/helpers';
 
-import type {Feature} from 'geojson';
+import type {Feature, GeoJsonProperties} from 'geojson';
 
 import {SubmissionApiPayload} from '@/interfaces/Submission';
 
@@ -14,16 +14,44 @@ export const DEFAULT_MATCH_RADIUS_METERS = 15;
 // needs to be checked against nearby features instead of all of them
 const METERS_PER_DEGREE_LAT = 111320;
 
-// Rounded to 5 decimals (~1.1m) rather than 6 (~11cm): the same parking
-// feature can be looked up from two different coordinate sources - the raw
-// fetched GeoJSON (here) vs. MapLibre's vector-tile-reconstructed geometry
-// (when a feature is clicked on the map) - and tile requantization can shift
-// a coordinate by a few centimetres, enough to flip a 6-decimal rounding
-// boundary and produce two different key strings for the same feature. A
-// looser 5-decimal bucket absorbs that noise while staying far tighter than
-// the match radius, so it doesn't risk merging two distinct real features.
-function parkingFeatureKey(lon: number, lat: number): string {
-  return `${lon.toFixed(5)},${lat.toFixed(5)}`;
+// Properties that can serve as a stable id for a parking feature, in
+// priority order. Not every feature has every field - which one is present
+// depends on the feature's data source - so this tries each in turn and
+// uses whichever the feature actually has. 
+
+const ID_PROPERTIES = [
+  'meta_osm_id',
+  'ref:open.toronto.ca:bicycle-parking-high-capacity-outdoor:id',
+  'ref:open.toronto.ca:bicycle-parking-racks:objectid',
+  'ref:open.toronto.ca:street-furniture-bicycle-parking:id',
+  'ref:open.toronto.ca:bicycle-parking-bike-stations-indoor:id',
+  'ref:toronto.ca:lockers:title',
+];
+
+// Identifies a parking feature for matching purposes. Prefers a stable id
+// from its own data source when available (two distinct-but-nearby features
+// can otherwise round to the same coordinate key and have their reports
+// incorrectly merged. Falls back to a coordinate-rounded key only when a 
+// feature has none of the known id properties.
+//
+// The coordinate fallback is rounded to 5 decimals (~1.1m) rather than 6
+// (~11cm): the same parking feature can be looked up from two different
+// coordinate sources - the raw fetched GeoJSON vs. MapLibre's
+// vector-tile-reconstructed geometry (when a feature is clicked on the map)
+// - and tile requantization can shift a coordinate by a few centimetres,
+// enough to flip a 6-decimal rounding boundary and produce two different key
+// strings for the same feature. A looser 5-decimal bucket absorbs that noise
+// while staying far tighter than the match radius.
+function parkingFeatureKey(
+  properties: GeoJsonProperties,
+  lon: number,
+  lat: number
+): string {
+  for (const idProperty of ID_PROPERTIES) {
+    const value = properties?.[idProperty];
+    if (value) return `id:${idProperty}:${value}`;
+  }
+  return `coord:${lon.toFixed(5)},${lat.toFixed(5)}`;
 }
 
 function gridCellKey(lon: number, lat: number, cellSizeDeg: number): string {
@@ -57,7 +85,7 @@ export function matchSubmissionsToParking(
     const [lon, lat] = getCentroid(feature);
     const cellKey = gridCellKey(lon, lat, cellSizeDeg);
     const cell = grid.get(cellKey) ?? [];
-    cell.push({key: parkingFeatureKey(lon, lat), lon, lat});
+    cell.push({key: parkingFeatureKey(feature.properties, lon, lat), lon, lat});
     grid.set(cellKey, cell);
   }
 

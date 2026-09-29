@@ -16,11 +16,15 @@ const baseLat = 43.65322;
 // ~1 degree of latitude is ~111,320m; used to build small, known offsets
 const metersToLatDegrees = (meters: number) => meters / 111320;
 
-function makeParkingFeature(lon: number, lat: number): Feature {
+function makeParkingFeature(
+  lon: number,
+  lat: number,
+  properties: Record<string, unknown> = {}
+): Feature {
   return {
     type: 'Feature',
     geometry: {type: 'Point', coordinates: [lon, lat]},
-    properties: {},
+    properties,
   };
 }
 
@@ -53,7 +57,7 @@ describe('matchSubmissionsToParking', () => {
 
     const matches = matchSubmissionsToParking([submission], [feature], 15);
 
-    expect(matches.get(parkingFeatureKey(baseLon, baseLat))).toEqual([
+    expect(matches.get(parkingFeatureKey({}, baseLon, baseLat))).toEqual([
       submission,
     ]);
   });
@@ -90,7 +94,7 @@ describe('matchSubmissionsToParking', () => {
       15
     );
 
-    expect(matches.get(parkingFeatureKey(baseLon, baseLat))).toEqual([
+    expect(matches.get(parkingFeatureKey({}, baseLon, baseLat))).toEqual([
       submissionA,
       submissionB,
     ]);
@@ -116,7 +120,7 @@ describe('matchSubmissionsToParking', () => {
       radiusMeters
     );
 
-    expect(matches.get(parkingFeatureKey(baseLon, baseLat))).toEqual([
+    expect(matches.get(parkingFeatureKey({}, baseLon, baseLat))).toEqual([
       submission,
     ]);
   });
@@ -130,9 +134,50 @@ describe('matchSubmissionsToParking', () => {
     const rawCoords: [number, number] = [-79.3848049, 43.653659499999996];
     const tileCoords: [number, number] = [-79.3848049454391, 43.65365950747071];
 
-    expect(parkingFeatureKey(...rawCoords)).toEqual(
-      parkingFeatureKey(...tileCoords)
+    expect(parkingFeatureKey({}, ...rawCoords)).toEqual(
+      parkingFeatureKey({}, ...tileCoords)
     );
+  });
+
+  test('uses a stable id property instead of coordinates when one is available', () => {
+    // same coordinates, but a real id should take priority over the
+    // coordinate fallback
+    const key = parkingFeatureKey(
+      {meta_osm_id: 'node/12245059976'},
+      baseLon,
+      baseLat
+    );
+
+    expect(key).not.toEqual(parkingFeatureKey({}, baseLon, baseLat));
+    expect(key).toContain('node/12245059976');
+  });
+
+  test('two distinct nearby features with different ids do not collide, even at identical coordinates', () => {
+    // real example from the parking data: two entries from different
+    // sources describing what may be the same physical rack, at the exact
+    // same coordinates - rounding alone could never separate these
+    const featureA = makeParkingFeature(baseLon, baseLat, {
+      'ref:open.toronto.ca:street-furniture-bicycle-parking:id': 'BP-05894',
+    });
+    const featureB = makeParkingFeature(baseLon, baseLat, {
+      'ref:open.toronto.ca:street-furniture-bicycle-parking:id': 'BP-29396',
+    });
+    const submissionA = makeSubmission(1, baseLon, baseLat);
+    const submissionB = makeSubmission(2, baseLon, baseLat);
+
+    const matches = matchSubmissionsToParking(
+      [submissionA, submissionB],
+      [featureA, featureB],
+      15
+    );
+
+    expect(matches.size).toBe(2);
+    expect(
+      matches.get(parkingFeatureKey(featureA.properties, baseLon, baseLat))
+    ).toEqual([submissionA, submissionB]);
+    expect(
+      matches.get(parkingFeatureKey(featureB.properties, baseLon, baseLat))
+    ).toEqual([submissionA, submissionB]);
   });
 
   test('returns an empty map when there are no submissions or no parking features', () => {

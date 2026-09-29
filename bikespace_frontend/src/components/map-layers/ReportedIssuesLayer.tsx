@@ -5,7 +5,11 @@ import type {SymbolLayer} from 'react-map-gl/maplibre';
 import type {ExpressionSpecification} from 'maplibre-gl';
 import type {FeatureCollection} from 'geojson';
 
+import styles from './legend-tables.module.scss';
+
 export const reportedIssuesSourceId = 'bicycle-parking-reports';
+// keep in sync with the paint properties on reportedIssuesLayer below
+const reportedIssuesBadgeColor = '#c62828';
 
 interface ReportedIssuesLayerProps {
   reportedFeatures: FeatureCollection;
@@ -50,7 +54,7 @@ export function ReportedIssuesLayer({
     },
     paint: {
       'text-opacity': reportedIssuesOpacity,
-      'text-color': '#c62828',
+      'text-color': reportedIssuesBadgeColor,
       'text-halo-color': 'white',
       'text-halo-width': 1.5,
     },
@@ -60,5 +64,43 @@ export function ReportedIssuesLayer({
     <Source id={reportedIssuesSourceId} type="geojson" data={reportedFeatures}>
       <Layer {...reportedIssuesLayer} />
     </Source>
+  );
+}
+
+export function ReportedIssuesLegend() {
+  return (
+    <>
+      <h3>Reported Issues</h3>
+      <table className={styles.legendTable}>
+        <thead>
+          <tr>
+            <th style={{textAlign: 'center'}}>Icon</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style={{textAlign: 'center'}}>
+              <span
+                role="img"
+                aria-label="Red exclamation mark badge"
+                style={{
+                  display: 'inline-block',
+                  fontWeight: 'bold',
+                  fontSize: '18px',
+                  lineHeight: 1,
+                  color: reportedIssuesBadgeColor,
+                  textShadow:
+                    '1px 1px white, -1px -1px white, 1px -1px white, -1px 1px white',
+                }}
+              >
+                !
+              </span>
+            </td>
+            <td>Parking feature has a user-submitted report</td>
+          </tr>
+        </tbody>
+      </table>
+    </>
   );
 }
