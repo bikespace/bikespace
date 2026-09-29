@@ -10,9 +10,9 @@ jobs:
   apitest:
     name: API tests
     runs-on: ubuntu-latest
-    env:
-      BIKESPACE_SECURITY_PASSWORD_SALT: ${{ secrets.BIKESPACE_SECURITY_PASSWORD_SALT }}
-      BIKESPACE_SECRET_KEY: ${{ secrets.BIKESPACE_SECRET_KEY }}
+    env: &api_env
+      BIKESPACE_SECURITY_PASSWORD_SALT: ${{ secrets.BIKESPACE_SECURITY_PASSWORD_SALT || 'fallback_salt_for_forked_prs' }}
+      BIKESPACE_SECRET_KEY: ${{ secrets.BIKESPACE_SECRET_KEY || 'fallback_secret_key_for_forked_prs' }}
       SEED_USER_EMAIL: ${{ secrets.SEED_USER_EMAIL }}
       SEED_USER_PASSWORD: ${{ secrets.SEED_USER_PASSWORD }}
     # Service containers to run with `container-job`
@@ -50,11 +50,7 @@ jobs:
   api-migration-test:
     name: Test if database migrations need to be generated for API
     runs-on: ubuntu-latest
-    env:
-      BIKESPACE_SECURITY_PASSWORD_SALT: ${{ secrets.BIKESPACE_SECURITY_PASSWORD_SALT }}
-      BIKESPACE_SECRET_KEY: ${{ secrets.BIKESPACE_SECRET_KEY }}
-      SEED_USER_EMAIL: ${{ secrets.SEED_USER_EMAIL }}
-      SEED_USER_PASSWORD: ${{ secrets.SEED_USER_PASSWORD }}
+    env: *api_env
     services:
       # Label used to access the service container
       postgres:
@@ -102,11 +98,7 @@ jobs:
     name: Frontend end-to-end tests
     timeout-minutes: 10
     runs-on: ubuntu-latest
-    env:
-      BIKESPACE_SECURITY_PASSWORD_SALT: ${{ secrets.BIKESPACE_SECURITY_PASSWORD_SALT }}
-      BIKESPACE_SECRET_KEY: ${{ secrets.BIKESPACE_SECRET_KEY }}
-      SEED_USER_EMAIL: ${{ secrets.SEED_USER_EMAIL }}
-      SEED_USER_PASSWORD: ${{ secrets.SEED_USER_PASSWORD }}
+    env: *api_env
     # Service containers to run with `container-job`
     services:
       # Label used to access the service container
@@ -183,10 +175,9 @@ jobs:
       - name: Build static frontend
         run: make build-frontend
       - name: Publish to Cloudflare Pages
-        uses: cloudflare/pages-action@v1
+        uses: cloudflare/wrangler-action@v4
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          projectName: bikespace-v2
-          directory: bikespace_frontend/out
+          command: pages deploy bikespace_frontend/out --project-name=bikespace-v2 --branch=${{ github.head_ref || github.ref_name }} --commit-dirty=true
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
