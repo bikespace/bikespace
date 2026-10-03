@@ -65,10 +65,10 @@ $ lsof -i :5432
 $ sudo -u postgres pg_ctl -D /Library/PostgreSQL/$VERSION/data stop
 ```
 
-If `postgres` or `pg_ctl` don't work for you, you might need to add postgres to your `.bash_profile` or `.zshrc` file by adding a line like this (replace 17 with your version number):
+If `postgres` or `pg_ctl` don't work for you, you might need to add postgres to your `.bash_profile` or `.zshrc` file by adding a line like this (replace 18 with your version number):
 
 ```
-export PATH="/Library/PostgreSQL/17/bin/:$PATH"
+export PATH="/Library/PostgreSQL/18/bin/:$PATH"
 ```
 
 ## Adding and Testing Database Migrations
@@ -86,3 +86,23 @@ Testing a migration script:
 1. While the api is running for development (e.g. `make dev-api`), run `make downgrade-db`. You should see the database revert to the previous schema.
 2. Run `make upgrade-db`. You should see the database update to the newest schema.
 3. Perform additional tests to confirm that a migrated database returns the correct results in use.
+
+
+## Validating Docker Compose Files
+
+To validate that the syntax for a docker compose file (e.g. `compose-prod.yaml`) is correct, you can run the following with dummy values for any required variables:
+
+```sh
+SERVICE_PASSWORD_64_BIKESPACESECRETKEY=x \
+SERVICE_PASSWORD_64_PASSWORDSALT=x \
+SEED_USER_EMAIL=x \
+SERVICE_PASSWORD_64_SEEDUSERPASSWORD=x \
+SERVICE_USER_POSTGRES=x \
+SERVICE_PASSWORD_64_POSTGRES=x \
+RESTIC_PASSWORD=x \
+BACKUP_S3_ENDPOINT=x \
+BACKUP_S3_BUCKET=x \
+BACKUP_S3_ACCESS_KEY=x \
+BACKUP_S3_SECRET_KEY=x \
+docker compose -f bikespace_api/docker/compose-prod.yaml config -q
+```
