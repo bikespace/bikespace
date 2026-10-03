@@ -18,9 +18,10 @@ services:
       BIKESPACE_SECURITY_PASSWORD_SALT: ${SERVICE_PASSWORD_64_PASSWORDSALT}
       SEED_USER_EMAIL: ${SEED_USER_EMAIL:?}
       SEED_USER_PASSWORD: ${SERVICE_PASSWORD_64_SEEDUSERPASSWORD}
-    ports:
-      - 8000
+      TRUSTED_PROXY_COUNT: ${TRUSTED_PROXY_COUNT:-1}
     restart: always
+    expose:
+      - 8000
     healthcheck:
       test: python -c "import requests; requests.get('http://localhost:8000/api/v2/submissions?limit=1').raise_for_status()"
       interval: 5s
@@ -43,6 +44,30 @@ services:
       interval: 1s
       timeout: 5s
       retries: 10
+
+  reverse_proxy:
+    image: caddy:${CADDY_IMAGE_TAG:-2.11}
+    restart: always
+    depends_on:
+      bikespace_api:
+        condition: service_healthy
+    environment:
+      CADDY_SITE_ADDRESS: ${CADDY_SITE_ADDRESS:-:80}
+    volumes:
+      - ./conf:/etc/caddy
+      - caddy_data:/data
+      - caddy_config:/config
+    expose:
+      - 80
+    ports:
+      - "${CADDY_HTTP_PORT:-80}:80"
+      - "${CADDY_HTTPS_PORT:-443}:443"
+      - "${CADDY_HTTPS_PORT:-443}:443/udp"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:80/api/v2/submissions?limit=1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   backup:
     build: ./backup
@@ -88,4 +113,6 @@ services:
 volumes:
   postgres_data:
     name: bikespace_postgres_data
+  caddy_data:
+  caddy_config:
   backup_scratch:

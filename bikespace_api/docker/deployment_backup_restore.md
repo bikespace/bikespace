@@ -11,13 +11,15 @@ Instructions below are for [Coolify](https://coolify.io/docs/applications/build-
    - Base directory: `bikespace_api/docker/`
    - Docker compose location: `compose-prod.yaml`
 
-3. Add a domain for the service, connecting Coolify's proxy to port `8000` (e.g. `https://bikespace.mydomain.ca:8000`)
+3. Add your domain, e.g. `https://bikespace-api.mydomain.ca`) under the `reverse_proxy` service.
 4. Fill in the following environment variables:
 
    - `SEED_USER_EMAIL`: email address for the superuser account you can use for initial setup, e.g. adding additional users. The password for this account will be automatically generated in `SERVICE_PASSWORD_64_SEEDUSERPASSWORD`.
    - `RESTIC_PASSWORD`: generate this for yourself (e.g. with `python3 -c "import secrets; print(secrets.token_hex(64))"`) and **save it outside of Coolify in a password manager!** Without this, you will not be able to use your backups.
    - `BACKUP_S3_*` variables: fill these out using the information from step 1.
    - `BACKUP_CRON_*` and `RESTIC_KEEP_*` variables can optionally be changed if you want a different backup and retention schedule than the default. See notes in the backup section.
+
+Leave `CADDY_SITE_ADDRESS` unset so that it defaults to just `:80`; Coolify's Traefik proxy will handle the rest for you.
 
 5. Deploy the service
 6. Check the deployment:

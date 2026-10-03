@@ -90,7 +90,7 @@ prodtest-api-stop:
 # does not test backup functionality, does not expose a port
 .PHONY: prodtest-api
 prodtest-api: prodtest-api-stop
-	docker compose --file bikespace_api/docker/compose-prod.yaml --env-file bikespace_api/.env.prodtest up --build --force-recreate
+	docker compose --file bikespace_api/docker/compose-prod.yaml --env-file bikespace_api/.env.prodtest up
 
 .PHONY: test-api
 test-api: setup-py launch-db db-test-server
