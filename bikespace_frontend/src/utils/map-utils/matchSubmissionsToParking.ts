@@ -17,7 +17,7 @@ const METERS_PER_DEGREE_LAT = 111320;
 // Properties that can serve as a stable id for a parking feature, in
 // priority order. Not every feature has every field - which one is present
 // depends on the feature's data source - so this tries each in turn and
-// uses whichever the feature actually has. 
+// uses whichever the feature actually has.
 
 const ID_PROPERTIES = [
   'meta_osm_id',
@@ -31,7 +31,7 @@ const ID_PROPERTIES = [
 // Identifies a parking feature for matching purposes. Prefers a stable id
 // from its own data source when available (two distinct-but-nearby features
 // can otherwise round to the same coordinate key and have their reports
-// incorrectly merged. Falls back to a coordinate-rounded key only when a 
+// incorrectly merged. Falls back to a coordinate-rounded key only when a
 // feature has none of the known id properties.
 //
 // The coordinate fallback is rounded to 5 decimals (~1.1m) rather than 6
