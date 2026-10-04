@@ -19,19 +19,11 @@ class BikeParkingStatusSchema(ma.Schema):
     updated_at = ma.fields.AwareDateTime(format="iso", dump_only=True)
 
 
-class StatusesQueryArgsSchema(ma.Schema):
-    include_hidden = ma.fields.Boolean(load_default=False)
-
-
 @statuses_blueprint.route("/bikeparking-statuses")
 class BikeParkingStatuses(MethodView):
     """Bike parking issue status types"""
 
-    @statuses_blueprint.arguments(StatusesQueryArgsSchema, location="query")
     @statuses_blueprint.response(HTTPStatus.OK, BikeParkingStatusSchema(many=True))
-    def get(self, args):
+    def get(self):
         """Return all bike parking status types"""
-        query = db.select(BikeParkingStatus)
-        if not args.get("include_hidden"):
-            query = query.where(BikeParkingStatus.hide_by_default == False)  # noqa: E712
-        return db.session.execute(query).scalars().all()
+        return db.session.execute(db.select(BikeParkingStatus)).scalars().all()

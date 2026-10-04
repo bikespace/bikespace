@@ -35,27 +35,10 @@ class TestGetBikeParkingStatuses:
         assert response.headers["Content-Type"] == "application/json"
         assert isinstance(response.json, list)
 
-    def test_get_statuses_excludes_hidden_by_default(self, flask_app, test_client, clean_db):
+    def test_get_statuses_returns_all_including_hidden(self, flask_app, test_client, clean_db):
         """
         GIVEN a Flask application with one visible and one hidden status
-        WHEN GET '/api/v2/bikeparking-statuses' is requested without query params
-        THEN only visible statuses are returned
-        """
-        with flask_app.app_context():
-            db.session.add(BikeParkingStatus(**VISIBLE_STATUS))
-            db.session.add(BikeParkingStatus(**HIDDEN_STATUS))
-            db.session.commit()
-
-        response = test_client.get("/api/v2/bikeparking-statuses")
-        assert response.status_code == HTTPStatus.OK
-        returned_names = [s["status_name"] for s in response.json]
-        assert VISIBLE_STATUS["status_name"] in returned_names
-        assert HIDDEN_STATUS["status_name"] not in returned_names
-
-    def test_get_statuses_includes_hidden_with_param(self, flask_app, test_client, clean_db):
-        """
-        GIVEN a Flask application with one visible and one hidden status
-        WHEN GET '/api/v2/bikeparking-statuses?include_hidden=true' is requested
+        WHEN GET '/api/v2/bikeparking-statuses' is requested
         THEN both visible and hidden statuses are returned
         """
         with flask_app.app_context():
@@ -63,7 +46,7 @@ class TestGetBikeParkingStatuses:
             db.session.add(BikeParkingStatus(**HIDDEN_STATUS))
             db.session.commit()
 
-        response = test_client.get("/api/v2/bikeparking-statuses?include_hidden=true")
+        response = test_client.get("/api/v2/bikeparking-statuses")
         assert response.status_code == HTTPStatus.OK
         returned_names = [s["status_name"] for s in response.json]
         assert VISIBLE_STATUS["status_name"] in returned_names
@@ -114,10 +97,10 @@ class TestGetBikeParkingStatuses:
     def test_get_statuses_seed_data_loaded(self, flask_app, test_client, clean_db):
         """
         GIVEN a Flask application with seed data loaded
-        WHEN GET '/api/v2/bikeparking-statuses?include_hidden=true' is requested
+        WHEN GET '/api/v2/bikeparking-statuses' is requested
         THEN all 14 seeded statuses are present
         """
-        response = test_client.get("/api/v2/bikeparking-statuses?include_hidden=true")
+        response = test_client.get("/api/v2/bikeparking-statuses")
         assert response.status_code == HTTPStatus.OK
         assert len(response.json) == 14
 
