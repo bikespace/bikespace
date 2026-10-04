@@ -46,7 +46,10 @@ services:
       retries: 10
 
   reverse_proxy:
-    image: caddy:${CADDY_IMAGE_TAG:-2.11}
+    build:
+      context: ./caddy
+      args:
+        CADDY_IMAGE_TAG: ${CADDY_IMAGE_TAG:-2.11}
     restart: always
     depends_on:
       bikespace_api:
@@ -54,7 +57,6 @@ services:
     environment:
       CADDY_SITE_ADDRESS: ${CADDY_SITE_ADDRESS:-:80}
     volumes:
-      - ./conf:/etc/caddy
       - caddy_data:/data
       - caddy_config:/config
     expose:
