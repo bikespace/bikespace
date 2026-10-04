@@ -2,9 +2,135 @@ import React from 'react';
 import {fireEvent, render, screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {BikeTheftMapPage} from './BikeTheftMapPage';
+import {useBikeTheftDataQuery} from '@/hooks/use-bike-theft-data-query';
 const mockExpandCluster = jest.fn().mockResolvedValue(15);
 const mockEaseTo = jest.fn();
 
+// Run the tests in the Toronto timezone
+// : TZ='America/Toronto' npx jest --runInBand --coverage=false src/hooks/use-bike-theft-data-query.test.ts src/components/biketheft-map/biketheft-map-page/BikeTheftMapPage.test.tsx
+
+// Test aspect
+// Sidebar: Showing 2 reports
+// Map source: only A and B
+// If A and B share coordinates: location count 2
+// If clustered together: cluster count 2
+
+// Mock the map's clustering engine to return a single cluster with a count of 2 for the test data.
+it('keeps sidebar, map, and location counts aligned after validation and combined filters', async () => {
+  const {fetchBikeTheftReports} = jest.requireActual(
+    '@/hooks/use-bike-theft-data-query'
+  );
+  const originalFetch = global.fetch;
+  const queryMock = jest.mocked(useBikeTheftDataQuery);
+  const originalQuery = queryMock.getMockImplementation()!;
+  const feature = (
+    id: string,
+    status: string,
+    date: string,
+    location = 'Outside',
+    coordinates: number[] | null = [-79.4, 43.6]
+  ) => ({
+    type: 'Feature',
+    properties: {id, status, date, location, description: id},
+    geometry: {type: 'Point', coordinates},
+  });
+  global.fetch = jest.fn().mockResolvedValue({
+    ok: true,
+    json: async () => ({
+      type: 'FeatureCollection',
+      features: [
+        feature('a', 'stolen', '2025-01-01'),
+        feature('b', 'unknown', '2025-12-31'),
+        feature('c', 'recovered', '2025-06-01'),
+        feature('d', 'stolen', '2025-06-01', 'Outside', [0, 0]),
+        feature('e', 'stolen', '2025-06-01', 'Outside', null),
+        feature('f', 'stolen', '2024-12-31'),
+        feature('g', 'stolen', '2025-06-01', 'House', [-79.5, 43.7]),
+        feature('h', 'stolen', '2025-06-01', 'Outside', [181, 43.6]),
+        feature('i', 'stolen', '2026-01-01'),
+      ],
+    }),
+  });
+  try {
+    const data = await fetchBikeTheftReports(
+      'https://example.com/reports.geojson'
+    );
+    queryMock.mockImplementation(() => ({...originalQuery(), data}));
+    const user = userEvent.setup();
+    render(<BikeTheftMapPage />);
+    const expectCounts = (ids: string[], locationCounts: number[]) => {
+      const Supercluster = jest.requireActual('supercluster');
+      const source = JSON.parse(
+        screen.getByTestId('stolen-bikes').textContent!
+      );
+      expect(
+        source.features.map((f: {properties: {id: string}}) => f.properties.id)
+      ).toEqual(ids);
+      // Run the map's clustering engine on the actual filtered source.
+      const clusters = new Supercluster({radius: 40, maxZoom: 14})
+        .load(source.features)
+        .getClusters([-180, -90, 180, 90], 0);
+      expect(
+        clusters.map(
+          (f: {properties: {point_count?: number}}) =>
+            f.properties.point_count ?? 1
+        )
+      ).toEqual(ids.length ? [ids.length] : []);
+      expect(
+        screen.getByText(
+          (_, element) =>
+            element?.tagName === 'P' &&
+            element.textContent ===
+              `Showing ${ids.length} report${ids.length === 1 ? '' : 's'}`
+        )
+      ).toBeInTheDocument();
+      const counts = JSON.parse(
+        screen.getByTestId('stolen-bike-counts').textContent!
+      );
+      expect(
+        counts.features.map(
+          (f: {properties: {count: number}}) => f.properties.count
+        )
+      ).toEqual(locationCounts);
+    };
+    expectCounts(['a', 'b', 'c', 'f', 'i'], [5]);
+    fireEvent.change(screen.getByLabelText('From'), {
+      target: {value: '2025-01-01'},
+    });
+    fireEvent.change(screen.getByLabelText('To'), {
+      target: {value: '2025-12-31'},
+    });
+    expectCounts(['a', 'b', 'c'], [3]);
+    await user.click(screen.getByRole('button', {name: 'Stolen'}));
+    expectCounts(['a', 'b'], [2]);
+    await user.selectOptions(
+      screen.getByLabelText('Filter by location'),
+      'all'
+    );
+    expectCounts(['a', 'b', 'g'], [2]);
+    await user.selectOptions(
+      screen.getByLabelText('Filter by location'),
+      'House'
+    );
+    expectCounts(['g'], []);
+    await user.click(screen.getByRole('button', {name: 'Recovered'}));
+    expectCounts([], []);
+    await user.selectOptions(
+      screen.getByLabelText('Filter by location'),
+      'all'
+    );
+    expectCounts(['c'], []);
+    await user.click(screen.getByRole('button', {name: 'All', exact: true}));
+    expectCounts(['a', 'b', 'c', 'g'], [3]);
+    await user.click(screen.getByRole('button', {name: 'Clear dates'}));
+    expectCounts(['a', 'b', 'c', 'f', 'g', 'i'], [5]);
+  } finally {
+    global.fetch = originalFetch;
+    queryMock.mockImplementation(originalQuery);
+  }
+});
+
+// Mock the bike theft data query to return a small set of reports for testing.
 jest.mock('@/hooks/use-bike-theft-data-query', () => {
   const data = [
     {
@@ -31,12 +157,12 @@ jest.mock('@/hooks/use-bike-theft-data-query', () => {
     },
   ];
   return {
-    useBikeTheftDataQuery: () => ({
+    useBikeTheftDataQuery: jest.fn(() => ({
       data,
       isPending: false,
       isError: false,
       refetch: jest.fn(),
-    }),
+    })),
   };
 });
 jest.mock('maplibre-gl', () => ({addProtocol: jest.fn()}));

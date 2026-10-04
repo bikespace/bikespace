@@ -1,5 +1,9 @@
 import {fetchBikeTheftReports} from './use-bike-theft-data-query';
 
+// Test the fetchBikeTheftReports function to ensure it correctly fetches and processes bike theft reports from a GeoJSON endpoint, handling various edge cases and errors.
+// Run this command to test: TZ='America/Toronto' npx jest --runInBand --coverage=false src/hooks/use-bike-theft-data-query.test.ts
+
+// Mock the global fetch function to simulate fetching bike theft reports from a GeoJSON endpoint.
 const originalFetch = global.fetch;
 afterEach(() => {
   global.fetch = originalFetch;
