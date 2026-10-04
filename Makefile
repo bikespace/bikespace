@@ -83,14 +83,23 @@ dev-api-test-force-logout-user:
 
 .PHONY: prodtest-api-stop
 prodtest-api-stop:
-	docker compose --file bikespace_api/docker/compose-prod.yaml --env-file bikespace_api/.env.prodtest down
+	docker compose \
+	--file bikespace_api/docker/compose-prod.yaml \
+	--file bikespace_api/docker/compose-prodtest.yaml \
+	--env-file bikespace_api/.env.prodtest \
+	down
 
 # confirms that the production compose starts and runs 
 # uses dummy ENV values from bikespace_api/.env.prodtest
-# does not test backup functionality, does not expose a port
+# does not test backup functionality
+# needs local https for /admin login to work
 .PHONY: prodtest-api
 prodtest-api: prodtest-api-stop
-	docker compose --file bikespace_api/docker/compose-prod.yaml --env-file bikespace_api/.env.prodtest up
+	docker compose \
+	--file bikespace_api/docker/compose-prod.yaml \
+	--file bikespace_api/docker/compose-prodtest.yaml \
+	--env-file bikespace_api/.env.prodtest \
+	up
 
 .PHONY: test-api
 test-api: setup-py launch-db db-test-server

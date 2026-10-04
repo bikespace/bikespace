@@ -104,5 +104,18 @@ BACKUP_S3_ENDPOINT=x \
 BACKUP_S3_BUCKET=x \
 BACKUP_S3_ACCESS_KEY=x \
 BACKUP_S3_SECRET_KEY=x \
-docker compose -f bikespace_api/docker/compose-prod.yaml config -q
+docker compose \
+--file bikespace_api/docker/compose-prod.yaml \
+config -q
+
+# other compose commands to test
+docker compose \
+--file bikespace_api/docker/compose-prod.yaml \
+--file bikespace_api/docker/compose-prodtest.yaml \
+config -q
+
+docker compose \
+--file bikespace_api/docker/compose-prod.yaml \
+--file bikespace_api/docker/compose-standalone.yaml \
+config -q
 ```

@@ -2,7 +2,9 @@
 
 ## Deployment
 
-Instructions below are for [Coolify](https://coolify.io/docs/applications/build-packs/docker-compose) but the steps should be similar for a regular docker compose deployment. For a non-Coolify deployment, you will have to generate your own secrets for the `SERVICE_USER_POSTGRES` and `SERVICE_PASSWORD_64_` values.
+### Coolify
+
+Instructions below are for [Coolify docker compose deployment](https://coolify.io/docs/applications/build-packs/docker-compose):
 
 1. Set up an S3-compatible bucket to store the backups as well as access credentials scoped to just that bucket and write down the key details in a secure place. You should have one value for each `BACKUP_S3_*` environment variable, though `BACKUP_S3_REGION` is optional for some providers. The backups bucket should be encrypted and it should not be public.
 2. Follow the [instructions for a Coolify docker compose deployment](https://coolify.io/docs/applications/build-packs/docker-compose), pointing Coolify at this repository with the following settings:
@@ -32,6 +34,15 @@ Leave `CADDY_SITE_ADDRESS` unset so that it defaults to just `:80`; Coolify's Tr
 
 7. Run a one-off backup and confirm it was successful (see instructions in the backup section).
 8. Change the seed user password using the User admin panel at `admin/user/`
+
+### Standalone (vanilla) deployment
+
+Key changes include:
+
+- You will have to generate your own secrets for the `SERVICE_USER_POSTGRES` and `SERVICE_PASSWORD_64_` values using the method noted above for `RESTIC_PASSWORD`.
+- Your compose command should use `--file compose-prod.yaml --file compose-standalone.yaml` together.
+- `compose-standalone.yaml` sets the proxy count to 1, but if you use another proxy in front of your deployment (e.g. Cloudflare), add `TRUSTED_PROXY_COUNT=2` to your .env file.
+- In your .env file, make sure to add a value for `CADDY_SITE_ADDRESS` as a fully qualified domain name like `https://your.domain`.
 
 
 ## Backup
