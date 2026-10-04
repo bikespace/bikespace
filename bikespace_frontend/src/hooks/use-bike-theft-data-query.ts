@@ -2,6 +2,7 @@ import {useQuery} from '@tanstack/react-query';
 import type {FeatureCollection, Point} from 'geojson';
 import type {StolenBikeReport} from '@/interfaces/BikeTheftProperties';
 
+// Fetch the bike theft reports from the configured URL
 export async function fetchBikeTheftReports(
   url: string | undefined,
   signal?: AbortSignal
@@ -16,12 +17,24 @@ export async function fetchBikeTheftReports(
     throw new Error('Expected a GeoJSON FeatureCollection');
   }
   return data.features
-    .filter(
-      feature =>
-        feature.geometry?.type === 'Point' &&
-        feature.geometry.coordinates.length >= 2 &&
-        feature.geometry.coordinates.slice(0, 2).every(Number.isFinite)
-    )
+    .filter(feature => {
+      const geometry = feature?.geometry;
+      if (geometry?.type !== 'Point' || !Array.isArray(geometry.coordinates)) {
+        return false;
+      }
+      // Validate that the coordinates are valid longitude and latitude values
+      const [longitude, latitude] = geometry.coordinates;
+      return (
+        Number.isFinite(longitude) &&
+        Number.isFinite(latitude) &&
+        longitude >= -180 &&
+        longitude <= 180 &&
+        latitude >= -90 &&
+        latitude <= 90 &&
+        // Exclude Null Island without rejecting the equator or prime meridian.
+        !(longitude === 0 && latitude === 0)
+      );
+    })
     .map(({properties, geometry}) => ({
       ...properties,
       longitude: geometry.coordinates[0],
