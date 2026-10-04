@@ -1,8 +1,12 @@
 import React, {useState} from 'react';
+import {DateTime} from 'luxon';
 
 import type {Feature} from 'geojson';
 
 import {SidebarButton} from '@/components/shared-ui/sidebar-button';
+import {IssueBadge} from '@/components/dashboard/issue-badge';
+import {SubmissionApiPayload} from '@/interfaces/Submission';
+import {issuePriority} from '@/config/bikespace-api';
 
 import {bicycleParkingDescriptions as bpDesc} from './bicycle_parkingDescriptions';
 import styles from '../feature-description.module.scss';
@@ -19,6 +23,7 @@ export interface ParkingFeatureDescriptionProps {
   handleUnHover: Function;
   centerFeatureOnMap: Function;
   onReportIssue: (feature: Feature) => void;
+  linkedReports?: SubmissionApiPayload[];
 }
 
 export function ParkingFeatureDescription({
@@ -30,6 +35,7 @@ export function ParkingFeatureDescription({
   handleUnHover,
   centerFeatureOnMap,
   onReportIssue,
+  linkedReports = [],
 }: ParkingFeatureDescriptionProps) {
   if (!feature.properties) {
     return <p>Feature has no properties</p>;
@@ -185,6 +191,34 @@ export function ParkingFeatureDescription({
     return operator ? <p>Operator: {operator}</p> : null;
   }
 
+  function LinkedReports({reports}: {reports: SubmissionApiPayload[]}) {
+    if (reports.length === 0) return null;
+    return (
+      <div className={styles.linkedReports}>
+        <h4>
+          {reports.length} User {reports.length === 1 ? 'Report' : 'Reports'}
+        </h4>
+        {reports.map(report => (
+          <div key={report.id} className={styles.linkedReport}>
+            <div className={styles.issues}>
+              {[...new Set(report.issues)]
+                .sort((a, b) => issuePriority[a] - issuePriority[b])
+                .map(issue => (
+                  <IssueBadge issue={issue} key={issue} />
+                ))}
+            </div>
+            {report.comments && <p>{report.comments}</p>}
+            <p>
+              <a href={`/dashboard?submission_id=${report.id}`}>
+                {DateTime.fromISO(report.parking_time).toRelativeCalendar()}
+              </a>
+            </p>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
   function AllData({feature}: {feature: Feature}) {
     if (!feature.properties) return null;
     return showAllData ? (
@@ -221,6 +255,7 @@ export function ParkingFeatureDescription({
         <FeatureImageLink image={image} />
         <FeatureOperator operator={operator} />
         <SourceLink feature={feature} />
+        <LinkedReports reports={linkedReports} />
         <div className={styles.featureDescriptionControls}>
           <SidebarButton
             onClick={(e: React.MouseEvent) => {

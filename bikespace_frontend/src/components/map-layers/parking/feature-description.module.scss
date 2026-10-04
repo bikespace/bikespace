@@ -83,3 +83,30 @@
     display: none;
   }
 }
+
+.linkedReports {
+  margin-top: 8px;
+  font-size: 0.9rem;
+  background-color: $color-secondary-light-grey;
+  border-radius: 4px;
+  padding: 4px;
+
+  h4 {
+    margin-bottom: 4px;
+  }
+}
+
+.linkedReport {
+  padding: 4px 0;
+
+  &:not(:last-child) {
+    border-bottom: 1px solid white;
+  }
+
+  .issues {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-bottom: 4px;
+  }
+}
