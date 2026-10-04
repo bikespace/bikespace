@@ -10,13 +10,13 @@
 	log
 
 	reverse_proxy bikespace_api:8000 {
-		health_uri /api/v2/healthz
+		health_uri /api/v2/submissions?limit=1
 		health_interval 30s
-		health_timeout 5s
+		health_timeout 10s
 	}
 }
 
-# Internal listener for container healthcheck
+# Internal listener for container healthcheck, independent of site address
 :2020 {
 	respond /healthz "OK" 200
 }

@@ -99,7 +99,7 @@ prodtest-api: prodtest-api-stop
 	--file bikespace_api/docker/compose-prod.yaml \
 	--file bikespace_api/docker/compose-prodtest.yaml \
 	--env-file bikespace_api/.env.prodtest \
-	up
+	up --build --force-recreate
 
 .PHONY: test-api
 test-api: setup-py launch-db db-test-server

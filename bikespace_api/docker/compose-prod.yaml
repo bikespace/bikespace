@@ -27,7 +27,7 @@ services:
       interval: 5s
       timeout: 5s
       retries: 10
-      start_period: 1s
+      start_period: 10s
 
   db:
     # Minimum version 18
@@ -41,9 +41,10 @@ services:
       POSTGRES_PASSWORD: ${SERVICE_PASSWORD_64_POSTGRES}
     healthcheck:
       test: pg_isready -h db -q -d $$POSTGRES_DB -U $$POSTGRES_USER
-      interval: 1s
+      interval: 5s
       timeout: 5s
       retries: 10
+      start_period: 10s
 
   reverse_proxy:
     build:
@@ -62,7 +63,7 @@ services:
     expose:
       - 80
     healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://localhost:80/api/v2/healthz"]
+      test: ["CMD", "wget", "-qO-", "http://localhost:2020/healthz"]
       interval: 10s
       timeout: 5s
       retries: 5
