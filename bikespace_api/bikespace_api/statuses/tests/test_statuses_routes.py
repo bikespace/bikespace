@@ -6,6 +6,7 @@ from bikespace_api.statuses.statuses_models import BikeParkingStatus, StatusName
 
 VISIBLE_STATUS = {
     "status_type": StatusName.ACTION_REQUIRED,
+    "status_type_label": "Action Required",
     "status_name": "test_visible",
     "status_description": "Test visible status",
     "hide_by_default": False,
@@ -13,6 +14,7 @@ VISIBLE_STATUS = {
 
 HIDDEN_STATUS = {
     "status_type": StatusName.CLOSED_UNRESOLVED,
+    "status_type_label": "Closed",
     "status_name": "test_hidden",
     "status_description": "Test hidden status",
     "hide_by_default": True,
@@ -84,10 +86,11 @@ class TestGetBikeParkingStatuses:
         item = response.json[0]
         assert all(
             k in item
-            for k in ("id", "status_type", "status_name", "status_description", "hide_by_default", "created_at", "updated_at")
+            for k in ("id", "status_type", "status_type_label", "status_name", "status_description", "hide_by_default", "created_at", "updated_at")
         )
         assert isinstance(item["id"], int)
         assert isinstance(item["status_type"], str)
+        assert isinstance(item["status_type_label"], str)
         assert isinstance(item["status_name"], str)
         assert isinstance(item["status_description"], str)
         assert isinstance(item["hide_by_default"], bool)

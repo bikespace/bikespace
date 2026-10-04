@@ -11,6 +11,7 @@ from bikespace_api.statuses.statuses_models import BikeParkingStatus, StatusName
 class BikeParkingStatusSchema(ma.Schema):
     id = ma.fields.Integer(dump_only=True)
     status_type = ma.fields.Enum(StatusName, by_value=True)
+    status_type_label = ma.fields.String()
     status_name = ma.fields.String()
     status_description = ma.fields.String()
     hide_by_default = ma.fields.Boolean()

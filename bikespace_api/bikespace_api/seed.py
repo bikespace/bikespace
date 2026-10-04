@@ -38,20 +38,20 @@ non_admin_user = {
 
 
 BIKEPARKING_STATUSES = [
-    (StatusName.ACTION_REQUIRED, "new_report", "Issue has been reported but no action taken yet", False),
-    (StatusName.ACTION_REQUIRED, "needs_survey", "Nature of issue is unclear from report details; area should be surveyed in-person", False),
-    (StatusName.RESOLUTION_PENDING, "reported_to_city", "Issue has been reported to the City of Toronto", False),
-    (StatusName.RESOLUTION_PENDING, "reported_to_operator", "Issue has been reported to the organization or person responsible for maintaining the bicycle parking", False),
-    (StatusName.RESOLUTION_PENDING, "resolution_pending", "Operator/city has initiated but not completed the process to resolve the issue", False),
-    (StatusName.RESOLVED_SUCCESS, "resolved", "Issue reported by the user was fully resolved with some action taken", False),
-    (StatusName.RESOLVED_SUCCESS, "partially_resolved", "Issue was partially resolved; original issue closed, new issue opened for permanent fix", False),
-    (StatusName.RESOLVED_INFORMATIONAL, "noted_for_information", "Issue does not require specific action; helps indicate a broader pattern", False),
-    (StatusName.CLOSED_UNRESOLVED, "archived", "Issue closed; no recent action taken", True),
-    (StatusName.CLOSED_UNRESOLVED, "unable_to_resolve", "Action taken but did not resolve the issue; no additional actions planned", False),
-    (StatusName.RESOLVED_INFORMATIONAL, "app_feedback", "About the app, not about bike parking", False),
-    (StatusName.ACTION_REQUIRED, "data_caution", "Unclear whether this is a valid issue report; extra scrutiny applied", False),
-    (StatusName.INVALID_SUBMISSION, "data_invalid", "Not a valid issue report, e.g. a duplicate or test entry", True),
-    (StatusName.INVALID_SUBMISSION, "duplicate_report", "Same submission as a previously submitted report", True),
+    (StatusName.ACTION_REQUIRED, "Action Required", "new_report", "Issue has been reported but no action taken yet", False),
+    (StatusName.ACTION_REQUIRED, "Action Required", "needs_survey", "Nature of issue is unclear from report details; area should be surveyed in-person", False),
+    (StatusName.RESOLUTION_PENDING, "Resolution Pending", "reported_to_city", "Issue has been reported to the City of Toronto", False),
+    (StatusName.RESOLUTION_PENDING, "Resolution Pending", "reported_to_operator", "Issue has been reported to the organization or person responsible for maintaining the bicycle parking", False),
+    (StatusName.RESOLUTION_PENDING, "Resolution Pending", "resolution_pending", "Operator/city has initiated but not completed the process to resolve the issue", False),
+    (StatusName.RESOLVED_SUCCESS, "Resolved", "resolved", "Issue reported by the user was fully resolved with some action taken", False),
+    (StatusName.RESOLVED_SUCCESS, "Resolved", "partially_resolved", "Issue was partially resolved; original issue closed, new issue opened for permanent fix", False),
+    (StatusName.RESOLVED_INFORMATIONAL, "Resolved (Informational)", "noted_for_information", "Issue does not require specific action; helps indicate a broader pattern", False),
+    (StatusName.CLOSED_UNRESOLVED, "Closed", "archived", "Issue closed; no recent action taken", True),
+    (StatusName.CLOSED_UNRESOLVED, "Closed", "unable_to_resolve", "Action taken but did not resolve the issue; no additional actions planned", False),
+    (StatusName.RESOLVED_INFORMATIONAL, "Resolved (Informational)", "app_feedback", "About the app, not about bike parking", False),
+    (StatusName.ACTION_REQUIRED, "Action Required", "data_caution", "Unclear whether this is a valid issue report; extra scrutiny applied", False),
+    (StatusName.INVALID_SUBMISSION, "Invalid", "data_invalid", "Not a valid issue report, e.g. a duplicate or test entry", True),
+    (StatusName.INVALID_SUBMISSION, "Invalid", "duplicate_report", "Same submission as a previously submitted report", True),
 ]
 
 
@@ -60,11 +60,12 @@ def seed_base_data():
     user_datastore = create_userdatastore(db, User, Role)
 
     # seed bikeparking statuses
-    for status_type, status_name, status_description, hide_by_default in BIKEPARKING_STATUSES:
+    for status_type, status_type_label, status_name, status_description, hide_by_default in BIKEPARKING_STATUSES:
         if db.session.query(BikeParkingStatus).filter_by(status_name=status_name).first() is None:
             db.session.add(
                 BikeParkingStatus(
                     status_type=status_type,
+                    status_type_label=status_type_label,
                     status_name=status_name,
                     status_description=status_description,
                     hide_by_default=hide_by_default,
