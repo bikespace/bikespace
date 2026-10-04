@@ -62,7 +62,7 @@ services:
     expose:
       - 80
     healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://localhost:80/api/v2/submissions?limit=1"]
+      test: ["CMD", "wget", "-qO-", "http://localhost:80/api/v2/healthz"]
       interval: 10s
       timeout: 5s
       retries: 5
