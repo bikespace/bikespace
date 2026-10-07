@@ -15,7 +15,7 @@ jobs:
     outputs:
       python-version: "3.12.14"
       node-version: "24"
-      postgres-image: postgres:15
+      postgres-image: postgres:18
     steps:
       - run: ":"
 
