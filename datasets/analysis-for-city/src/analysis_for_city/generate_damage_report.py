@@ -41,7 +41,6 @@ OUTPUT_EXCEL_NAME = "damage_bikespace_city_matches"
 
 BIKESPACE_API_URL = "https://api-dev.bikespace.ca/api/v2/submissions"
 BIKESPACE_API_PAGE_SIZE = 5000
-BIKESPACE_API_DATE_FORMAT = "%Y-%m-%dT%H:%M:%S"
 
 CLEANUP_SHEET_FILENAME = "BikeSpace Data Notes and Cleanup - Data.csv"
 CLEANUP_SHEET_COLUMNS = [
@@ -101,7 +100,7 @@ def parse_date(input: str):
 def parse_date_bikespace_api(input: str) -> datetime.date:
     """Convert date from the BikeSpace API to datetime.date. Format is specified by the BIKESPACE_API_DATE_FORMAT constant."""
     input_str = input.split(".")[0]
-    parsed = datetime.strptime(input_str, BIKESPACE_API_DATE_FORMAT)
+    parsed = datetime.fromisoformat(input_str)
     parsed_tzaware = parsed.replace(tzinfo=timezone.utc)
     return parsed_tzaware
 
