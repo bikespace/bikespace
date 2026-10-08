@@ -1,4 +1,4 @@
-import React, {forwardRef} from 'react';
+import {forwardRef} from 'react';
 import {render, screen} from '@testing-library/react';
 import {userEvent} from '@testing-library/user-event';
 
@@ -16,6 +16,14 @@ jest.mock('react-map-gl/maplibre', () => ({
 
 jest.mock('@/utils/map-utils/geocoder-search/_useGeocoderQuery', () => ({
   useGeocoderQuery: jest.fn(),
+}));
+
+jest.mock('@/hooks/use-submissions-query', () => ({
+  useSubmissionsQuery: () => ({data: []}),
+}));
+
+jest.mock('@/hooks/use-parking-data-query', () => ({
+  useParkingDataQuery: () => ({data: []}),
 }));
 
 jest.mock('next/navigation', () => ({

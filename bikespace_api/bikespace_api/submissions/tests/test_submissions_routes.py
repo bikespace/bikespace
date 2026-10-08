@@ -23,7 +23,7 @@ def dummy_submission():
         "longitude": -79.3832,
         "issues": ["full"],
         "parking_duration": "minutes",
-        "parking_time": "2023-08-19 15:17:17.234235",
+        "parking_time": "2023-08-19T15:17:17.234235+00:00",
         "comments": "test1",
     }
 
@@ -146,8 +146,8 @@ class TestPostSubmission:
         assert new_submission.parking_duration == ParkingDuration(
             dummy_submission["parking_duration"]
         )
-        assert new_submission.parking_time == datetime.strptime(
-            dummy_submission["parking_time"], "%Y-%m-%d %H:%M:%S.%f"
+        assert new_submission.parking_time == datetime.fromisoformat(
+            dummy_submission["parking_time"]
         )
         assert new_submission.comments == dummy_submission["comments"]
         assert (
@@ -189,8 +189,8 @@ class TestPostSubmission:
         assert new_submission.parking_duration == ParkingDuration(
             dummy_submission["parking_duration"]
         )
-        assert new_submission.parking_time == datetime.strptime(
-            dummy_submission["parking_time"], "%Y-%m-%d %H:%M:%S.%f"
+        assert new_submission.parking_time == datetime.fromisoformat(
+            dummy_submission["parking_time"]
         )
         assert new_submission.comments == dummy_submission["comments"]
         assert (

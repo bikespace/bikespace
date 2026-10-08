@@ -9,7 +9,7 @@ import marshmallow as ma
 from better_profanity import profanity
 from flask import Response, make_response, request, url_for
 from flask.views import MethodView
-from flask_security import current_user, auth_required, roles_accepted  # type: ignore
+from flask_security import auth_required, current_user, roles_accepted  # type: ignore
 from flask_smorest import abort
 from geojson import Feature, FeatureCollection, Point
 from marshmallow import validate
@@ -39,7 +39,7 @@ class SubmissionSchema(ma.Schema):
         validate=validate.Length(max=len(IssueType)),
     )
     parking_duration = ma.fields.Enum(ParkingDuration, by_value=True)
-    parking_time = ma.fields.DateTime(format="iso", required=True)
+    parking_time = ma.fields.AwareDateTime(format="iso", required=True)
     comments = ma.fields.String(validate=validate.Length(max=5000))
     submitted_datetime = ma.fields.AwareDateTime(
         format="iso", dump_only=True, allow_none=True

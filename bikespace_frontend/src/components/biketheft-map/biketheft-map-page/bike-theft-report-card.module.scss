@@ -1,0 +1,13 @@
+@use '@/styles/variables.module.scss' as variables;
+
+.selectedReportsList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  > li + li {
+    border-top: 1px solid variables.$color-secondary-dark-grey;
+    margin-top: 12px;
+    padding-top: 12px;
+  }
+}

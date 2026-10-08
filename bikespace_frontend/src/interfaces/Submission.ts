@@ -58,6 +58,7 @@ export interface SubmissionApiPayload {
   parking_duration: ParkingDuration;
   comments: string;
   submitted_datetime: string | null;
+  user: string | null;
 }
 
 export enum DateRangeInterval {

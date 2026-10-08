@@ -4,6 +4,7 @@ import {useSearchParams} from 'next/navigation';
 
 import {ParkingDuration} from '@/interfaces/Submission';
 import {defaultMapCenter} from '@/utils/map-utils';
+import {useAuthStore} from '@/states/store';
 
 import {SubmissionSchema, submissionSchemaResolver} from './schema';
 
@@ -15,6 +16,7 @@ import styles from './submission-form.module.scss';
 
 export function SubmissionForm() {
   const searchParams = useSearchParams();
+  const authToken = useAuthStore(state => state.authToken);
   const lat = searchParams.get('lat');
   const lon = searchParams.get('lon');
   const urlLocation =
@@ -40,7 +42,7 @@ export function SubmissionForm() {
   const onSubmit = async (data: SubmissionSchema) => {
     try {
       const response = await fetch(
-        `${process.env.BIKESPACE_API_URL}/submissions`,
+        `${process.env.BIKESPACE_API_URL}/api/v2/submissions`,
         {
           method: 'POST',
           body: JSON.stringify({
@@ -54,6 +56,7 @@ export function SubmissionForm() {
           headers: {
             'Content-Type': 'application/json',
             Accept: 'application/json',
+            ...(authToken ? {'Authentication-Token': authToken} : {}),
           },
         }
       );
