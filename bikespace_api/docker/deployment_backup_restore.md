@@ -35,6 +35,24 @@ Leave `CADDY_SITE_ADDRESS` unset so that it defaults to just `:80`; Coolify's Tr
 7. Run a one-off backup and confirm it was successful (see instructions in the backup section).
 8. Change the seed user password using the User admin panel at `admin/user/`
 
+### Continuous deployment from GitHub Actions
+
+The [`deploy-api.yml`](../../.github/workflows/deploy-api.yml) workflow runs the API tests on pushes to `main`, then triggers a Coolify deployment, waits for it to finish, and fails if the deployment fails or is cancelled. To set it up:
+
+1. In Coolify, make sure API access is enabled (Settings > Advanced).
+2. Create an API token (Keys & Tokens > API tokens) with only the `deploy` and `read` permissions, and use it only for this workflow. Do not grant `read:sensitive`, `write`, or `root`: those would allow anyone who obtains the token to read or change the secrets of every resource in the Coolify team.
+3. Copy the deploy webhook URL from the application's Webhooks page. It should look like `https://<coolify host>/api/v1/deploy?uuid=<application uuid>&force=false`.
+4. Add both as GitHub Actions repository secrets:
+
+   - `COOLIFY_WEBHOOK_DEPLOY_API`: the deploy webhook URL
+   - `COOLIFY_TOKEN_DEPLOY_API`: the API token
+
+Notes:
+
+- The workflow only reports the deployment UUID and status. The GitHub Actions logs for this repository are public, and Coolify only returns deployment logs to tokens with `read:sensitive`, so view the deployment log itself in the Coolify UI.
+- If the wait step fails with a 401 or 403 error, check that the token has the `read` permission.
+- The Coolify instance must be reachable from GitHub-hosted runners.
+
 ### Standalone (vanilla) deployment
 
 Key changes include:

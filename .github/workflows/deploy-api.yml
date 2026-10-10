@@ -79,11 +79,44 @@ jobs:
     name: Deploy API
     needs: [apitest, api-migration-test]
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
+    timeout-minutes: 30
+    permissions: {}
+    env:
+      COOLIFY_WEBHOOK: ${{ secrets.COOLIFY_WEBHOOK_DEPLOY_API }}
+      COOLIFY_TOKEN: ${{ secrets.COOLIFY_TOKEN_DEPLOY_API }}
+    # This repo's Actions logs are public: only print the deployment UUID and status, never API response bodies or the Coolify URL
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: Trigger Coolify deployment
+        id: trigger
+        shell: bash
         run: |
-          curl --fail --request POST '${{ secrets.COOLIFY_WEBHOOK_DEPLOY_API }}' \
-          --header 'Authorization: Bearer ${{ secrets.COOLIFY_TOKEN_DEPLOY_API }}'
+          response=$(curl --fail --silent --show-error --request POST "$COOLIFY_WEBHOOK" \
+            --header "Authorization: Bearer $COOLIFY_TOKEN")
+          deployment_uuid=$(jq --exit-status --raw-output '.deployments[0].deployment_uuid' <<<"$response")
+          echo "Coolify deployment queued: $deployment_uuid"
+          echo "deployment_uuid=$deployment_uuid" >> "$GITHUB_OUTPUT"
+      - name: Wait for Coolify deployment
+        shell: bash
+        env:
+          DEPLOYMENT_UUID: ${{ steps.trigger.outputs.deployment_uuid }}
+        run: |
+          # webhook URL looks like https://<coolify host>/api/v1/deploy?uuid=...
+          api_url="${COOLIFY_WEBHOOK%%/api/v1/*}/api/v1"
+          last_status=""
+          while true; do
+            status=$(curl --fail --silent --show-error --retry 5 --retry-connrefused \
+              "$api_url/deployments/$DEPLOYMENT_UUID" \
+              --header "Authorization: Bearer $COOLIFY_TOKEN" | jq --raw-output '.status')
+            if [ "$status" != "$last_status" ]; then
+              echo "Deployment status: $status"
+              last_status="$status"
+            fi
+            case "$status" in
+              finished) exit 0 ;;
+              failed | cancelled-by-user)
+                echo "::error::Coolify deployment $DEPLOYMENT_UUID $status - see the deployment log in the Coolify UI"
+                exit 1
+                ;;
+            esac
+            sleep 10
+          done
