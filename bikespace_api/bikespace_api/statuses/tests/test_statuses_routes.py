@@ -5,18 +5,18 @@ from bikespace_api.statuses.statuses_models import BikeParkingStatus, StatusName
 
 
 VISIBLE_STATUS = {
-    "status_type": StatusName.ACTION_REQUIRED,
-    "status_type_label": "Action Required",
-    "status_name": "test_visible",
-    "status_description": "Test visible status",
+    "code": StatusName.ACTION_REQUIRED,
+    "label": "Test visible",
+    "internal_code": "test_visible",
+    "description": "Test visible status",
     "hide_by_default": False,
 }
 
 HIDDEN_STATUS = {
-    "status_type": StatusName.CLOSED_UNRESOLVED,
-    "status_type_label": "Closed",
-    "status_name": "test_hidden",
-    "status_description": "Test hidden status",
+    "code": StatusName.CLOSED_UNRESOLVED,
+    "label": "Test hidden",
+    "internal_code": "test_hidden",
+    "description": "Test hidden status",
     "hide_by_default": True,
 }
 
@@ -48,9 +48,9 @@ class TestGetBikeParkingStatuses:
 
         response = test_client.get("/api/v2/bikeparking-statuses")
         assert response.status_code == HTTPStatus.OK
-        returned_names = [s["status_name"] for s in response.json]
-        assert VISIBLE_STATUS["status_name"] in returned_names
-        assert HIDDEN_STATUS["status_name"] in returned_names
+        returned_names = [s["internal_code"] for s in response.json]
+        assert VISIBLE_STATUS["internal_code"] in returned_names
+        assert HIDDEN_STATUS["internal_code"] in returned_names
 
     def test_get_statuses_response_shape(self, flask_app, test_client, clean_db):
         """
@@ -69,13 +69,13 @@ class TestGetBikeParkingStatuses:
         item = response.json[0]
         assert all(
             k in item
-            for k in ("id", "status_type", "status_type_label", "status_name", "status_description", "hide_by_default", "created_at", "updated_at")
+            for k in ("id", "code", "label", "internal_code", "description", "hide_by_default", "created_at", "updated_at")
         )
         assert isinstance(item["id"], int)
-        assert isinstance(item["status_type"], str)
-        assert isinstance(item["status_type_label"], str)
-        assert isinstance(item["status_name"], str)
-        assert isinstance(item["status_description"], str)
+        assert isinstance(item["code"], str)
+        assert isinstance(item["label"], str)
+        assert isinstance(item["internal_code"], str)
+        assert isinstance(item["description"], str)
         assert isinstance(item["hide_by_default"], bool)
 
     def test_get_statuses_empty_db(self, flask_app, test_client, clean_db):
@@ -118,7 +118,7 @@ class TestGetBikeParkingStatuses:
             db.session.commit()
             status_id = status.id
 
-            status.status_description = "Updated description"
+            status.description = "Updated description"
             db.session.commit()
 
             BikeParkingStatusVersion = version_class(BikeParkingStatus)
@@ -129,5 +129,5 @@ class TestGetBikeParkingStatuses:
             )
 
         assert len(versions) == 2
-        assert versions[0].status_description == VISIBLE_STATUS["status_description"]
-        assert versions[1].status_description == "Updated description"
+        assert versions[0].description == VISIBLE_STATUS["description"]
+        assert versions[1].description == "Updated description"

@@ -23,7 +23,7 @@ def upgrade():
         "bikeparking_statuses",
         sa.Column("id", sa.Integer(), autoincrement=True, nullable=False),
         sa.Column(
-            "status_type",
+            "code",
             sa.Enum(
                 "ACTION_REQUIRED",
                 "RESOLUTION_PENDING",
@@ -36,20 +36,20 @@ def upgrade():
             ),
             nullable=False,
         ),
-        sa.Column("status_type_label", sa.String(), nullable=False),
-        sa.Column("status_name", sa.String(), nullable=False),
-        sa.Column("status_description", sa.Text(), nullable=False),
+        sa.Column("label", sa.String(), nullable=False),
+        sa.Column("internal_code", sa.String(), nullable=False),
+        sa.Column("description", sa.Text(), nullable=False),
         sa.Column("hide_by_default", sa.Boolean(), nullable=False),
         sa.Column("created_at", sa.DateTime(timezone=True), nullable=False),
         sa.Column("updated_at", sa.DateTime(timezone=True), nullable=False),
         sa.PrimaryKeyConstraint("id"),
-        sa.UniqueConstraint("status_name"),
+        sa.UniqueConstraint("internal_code"),
     )
     op.create_table(
         "bikeparking_statuses_version",
         sa.Column("id", sa.Integer(), autoincrement=False, nullable=False),
         sa.Column(
-            "status_type",
+            "code",
             sa.Enum(
                 "ACTION_REQUIRED",
                 "RESOLUTION_PENDING",
@@ -63,9 +63,9 @@ def upgrade():
             autoincrement=False,
             nullable=True,
         ),
-        sa.Column("status_type_label", sa.String(), autoincrement=False, nullable=True),
-        sa.Column("status_name", sa.String(), autoincrement=False, nullable=True),
-        sa.Column("status_description", sa.Text(), autoincrement=False, nullable=True),
+        sa.Column("label", sa.String(), autoincrement=False, nullable=True),
+        sa.Column("internal_code", sa.String(), autoincrement=False, nullable=True),
+        sa.Column("description", sa.Text(), autoincrement=False, nullable=True),
         sa.Column("hide_by_default", sa.Boolean(), autoincrement=False, nullable=True),
         sa.Column("created_at", sa.DateTime(timezone=True), autoincrement=False, nullable=True),
         sa.Column("updated_at", sa.DateTime(timezone=True), autoincrement=False, nullable=True),

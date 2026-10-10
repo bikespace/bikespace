@@ -24,13 +24,13 @@ class BikeParkingStatus(db.Model):
     __versioned__ = {}
 
     id: so.Mapped[int] = so.mapped_column(primary_key=True, autoincrement=True)
-    status_type: so.Mapped[StatusName] = so.mapped_column(
+    code: so.Mapped[StatusName] = so.mapped_column(
         sa.Enum(StatusName, create_constraint=False, native_enum=False),
         nullable=False,
     )
-    status_type_label: so.Mapped[str] = so.mapped_column(sa.String, nullable=False)
-    status_name: so.Mapped[str] = so.mapped_column(sa.String, nullable=False, unique=True)
-    status_description: so.Mapped[str] = so.mapped_column(sa.Text, nullable=False)
+    label: so.Mapped[str] = so.mapped_column(sa.String, nullable=False)
+    internal_code: so.Mapped[str] = so.mapped_column(sa.String, nullable=False, unique=True)
+    description: so.Mapped[str] = so.mapped_column(sa.Text, nullable=False)
     hide_by_default: so.Mapped[bool] = so.mapped_column(
         sa.Boolean, nullable=False, default=False
     )
@@ -46,16 +46,16 @@ class BikeParkingStatus(db.Model):
 
     def __init__(
         self,
-        status_type: StatusName = None,  # type: ignore
-        status_type_label: str = None,  # type: ignore
-        status_name: str = None,  # type: ignore
-        status_description: str = None,  # type: ignore
+        code: StatusName = None,  # type: ignore
+        label: str = None,  # type: ignore
+        internal_code: str = None,  # type: ignore
+        description: str = None,  # type: ignore
         hide_by_default: bool = False,
     ):
-        self.status_type = status_type
-        self.status_type_label = status_type_label
-        self.status_name = status_name
-        self.status_description = status_description
+        self.code = code
+        self.label = label
+        self.internal_code = internal_code
+        self.description = description
         self.hide_by_default = hide_by_default
         self.created_at = datetime.now(timezone.utc)
         self.updated_at = datetime.now(timezone.utc)

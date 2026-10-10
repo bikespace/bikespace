@@ -9,14 +9,15 @@ class AdminBikeParkingStatusModelView(ModelView):
     column_display_pk = True
     column_list = [
         "id",
-        "status_type",
-        "status_name",
-        "status_description",
+        "code",
+        "label",
+        "internal_code",
+        "description",
         "hide_by_default",
         "created_at",
         "updated_at",
     ]
-    form_columns = ["status_type", "status_name", "status_description", "hide_by_default"]
+    form_columns = ["code", "label", "internal_code", "description", "hide_by_default"]
 
     def is_accessible(self):
         allowed_roles = [ApplicationRoles.SUPERUSER, ApplicationRoles.EDITOR]
