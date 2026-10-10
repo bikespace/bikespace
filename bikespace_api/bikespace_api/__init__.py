@@ -81,11 +81,6 @@ def create_app(script_info=None):
 
     api.register_blueprint(submissions_blueprint, url_prefix="/api/v2/")
 
-    # set up statuses blueprint
-    from bikespace_api.statuses.statuses_routes import statuses_blueprint
-
-    api.register_blueprint(statuses_blueprint, url_prefix="/api/v2/")
-
     # set up route index redirect
     @app.route("/")
     def api_home_page():

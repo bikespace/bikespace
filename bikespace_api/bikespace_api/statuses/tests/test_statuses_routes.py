@@ -22,15 +22,15 @@ HIDDEN_STATUS = {
 
 
 class TestGetBikeParkingStatuses:
-    """Tests for GET /api/v2/bikeparking-statuses"""
+    """Tests for GET /api/v2/submissions/bikeparking-statuses"""
 
     def test_get_statuses_returns_200(self, test_client):
         """
         GIVEN a Flask application configured for testing
-        WHEN GET '/api/v2/bikeparking-statuses' is requested
+        WHEN GET '/api/v2/submissions/bikeparking-statuses' is requested
         THEN check that the response is 200 with a JSON list
         """
-        response = test_client.get("/api/v2/bikeparking-statuses")
+        response = test_client.get("/api/v2/submissions/bikeparking-statuses")
         assert response.status_code == HTTPStatus.OK
         assert response.headers["Content-Type"] == "application/json"
         assert isinstance(response.json, list)
@@ -38,7 +38,7 @@ class TestGetBikeParkingStatuses:
     def test_get_statuses_returns_all_including_hidden(self, flask_app, test_client, clean_db):
         """
         GIVEN a Flask application with one visible and one hidden status
-        WHEN GET '/api/v2/bikeparking-statuses' is requested
+        WHEN GET '/api/v2/submissions/bikeparking-statuses' is requested
         THEN both visible and hidden statuses are returned
         """
         with flask_app.app_context():
@@ -46,7 +46,7 @@ class TestGetBikeParkingStatuses:
             db.session.add(BikeParkingStatus(**HIDDEN_STATUS))
             db.session.commit()
 
-        response = test_client.get("/api/v2/bikeparking-statuses")
+        response = test_client.get("/api/v2/submissions/bikeparking-statuses")
         assert response.status_code == HTTPStatus.OK
         returned_names = [s["internal_code"] for s in response.json]
         assert VISIBLE_STATUS["internal_code"] in returned_names
@@ -55,14 +55,14 @@ class TestGetBikeParkingStatuses:
     def test_get_statuses_response_shape(self, flask_app, test_client, clean_db):
         """
         GIVEN a Flask application with a seeded status
-        WHEN GET '/api/v2/bikeparking-statuses' is requested
+        WHEN GET '/api/v2/submissions/bikeparking-statuses' is requested
         THEN each item has the expected fields with correct types
         """
         with flask_app.app_context():
             db.session.add(BikeParkingStatus(**VISIBLE_STATUS))
             db.session.commit()
 
-        response = test_client.get("/api/v2/bikeparking-statuses")
+        response = test_client.get("/api/v2/submissions/bikeparking-statuses")
         assert response.status_code == HTTPStatus.OK
         assert len(response.json) > 0
 
@@ -81,7 +81,7 @@ class TestGetBikeParkingStatuses:
     def test_get_statuses_empty_db(self, flask_app, test_client, clean_db):
         """
         GIVEN a Flask application with no statuses in the database
-        WHEN GET '/api/v2/bikeparking-statuses' is requested
+        WHEN GET '/api/v2/submissions/bikeparking-statuses' is requested
         THEN an empty list is returned
         """
         with flask_app.app_context():
@@ -90,17 +90,17 @@ class TestGetBikeParkingStatuses:
             )
             db.session.commit()
 
-        response = test_client.get("/api/v2/bikeparking-statuses")
+        response = test_client.get("/api/v2/submissions/bikeparking-statuses")
         assert response.status_code == HTTPStatus.OK
         assert response.json == []
 
     def test_get_statuses_seed_data_loaded(self, flask_app, test_client, clean_db):
         """
         GIVEN a Flask application with seed data loaded
-        WHEN GET '/api/v2/bikeparking-statuses' is requested
+        WHEN GET '/api/v2/submissions/bikeparking-statuses' is requested
         THEN all 14 seeded statuses are present
         """
-        response = test_client.get("/api/v2/bikeparking-statuses")
+        response = test_client.get("/api/v2/submissions/bikeparking-statuses")
         assert response.status_code == HTTPStatus.OK
         assert len(response.json) == 14
 
