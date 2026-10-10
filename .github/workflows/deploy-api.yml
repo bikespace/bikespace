@@ -1,4 +1,4 @@
-name: Deploy to Fly.io
+name: Deploy API
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - main
     paths:
       - bikespace_api/**
-      - .github/workflows/deploy-to-fly.yml
+      - .github/workflows/deploy-api.yml
 
 jobs:
   # variables are only available in workflow steps, so this config job is used to set shared config variables
@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       python-version: "3.12.14"
-      postgres-image: postgres:15
+      postgres-image: postgres:18
     steps:
       - run: ":"
 
@@ -75,17 +75,15 @@ jobs:
       - name: Run migration check
         run: make migrate-test-db
 
-  deploy-to-fly:
-    name: Deploy to fly.io
+  deploy-api:
+    name: Deploy API
     needs: [apitest, api-migration-test]
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      deployments: write
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - uses: superfly/flyctl-actions/setup-flyctl@ed8efb33836e8b2096c7fd3ba1c8afe303ebbff1 # @master as of 2026-04-07
-      - run: flyctl deploy
-        working-directory: ./bikespace_api
-        env:
-          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+      - name: Trigger Coolify deployment
+        run: |
+          curl --fail --request POST '${{ secrets.COOLIFY_WEBHOOK_DEPLOY_API }}' \
+          --header 'Authorization: Bearer ${{ secrets.COOLIFY_TOKEN_DEPLOY_API }}'
