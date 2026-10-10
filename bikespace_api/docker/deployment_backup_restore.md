@@ -37,20 +37,24 @@ Leave `CADDY_SITE_ADDRESS` unset so that it defaults to just `:80`; Coolify's Tr
 
 ### Continuous deployment from GitHub Actions
 
-The [`deploy-api.yml`](../../.github/workflows/deploy-api.yml) workflow runs the API tests on pushes to `main`, then triggers a Coolify deployment, waits for it to finish, and fails if the deployment fails or is cancelled. To set it up:
+The [`deploy-api.yml`](../../.github/workflows/deploy-api.yml) workflow runs the API tests on pushes to `main`, then triggers a Coolify deployment of that commit and waits up to 10 minutes for the live API to report it at `/version`. It uses Coolify's per-application git webhook, so the Coolify API does not need to be enabled and no API token is needed. To set it up:
 
-1. In Coolify, make sure API access is enabled (Settings > Advanced).
-2. Create an API token (Keys & Tokens > API tokens) with only the `deploy` and `read` permissions, and use it only for this workflow. Do not grant `read:sensitive`, `write`, or `root`: those would allow anyone who obtains the token to read or change the secrets of every resource in the Coolify team.
-3. Copy the deploy webhook URL from the application's Webhooks page. It should look like `https://<coolify host>/api/v1/deploy?uuid=<application uuid>&force=false`.
-4. Add both as GitHub Actions repository secrets:
+1. In the Coolify application, enable auto deploy (Advanced settings).
+2. On the application's Webhooks page, set a long random "GitHub Webhook Secret" (e.g. generated with `python3 -c "import secrets; print(secrets.token_hex(32))"`). This secret can only trigger a deployment of this application.
+3. Add the following GitHub Actions repository secrets:
 
-   - `COOLIFY_WEBHOOK_DEPLOY_API`: the deploy webhook URL
-   - `COOLIFY_TOKEN_DEPLOY_API`: the API token
+   - `COOLIFY_WEBHOOK_DEPLOY_API`: `https://<coolify host>/webhooks/source/github/events/manual`
+   - `COOLIFY_WEBHOOK_SECRET_DEPLOY_API`: the GitHub Webhook Secret from step 2
+
+4. If your API is not served at `https://api.bikespace.ca`, update `VERSION_URL` in the workflow.
+
+Do **not** also add the webhook in the GitHub repository settings, otherwise every push would deploy without waiting for the tests.
 
 Notes:
 
-- The workflow only reports the deployment UUID and status. The GitHub Actions logs for this repository are public, and Coolify only returns deployment logs to tokens with `read:sensitive`, so view the deployment log itself in the Coolify UI.
-- If the wait step fails with a 401 or 403 error, check that the token has the `read` permission.
+- `/version` is served by the `reverse_proxy` (Caddy) container and returns the commit that Coolify deployed (`SOURCE_COMMIT`). Caddy only starts after the `bikespace_api` container is healthy, so a matching commit means the new version is up.
+- If the trigger step fails with "No matching application or invalid signature", check the webhook secret and that the application's repository and branch in Coolify match the GitHub repository and `main`. "Deployments disabled" means auto deploy is turned off.
+- If the wait step times out, the deployment failed or took longer than 10 minutes: check the deployment log in the Coolify UI. If `/version` returns `unknown`, `SOURCE_COMMIT` is not reaching the `reverse_proxy` container.
 - The Coolify instance must be reachable from GitHub-hosted runners.
 
 ### Standalone (vanilla) deployment

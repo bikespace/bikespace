@@ -57,6 +57,7 @@ services:
         condition: service_healthy
     environment:
       CADDY_SITE_ADDRESS: ${CADDY_SITE_ADDRESS:-:80}
+      SOURCE_COMMIT: ${SOURCE_COMMIT:-unknown} # set by Coolify; served at /version
     volumes:
       - caddy_data:/data
       - caddy_config:/config
