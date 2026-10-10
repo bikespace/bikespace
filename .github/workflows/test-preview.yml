@@ -1,4 +1,5 @@
 name: Test and Preview
+
 on:
   pull_request:
     types: [opened, synchronize, ready_for_review]
@@ -6,21 +7,32 @@ on:
       - bikespace_api/**
       - bikespace_frontend/**
       - .github/workflows/test-preview.yml
+
 jobs:
+  # variables are only available in workflow steps, so this config job is used to set shared config variables
+  config:
+    runs-on: ubuntu-latest
+    outputs:
+      python-version: "3.12.14"
+      node-version: "24"
+      postgres-image: postgres:18
+    steps:
+      - run: ":"
+
   apitest:
     name: API tests
     runs-on: ubuntu-latest
-    env:
-      BIKESPACE_SECURITY_PASSWORD_SALT: ${{ secrets.BIKESPACE_SECURITY_PASSWORD_SALT }}
-      BIKESPACE_SECRET_KEY: ${{ secrets.BIKESPACE_SECRET_KEY }}
+    needs: config
+    env: &api_env
+      BIKESPACE_SECURITY_PASSWORD_SALT: ${{ secrets.BIKESPACE_SECURITY_PASSWORD_SALT || 'fallback_salt_for_forked_prs' }}
+      BIKESPACE_SECRET_KEY: ${{ secrets.BIKESPACE_SECRET_KEY || 'fallback_secret_key_for_forked_prs' }}
       SEED_USER_EMAIL: ${{ secrets.SEED_USER_EMAIL }}
       SEED_USER_PASSWORD: ${{ secrets.SEED_USER_PASSWORD }}
     # Service containers to run with `container-job`
     services:
       # Label used to access the service container
-      postgres:
-        # Docker Hub image
-        image: postgres:15
+      postgres: &api_postgres_service # Docker Hub image
+        image: ${{ needs.config.outputs.postgres-image }}
         # Provide the password for postgres
         env:
           POSTGRES_PASSWORD: postgres
@@ -34,103 +46,75 @@ jobs:
           - 5432:5432
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: Setup python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
-          python-version: "3.12.0"
+          python-version: ${{ needs.config.outputs.python-version }}
           cache: "pip"
           cache-dependency-path: bikespace_api/requirements.txt
       - name: Run pytest
         run: make test-api
       - name: Coveralls
-        uses: coverallsapp/github-action@v2
+        uses: coverallsapp/github-action@8d6379e14d29928660c4ba802d8e85393440b329 # v2.3.8
         with:
           fail-on-error: false
+
   api-migration-test:
     name: Test if database migrations need to be generated for API
     runs-on: ubuntu-latest
-    env:
-      BIKESPACE_SECURITY_PASSWORD_SALT: ${{ secrets.BIKESPACE_SECURITY_PASSWORD_SALT }}
-      BIKESPACE_SECRET_KEY: ${{ secrets.BIKESPACE_SECRET_KEY }}
-      SEED_USER_EMAIL: ${{ secrets.SEED_USER_EMAIL }}
-      SEED_USER_PASSWORD: ${{ secrets.SEED_USER_PASSWORD }}
+    needs: config
+    env: *api_env
     services:
       # Label used to access the service container
-      postgres:
-        # Docker Hub image
-        image: postgres:15
-        # Provide the password for postgres
-        env:
-          POSTGRES_PASSWORD: postgres
-        # Set health checks to wait until postgres has started
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          - 5432:5432
+      postgres: *api_postgres_service
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: Setup python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
-          python-version: "3.12.0"
+          python-version: ${{ needs.config.outputs.python-version }}
           cache: "pip"
           cache-dependency-path: bikespace_api/requirements.txt
       - name: Run migration check
         run: make migrate-test-db
+
   test-frontend:
     name: Lint and Test Frontend
     runs-on: ubuntu-latest
+    needs: config
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: Setup node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
-          node-version: "24"
+          node-version: ${{ needs.config.outputs.node-version }}
           cache: "npm"
           cache-dependency-path: bikespace_frontend/package-lock.json
       - name: Check code style
         run: make lint-frontend
       - name: Run Jest tests
         run: make test-frontend
+
   test-e2e:
     name: Frontend end-to-end tests
     timeout-minutes: 10
     runs-on: ubuntu-latest
-    env:
-      BIKESPACE_SECURITY_PASSWORD_SALT: ${{ secrets.BIKESPACE_SECURITY_PASSWORD_SALT }}
-      BIKESPACE_SECRET_KEY: ${{ secrets.BIKESPACE_SECRET_KEY }}
-      SEED_USER_EMAIL: ${{ secrets.SEED_USER_EMAIL }}
-      SEED_USER_PASSWORD: ${{ secrets.SEED_USER_PASSWORD }}
+    needs: config
+    env: *api_env
     # Service containers to run with `container-job`
     services:
       # Label used to access the service container
-      postgres:
-        # Docker Hub image
-        image: postgres:15
-        # Provide the password for postgres
-        env:
-          POSTGRES_PASSWORD: postgres
-        # Set health checks to wait until postgres has started
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          - 5432:5432
+      postgres: *api_postgres_service
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: Setup node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
-          node-version: "24"
+          node-version: ${{ needs.config.outputs.node-version }}
           cache: "npm"
           cache-dependency-path: bikespace_frontend/package-lock.json
       - name: Install frontend dependencies
@@ -140,7 +124,7 @@ jobs:
         run: |
           echo "PLAYWRIGHT_VERSION=$(node -e "console.log(require('./bikespace_frontend/node_modules/@playwright/test/package.json').version)")" >> $GITHUB_ENV
       - name: Cache Playwright browsers
-        uses: actions/cache@v4
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         id: playwright-cache
         with:
           path: ~/.cache/ms-playwright
@@ -153,17 +137,18 @@ jobs:
         run: cd bikespace_frontend && npx playwright install-deps
       - name: Run end to end tests
         run: cd bikespace_frontend && npx playwright test
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         if: ${{ !cancelled() }}
         with:
           name: playwright-report
           path: bikespace_frontend/playwright-report/
           retention-days: 30
+
   publish:
     # Only publish previews for PRs from the same repository
     if: ${{ github.event.pull_request.head.repo.full_name == github.repository}}
     name: Publish to Cloudflare Pages
-    needs: [test-frontend, test-e2e]
+    needs: [test-frontend, test-e2e, config]
     runs-on: ubuntu-latest
     env:
       MAPTILER_API_KEY: ${{ secrets.MAPTILER_API_KEY }}
@@ -173,20 +158,19 @@ jobs:
       pull-requests: write
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: Setup node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
-          node-version: "24"
+          node-version: ${{ needs.config.outputs.node-version }}
           cache: "npm"
           cache-dependency-path: bikespace_frontend/package-lock.json
       - name: Build static frontend
         run: make build-frontend
       - name: Publish to Cloudflare Pages
-        uses: cloudflare/pages-action@v1
+        uses: cloudflare/wrangler-action@953926a2e2182532811c01a25e53647d93bf07c0 # v4.1.3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          projectName: bikespace-v2
-          directory: bikespace_frontend/out
+          command: pages deploy bikespace_frontend/out --project-name=bikespace-v2 --branch=${{ github.head_ref || github.ref_name }} --commit-dirty=true
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
