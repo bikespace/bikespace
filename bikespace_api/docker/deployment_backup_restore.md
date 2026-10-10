@@ -37,10 +37,12 @@ Leave `CADDY_SITE_ADDRESS` unset so that it defaults to just `:80`; Coolify's Tr
 
 ### Continuous deployment from GitHub Actions
 
-The [`deploy-api.yml`](../../.github/workflows/deploy-api.yml) workflow runs the API tests on pushes to `main`, then triggers a Coolify deployment of that commit and waits up to 10 minutes for the live API to report it at `/version`. It uses Coolify's per-application git webhook, so the Coolify API does not need to be enabled and no API token is needed. To set it up:
+The `deploy-api.yml` workflow runs the API tests on pushes to `main`, then triggers a Coolify deployment of that commit and waits up to 10 minutes for the live API to report it at `/version`. It uses Coolify's per-application git webhook, so the Coolify API does not need to be enabled and no API token is needed. 
+
+To set it up:
 
 1. In the Coolify application, enable auto deploy (Advanced settings).
-2. On the application's Webhooks page, set a long random "GitHub Webhook Secret" (e.g. generated with `python3 -c "import secrets; print(secrets.token_hex(32))"`). This secret can only trigger a deployment of this application.
+2. On the application's Webhooks page, there should be a "GitHub Webhook Secret". If the secret is blank, you can generate one with `python3 -c "import secrets; print(secrets.token_hex(32))"`. This secret can only trigger a deployment of this application.
 3. Add the following GitHub Actions repository secrets:
 
    - `COOLIFY_WEBHOOK_DEPLOY_API`: `https://<coolify host>/webhooks/source/github/events/manual`
