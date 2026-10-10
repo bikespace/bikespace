@@ -115,9 +115,15 @@ export function BikeTheftMapPage() {
   // --- Filter reports based on selected filters ---
   const filteredReports = React.useMemo(() => {
     return stolenBikeReports.filter(r => {
+      // If the status filter is not "All", check if the report's status matches the filter
+      // Count both 'stolen' and 'unknown' as stolen
       if (
         statusFilter !== BikeTheftStatusFilter.All &&
-        r.status !== statusFilter
+        r.status !== statusFilter &&
+        !(
+          statusFilter === BikeTheftStatusFilter.Stolen &&
+          r.status === 'unknown'
+        )
       )
         return false;
       const date = r.date.slice(0, 10);
