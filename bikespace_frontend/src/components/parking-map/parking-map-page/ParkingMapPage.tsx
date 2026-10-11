@@ -326,7 +326,11 @@ export function ParkingMapPage() {
         ? {
             type: 'Feature',
             geometry: {type: 'Point', coordinates: [lon, lat]},
-            properties: {reportCount: reports.length},
+            // carries the original feature's own properties (not just
+            // reportCount) so parkingLayerFilter - which references
+            // properties like bicycle_parking - can be applied to this
+            // layer the same way it filters ParkingLayer
+            properties: {...feature.properties, reportCount: reports.length},
           }
         : null;
     })
@@ -487,6 +491,7 @@ export function ParkingMapPage() {
               type: 'FeatureCollection',
               features: reportedFeatures,
             }}
+            layerFilter={parkingLayerFilter}
           />
         ) : null}
         {showBicycleNetwork ? (
