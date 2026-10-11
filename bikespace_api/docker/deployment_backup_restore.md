@@ -35,6 +35,30 @@ Leave `CADDY_SITE_ADDRESS` unset so that it defaults to just `:80`; Coolify's Tr
 7. Run a one-off backup and confirm it was successful (see instructions in the backup section).
 8. Change the seed user password using the User admin panel at `admin/user/`
 
+### Continuous deployment from GitHub Actions
+
+The `deploy-api.yml` workflow runs the API tests on pushes to `main`, then triggers a Coolify deployment of that commit and waits up to 10 minutes for the live API to report it at `/version`. It uses Coolify's per-application git webhook, so the Coolify API does not need to be enabled and no API token is needed. 
+
+To set it up:
+
+1. In the Coolify application, enable auto deploy (Advanced settings).
+2. On the application's Webhooks page, there should be a "GitHub Webhook Secret". If the secret is blank, you can generate one with `python3 -c "import secrets; print(secrets.token_hex(32))"`. This secret can only trigger a deployment of this application.
+3. Add the following GitHub Actions repository secrets:
+
+   - `COOLIFY_WEBHOOK_DEPLOY_API`: `https://<coolify host>/webhooks/source/github/events/manual`
+   - `COOLIFY_WEBHOOK_SECRET_DEPLOY_API`: the GitHub Webhook Secret from step 2
+
+4. If your API is not served at `https://api.bikespace.ca`, update `VERSION_URL` in the workflow.
+
+Do **not** also add the webhook in the GitHub repository settings, otherwise every push would deploy without waiting for the tests.
+
+Notes:
+
+- `/version` is served by the `reverse_proxy` (Caddy) container and returns the commit that Coolify deployed (`SOURCE_COMMIT`). Caddy only starts after the `bikespace_api` container is healthy, so a matching commit means the new version is up.
+- If the trigger step fails with "No matching application or invalid signature", check the webhook secret and that the application's repository and branch in Coolify match the GitHub repository and `main`. "Deployments disabled" means auto deploy is turned off.
+- If the wait step times out, the deployment failed or took longer than 10 minutes: check the deployment log in the Coolify UI. If `/version` returns `unknown`, `SOURCE_COMMIT` is not reaching the `reverse_proxy` container.
+- The Coolify instance must be reachable from GitHub-hosted runners.
+
 ### Standalone (vanilla) deployment
 
 Key changes include:
