@@ -19,6 +19,7 @@ import {
 } from '@/utils/map-utils';
 import {useSubmissionsQuery} from '@/hooks/use-submissions-query';
 import {useParkingDataQuery} from '@/hooks/use-parking-data-query';
+import {useParkingClusterMembersQuery} from '@/hooks/use-parking-cluster-members-query';
 
 import {ParkingMapFilter} from './map-filters/ParkingMapFilter';
 import {Sidebar} from './sidebar/Sidebar';
@@ -292,9 +293,28 @@ export function ParkingMapPage() {
 
   const {data: submissions} = useSubmissionsQuery();
   const {data: parkingFeatures} = useParkingDataQuery();
+  const {data: clusterMembers} = useParkingClusterMembersQuery();
   const matchedReports = useMemo(
     () => matchSubmissionsToParking(submissions ?? [], parkingFeatures ?? []),
     [submissions, parkingFeatures]
+  );
+  // Cluster members can sit well inside the fuzzy match radius above (that's
+  // often *why* they clustered in the first place - see group_proximate_rings/
+  // group_proximate_racks in the data pipeline), so attributing a report to
+  // one specific member needs a much tighter radius than matching a report to
+  // a well-separated top-level feature does. A report filed via "Report
+  // Issue" on a drilled-down member always carries that member's own exact
+  // coordinates, so a small radius (just enough to absorb GPS/float noise) is
+  // sufficient and avoids misattributing a report to every nearby sibling.
+  const CLUSTER_MEMBER_MATCH_RADIUS_METERS = 3;
+  const matchedMemberReports = useMemo(
+    () =>
+      matchSubmissionsToParking(
+        submissions ?? [],
+        clusterMembers ?? [],
+        CLUSTER_MEMBER_MATCH_RADIUS_METERS
+      ),
+    [submissions, clusterMembers]
   );
   const reportedFeatures: Feature[] = (parkingFeatures ?? [])
     .map((feature): Feature | null => {
@@ -336,6 +356,30 @@ export function ParkingMapPage() {
             )}
             {parkingGroupSelected.map(f => {
               const [lon, lat] = getCentroid(f);
+              const clusterId = f.properties?.meta_cluster_id;
+              const members = clusterId
+                ? (clusterMembers ?? [])
+                    .filter(m => m.properties?.meta_cluster_id === clusterId)
+                    .map((member, i) => {
+                      const [mLon, mLat] = getCentroid(member);
+                      // tag each member with its 1-based position so the
+                      // sidebar list, the position diagram, and the
+                      // highlighted map pin can all show the same number
+                      const indexedMember: Feature = {
+                        ...member,
+                        properties: {
+                          ...member.properties,
+                          clusterMemberIndex: i + 1,
+                        },
+                      };
+                      return {
+                        feature: indexedMember,
+                        linkedReports: matchedMemberReports.get(
+                          parkingFeatureKey(member.properties, mLon, mLat)
+                        ),
+                      };
+                    })
+                : [];
               return (
                 <ParkingFeatureDescription
                   feature={f}
@@ -350,6 +394,7 @@ export function ParkingMapPage() {
                   linkedReports={matchedReports.get(
                     parkingFeatureKey(f.properties, lon, lat)
                   )}
+                  clusterMembers={members}
                 />
               );
             })}
