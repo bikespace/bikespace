@@ -2,7 +2,7 @@ import React from 'react';
 import {Layer, Source} from 'react-map-gl/maplibre';
 
 import type {SymbolLayer} from 'react-map-gl/maplibre';
-import type {ExpressionSpecification} from 'maplibre-gl';
+import type {ExpressionSpecification, FilterSpecification} from 'maplibre-gl';
 import type {FeatureCollection} from 'geojson';
 
 import styles from './legend-tables.module.scss';
@@ -13,12 +13,14 @@ const reportedIssuesBadgeColor = '#c62828';
 
 interface ReportedIssuesLayerProps {
   reportedFeatures: FeatureCollection;
+  layerFilter?: FilterSpecification;
 }
 
 // Purely a visual indicator - not included in parkingInteractiveLayers, so
 // clicks still resolve against the underlying ParkingLayer feature beneath.
 export function ReportedIssuesLayer({
   reportedFeatures,
+  layerFilter = true,
 }: ReportedIssuesLayerProps) {
   // only show badges once individual parking icons are visible, matching
   // the zoom threshold ParkingLayer uses to fade in its own icons
@@ -36,6 +38,7 @@ export function ReportedIssuesLayer({
     id: 'bicycle-parking-reports',
     type: 'symbol',
     source: reportedIssuesSourceId,
+    filter: layerFilter,
     layout: {
       // MapLibre's SDF glyphs only cover the font's own character ranges
       // (see the font-fallback comment in ParkingLayer.tsx) - emoji/symbol

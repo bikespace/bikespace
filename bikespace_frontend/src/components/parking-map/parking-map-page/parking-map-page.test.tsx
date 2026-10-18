@@ -26,6 +26,10 @@ jest.mock('@/hooks/use-parking-data-query', () => ({
   useParkingDataQuery: () => ({data: []}),
 }));
 
+jest.mock('@/hooks/use-parking-cluster-members-query', () => ({
+  useParkingClusterMembersQuery: () => ({data: []}),
+}));
+
 jest.mock('next/navigation', () => ({
   useRouter: () => ({
     push: jest.fn(),
