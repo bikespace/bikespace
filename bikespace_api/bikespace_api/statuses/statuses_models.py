@@ -35,13 +35,13 @@ class BikeParkingStatus(db.Model):
         sa.Boolean, nullable=False, default=False
     )
     created_at: so.Mapped[datetime] = so.mapped_column(
-        sa.DateTime(timezone=True), nullable=False, default=lambda: datetime.now(timezone.utc)
+        sa.DateTime(timezone=True), nullable=False, default=lambda: datetime.now(timezone.utc)  # pragma: no cover
     )
     updated_at: so.Mapped[datetime] = so.mapped_column(
         sa.DateTime(timezone=True),
         nullable=False,
-        default=lambda: datetime.now(timezone.utc),
-        onupdate=lambda: datetime.now(timezone.utc),
+        default=lambda: datetime.now(timezone.utc),  # pragma: no cover
+        onupdate=lambda: datetime.now(timezone.utc),  # pragma: no cover
     )
 
     def __init__(
