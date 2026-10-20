@@ -113,6 +113,8 @@ test.py
 swagger-ui/
 
 .env*
+# commit dummy .env for api prodtest
+!bikespace_api/.env.prodtest
 # commit config .env for bikespace_frontend but do not commit .local env files
 !bikespace_frontend/.env*
 bikespace_frontend/.env.*.local

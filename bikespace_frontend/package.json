@@ -29,6 +29,7 @@
     "@tanstack/react-query": "^5.85.5",
     "@turf/bbox": "^7.2.0",
     "@turf/centroid": "^7.2.0",
+    "@turf/distance": "^7.4.0",
     "@turf/helpers": "^7.2.0",
     "@types/leaflet.markercluster": "^1.5.5",
     "@types/mapbox-gl": "^3.4.1",

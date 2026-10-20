@@ -1,0 +1,89 @@
+@use '@/styles/variables.module.scss' as variables;
+
+.filters {
+  min-width: 0;
+}
+
+.sectionLabel {
+  display: block;
+  margin: 12px 0 4px;
+
+  &:first-child {
+    margin-top: 0;
+  }
+}
+
+.filterButtonRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin: 4px 0;
+}
+
+button.filterButtonActive {
+  background-color: variables.$color-primary-20p;
+  border-color: variables.$color-primary-d50p;
+}
+
+.dateFilterRow {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.dateFilterLabel,
+.locationFilterLabel {
+  display: block;
+  min-width: 0;
+
+  > span {
+    display: block;
+    margin-bottom: 4px;
+  }
+}
+
+select.filterSelect,
+.dateInput {
+  min-width: 0;
+  cursor: pointer;
+
+  &:hover:not(:disabled) {
+    border-color: variables.$color-primary;
+  }
+
+  &:focus-visible {
+    outline: 2px solid variables.$color-primary-d50p;
+    outline-offset: 2px;
+    box-shadow: 0 0 0 0.2rem variables.$color-primary-20p;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    color: variables.$color-secondary-dark-grey;
+    background-color: variables.$color-secondary-light-grey;
+    border-color: variables.$color-secondary-dark-grey;
+    opacity: 0.65;
+  }
+}
+
+.reportCount {
+  margin: 12px 0 0;
+}
+
+.dateInput {
+  box-sizing: border-box;
+  width: 100%;
+  height: 2rem;
+  padding: 0 8px;
+  border: 2px solid variables.$color-primary-d50p;
+  border-radius: 4px;
+  background: white;
+  color: variables.$color-secondary-dark-grey;
+  font-family: variables.$body-font-stack;
+  font-size: 0.9rem;
+}
+
+.dateHelp {
+  margin: 8px 0;
+  font-size: 0.85rem;
+}

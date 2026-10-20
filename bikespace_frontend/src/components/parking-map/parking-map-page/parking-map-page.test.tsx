@@ -18,6 +18,14 @@ jest.mock('@/utils/map-utils/geocoder-search/_useGeocoderQuery', () => ({
   useGeocoderQuery: jest.fn(),
 }));
 
+jest.mock('@/hooks/use-submissions-query', () => ({
+  useSubmissionsQuery: () => ({data: []}),
+}));
+
+jest.mock('@/hooks/use-parking-data-query', () => ({
+  useParkingDataQuery: () => ({data: []}),
+}));
+
 jest.mock('next/navigation', () => ({
   useRouter: () => ({
     push: jest.fn(),

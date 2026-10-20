@@ -1,38 +1,11 @@
-name: bikespace_prodtest
+# supplemental compose to use with compose-prod.yaml for local testing
+name: bikespace_prod
 
 services:
   bikespace_api:
-    build:
-      context: ..
-      dockerfile: Dockerfile
-    depends_on:
-      db:
-        condition: service_healthy
-        restart: true
     environment:
-      APP_SETTINGS: "bikespace_api.config.ProductionConfig"
-      DATABASE_URL: "postgresql://postgres:prodpwd@db/bikespace_prodtest"
-      FLASK_DEBUG: "false"
-      FLASK_RUN_PORT: 8000
-      BIKESPACE_SECRET_KEY: ${BIKESPACE_SECRET_KEY}
-      BIKESPACE_SECURITY_PASSWORD_SALT: ${BIKESPACE_SECURITY_PASSWORD_SALT}
-      SEED_USER_EMAIL: ${SEED_USER_EMAIL}
-      SEED_USER_PASSWORD: ${SEED_USER_PASSWORD}
+      TRUSTED_PROXY_COUNT: ${TRUSTED_PROXY_COUNT:-1}
+
+  reverse_proxy:
     ports:
-      - "8002:8000"
-    develop:
-      watch:
-        - action: rebuild
-          path: ../bikespace_api/
-  db:
-    image: postgres
-    restart: always
-    user: postgres
-    environment:
-      POSTGRES_PASSWORD: "prodpwd"
-      POSTGRES_DB: "bikespace_prodtest"
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready"]
-      interval: 1s
-      timeout: 5s
-      retries: 10
+      - "${CADDY_HTTP_PORT:-8002}:80"

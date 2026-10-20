@@ -53,7 +53,7 @@ const theftRateFillColor = [
 ] as unknown as ExpressionSpecification;
 
 export function TheftRateLayer({beforeId}: {beforeId?: string}) {
-  const theftRateURL = process.env.DATA_BICYCLE_THEFT;
+  const theftRateURL = process.env.DATA_BICYCLE_THEFT_RATE;
 
   const theftRateLayer: FillLayer = {
     id: 'bicycle-theft-rate',

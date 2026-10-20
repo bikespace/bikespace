@@ -53,7 +53,7 @@ pip-freeze: $(BIKESPACE_API_DIR)/requirements.txt
 
 .PHONY: dev-api-stop
 dev-api-stop:
-	docker compose --file bikespace_api/docker/compose-dev.yaml down
+	docker compose --file bikespace_api/docker/compose-dev.yaml $(ENV_FILE_FLAG) down
 
 # port 8000
 .PHONY: dev-api
@@ -68,7 +68,7 @@ dev-api-force-logout-user:
 
 .PHONY: dev-api-test-stop
 dev-api-test-stop:
-	docker compose --file bikespace_api/docker/compose-test.yaml down
+	docker compose --file bikespace_api/docker/compose-test.yaml $(ENV_FILE_FLAG) down
 
 # port 8001
 .PHONY: dev-api-test
@@ -83,12 +83,23 @@ dev-api-test-force-logout-user:
 
 .PHONY: prodtest-api-stop
 prodtest-api-stop:
-	docker compose --file bikespace_api/docker/compose-prodtest.yaml down
+	docker compose \
+	--file bikespace_api/docker/compose-prod.yaml \
+	--file bikespace_api/docker/compose-prodtest.yaml \
+	--env-file bikespace_api/.env.prodtest \
+	down
 
-# port 8002
+# confirms that the production compose starts and runs 
+# uses dummy ENV values from bikespace_api/.env.prodtest
+# does not test backup functionality
+# needs local https for /admin login to work
 .PHONY: prodtest-api
 prodtest-api: prodtest-api-stop
-	docker compose --file bikespace_api/docker/compose-prodtest.yaml $(ENV_FILE_FLAG) up --build --force-recreate
+	docker compose \
+	--file bikespace_api/docker/compose-prod.yaml \
+	--file bikespace_api/docker/compose-prodtest.yaml \
+	--env-file bikespace_api/.env.prodtest \
+	up --build --force-recreate
 
 .PHONY: test-api
 test-api: setup-py launch-db db-test-server
