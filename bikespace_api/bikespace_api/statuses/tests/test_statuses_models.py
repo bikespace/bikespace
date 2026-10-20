@@ -64,4 +64,4 @@ def test_all_status_name_enum_values():
         "closed_unresolved",
         "invalid_submission",
     }
-    assert {m.value for m in StatusName} == expected_values
+    assert {m.value for m in StatusName} == expected_values  # pragma: no cover

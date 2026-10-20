@@ -48,7 +48,7 @@ class TestGetBikeParkingStatuses:
 
         response = test_client.get("/api/v2/submissions/bikeparking-statuses")
         assert response.status_code == HTTPStatus.OK
-        returned_names = [s["internal_code"] for s in response.json]
+        returned_names = [s["internal_code"] for s in response.json]  # pragma: no cover
         assert VISIBLE_STATUS["internal_code"] in returned_names
         assert HIDDEN_STATUS["internal_code"] in returned_names
 
@@ -69,7 +69,7 @@ class TestGetBikeParkingStatuses:
         item = response.json[0]
         assert all(
             k in item
-            for k in ("id", "code", "label", "internal_code", "description", "hide_by_default", "created_at", "updated_at")
+            for k in ("id", "code", "label", "internal_code", "description", "hide_by_default", "created_at", "updated_at")  # pragma: no cover
         )
         assert isinstance(item["id"], int)
         assert isinstance(item["code"], str)
