@@ -55,11 +55,8 @@ BIKEPARKING_STATUSES = [
 ]
 
 
-def seed_base_data():
-    """Seed the 4 canonical submissions, 2 test users, and 14 bike parking statuses. Requires an active app context."""
-    user_datastore = create_userdatastore(db, User, Role)
-
-    # seed bikeparking statuses
+def seed_statuses():
+    """Seed the 14 bike parking statuses. Requires an active app context."""
     for code, label, internal_code, description, hide_by_default in BIKEPARKING_STATUSES:
         if db.session.query(BikeParkingStatus).filter_by(internal_code=internal_code).first() is None:
             db.session.add(
@@ -72,6 +69,13 @@ def seed_base_data():
                 )
             )
     db.session.commit()
+
+
+def seed_base_data():
+    """Seed the 4 canonical submissions, 2 test users, and 14 bike parking statuses. Requires an active app context."""
+    user_datastore = create_userdatastore(db, User, Role)
+
+    seed_statuses()
 
     # create user roles
     user_role = Role(name=ApplicationRoles.USER)
