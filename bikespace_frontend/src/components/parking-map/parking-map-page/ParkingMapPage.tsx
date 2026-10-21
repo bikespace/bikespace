@@ -40,6 +40,10 @@ import {
   BicycleNetworkLayerLegend,
 } from '@/components/map-layers/BicycleNetwork';
 import {
+  TheftRateLayer,
+  TheftRateLayerLegend,
+} from '@/components/map-layers/TheftRate';
+import {
   ReportedIssuesLayer,
   ReportedIssuesLegend,
 } from '@/components/map-layers/ReportedIssuesLayer';
@@ -94,6 +98,8 @@ export function ParkingMapPage() {
   const [parkingLayerFilter, setParkingLayerFilter] =
     useState<FilterSpecification>(true);
   const [showBicycleNetwork, setShowBicycleNetwork] = useState<boolean>(true);
+  const [showTheftRate, setShowTheftRate] = useState<boolean>(false);
+  const [waterLayerId, setWaterLayerId] = useState<string | undefined>();
 
   const mapRef = useRef<MapRef>(null);
   const resultsCardRef = useRef<HTMLDivElement>(null);
@@ -282,6 +288,15 @@ export function ParkingMapPage() {
     // after styles load
     const map: MapLibreMap = mapRef.current!.getMap(); // maplibre-gl map instance
     map?.once('idle', () => setIsMapLoading(false)); // wait for styles to load, then set loading to false
+
+    // overlay layers that sit under this one are hidden by water, so e.g. the theft-rate
+    // choropleth doesn't tint the lake
+    const waterLayer = map
+      .getStyle()
+      .layers.find(
+        layer => layer.type === 'fill' && layer['source-layer'] === 'water'
+      );
+    setWaterLayerId(waterLayer?.id);
   }
 
   const openSubmission = useSubmissionPrefill();
@@ -397,6 +412,7 @@ export function ParkingMapPage() {
               <ParkingLayerLegend />
               <ReportedIssuesLegend />
               <BicycleNetworkLayerLegend />
+              {showTheftRate ? <TheftRateLayerLegend /> : null}
             </SidebarDetailsContent>
           </SidebarDetailsDisclosure>
           <SidebarDetailsDisclosure>
@@ -409,6 +425,14 @@ export function ParkingMapPage() {
                 {(showBicycleNetwork ? 'Hide' : 'Show') +
                   ' ' +
                   'Bicycle Network'}
+              </SidebarButton>
+              <SidebarButton
+                onClick={() => setShowTheftRate(!showTheftRate)}
+                style={{margin: '1rem 0'}}
+              >
+                {(showTheftRate ? 'Hide' : 'Show') +
+                  ' ' +
+                  'Bicycle Theft Rate (beta)'}
               </SidebarButton>
             </SidebarDetailsContent>
           </SidebarDetailsDisclosure>
@@ -443,6 +467,9 @@ export function ParkingMapPage() {
               features: reportedFeatures,
             }}
           />
+        ) : null}
+        {showTheftRate ? (
+          <TheftRateLayer beforeId={waterLayerId ?? mapStyleRoadLabelsLayer} />
         ) : null}
         {showBicycleNetwork ? (
           <BicycleNetworkLayer beforeId={mapStyleRoadLabelsLayer} />
