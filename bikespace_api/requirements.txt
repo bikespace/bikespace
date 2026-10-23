@@ -8,7 +8,7 @@ better-profanity==0.7.0
 black==26.3.1
 bleach==6.4.0
 blinker==1.9.0
-certifi==2024.7.4
+certifi==2026.10.19
 cffi==1.17.1
 charset-normalizer==3.3.0
 click==8.1.3
