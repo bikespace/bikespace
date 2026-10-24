@@ -1,7 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import {Layer, Marker, Source, useMap} from 'react-map-gl/maplibre';
 
-import {getCentroid, getSpriteImageWithTextOverlay} from '@/utils/map-utils';
+import {
+  addAttribution,
+  attributions,
+  getCentroid,
+  getSpriteImageWithTextOverlay,
+} from '@/utils/map-utils';
 
 import type {CircleLayer, SymbolLayer} from 'react-map-gl/maplibre';
 import type {
@@ -152,10 +157,12 @@ export function ParkingLayer({
 
   return (
     <>
+      {addAttribution('osm-attribution', attributions['OpenStreetMap'])}
       <Source
         id={parkingSourceId}
         type="geojson"
         data={bicycleParkingURL}
+        attribution={attributions['City of Toronto Open Data']}
         generateId={true}
       >
         <Layer {...parkingLayerDense} />

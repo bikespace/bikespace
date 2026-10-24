@@ -1,7 +1,8 @@
 import React from 'react';
-import {Layer, Source} from 'react-map-gl/maplibre';
 
-import type {LineLayer} from 'react-map-gl/maplibre';
+import {Layer, LineLayer, Source} from 'react-map-gl/maplibre';
+
+import {attributions} from '@/utils/map-utils';
 
 import styles from './legend-tables.module.scss';
 
@@ -102,7 +103,12 @@ export function BicycleNetworkLayer({beforeId}: {beforeId?: string}) {
   };
 
   return (
-    <Source id="bicycle-network" type="geojson" data={bicycleNetworkURL}>
+    <Source
+      id="bicycle-network"
+      type="geojson"
+      data={bicycleNetworkURL}
+      attribution={attributions['City of Toronto Open Data']}
+    >
       <Layer {...bicycleLaneLayer} beforeId={beforeId} />
       <Layer {...bicycleRouteLayer} beforeId={beforeId} />
     </Source>
