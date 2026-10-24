@@ -46,6 +46,7 @@ interface BicycleNetworkLayerProps {
   firstLayerId?: string;
   lastLayerId?: string;
   background?: 'light' | 'dark';
+  theme?: 'bikespace' | 'mississauga';
 }
 
 export function BicycleNetworkLayer({
@@ -53,6 +54,7 @@ export function BicycleNetworkLayer({
   firstLayerId = 'bicycle-lanes-first',
   lastLayerId = 'bicycle-lanes-last',
   background = 'light',
+  theme = 'bikespace',
 }: BicycleNetworkLayerProps) {
   const bicycleNetworkURL = process.env.DATA_BICYCLE_NETWORK;
 
@@ -201,21 +203,31 @@ export function BicycleNetworkLayer({
   };
 
   return (
+    // Source does not allow for nested fragments, so each component has to be evaluated and returned one by one
     <Source
       id="bicycle-network"
       type="geojson"
       data={bicycleNetworkURL!}
       attribution="City of Toronto"
     >
-      {/* {background === 'dark' ? (
+      {/* If BikeSpace theme is selected */}
+      {theme === 'bikespace' && background === 'dark' ? (
         <Layer {...bikespaceContrastOutline} beforeId={beforeId} />
       ) : null}
-      <Layer {...bikespaceStyleLight} beforeId={beforeId} /> */}
-      {background === 'dark' ? (
+      {theme === 'bikespace' ? (
+        <Layer {...bikespaceStyleLight} beforeId={beforeId} />
+      ) : null}
+
+      {/* If Mississauga theme is selected */}
+      {theme === 'mississauga' && background === 'dark' ? (
         <Layer {...mississaugaContrastOutline} beforeId={beforeId} />
       ) : null}
-      <Layer {...mississaugaStyleOutline} beforeId={beforeId} />
-      <Layer {...mississaugaStyle} beforeId={beforeId} />
+      {theme === 'mississauga' ? (
+        <Layer {...mississaugaStyleOutline} beforeId={beforeId} />
+      ) : null}
+      {theme === 'mississauga' ? (
+        <Layer {...mississaugaStyle} beforeId={beforeId} />
+      ) : null}
     </Source>
   );
 }
