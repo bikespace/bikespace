@@ -222,7 +222,10 @@ export function BicycleNetworkLayer({
     >
       {/* If BikeSpace theme is selected */}
       {theme === 'bikespace' && background === 'dark' ? (
-        <Layer {...bikespaceContrastOutline} beforeId={beforeId} />
+        <Layer
+          {...bikespaceContrastOutline}
+          beforeId={bikespaceStyleLight.id}
+        />
       ) : null}
       {theme === 'bikespace' ? (
         <Layer {...bikespaceStyleLight} beforeId={beforeId} />
@@ -230,10 +233,13 @@ export function BicycleNetworkLayer({
 
       {/* If Mississauga theme is selected */}
       {theme === 'mississauga' && background === 'dark' ? (
-        <Layer {...mississaugaContrastOutline} beforeId={beforeId} />
+        <Layer
+          {...mississaugaContrastOutline}
+          beforeId={mississaugaStyleOutline.id}
+        />
       ) : null}
       {theme === 'mississauga' ? (
-        <Layer {...mississaugaStyleOutline} beforeId={beforeId} />
+        <Layer {...mississaugaStyleOutline} beforeId={mississaugaStyle.id} />
       ) : null}
       {theme === 'mississauga' ? (
         <Layer {...mississaugaStyle} beforeId={beforeId} />
