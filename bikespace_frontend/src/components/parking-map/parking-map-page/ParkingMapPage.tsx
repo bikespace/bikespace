@@ -121,6 +121,9 @@ export function ParkingMapPage() {
   const [baseMapLayerName, setBaseMapLayerName] = useState<string>(
     baseMapOptions[0].id
   );
+  const [bicyleNetworkTheme, setBicycleNetworkTheme] = useState<
+    'bikespace' | 'mississauga'
+  >('bikespace');
 
   const mapRef = useRef<MapRef>(null);
   const resultsCardRef = useRef<HTMLDivElement>(null);
@@ -342,6 +345,12 @@ export function ParkingMapPage() {
     })
     .filter((feature): feature is Feature => feature !== null);
 
+  function handleBicycleNetworkSelection(
+    e: React.ChangeEvent<HTMLInputElement>
+  ) {
+    setBicycleNetworkTheme(e.target.value as 'bikespace' | 'mississauga');
+  }
+
   return (
     <main className={styles.parkingMapPage}>
       <Sidebar isOpen={sidebarIsOpen} setIsOpen={setSidebarIsOpen}>
@@ -412,6 +421,52 @@ export function ParkingMapPage() {
             isMinimized={geoSearchIsMinimized}
             setIsMinimized={setGeoSearchIsMinimized}
           />
+          <SidebarDetailsDisclosure open>
+            <summary>Map Layers</summary>
+            <SidebarDetailsContent>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                }}
+              >
+                <h3>Bicycle Network</h3>
+                <SidebarButton
+                  onClick={() => setShowBicycleNetwork(!showBicycleNetwork)}
+                >
+                  {showBicycleNetwork ? 'Hide' : 'Show'}
+                </SidebarButton>
+              </div>
+              <fieldset>
+                <legend>Theme:</legend>
+                <div style={{display: 'flex', gap: '4px'}}>
+                  <div>
+                    <input
+                      type="radio"
+                      id="theme-bikespace"
+                      name="theme"
+                      value="bikespace"
+                      checked={bicyleNetworkTheme === 'bikespace'}
+                      onChange={handleBicycleNetworkSelection}
+                    />
+                    <label htmlFor="theme-bikespace">BikeSpace</label>
+                  </div>
+                  <div>
+                    <input
+                      type="radio"
+                      id="theme-mississauga"
+                      name="theme"
+                      value="mississauga"
+                      checked={bicyleNetworkTheme === 'mississauga'}
+                      onChange={handleBicycleNetworkSelection}
+                    />
+                    <label htmlFor="theme-mississauga">Mississauga</label>
+                  </div>
+                </div>
+              </fieldset>
+            </SidebarDetailsContent>
+          </SidebarDetailsDisclosure>
           <SidebarDetailsDisclosure>
             <summary>Filters</summary>
             <SidebarDetailsContent>
@@ -427,19 +482,6 @@ export function ParkingMapPage() {
               <ParkingLayerLegend />
               <ReportedIssuesLegend />
               <BicycleNetworkLayerLegend />
-            </SidebarDetailsContent>
-          </SidebarDetailsDisclosure>
-          <SidebarDetailsDisclosure>
-            <summary>Map Layers</summary>
-            <SidebarDetailsContent>
-              <SidebarButton
-                onClick={() => setShowBicycleNetwork(!showBicycleNetwork)}
-                style={{margin: '1rem 0'}}
-              >
-                {(showBicycleNetwork ? 'Hide' : 'Show') +
-                  ' ' +
-                  'Bicycle Network'}
-              </SidebarButton>
             </SidebarDetailsContent>
           </SidebarDetailsDisclosure>
         </div>
@@ -492,6 +534,7 @@ export function ParkingMapPage() {
             firstLayerId={bicycleNetworkFirstLayerId}
             lastLayerId={bicycleNetworkLastLayerId}
             background="dark"
+            theme={bicyleNetworkTheme}
           />
         ) : null}
         {/* placed here to avoid covering the sidebar */}
