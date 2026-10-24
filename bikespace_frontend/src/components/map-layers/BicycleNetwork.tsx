@@ -49,7 +49,36 @@ const bikeLaneTypes = {
   ],
 };
 
-export type BicycleNetworkTheme = 'bikespace' | 'mississauga';
+const bikeLaneTypesToronto = {
+  cycleTracks: [
+    'Cycle Track',
+    'Cycle Track - Contraflow',
+    'Bi-Directional Cycle Track',
+  ],
+  bikeLanes: ['Bike Lane', 'Bike Lane - Buffered'],
+  bikeLanesContraFlow: [
+    'Bike Lane - Contraflow',
+    'Contra-Flow Bike Lane',
+    'Contraflow',
+  ],
+  unprotectedConnectors: [
+    'Sharrows',
+    'Sharrows - Arterial',
+    'Sharrows - Arterial - Connector',
+    'Sharrows - Wayfinding',
+    'Signed Route (No Pavement Markings)',
+  ],
+  multiUseTrails: [
+    'Multi-Use Trail',
+    'Multi-Use Trail - Boulevard',
+    'Multi-Use Trail - Connector',
+    'Multi-Use Trail - Entrance',
+    'Multi-Use Trail - Existing Connector',
+  ],
+  parkRoadwayConnections: ['Park Road'],
+};
+
+export type BicycleNetworkTheme = 'bikespace' | 'mississauga' | 'toronto';
 
 interface BicycleNetworkLayerProps {
   beforeId?: string;
@@ -212,6 +241,91 @@ export function BicycleNetworkLayer({
     },
   };
 
+  const torontoStyleOverlay: LineLayerSpecification = {
+    id: firstLayerId,
+    type: 'line',
+    source: 'bicycle-lanes',
+    filter: [
+      'in',
+      ['get', 'INFRA_HIGHORDER'],
+      [
+        'literal',
+        [
+          ...bikeLaneTypesToronto.bikeLanes,
+          ...bikeLaneTypesToronto.bikeLanesContraFlow,
+          ...bikeLaneTypesToronto.unprotectedConnectors,
+          ...bikeLaneTypesToronto.parkRoadwayConnections,
+        ],
+      ],
+    ],
+    layout: {
+      'line-cap': [
+        'match',
+        ['get', 'INFRA_HIGHORDER'],
+        bikeLaneTypesToronto.bikeLanes,
+        'square',
+        'round',
+      ],
+    },
+    paint: {
+      'line-width': [
+        'match',
+        ['get', 'INFRA_HIGHORDER'],
+        bikeLaneTypesToronto.bikeLanes,
+        1,
+        3,
+      ],
+      'line-color': 'white',
+      'line-dasharray': [
+        'match',
+        ['get', 'INFRA_HIGHORDER'],
+        bikeLaneTypesToronto.bikeLanes,
+        ['literal', [1, 0]], // no dash
+        // [dash, gap]; both are scaled by line width
+        // round line-cap adds 1 width to dash and subtracts 1 width to gap
+        ['literal', [(3 - 3) / 3, (3 + 3) / 3]],
+      ],
+    },
+  };
+
+  const torontoStyle: LineLayerSpecification = {
+    id: background === 'dark' ? 'bicycle-network-toronto-style' : lastLayerId,
+    type: 'line',
+    source: 'bicycle-lanes',
+    layout: {
+      'line-cap': 'square',
+    },
+    paint: {
+      'line-width': 5,
+      'line-color': [
+        'match',
+        ['get', 'INFRA_HIGHORDER'],
+        bikeLaneTypes.protected,
+        'rgb(0, 102, 179)',
+        bikeLaneTypes.multiUseTrails,
+        'rgb(245, 143, 31)',
+        bikeLaneTypes.painted,
+        'rgb(0, 102, 179)',
+        bikeLaneTypes.unprotectedConnectors,
+        'rgb(0, 178, 235)',
+        '#2c3b42',
+      ],
+    },
+  };
+
+  const torontoContrastOutline: LineLayerSpecification = {
+    id: lastLayerId,
+    type: 'line',
+    source: 'bicycle-lanes',
+    layout: {
+      'line-cap': 'square',
+    },
+    paint: {
+      'line-width': 7 + 2,
+      'line-color': 'white',
+    },
+  };
+
   return (
     // Source does not allow for nested fragments, so each component has to be evaluated and returned one by one
     <Source
@@ -241,9 +355,22 @@ export function BicycleNetworkLayer({
       {theme === 'mississauga' ? (
         <Layer {...mississaugaStyle} beforeId={beforeId} />
       ) : null}
+
+      {/* If Toronto theme is selected */}
+      {theme === 'toronto' && background === 'dark' ? (
+        <Layer {...torontoContrastOutline} beforeId={torontoStyle.id} />
+      ) : null}
+      {theme === 'toronto' ? (
+        <Layer {...torontoStyle} beforeId={torontoStyleOverlay.id} />
+      ) : null}
+      {theme === 'toronto' ? (
+        <Layer {...torontoStyleOverlay} beforeId={beforeId} />
+      ) : null}
     </Source>
   );
 }
+
+// TODO add Toronto to legend
 
 export function BicycleNetworkLayerLegend({
   theme = 'bikespace',

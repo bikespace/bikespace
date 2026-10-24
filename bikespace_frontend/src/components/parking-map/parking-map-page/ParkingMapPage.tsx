@@ -440,7 +440,9 @@ export function ParkingMapPage() {
               </div>
               <fieldset>
                 <legend>Theme:</legend>
-                <div style={{display: 'flex', gap: '4px'}}>
+                <div
+                  style={{display: 'flex', gap: '4px', flexDirection: 'column'}}
+                >
                   <div>
                     <input
                       type="radio"
@@ -462,6 +464,17 @@ export function ParkingMapPage() {
                       onChange={handleBicycleNetworkSelection}
                     />
                     <label htmlFor="theme-mississauga">Mississauga</label>
+                  </div>
+                  <div>
+                    <input
+                      type="radio"
+                      id="theme-toronto"
+                      name="theme"
+                      value="toronto"
+                      checked={bicycleNetworkTheme === 'toronto'}
+                      onChange={handleBicycleNetworkSelection}
+                    />
+                    <label htmlFor="theme-toronto">Toronto</label>
                   </div>
                 </div>
               </fieldset>
@@ -533,7 +546,9 @@ export function ParkingMapPage() {
             beforeId={mapStyleRoadLabelsLayer}
             firstLayerId={bicycleNetworkFirstLayerId}
             lastLayerId={bicycleNetworkLastLayerId}
-            background="dark"
+            background={
+              baseMapLayerName === baseMapOptions[0].id ? 'light' : 'dark'
+            }
             theme={bicycleNetworkTheme}
           />
         ) : null}
