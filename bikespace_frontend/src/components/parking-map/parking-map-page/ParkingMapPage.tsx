@@ -38,7 +38,7 @@ import {
 import {
   BicycleNetworkLayer,
   BicycleNetworkLayerLegend,
-} from '@/components/map-layers/BicycleNetwork';
+} from '@/components/map-layers/bicycle-network';
 import {
   BasemapControl,
   BaseMapOption,
@@ -62,7 +62,7 @@ import type {
   StyleSpecification,
 } from 'react-map-gl/maplibre';
 import type {Feature} from 'geojson';
-import type {BicycleNetworkTheme} from '@/components/map-layers/BicycleNetwork';
+import type {BicycleNetworkTheme} from '@/components/map-layers/bicycle-network';
 
 import 'maplibre-gl/dist/maplibre-gl.css';
 import styles from './parking-map-page.module.scss';
