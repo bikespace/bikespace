@@ -69,7 +69,9 @@ export function BicycleNetworkLayer({
         'match',
         ['get', 'INFRA_HIGHORDER'],
         bikeLaneTypes.unprotectedConnectors,
-        ['literal', [1, 2]],
+        // [dash, gap]; both are scaled by line width
+        // round line-cap adds 1 width to dash and subtracts 1 width to gap
+        ['literal', [(6 - 3) / 3, (6 + 3) / 3]],
         ['literal', [1, 0]], // no dash
       ],
       'line-color': [
@@ -85,6 +87,19 @@ export function BicycleNetworkLayer({
         'hsl(137, 56%, 62%)',
         '#2c3b42',
       ],
+    },
+  };
+
+  const bikespaceContrastOutline: LineLayerSpecification = {
+    id: lastLayerId,
+    type: 'line',
+    source: 'bicycle-lanes',
+    layout: {
+      'line-cap': 'round',
+    },
+    paint: {
+      'line-width': 3 + 2,
+      'line-color': 'white',
     },
   };
 
@@ -160,7 +175,7 @@ export function BicycleNetworkLayer({
     },
   };
 
-  const contrastOutline: LineLayerSpecification = {
+  const mississaugaContrastOutline: LineLayerSpecification = {
     id: lastLayerId,
     type: 'line',
     source: 'bicycle-lanes',
@@ -168,30 +183,20 @@ export function BicycleNetworkLayer({
       'line-cap': 'round',
     },
     paint: {
-      'line-width': 1,
-      'line-gap-width': [
+      'line-width': [
         'match',
         ['get', 'INFRA_HIGHORDER'],
         bikeLaneTypes.protected,
-        7,
+        7 + 2,
         bikeLaneTypes.multiUseTrails,
-        7,
+        7 + 2,
         bikeLaneTypes.painted,
-        3,
+        3 + 2,
         bikeLaneTypes.unprotectedConnectors,
-        3,
-        3,
+        3 + 2,
+        3 + 2,
       ],
       'line-color': 'white',
-      'line-dasharray': [
-        'match',
-        ['get', 'INFRA_HIGHORDER'],
-        bikeLaneTypes.unprotectedConnectors,
-        // [dash, gap]; both are scaled by line width
-        // round line-cap adds 1 width to dash and subtracts 1 width to gap
-        ['literal', [(6 - 3) / 1, (6 + 3) / 1]],
-        ['literal', [1, 0]], // no dash
-      ],
     },
   };
 
@@ -202,8 +207,12 @@ export function BicycleNetworkLayer({
       data={bicycleNetworkURL!}
       attribution="City of Toronto"
     >
+      {/* {background === 'dark' ? (
+        <Layer {...bikespaceContrastOutline} beforeId={beforeId} />
+      ) : null}
+      <Layer {...bikespaceStyleLight} beforeId={beforeId} /> */}
       {background === 'dark' ? (
-        <Layer {...contrastOutline} beforeId={beforeId} />
+        <Layer {...mississaugaContrastOutline} beforeId={beforeId} />
       ) : null}
       <Layer {...mississaugaStyleOutline} beforeId={beforeId} />
       <Layer {...mississaugaStyle} beforeId={beforeId} />
