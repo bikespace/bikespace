@@ -488,7 +488,7 @@ export function ParkingMapPage() {
         ) : null}
         {showBicycleNetwork ? (
           <BicycleNetworkLayer
-            beforeId={parkingFirstLayerId}
+            beforeId={mapStyleRoadLabelsLayer}
             firstLayerId={bicycleNetworkFirstLayerId}
             lastLayerId={bicycleNetworkLastLayerId}
             background="dark"
