@@ -68,7 +68,7 @@ export function BicycleNetworkLayer({
 }: BicycleNetworkLayerProps) {
   const bicycleNetworkURL = process.env.DATA_BICYCLE_NETWORK;
 
-  const bikespaceStyleLight: LineLayerSpecification = {
+  const bikespaceStyle: LineLayerSpecification = {
     id: firstLayerId,
     type: 'line',
     source: 'bicycle-lanes',
@@ -222,13 +222,10 @@ export function BicycleNetworkLayer({
     >
       {/* If BikeSpace theme is selected */}
       {theme === 'bikespace' && background === 'dark' ? (
-        <Layer
-          {...bikespaceContrastOutline}
-          beforeId={bikespaceStyleLight.id}
-        />
+        <Layer {...bikespaceContrastOutline} beforeId={bikespaceStyle.id} />
       ) : null}
       {theme === 'bikespace' ? (
-        <Layer {...bikespaceStyleLight} beforeId={beforeId} />
+        <Layer {...bikespaceStyle} beforeId={beforeId} />
       ) : null}
 
       {/* If Mississauga theme is selected */}
