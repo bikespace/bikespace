@@ -1,8 +1,36 @@
 import {StaticImageData} from 'next/image';
 import React, {ReactElement} from 'react';
+
+import {Layer, Source} from 'react-map-gl/maplibre';
 import {centroid} from '@turf/centroid';
 
 import type {Feature, Position} from 'geojson';
+
+/**
+ * Attribution strings to use with MapLibre GL Source definitions
+ */
+export const attributions = {
+  'City of Toronto Open Data':
+    '<a href="https://open.toronto.ca/open-data-licence/" target="_blank">City of Toronto</a>',
+  OpenStreetMap:
+    '<a href="https://www.openstreetmap.org/copyright" target="_blank">© OpenStreetMap contributors</a>',
+};
+
+/**
+ * Adds a dummy layer to load additional attributions to the map. Allows for each attribution to be added separately so that they can be de-duped in the attribution control.
+ */
+export function addAttribution(id: string, attribution: string) {
+  return (
+    <Source
+      id={id}
+      type="geojson"
+      attribution={attribution}
+      data={{type: 'FeatureCollection', features: []}}
+    >
+      <Layer id={id} type="circle" paint={{'circle-opacity': 0}} />
+    </Source>
+  );
+}
 
 /**
  * Returns a single [lon, lat] Point from a GeoJSON Feature using TurfJS
