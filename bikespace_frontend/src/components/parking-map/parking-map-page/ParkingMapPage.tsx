@@ -65,8 +65,7 @@ import type {Feature} from 'geojson';
 
 import 'maplibre-gl/dist/maplibre-gl.css';
 import styles from './parking-map-page.module.scss';
-const parkingSpritePath =
-  window.location.origin + '/parking_sprites/parking_sprites';
+const parkingSpritePath = '/parking_sprites/parking_sprites';
 
 const bicycleNetworkFirstLayerId = 'bicycle-network-first';
 const bicycleNetworkLastLayerId = 'bicycle-network-last';
@@ -286,7 +285,10 @@ export function ParkingMapPage() {
   }
 
   function addSprite() {
-    mapRef.current!.addSprite('parking', parkingSpritePath);
+    mapRef.current!.addSprite(
+      'parking',
+      new URL(parkingSpritePath, window.location.href).href
+    );
   }
 
   // show map pins as interactive when mouse is over them
