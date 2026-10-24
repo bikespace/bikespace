@@ -5,11 +5,19 @@ import type {LineLayerSpecification} from 'react-map-gl/maplibre';
 
 import styles from './legend-tables.module.scss';
 
-import networkProtected from '@/assets/icons/bicycle_network/network_protected_lane.svg';
-import networkPainted from '@/assets/icons/bicycle_network/network_painted_lane.svg';
-import networkTrail from '@/assets/icons/bicycle_network/network_park_multiuse_trail.svg';
-import networkUnknown from '@/assets/icons/bicycle_network/network_unknown_lane.svg';
-import networkSharrow from '@/assets/icons/bicycle_network/network_sharrow_unprotected.svg';
+// BikeSpace Theme Legend SVGs
+import networkProtectedBikeSpace from '@/assets/icons/bicycle_network/network_bikespace_protected_lane.svg';
+import networkPaintedBikeSpace from '@/assets/icons/bicycle_network/network_bikespace_painted_lane.svg';
+import networkTrailBikeSpace from '@/assets/icons/bicycle_network/network_bikespace_park_multiuse_trail.svg';
+import networkUnknownBikeSpace from '@/assets/icons/bicycle_network/network_bikespace_unknown_lane.svg';
+import networkSharrowBikeSpace from '@/assets/icons/bicycle_network/network_bikespace_sharrow_unprotected.svg';
+
+// Mississauga Theme Legend SVGs
+import networkProtectedMississauga from '@/assets/icons/bicycle_network/network_mississauga_protected_lane.svg';
+import networkPaintedMississauga from '@/assets/icons/bicycle_network/network_mississauga_painted_lane.svg';
+import networkTrailMississauga from '@/assets/icons/bicycle_network/network_mississauga_park_multiuse_trail.svg';
+import networkUnknownMississauga from '@/assets/icons/bicycle_network/network_mississauga_unknown_lane.svg';
+import networkSharrowMississauga from '@/assets/icons/bicycle_network/network_mississauga_sharrow_unprotected.svg';
 
 const bikeLaneTypes = {
   protected: [
@@ -234,35 +242,63 @@ export function BicycleNetworkLayer({
   );
 }
 
-export function BicycleNetworkLayerLegend() {
+export function BicycleNetworkLayerLegend({
+  theme = 'bikespace',
+}: {
+  theme?: BicycleNetworkTheme;
+}) {
   const legendEntries = [
     {
       key: 'protected',
-      icon: networkProtected.src,
-      alt: 'dark green line',
+      icon:
+        theme === 'mississauga'
+          ? networkProtectedMississauga.src
+          : networkProtectedBikeSpace.src,
+      alt:
+        theme === 'mississauga'
+          ? 'grey line with a green casing'
+          : 'dark green line',
       description: 'Protected bike lane',
     },
     {
       key: 'painted',
-      icon: networkPainted.src,
+      icon:
+        theme === 'mississauga'
+          ? networkPaintedMississauga.src
+          : networkPaintedBikeSpace.src,
       alt: 'green line',
       description: 'Painted bike lane',
     },
     {
       key: 'trail',
-      icon: networkTrail.src,
-      alt: 'brown line',
+      icon:
+        theme === 'mississauga'
+          ? networkTrailMississauga.src
+          : networkTrailBikeSpace.src,
+      alt:
+        theme === 'mississauga'
+          ? 'light green line with a green casing'
+          : 'brown line',
       description: 'Multi-use or park trail',
     },
     {
       key: 'sharrow',
-      icon: networkSharrow.src,
-      alt: 'light green dashed line',
+      icon:
+        theme === 'mississauga'
+          ? networkSharrowMississauga.src
+          : networkSharrowBikeSpace.src,
+      alt:
+        theme === 'mississauga'
+          ? 'green dashed line'
+          : 'light green dashed line',
       description: 'Unprotected bike route (e.g. sharrows)',
     },
     {
       key: 'unknown',
-      icon: networkUnknown.src,
+      icon:
+        theme === 'mississauga'
+          ? networkUnknownMississauga.src
+          : networkUnknownBikeSpace.src,
       alt: 'dark grey line',
       description: 'Unknown bike lane type',
     },

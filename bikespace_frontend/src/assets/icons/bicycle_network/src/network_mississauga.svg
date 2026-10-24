@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="48"
+   height="24"
+   viewBox="0 0 12 6"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.4 (e7c3feb1, 2024-10-09)"
+   sodipodi:docname="network_mississauga.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="3.4685159"
+     inkscape:cx="295.65959"
+     inkscape:cy="35.461853"
+     inkscape:window-width="1280"
+     inkscape:window-height="771"
+     inkscape:window-x="0"
+     inkscape:window-y="401"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1">
+    <inkscape:page
+       x="0"
+       y="0"
+       width="12"
+       height="6"
+       id="page326"
+       inkscape:label="protected_lane"
+       margin="0"
+       bleed="0" />
+    <inkscape:page
+       x="22"
+       y="0"
+       width="12"
+       height="6"
+       id="page328"
+       inkscape:label="painted_lane" />
+    <inkscape:page
+       x="44"
+       y="0"
+       width="12"
+       height="6"
+       id="page330"
+       inkscape:label="park_multiuse_trail" />
+    <inkscape:page
+       x="66"
+       y="0"
+       width="12"
+       height="6"
+       id="page332"
+       inkscape:label="unknown_lane" />
+    <inkscape:page
+       x="88"
+       y="0"
+       width="12"
+       height="6"
+       id="page334"
+       inkscape:label="sharrow_unprotected"
+       inkscape:export-filename="sharrow_unprotected.svg"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96" />
+  </sodipodi:namedview>
+  <defs
+     id="defs2" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       style="fill:#000000;stroke:#2c3b42;stroke-width:0.75;stroke-linecap:round;stroke-dasharray:none;stroke-opacity:1"
+       d="m 67.410677,3 h 9.178646"
+       id="path468-6-2"
+       inkscape:label="unknown" />
+    <path
+       style="fill:#000000;stroke:#01a450;stroke-width:0.854678;stroke-linecap:round;stroke-dasharray:1.70935, 1.70935;stroke-dashoffset:0;stroke-opacity:1"
+       d="m 89.726625,3 h 8.596642"
+       id="path468-6-9"
+       inkscape:label="sharrow" />
+    <path
+       style="fill:#000000;stroke:#01a450;stroke-width:1.75;stroke-linecap:round;stroke-dasharray:none;stroke-opacity:1"
+       d="m 45.410677,3 h 9.178646"
+       id="path468-2-5"
+       inkscape:label="casing_2" />
+    <path
+       style="fill:#000000;stroke:#dfedd3;stroke-width:0.75;stroke-linecap:round;stroke-dasharray:none;stroke-opacity:1"
+       d="m 45.410677,3 h 9.178646"
+       id="path468-9"
+       inkscape:label="multiuse" />
+    <path
+       style="fill:#000000;stroke:#01a450;stroke-width:0.75;stroke-linecap:round;stroke-dasharray:none;stroke-opacity:1"
+       d="m 23.410677,3 h 9.178646"
+       id="path468-6"
+       inkscape:label="painted" />
+    <path
+       style="fill:#000000;stroke:#01a450;stroke-width:1.75;stroke-linecap:round;stroke-dasharray:none;stroke-opacity:1"
+       d="M 1.4106772,3 H 10.589323"
+       id="path468-2"
+       inkscape:label="casing_1" />
+    <path
+       style="fill:#000000;stroke:#a2a6a9;stroke-width:0.75;stroke-linecap:round;stroke-dasharray:none;stroke-opacity:1"
+       d="M 1.4106766,3 H 10.589323"
+       id="path468"
+       inkscape:label="protected" />
+  </g>
+</svg>

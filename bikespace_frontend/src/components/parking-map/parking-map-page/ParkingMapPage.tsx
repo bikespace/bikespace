@@ -122,7 +122,7 @@ export function ParkingMapPage() {
   const [baseMapLayerName, setBaseMapLayerName] = useState<string>(
     baseMapOptions[0].id
   );
-  const [bicyleNetworkTheme, setBicycleNetworkTheme] =
+  const [bicycleNetworkTheme, setBicycleNetworkTheme] =
     useState<BicycleNetworkTheme>('bikespace');
 
   const mapRef = useRef<MapRef>(null);
@@ -447,7 +447,7 @@ export function ParkingMapPage() {
                       id="theme-bikespace"
                       name="theme"
                       value="bikespace"
-                      checked={bicyleNetworkTheme === 'bikespace'}
+                      checked={bicycleNetworkTheme === 'bikespace'}
                       onChange={handleBicycleNetworkSelection}
                     />
                     <label htmlFor="theme-bikespace">BikeSpace</label>
@@ -458,7 +458,7 @@ export function ParkingMapPage() {
                       id="theme-mississauga"
                       name="theme"
                       value="mississauga"
-                      checked={bicyleNetworkTheme === 'mississauga'}
+                      checked={bicycleNetworkTheme === 'mississauga'}
                       onChange={handleBicycleNetworkSelection}
                     />
                     <label htmlFor="theme-mississauga">Mississauga</label>
@@ -481,7 +481,7 @@ export function ParkingMapPage() {
             <SidebarDetailsContent className={styles.legendContent}>
               <ParkingLayerLegend />
               <ReportedIssuesLegend />
-              <BicycleNetworkLayerLegend />
+              <BicycleNetworkLayerLegend theme={bicycleNetworkTheme} />
             </SidebarDetailsContent>
           </SidebarDetailsDisclosure>
         </div>
@@ -534,7 +534,7 @@ export function ParkingMapPage() {
             firstLayerId={bicycleNetworkFirstLayerId}
             lastLayerId={bicycleNetworkLastLayerId}
             background="dark"
-            theme={bicyleNetworkTheme}
+            theme={bicycleNetworkTheme}
           />
         ) : null}
         {/* placed here to avoid covering the sidebar */}
