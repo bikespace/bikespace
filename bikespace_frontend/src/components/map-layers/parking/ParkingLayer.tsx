@@ -3,7 +3,10 @@ import {Layer, Marker, Source, useMap} from 'react-map-gl/maplibre';
 
 import {getCentroid, getSpriteImageWithTextOverlay} from '@/utils/map-utils';
 
-import type {CircleLayer, SymbolLayer} from 'react-map-gl/maplibre';
+import type {
+  CircleLayerSpecification,
+  SymbolLayerSpecification,
+} from 'react-map-gl/maplibre';
 import type {
   ExpressionSpecification,
   MapGeoJSONFeature,
@@ -73,7 +76,7 @@ export function ParkingLayer({
     16.05,
     ['case', ['boolean', ['feature-state', 'groupSelected'], false], 0, 1],
   ];
-  const parkingLayer: SymbolLayer = {
+  const parkingLayer: SymbolLayerSpecification = {
     id: 'bicycle-parking',
     type: 'symbol',
     source: parkingSourceId,
@@ -122,7 +125,7 @@ export function ParkingLayer({
     16.05,
     0,
   ];
-  const parkingLayerDense: CircleLayer = {
+  const parkingLayerDense: CircleLayerSpecification = {
     id: firstLayerId,
     type: 'circle',
     source: parkingSourceId,
@@ -156,7 +159,7 @@ export function ParkingLayer({
       <Source
         id={parkingSourceId}
         type="geojson"
-        data={bicycleParkingURL}
+        data={bicycleParkingURL!}
         generateId={true}
         attribution="City of Toronto"
       >

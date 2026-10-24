@@ -59,7 +59,7 @@ import type {
   MapLayerMouseEvent,
   MapRef,
   PointLike,
-  MapStyle,
+  StyleSpecification,
 } from 'react-map-gl/maplibre';
 import type {Feature} from 'geojson';
 
@@ -72,7 +72,7 @@ const bicycleNetworkFirstLayerId = 'bicycle-network-first';
 const bicycleNetworkLastLayerId = 'bicycle-network-last';
 const parkingFirstLayerId = 'parking-layer-first';
 
-const backupMapStyle: MapStyle = {
+const backupMapStyle: StyleSpecification = {
   version: 8,
   glyphs:
     'https://protomaps.github.io/basemaps-assets/fonts/{fontstack}/{range}.pbf',

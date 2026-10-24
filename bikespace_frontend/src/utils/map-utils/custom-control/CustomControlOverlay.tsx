@@ -1,4 +1,4 @@
-import {ReactElement, cloneElement, memo} from 'react';
+import {ReactElement, cloneElement} from 'react';
 import {createPortal} from 'react-dom';
 
 import {useControl} from 'react-map-gl/maplibre';
