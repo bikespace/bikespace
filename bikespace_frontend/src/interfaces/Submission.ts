@@ -58,6 +58,7 @@ export interface SubmissionApiPayload {
   parking_duration: ParkingDuration;
   comments: string;
   submitted_datetime: string | null;
+  user: string | null;
 }
 
 export enum DateRangeInterval {
@@ -71,6 +72,12 @@ export enum DateRangeInterval {
   CustomRange = 'custom_range',
 }
 
+export enum IssueFilterMode {
+  Any = 'any',
+  All = 'all',
+  Exclude = 'exclude',
+}
+
 export interface SubmissionFilters {
   dateRange: {
     from: Date | null;
@@ -78,7 +85,8 @@ export interface SubmissionFilters {
   };
   dateRangeInterval: DateRangeInterval | null;
   parkingDuration: ParkingDuration[];
-  issue: IssueType | null;
+  issues: IssueType[];
+  issueFilterMode: IssueFilterMode;
   day: Day | null;
 }
 

@@ -10,6 +10,7 @@ import {useSingleSubmissionQuery} from '@/hooks/use-single-submission-query';
 
 import {useStore} from '@/states/store';
 import {SidebarTab, useSubmissionId, useSidebarTab} from '@/states/url-params';
+import {IssueFilterMode} from '@/interfaces/Submission';
 
 import {MapProps} from '../map';
 
@@ -71,12 +72,12 @@ export function DashboardPage() {
   useEffect(() => {
     if (loadedSubmissions.length === 0) return;
 
-    const {dateRange, parkingDuration, issue, day} = filters;
+    const {dateRange, parkingDuration, issues, issueFilterMode, day} = filters;
     let subs = loadedSubmissions;
 
     if (dateRange.from || dateRange.to)
       subs = subs.filter(s => {
-        const d = new Date(s.parking_time + '+00:00');
+        const d = new Date(s.parking_time);
 
         return (
           (dateRange.from ? d >= dateRange.from : true) &&
@@ -87,12 +88,18 @@ export function DashboardPage() {
     if (parkingDuration.length !== 0)
       subs = subs.filter(s => parkingDuration.includes(s.parking_duration));
 
-    if (issue !== null) subs = subs.filter(s => s.issues.includes(issue));
+    if (issues.length !== 0)
+      subs = subs.filter(s => {
+        if (issueFilterMode === IssueFilterMode.Exclude)
+          return !s.issues.some(i => issues.includes(i));
+        if (issueFilterMode === IssueFilterMode.All)
+          return issues.every(i => s.issues.includes(i));
+        // default: IssueFilterMode.Any
+        return s.issues.some(i => issues.includes(i));
+      });
 
     if (day !== null)
-      subs = subs.filter(
-        s => new Date(s.parking_time + '+00:00').getDay() === day
-      );
+      subs = subs.filter(s => new Date(s.parking_time).getDay() === day);
 
     setSubmissions(subs);
   }, [allSubmissionQuery.data, singleSubmissionQuery.data, filters]);

@@ -1,4 +1,5 @@
 name: Deploy to Fly.io
+
 on:
   push:
     branches:
@@ -6,11 +7,22 @@ on:
     paths:
       - bikespace_api/**
       - .github/workflows/deploy-to-fly.yml
+
 jobs:
+  # variables are only available in workflow steps, so this config job is used to set shared config variables
+  config:
+    runs-on: ubuntu-latest
+    outputs:
+      python-version: "3.12.14"
+      postgres-image: postgres:15
+    steps:
+      - run: ":"
+
   apitest:
     name: API tests
     runs-on: ubuntu-latest
-    env:
+    needs: config
+    env: &api_env
       BIKESPACE_SECURITY_PASSWORD_SALT: ${{ secrets.BIKESPACE_SECURITY_PASSWORD_SALT }}
       BIKESPACE_SECRET_KEY: ${{ secrets.BIKESPACE_SECRET_KEY }}
       SEED_USER_EMAIL: ${{ secrets.SEED_USER_EMAIL }}
@@ -18,9 +30,8 @@ jobs:
     # Service containers to run with `container-job`
     services:
       # Label used to access the service container
-      postgres:
-        # Docker Hub image
-        image: postgres
+      postgres: &api_postgres_service # Docker Hub image
+        image: ${{ needs.config.outputs.postgres-image }}
         # Provide the password for postgres
         env:
           POSTGRES_PASSWORD: postgres
@@ -34,50 +45,36 @@ jobs:
           - 5432:5432
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: Setup python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
-          python-version: "3.12.0"
+          python-version: ${{ needs.config.outputs.python-version }}
       - name: Run pytest
         run: make test-api
       - name: Coveralls
-        uses: coverallsapp/github-action@v2
+        uses: coverallsapp/github-action@8d6379e14d29928660c4ba802d8e85393440b329 # v2.3.8
         with:
           fail-on-error: false
+
   api-migration-test:
     name: Test if database migrations need to be generated for API
     runs-on: ubuntu-latest
-    env:
-      BIKESPACE_SECURITY_PASSWORD_SALT: ${{ secrets.BIKESPACE_SECURITY_PASSWORD_SALT }}
-      BIKESPACE_SECRET_KEY: ${{ secrets.BIKESPACE_SECRET_KEY }}
-      SEED_USER_EMAIL: ${{ secrets.SEED_USER_EMAIL }}
-      SEED_USER_PASSWORD: ${{ secrets.SEED_USER_PASSWORD }}
+    needs: config
+    env: *api_env
     services:
       # Label used to access the service container
-      postgres:
-        # Docker Hub image
-        image: postgres
-        # Provide the password for postgres
-        env:
-          POSTGRES_PASSWORD: postgres
-        # Set health checks to wait until postgres has started
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          - 5432:5432
+      postgres: *api_postgres_service
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: Setup python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
-          python-version: "3.12.0"
+          python-version: ${{ needs.config.outputs.python-version }}
       - name: Run migration check
         run: make migrate-test-db
+
   deploy-to-fly:
     name: Deploy to fly.io
     needs: [apitest, api-migration-test]
@@ -86,8 +83,8 @@ jobs:
       contents: read
       deployments: write
     steps:
-      - uses: actions/checkout@v3
-      - uses: superfly/flyctl-actions/setup-flyctl@master
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: superfly/flyctl-actions/setup-flyctl@ed8efb33836e8b2096c7fd3ba1c8afe303ebbff1 # @master as of 2026-04-07
       - run: flyctl deploy
         working-directory: ./bikespace_api
         env:

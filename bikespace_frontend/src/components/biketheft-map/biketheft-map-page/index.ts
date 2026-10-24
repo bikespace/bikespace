@@ -1,0 +1,1 @@
+export {BikeTheftMapPage} from './BikeTheftMapPage';

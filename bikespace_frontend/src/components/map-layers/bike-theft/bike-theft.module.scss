@@ -1,0 +1,34 @@
+@use '@/styles/variables.module.scss' as variables;
+
+.legendList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.legendRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.legendSwatch {
+  width: 16px;
+  height: 16px;
+  border-radius: 3px;
+  border: 1px solid variables.$color-secondary-dark-grey;
+  flex-shrink: 0;
+}
+
+.legendLabel {
+  font-size: 0.9rem;
+  color: variables.$color-secondary-dark-grey;
+}
+
+.selectedFeatureDetails {
+  margin: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  word-break: break-word;
+}

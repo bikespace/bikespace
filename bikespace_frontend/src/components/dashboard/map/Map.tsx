@@ -7,7 +7,7 @@ import {useStore} from '@/states/store';
 import {SidebarTab, useSidebarTab} from '@/states/url-params';
 import {useIsMobile} from '@/hooks/use-is-mobile';
 
-import {defaultMapCenter} from '@/utils/map-utils';
+import {defaultMapCenter, getRasterTileLayerProps} from '@/utils/map-utils';
 
 import {Spinner} from '@/components/shared-ui/spinner';
 
@@ -39,6 +39,7 @@ function Map({submissions, isFirstMarkerDataLoading}: MapProps) {
   const mapRef: React.LegacyRef<lMap> = useRef(null);
   const clusterRef = useRef<LeafletMarkerClusterGroup>(null);
   const markerRefs = useRef<MarkerRefs>({});
+  const tileLayerProps = getRasterTileLayerProps(process.env.MAPTILER_API_KEY);
 
   const isMobile = useIsMobile();
   const [, setSidebarTab] = useSidebarTab();
@@ -95,8 +96,7 @@ function Map({submissions, isFirstMarkerDataLoading}: MapProps) {
     >
       <LeafletLocateControl />
       <TileLayer
-        attribution='&copy; Maps <a href="https://www.thunderforest.com/">Thunderforest</a>, &copy; Data <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>'
-        url="https://tile.thunderforest.com/atlas/{z}/{x}/{y}.png?apikey=66ccf6226ef54ef38a6b97fe0b0e5d2e"
+        {...tileLayerProps}
         maxZoom={20}
         eventHandlers={{
           loading: () => {

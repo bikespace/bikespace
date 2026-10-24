@@ -39,8 +39,8 @@ export function ReportSummary({onReady}: {onReady?: () => void}) {
     if (submissions.length === 0) return;
 
     setDateRange({
-      from: new Date(submissions[0].parking_time + '+00:00'),
-      to: new Date(submissions[submissions.length - 1].parking_time + '+00:00'),
+      from: new Date(submissions[0].parking_time),
+      to: new Date(submissions[submissions.length - 1].parking_time),
     });
   }, [submissions]);
 
@@ -65,7 +65,10 @@ export function ReportSummary({onReady}: {onReady?: () => void}) {
     <div className={styles.summary}>
       <div>
         {submissions.length > 0 ? (
-          <span className={styles.entryCount}>
+          <span
+            className={styles.entryCount}
+            data-testid="report-summary-count"
+          >
             {submissions.length.toLocaleString('en-CA')}
           </span>
         ) : (
@@ -75,13 +78,13 @@ export function ReportSummary({onReady}: {onReady?: () => void}) {
             alt="warning icon"
           />
         )}
-        <span>
+        <span data-testid="report-summary-label">
           {submissions.length > 0
             ? ` reports ${
                 filters.dateRange.from === null &&
                 filters.dateRange.to === null &&
                 filters.dateRangeInterval === null &&
-                filters.issue === null &&
+                filters.issues.length === 0 &&
                 filters.parkingDuration.length === 0 &&
                 filters.day === null
                   ? ''

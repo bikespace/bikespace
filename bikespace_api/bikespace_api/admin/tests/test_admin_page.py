@@ -1,9 +1,9 @@
 import re
 
 import pytest
-from bs4 import BeautifulSoup
-
 from bikespace_api.admin.roles import ApplicationRoles
+from bikespace_api.seed import admin_user, non_admin_user
+from bs4 import BeautifulSoup
 
 # Rationale for 'type: ignore' comments:
 # - soup.find doesn't have an overload where both name= and string= are not None (as of bs4 version 4.14.2), even though this is a documented usage of the function
@@ -52,6 +52,18 @@ def test_admin_page_submission_without_logging_in(test_client):
     THEN check that the response is a redirection to the login page
     """
     response = test_client.get("/admin/submission/", follow_redirects=True)
+    soup = BeautifulSoup(response.data, "html.parser")
+
+    default_login_page_redirect(response, soup)
+
+
+def test_admin_page_bikeparkingstatus_without_logging_in(test_client):
+    """
+    GIVEN the flask application configured for testing
+    WHEN the '/admin/bikeparkingstatus/' page is requested (GET) without logging in
+    THEN check that the response is a redirection to the login page
+    """
+    response = test_client.get("/admin/bikeparkingstatus/", follow_redirects=True)
     soup = BeautifulSoup(response.data, "html.parser")
 
     default_login_page_redirect(response, soup)
@@ -124,7 +136,7 @@ def test_admin_login_successfully(test_client, clean_db):
 
     post_login_response = test_client.post(
         "/admin/login/",
-        data=dict(email="admin@example.com", password="admin"),
+        data=dict(email=admin_user["email"], password=admin_user["password"]),
         follow_redirects=True,
     )
     assert post_login_response.status_code == 200
@@ -211,6 +223,19 @@ def test_admin_submission_create_form_renders(logged_in_admin_client):
 
 
 @pytest.mark.uses_db
+def test_admin_bikeparkingstatus_accessible_as_superuser(logged_in_admin_client):
+    """
+    GIVEN a logged-in superuser
+    WHEN the admin bikeparkingstatus list page is requested
+    THEN the page loads successfully (covering the _handle_view is_accessible True branch)
+    """
+    response = logged_in_admin_client.get("/admin/bikeparkingstatus/")
+    assert response.status_code == 200
+    soup = BeautifulSoup(response.data, "html.parser")
+    assert soup.find("table")
+
+
+@pytest.mark.uses_db
 def test_admin_roles_accessible_as_superuser(logged_in_admin_client):
     """
     GIVEN a logged-in superuser
@@ -230,10 +255,10 @@ def test_update_user_without_changing_password(logged_in_admin_client):
     WHEN a non-password field is updated without supplying a new password
     THEN the field change is saved and the original password hash is preserved
     """
+    from bikespace_api.admin.admin_models import User
     from flask_security.utils import verify_password
 
     from bikespace_api import db  # type: ignore
-    from bikespace_api.admin.admin_models import User
 
     test_client = logged_in_admin_client
     original_password = "originalpassword"
@@ -304,7 +329,7 @@ def test_allowed_pages_for_regular_users(test_client, clean_db):
     # login the non-admin user
     login_response = test_client.post(
         "/admin/login/",
-        data=dict(email="notanadmin@example.com", password="notanadmin"),
+        data=dict(email=non_admin_user["email"], password=non_admin_user["password"]),
         follow_redirects=True,
     )
     assert login_response.status_code == 200
@@ -317,6 +342,7 @@ def test_allowed_pages_for_regular_users(test_client, clean_db):
         ("/admin/role/", 403),
         ("/admin/user/", 403),
         ("/admin/submission/", 403),
+        ("/admin/bikeparkingstatus/", 403),
     ]
 
     for page_url, expected_response in pages_and_expected_responses:

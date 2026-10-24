@@ -52,6 +52,19 @@ export default function MyComponent() {
 }
 ```
 
+Another option would be to use `next/dynamic` with the `ssr: false` option to prevent the component from rendering before hydration. For typing, the component should be a default export from its source file.
+
+```ts
+import dynamic from 'next/dynamic';
+
+...
+
+const MyComponent = dynamic(() => import('../my-component/MyComponent'), {
+  loading: () => <Spinner />, // optional loading state
+  ssr: false,
+});
+```
+
 ### Retry if navigation interrupted by page hydration
 
 For navigation links, sometimes page hydration may interrupt the navigation action. To handle this, you can retry with `.toPass`:

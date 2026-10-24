@@ -1,22 +1,23 @@
 import os
 import time
 
-from dotenv import load_dotenv
-from faker import Faker
-from flask.cli import FlaskGroup
-from flask_security.utils import hash_password
+import click
 import sqlalchemy as sa
-from sqlalchemy_utils import create_database, database_exists, drop_database
-
-from bikespace_api import create_app, create_userdatastore, db
+from bikespace_api.admin.admin_models import Role, User
+from bikespace_api.admin.roles import ApplicationRoles
+from bikespace_api.seed import seed_base_data
 from bikespace_api.submissions.submissions_models import (
     IssueType,
     ParkingDuration,
     Submission,
 )
-from bikespace_api.admin.admin_models import Role, User
-from bikespace_api.admin.roles import ApplicationRoles
-from bikespace_api.seed import seed_base_data
+from dotenv import load_dotenv
+from faker import Faker
+from flask.cli import FlaskGroup
+from flask_security.utils import hash_password
+from sqlalchemy_utils import create_database, database_exists, drop_database
+
+from bikespace_api import create_app, create_userdatastore, db  # type: ignore
 
 LOAD_TESTING_NUMBER_OF_SUBMISSIONS = 1500
 
@@ -99,6 +100,20 @@ def seed_dev_db():
         load_testing_submissions,
     )
     db.session.commit()
+
+
+@cli.command()
+@click.argument("username")
+def force_logout_user(username: str):
+    """Invalidates all of a user's active sessions and tokens by resetting their fs_uniquifier property."""
+    user = user_datastore.find_user(username=username)
+
+    if user:
+        user_datastore.reset_user_access(user)
+        user_datastore.commit()
+        print(f"Sessions invalidated for user: {username}")
+    else:
+        print(f"User {username} not found")
 
 
 if __name__ == "__main__":

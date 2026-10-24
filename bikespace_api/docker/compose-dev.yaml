@@ -25,7 +25,7 @@ services:
     ports:
       - "8000:8000"
   db:
-    image: postgres
+    image: postgres:18
     restart: always
     user: postgres
     environment:

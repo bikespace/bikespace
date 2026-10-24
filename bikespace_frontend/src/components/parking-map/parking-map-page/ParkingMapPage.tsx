@@ -1,6 +1,6 @@
 'use client';
 
-import React, {useEffect, useState, useRef} from 'react';
+import React, {useEffect, useMemo, useState, useRef} from 'react';
 import Map, {GeolocateControl, NavigationControl} from 'react-map-gl/maplibre';
 import {bbox as getBBox} from '@turf/bbox';
 import {featureCollection as getFeatureCollection} from '@turf/helpers';
@@ -10,7 +10,15 @@ import {Protocol} from 'pmtiles';
 import {layers, namedFlavor} from '@protomaps/basemaps';
 
 import {trackUmamiEvent} from '@/utils';
-import {defaultMapCenter, GeocoderSearch, getCentroid} from '@/utils/map-utils';
+import {
+  defaultMapCenter,
+  GeocoderSearch,
+  getCentroid,
+  matchSubmissionsToParking,
+  parkingFeatureKey,
+} from '@/utils/map-utils';
+import {useSubmissionsQuery} from '@/hooks/use-submissions-query';
+import {useParkingDataQuery} from '@/hooks/use-parking-data-query';
 
 import {ParkingMapFilter} from './map-filters/ParkingMapFilter';
 import {Sidebar} from './sidebar/Sidebar';
@@ -37,6 +45,10 @@ import {
   COTAerialNightLayer,
   COTAerialLatestLayer,
 } from '@/components/map-layers/basemaps';
+import {
+  ReportedIssuesLayer,
+  ReportedIssuesLegend,
+} from '@/components/map-layers/ReportedIssuesLayer';
 
 import type {
   FilterSpecification,
@@ -53,8 +65,7 @@ import type {Feature} from 'geojson';
 
 import 'maplibre-gl/dist/maplibre-gl.css';
 import styles from './parking-map-page.module.scss';
-const parkingSpritePath =
-  window.location.origin + '/parking_sprites/parking_sprites';
+const parkingSpritePath = '/parking_sprites/parking_sprites';
 
 const bicycleNetworkFirstLayerId = 'bicycle-network-first';
 const bicycleNetworkLastLayerId = 'bicycle-network-last';
@@ -306,6 +317,28 @@ export function ParkingMapPage() {
     openSubmission(lat, lon);
   }
 
+  const {data: submissions} = useSubmissionsQuery();
+  const {data: parkingFeatures} = useParkingDataQuery();
+  const matchedReports = useMemo(
+    () => matchSubmissionsToParking(submissions ?? [], parkingFeatures ?? []),
+    [submissions, parkingFeatures]
+  );
+  const reportedFeatures: Feature[] = (parkingFeatures ?? [])
+    .map((feature): Feature | null => {
+      const [lon, lat] = getCentroid(feature);
+      const reports =
+        matchedReports.get(parkingFeatureKey(feature.properties, lon, lat)) ??
+        [];
+      return reports.length > 0
+        ? {
+            type: 'Feature',
+            geometry: {type: 'Point', coordinates: [lon, lat]},
+            properties: {reportCount: reports.length},
+          }
+        : null;
+    })
+    .filter((feature): feature is Feature => feature !== null);
+
   return (
     <main className={styles.parkingMapPage}>
       <Sidebar isOpen={sidebarIsOpen} setIsOpen={setSidebarIsOpen}>
@@ -328,19 +361,25 @@ export function ParkingMapPage() {
                 details
               </p>
             )}
-            {parkingGroupSelected.map(f => (
-              <ParkingFeatureDescription
-                feature={f}
-                key={f.id}
-                selected={parkingSelectedIDs.includes(f.id)}
-                hovered={parkingHoveredIDs.includes(f.id)}
-                handleClick={handleFeatureSelection}
-                handleHover={handleFeatureHover}
-                handleUnHover={handleFeatureUnHover}
-                centerFeatureOnMap={zoomAndFlyToSingleFeature}
-                onReportIssue={handleReportIssue}
-              />
-            ))}
+            {parkingGroupSelected.map(f => {
+              const [lon, lat] = getCentroid(f);
+              return (
+                <ParkingFeatureDescription
+                  feature={f}
+                  key={f.id}
+                  selected={parkingSelectedIDs.includes(f.id)}
+                  hovered={parkingHoveredIDs.includes(f.id)}
+                  handleClick={handleFeatureSelection}
+                  handleHover={handleFeatureHover}
+                  handleUnHover={handleFeatureUnHover}
+                  centerFeatureOnMap={zoomAndFlyToSingleFeature}
+                  onReportIssue={handleReportIssue}
+                  linkedReports={matchedReports.get(
+                    parkingFeatureKey(f.properties, lon, lat)
+                  )}
+                />
+              );
+            })}
             {emptyLocationSelected && parkingGroupSelected.length === 0 && (
               <div className={styles.ContentCard}>
                 <h3>No known bicycle parking here.</h3>
@@ -383,6 +422,7 @@ export function ParkingMapPage() {
             <summary>Legend</summary>
             <SidebarDetailsContent className={styles.legendContent}>
               <ParkingLayerLegend />
+              <ReportedIssuesLegend />
               <BicycleNetworkLayerLegend />
             </SidebarDetailsContent>
           </SidebarDetailsDisclosure>
@@ -435,6 +475,14 @@ export function ParkingMapPage() {
           layerFilter={parkingLayerFilter}
           firstLayerId={parkingFirstLayerId}
         />
+        {reportedFeatures.length > 0 ? (
+          <ReportedIssuesLayer
+            reportedFeatures={{
+              type: 'FeatureCollection',
+              features: reportedFeatures,
+            }}
+          />
+        ) : null}
         {showBicycleNetwork ? (
           <BicycleNetworkLayer
             beforeId={parkingFirstLayerId}

@@ -1,0 +1,44 @@
+@import '@/styles/variables.module.scss';
+
+.loginForm {
+  display: flex;
+  justify-content: center;
+}
+
+.formArea {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  label {
+    margin-bottom: 4px;
+  }
+
+  input {
+    min-height: 2rem;
+    min-width: 16rem;
+    font-size: 1rem;
+    border: 2px solid $color-primary-d50p;
+    border-radius: 4px;
+    padding: 0 0.5rem;
+  }
+
+  input[aria-invalid='true'] {
+    background-color: $color-secondary-red-light;
+  }
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+}
+
+.actionButton {
+  margin-top: 0.8rem;
+  margin-bottom: 0.4rem;
+}
+
+.errorMessage {
+  text-align: center;
+}

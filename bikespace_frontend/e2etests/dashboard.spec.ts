@@ -1,19 +1,15 @@
 import {test, expect} from '@playwright/test';
 
+import {
+  defaultTestOptions,
+  testDefaultViewport,
+  testDesktopViewport,
+} from './constants';
+
 const stopClusterNavAfterFirstSubmission = true;
-const retriesForKnownFlakyTests: number = 3;
+const retriesForKnownFlakyTests = 3;
 
-const testLat = 43.76;
-const testLong = -79.43;
-
-test.use({
-  geolocation: {
-    latitude: testLat,
-    longitude: testLong,
-  },
-  permissions: ['geolocation'],
-  timezoneId: 'America/Toronto',
-});
+test.use(defaultTestOptions);
 
 test.beforeEach(async ({context}) => {
   // test isolation: block all network requests except for localhost
@@ -22,10 +18,7 @@ test.beforeEach(async ({context}) => {
 
 test.describe('Dashboard navigation on mobile viewport size', () => {
   test.use({
-    viewport: {
-      height: 600,
-      width: 800,
-    },
+    viewport: testDefaultViewport,
   });
 
   // Too flaky to add to CI; often times out on generating the insights tab for some browsers
@@ -82,10 +75,7 @@ test.describe('Dashboard navigation on mobile viewport size', () => {
 test.describe('Dashboard navigation on mobile viewport size (flaky)', () => {
   if (retriesForKnownFlakyTests > 0) test.describe.configure({retries: 3});
   test.use({
-    viewport: {
-      height: 600,
-      width: 800,
-    },
+    viewport: testDefaultViewport,
   });
 
   // Too flaky to add to CI; often fails on trying to locate the marker for submission 1
@@ -140,10 +130,7 @@ test.describe('Dashboard navigation on mobile viewport size (flaky)', () => {
 
 test.describe('Dashboard navigation on desktop viewport size', () => {
   test.use({
-    viewport: {
-      height: 800,
-      width: 1200,
-    },
+    viewport: testDesktopViewport,
   });
 
   // Too flaky to add to CI; often times out on generating the insights tab for some browsers
@@ -198,10 +185,7 @@ test.describe('Dashboard navigation on desktop viewport size', () => {
 test.describe('Dashboard navigation on desktop viewport size (flaky)', () => {
   if (retriesForKnownFlakyTests > 0) test.describe.configure({retries: 3});
   test.use({
-    viewport: {
-      height: 800,
-      width: 1200,
-    },
+    viewport: testDesktopViewport,
   });
 
   // Too flaky to add to CI; often fails on trying to locate the marker for submission 1

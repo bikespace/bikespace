@@ -14,6 +14,8 @@ from flask_security.datastore import SQLAlchemyUserDatastore
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import CSRFProtect
 
+from werkzeug.middleware.proxy_fix import ProxyFix
+
 # instantiate the db
 db = SQLAlchemy()
 migrate = Migrate()
@@ -29,6 +31,13 @@ def create_app(script_info=None):
     CORS(app)
     CSRFProtect(app)
 
+    # handle proxy redirects
+    proxy_hops = int(os.getenv("TRUSTED_PROXY_COUNT", "0"))
+    if proxy_hops:
+        app.wsgi_app = ProxyFix(
+            app.wsgi_app, x_for=proxy_hops, x_proto=1, x_host=1, x_port=1
+        )
+
     # set config
     app_settings = os.getenv("APP_SETTINGS")
     app.config.from_object(app_settings)
@@ -42,7 +51,7 @@ def create_app(script_info=None):
     from bikespace_api.admin import admin_blueprint
     from bikespace_api.admin.admin_models import Role, User
 
-    app.register_blueprint(admin_blueprint)
+    api.register_blueprint(admin_blueprint)
     admin = Admin(
         app,
         name="BikeSpace",
@@ -68,10 +77,13 @@ def create_app(script_info=None):
     from bikespace_api.admin.admin_views import AdminRolesModelView, AdminUsersModelView
     from bikespace_api.submissions.submissions_views import AdminSubmissionModelView
     from bikespace_api.submissions.submissions_models import Submission
+    from bikespace_api.statuses.statuses_views import AdminBikeParkingStatusModelView
+    from bikespace_api.statuses.statuses_models import BikeParkingStatus
 
     admin.add_view(AdminRolesModelView(Role, db.session))
     admin.add_view(AdminUsersModelView(User, db.session))
     admin.add_view(AdminSubmissionModelView(Submission, db.session))
+    admin.add_view(AdminBikeParkingStatusModelView(BikeParkingStatus, db.session))
 
     # set up submissions blueprint
     from bikespace_api.submissions.submissions_routes import submissions_blueprint

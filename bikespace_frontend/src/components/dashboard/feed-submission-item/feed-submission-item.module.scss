@@ -23,24 +23,6 @@
     word-break: break-word;
   }
 
-  .subHeader {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    .submissionId {
-      font-style: italic;
-    }
-  }
-
-  .issues {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    flex-wrap: wrap;
-  }
-
   &:hover {
     h3 {
       color: $color-primary;
@@ -50,4 +32,26 @@
   &.focused {
     background: $color-secondary-light-grey;
   }
+}
+
+.subHeader {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.submissionId {
+  font-style: italic;
+}
+
+.issues {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.user {
+  font-style: italic;
 }

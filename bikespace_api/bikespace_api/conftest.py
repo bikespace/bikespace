@@ -1,13 +1,12 @@
-from datetime import datetime, timezone
+from datetime import datetime
 
 import pytest
 from sqlalchemy import text
-
 from sqlalchemy_utils import create_database, database_exists, drop_database
 
 from bikespace_api import create_app, db
 from bikespace_api.admin.admin_models import Role, User
-from bikespace_api.seed import seed_base_data
+from bikespace_api.seed import admin_user, non_admin_user, seed_base_data
 from bikespace_api.submissions.submissions_models import (
     IssueType,
     ParkingDuration,
@@ -117,7 +116,7 @@ def new_submission_with_user(new_base_user):
 def logged_in_admin_client(test_client, clean_db):
     test_client.post(
         "/admin/login/",
-        data=dict(email="admin@example.com", password="admin"),
+        data=dict(email=admin_user["email"], password=admin_user["password"]),
         follow_redirects=True,
     )
     return test_client
@@ -126,7 +125,7 @@ def logged_in_admin_client(test_client, clean_db):
 @pytest.fixture()
 def token_auth_headers_admin(flask_app, clean_db):
     with flask_app.app_context():
-        user = User.query.filter_by(email="admin@example.com").first()
+        user = User.query.filter_by(email=admin_user["email"]).first()
         token = user.get_auth_token()
     return {
         "Authentication-Token": token,
@@ -137,7 +136,7 @@ def token_auth_headers_admin(flask_app, clean_db):
 @pytest.fixture()
 def token_auth_headers_regular_user(flask_app, clean_db):
     with flask_app.app_context():
-        user = User.query.filter_by(email="notanadmin@example.com").first()
+        user = User.query.filter_by(email=non_admin_user["email"]).first()
         token = user.get_auth_token()
     return {
         "Authentication-Token": token,
