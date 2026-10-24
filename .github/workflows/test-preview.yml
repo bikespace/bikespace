@@ -7,6 +7,7 @@ on:
       - bikespace_api/**
       - bikespace_frontend/**
       - .github/workflows/test-preview.yml
+
 jobs:
   # variables are only available in workflow steps, so this config job is used to set shared config variables
   config:
