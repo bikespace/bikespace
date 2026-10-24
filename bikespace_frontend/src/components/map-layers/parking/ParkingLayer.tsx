@@ -23,6 +23,21 @@ export const parkingInteractiveLayers = ['bicycle-parking'];
 // access=* values that indicate that bicycle parking is open to the public
 const publicAccessTypes = ['yes', 'permissive', ''];
 
+// Text overlaid on a selected/hovered marker's icon. A feature drilled down
+// from a cluster (see ParkingMapPage) carries a clusterMemberIndex matching
+// its position in the sidebar list and drill-down diagram, so its highlight
+// marker shows that number instead - letting a user tell which specific
+// member is highlighted, rather than confusing it with the cluster's own
+// (visually near-identical) marker. Falls back to showing capacity, as
+// non-cluster markers already did.
+export function markerTextField(feature: MapGeoJSONFeature): string {
+  const clusterMemberIndex = feature.properties?.clusterMemberIndex;
+  if (clusterMemberIndex) return `#${clusterMemberIndex}`;
+  return feature.properties?.capacity && feature.properties?.capacity !== '2'
+    ? feature.properties.capacity
+    : '';
+}
+
 interface ParkingLayerProps {
   selected: MapGeoJSONFeature[];
   groupSelected: MapGeoJSONFeature[];
@@ -181,11 +196,7 @@ export function ParkingLayer({
                 )
                   ? 'parking:parking_sidebar'
                   : 'parking:private_sidebar',
-                'text-field':
-                  feature.properties?.capacity &&
-                  feature.properties?.capacity !== '2'
-                    ? feature.properties.capacity
-                    : '',
+                'text-field': markerTextField(feature),
                 ...selectedMarkerLayoutProperties,
               } as layoutOptions,
               ''
@@ -213,11 +224,7 @@ export function ParkingLayer({
                 )
                   ? 'parking:parking_selected'
                   : 'parking:private_selected',
-                'text-field':
-                  feature.properties?.capacity &&
-                  feature.properties?.capacity !== '2'
-                    ? feature.properties.capacity
-                    : '',
+                'text-field': markerTextField(feature),
                 ...selectedMarkerLayoutProperties,
               } as layoutOptions,
               ''

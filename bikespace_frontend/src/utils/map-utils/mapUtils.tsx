@@ -13,6 +13,26 @@ export function getCentroid(feature: Feature) {
   return centroid(feature).geometry.coordinates as Position;
 }
 
+const METERS_PER_DEGREE_LAT = 111320;
+
+/**
+ * Returns [eastOffsetMeters, northOffsetMeters] of `[lon, lat]` relative to
+ * `[originLon, originLat]`, using a flat equirectangular approximation. Only
+ * suitable for short distances (e.g. plotting nearby points relative to each
+ * other), not general-purpose geodesic distance/direction.
+ */
+export function metersOffsetFrom(
+  [lon, lat]: Position,
+  [originLon, originLat]: Position
+): [number, number] {
+  const metersPerDegreeLon =
+    METERS_PER_DEGREE_LAT * Math.cos((originLat * Math.PI) / 180);
+  return [
+    (lon - originLon) * metersPerDegreeLon,
+    (lat - originLat) * METERS_PER_DEGREE_LAT,
+  ];
+}
+
 interface spriteProperties {
   height: number;
   pixelRatio: number;
