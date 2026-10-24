@@ -41,12 +41,14 @@ const bikeLaneTypes = {
   ],
 };
 
+export type BicycleNetworkTheme = 'bikespace' | 'mississauga';
+
 interface BicycleNetworkLayerProps {
   beforeId?: string;
   firstLayerId?: string;
   lastLayerId?: string;
   background?: 'light' | 'dark';
-  theme?: 'bikespace' | 'mississauga';
+  theme?: BicycleNetworkTheme;
 }
 
 export function BicycleNetworkLayer({

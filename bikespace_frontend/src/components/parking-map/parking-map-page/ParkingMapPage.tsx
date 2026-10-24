@@ -62,6 +62,7 @@ import type {
   StyleSpecification,
 } from 'react-map-gl/maplibre';
 import type {Feature} from 'geojson';
+import type {BicycleNetworkTheme} from '@/components/map-layers/BicycleNetwork';
 
 import 'maplibre-gl/dist/maplibre-gl.css';
 import styles from './parking-map-page.module.scss';
@@ -121,9 +122,8 @@ export function ParkingMapPage() {
   const [baseMapLayerName, setBaseMapLayerName] = useState<string>(
     baseMapOptions[0].id
   );
-  const [bicyleNetworkTheme, setBicycleNetworkTheme] = useState<
-    'bikespace' | 'mississauga'
-  >('bikespace');
+  const [bicyleNetworkTheme, setBicycleNetworkTheme] =
+    useState<BicycleNetworkTheme>('bikespace');
 
   const mapRef = useRef<MapRef>(null);
   const resultsCardRef = useRef<HTMLDivElement>(null);
@@ -348,7 +348,7 @@ export function ParkingMapPage() {
   function handleBicycleNetworkSelection(
     e: React.ChangeEvent<HTMLInputElement>
   ) {
-    setBicycleNetworkTheme(e.target.value as 'bikespace' | 'mississauga');
+    setBicycleNetworkTheme(e.target.value as BicycleNetworkTheme);
   }
 
   return (
