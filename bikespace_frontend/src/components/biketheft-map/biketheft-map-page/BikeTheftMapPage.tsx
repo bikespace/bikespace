@@ -1,12 +1,17 @@
 'use client';
 import React, {useEffect, useRef, useState} from 'react';
+
+import maplibregl from 'maplibre-gl';
 import Map, {GeolocateControl, NavigationControl} from 'react-map-gl/maplibre';
-import maplibregl, {type GeoJSONSource} from 'maplibre-gl';
 import {layers, namedFlavor} from '@protomaps/basemaps';
+
 import {defaultMapCenter} from '@/utils/map-utils';
 import {Sidebar} from '@/components/parking-map/parking-map-page/sidebar/Sidebar';
 import {SidebarButton} from '@/components/shared-ui/sidebar-button';
-import type {MapLayerMouseEvent, MapRef, MapStyle} from 'react-map-gl/maplibre';
+
+import type {GeoJSONSource, StyleSpecification} from 'maplibre-gl';
+import type {MapLayerMouseEvent, MapRef} from 'react-map-gl/maplibre';
+
 import type {StolenBikeReport} from '@/interfaces/BikeTheftProperties';
 import {BikeTheftStatusFilter} from '@/interfaces/BikeTheftProperties';
 
@@ -32,7 +37,7 @@ import styles from './Biketheft-map-page.module.scss';
 import parkingStyles from '@/components/parking-map/parking-map-page/parking-map-page.module.scss';
 
 // Mapstyle for backup map tiles when MapTiler API key is not available
-const backupMapStyle: MapStyle = {
+const backupMapStyle: StyleSpecification = {
   version: 8,
   glyphs:
     'https://protomaps.github.io/basemaps-assets/fonts/{fontstack}/{range}.pbf',
