@@ -117,13 +117,15 @@ export const getTorontoStyleLayer = (id: string): LineLayerSpecification => ({
 });
 
 export const getTorontoContrastOutlineLayer = (
-  id: string
+  id: string,
+  show: boolean
 ): LineLayerSpecification => ({
   id: id,
   type: 'line',
   source: 'bicycle-lanes',
   layout: {
     'line-cap': 'square',
+    visibility: show ? 'visible' : 'none',
   },
   paint: {
     'line-width': 7 + 2,

@@ -49,19 +49,20 @@ export function BicycleNetworkLayer({
   // set up styles - Mississauga
   const mississaugaStyle = getMississaugaStyleLayer(firstLayerId);
   const mississaugaStyleOutline = getMississaugaStyleOutlineLayer(
-    background === 'dark'
-      ? 'bicycle-network-mississauga-style-outline'
-      : lastLayerId
+    'bicycle-network-mississauga-style-outline'
   );
-  const mississaugaContrastOutline =
-    getMississaugaContrastOutlineLayer(lastLayerId);
+  const mississaugaContrastOutline = getMississaugaContrastOutlineLayer(
+    lastLayerId,
+    background === 'dark'
+  );
 
   // set up styles - Toronto
   const torontoStyleOverlay = getTorontoStyleOverlayLayer(firstLayerId);
-  const torontoStyle = getTorontoStyleLayer(
-    background === 'dark' ? 'bicycle-network-toronto-style' : lastLayerId
+  const torontoStyle = getTorontoStyleLayer('bicycle-network-toronto-style');
+  const torontoContrastOutline = getTorontoContrastOutlineLayer(
+    lastLayerId,
+    background === 'dark'
   );
-  const torontoContrastOutline = getTorontoContrastOutlineLayer(lastLayerId);
 
   return (
     // Source does not allow for nested fragments, so each component has to be evaluated and returned one by one

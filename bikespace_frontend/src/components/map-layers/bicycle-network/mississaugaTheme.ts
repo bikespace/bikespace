@@ -116,13 +116,15 @@ export const getMississaugaStyleOutlineLayer = (
 });
 
 export const getMississaugaContrastOutlineLayer = (
-  id: string
+  id: string,
+  show: boolean
 ): LineLayerSpecification => ({
   id: id,
   type: 'line',
   source: 'bicycle-lanes',
   layout: {
     'line-cap': 'round',
+    visibility: show ? 'visible' : 'none',
   },
   paint: {
     'line-width': [
