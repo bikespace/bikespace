@@ -2,6 +2,8 @@ import React from 'react';
 
 import {Layer, Source} from 'react-map-gl/maplibre';
 
+import {attributions} from '@/utils/map-utils';
+
 import {
   getBikeSpaceStyleLayer,
   getBikeSpaceContrastOutlineLayer,
@@ -70,7 +72,7 @@ export function BicycleNetworkLayer({
       id="bicycle-network"
       type="geojson"
       data={bicycleNetworkURL!}
-      attribution="City of Toronto"
+      attribution={attributions['City of Toronto Open Data']}
     >
       {/* If BikeSpace theme is selected */}
       {theme === 'bikespace' ? (
