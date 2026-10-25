@@ -3,6 +3,7 @@ import {useState} from 'react';
 
 import {useClickAway} from '@uidotdev/usehooks';
 
+import {cx} from '@/utils';
 import {CustomControlOverlay} from '@/utils/map-utils';
 
 import type {StaticImageData} from 'next/image';
@@ -44,7 +45,13 @@ export function BasemapOptionsList({
     <div className={styles.baseMapOptionsPicker}>
       {layerOptions.map(layer => {
         return (
-          <div key={layer.id} className={styles.basemapOption}>
+          <div
+            key={layer.id}
+            className={cx(
+              styles.basemapOption,
+              selectedLayer === layer.id && styles.basemapOptionSelected
+            )}
+          >
             <input
               type="radio"
               id={`${inputName}-${layer.id}`}

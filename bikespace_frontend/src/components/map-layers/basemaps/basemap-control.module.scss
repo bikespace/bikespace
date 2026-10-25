@@ -1,3 +1,5 @@
+@use '@/styles/variables.module.scss' as variables;
+
 .controlHeader {
   display: flex;
   align-items: center;
@@ -27,15 +29,38 @@
 .basemapOption {
   display: flex;
   flex-direction: column;
-  padding-bottom: 4px;
-  border: 1px solid black;
+  padding: 1px;
+  padding-bottom: 4px + 1px;
+  border: 1px solid variables.$color-primary-d50p;
   border-radius: 6px;
   overflow: hidden;
+
+  &:hover {
+    background-color: variables.$color-primary-10p;
+    border-color: variables.$color-primary;
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 0.2rem variables.$color-primary-20p;
+    outline: none;
+  }
 
   input[type='radio'] {
     appearance: none;
     -webkit-appearance: none;
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    margin: 0;
   }
+}
+
+.basemapOptionSelected {
+  border: 2px solid variables.$color-primary;
+  background-color: variables.$color-primary-10p;
+  padding: 0px;
+  padding-bottom: 4px;
 }
 
 .baseMapOptionLabel {
@@ -45,6 +70,7 @@
 $thumbnail-width: 130px;
 
 .baseMapOptionThumbnail {
+  display: block;
   width: $thumbnail-width;
   object-fit: cover;
 }
