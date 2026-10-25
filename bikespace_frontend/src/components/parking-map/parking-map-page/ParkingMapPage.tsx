@@ -520,7 +520,11 @@ export function ParkingMapPage() {
                 theme={bicycleNetworkTheme}
                 setTheme={setBicycleNetworkTheme}
               />
-              <h3 ref={basemapMenuRef} style={{marginTop: '1rem'}} tabIndex={0}>
+              <h3
+                ref={basemapMenuRef}
+                style={{marginTop: '1rem', marginBottom: '4px'}}
+                tabIndex={0}
+              >
                 Base Map
               </h3>
               <BasemapOptionsList
