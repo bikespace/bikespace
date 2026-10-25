@@ -6,7 +6,7 @@
 
 .themeOptionList {
   display: flex;
-  gap: 6px;
+  gap: 8px;
   flex-wrap: wrap;
 }
 
@@ -14,10 +14,10 @@
   display: inline-flex;
   align-items: center;
   height: 2rem;
-  border: 1px solid variables.$color-primary-d50p;
+  outline: 1px solid variables.$color-primary-d50p;
   border-radius: 6px;
-  padding: 1px;
   font-size: 0.9rem;
+  padding: 4px 8px;
 
   &:hover {
     background-color: variables.$color-primary-10p;
@@ -32,21 +32,24 @@
   input[type='radio'] {
     appearance: none;
     -webkit-appearance: none;
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    margin: 0;
   }
 
   label {
     display: flex;
     align-items: center;
     gap: 4px;
-    padding-right: 8px;
   }
 }
 
 .themeOptionSelected {
-  border: 2px solid variables.$color-primary;
+  outline: 2px solid variables.$color-primary;
   background-color: variables.$color-primary-10p;
   color: variables.$color-secondary-dark-grey;
-  padding: 0px;
 
   &:hover {
     background-color: variables.$color-primary-20p;
