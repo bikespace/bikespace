@@ -21,7 +21,7 @@ export interface MapStyleMeta {
 export interface BaseMapOption {
   id: string;
   name: string;
-  component: React.JSX.Element | null;
+  getComponent: ((beforeId: string) => React.JSX.Element) | undefined;
   style: MapStyleMeta;
 }
 

@@ -116,7 +116,7 @@ const baseMapOptions: Record<string, BaseMapOption> = {
   default: {
     id: 'default',
     name: 'Street Map',
-    component: null,
+    getComponent: undefined,
     style: process.env.MAPTILER_API_KEY
       ? baseMapStyles.maptilerStreets
       : baseMapStyles.backup,
@@ -124,7 +124,7 @@ const baseMapOptions: Record<string, BaseMapOption> = {
   maptilerAerial: {
     id: 'maptilerAerial',
     name: 'Satellite',
-    component: null,
+    getComponent: undefined,
     style: process.env.MAPTILER_API_KEY
       ? baseMapStyles.maptilerHybrid
       : baseMapStyles.backup,
@@ -132,7 +132,9 @@ const baseMapOptions: Record<string, BaseMapOption> = {
   cotAerialLatest: {
     id: 'cotAerialLatest',
     name: 'Satellite (Toronto)',
-    component: <COTAerialLatestLayer beforeId={bicycleNetworkLastLayerId} />,
+    getComponent: (beforeId: string) => (
+      <COTAerialLatestLayer beforeId={beforeId} />
+    ),
     style: process.env.MAPTILER_API_KEY
       ? baseMapStyles.maptilerHybrid
       : baseMapStyles.backup,
@@ -140,7 +142,9 @@ const baseMapOptions: Record<string, BaseMapOption> = {
   cotAerialNight: {
     id: 'cotAerialNight',
     name: 'Night (Toronto)',
-    component: <COTAerialNightLayer beforeId={bicycleNetworkLastLayerId} />,
+    getComponent: (beforeId: string) => (
+      <COTAerialNightLayer beforeId={beforeId} />
+    ),
     style: process.env.MAPTILER_API_KEY
       ? baseMapStyles.maptilerHybrid
       : baseMapStyles.backup,
@@ -187,12 +191,12 @@ export function ParkingMapPage() {
   useEffect(() => {
     const styleRasterLayerId =
       baseMapOptions[baseMapLayerId].style.satelliteRasterLayer;
-    const addedRasterLayer = baseMapOptions[baseMapLayerId].component;
+    const hasAddedRasterLayer = baseMapOptions[baseMapLayerId].getComponent;
     if (styleRasterLayerId) {
       const styleRasterLayer = mapRef.current!.getLayer(styleRasterLayerId);
-      if (styleRasterLayer && addedRasterLayer) {
+      if (styleRasterLayer && hasAddedRasterLayer) {
         styleRasterLayer.setLayoutProperty('visibility', 'none');
-      } else if (styleRasterLayer && !addedRasterLayer) {
+      } else if (styleRasterLayer && !hasAddedRasterLayer) {
         styleRasterLayer.setLayoutProperty('visibility', 'visible');
       }
     }
@@ -581,7 +585,13 @@ export function ParkingMapPage() {
             theme={bicycleNetworkTheme}
           />
         ) : null}
-        {baseMapOptions[baseMapLayerId].component}
+        {baseMapOptions[baseMapLayerId].getComponent
+          ? baseMapOptions[baseMapLayerId].getComponent(
+              showBicycleNetwork
+                ? bicycleNetworkLastLayerId
+                : baseMapOptions[baseMapLayerId].style.roadLabelLayer
+            )
+          : null}
         {/* placed here to avoid covering the sidebar */}
         <Spinner show={isMapLoading} overlay label="Loading map..." />
       </Map>
