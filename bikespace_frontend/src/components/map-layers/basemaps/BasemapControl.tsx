@@ -1,6 +1,8 @@
 import React from 'react';
 import {useState} from 'react';
 
+import {useClickAway} from '@uidotdev/usehooks';
+
 import {CustomControlOverlay} from '@/utils/map-utils';
 
 import type {StyleSpecification} from 'react-map-gl/maplibre';
@@ -35,15 +37,13 @@ export function BasemapControl({
   setSelectedLayer,
 }: BasemapControlProps) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-
-  // TODOs:
-  // add a click away effect on map to close
-  // figure out how to add some info so people can tell the freshness of the imagery
-  // decide whether to integrate with sidebar (and add in layer control for bike network) or whether to keep as a map menu
+  const clickAwayRef = useClickAway(() => {
+    setIsOpen(false);
+  }) as React.RefObject<HTMLFieldSetElement>;
 
   return (
     <CustomControlOverlay position="top-left">
-      <fieldset style={{margin: isOpen ? 4 : 0}}>
+      <fieldset ref={clickAwayRef} style={{margin: isOpen ? 4 : 0}}>
         <legend
           className={styles.controlHeader}
           style={{
