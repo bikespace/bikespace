@@ -63,7 +63,7 @@ const backupMapStyle: MapStyle = {
 };
 
 const ltsPmtilesUrl = `pmtiles://${process.env.DATA_LEVEL_OF_TRAFFIC_STRESS}`;
-const ltsSourceLayer = 'lts_gta';
+const ltsSourceLayer = 'lts_filtered_1_4';
 
 const ltsLineLayer: LineLayer = {
   id: 'lts-lines',
