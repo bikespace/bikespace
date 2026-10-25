@@ -31,7 +31,6 @@ const bikeLaneTypes = {
     'Multi-Use Trail - Connector',
     'Multi-Use Trail - Entrance',
     'Multi-Use Trail - Existing Connector',
-    'Park Road',
   ],
   unprotectedConnectors: [
     'Sharrows',
@@ -39,6 +38,7 @@ const bikeLaneTypes = {
     'Sharrows - Arterial - Connector',
     'Sharrows - Wayfinding',
     'Signed Route (No Pavement Markings)',
+    'Park Road',
   ],
 };
 
@@ -50,7 +50,13 @@ export const getBikeSpaceStyleLayer = (id: string): LineLayerSpecification => ({
     'line-cap': 'round',
   },
   paint: {
-    'line-width': 3,
+    'line-width': [
+      'match',
+      ['get', 'INFRA_HIGHORDER'],
+      bikeLaneTypes.protected,
+      5,
+      3,
+    ],
     'line-dasharray': [
       'match',
       ['get', 'INFRA_HIGHORDER'],
@@ -86,7 +92,13 @@ export const getBikeSpaceContrastOutlineLayer = (
     'line-cap': 'round',
   },
   paint: {
-    'line-width': 3 + 2,
+    'line-width': [
+      'match',
+      ['get', 'INFRA_HIGHORDER'],
+      bikeLaneTypes.protected,
+      5 + 2,
+      3 + 2,
+    ],
     'line-color': 'white',
   },
 });

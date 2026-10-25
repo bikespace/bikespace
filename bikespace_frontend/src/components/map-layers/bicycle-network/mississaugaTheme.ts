@@ -35,7 +35,6 @@ const bikeLaneTypes = {
     'Multi-Use Trail - Connector',
     'Multi-Use Trail - Entrance',
     'Multi-Use Trail - Existing Connector',
-    'Park Road',
   ],
   unprotectedConnectors: [
     'Sharrows',
@@ -43,6 +42,7 @@ const bikeLaneTypes = {
     'Sharrows - Arterial - Connector',
     'Sharrows - Wayfinding',
     'Signed Route (No Pavement Markings)',
+    'Park Road',
   ],
 };
 

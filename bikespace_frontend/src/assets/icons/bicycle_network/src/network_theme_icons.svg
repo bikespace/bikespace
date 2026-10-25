@@ -24,9 +24,9 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
      showgrid="false"
-     inkscape:zoom="5.5635257"
-     inkscape:cx="47.631666"
-     inkscape:cy="28.579"
+     inkscape:zoom="7.8680135"
+     inkscape:cx="98.500085"
+     inkscape:cy="25.165183"
      inkscape:window-width="1920"
      inkscape:window-height="1147"
      inkscape:window-x="0"
@@ -69,7 +69,7 @@
      id="layer1"
      transform="translate(0,-1.076087)">
     <path
-       style="fill:#000000;stroke:#13632a;stroke-width:3;stroke-linecap:round;stroke-dasharray:none;stroke-opacity:1"
+       style="fill:#000000;stroke:#13632a;stroke-width:5;stroke-linecap:round;stroke-dasharray:none;stroke-opacity:1"
        d="m 121.64271,19.050946 h 36.71458"
        id="path468-6"
        inkscape:label="bs_protected" />
@@ -84,8 +84,8 @@
        id="path7-8"
        inkscape:label="bs_sharrow" />
     <path
-       style="fill:#000000;stroke:#8c5535;stroke-width:3;stroke-linecap:round;stroke-dasharray:none;stroke-opacity:1"
-       d="m 121.64271,31.101228 h 36.71458"
+       style="fill:#000000;stroke:#8c5535;stroke-width:3.05214;stroke-linecap:round;stroke-dasharray:none;stroke-opacity:1"
+       d="m 120.99905,31.101228 h 38.0019"
        id="path468-6-0"
        inkscape:label="bs_mup" />
     <g
