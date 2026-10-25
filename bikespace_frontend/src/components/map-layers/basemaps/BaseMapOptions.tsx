@@ -2,6 +2,8 @@ import React from 'react';
 
 import {Layer, Source} from 'react-map-gl/maplibre';
 
+import {attributions} from '@/utils/map-utils';
+
 export const COTAerialNightLayer = ({beforeId}: {beforeId: string}) => (
   <Source
     id="cot-aerial-night"
@@ -10,7 +12,7 @@ export const COTAerialNightLayer = ({beforeId}: {beforeId: string}) => (
       'https://gis.toronto.ca/arcgis/rest/services/basemap/cot_2020_NightTimeLight_20cm/MapServer/tile/{z}/{y}/{x}',
     ]}
     tileSize={256}
-    attribution="City of Toronto"
+    attribution={attributions['City of Toronto Open Data']}
   >
     <Layer
       beforeId={beforeId}
@@ -34,7 +36,7 @@ export const COTAerialLatestLayer = ({beforeId}: {beforeId: string}) => (
       'https://gis.toronto.ca/arcgis/rest/services/basemap/cot_ortho/MapServer/tile/{z}/{y}/{x}',
     ]}
     tileSize={256}
-    attribution="City of Toronto"
+    attribution={attributions['City of Toronto Open Data']}
   >
     <Layer
       beforeId={beforeId}
