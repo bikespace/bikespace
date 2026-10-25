@@ -25,17 +25,55 @@ export interface BaseMapOption {
   style: MapStyleMeta;
 }
 
-interface BasemapControlProps {
+interface BasemapOptionsListProps {
   layerOptions: BaseMapOption[];
   selectedLayer: string | undefined;
   setSelectedLayer: React.Dispatch<React.SetStateAction<string>>;
+  inputName?: string;
 }
 
-export function BasemapControl({
+export function BasemapOptionsList({
   layerOptions,
   selectedLayer,
   setSelectedLayer,
-}: BasemapControlProps) {
+  inputName = 'basemap-options',
+}: BasemapOptionsListProps) {
+  return (
+    <div className={styles.baseMapOptionsPicker}>
+      {layerOptions.map(layer => {
+        return (
+          <div key={layer.id} className={styles.basemapOption}>
+            <input
+              type="radio"
+              id={`${inputName}-${layer.id}`}
+              name={inputName}
+              checked={selectedLayer === layer.id}
+              onChange={e => {
+                if (e.target.checked) {
+                  setSelectedLayer(layer.id);
+                } else {
+                  setSelectedLayer(layerOptions[0].id);
+                }
+              }}
+            />
+            <label
+              className={styles.baseMapOptionLabel}
+              htmlFor={`${inputName}-${layer.id}`}
+            >
+              {layer.name}
+            </label>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+export function BasemapMapControl({
+  layerOptions,
+  selectedLayer,
+  setSelectedLayer,
+}: BasemapOptionsListProps) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const clickAwayRef = useClickAway(() => {
     setIsOpen(false);
@@ -63,30 +101,31 @@ export function BasemapControl({
           </button>
         </legend>
         {isOpen ? (
-          <div className={styles.baseMapOptionsPicker}>
-            {layerOptions.map(layer => (
-              <div key={layer.id}>
-                <input
-                  type="radio"
-                  id={layer.id}
-                  name={layer.name}
-                  checked={selectedLayer?.includes(layer.id)}
-                  onChange={e => {
-                    if (e.target.checked) {
-                      setSelectedLayer(layer.id);
-                    } else {
-                      setSelectedLayer(layerOptions[0].id);
-                    }
-                  }}
-                />
-                <label className={styles.baseMapOptionLabel} htmlFor={layer.id}>
-                  {layer.name}
-                </label>
-              </div>
-            ))}
-          </div>
+          <BasemapOptionsList
+            layerOptions={layerOptions}
+            selectedLayer={selectedLayer}
+            setSelectedLayer={setSelectedLayer}
+          />
         ) : null}
       </fieldset>
+    </CustomControlOverlay>
+  );
+}
+
+export function BasemapMapButton({
+  handleClick,
+}: {
+  handleClick: React.MouseEventHandler<HTMLButtonElement>;
+}) {
+  return (
+    <CustomControlOverlay position="top-left">
+      <button className={styles.openCloseButton} onClick={handleClick}>
+        <img
+          src={layersIcon.src}
+          alt="Open Layers Menu"
+          style={{height: 20, width: 20}}
+        />
+      </button>
     </CustomControlOverlay>
   );
 }

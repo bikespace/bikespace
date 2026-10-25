@@ -41,11 +41,13 @@ import {
   BicycleNetworkThemeSelector,
 } from '@/components/map-layers/bicycle-network';
 import {
-  BasemapControl,
+  BasemapOptionsList,
+  BasemapMapControl,
   BaseMapOption,
   COTAerialNightLayer,
   COTAerialLatestLayer,
   MapStyleMeta,
+  BasemapMapButton,
 } from '@/components/map-layers/basemaps';
 import {
   ReportedIssuesLayer,
@@ -170,6 +172,7 @@ export function ParkingMapPage() {
 
   const mapRef = useRef<MapRef>(null);
   const resultsCardRef = useRef<HTMLDivElement>(null);
+  const basemapMenuRef = useRef<HTMLHeadingElement>(null);
 
   // enable backup map tiles
   useEffect(() => {
@@ -369,6 +372,21 @@ export function ParkingMapPage() {
     map?.once('idle', () => setIsMapLoading(false)); // wait for styles to load, then set loading to false
   }
 
+  function handleOpenBasemapMenu(e: React.MouseEvent<HTMLButtonElement>) {
+    setSidebarIsOpen(true);
+    basemapMenuRef.current?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'nearest',
+    });
+    basemapMenuRef.current?.focus();
+    if (sidebarIsOpen) {
+      basemapMenuRef.current?.classList.add(styles.attentionHighlight);
+      setTimeout(() => {
+        basemapMenuRef.current?.classList.remove(styles.attentionHighlight);
+      }, 500);
+    }
+  }
+
   const openSubmission = useSubmissionPrefill();
   function handleReportIssue(feature: Feature) {
     const [lon, lat] = getCentroid(feature);
@@ -488,6 +506,15 @@ export function ParkingMapPage() {
                 theme={bicycleNetworkTheme}
                 setTheme={setBicycleNetworkTheme}
               />
+              <h3 ref={basemapMenuRef} style={{marginTop: '1rem'}} tabIndex={0}>
+                Base Map
+              </h3>
+              <BasemapOptionsList
+                layerOptions={Object.values(baseMapOptions)}
+                selectedLayer={baseMapLayerId}
+                setSelectedLayer={setBaseMapLayerId}
+                inputName="basemap-options-sidebar"
+              />
             </SidebarDetailsContent>
           </SidebarDetailsDisclosure>
           <SidebarDetailsDisclosure>
@@ -527,11 +554,7 @@ export function ParkingMapPage() {
         {/* controls */}
         <NavigationControl position="top-left" />
         <GeolocateControl position="top-left" />
-        <BasemapControl
-          layerOptions={Object.values(baseMapOptions)}
-          selectedLayer={baseMapLayerId}
-          setSelectedLayer={setBaseMapLayerId}
-        />
+        <BasemapMapButton handleClick={handleOpenBasemapMenu} />
         {/* display layers */}
         <ParkingLayer
           selected={parkingSelectedOrHovered}

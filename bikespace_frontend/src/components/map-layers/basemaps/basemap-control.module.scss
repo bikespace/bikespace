@@ -20,6 +20,13 @@
   margin-bottom: 4px;
 }
 
+.basemapOption {
+  padding-bottom: 4px;
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+}
+
 .baseMapOptionLabel {
   font-size: 0.9rem;
 }
