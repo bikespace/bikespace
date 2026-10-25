@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="48"
+   height="48"
+   viewBox="0 0 48 48"
+   version="1.1"
+   id="svg1"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1" />
+  <g
+     id="layer1"
+     transform="translate(-116,-1.076087)">
+    <path
+       style="fill:#000000;stroke:#13632a;stroke-width:3;stroke-linecap:round;stroke-dasharray:none;stroke-opacity:1"
+       d="m 121.64271,19.050946 h 36.71458"
+       id="path468-6" />
+    <path
+       style="fill:#000000;stroke:#68d488;stroke-width:3.41871;stroke-linecap:round;stroke-dasharray:6.8374, 6.8374;stroke-dashoffset:0;stroke-opacity:1"
+       d="m 140.83565,61.362288 v 34.38657"
+       id="path468-6-9-0" />
+    <path
+       style="fill:#68d488;fill-opacity:1;stroke:#ffffff;stroke-width:0.5;stroke-linecap:round;stroke-dasharray:none;stroke-opacity:1"
+       d="m 140,6.273353 a 1.709355,1.709355 0 0 0 -1.70898,1.708984 v 6.837891 A 1.709355,1.709355 0 0 0 140,16.529213 1.709355,1.709355 0 0 0 141.70898,14.820228 V 7.982337 A 1.709355,1.709355 0 0 0 140,6.273353 Z m 0,13.675782 a 1.709355,1.709355 0 0 0 -1.70898,1.708984 v 6.835937 A 1.709355,1.709355 0 0 0 140,30.204993 1.709355,1.709355 0 0 0 141.70898,28.494056 V 21.658119 A 1.709355,1.709355 0 0 0 140,19.949135 Z m 0,13.673827 a 1.709355,1.709355 0 0 0 -1.70898,1.708984 v 6.837891 A 1.709355,1.709355 0 0 0 140,43.878821 1.709355,1.709355 0 0 0 141.70898,42.169838 V 35.331946 A 1.709355,1.709355 0 0 0 140,33.622962 Z"
+       id="path7-8" />
+    <path
+       style="fill:#000000;stroke:#8c5535;stroke-width:3;stroke-linecap:round;stroke-dasharray:none;stroke-opacity:1"
+       d="m 121.64271,31.101228 h 36.71458"
+       id="path468-6-0" />
+    <path
+       style="fill:#000000;stroke:#01a450;stroke-width:3.41871;stroke-linecap:round;stroke-dasharray:6.8374, 6.8374;stroke-dashoffset:0;stroke-opacity:1"
+       d="M 79.815731,63.283679 V 97.670251"
+       id="path468-6-9" />
+  </g>
+</svg>

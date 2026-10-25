@@ -6,7 +6,8 @@
 
 import type {LineLayerSpecification} from 'react-map-gl/maplibre';
 
-// Mississauga Theme Legend SVGs
+// Toronto Theme Legend SVGs
+import torontoThemeIcon from '@/assets/icons/bicycle_network/network_theme_icons_toronto.svg';
 import networkCycleTracks from '@/assets/icons/bicycle_network/network_toronto_cycle_tracks.svg';
 import networkBikeLanes from '@/assets/icons/bicycle_network/network_toronto_bike_lanes.svg';
 import networkBikeLanesContraflow from '@/assets/icons/bicycle_network/network_toronto_bike_lanes_contraflow.svg';
@@ -184,3 +185,5 @@ export const torontoStyleLegendEntries = [
     description: 'Unknown Bike Lane Type',
   },
 ];
+
+export {torontoThemeIcon};

@@ -9,6 +9,7 @@
 import type {LineLayerSpecification} from 'react-map-gl/maplibre';
 
 // Mississauga Theme Legend SVGs
+import mississaugaThemeIcon from '@/assets/icons/bicycle_network/network_theme_icons_mississauga.svg';
 import networkProtected from '@/assets/icons/bicycle_network/network_mississauga_protected_lane.svg';
 import networkPainted from '@/assets/icons/bicycle_network/network_mississauga_painted_lane.svg';
 import networkTrail from '@/assets/icons/bicycle_network/network_mississauga_park_multiuse_trail.svg';
@@ -176,3 +177,5 @@ export const mississaugaStyleLegendEntries = [
     description: 'Unknown bike lane type',
   },
 ];
+
+export {mississaugaThemeIcon};

@@ -38,6 +38,7 @@ import {
 import {
   BicycleNetworkLayer,
   BicycleNetworkLayerLegend,
+  BicycleNetworkThemeSelector,
 } from '@/components/map-layers/bicycle-network';
 import {
   BasemapControl,
@@ -396,12 +397,6 @@ export function ParkingMapPage() {
     })
     .filter((feature): feature is Feature => feature !== null);
 
-  function handleBicycleNetworkSelection(
-    e: React.ChangeEvent<HTMLInputElement>
-  ) {
-    setBicycleNetworkTheme(e.target.value as BicycleNetworkTheme);
-  }
-
   return (
     <main className={styles.parkingMapPage}>
       <Sidebar isOpen={sidebarIsOpen} setIsOpen={setSidebarIsOpen}>
@@ -489,46 +484,10 @@ export function ParkingMapPage() {
                   {showBicycleNetwork ? 'Hide' : 'Show'}
                 </SidebarButton>
               </div>
-              <fieldset>
-                <legend>Theme:</legend>
-                <div
-                  style={{display: 'flex', gap: '4px', flexDirection: 'column'}}
-                >
-                  <div>
-                    <input
-                      type="radio"
-                      id="theme-bikespace"
-                      name="theme"
-                      value="bikespace"
-                      checked={bicycleNetworkTheme === 'bikespace'}
-                      onChange={handleBicycleNetworkSelection}
-                    />
-                    <label htmlFor="theme-bikespace">BikeSpace</label>
-                  </div>
-                  <div>
-                    <input
-                      type="radio"
-                      id="theme-mississauga"
-                      name="theme"
-                      value="mississauga"
-                      checked={bicycleNetworkTheme === 'mississauga'}
-                      onChange={handleBicycleNetworkSelection}
-                    />
-                    <label htmlFor="theme-mississauga">Mississauga</label>
-                  </div>
-                  <div>
-                    <input
-                      type="radio"
-                      id="theme-toronto"
-                      name="theme"
-                      value="toronto"
-                      checked={bicycleNetworkTheme === 'toronto'}
-                      onChange={handleBicycleNetworkSelection}
-                    />
-                    <label htmlFor="theme-toronto">Toronto</label>
-                  </div>
-                </div>
-              </fieldset>
+              <BicycleNetworkThemeSelector
+                theme={bicycleNetworkTheme}
+                setTheme={setBicycleNetworkTheme}
+              />
             </SidebarDetailsContent>
           </SidebarDetailsDisclosure>
           <SidebarDetailsDisclosure>

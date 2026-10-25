@@ -1,9 +1,8 @@
 import React from 'react';
-import styles from './spinner.module.scss';
 
-function cx(...classes: Array<string | false | null | undefined>) {
-  return classes.filter(Boolean).join(' ');
-}
+import {cx} from '@/utils';
+
+import styles from './spinner.module.scss';
 
 type SpinnerProps = {
   show?: boolean;

@@ -5,6 +5,7 @@
 import type {LineLayerSpecification} from 'react-map-gl/maplibre';
 
 // BikeSpace Theme Legend SVGs
+import bikeSpaceThemeIcon from '@/assets/icons/bicycle_network/network_theme_icons_bikespace.svg';
 import networkProtected from '@/assets/icons/bicycle_network/network_bikespace_protected_lane.svg';
 import networkPainted from '@/assets/icons/bicycle_network/network_bikespace_painted_lane.svg';
 import networkTrail from '@/assets/icons/bicycle_network/network_bikespace_park_multiuse_trail.svg';
@@ -122,3 +123,5 @@ export const bikeSpaceStyleLegendEntries = [
     description: 'Unknown bike lane type',
   },
 ];
+
+export {bikeSpaceThemeIcon};

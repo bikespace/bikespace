@@ -2,27 +2,32 @@ import React from 'react';
 
 import {Layer, Source} from 'react-map-gl/maplibre';
 
+import {cx} from '@/utils';
 import {attributions} from '@/utils/map-utils';
 
 import {
+  bikeSpaceThemeIcon,
   getBikeSpaceStyleLayer,
   getBikeSpaceContrastOutlineLayer,
   bikeSpaceStyleLegendEntries,
 } from './bikespaceTheme';
 import {
+  mississaugaThemeIcon,
   getMississaugaStyleLayer,
   getMississaugaStyleOutlineLayer,
   getMississaugaContrastOutlineLayer,
   mississaugaStyleLegendEntries,
 } from './mississaugaTheme';
 import {
+  torontoThemeIcon,
   getTorontoStyleLayer,
   getTorontoStyleOverlayLayer,
   getTorontoContrastOutlineLayer,
   torontoStyleLegendEntries,
 } from './torontoTheme';
 
-import styles from '@/components/map-layers/legend-tables.module.scss';
+import styles from './bicycle-network.module.scss';
+import legendStyles from '@/components/map-layers/legend-tables.module.scss';
 
 export type BicycleNetworkTheme = 'bikespace' | 'mississauga' | 'toronto';
 
@@ -110,7 +115,96 @@ export function BicycleNetworkLayer({
   );
 }
 
-// TODO add Toronto to legend
+interface BicycleNetworkThemeSelectorProps {
+  theme: BicycleNetworkTheme;
+  setTheme: React.Dispatch<React.SetStateAction<BicycleNetworkTheme>>;
+}
+
+export function BicycleNetworkThemeSelector({
+  theme,
+  setTheme,
+}: BicycleNetworkThemeSelectorProps) {
+  function handleThemeSelection(e: React.ChangeEvent<HTMLInputElement>) {
+    setTheme(e.target.value as BicycleNetworkTheme);
+  }
+
+  return (
+    <fieldset>
+      <legend className={styles.themeLegend}>Theme:</legend>
+      <div className={styles.themeOptionList}>
+        <div
+          className={cx(
+            styles.themeOption,
+            theme === 'bikespace' && styles.themeOptionSelected
+          )}
+        >
+          <input
+            type="radio"
+            id="theme-bikespace"
+            name="theme"
+            value="bikespace"
+            checked={theme === 'bikespace'}
+            onChange={handleThemeSelection}
+          />
+          <label htmlFor="theme-bikespace">
+            <img
+              src={bikeSpaceThemeIcon.src}
+              alt=""
+              className={styles.themeIcon}
+            />
+            BikeSpace
+          </label>
+        </div>
+        <div
+          className={cx(
+            styles.themeOption,
+            theme === 'mississauga' && styles.themeOptionSelected
+          )}
+        >
+          <input
+            type="radio"
+            id="theme-mississauga"
+            name="theme"
+            value="mississauga"
+            checked={theme === 'mississauga'}
+            onChange={handleThemeSelection}
+          />
+          <label htmlFor="theme-mississauga">
+            <img
+              src={mississaugaThemeIcon.src}
+              alt=""
+              className={styles.themeIcon}
+            />
+            Mississauga
+          </label>
+        </div>
+        <div
+          className={cx(
+            styles.themeOption,
+            theme === 'toronto' && styles.themeOptionSelected
+          )}
+        >
+          <input
+            type="radio"
+            id="theme-toronto"
+            name="theme"
+            value="toronto"
+            checked={theme === 'toronto'}
+            onChange={handleThemeSelection}
+          />
+          <label htmlFor="theme-toronto">
+            <img
+              src={torontoThemeIcon.src}
+              alt=""
+              className={styles.themeIcon}
+            />
+            Toronto
+          </label>
+        </div>
+      </div>
+    </fieldset>
+  );
+}
 
 export function BicycleNetworkLayerLegend({
   theme = 'bikespace',
@@ -127,7 +221,7 @@ export function BicycleNetworkLayerLegend({
   return (
     <>
       <h3>Bicycle Network</h3>
-      <table className={styles.legendTable}>
+      <table className={legendStyles.legendTable}>
         <thead>
           <tr>
             <th style={{textAlign: 'center'}}>Style</th>
