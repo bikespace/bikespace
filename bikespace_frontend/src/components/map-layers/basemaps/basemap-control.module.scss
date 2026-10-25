@@ -1,0 +1,25 @@
+.controlHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+  width: 100%;
+  font-size: 0.9rem;
+}
+
+.openCloseButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 29px;
+  min-width: 29px;
+}
+
+.baseMapOptionsPicker {
+  margin-right: 4px;
+  margin-bottom: 4px;
+}
+
+.baseMapOptionLabel {
+  font-size: 0.9rem;
+}

@@ -5,6 +5,8 @@ import {CustomControlOverlay} from '@/utils/map-utils';
 
 import type {StyleSpecification} from 'react-map-gl/maplibre';
 
+import styles from './basemap-control.module.scss';
+
 import layersIcon from '@/assets/icons/layers.svg';
 import closeIcon from '@/assets/icons/close-menu.svg';
 
@@ -36,7 +38,6 @@ export function BasemapControl({
 
   // TODOs:
   // add a click away effect on map to close
-  // move the styles to a scss file
   // figure out how to add some info so people can tell the freshness of the imagery
   // decide whether to integrate with sidebar (and add in layer control for bike network) or whether to keep as a map menu
 
@@ -44,24 +45,14 @@ export function BasemapControl({
     <CustomControlOverlay position="top-left">
       <fieldset style={{margin: isOpen ? 4 : 0}}>
         <legend
+          className={styles.controlHeader}
           style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            gap: 4,
-            fontSize: '0.9rem',
-            marginLeft: isOpen ? 4 : 0,
+            paddingLeft: isOpen ? 4 : 0,
           }}
         >
-          {isOpen ? <div>Base Map:</div> : null}
+          {isOpen ? <h3>Base Map:</h3> : null}
           <button
-            style={{
-              minHeight: 29,
-              minWidth: 29,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
+            className={styles.openCloseButton}
             onClick={() => setIsOpen(!isOpen)}
           >
             <img
@@ -71,8 +62,9 @@ export function BasemapControl({
             />
           </button>
         </legend>
-        {isOpen
-          ? layerOptions.map(layer => (
+        {isOpen ? (
+          <div className={styles.baseMapOptionsPicker}>
+            {layerOptions.map(layer => (
               <div key={layer.id}>
                 <input
                   type="radio"
@@ -87,12 +79,13 @@ export function BasemapControl({
                     }
                   }}
                 />
-                <label style={{fontSize: '0.9rem'}} htmlFor={layer.id}>
+                <label className={styles.baseMapOptionLabel} htmlFor={layer.id}>
                   {layer.name}
                 </label>
               </div>
-            ))
-          : null}
+            ))}
+          </div>
+        ) : null}
       </fieldset>
     </CustomControlOverlay>
   );
