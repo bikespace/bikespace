@@ -70,6 +70,12 @@ import type {BicycleNetworkTheme} from '@/components/map-layers/bicycle-network'
 
 import 'maplibre-gl/dist/maplibre-gl.css';
 import styles from './parking-map-page.module.scss';
+
+import streetmapMaptilerThumbnail from '@/assets/images/basemaps/street_map_maptiler.png';
+import satelliteMaptilerThumbnail from '@/assets/images/basemaps/satellite_maptiler.png';
+import satelliteTorontoThumbnail from '@/assets/images/basemaps/satellite_toronto.png';
+import nightTorontoThumbnail from '@/assets/images/basemaps/night_toronto.png';
+
 const parkingSpritePath = '/parking_sprites/parking_sprites';
 
 const bicycleNetworkFirstLayerId = 'bicycle-network-first';
@@ -116,6 +122,7 @@ const baseMapOptions: Record<string, BaseMapOption> = {
   default: {
     id: 'default',
     name: 'Street Map',
+    thumbnail: streetmapMaptilerThumbnail,
     getComponent: undefined,
     style: process.env.MAPTILER_API_KEY
       ? baseMapStyles.maptilerStreets
@@ -124,6 +131,7 @@ const baseMapOptions: Record<string, BaseMapOption> = {
   maptilerAerial: {
     id: 'maptilerAerial',
     name: 'Satellite',
+    thumbnail: satelliteMaptilerThumbnail,
     getComponent: undefined,
     style: process.env.MAPTILER_API_KEY
       ? baseMapStyles.maptilerHybrid
@@ -132,6 +140,7 @@ const baseMapOptions: Record<string, BaseMapOption> = {
   cotAerialLatest: {
     id: 'cotAerialLatest',
     name: 'Satellite (Toronto)',
+    thumbnail: satelliteTorontoThumbnail,
     getComponent: (beforeId: string) => (
       <COTAerialLatestLayer beforeId={beforeId} />
     ),
@@ -142,6 +151,7 @@ const baseMapOptions: Record<string, BaseMapOption> = {
   cotAerialNight: {
     id: 'cotAerialNight',
     name: 'Night (Toronto)',
+    thumbnail: nightTorontoThumbnail,
     getComponent: (beforeId: string) => (
       <COTAerialNightLayer beforeId={beforeId} />
     ),

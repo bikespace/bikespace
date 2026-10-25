@@ -16,17 +16,42 @@
 }
 
 .baseMapOptionsPicker {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 6px;
   margin-right: 4px;
   margin-bottom: 4px;
 }
 
 .basemapOption {
-  padding-bottom: 4px;
   display: flex;
-  flex-direction: row;
-  align-items: baseline;
+  flex-direction: column;
+  padding-bottom: 4px;
+  border: 1px solid black;
+  border-radius: 6px;
+  overflow: hidden;
+
+  input[type='radio'] {
+    appearance: none;
+    -webkit-appearance: none;
+  }
 }
 
 .baseMapOptionLabel {
   font-size: 0.9rem;
+}
+
+$thumbnail-width: 130px;
+
+.baseMapOptionThumbnail {
+  width: $thumbnail-width;
+  object-fit: cover;
+}
+
+.baseMapOptionName {
+  max-width: $thumbnail-width;
+  display: block;
+  text-wrap: wrap;
+  text-align: center;
 }

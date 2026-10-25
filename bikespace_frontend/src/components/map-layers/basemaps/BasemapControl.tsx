@@ -5,6 +5,7 @@ import {useClickAway} from '@uidotdev/usehooks';
 
 import {CustomControlOverlay} from '@/utils/map-utils';
 
+import type {StaticImageData} from 'next/image';
 import type {StyleSpecification} from 'react-map-gl/maplibre';
 
 import styles from './basemap-control.module.scss';
@@ -21,6 +22,7 @@ export interface MapStyleMeta {
 export interface BaseMapOption {
   id: string;
   name: string;
+  thumbnail: StaticImageData;
   getComponent: ((beforeId: string) => React.JSX.Element) | undefined;
   style: MapStyleMeta;
 }
@@ -60,7 +62,11 @@ export function BasemapOptionsList({
               className={styles.baseMapOptionLabel}
               htmlFor={`${inputName}-${layer.id}`}
             >
-              {layer.name}
+              <img
+                src={layer.thumbnail.src}
+                className={styles.baseMapOptionThumbnail}
+              />
+              <span className={styles.baseMapOptionName}>{layer.name}</span>
             </label>
           </div>
         );
