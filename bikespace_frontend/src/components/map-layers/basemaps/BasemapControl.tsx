@@ -3,13 +3,22 @@ import {useState} from 'react';
 
 import {CustomControlOverlay} from '@/utils/map-utils';
 
+import type {StyleSpecification} from 'react-map-gl/maplibre';
+
 import layersIcon from '@/assets/icons/layers.svg';
 import closeIcon from '@/assets/icons/close-menu.svg';
+
+export interface MapStyleMeta {
+  mapStyle: StyleSpecification;
+  roadLabelLayer: string;
+  satelliteRasterLayer: string | null;
+}
 
 export interface BaseMapOption {
   id: string;
   name: string;
   component: React.JSX.Element | null;
+  style: MapStyleMeta;
 }
 
 interface BasemapControlProps {

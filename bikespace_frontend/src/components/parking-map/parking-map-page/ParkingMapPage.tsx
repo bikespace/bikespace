@@ -44,6 +44,7 @@ import {
   BaseMapOption,
   COTAerialNightLayer,
   COTAerialLatestLayer,
+  MapStyleMeta,
 } from '@/components/map-layers/basemaps';
 import {
   ReportedIssuesLayer,
@@ -88,19 +89,60 @@ const backupMapStyle: StyleSpecification = {
   layers: layers('protomaps', namedFlavor('light'), {lang: 'en'}),
 };
 
-const baseMapOptions: BaseMapOption[] = [
-  {id: 'default', name: 'Map', component: null},
-  {
-    id: 'cotAerialLatest',
+const baseMapStyles: Record<string, MapStyleMeta> = {
+  maptilerStreets: {
+    mapStyle:
+      `https://api.maptiler.com/maps/streets/style.json?key=${process.env.MAPTILER_API_KEY}` as unknown as StyleSpecification,
+    roadLabelLayer: 'road_label',
+    satelliteRasterLayer: null,
+  },
+  maptilerHybrid: {
+    mapStyle:
+      `https://api.maptiler.com/maps/hybrid-v4/style.json?key=${process.env.MAPTILER_API_KEY}` as unknown as StyleSpecification,
+    roadLabelLayer: 'Road labels',
+    satelliteRasterLayer: 'Satellite',
+  },
+  backup: {
+    mapStyle: backupMapStyle,
+    roadLabelLayer: 'roads_labels_major',
+    satelliteRasterLayer: null,
+  },
+};
+
+const baseMapOptions: Record<string, BaseMapOption> = {
+  default: {
+    id: 'default',
+    name: 'Street Map',
+    component: null,
+    style: process.env.MAPTILER_API_KEY
+      ? baseMapStyles.maptilerStreets
+      : baseMapStyles.backup,
+  },
+  maptilerAerial: {
+    id: 'maptilerAerial',
     name: 'Satellite',
+    component: null,
+    style: process.env.MAPTILER_API_KEY
+      ? baseMapStyles.maptilerHybrid
+      : baseMapStyles.backup,
+  },
+  cotAerialLatest: {
+    id: 'cotAerialLatest',
+    name: 'Satellite (Toronto)',
     component: <COTAerialLatestLayer beforeId={bicycleNetworkLastLayerId} />,
+    style: process.env.MAPTILER_API_KEY
+      ? baseMapStyles.maptilerHybrid
+      : baseMapStyles.backup,
   },
-  {
+  cotAerialNight: {
     id: 'cotAerialNight',
-    name: 'Night',
+    name: 'Night (Toronto)',
     component: <COTAerialNightLayer beforeId={bicycleNetworkLastLayerId} />,
+    style: process.env.MAPTILER_API_KEY
+      ? baseMapStyles.maptilerHybrid
+      : baseMapStyles.backup,
   },
-];
+};
 
 export function uniqueBy(a: Array<Object>, getKey: Function): Array<Object> {
   const seen = new Set();
@@ -119,21 +161,14 @@ export function ParkingMapPage() {
   const [parkingLayerFilter, setParkingLayerFilter] =
     useState<FilterSpecification>(true);
   const [showBicycleNetwork, setShowBicycleNetwork] = useState<boolean>(true);
-  const [baseMapLayerName, setBaseMapLayerName] = useState<string>(
-    baseMapOptions[0].id
+  const [baseMapLayerId, setBaseMapLayerId] = useState<string>(
+    baseMapOptions['default'].id
   );
   const [bicycleNetworkTheme, setBicycleNetworkTheme] =
     useState<BicycleNetworkTheme>('bikespace');
 
   const mapRef = useRef<MapRef>(null);
   const resultsCardRef = useRef<HTMLDivElement>(null);
-
-  const mapStyle = process.env.MAPTILER_API_KEY
-    ? `https://api.maptiler.com/maps/streets/style.json?key=${process.env.MAPTILER_API_KEY}`
-    : backupMapStyle;
-  const mapStyleRoadLabelsLayer = process.env.MAPTILER_API_KEY
-    ? 'road_label'
-    : 'roads_labels_major';
 
   // enable backup map tiles
   useEffect(() => {
@@ -218,6 +253,7 @@ export function ParkingMapPage() {
   }
 
   function handleLayerClick(e: MapLayerMouseEvent) {
+    console.log(e.target.style);
     const features = mapRef.current!.queryRenderedFeatures(
       e.point as PointLike,
       {
@@ -507,7 +543,7 @@ export function ParkingMapPage() {
           zoom: zoomLevel,
         }}
         style={{width: '100%', height: '100%'}}
-        mapStyle={mapStyle}
+        mapStyle={baseMapOptions[baseMapLayerId].style.mapStyle}
         onLoad={handleOnLoad}
         onClick={handleLayerClick}
         // onZoomEnd={() =>
@@ -518,15 +554,12 @@ export function ParkingMapPage() {
         <NavigationControl position="top-left" />
         <GeolocateControl position="top-left" />
         <BasemapControl
-          layerOptions={baseMapOptions}
-          selectedLayer={baseMapLayerName}
-          setSelectedLayer={setBaseMapLayerName}
+          layerOptions={Object.values(baseMapOptions)}
+          selectedLayer={baseMapLayerId}
+          setSelectedLayer={setBaseMapLayerId}
         />
         {/* display layers */}
-        {baseMapLayerName
-          ? baseMapOptions.filter(baseMap => baseMap.id === baseMapLayerName)[0]
-              .component
-          : null}
+        {baseMapOptions[baseMapLayerId].component}
         <ParkingLayer
           selected={parkingSelectedOrHovered}
           groupSelected={parkingGroupSelected}
@@ -543,11 +576,11 @@ export function ParkingMapPage() {
         ) : null}
         {showBicycleNetwork ? (
           <BicycleNetworkLayer
-            beforeId={mapStyleRoadLabelsLayer}
+            beforeId={baseMapOptions[baseMapLayerId].style.roadLabelLayer}
             firstLayerId={bicycleNetworkFirstLayerId}
             lastLayerId={bicycleNetworkLastLayerId}
             background={
-              baseMapLayerName === baseMapOptions[0].id ? 'light' : 'dark'
+              baseMapLayerId === baseMapOptions['default'].id ? 'light' : 'dark'
             }
             theme={bicycleNetworkTheme}
           />
