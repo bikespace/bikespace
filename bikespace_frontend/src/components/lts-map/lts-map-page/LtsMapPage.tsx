@@ -11,7 +11,11 @@ import maplibregl from 'maplibre-gl';
 import {Protocol} from 'pmtiles';
 import {layers, namedFlavor} from '@protomaps/basemaps';
 
-import {defaultMapCenter, GeocoderSearch} from '@/utils/map-utils';
+import {
+  attributions,
+  defaultMapCenter,
+  GeocoderSearch,
+} from '@/utils/map-utils';
 
 import {Sidebar} from '@/components/parking-map/parking-map-page/sidebar/Sidebar';
 import {
@@ -556,7 +560,12 @@ export function LtsMapPage() {
       >
         <NavigationControl position="top-left" />
         <GeolocateControl position="top-left" />
-        <Source id="lts" type="vector" url={ltsPmtilesUrl}>
+        <Source
+          id="lts"
+          type="vector"
+          url={ltsPmtilesUrl}
+          attribution={attributions['OpenStreetMap']}
+        >
           <Layer
             {...ltsLineLayer}
             filter={ltsFilter}
