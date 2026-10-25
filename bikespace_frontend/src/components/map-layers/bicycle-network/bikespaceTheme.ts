@@ -5,11 +5,11 @@
 import type {LineLayerSpecification} from 'react-map-gl/maplibre';
 
 // BikeSpace Theme Legend SVGs
-import networkProtectedBikeSpace from '@/assets/icons/bicycle_network/network_bikespace_protected_lane.svg';
-import networkPaintedBikeSpace from '@/assets/icons/bicycle_network/network_bikespace_painted_lane.svg';
-import networkTrailBikeSpace from '@/assets/icons/bicycle_network/network_bikespace_park_multiuse_trail.svg';
-import networkUnknownBikeSpace from '@/assets/icons/bicycle_network/network_bikespace_unknown_lane.svg';
-import networkSharrowBikeSpace from '@/assets/icons/bicycle_network/network_bikespace_sharrow_unprotected.svg';
+import networkProtected from '@/assets/icons/bicycle_network/network_bikespace_protected_lane.svg';
+import networkPainted from '@/assets/icons/bicycle_network/network_bikespace_painted_lane.svg';
+import networkTrail from '@/assets/icons/bicycle_network/network_bikespace_park_multiuse_trail.svg';
+import networkUnknown from '@/assets/icons/bicycle_network/network_bikespace_unknown_lane.svg';
+import networkSharrow from '@/assets/icons/bicycle_network/network_bikespace_sharrow_unprotected.svg';
 
 const bikeLaneTypes = {
   protected: [
@@ -93,31 +93,31 @@ export const getBikeSpaceContrastOutlineLayer = (
 export const bikeSpaceStyleLegendEntries = [
   {
     key: 'protected',
-    icon: networkProtectedBikeSpace.src,
+    icon: networkProtected.src,
     alt: 'dark green line',
     description: 'Protected bike lane',
   },
   {
     key: 'painted',
-    icon: networkPaintedBikeSpace.src,
+    icon: networkPainted.src,
     alt: 'green line',
     description: 'Painted bike lane',
   },
   {
     key: 'trail',
-    icon: networkTrailBikeSpace.src,
+    icon: networkTrail.src,
     alt: 'brown line',
     description: 'Multi-use or park trail',
   },
   {
     key: 'sharrow',
-    icon: networkSharrowBikeSpace.src,
+    icon: networkSharrow.src,
     alt: 'light green dashed line',
     description: 'Unprotected bike route (e.g. sharrows)',
   },
   {
     key: 'unknown',
-    icon: networkUnknownBikeSpace.src,
+    icon: networkUnknown.src,
     alt: 'dark grey line',
     description: 'Unknown bike lane type',
   },

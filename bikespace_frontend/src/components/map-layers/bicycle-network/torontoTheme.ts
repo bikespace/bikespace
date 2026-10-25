@@ -6,7 +6,14 @@
 
 import type {LineLayerSpecification} from 'react-map-gl/maplibre';
 
-import {bikeSpaceStyleLegendEntries} from './bikespaceTheme';
+// Mississauga Theme Legend SVGs
+import networkCycleTracks from '@/assets/icons/bicycle_network/network_toronto_cycle_tracks.svg';
+import networkBikeLanes from '@/assets/icons/bicycle_network/network_toronto_bike_lanes.svg';
+import networkBikeLanesContraflow from '@/assets/icons/bicycle_network/network_toronto_bike_lanes_contraflow.svg';
+import networkUnprotectedConnectors from '@/assets/icons/bicycle_network/network_toronto_unprotected_connectors.svg';
+import networkMultiUseTrails from '@/assets/icons/bicycle_network/network_toronto_multi_use_trails.svg';
+import networkParkRoadway from '@/assets/icons/bicycle_network/network_toronto_park_roadway.svg';
+import networkUnknown from '@/assets/icons/bicycle_network/network_toronto_unknown_lane.svg';
 
 const bikeLaneTypesToronto = {
   cycleTracks: [
@@ -133,4 +140,47 @@ export const getTorontoContrastOutlineLayer = (
   },
 });
 
-export const torontoStyleLegendEntries = bikeSpaceStyleLegendEntries;
+export const torontoStyleLegendEntries = [
+  {
+    key: 'cycle_tracks',
+    icon: networkCycleTracks.src,
+    alt: 'dark blue line',
+    description: 'Cycle Tracks (protected bike lane)',
+  },
+  {
+    key: 'bike_lanes',
+    icon: networkBikeLanes.src,
+    alt: 'dark blue line with a white stripe',
+    description: 'Bike Lanes (paint only)',
+  },
+  {
+    key: 'bike_lanes_contraflow',
+    icon: networkBikeLanesContraflow.src,
+    alt: 'dark blue line with a white dotted stripe',
+    description: 'Contra-flow Bike Lanes (protected, two-way bike lane)',
+  },
+  {
+    key: 'unprotected_connectors',
+    icon: networkUnprotectedConnectors.src,
+    alt: 'light blue line with a white dotted stripe',
+    description: 'On-Street Shared Cycling Connections (e.g. sharrows)',
+  },
+  {
+    key: 'multi_use_trails',
+    icon: networkMultiUseTrails.src,
+    alt: 'orange line',
+    description: 'Multi-Use Trails',
+  },
+  {
+    key: 'park_roadway',
+    icon: networkParkRoadway.src,
+    alt: 'orange line with a white dotted stripe',
+    description: 'Park Roadway Connections',
+  },
+  {
+    key: 'unknown',
+    icon: networkUnknown.src,
+    alt: 'dark grey line',
+    description: 'Unknown Bike Lane Type',
+  },
+];

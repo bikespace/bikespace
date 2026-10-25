@@ -9,11 +9,11 @@
 import type {LineLayerSpecification} from 'react-map-gl/maplibre';
 
 // Mississauga Theme Legend SVGs
-import networkProtectedMississauga from '@/assets/icons/bicycle_network/network_mississauga_protected_lane.svg';
-import networkPaintedMississauga from '@/assets/icons/bicycle_network/network_mississauga_painted_lane.svg';
-import networkTrailMississauga from '@/assets/icons/bicycle_network/network_mississauga_park_multiuse_trail.svg';
-import networkUnknownMississauga from '@/assets/icons/bicycle_network/network_mississauga_unknown_lane.svg';
-import networkSharrowMississauga from '@/assets/icons/bicycle_network/network_mississauga_sharrow_unprotected.svg';
+import networkProtected from '@/assets/icons/bicycle_network/network_mississauga_protected_lane.svg';
+import networkPainted from '@/assets/icons/bicycle_network/network_mississauga_painted_lane.svg';
+import networkTrail from '@/assets/icons/bicycle_network/network_mississauga_park_multiuse_trail.svg';
+import networkUnknown from '@/assets/icons/bicycle_network/network_mississauga_unknown_lane.svg';
+import networkSharrow from '@/assets/icons/bicycle_network/network_mississauga_sharrow_unprotected.svg';
 
 const bikeLaneTypes = {
   protected: [
@@ -147,31 +147,31 @@ export const getMississaugaContrastOutlineLayer = (
 export const mississaugaStyleLegendEntries = [
   {
     key: 'protected',
-    icon: networkProtectedMississauga.src,
+    icon: networkProtected.src,
     alt: 'grey line with a green casing',
     description: 'Protected bike lane',
   },
   {
     key: 'painted',
-    icon: networkPaintedMississauga.src,
+    icon: networkPainted.src,
     alt: 'green line',
     description: 'Painted bike lane',
   },
   {
     key: 'trail',
-    icon: networkTrailMississauga.src,
+    icon: networkTrail.src,
     alt: 'light green line with a green casing',
     description: 'Multi-use or park trail',
   },
   {
     key: 'sharrow',
-    icon: networkSharrowMississauga.src,
+    icon: networkSharrow.src,
     alt: 'green dashed line',
     description: 'Unprotected bike route (e.g. sharrows)',
   },
   {
     key: 'unknown',
-    icon: networkUnknownMississauga.src,
+    icon: networkUnknown.src,
     alt: 'dark grey line',
     description: 'Unknown bike lane type',
   },

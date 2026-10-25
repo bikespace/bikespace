@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="48"
+   height="24"
+   viewBox="0 0 12 6"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.4 (e7c3feb1, 2024-10-09)"
+   sodipodi:docname="network_toronto.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="1.4623002"
+     inkscape:cx="115.91327"
+     inkscape:cy="49.237495"
+     inkscape:window-width="1280"
+     inkscape:window-height="771"
+     inkscape:window-x="0"
+     inkscape:window-y="401"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1">
+    <inkscape:page
+       x="0"
+       y="0"
+       width="12"
+       height="6"
+       id="page326"
+       margin="0"
+       bleed="0"
+       inkscape:label="cycle_tracks" />
+    <inkscape:page
+       x="22"
+       y="0"
+       width="12"
+       height="6"
+       id="page328"
+       inkscape:label="bike_lanes"
+       margin="0"
+       bleed="0" />
+    <inkscape:page
+       x="44"
+       y="0"
+       width="12"
+       height="6"
+       id="page330"
+       inkscape:label="bike_lanes_contraflow"
+       margin="0"
+       bleed="0" />
+    <inkscape:page
+       x="66"
+       y="0"
+       width="12"
+       height="6"
+       id="page334"
+       inkscape:export-filename="sharrow_unprotected.svg"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96"
+       inkscape:label="multi_use_trails"
+       margin="0"
+       bleed="0" />
+    <inkscape:page
+       x="88"
+       y="0"
+       width="12"
+       height="6"
+       id="page2"
+       margin="0"
+       bleed="0"
+       inkscape:label="park_roadway" />
+    <inkscape:page
+       x="110"
+       y="0"
+       width="12"
+       height="6"
+       id="page3"
+       margin="0"
+       bleed="0"
+       inkscape:label="unprotected_connectors" />
+    <inkscape:page
+       x="132"
+       y="0"
+       width="12"
+       height="6"
+       id="page332"
+       inkscape:label="unknown_lane"
+       margin="0"
+       bleed="0" />
+  </sodipodi:namedview>
+  <defs
+     id="defs2" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       style="fill:#000000;stroke:#0066b3;stroke-width:1.25;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+       d="M 1.4106768,3 H 10.589323"
+       id="path468" />
+    <path
+       style="fill:#000000;stroke:#0066b3;stroke-width:1.25;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+       d="m 23.410677,3 h 9.178646"
+       id="path468-8" />
+    <path
+       style="fill:#000000;stroke:#ffffff;stroke-width:0.263143;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+       d="M 22.915426,3 H 33.084507"
+       id="path468-8-3" />
+    <path
+       style="fill:#000000;stroke:#0066b3;stroke-width:1.25;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+       d="m 45.41071,3 h 9.178646"
+       id="path468-8-9" />
+    <path
+       style="fill:#000000;stroke:#ffffff;stroke-width:0.745321;stroke-linecap:round;stroke-dasharray:0.149063, 1.49063;stroke-dashoffset:0;stroke-opacity:1"
+       d="M 45.006389,3 H 55.048954"
+       id="path468-8-3-0" />
+    <path
+       style="fill:#000000;stroke:#f58f1f;stroke-width:1.25;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+       d="m 67.410677,3 h 9.178646"
+       id="path468-2" />
+    <path
+       style="fill:#000000;stroke:#f58f1f;stroke-width:1.25;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+       d="m 89.410677,3 h 9.178646"
+       id="path468-2-9" />
+    <path
+       style="fill:#000000;stroke:#ffffff;stroke-width:0.745321;stroke-linecap:round;stroke-dasharray:0.149063, 1.49063;stroke-dashoffset:0;stroke-opacity:1"
+       d="M 89.006389,3 H 99.048954"
+       id="path468-8-3-0-1" />
+    <path
+       style="fill:#000000;stroke:#00b2eb;stroke-width:1.25;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+       d="m 111.41067,3 h 9.17866"
+       id="path468-8-9-0" />
+    <path
+       style="fill:#000000;stroke:#ffffff;stroke-width:0.745321;stroke-linecap:round;stroke-dasharray:0.149063, 1.49063;stroke-dashoffset:0;stroke-opacity:1"
+       d="m 111.00639,3 h 10.04257"
+       id="path468-8-3-0-9" />
+    <path
+       style="fill:#000000;stroke:#2c3b42;stroke-width:1.25;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+       d="m 133.41068,3 h 9.17864"
+       id="path468-27" />
+  </g>
+</svg>
