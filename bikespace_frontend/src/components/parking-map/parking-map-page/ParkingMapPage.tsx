@@ -179,6 +179,21 @@ export function ParkingMapPage() {
     };
   }, []);
 
+  // hide style raster tiles when other raster tiles are loaded
+  useEffect(() => {
+    const styleRasterLayerId =
+      baseMapOptions[baseMapLayerId].style.satelliteRasterLayer;
+    const addedRasterLayer = baseMapOptions[baseMapLayerId].component;
+    if (styleRasterLayerId) {
+      const styleRasterLayer = mapRef.current!.getLayer(styleRasterLayerId);
+      if (styleRasterLayer && addedRasterLayer) {
+        styleRasterLayer.setLayoutProperty('visibility', 'none');
+      } else if (styleRasterLayer && !addedRasterLayer) {
+        styleRasterLayer.setLayoutProperty('visibility', 'visible');
+      }
+    }
+  }, [baseMapLayerId]);
+
   // manage state of selected features
   const [parkingGroupSelected, setParkingGroupSelected] = useState<
     MapGeoJSONFeature[]
@@ -559,7 +574,6 @@ export function ParkingMapPage() {
           setSelectedLayer={setBaseMapLayerId}
         />
         {/* display layers */}
-        {baseMapOptions[baseMapLayerId].component}
         <ParkingLayer
           selected={parkingSelectedOrHovered}
           groupSelected={parkingGroupSelected}
@@ -585,6 +599,7 @@ export function ParkingMapPage() {
             theme={bicycleNetworkTheme}
           />
         ) : null}
+        {baseMapOptions[baseMapLayerId].component}
         {/* placed here to avoid covering the sidebar */}
         <Spinner show={isMapLoading} overlay label="Loading map..." />
       </Map>

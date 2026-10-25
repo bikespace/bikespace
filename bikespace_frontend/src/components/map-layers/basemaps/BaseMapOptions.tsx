@@ -18,6 +18,11 @@ export const COTAerialNightLayer = ({beforeId}: {beforeId: string}) => (
       type="raster"
       source="cot-aerial-night"
     />
+    <Layer
+      beforeId={'cot-aerial-night'}
+      type="background"
+      paint={{'background-color': 'black'}}
+    />
   </Source>
 );
 
@@ -36,6 +41,11 @@ export const COTAerialLatestLayer = ({beforeId}: {beforeId: string}) => (
       id="cot-aerial-latest"
       type="raster"
       source="cot-aerial-latest"
+    />
+    <Layer
+      beforeId={'cot-aerial-latest'}
+      type="background"
+      paint={{'background-color': 'black'}}
     />
   </Source>
 );

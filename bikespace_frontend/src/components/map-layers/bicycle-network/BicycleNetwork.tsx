@@ -73,36 +73,36 @@ export function BicycleNetworkLayer({
       attribution="City of Toronto"
     >
       {/* If BikeSpace theme is selected */}
+      {theme === 'bikespace' ? (
+        <Layer {...bikeSpaceStyle} key={beforeId} beforeId={beforeId} />
+      ) : null}
       {theme === 'bikespace' && background === 'dark' ? (
         <Layer {...bikespaceContrastOutline} beforeId={bikeSpaceStyle.id} />
       ) : null}
-      {theme === 'bikespace' ? (
-        <Layer {...bikeSpaceStyle} beforeId={beforeId} />
-      ) : null}
 
       {/* If Mississauga theme is selected */}
+      {theme === 'mississauga' ? (
+        <Layer {...mississaugaStyle} key={beforeId} beforeId={beforeId} />
+      ) : null}
+      {theme === 'mississauga' ? (
+        <Layer {...mississaugaStyleOutline} beforeId={mississaugaStyle.id} />
+      ) : null}
       {theme === 'mississauga' && background === 'dark' ? (
         <Layer
           {...mississaugaContrastOutline}
           beforeId={mississaugaStyleOutline.id}
         />
       ) : null}
-      {theme === 'mississauga' ? (
-        <Layer {...mississaugaStyleOutline} beforeId={mississaugaStyle.id} />
-      ) : null}
-      {theme === 'mississauga' ? (
-        <Layer {...mississaugaStyle} beforeId={beforeId} />
-      ) : null}
 
       {/* If Toronto theme is selected */}
-      {theme === 'toronto' && background === 'dark' ? (
-        <Layer {...torontoContrastOutline} beforeId={torontoStyle.id} />
+      {theme === 'toronto' ? (
+        <Layer {...torontoStyleOverlay} key={beforeId} beforeId={beforeId} />
       ) : null}
       {theme === 'toronto' ? (
         <Layer {...torontoStyle} beforeId={torontoStyleOverlay.id} />
       ) : null}
-      {theme === 'toronto' ? (
-        <Layer {...torontoStyleOverlay} beforeId={beforeId} />
+      {theme === 'toronto' && background === 'dark' ? (
+        <Layer {...torontoContrastOutline} beforeId={torontoStyle.id} />
       ) : null}
     </Source>
   );
