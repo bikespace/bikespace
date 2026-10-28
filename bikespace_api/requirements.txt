@@ -8,13 +8,13 @@ better-profanity==0.7.0
 black==26.10.1
 bleach==6.4.0
 blinker==1.9.0
-certifi==2026.10.19
+certifi==2026.10.23
 cffi==1.17.1
 charset-normalizer==3.3.0
 click==8.1.3
 coverage==7.2.1
 Deprecated==1.2.14
-dnspython==2.7.0
+dnspython==2.9.0
 email_validator==2.3.0
 exceptiongroup==1.1.3
 Faker==40.1.2
