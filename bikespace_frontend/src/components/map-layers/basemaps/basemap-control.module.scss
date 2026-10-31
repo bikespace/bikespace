@@ -1,0 +1,80 @@
+@use '@/styles/variables.module.scss' as variables;
+
+.controlHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+  width: 100%;
+  font-size: 0.9rem;
+}
+
+.openCloseButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 29px;
+  min-width: 29px;
+}
+
+.baseMapOptionsPicker {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-right: 4px;
+  margin-bottom: 4px;
+}
+
+.basemapOption {
+  display: flex;
+  flex-direction: column;
+  outline: 1px solid variables.$color-primary-d50p;
+  border-radius: 6px;
+  overflow: hidden;
+
+  &:hover {
+    background-color: variables.$color-primary-10p;
+    border-color: variables.$color-primary;
+  }
+
+  &:has(input:focus-visible) {
+    box-shadow: 0 0 0 0.2rem variables.$color-primary-20p;
+    outline: none;
+  }
+
+  input[type='radio'] {
+    appearance: none;
+    -webkit-appearance: none;
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    margin: 0;
+  }
+}
+
+.basemapOptionSelected {
+  outline: 2px solid variables.$color-primary;
+  background-color: variables.$color-primary-10p;
+}
+
+.baseMapOptionLabel {
+  font-size: 0.9rem;
+}
+
+$thumbnail-width: 130px;
+
+.baseMapOptionThumbnail {
+  display: block;
+  width: $thumbnail-width;
+  object-fit: cover;
+}
+
+.baseMapOptionName {
+  max-width: $thumbnail-width;
+  display: block;
+  text-wrap: wrap;
+  text-align: center;
+  margin: 4px;
+}

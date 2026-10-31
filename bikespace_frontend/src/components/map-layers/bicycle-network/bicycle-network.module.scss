@@ -1,0 +1,62 @@
+@use '@/styles/variables.module.scss' as variables;
+
+.themeLegend {
+  margin-bottom: 4px;
+}
+
+.themeOptionList {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.themeOption {
+  display: inline-flex;
+  align-items: center;
+  height: 2rem;
+  outline: 1px solid variables.$color-primary-d50p;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  padding: 4px 8px;
+
+  &:hover {
+    background-color: variables.$color-primary-10p;
+    border-color: variables.$color-primary;
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 0.2rem variables.$color-primary-20p;
+    outline: none;
+  }
+
+  input[type='radio'] {
+    appearance: none;
+    -webkit-appearance: none;
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    margin: 0;
+  }
+
+  label {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+}
+
+.themeOptionSelected {
+  outline: 2px solid variables.$color-primary;
+  background-color: variables.$color-primary-10p;
+  color: variables.$color-secondary-dark-grey;
+
+  &:hover {
+    background-color: variables.$color-primary-20p;
+  }
+}
+
+.themeIcon {
+  height: 1.8rem;
+  width: 1.8rem;
+}

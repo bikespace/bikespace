@@ -8,7 +8,10 @@ import {
   getSpriteImageWithTextOverlay,
 } from '@/utils/map-utils';
 
-import type {CircleLayer, SymbolLayer} from 'react-map-gl/maplibre';
+import type {
+  CircleLayerSpecification,
+  SymbolLayerSpecification,
+} from 'react-map-gl/maplibre';
 import type {
   ExpressionSpecification,
   MapGeoJSONFeature,
@@ -22,7 +25,6 @@ import parkingSpriteImage from '@/public/parking_sprites/parking_sprites@2x.png'
 import parkingSpriteJSON from '@/public/parking_sprites/parking_sprites@2x.json';
 
 export const parkingSourceId = 'bicycle-parking';
-export const parkingFirstLayerId = 'bicycle-parking-dense';
 export const parkingInteractiveLayers = ['bicycle-parking'];
 
 // access=* values that indicate that bicycle parking is open to the public
@@ -32,12 +34,14 @@ interface ParkingLayerProps {
   selected: MapGeoJSONFeature[];
   groupSelected: MapGeoJSONFeature[];
   layerFilter?: FilterSpecification;
+  firstLayerId?: string;
 }
 
 export function ParkingLayer({
   selected,
   groupSelected,
   layerFilter = true,
+  firstLayerId = 'bicycle-parking-dense',
 }: ParkingLayerProps) {
   const bicycleParkingURL = process.env.DATA_BICYCLE_PARKING;
 
@@ -77,7 +81,7 @@ export function ParkingLayer({
     16.05,
     ['case', ['boolean', ['feature-state', 'groupSelected'], false], 0, 1],
   ];
-  const parkingLayer: SymbolLayer = {
+  const parkingLayer: SymbolLayerSpecification = {
     id: 'bicycle-parking',
     type: 'symbol',
     source: parkingSourceId,
@@ -126,8 +130,8 @@ export function ParkingLayer({
     16.05,
     0,
   ];
-  const parkingLayerDense: CircleLayer = {
-    id: 'bicycle-parking-dense',
+  const parkingLayerDense: CircleLayerSpecification = {
+    id: firstLayerId,
     type: 'circle',
     source: parkingSourceId,
     filter: layerFilter,
@@ -161,7 +165,7 @@ export function ParkingLayer({
       <Source
         id={parkingSourceId}
         type="geojson"
-        data={bicycleParkingURL}
+        data={bicycleParkingURL!}
         attribution={attributions['City of Toronto Open Data']}
         generateId={true}
       >
