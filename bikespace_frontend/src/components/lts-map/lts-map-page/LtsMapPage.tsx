@@ -16,6 +16,7 @@ import {
   defaultMapCenter,
   GeocoderSearch,
 } from '@/utils/map-utils';
+import {useLtsDataLastModifiedQuery} from '@/hooks/use-lts-data-last-modified-query';
 
 import {Sidebar} from '@/components/parking-map/parking-map-page/sidebar/Sidebar';
 import {
@@ -133,6 +134,7 @@ export function LtsMapPage() {
   ]);
   const mapRef = useRef<MapRef>(null);
   const resultsCardRef = useRef<HTMLDivElement>(null);
+  const {data: ltsDataLastUpdated} = useLtsDataLastModifiedQuery();
 
   const mapStyle = process.env.MAPTILER_API_KEY
     ? `https://api.maptiler.com/maps/dataviz/style.json?key=${process.env.MAPTILER_API_KEY}`
@@ -318,9 +320,11 @@ export function LtsMapPage() {
                     );
                   })}
                 </div>
-                <p>
-                  <em>Data Last Updated: 2026-05-16</em>
-                </p>
+                {ltsDataLastUpdated ? (
+                  <p>
+                    <em>Data Last Updated: {ltsDataLastUpdated}</em>
+                  </p>
+                ) : null}
               </div>
             </SidebarDetailsContent>
           </SidebarDetailsDisclosure>
