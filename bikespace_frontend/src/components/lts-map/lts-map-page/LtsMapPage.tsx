@@ -320,11 +320,9 @@ export function LtsMapPage() {
                     );
                   })}
                 </div>
-                {ltsDataLastUpdated ? (
-                  <p>
-                    <em>Data Last Updated: {ltsDataLastUpdated}</em>
-                  </p>
-                ) : null}
+                <p>
+                  <em>Data Last Updated: {ltsDataLastUpdated ?? 'unknown'}</em>
+                </p>
               </div>
             </SidebarDetailsContent>
           </SidebarDetailsDisclosure>
