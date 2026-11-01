@@ -177,6 +177,7 @@ export function ParkingMapPage() {
     useState<boolean>(false);
   const [parkingLayerFilter, setParkingLayerFilter] =
     useState<FilterSpecification>(true);
+  const [showBicycleParking, setShowBicycleParking] = useState<boolean>(true);
   const [showBicycleNetwork, setShowBicycleNetwork] = useState<boolean>(true);
   const [baseMapLayerId, setBaseMapLayerId] = useState<string>(
     baseMapOptions['default'].id
@@ -509,6 +510,20 @@ export function ParkingMapPage() {
                   justifyContent: 'space-between',
                 }}
               >
+                <h3>Bicycle Parking</h3>
+                <SidebarButton
+                  onClick={() => setShowBicycleParking(!showBicycleParking)}
+                >
+                  {showBicycleParking ? 'Hide' : 'Show'}
+                </SidebarButton>
+              </div>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                }}
+              >
                 <h3>Bicycle Network</h3>
                 <SidebarButton
                   onClick={() => setShowBicycleNetwork(!showBicycleNetwork)}
@@ -574,13 +589,15 @@ export function ParkingMapPage() {
         <GeolocateControl position="top-left" />
         <BasemapMapButton handleClick={handleOpenBasemapMenu} />
         {/* display layers */}
-        <ParkingLayer
-          selected={parkingSelectedOrHovered}
-          groupSelected={parkingGroupSelected}
-          layerFilter={parkingLayerFilter}
-          firstLayerId={parkingFirstLayerId}
-        />
-        {reportedFeatures.length > 0 ? (
+        {showBicycleParking ? (
+          <ParkingLayer
+            selected={parkingSelectedOrHovered}
+            groupSelected={parkingGroupSelected}
+            layerFilter={parkingLayerFilter}
+            firstLayerId={parkingFirstLayerId}
+          />
+        ) : null}
+        {reportedFeatures.length > 0 && showBicycleParking ? (
           <ReportedIssuesLayer
             reportedFeatures={{
               type: 'FeatureCollection',
