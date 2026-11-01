@@ -522,6 +522,7 @@ export function ParkingMapPage() {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'space-between',
+                  marginTop: '1rem',
                 }}
               >
                 <h3>Bicycle Network</h3>
