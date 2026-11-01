@@ -560,7 +560,7 @@ export function ParkingMapPage() {
               />
             </SidebarDetailsContent>
           </SidebarDetailsDisclosure>
-          <SidebarDetailsDisclosure open={!(parkingGroupSelected.length > 0)}>
+          <SidebarDetailsDisclosure>
             <summary>Legend</summary>
             <SidebarDetailsContent className={styles.legendContent}>
               <ParkingLayerLegend />
