@@ -38,7 +38,17 @@ import {
 import {
   BicycleNetworkLayer,
   BicycleNetworkLayerLegend,
-} from '@/components/map-layers/BicycleNetwork';
+  BicycleNetworkThemeSelector,
+} from '@/components/map-layers/bicycle-network';
+import {
+  BasemapOptionsList,
+  BasemapMapControl,
+  BaseMapOption,
+  COTAerialNightLayer,
+  COTAerialLatestLayer,
+  MapStyleMeta,
+  BasemapMapButton,
+} from '@/components/map-layers/basemaps';
 import {
   ReportedIssuesLayer,
   ReportedIssuesLegend,
@@ -53,15 +63,26 @@ import type {
   MapLayerMouseEvent,
   MapRef,
   PointLike,
-  MapStyle,
+  StyleSpecification,
 } from 'react-map-gl/maplibre';
 import type {Feature} from 'geojson';
+import type {BicycleNetworkTheme} from '@/components/map-layers/bicycle-network';
 
 import 'maplibre-gl/dist/maplibre-gl.css';
 import styles from './parking-map-page.module.scss';
+
+import streetmapMaptilerThumbnail from '@/assets/images/basemaps/street_map_maptiler.png';
+import satelliteMaptilerThumbnail from '@/assets/images/basemaps/satellite_maptiler.png';
+import satelliteTorontoThumbnail from '@/assets/images/basemaps/satellite_toronto.png';
+import nightTorontoThumbnail from '@/assets/images/basemaps/night_toronto.png';
+
 const parkingSpritePath = '/parking_sprites/parking_sprites';
 
-const backupMapStyle: MapStyle = {
+const bicycleNetworkFirstLayerId = 'bicycle-network-first';
+const bicycleNetworkLastLayerId = 'bicycle-network-last';
+const parkingFirstLayerId = 'parking-layer-first';
+
+const backupMapStyle: StyleSpecification = {
   version: 8,
   glyphs:
     'https://protomaps.github.io/basemaps-assets/fonts/{fontstack}/{range}.pbf',
@@ -75,6 +96,69 @@ const backupMapStyle: MapStyle = {
     },
   },
   layers: layers('protomaps', namedFlavor('light'), {lang: 'en'}),
+};
+
+const baseMapStyles: Record<string, MapStyleMeta> = {
+  maptilerStreets: {
+    mapStyle:
+      `https://api.maptiler.com/maps/streets/style.json?key=${process.env.MAPTILER_API_KEY}` as unknown as StyleSpecification,
+    roadLabelLayer: 'road_label',
+    satelliteRasterLayer: null,
+  },
+  maptilerHybrid: {
+    mapStyle:
+      `https://api.maptiler.com/maps/hybrid-v4/style.json?key=${process.env.MAPTILER_API_KEY}` as unknown as StyleSpecification,
+    roadLabelLayer: 'Road labels',
+    satelliteRasterLayer: 'Satellite',
+  },
+  backup: {
+    mapStyle: backupMapStyle,
+    roadLabelLayer: 'roads_labels_major',
+    satelliteRasterLayer: null,
+  },
+};
+
+const baseMapOptions: Record<string, BaseMapOption> = {
+  default: {
+    id: 'default',
+    name: 'Street Map',
+    thumbnail: streetmapMaptilerThumbnail,
+    getComponent: undefined,
+    style: process.env.MAPTILER_API_KEY
+      ? baseMapStyles.maptilerStreets
+      : baseMapStyles.backup,
+  },
+  maptilerAerial: {
+    id: 'maptilerAerial',
+    name: 'Satellite',
+    thumbnail: satelliteMaptilerThumbnail,
+    getComponent: undefined,
+    style: process.env.MAPTILER_API_KEY
+      ? baseMapStyles.maptilerHybrid
+      : baseMapStyles.backup,
+  },
+  cotAerialLatest: {
+    id: 'cotAerialLatest',
+    name: 'Satellite (Toronto)',
+    thumbnail: satelliteTorontoThumbnail,
+    getComponent: (beforeId: string) => (
+      <COTAerialLatestLayer beforeId={beforeId} />
+    ),
+    style: process.env.MAPTILER_API_KEY
+      ? baseMapStyles.maptilerHybrid
+      : baseMapStyles.backup,
+  },
+  cotAerialNight: {
+    id: 'cotAerialNight',
+    name: 'Night (Toronto)',
+    thumbnail: nightTorontoThumbnail,
+    getComponent: (beforeId: string) => (
+      <COTAerialNightLayer beforeId={beforeId} />
+    ),
+    style: process.env.MAPTILER_API_KEY
+      ? baseMapStyles.maptilerHybrid
+      : baseMapStyles.backup,
+  },
 };
 
 export function uniqueBy(a: Array<Object>, getKey: Function): Array<Object> {
@@ -93,17 +177,17 @@ export function ParkingMapPage() {
     useState<boolean>(false);
   const [parkingLayerFilter, setParkingLayerFilter] =
     useState<FilterSpecification>(true);
-  const [showBicycleNetwork, setShowBicycleNetwork] = useState<boolean>(true);
+  const [showBicycleParking, setShowBicycleParking] = useState<boolean>(false);
+  const [showBicycleNetwork, setShowBicycleNetwork] = useState<boolean>(false);
+  const [baseMapLayerId, setBaseMapLayerId] = useState<string>(
+    baseMapOptions['default'].id
+  );
+  const [bicycleNetworkTheme, setBicycleNetworkTheme] =
+    useState<BicycleNetworkTheme>('bikespace');
 
   const mapRef = useRef<MapRef>(null);
   const resultsCardRef = useRef<HTMLDivElement>(null);
-
-  const mapStyle = process.env.MAPTILER_API_KEY
-    ? `https://api.maptiler.com/maps/streets/style.json?key=${process.env.MAPTILER_API_KEY}`
-    : backupMapStyle;
-  const mapStyleRoadLabelsLayer = process.env.MAPTILER_API_KEY
-    ? 'road_label'
-    : 'roads_labels_major';
+  const basemapMenuRef = useRef<HTMLHeadingElement>(null);
 
   // enable backup map tiles
   useEffect(() => {
@@ -113,6 +197,21 @@ export function ParkingMapPage() {
       maplibregl.removeProtocol('pmtiles');
     };
   }, []);
+
+  // hide style raster tiles when other raster tiles are loaded
+  useEffect(() => {
+    const styleRasterLayerId =
+      baseMapOptions[baseMapLayerId].style.satelliteRasterLayer;
+    const hasAddedRasterLayer = baseMapOptions[baseMapLayerId].getComponent;
+    if (styleRasterLayerId) {
+      const styleRasterLayer = mapRef.current!.getLayer(styleRasterLayerId);
+      if (styleRasterLayer && hasAddedRasterLayer) {
+        styleRasterLayer.setLayoutProperty('visibility', 'none');
+      } else if (styleRasterLayer && !hasAddedRasterLayer) {
+        styleRasterLayer.setLayoutProperty('visibility', 'visible');
+      }
+    }
+  }, [baseMapLayerId]);
 
   // manage state of selected features
   const [parkingGroupSelected, setParkingGroupSelected] = useState<
@@ -188,6 +287,7 @@ export function ParkingMapPage() {
   }
 
   function handleLayerClick(e: MapLayerMouseEvent) {
+    console.log(e.target.style);
     const features = mapRef.current!.queryRenderedFeatures(
       e.point as PointLike,
       {
@@ -258,7 +358,10 @@ export function ParkingMapPage() {
   }
 
   function addSprite() {
-    mapRef.current!.addSprite('parking', parkingSpritePath);
+    mapRef.current!.addSprite(
+      'parking',
+      new URL(parkingSpritePath, window.location.href).href
+    );
   }
 
   // show map pins as interactive when mouse is over them
@@ -282,6 +385,21 @@ export function ParkingMapPage() {
     // after styles load
     const map: MapLibreMap = mapRef.current!.getMap(); // maplibre-gl map instance
     map?.once('idle', () => setIsMapLoading(false)); // wait for styles to load, then set loading to false
+  }
+
+  function handleOpenBasemapMenu(e: React.MouseEvent<HTMLButtonElement>) {
+    setSidebarIsOpen(true);
+    basemapMenuRef.current?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'nearest',
+    });
+    basemapMenuRef.current?.focus();
+    if (sidebarIsOpen) {
+      basemapMenuRef.current?.classList.add(styles.attentionHighlight);
+      setTimeout(() => {
+        basemapMenuRef.current?.classList.remove(styles.attentionHighlight);
+      }, 500);
+    }
   }
 
   const openSubmission = useSubmissionPrefill();
@@ -382,6 +500,57 @@ export function ParkingMapPage() {
             isMinimized={geoSearchIsMinimized}
             setIsMinimized={setGeoSearchIsMinimized}
           />
+          <SidebarDetailsDisclosure open>
+            <summary>Map Layers</summary>
+            <SidebarDetailsContent>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                }}
+              >
+                <h3>Bicycle Parking</h3>
+                <SidebarButton
+                  onClick={() => setShowBicycleParking(!showBicycleParking)}
+                >
+                  {showBicycleParking ? 'Hide' : 'Show'}
+                </SidebarButton>
+              </div>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  marginTop: '1rem',
+                }}
+              >
+                <h3>Bicycle Network</h3>
+                <SidebarButton
+                  onClick={() => setShowBicycleNetwork(!showBicycleNetwork)}
+                >
+                  {showBicycleNetwork ? 'Hide' : 'Show'}
+                </SidebarButton>
+              </div>
+              <BicycleNetworkThemeSelector
+                theme={bicycleNetworkTheme}
+                setTheme={setBicycleNetworkTheme}
+              />
+              <h3
+                ref={basemapMenuRef}
+                style={{marginTop: '1rem', marginBottom: '4px'}}
+                tabIndex={0}
+              >
+                Base Map
+              </h3>
+              <BasemapOptionsList
+                layerOptions={Object.values(baseMapOptions)}
+                selectedLayer={baseMapLayerId}
+                setSelectedLayer={setBaseMapLayerId}
+                inputName="basemap-options-sidebar"
+              />
+            </SidebarDetailsContent>
+          </SidebarDetailsDisclosure>
           <SidebarDetailsDisclosure>
             <summary>Filters</summary>
             <SidebarDetailsContent>
@@ -391,25 +560,12 @@ export function ParkingMapPage() {
               />
             </SidebarDetailsContent>
           </SidebarDetailsDisclosure>
-          <SidebarDetailsDisclosure open={!(parkingGroupSelected.length > 0)}>
+          <SidebarDetailsDisclosure>
             <summary>Legend</summary>
             <SidebarDetailsContent className={styles.legendContent}>
               <ParkingLayerLegend />
               <ReportedIssuesLegend />
-              <BicycleNetworkLayerLegend />
-            </SidebarDetailsContent>
-          </SidebarDetailsDisclosure>
-          <SidebarDetailsDisclosure>
-            <summary>Map Layers</summary>
-            <SidebarDetailsContent>
-              <SidebarButton
-                onClick={() => setShowBicycleNetwork(!showBicycleNetwork)}
-                style={{margin: '1rem 0'}}
-              >
-                {(showBicycleNetwork ? 'Hide' : 'Show') +
-                  ' ' +
-                  'Bicycle Network'}
-              </SidebarButton>
+              <BicycleNetworkLayerLegend theme={bicycleNetworkTheme} />
             </SidebarDetailsContent>
           </SidebarDetailsDisclosure>
         </div>
@@ -422,21 +578,27 @@ export function ParkingMapPage() {
           zoom: zoomLevel,
         }}
         style={{width: '100%', height: '100%'}}
-        mapStyle={mapStyle}
+        mapStyle={baseMapOptions[baseMapLayerId].style.mapStyle}
         onLoad={handleOnLoad}
         onClick={handleLayerClick}
         // onZoomEnd={() =>
         //   setZoomLevel(Math.round((mapRef.current!.getZoom() ?? 0) * 10) / 10)
         // }
       >
+        {/* controls */}
         <NavigationControl position="top-left" />
         <GeolocateControl position="top-left" />
-        <ParkingLayer
-          selected={parkingSelectedOrHovered}
-          groupSelected={parkingGroupSelected}
-          layerFilter={parkingLayerFilter}
-        />
-        {reportedFeatures.length > 0 ? (
+        <BasemapMapButton handleClick={handleOpenBasemapMenu} />
+        {/* display layers */}
+        {showBicycleParking ? (
+          <ParkingLayer
+            selected={parkingSelectedOrHovered}
+            groupSelected={parkingGroupSelected}
+            layerFilter={parkingLayerFilter}
+            firstLayerId={parkingFirstLayerId}
+          />
+        ) : null}
+        {reportedFeatures.length > 0 && showBicycleParking ? (
           <ReportedIssuesLayer
             reportedFeatures={{
               type: 'FeatureCollection',
@@ -445,8 +607,23 @@ export function ParkingMapPage() {
           />
         ) : null}
         {showBicycleNetwork ? (
-          <BicycleNetworkLayer beforeId={mapStyleRoadLabelsLayer} />
+          <BicycleNetworkLayer
+            beforeId={baseMapOptions[baseMapLayerId].style.roadLabelLayer}
+            firstLayerId={bicycleNetworkFirstLayerId}
+            lastLayerId={bicycleNetworkLastLayerId}
+            background={
+              baseMapLayerId === baseMapOptions['default'].id ? 'light' : 'dark'
+            }
+            theme={bicycleNetworkTheme}
+          />
         ) : null}
+        {baseMapOptions[baseMapLayerId].getComponent
+          ? baseMapOptions[baseMapLayerId].getComponent(
+              showBicycleNetwork
+                ? bicycleNetworkLastLayerId
+                : baseMapOptions[baseMapLayerId].style.roadLabelLayer
+            )
+          : null}
         {/* placed here to avoid covering the sidebar */}
         <Spinner show={isMapLoading} overlay label="Loading map..." />
       </Map>

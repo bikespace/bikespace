@@ -32,6 +32,10 @@ jest.mock('next/navigation', () => ({
   }),
 }));
 
+jest.mock('@uidotdev/usehooks', () => ({
+  useClickAway: jest.fn(),
+}));
+
 describe('uniqueBy', () => {
   test('uniqueBy returns a Set of unique objects based on comparing the value returned by a custom function', () => {
     interface TestObject {

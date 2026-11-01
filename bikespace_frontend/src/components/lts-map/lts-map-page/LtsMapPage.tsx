@@ -26,10 +26,10 @@ import {
 import {SidebarButton} from '@/components/shared-ui/sidebar-button';
 
 import type {
-  LineLayer,
+  LineLayerSpecification,
   MapLayerMouseEvent,
   MapRef,
-  MapStyle,
+  StyleSpecification,
 } from 'react-map-gl/maplibre';
 import type {FilterSpecification, MapGeoJSONFeature} from 'maplibre-gl';
 
@@ -47,7 +47,7 @@ function ensurePmtilesProtocol() {
   pmtilesProtocolAdded = true;
 }
 
-const backupMapStyle: MapStyle = {
+const backupMapStyle: StyleSpecification = {
   version: 8,
   glyphs:
     'https://protomaps.github.io/basemaps-assets/fonts/{fontstack}/{range}.pbf',
@@ -66,7 +66,7 @@ const backupMapStyle: MapStyle = {
 const ltsPmtilesUrl = `pmtiles://${process.env.DATA_LEVEL_OF_TRAFFIC_STRESS}`;
 const ltsSourceLayer = 'lts_filtered_1_4';
 
-const ltsLineLayer: LineLayer = {
+const ltsLineLayer: LineLayerSpecification = {
   id: 'lts-lines',
   type: 'line',
   source: 'lts',
@@ -95,7 +95,7 @@ const ltsLineLayer: LineLayer = {
   },
 };
 
-const ltsHitLayer: LineLayer = {
+const ltsHitLayer: LineLayerSpecification = {
   id: 'lts-lines-hit',
   type: 'line',
   source: 'lts',
@@ -107,7 +107,7 @@ const ltsHitLayer: LineLayer = {
   },
 };
 
-const ltsSelectedLayer: LineLayer = {
+const ltsSelectedLayer: LineLayerSpecification = {
   id: 'lts-lines-selected',
   type: 'line',
   source: 'lts-selected',
