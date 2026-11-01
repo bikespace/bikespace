@@ -177,8 +177,8 @@ export function ParkingMapPage() {
     useState<boolean>(false);
   const [parkingLayerFilter, setParkingLayerFilter] =
     useState<FilterSpecification>(true);
-  const [showBicycleParking, setShowBicycleParking] = useState<boolean>(true);
-  const [showBicycleNetwork, setShowBicycleNetwork] = useState<boolean>(true);
+  const [showBicycleParking, setShowBicycleParking] = useState<boolean>(false);
+  const [showBicycleNetwork, setShowBicycleNetwork] = useState<boolean>(false);
   const [baseMapLayerId, setBaseMapLayerId] = useState<string>(
     baseMapOptions['default'].id
   );

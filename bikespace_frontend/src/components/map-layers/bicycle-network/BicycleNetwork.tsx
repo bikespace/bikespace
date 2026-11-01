@@ -152,7 +152,7 @@ export function BicycleNetworkThemeSelector({
               alt=""
               className={styles.themeIcon}
             />
-            BikeSpace
+            Theme A
           </label>
         </div>
         <div
@@ -175,7 +175,7 @@ export function BicycleNetworkThemeSelector({
               alt=""
               className={styles.themeIcon}
             />
-            Mississauga
+            Theme B
           </label>
         </div>
         <div
@@ -198,7 +198,7 @@ export function BicycleNetworkThemeSelector({
               alt=""
               className={styles.themeIcon}
             />
-            Toronto
+            Theme C
           </label>
         </div>
       </div>
