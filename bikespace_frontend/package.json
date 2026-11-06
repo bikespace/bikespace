@@ -57,12 +57,10 @@
     "remark-gfm": "^4.0.1",
     "sass": "^1.90.0",
     "serve": "^14.2.6",
-    "sharp": "^0.33.5",
     "zod": "^3.25.76",
     "zustand": "^4.5.7"
   },
   "devDependencies": {
-    "@faker-js/faker": "^8.4.1",
     "@jest/globals": "^29.7.0",
     "@playwright/test": "^1.56.1",
     "@testing-library/jest-dom": "^6.8.0",
@@ -89,5 +87,9 @@
     "ts-jest": "^29.4.1",
     "ts-node": "^10.9.2",
     "typescript": "5.9.3"
+  },
+  "overrides": {
+    "compression": "^1.8.2",
+    "tmp": "^0.2.6"
   }
 }
