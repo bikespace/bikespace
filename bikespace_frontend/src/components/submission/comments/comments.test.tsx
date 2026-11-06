@@ -1,6 +1,5 @@
 import userEvent from '@testing-library/user-event';
 import {render, screen} from '@testing-library/react';
-import {faker} from '@faker-js/faker';
 import {FormProvider, useForm} from 'react-hook-form';
 
 import {SubmissionSchema} from '../submission-form/schema';
@@ -35,7 +34,7 @@ describe('Comments', () => {
   test('Dispatch action should be triggered when user types', async () => {
     render(<MockComments />);
 
-    const text = faker.string.alpha();
+    const text = 'x';
     const textarea = screen.getByRole('textbox');
 
     await userEvent.type(textarea, text);
