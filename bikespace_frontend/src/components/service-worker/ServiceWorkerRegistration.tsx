@@ -2,6 +2,9 @@
 
 import {useEffect} from 'react';
 
+// loaded here so the install prompt is captured on every page, before hydration
+import '@/hooks/use-install-prompt';
+
 const trafficStressUrl = process.env.DATA_LEVEL_OF_TRAFFIC_STRESS ?? '';
 
 function buildServiceWorkerPath() {

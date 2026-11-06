@@ -1,0 +1,99 @@
+@use '@/styles/variables.module.scss' as variables;
+
+$control-min-height: 3.25rem;
+
+// Nothing to show until hydration, so reserve space only where the section is
+// likely to appear. This must never hide a mode that has content.
+.installApp[data-install-mode='pending'] {
+  display: none;
+
+  @media (pointer: coarse) and (display-mode: browser) {
+    display: block;
+    min-height: $control-min-height;
+  }
+}
+
+.installApp {
+  .installButton,
+  summary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+
+    width: 100%;
+    min-height: $control-min-height;
+    padding: 0.5rem 1rem;
+
+    border: 2px solid black;
+    border-radius: 4px;
+    font: inherit;
+    text-align: center;
+    cursor: pointer;
+
+    &:hover {
+      border-color: variables.$color-primary;
+    }
+
+    &:focus-visible {
+      outline: 2px solid variables.$color-primary-d50p;
+      outline-offset: 2px;
+    }
+  }
+
+  .installButton {
+    background: none;
+    color: inherit;
+  }
+
+  summary {
+    // the marker is a pseudo-element so that summary stays the click target
+    list-style: none;
+    &::-webkit-details-marker {
+      display: none;
+    }
+    &::after {
+      content: '';
+      flex: none;
+      width: 0.5rem;
+      height: 0.5rem;
+      margin-top: -0.25rem;
+      border-right: 2px solid currentColor;
+      border-bottom: 2px solid currentColor;
+      transform: rotate(45deg);
+    }
+  }
+
+  details[open] summary::after {
+    margin-top: 0.25rem;
+    transform: rotate(-135deg);
+  }
+
+  .installSteps {
+    margin: 0.5rem 0 0 0;
+    padding: 1rem;
+    border-radius: 4px;
+    background-color: variables.$color-primary-10p;
+
+    p,
+    ol {
+      margin-bottom: 0;
+    }
+
+    li {
+      margin-bottom: 0.5rem;
+      text-indent: 0;
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    .shareIcon {
+      display: inline-block;
+      width: 1.25rem;
+      height: 1.25rem;
+      margin-bottom: 0;
+      vertical-align: text-bottom;
+    }
+  }
+}
