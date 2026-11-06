@@ -1,22 +1,25 @@
 {
-  "name": "Bikespace",
-  "short_name": "Bikespace",
-  "description": "Bikespace - Toronto's bike parking app",
+  "id": "/",
+  "name": "BikeSpace",
+  "short_name": "BikeSpace",
+  "description": "BikeSpace - Toronto's bike parking app",
+  "start_url": "/",
+  "scope": "/",
   "icons": [
     {
       "src": "/web-app-manifest-192x192.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "maskable"
+      "purpose": "any"
     },
     {
       "src": "/web-app-manifest-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "maskable"
+      "purpose": "any"
     }
   ],
-  "theme_color": "#ffffff",
+  "theme_color": "#136329",
   "background_color": "#ffffff",
   "display": "standalone"
 }

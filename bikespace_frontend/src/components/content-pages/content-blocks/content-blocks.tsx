@@ -2,6 +2,8 @@
 
 import React from 'react';
 
+import {InstallApp} from '../install-app';
+
 import styles from './content-blocks.module.scss';
 
 function HeroBlock({
@@ -54,6 +56,7 @@ function HeroBlock({
             Reported bike theft map
           </a>
         </div>
+        <InstallApp />
       </div>
       <div style={{flex: '1 1 auto'}}>
         <img src={imageSrc} className={styles.heroImage} alt={imageAlt}></img>
