@@ -13,7 +13,8 @@ export const submissionSchema = z.object({
     longitude: z.number(),
   }),
   parkingTime: z.object({
-    date: z.date(),
+    // Clearing the datetime-local input gives an Invalid Date
+    date: z.date({error: 'Please enter a valid date and time.'}),
     parkingDuration: z.nativeEnum(ParkingDuration),
   }),
   comments: z.string(),

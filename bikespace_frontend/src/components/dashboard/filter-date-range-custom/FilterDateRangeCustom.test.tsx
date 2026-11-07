@@ -133,4 +133,15 @@ describe('FilterDateRangeCustom', () => {
 
     expect(submitBtn).toBeDisabled();
   });
+
+  test('clearing a date input shows a required message', async () => {
+    render(<FilterDateRangeCustom />);
+
+    const user = userEvent.setup();
+    const startDateInput = screen.getByLabelText('Start date:');
+
+    await user.clear(startDateInput);
+
+    expect(await screen.findByText('Required')).toBeInTheDocument();
+  });
 });
