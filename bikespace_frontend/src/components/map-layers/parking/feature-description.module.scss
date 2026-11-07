@@ -84,6 +84,94 @@
   }
 }
 
+.clusterMembers {
+  margin-top: 8px;
+  font-size: 0.9rem;
+  background-color: $color-secondary-light-grey;
+  border-radius: 4px;
+  padding: 4px;
+}
+
+.clusterMembersTitle {
+  margin: 0 0 4px;
+}
+
+.clusterMembersList {
+  margin-top: 4px;
+}
+
+.clusterMembersDiagram {
+  display: block;
+  margin: 4px auto 8px;
+}
+
+.diagramCompass {
+  font-size: 9px;
+  fill: $color-secondary-med-grey;
+}
+
+.diagramCenter {
+  fill: $color-secondary-med-grey;
+}
+
+.diagramMemberGroup {
+  cursor: pointer;
+
+  &:hover .diagramMember,
+  &:focus .diagramMember {
+    fill: $color-primary-d20p;
+  }
+}
+
+.diagramMember {
+  fill: $color-primary;
+  stroke: white;
+  stroke-width: 1.5px;
+}
+
+.diagramMemberLabel {
+  font-size: 10px;
+  font-weight: bold;
+  fill: white;
+  pointer-events: none;
+}
+
+.clusterMembersLegend {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 0 0 8px;
+  padding: 0;
+  list-style: none;
+  font-size: 0.8rem;
+  color: $color-secondary-med-grey;
+
+  li {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+}
+
+.legendSwatchCenter,
+.legendSwatchMember {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.legendSwatchCenter {
+  background-color: $color-secondary-med-grey;
+}
+
+.legendSwatchMember {
+  background-color: $color-primary;
+  border: 1.5px solid white;
+  outline: 1px solid $color-secondary-med-light-grey;
+}
+
 .linkedReports {
   margin-top: 8px;
   font-size: 0.9rem;
@@ -94,6 +182,48 @@
   h4 {
     margin-bottom: 4px;
   }
+}
+
+.linkedReportsGroup {
+  padding: 2px 6px;
+  border-radius: 0 4px 4px 0;
+  border-left: 4px solid $color-secondary-med-light-grey;
+  background-color: rgba(255, 255, 255, 0.5);
+
+  &:not(:last-child) {
+    margin-bottom: 8px;
+  }
+
+  h5 {
+    margin: 4px 0;
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: $color-secondary-med-grey;
+    text-transform: uppercase;
+  }
+}
+
+.linkedReportsGroupAttributed {
+  border-left-color: $color-primary;
+
+  h5 {
+    color: $color-primary-d20p;
+  }
+}
+
+.linkedReportsGroupGeneral {
+  border-left-color: $color-secondary-orange;
+
+  h5 {
+    color: $color-secondary-orange;
+  }
+}
+
+.linkedReportMemberTag {
+  margin: 4px 0 0;
+  font-size: 0.75rem;
+  font-weight: bold;
+  color: $color-primary-d20p;
 }
 
 .linkedReport {

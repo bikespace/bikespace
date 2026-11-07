@@ -8,6 +8,11 @@ next-env.d.ts
 
 .DS_Store
 .swc
+
+# local-only env overrides (e.g. for manual testing), never committed
+.env*.local
+/public/test-data/
+/public/real-data-test/
 /test-results/
 /playwright-report/
 /blob-report/
