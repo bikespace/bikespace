@@ -12,6 +12,7 @@ export const layout = {
 
 export const config = {
   displaylogo: false,
+  showSendToCloud: false, // plotly.js 4 shows this button by default; it uploads chart data to cloud.plotly.com
   modeBarButtonsToRemove: [
     'zoom2d',
     'pan2d',

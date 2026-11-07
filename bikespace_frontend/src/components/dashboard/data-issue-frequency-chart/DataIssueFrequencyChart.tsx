@@ -71,7 +71,6 @@ function DataIssueFrequencyChart({
           pad: {l: 4},
         },
         yaxis: {
-          //@ts-expect-error labelalias attribute is present
           labelalias: issueLabels,
           fixedrange: true, // prevent user zoom
         },
