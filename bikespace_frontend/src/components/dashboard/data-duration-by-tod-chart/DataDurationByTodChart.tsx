@@ -1,6 +1,6 @@
 import React, {useCallback, useMemo, useRef} from 'react';
 import Plotly, {PlotParams} from 'react-plotly.js';
-import {Annotations} from 'plotly.js-dist-min';
+import {Annotation} from 'plotly.js-dist-min';
 import {DateTime, Interval} from 'luxon';
 
 import {layout, config} from '@/config/plotly';
@@ -39,7 +39,7 @@ function DataDurationByTodChart({
     });
   }, [submissions]);
 
-  const annotations = useMemo<Partial<Annotations>[]>(() => {
+  const annotations = useMemo<Partial<Annotation>[]>(() => {
     return data
       .map((dArray, i) => {
         return dArray.map((_, j) => ({
@@ -83,7 +83,6 @@ function DataDurationByTodChart({
           pad: {l: 4},
         },
         yaxis: {
-          //@ts-expect-error labelalias attribute is present
           labelalias: durationLabels,
           automargin: true,
           fixedrange: true, // prevent user zoom
