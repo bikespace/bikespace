@@ -26,6 +26,6 @@ describe('submissionSchema', () => {
       result.error?.issues
         .filter(issue => issue.path.join('.') === 'parkingTime.date')
         .map(issue => issue.message)
-    ).toEqual(['Please enter a valid date and time.']);
+    ).toEqual(['Date and time are required.']);
   });
 });

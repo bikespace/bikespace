@@ -26,7 +26,10 @@ export const Time = () => {
         name="parkingTime.date"
         value={convertToDateTimeLocalString(dateTime)}
         onChange={e => {
-          setValue('parkingTime.date', new Date(e.target.value));
+          // Validate on change so clearing the date shows the required message
+          setValue('parkingTime.date', new Date(e.target.value), {
+            shouldValidate: true,
+          });
         }}
         data-umami-event="date-time-dropdown"
       />
