@@ -1,8 +1,11 @@
-import {render, screen, fireEvent, act} from '@testing-library/react';
+import {render, screen, fireEvent, act, waitFor} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {FormProvider, useForm} from 'react-hook-form';
 
-import {SubmissionSchema} from '../submission-form/schema';
+import {
+  SubmissionSchema,
+  submissionSchemaResolver,
+} from '../submission-form/schema';
 
 import {ParkingDuration} from '@/interfaces/Submission';
 
@@ -16,6 +19,7 @@ const MockForm = () => {
         parkingDuration: ParkingDuration.Minutes,
       },
     },
+    resolver: submissionSchemaResolver,
   });
 
   return (
@@ -61,17 +65,41 @@ describe('Time', () => {
     expect(radio).toBeChecked();
   });
 
-  test('Changing parking time correctly updates state', () => {
+  test('Changing parking time correctly updates state', async () => {
     render(<MockForm />);
 
     const inputDate = '2024-06-17T00:00';
 
     const dateTime = screen.getByLabelText('When did this happen?');
 
-    act(() => {
+    await act(async () => {
       fireEvent.change(dateTime, {target: {value: inputDate}});
     });
 
     expect(dateTime).toHaveValue(inputDate);
+  });
+
+  test('Clearing the date shows a required message until a date is entered', async () => {
+    render(<MockForm />);
+
+    const dateTime = screen.getByLabelText('When did this happen?');
+
+    await act(async () => {
+      fireEvent.change(dateTime, {target: {value: ''}});
+    });
+
+    expect(
+      await screen.findByText('Date and time are required.')
+    ).toBeInTheDocument();
+
+    await act(async () => {
+      fireEvent.change(dateTime, {target: {value: '2024-06-17T00:00'}});
+    });
+
+    await waitFor(() =>
+      expect(
+        screen.queryByText('Date and time are required.')
+      ).not.toBeInTheDocument()
+    );
   });
 });

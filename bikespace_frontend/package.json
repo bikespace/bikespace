@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "@hookform/error-message": "^2.0.1",
-    "@hookform/resolvers": "^3.10.0",
+    "@hookform/resolvers": "^7.0.3",
     "@mdx-js/loader": "^3.1.0",
     "@mdx-js/react": "^3.1.0",
     "@next/mdx": "^14.2.32",
@@ -58,7 +58,7 @@
     "remark-gfm": "^4.0.1",
     "sass": "^1.90.0",
     "serve": "^14.2.6",
-    "zod": "^3.25.76",
+    "zod": "^4.6.7",
     "zustand": "^4.5.7"
   },
   "devDependencies": {
