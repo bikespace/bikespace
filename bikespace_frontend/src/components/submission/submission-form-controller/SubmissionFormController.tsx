@@ -1,11 +1,17 @@
 import {Route} from 'next';
 import {useRouter} from 'next/navigation';
+import {useWatch} from 'react-hook-form';
 
-import {useSubmissionFormContext} from '../submission-form/schema';
+import {
+  submissionSchema,
+  useSubmissionFormContext,
+} from '../submission-form/schema';
 
 import {FormOrder, formOrder} from '../constants';
 
 import styles from './submission-form-controller.module.scss';
+
+type SchemaStep = keyof typeof submissionSchema.shape;
 
 interface SubmissionFormControllerProps {
   step: number;
@@ -19,9 +25,20 @@ export function SubmissionFormController({
   const router = useRouter();
 
   const {
+    control,
     trigger,
-    formState: {isSubmitted, isSubmitting, isValid, isDirty},
+    formState: {isSubmitted, isSubmitting},
   } = useSubmissionFormContext();
+
+  // Only validate the current step's field, so an invalid value on a later
+  // step (e.g. a cleared date) doesn't disable Next on earlier steps.
+  const values = useWatch({control});
+  const currentStep = formOrder[step];
+  const isStepValid =
+    currentStep === 'summary' ||
+    submissionSchema.shape[currentStep as SchemaStep].safeParse(
+      values[currentStep as SchemaStep]
+    ).success;
 
   return (
     <div className={styles.formController}>
@@ -65,7 +82,7 @@ export function SubmissionFormController({
               if (isValid) setStep(step + 1);
             }
           }}
-          disabled={!isDirty || !isValid}
+          disabled={!isStepValid}
           data-umami-event={`next-button-from-${formOrder[step]}`}
         >
           Next
