@@ -6,7 +6,11 @@ import {useLtsDataLastModifiedQuery} from '@/hooks/use-lts-data-last-modified-qu
 jest.mock('@/hooks/use-lts-data-last-modified-query', () => ({
   useLtsDataLastModifiedQuery: jest.fn(),
 }));
-jest.mock('maplibre-gl', () => ({addProtocol: jest.fn()}));
+jest.mock('maplibre-gl', () => ({
+  addProtocol: jest.fn(),
+  setWorkerUrl: jest.fn(),
+  getVersion: jest.fn(() => 'test'),
+}));
 jest.mock('pmtiles', () => ({Protocol: jest.fn()}));
 jest.mock('@protomaps/basemaps', () => ({
   layers: () => [],

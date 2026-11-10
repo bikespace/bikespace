@@ -111,6 +111,9 @@ const config = {
     // ...
     '^@/(.*)$': '<rootDir>/src/$1',
     'react-leaflet': '<rootDir>/__test__/mocks/react-leaflet.jsx',
+    '^maplibre-gl$': '<rootDir>/__test__/mocks/maplibre-gl.ts',
+    // supercluster's package entry is ESM only; use its bundled UMD build
+    '^supercluster$': '<rootDir>/node_modules/supercluster/dist/supercluster.js',
   },
 
   // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader

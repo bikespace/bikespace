@@ -8,7 +8,10 @@ import {
   getSpriteImageWithTextOverlay,
 } from '@/utils/map-utils';
 
-import type {CircleLayer, SymbolLayer} from 'react-map-gl/maplibre';
+import type {
+  CircleLayerSpecification,
+  SymbolLayerSpecification,
+} from 'react-map-gl/maplibre';
 import type {
   ExpressionSpecification,
   MapGeoJSONFeature,
@@ -39,7 +42,7 @@ export function ParkingLayer({
   groupSelected,
   layerFilter = true,
 }: ParkingLayerProps) {
-  const bicycleParkingURL = process.env.DATA_BICYCLE_PARKING;
+  const bicycleParkingURL = process.env.DATA_BICYCLE_PARKING!;
 
   const {current: map} = useMap();
 
@@ -77,7 +80,7 @@ export function ParkingLayer({
     16.05,
     ['case', ['boolean', ['feature-state', 'groupSelected'], false], 0, 1],
   ];
-  const parkingLayer: SymbolLayer = {
+  const parkingLayer: SymbolLayerSpecification = {
     id: 'bicycle-parking',
     type: 'symbol',
     source: parkingSourceId,
@@ -126,7 +129,7 @@ export function ParkingLayer({
     16.05,
     0,
   ];
-  const parkingLayerDense: CircleLayer = {
+  const parkingLayerDense: CircleLayerSpecification = {
     id: 'bicycle-parking-dense',
     type: 'circle',
     source: parkingSourceId,
