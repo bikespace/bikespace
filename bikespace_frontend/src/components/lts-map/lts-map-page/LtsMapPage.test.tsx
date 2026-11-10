@@ -1,5 +1,5 @@
 import React from 'react';
-import {render, screen} from '@testing-library/react';
+import {act, render, screen} from '@testing-library/react';
 import {LtsMapPage} from './LtsMapPage';
 import {useLtsDataLastModifiedQuery} from '@/hooks/use-lts-data-last-modified-query';
 
@@ -21,16 +21,30 @@ jest.mock('@/utils/map-utils', () => ({
   defaultMapCenter: {longitude: -79.4, latitude: 43.6},
   GeocoderSearch: () => null,
 }));
+// filled in by the react-map-gl mock below when the page renders
+const mockMapProps: {onClick?: (event: unknown) => void} = {};
+const mockSourceData: unknown[] = [];
+
 jest.mock('react-map-gl/maplibre', () => {
   const React = jest.requireActual('react');
   return {
     __esModule: true,
     default: React.forwardRef(
-      ({children}: {children: React.ReactNode}, _ref: unknown) => (
-        <div>{children}</div>
-      )
+      (
+        {
+          children,
+          onClick,
+        }: {children: React.ReactNode; onClick: (event: unknown) => void},
+        _ref: unknown
+      ) => {
+        mockMapProps.onClick = onClick;
+        return <div>{children}</div>;
+      }
     ),
-    Source: ({children}: {children: React.ReactNode}) => <div>{children}</div>,
+    Source: ({children, data}: {children: React.ReactNode; data?: unknown}) => {
+      if (data) mockSourceData.push(data);
+      return <div>{children}</div>;
+    },
     Layer: () => null,
     GeolocateControl: () => null,
     NavigationControl: () => null,
@@ -59,3 +73,36 @@ it.each([null, undefined])(
     expect(screen.getByText('Data Last Updated: unknown')).toBeInTheDocument();
   }
 );
+
+it('passes plain-object properties to the selected segment source', () => {
+  mockLastModified(null);
+  Element.prototype.scrollIntoView = jest.fn(); // not implemented in jsdom
+  render(<LtsMapPage />);
+
+  // maplibre-gl v6 returns vector tile feature properties without a prototype
+  const properties = Object.assign(Object.create(null), {
+    lts: 3,
+    name: 'Bloor Street West',
+  });
+  const feature = {
+    properties,
+    geometry: {
+      type: 'LineString',
+      coordinates: [
+        [-79.4, 43.66],
+        [-79.39, 43.66],
+      ],
+    },
+  };
+  act(() =>
+    mockMapProps.onClick!({
+      point: {x: 0, y: 0},
+      target: {queryRenderedFeatures: () => [feature]},
+    })
+  );
+
+  expect(screen.getByText('Bloor Street West')).toBeInTheDocument();
+  // react-map-gl's Source diffing calls hasOwnProperty on these properties
+  const data = mockSourceData.at(-1) as {properties: object};
+  expect(Object.getPrototypeOf(data.properties)).toBe(Object.prototype);
+});

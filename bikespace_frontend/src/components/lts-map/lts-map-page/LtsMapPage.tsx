@@ -1,6 +1,6 @@
 'use client';
 
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
 import Map, {
   GeolocateControl,
   Layer,
@@ -213,14 +213,20 @@ export function LtsMapPage() {
   const selectedFeatureEntries = selectedFeatureProperties
     ? Object.entries(selectedFeatureProperties).filter(([key]) => key !== 'lts')
     : [];
-  const selectedFeatureGeoJSON =
-    selectedFeature?.geometry === undefined
-      ? null
-      : {
-          type: 'Feature' as const,
-          properties: selectedFeature.properties ?? {},
-          geometry: selectedFeature.geometry,
-        };
+  const selectedFeatureGeoJSON = useMemo(
+    () =>
+      selectedFeature?.geometry === undefined
+        ? null
+        : {
+            type: 'Feature' as const,
+            // maplibre-gl v6 creates vector tile feature properties with
+            // Object.create(null); copy them into a plain object because
+            // react-map-gl's Source prop diffing calls hasOwnProperty on them
+            properties: {...selectedFeature.properties},
+            geometry: selectedFeature.geometry,
+          },
+    [selectedFeature]
+  );
 
   return (
     <main className={styles.ltsMapPage}>
