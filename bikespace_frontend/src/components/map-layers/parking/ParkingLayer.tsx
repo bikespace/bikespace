@@ -16,6 +16,7 @@ import type {
   ExpressionSpecification,
   MapGeoJSONFeature,
   FilterSpecification,
+  Marker as MapLibreMarker,
 } from 'maplibre-gl';
 import type {layoutOptions} from '@/utils/map-utils';
 
@@ -30,6 +31,12 @@ export const parkingInteractiveLayers = ['bicycle-parking'];
 
 // access=* values that indicate that bicycle parking is open to the public
 const publicAccessTypes = ['yes', 'permissive', ''];
+
+// maplibre-gl v6 only gives its default marker an aria-label, so label the
+// custom sprite markers ourselves (e2e tests also locate them by this label)
+function labelMarker(marker: MapLibreMarker | null) {
+  marker?.getElement().setAttribute('aria-label', 'Map marker');
+}
 
 interface ParkingLayerProps {
   selected: MapGeoJSONFeature[];
@@ -176,6 +183,7 @@ export function ParkingLayer({
         return (
           <Marker
             key={feature.id}
+            ref={labelMarker}
             latitude={lat}
             longitude={lon}
             anchor="bottom"
@@ -208,6 +216,7 @@ export function ParkingLayer({
         return (
           <Marker
             key={feature.id}
+            ref={labelMarker}
             latitude={lat}
             longitude={lon}
             anchor="bottom"
