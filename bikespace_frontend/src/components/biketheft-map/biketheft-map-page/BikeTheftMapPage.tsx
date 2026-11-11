@@ -25,6 +25,14 @@ import {BikeTheftReportCard} from './BikeTheftReportCard';
 import {BikeTheftGeocoderSearch} from './BikeTheftGeocoderSearch';
 import {BikeTheftFiltersPanel} from './BikeTheftFiltersPanel';
 import {BikeTheftLegendPanel} from './BikeTheftLegendPanel';
+import {
+  findWaterLayerId,
+  TheftRateLayer,
+} from '@/components/map-layers/TheftRate';
+import {
+  SidebarDetailsContent,
+  SidebarDetailsDisclosure,
+} from '@/components/shared-ui/sidebar-details-disclosure';
 
 // Show the zoom controls and current location
 import 'maplibre-gl/dist/maplibre-gl.css';
@@ -81,6 +89,9 @@ export function BikeTheftMapPage() {
   const [statusFilter, setStatusFilter] = useState<BikeTheftStatusFilter>(
     BikeTheftStatusFilter.All
   );
+
+  const [showTheftRate, setShowTheftRate] = useState(false);
+  const [waterLayerId, setWaterLayerId] = useState<string | undefined>();
 
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
@@ -271,8 +282,23 @@ export function BikeTheftMapPage() {
             onLocationChange={setLocationFilter}
           />
 
+          {/* --- Map layers --- */}
+          <SidebarDetailsDisclosure open>
+            <summary>Map Layers</summary>
+            <SidebarDetailsContent>
+              <SidebarButton
+                onClick={() => setShowTheftRate(!showTheftRate)}
+                style={{margin: '1rem 0'}}
+              >
+                {(showTheftRate ? 'Hide' : 'Show') +
+                  ' ' +
+                  'Bicycle Theft Rate (beta)'}
+              </SidebarButton>
+            </SidebarDetailsContent>
+          </SidebarDetailsDisclosure>
+
           {/* --- Legend --- */}
-          <BikeTheftLegendPanel />
+          <BikeTheftLegendPanel showTheftRate={showTheftRate} />
         </div>
       </Sidebar>
 
@@ -286,9 +312,11 @@ export function BikeTheftMapPage() {
         }}
         style={{width: '100%', height: '100%'}}
         mapStyle={mapStyle}
-        onLoad={() => {
+        onLoad={event => {
           if (process.env.NODE_ENV !== 'production')
             console.log('stolen map loaded');
+          // overlays placed under the water layer don't tint lakes and rivers
+          setWaterLayerId(findWaterLayerId(event.target));
         }}
         onClick={handleMapClick}
         onError={event => {
@@ -301,6 +329,9 @@ export function BikeTheftMapPage() {
         <NavigationControl position="top-left" />
         <GeolocateControl position="top-left" />
 
+        {showTheftRate ? (
+          <TheftRateLayer beforeId={waterLayerId ?? mapStyleRoadLabelsLayer} />
+        ) : null}
         <BikeTheftLayer
           reports={filteredReports}
           selectedReports={selectedReports}

@@ -65,4 +65,9 @@ h2.cardHeading {
   h3 {
     padding-top: 4px;
   }
+
+  // extra space between stacked legend sections
+  > * + h3 {
+    margin-top: 0.9rem;
+  }
 }

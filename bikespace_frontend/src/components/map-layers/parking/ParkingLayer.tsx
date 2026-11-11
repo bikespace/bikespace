@@ -32,13 +32,17 @@ interface ParkingLayerProps {
   selected: MapGeoJSONFeature[];
   groupSelected: MapGeoJSONFeature[];
   layerFilter?: FilterSpecification;
+  visible?: boolean;
 }
 
 export function ParkingLayer({
   selected,
   groupSelected,
   layerFilter = true,
+  visible = true,
 }: ParkingLayerProps) {
+  // hide via layout rather than unmounting so the layers stay queryable on click
+  const visibility = visible ? 'visible' : 'none';
   const bicycleParkingURL = process.env.DATA_BICYCLE_PARKING;
 
   const {current: map} = useMap();
@@ -83,6 +87,7 @@ export function ParkingLayer({
     source: parkingSourceId,
     filter: layerFilter,
     layout: {
+      visibility,
       'icon-image': [
         'match',
         ['to-string', ['get', 'access']],
@@ -131,6 +136,7 @@ export function ParkingLayer({
     type: 'circle',
     source: parkingSourceId,
     filter: layerFilter,
+    layout: {visibility},
     paint: {
       'circle-color': [
         'match',

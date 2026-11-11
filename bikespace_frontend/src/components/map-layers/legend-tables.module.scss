@@ -13,4 +13,10 @@
   td {
     vertical-align: middle;
   }
+  // fixed-width symbol column so descriptions line up across stacked legend tables
+  th:first-child,
+  td:first-child {
+    width: 3.5rem;
+    text-align: center;
+  }
 }
