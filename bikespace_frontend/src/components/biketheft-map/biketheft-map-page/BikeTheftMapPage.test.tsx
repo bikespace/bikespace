@@ -172,6 +172,7 @@ jest.mock('@protomaps/basemaps', () => ({
   namedFlavor: jest.fn(),
 }));
 jest.mock('@/utils/map-utils', () => ({
+  attributions: jest.requireActual('@/utils/map-utils/mapUtils').attributions,
   defaultMapCenter: {longitude: -79.4, latitude: 43.6},
   GeocoderSearch: () => null,
 }));

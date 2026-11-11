@@ -57,6 +57,18 @@ def test_admin_page_submission_without_logging_in(test_client):
     default_login_page_redirect(response, soup)
 
 
+def test_admin_page_bikeparkingstatus_without_logging_in(test_client):
+    """
+    GIVEN the flask application configured for testing
+    WHEN the '/admin/bikeparkingstatus/' page is requested (GET) without logging in
+    THEN check that the response is a redirection to the login page
+    """
+    response = test_client.get("/admin/bikeparkingstatus/", follow_redirects=True)
+    soup = BeautifulSoup(response.data, "html.parser")
+
+    default_login_page_redirect(response, soup)
+
+
 def test_admin_page_roles_without_logging_in(test_client):
     """
     GIVEN the flask application configured for testing
@@ -211,6 +223,19 @@ def test_admin_submission_create_form_renders(logged_in_admin_client):
 
 
 @pytest.mark.uses_db
+def test_admin_bikeparkingstatus_accessible_as_superuser(logged_in_admin_client):
+    """
+    GIVEN a logged-in superuser
+    WHEN the admin bikeparkingstatus list page is requested
+    THEN the page loads successfully (covering the _handle_view is_accessible True branch)
+    """
+    response = logged_in_admin_client.get("/admin/bikeparkingstatus/")
+    assert response.status_code == 200
+    soup = BeautifulSoup(response.data, "html.parser")
+    assert soup.find("table")
+
+
+@pytest.mark.uses_db
 def test_admin_roles_accessible_as_superuser(logged_in_admin_client):
     """
     GIVEN a logged-in superuser
@@ -317,6 +342,7 @@ def test_allowed_pages_for_regular_users(test_client, clean_db):
         ("/admin/role/", 403),
         ("/admin/user/", 403),
         ("/admin/submission/", 403),
+        ("/admin/bikeparkingstatus/", 403),
     ]
 
     for page_url, expected_response in pages_and_expected_responses:

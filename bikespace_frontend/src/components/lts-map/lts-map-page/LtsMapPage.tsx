@@ -11,7 +11,12 @@ import maplibregl from 'maplibre-gl';
 import {Protocol} from 'pmtiles';
 import {layers, namedFlavor} from '@protomaps/basemaps';
 
-import {defaultMapCenter, GeocoderSearch} from '@/utils/map-utils';
+import {
+  attributions,
+  defaultMapCenter,
+  GeocoderSearch,
+} from '@/utils/map-utils';
+import {useLtsDataLastModifiedQuery} from '@/hooks/use-lts-data-last-modified-query';
 
 import {Sidebar} from '@/components/parking-map/parking-map-page/sidebar/Sidebar';
 import {
@@ -59,7 +64,7 @@ const backupMapStyle: MapStyle = {
 };
 
 const ltsPmtilesUrl = `pmtiles://${process.env.DATA_LEVEL_OF_TRAFFIC_STRESS}`;
-const ltsSourceLayer = 'lts_gta';
+const ltsSourceLayer = 'lts_filtered_1_4';
 
 const ltsLineLayer: LineLayer = {
   id: 'lts-lines',
@@ -129,6 +134,7 @@ export function LtsMapPage() {
   ]);
   const mapRef = useRef<MapRef>(null);
   const resultsCardRef = useRef<HTMLDivElement>(null);
+  const {data: ltsDataLastUpdated} = useLtsDataLastModifiedQuery();
 
   const mapStyle = process.env.MAPTILER_API_KEY
     ? `https://api.maptiler.com/maps/dataviz/style.json?key=${process.env.MAPTILER_API_KEY}`
@@ -315,7 +321,7 @@ export function LtsMapPage() {
                   })}
                 </div>
                 <p>
-                  <em>Data Last Updated: 2026-05-16</em>
+                  <em>Data Last Updated: {ltsDataLastUpdated ?? 'unknown'}</em>
                 </p>
               </div>
             </SidebarDetailsContent>
@@ -556,7 +562,12 @@ export function LtsMapPage() {
       >
         <NavigationControl position="top-left" />
         <GeolocateControl position="top-left" />
-        <Source id="lts" type="vector" url={ltsPmtilesUrl}>
+        <Source
+          id="lts"
+          type="vector"
+          url={ltsPmtilesUrl}
+          attribution={attributions['OpenStreetMap']}
+        >
           <Layer
             {...ltsLineLayer}
             filter={ltsFilter}
