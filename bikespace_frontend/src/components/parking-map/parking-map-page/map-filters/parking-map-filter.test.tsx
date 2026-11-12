@@ -12,25 +12,7 @@ import type {RefObject} from 'react';
 import type {MapRef} from 'react-map-gl/maplibre';
 import type {DefinedUseQueryResult} from '@tanstack/react-query';
 
-jest.mock('maplibre-gl', () => {
-  const mockMap = {
-    addControl: jest.fn(),
-    on: jest.fn(),
-    remove: jest.fn(),
-    flyTo: jest.fn(),
-    // Add other methods you use as needed
-  };
-  const mockMarker = {
-    setLngLat: jest.fn().mockReturnThis(),
-    addTo: jest.fn().mockReturnThis(),
-    remove: jest.fn(),
-  };
-  return {
-    Map: jest.fn(() => mockMap),
-    Marker: jest.fn(() => mockMarker),
-  };
-});
-
+// maplibre-gl is stubbed globally via moduleNameMapper (__test__/mocks/maplibre-gl.ts)
 const container = document.createElement('div');
 const mockMap = new Map({container});
 const mockMapRef = {

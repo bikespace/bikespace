@@ -165,11 +165,6 @@ jest.mock('@/hooks/use-bike-theft-data-query', () => {
     })),
   };
 });
-jest.mock('maplibre-gl', () => ({
-  addProtocol: jest.fn(),
-  setWorkerUrl: jest.fn(),
-  getVersion: jest.fn(() => 'test'),
-}));
 jest.mock('pmtiles', () => ({Protocol: jest.fn()}));
 jest.mock('@protomaps/basemaps', () => ({
   layers: () => [],
