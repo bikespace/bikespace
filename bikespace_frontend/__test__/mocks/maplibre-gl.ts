@@ -13,6 +13,7 @@ const mockMap = {
   on: jest.fn(),
   remove: jest.fn(),
   flyTo: jest.fn(),
+  getCenter: jest.fn(),
 };
 
 export const Map = jest.fn(() => mockMap);

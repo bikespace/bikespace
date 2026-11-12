@@ -12,37 +12,21 @@ import {GeocoderSearch} from './GeocoderSearch';
 
 import testGeoSearchResult from '@/__test__/test_data/testGeoSearchResult.json';
 
-const mockGetCenter: jest.Mock<{lng: number; lat: number} | null> = jest.fn(
-  () => ({
-    lng: defaultMapCenter.longitude,
-    lat: defaultMapCenter.latitude,
-  })
-);
-jest.mock('maplibre-gl', () => {
-  const mockMap = {
-    addControl: jest.fn(),
-    on: jest.fn(),
-    remove: jest.fn(),
-    getCenter: () => mockGetCenter(),
-    flyTo: jest.fn(),
-    // Add other methods you use as needed
-  };
-  const mockMarker = {
-    setLngLat: jest.fn().mockReturnThis(),
-    addTo: jest.fn().mockReturnThis(),
-    remove: jest.fn(),
-  };
-  return {
-    Map: jest.fn(() => mockMap),
-    Marker: jest.fn(() => mockMarker),
-  };
-});
-
+// maplibre-gl is stubbed globally via moduleNameMapper (__test__/mocks/maplibre-gl.ts)
 const container = document.createElement('div');
 const mockMap = new Map({container});
 const mockMapRef = {
   current: {...mockMap, getMap: () => mockMap},
 } as RefObject<MapRef>;
+
+const mockGetCenter = mockMap.getCenter as unknown as jest.Mock<{
+  lng: number;
+  lat: number;
+} | null>;
+mockGetCenter.mockImplementation(() => ({
+  lng: defaultMapCenter.longitude,
+  lat: defaultMapCenter.latitude,
+}));
 
 const defaultGeocoderResponse = {
   isFetching: false,
