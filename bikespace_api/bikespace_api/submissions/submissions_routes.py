@@ -12,7 +12,6 @@ from flask.views import MethodView
 from flask_security import auth_required, current_user, roles_accepted  # type: ignore
 from flask_smorest import abort
 from geojson import Feature, FeatureCollection, Point
-from marshmallow import validate
 from sqlalchemy import desc
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy_continuum import count_versions, version_class
@@ -36,11 +35,11 @@ class SubmissionSchema(ma.Schema):
     issues = ma.fields.List(
         ma.fields.Enum(IssueType, by_value=True),
         required=True,
-        validate=validate.Length(max=len(IssueType)),
+        validate=ma.validate.Length(max=len(IssueType)),
     )
     parking_duration = ma.fields.Enum(ParkingDuration, by_value=True)
     parking_time = ma.fields.AwareDateTime(format="iso", required=True)
-    comments = ma.fields.String(validate=validate.Length(max=5000))
+    comments = ma.fields.String(validate=ma.validate.Length(max=5000))
     submitted_datetime = ma.fields.AwareDateTime(
         format="iso", dump_only=True, allow_none=True
     )
@@ -54,7 +53,7 @@ class UserSchema(ma.Schema):
 
 
 class SubmissionSchemaWithVersion(SubmissionSchema):
-    version = ma.fields.Integer(dump_only=True, validate=validate.Range(min=1))
+    version = ma.fields.Integer(dump_only=True, validate=ma.validate.Range(min=1))
     version_history_url = ma.fields.Url(dump_only=True)
     user = ma.fields.Pluck(UserSchema, "username")
 
@@ -79,7 +78,9 @@ class PaginatedSubmissionsSchema(ma.Schema):
 
 class GeometryPointSchema(ma.Schema):
     type = ma.fields.Constant("Point")
-    coordinates = ma.fields.List(ma.fields.Float(), validate=validate.Length(equal=2))
+    coordinates = ma.fields.List(
+        ma.fields.Float(), validate=ma.validate.Length(equal=2)
+    )
 
 
 class SubmissionSchemaWithVersionNoGeometry(SubmissionSchemaWithVersion):
@@ -116,7 +117,7 @@ class SubmissionCreateSchema(SubmissionSchema):
 
 
 class SubmissionCreateConfirmationSchema(ma.Schema):
-    status = ma.fields.String(validate=validate.OneOf(["created", "error"]))
+    status = ma.fields.String(validate=ma.validate.OneOf(["created", "error"]))
     submission_id = ma.fields.Integer()
 
 
@@ -279,12 +280,12 @@ class SubmissionUpdateSchema(SubmissionCreateSchema):
 
 
 class SubmissionUpdateConfirmationSchema(ma.Schema):
-    status = ma.fields.String(validate=validate.OneOf(["updated", "error"]))
+    status = ma.fields.String(validate=ma.validate.OneOf(["updated", "error"]))
     submission_id = ma.fields.Integer()
 
 
 class SubmissionDeleteConfirmationSchema(ma.Schema):
-    status = ma.fields.String(validate=validate.OneOf(["deleted", "error"]))
+    status = ma.fields.String(validate=ma.validate.OneOf(["deleted", "error"]))
     submission_id = ma.fields.Integer()
 
 
@@ -398,7 +399,7 @@ def get_changeset_fields(schema: type[ma.Schema]) -> type[ma.Schema]:
     for field in parent_fields.values():
         field.allow_none = True
     changeset_fields = {
-        k: ma.fields.List(v, validate=validate.Length(equal=2))
+        k: ma.fields.List(v, validate=ma.validate.Length(equal=2))
         for k, v in parent_fields.items()  # pragma: no cover
     }
     return ma.Schema.from_dict(changeset_fields, name="SubmissionChangesetSchema")  # type: ignore
@@ -414,7 +415,7 @@ class SubmissionHistorySchema(ma.Schema):
     version_index = ma.fields.Integer(attribute="index")
     operation_description = ma.fields.Enum(OperationType)
     transaction_user = ma.fields.Integer(
-        validate=validate.Range(min=1),
+        validate=ma.validate.Range(min=1),
         allow_none=True,
         attribute="transaction.user_id",
     )
