@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from enum import Enum
 
 import sqlalchemy as sa
@@ -29,19 +29,23 @@ class BikeParkingStatus(db.Model):
         nullable=False,
     )
     label: so.Mapped[str] = so.mapped_column(sa.String, nullable=False)
-    internal_code: so.Mapped[str] = so.mapped_column(sa.String, nullable=False, unique=True)
+    internal_code: so.Mapped[str] = so.mapped_column(
+        sa.String, nullable=False, unique=True
+    )
     description: so.Mapped[str] = so.mapped_column(sa.Text, nullable=False)
     hide_by_default: so.Mapped[bool] = so.mapped_column(
         sa.Boolean, nullable=False, default=False
     )
     created_at: so.Mapped[datetime] = so.mapped_column(
-        sa.DateTime(timezone=True), nullable=False, default=lambda: datetime.now(timezone.utc)  # pragma: no cover
+        sa.DateTime(timezone=True),
+        nullable=False,
+        default=lambda: datetime.now(UTC),  # pragma: no cover
     )
     updated_at: so.Mapped[datetime] = so.mapped_column(
         sa.DateTime(timezone=True),
         nullable=False,
-        default=lambda: datetime.now(timezone.utc),  # pragma: no cover
-        onupdate=lambda: datetime.now(timezone.utc),  # pragma: no cover
+        default=lambda: datetime.now(UTC),  # pragma: no cover
+        onupdate=lambda: datetime.now(UTC),  # pragma: no cover
     )
 
     def __init__(
@@ -57,5 +61,5 @@ class BikeParkingStatus(db.Model):
         self.internal_code = internal_code
         self.description = description
         self.hide_by_default = hide_by_default
-        self.created_at = datetime.now(timezone.utc)
-        self.updated_at = datetime.now(timezone.utc)
+        self.created_at = datetime.now(UTC)
+        self.updated_at = datetime.now(UTC)

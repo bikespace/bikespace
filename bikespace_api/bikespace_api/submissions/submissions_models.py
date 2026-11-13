@@ -1,10 +1,10 @@
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from enum import Enum
-from typing import List, Optional
+from typing import Optional
 
 import sqlalchemy as sa
-import sqlalchemy.orm as so
 import sqlalchemy.dialects.postgresql as pg
+import sqlalchemy.orm as so
 from sqlalchemy_continuum import make_versioned
 from sqlalchemy_continuum.plugins import FlaskPlugin
 
@@ -41,18 +41,18 @@ class Submission(db.Model):
     id: so.Mapped[int] = so.mapped_column(primary_key=True, autoincrement=True)
     latitude: so.Mapped[float] = so.mapped_column(nullable=False)
     longitude: so.Mapped[float] = so.mapped_column(nullable=False)
-    issues: so.Mapped[List[IssueType]] = so.mapped_column(
+    issues: so.Mapped[list[IssueType]] = so.mapped_column(
         pg.ARRAY(sa.Enum(IssueType, create_constraint=False, native_enum=False)),
         nullable=False,
     )
-    parking_duration: so.Mapped[Optional[ParkingDuration]] = so.mapped_column(
+    parking_duration: so.Mapped[ParkingDuration | None] = so.mapped_column(
         sa.Enum(ParkingDuration, create_constraint=False, native_enum=False),
         nullable=True,
     )
     parking_time: so.Mapped[datetime] = so.mapped_column(
         sa.DateTime(timezone=True), nullable=False, default=datetime.now
     )
-    comments: so.Mapped[Optional[str]] = so.mapped_column(
+    comments: so.Mapped[str | None] = so.mapped_column(
         sa.Text,
         default=None,
         nullable=True,
@@ -60,7 +60,7 @@ class Submission(db.Model):
     submitted_datetime: so.Mapped[datetime] = so.mapped_column(
         sa.DateTime(timezone=True), nullable=True
     )
-    user_id: so.Mapped[Optional[int]] = so.mapped_column(
+    user_id: so.Mapped[int | None] = so.mapped_column(
         sa.ForeignKey("user.id"), index=True
     )
     user: so.Mapped[Optional["User"]] = so.relationship(back_populates="submissions")
@@ -70,7 +70,7 @@ class Submission(db.Model):
         self,
         latitude: float = None,  # type: ignore
         longitude: float = None,  # type: ignore
-        issues: List[IssueType] = None,  # type: ignore
+        issues: list[IssueType] = None,  # type: ignore
         parking_duration: ParkingDuration = None,  # type: ignore
         parking_time: datetime = None,  # type: ignore
         comments: Optional[str] = None,
@@ -82,5 +82,5 @@ class Submission(db.Model):
         self.parking_duration = parking_duration
         self.parking_time = parking_time
         self.comments = comments
-        self.submitted_datetime = datetime.now(timezone.utc)
+        self.submitted_datetime = datetime.now(UTC)
         self.user_id = user_id
