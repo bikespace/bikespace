@@ -1,5 +1,5 @@
 FROM alpine:3.24
-# supercronic pinned to v0.2.33 and verified against the published SHA1
+# supercronic pinned to v0.2.51 and verified against the published SHA1
 RUN apk add --no-cache postgresql18-client rclone restic ca-certificates tzdata curl gettext \
  && curl -fsSL -o /tmp/supercronic \
     https://github.com/aptible/supercronic/releases/download/v0.2.51/supercronic-linux-amd64 \
