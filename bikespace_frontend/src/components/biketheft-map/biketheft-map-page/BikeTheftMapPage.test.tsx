@@ -120,7 +120,7 @@ it('keeps sidebar, map, and location counts aligned after validation and combine
       'all'
     );
     expectCounts(['c'], []);
-    await user.click(screen.getByRole('button', {name: 'All', exact: true}));
+    await user.click(screen.getByRole('button', {name: 'All'}));
     expectCounts(['a', 'b', 'c', 'g'], [3]);
     await user.click(screen.getByRole('button', {name: 'Clear dates'}));
     expectCounts(['a', 'b', 'c', 'f', 'g', 'i'], [5]);
@@ -165,7 +165,6 @@ jest.mock('@/hooks/use-bike-theft-data-query', () => {
     })),
   };
 });
-jest.mock('maplibre-gl', () => ({addProtocol: jest.fn()}));
 jest.mock('pmtiles', () => ({Protocol: jest.fn()}));
 jest.mock('@protomaps/basemaps', () => ({
   layers: () => [],

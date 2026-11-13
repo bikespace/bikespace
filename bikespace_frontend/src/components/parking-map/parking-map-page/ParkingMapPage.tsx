@@ -4,7 +4,9 @@ import React, {useEffect, useMemo, useState, useRef} from 'react';
 import Map, {GeolocateControl, NavigationControl} from 'react-map-gl/maplibre';
 import {bbox as getBBox} from '@turf/bbox';
 import {featureCollection as getFeatureCollection} from '@turf/helpers';
-import maplibregl, {Marker} from 'maplibre-gl';
+import * as maplibregl from 'maplibre-gl';
+import '@/utils/map-utils/maplibre-worker';
+import {Marker} from 'maplibre-gl';
 import type {Map as MapLibreMap} from 'maplibre-gl';
 import {Protocol} from 'pmtiles';
 import {layers, namedFlavor} from '@protomaps/basemaps';
@@ -53,7 +55,7 @@ import type {
   MapLayerMouseEvent,
   MapRef,
   PointLike,
-  MapStyle,
+  StyleSpecification,
 } from 'react-map-gl/maplibre';
 import type {Feature} from 'geojson';
 
@@ -61,7 +63,7 @@ import 'maplibre-gl/dist/maplibre-gl.css';
 import styles from './parking-map-page.module.scss';
 const parkingSpritePath = '/parking_sprites/parking_sprites';
 
-const backupMapStyle: MapStyle = {
+const backupMapStyle: StyleSpecification = {
   version: 8,
   glyphs:
     'https://protomaps.github.io/basemaps-assets/fonts/{fontstack}/{range}.pbf',
@@ -258,7 +260,9 @@ export function ParkingMapPage() {
   }
 
   function addSprite() {
-    mapRef.current!.addSprite('parking', parkingSpritePath);
+    // maplibre-gl v6 rejects relative sprite URLs
+    const spriteUrl = new URL(parkingSpritePath, window.location.href).href;
+    mapRef.current!.addSprite('parking', spriteUrl);
   }
 
   // show map pins as interactive when mouse is over them

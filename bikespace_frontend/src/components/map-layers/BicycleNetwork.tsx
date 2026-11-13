@@ -1,6 +1,7 @@
 import React from 'react';
 
-import {Layer, LineLayer, Source} from 'react-map-gl/maplibre';
+import {Layer, Source} from 'react-map-gl/maplibre';
+import type {LineLayerSpecification} from 'react-map-gl/maplibre';
 
 import {attributions} from '@/utils/map-utils';
 
@@ -43,9 +44,9 @@ const bikeLaneTypes = {
 };
 
 export function BicycleNetworkLayer({beforeId}: {beforeId?: string}) {
-  const bicycleNetworkURL = process.env.DATA_BICYCLE_NETWORK;
+  const bicycleNetworkURL = process.env.DATA_BICYCLE_NETWORK!;
 
-  const bicycleLaneLayer: LineLayer = {
+  const bicycleLaneLayer: LineLayerSpecification = {
     id: 'bicycle-lanes',
     type: 'line',
     source: 'bicycle-lanes',
@@ -75,7 +76,7 @@ export function BicycleNetworkLayer({beforeId}: {beforeId?: string}) {
     },
   };
 
-  const bicycleRouteLayer: LineLayer = {
+  const bicycleRouteLayer: LineLayerSpecification = {
     id: 'bicycle-routes',
     type: 'line',
     source: 'bicycle-lanes',
