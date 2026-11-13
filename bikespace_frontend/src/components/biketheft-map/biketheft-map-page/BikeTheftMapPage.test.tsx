@@ -474,3 +474,23 @@ it('marks overlapping stolen and recovered reports as mixed, respecting filters'
     expect.objectContaining({status: 'recovered', locationStatus: 'recovered'}),
   ]);
 });
+
+it('toggles the theft rate layer and its legend', async () => {
+  const user = userEvent.setup();
+  render(<BikeTheftMapPage />);
+  expect(screen.queryByTestId('bicycle-theft-rate')).not.toBeInTheDocument();
+  expect(
+    screen.queryByText('Estimated Bicycle Theft Rate')
+  ).not.toBeInTheDocument();
+
+  await user.click(
+    screen.getByRole('button', {name: 'Show Bicycle Theft Rate (beta)'})
+  );
+  expect(screen.getByTestId('bicycle-theft-rate')).toBeInTheDocument();
+  expect(screen.getByText('Estimated Bicycle Theft Rate')).toBeInTheDocument();
+
+  await user.click(
+    screen.getByRole('button', {name: 'Hide Bicycle Theft Rate (beta)'})
+  );
+  expect(screen.queryByTestId('bicycle-theft-rate')).not.toBeInTheDocument();
+});

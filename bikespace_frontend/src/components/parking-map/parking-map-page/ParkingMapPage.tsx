@@ -40,6 +40,11 @@ import {
   BicycleNetworkLayerLegend,
 } from '@/components/map-layers/BicycleNetwork';
 import {
+  findWaterLayerId,
+  TheftRateLayer,
+  TheftRateLayerLegend,
+} from '@/components/map-layers/TheftRate';
+import {
   ReportedIssuesLayer,
   ReportedIssuesLegend,
 } from '@/components/map-layers/ReportedIssuesLayer';
@@ -93,7 +98,10 @@ export function ParkingMapPage() {
     useState<boolean>(false);
   const [parkingLayerFilter, setParkingLayerFilter] =
     useState<FilterSpecification>(true);
+  const [showParking, setShowParking] = useState<boolean>(true);
   const [showBicycleNetwork, setShowBicycleNetwork] = useState<boolean>(true);
+  const [showTheftRate, setShowTheftRate] = useState<boolean>(false);
+  const [waterLayerId, setWaterLayerId] = useState<string | undefined>();
 
   const mapRef = useRef<MapRef>(null);
   const resultsCardRef = useRef<HTMLDivElement>(null);
@@ -282,6 +290,16 @@ export function ParkingMapPage() {
     // after styles load
     const map: MapLibreMap = mapRef.current!.getMap(); // maplibre-gl map instance
     map?.once('idle', () => setIsMapLoading(false)); // wait for styles to load, then set loading to false
+
+    // overlay layers that sit under this one are hidden by water, so e.g. the theft-rate
+    // choropleth doesn't tint the lake
+    setWaterLayerId(findWaterLayerId(map));
+  }
+
+  function toggleParking() {
+    // selected parking markers are drawn separately, so clear them when hiding the layer
+    if (showParking) handleFeatureSelectionClear();
+    setShowParking(!showParking);
   }
 
   const openSubmission = useSubmissionPrefill();
@@ -391,17 +409,12 @@ export function ParkingMapPage() {
               />
             </SidebarDetailsContent>
           </SidebarDetailsDisclosure>
-          <SidebarDetailsDisclosure open={!(parkingGroupSelected.length > 0)}>
-            <summary>Legend</summary>
-            <SidebarDetailsContent className={styles.legendContent}>
-              <ParkingLayerLegend />
-              <ReportedIssuesLegend />
-              <BicycleNetworkLayerLegend />
-            </SidebarDetailsContent>
-          </SidebarDetailsDisclosure>
-          <SidebarDetailsDisclosure>
+          <SidebarDetailsDisclosure open>
             <summary>Map Layers</summary>
             <SidebarDetailsContent>
+              <SidebarButton onClick={toggleParking} style={{margin: '1rem 0'}}>
+                {(showParking ? 'Hide' : 'Show') + ' ' + 'Bicycle Parking'}
+              </SidebarButton>
               <SidebarButton
                 onClick={() => setShowBicycleNetwork(!showBicycleNetwork)}
                 style={{margin: '1rem 0'}}
@@ -410,6 +423,23 @@ export function ParkingMapPage() {
                   ' ' +
                   'Bicycle Network'}
               </SidebarButton>
+              <SidebarButton
+                onClick={() => setShowTheftRate(!showTheftRate)}
+                style={{margin: '1rem 0'}}
+              >
+                {(showTheftRate ? 'Hide' : 'Show') +
+                  ' ' +
+                  'Bicycle Theft Rate (beta)'}
+              </SidebarButton>
+            </SidebarDetailsContent>
+          </SidebarDetailsDisclosure>
+          <SidebarDetailsDisclosure open={!(parkingGroupSelected.length > 0)}>
+            <summary>Legend</summary>
+            <SidebarDetailsContent className={styles.legendContent}>
+              {showParking ? <ParkingLayerLegend /> : null}
+              <ReportedIssuesLegend />
+              {showBicycleNetwork ? <BicycleNetworkLayerLegend /> : null}
+              {showTheftRate ? <TheftRateLayerLegend /> : null}
             </SidebarDetailsContent>
           </SidebarDetailsDisclosure>
         </div>
@@ -435,6 +465,7 @@ export function ParkingMapPage() {
           selected={parkingSelectedOrHovered}
           groupSelected={parkingGroupSelected}
           layerFilter={parkingLayerFilter}
+          visible={showParking}
         />
         {reportedFeatures.length > 0 ? (
           <ReportedIssuesLayer
@@ -443,6 +474,9 @@ export function ParkingMapPage() {
               features: reportedFeatures,
             }}
           />
+        ) : null}
+        {showTheftRate ? (
+          <TheftRateLayer beforeId={waterLayerId ?? mapStyleRoadLabelsLayer} />
         ) : null}
         {showBicycleNetwork ? (
           <BicycleNetworkLayer beforeId={mapStyleRoadLabelsLayer} />
