@@ -1,17 +1,11 @@
-// import withMDX from '@next/mdx';
 import createMDX from '@next/mdx';
-import remarkGfm from 'remark-gfm';
-import rehypeSlug from 'rehype-slug';
 
 const nextConfig = {
   // Enable SSG
   output: 'export',
   // Configure `pageExtensions` to include MDX files
   pageExtensions: ['js', 'jsx', 'mdx', 'ts', 'tsx'],
-  experimental: {
-    typedRoutes: true,
-    missingSuspenseWithCSRBailout: false,
-  },
+  typedRoutes: true,
   env: {
     DATA_BICYCLE_THEFT: process.env.DATA_BICYCLE_THEFT,
     BIKESPACE_API_URL: process.env.BIKESPACE_API_URL,
@@ -25,8 +19,10 @@ const nextConfig = {
 
 const withMDX = createMDX({
   options: {
-    remarkPlugins: [remarkGfm],
-    rehypePlugins: [rehypeSlug],
+    // Plugins are referenced by package name so the options stay serializable,
+    // which Turbopack requires.
+    remarkPlugins: ['remark-gfm'],
+    rehypePlugins: ['rehype-slug'],
   },
 });
 

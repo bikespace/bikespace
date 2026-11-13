@@ -24,6 +24,10 @@ import type {SubmissionApiPayload} from '@/interfaces/Submission';
 
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css';
+import 'leaflet.locatecontrol/dist/L.Control.Locate.css';
+// react-leaflet-cluster v4 no longer imports its own CSS.
+import 'react-leaflet-cluster/dist/assets/MarkerCluster.css';
+import 'react-leaflet-cluster/dist/assets/MarkerCluster.Default.css';
 
 import styles from './map.module.scss';
 import './leaflet.scss';
