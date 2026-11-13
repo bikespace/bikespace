@@ -22,26 +22,28 @@ test('Submit an issue (not logged in)', async ({page}, testInfo) => {
   }).toPass();
 
   // issue entry - 'next' button should be disabled until an issue is selected
-  await expect(page.getByRole('button', {name: 'Next'})).toBeDisabled();
+  await expect(
+    page.getByRole('button', {name: 'Next', exact: true})
+  ).toBeDisabled();
   await page.getByText('Bicycle parking is not provided').click();
-  await page.getByRole('button', {name: 'Next'}).click();
+  await page.getByRole('button', {name: 'Next', exact: true}).click();
 
   // location entry
   await page.waitForSelector('div.leaflet-container');
   await page
     .locator('div.leaflet-container')
     .click({position: {x: 100, y: 100}});
-  await page.getByRole('button', {name: 'Next'}).click();
+  await page.getByRole('button', {name: 'Next', exact: true}).click();
 
   // parking_time, parking_duration entry
   await page.getByLabel('When did this happen?').fill('2023-01-01T12:30');
   await page.getByText('hours').click();
-  await page.getByRole('button', {name: 'Next'}).click();
+  await page.getByRole('button', {name: 'Next', exact: true}).click();
 
   // comment entry
   const testComment = `Comment from end-to-end test "${testInfo.title}" on ${testInfo.project.name} run ${new Date().toISOString()}`;
   await page.getByRole('textbox').fill(testComment);
-  await page.getByRole('button', {name: 'Next'}).click();
+  await page.getByRole('button', {name: 'Next', exact: true}).click();
 
   // check summary content
   const submitSummary = page.locator('#submission-summary');
@@ -100,26 +102,28 @@ test('Log in, submit an issue, log out', async ({page}, testInfo) => {
   await page.goto('/submission');
 
   // issue entry - 'next' button should be disabled until an issue is selected
-  await expect(page.getByRole('button', {name: 'Next'})).toBeDisabled();
+  await expect(
+    page.getByRole('button', {name: 'Next', exact: true})
+  ).toBeDisabled();
   await page.getByText('Bicycle parking is not provided').click();
-  await page.getByRole('button', {name: 'Next'}).click();
+  await page.getByRole('button', {name: 'Next', exact: true}).click();
 
   // location entry
   await page.waitForSelector('div.leaflet-container');
   await page
     .locator('div.leaflet-container')
     .click({position: {x: 100, y: 100}});
-  await page.getByRole('button', {name: 'Next'}).click();
+  await page.getByRole('button', {name: 'Next', exact: true}).click();
 
   // parking_time, parking_duration entry
   await page.getByLabel('When did this happen?').fill('2023-01-01T12:30');
   await page.getByText('hours').click();
-  await page.getByRole('button', {name: 'Next'}).click();
+  await page.getByRole('button', {name: 'Next', exact: true}).click();
 
   // comment entry
   const testComment = `Comment from end-to-end test "${testInfo.title}" on ${testInfo.project.name} run ${new Date().toISOString()}`;
   await page.getByRole('textbox').fill(testComment);
-  await page.getByRole('button', {name: 'Next'}).click();
+  await page.getByRole('button', {name: 'Next', exact: true}).click();
 
   // check summary content
   const submitSummary = page.locator('#submission-summary');
