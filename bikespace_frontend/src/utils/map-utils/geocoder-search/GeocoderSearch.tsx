@@ -8,7 +8,7 @@ import {AnimatedEllipses} from '@/components/shared-ui/animated-ellipses';
 
 import type {RefObject} from 'react';
 import type {Feature, FeatureCollection} from 'geojson';
-import type {LngLatLike, MapRef} from 'react-map-gl/dist/esm/exports-maplibre';
+import type {LngLatLike, MapRef} from 'react-map-gl/maplibre';
 import type {UseQueryResult} from '@tanstack/react-query';
 
 import styles from './geocoder-search.module.scss';

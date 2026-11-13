@@ -1,7 +1,7 @@
 import React from 'react';
 import {Layer, Source} from 'react-map-gl/maplibre';
 
-import type {SymbolLayer} from 'react-map-gl/maplibre';
+import type {SymbolLayerSpecification} from 'react-map-gl/maplibre';
 import type {ExpressionSpecification} from 'maplibre-gl';
 import type {FeatureCollection} from 'geojson';
 
@@ -32,7 +32,7 @@ export function ReportedIssuesLayer({
     1,
   ];
 
-  const reportedIssuesLayer: SymbolLayer = {
+  const reportedIssuesLayer: SymbolLayerSpecification = {
     id: 'bicycle-parking-reports',
     type: 'symbol',
     source: reportedIssuesSourceId,

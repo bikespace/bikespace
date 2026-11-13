@@ -1,4 +1,7 @@
-import type {CircleLayer, SymbolLayer} from 'react-map-gl/maplibre';
+import type {
+  CircleLayerSpecification,
+  SymbolLayerSpecification,
+} from 'react-map-gl/maplibre';
 
 export const BIKE_THEFT_SOURCE_ID = 'stolen-bikes';
 export const BIKE_THEFT_SELECTED_SOURCE_ID = 'stolen-bikes-selected';
@@ -11,7 +14,7 @@ export const BIKE_THEFT_CLUSTER_LAYER_ID = 'stolen-bike-clusters';
 export const BIKE_THEFT_CLUSTER_MAX_ZOOM = 14;
 
 // Cluster layer
-export const stolenClustersLayer: CircleLayer = {
+export const stolenClustersLayer: CircleLayerSpecification = {
   id: BIKE_THEFT_CLUSTER_LAYER_ID,
   type: 'circle',
   source: BIKE_THEFT_SOURCE_ID,
@@ -32,7 +35,7 @@ export const stolenClustersLayer: CircleLayer = {
 };
 
 // --- Map layer for stolen bike clustercounts ---
-export const stolenClusterCountsLayer: SymbolLayer = {
+export const stolenClusterCountsLayer: SymbolLayerSpecification = {
   id: 'stolen-bike-cluster-counts',
   type: 'symbol',
   source: BIKE_THEFT_SOURCE_ID,
@@ -50,7 +53,7 @@ export const stolenClusterCountsLayer: SymbolLayer = {
 };
 
 // --- Map layer for stolen bike counts ---
-export const stolenCountsLayer: SymbolLayer = {
+export const stolenCountsLayer: SymbolLayerSpecification = {
   id: BIKE_THEFT_COUNTS_LAYER_ID,
   minzoom: BIKE_THEFT_CLUSTER_MAX_ZOOM + 1,
   type: 'symbol',
@@ -68,7 +71,7 @@ export const stolenCountsLayer: SymbolLayer = {
 };
 
 // --- Map layer for stolen bike pins ---
-export const stolenPinsLayer: CircleLayer = {
+export const stolenPinsLayer: CircleLayerSpecification = {
   id: BIKE_THEFT_LAYER_ID,
   filter: ['!', ['has', 'point_count']],
   type: 'circle',
@@ -96,7 +99,7 @@ export const stolenPinsLayer: CircleLayer = {
   },
 };
 
-export const stolenPinsHitLayer: CircleLayer = {
+export const stolenPinsHitLayer: CircleLayerSpecification = {
   id: BIKE_THEFT_HIT_LAYER_ID,
   filter: ['!', ['has', 'point_count']],
   type: 'circle',
@@ -109,7 +112,7 @@ export const stolenPinsHitLayer: CircleLayer = {
 };
 
 // Select layer for stolen bike pins
-export const stolenPinsSelectedLayer: CircleLayer = {
+export const stolenPinsSelectedLayer: CircleLayerSpecification = {
   id: BIKE_THEFT_SELECTED_LAYER_ID,
   type: 'circle',
   source: BIKE_THEFT_SELECTED_SOURCE_ID,
