@@ -1,4 +1,5 @@
-@import '@/styles/variables.module.scss';
+@use 'sass:string';
+@use '@/styles/variables.module.scss' as *;
 
 $colors: (
   'not_provided': $color-secondary-blue,
@@ -16,6 +17,6 @@ $colors: (
 // Export variables for plotly.js consumption
 :export {
   @each $color, $value in $colors {
-    #{unquote($color)}: $value;
+    #{string.unquote($color)}: $value;
   }
 }
