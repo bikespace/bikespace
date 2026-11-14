@@ -102,5 +102,5 @@ Playwright tests cover the parking map, submission flow, and dashboard. Config: 
 
 ## Deployment
 
-- **API**: Fly.io (`yyz` region) — triggered by push to `main` via `.github/workflows/deploy-to-fly.yml`
+- **API**: self-hosted Coolify – triggered by push to `main` via `.github/workflows/deploy-api.yml`
 - **Frontend**: Cloudflare Pages (static export) — preview deployed on PRs via `.github/workflows/test-preview.yml`

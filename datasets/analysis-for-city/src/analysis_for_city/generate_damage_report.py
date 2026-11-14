@@ -39,7 +39,7 @@ REFERENCE_DATA_FOLDER = Path("references")
 OUTPUT_FOLDER = Path("reports")
 OUTPUT_EXCEL_NAME = "damage_bikespace_city_matches"
 
-BIKESPACE_API_URL = "https://api-dev.bikespace.ca/api/v2/submissions"
+BIKESPACE_API_URL = "https://api.bikespace.ca/api/v2/submissions"
 BIKESPACE_API_PAGE_SIZE = 5000
 
 CLEANUP_SHEET_FILENAME = "BikeSpace Data Notes and Cleanup - Data.csv"
@@ -141,7 +141,7 @@ def filter_by_date(
 def get_bikespace_reports() -> gpd.GeoDataFrame:
     """The [BikeSpace app](https://bikespace.ca/) allows users to report issues with bicycle parking in Toronto, including parking features that are damaged. User reports can be viewed on the [BikeSpace dashboard](https://bikespace.ca/dashboard) or downloaded via the API.
 
-    Details on the bikespace API can be found at [api-dev.bikespace.ca](https://api-dev.bikespace.ca/api/v2/docs).
+    Details on the bikespace API can be found at [api.bikespace.ca](https://api.bikespace.ca/api/v2/docs).
     """
     # get data
     bikespace_request = requests.get(
