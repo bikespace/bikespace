@@ -1,7 +1,6 @@
 ROOT_PATH := $(abspath $(lastword $(MAKEFILE_LIST)))
 ROOT_DIR :=  $(dir $(ROOT_PATH))
 BIKESPACE_API_DIR = $(ROOT_DIR)bikespace_api
-BIKESPACE_API_FLY_TOML = $(ROOT_DIR)/$(BIKESPACE_API_DIR)/fly.toml
 BIKESPACE_FRONTEND_DIR = $(ROOT_DIR)/bikespace_frontend
 BIKESPACE_DB_MIGRATIONS = $(BIKESPACE_API_DIR)/migrations
 MANAGE_PY = $(BIKESPACE_API_DIR)/manage.py
@@ -91,7 +90,7 @@ prodtest-api-stop:
 
 # confirms that the production compose starts and runs 
 # uses dummy ENV values from bikespace_api/.env.prodtest
-# does not test backup functionality
+# backup service writes to a local SeaweedFS S3 mock (service `s3`)
 # needs local https for /admin login to work
 .PHONY: prodtest-api
 prodtest-api: prodtest-api-stop
@@ -184,10 +183,6 @@ stop-db:
 .PHONY: db-test-server
 db-test-server: setup-py
 	$(PYTHON) $(MANAGE_PY) test-db-server
-
-.PHONY: fly-deploy-api
-fly-deploy-api:
-	cd $(BIKESPACE_API_DIR) && flyctl deploy
 
 .PHONY: run-frontend
 run-frontend: build-frontend

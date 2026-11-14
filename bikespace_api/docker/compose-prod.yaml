@@ -23,11 +23,13 @@ services:
     expose:
       - 8000
     healthcheck:
-      test: python -c "import requests; requests.get('http://localhost:8000/api/v2/submissions?limit=1').raise_for_status()"
-      interval: 5s
+      test: python -c "import urllib.request; urllib.request.urlopen('http://localhost:8000/api/v2/submissions?limit=1', timeout=4)"
+      interval: 30s
       timeout: 5s
-      retries: 10
-      start_period: 10s
+      retries: 3
+      # check every 2s while starting so reverse_proxy (depends_on: service_healthy) isn't held up
+      start_period: 30s
+      start_interval: 2s
 
   db:
     # Minimum version 18
@@ -57,6 +59,7 @@ services:
         condition: service_healthy
     environment:
       CADDY_SITE_ADDRESS: ${CADDY_SITE_ADDRESS:-:80}
+      SOURCE_COMMIT: ${SOURCE_COMMIT:-unknown} # set by Coolify; served at /version
     volumes:
       - caddy_data:/data
       - caddy_config:/config

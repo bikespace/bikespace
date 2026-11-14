@@ -21,8 +21,8 @@ export function Noscript() {
         <li>
           Via command line, e.g.:
           <pre>
-            $ curl "https://api-dev.bikespace.ca/api/v2/submissions?limit=5000"
-            -o "bikespace_reports.json"
+            $ curl "https://api.bikespace.ca/api/v2/submissions?limit=5000" -o
+            "bikespace_reports.json"
           </pre>
           See our GitHub page for
           <a href="https://github.com/bikespace/bikespace-v2/blob/main/bikespace_api/bikespace_api/static/bikespace-open-api.yaml">

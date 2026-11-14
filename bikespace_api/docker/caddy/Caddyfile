@@ -9,6 +9,9 @@
 	encode zstd gzip
 	log
 
+	# Commit this deployment was built from; polled by .github/workflows/deploy-api.yml
+	respond /version "{$SOURCE_COMMIT:unknown}" 200
+
 	reverse_proxy bikespace_api:8000 {
 		health_uri /api/v2/submissions?limit=1
 		health_interval 30s
