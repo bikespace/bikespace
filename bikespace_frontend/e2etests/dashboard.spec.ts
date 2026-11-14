@@ -8,6 +8,10 @@ import {
 
 const stopClusterNavAfterFirstSubmission = true;
 const retriesForKnownFlakyTests = 3;
+// The feed and map render every submission (~1,400 seeded), which can take
+// over the default 5s when other workers are loading the dashboard too
+// (seen on Firefox with parallel workers; passes reliably in isolation).
+const feedLoadTimeout = 15 * 1000;
 
 test.use(defaultTestOptions);
 
@@ -64,7 +68,7 @@ test.describe('Dashboard navigation on mobile viewport size', () => {
     await page.goto('/dashboard?submission_id=1');
     await expect(
       page.getByTestId('submissions-feed').getByText(/id: 1\D/i)
-    ).toBeVisible();
+    ).toBeVisible({timeout: feedLoadTimeout});
     await page.waitForSelector('div.leaflet-container');
     await expect(
       page.getByRole('button', {name: /marker for submission 1/i, exact: true})
@@ -174,7 +178,7 @@ test.describe('Dashboard navigation on desktop viewport size', () => {
     await page.goto('/dashboard?submission_id=1');
     await expect(
       page.getByTestId('submissions-feed').getByText(/id: 1\D/i)
-    ).toBeVisible();
+    ).toBeVisible({timeout: feedLoadTimeout});
     await page.waitForSelector('div.leaflet-container');
     await expect(
       page.getByRole('button', {name: /marker for submission 1/i, exact: true})
