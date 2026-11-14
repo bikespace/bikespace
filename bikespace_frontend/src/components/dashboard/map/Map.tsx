@@ -83,10 +83,20 @@ function Map({submissions, isFirstMarkerDataLoading}: MapProps) {
   // zoom to pin and open popup when a new submission is selected
   useEffect(() => {
     if (!markersReady || !selectedSubmission) return;
-    const currentMarker = markerRefs.current[selectedSubmission];
-    clusterRef.current!.zoomToShowLayer(currentMarker, () => {
-      currentMarker.openPopup();
-    });
+    // react-leaflet-cluster v4 buffers addLayer/removeLayer calls from child
+    // <Marker>s and applies them in a microtask. Child effects run before this
+    // one, so markers added in this commit are not clustered yet. Defer to a
+    // macrotask so zoomToShowLayer sees the final cluster state; otherwise it
+    // can act on a marker that is about to be absorbed into a cluster.
+    const timeoutId = setTimeout(() => {
+      const currentMarker = markerRefs.current[selectedSubmission];
+      const cluster = clusterRef.current;
+      if (!currentMarker || !cluster) return;
+      cluster.zoomToShowLayer(currentMarker, () => {
+        currentMarker.openPopup();
+      });
+    }, 0);
+    return () => clearTimeout(timeoutId);
   }, [selectedSubmission, submissions, markersReady]);
 
   return (

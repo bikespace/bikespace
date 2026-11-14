@@ -37,7 +37,7 @@ test('Navigate bike parking map', async ({page, browserName}, testInfo) => {
   const firstMarker = page.getByLabel(/map marker/i).first();
 
   // details pane should re-open if a feature is clicked
-  closePane.click();
+  await closePane.click();
   await openPane.waitFor({state: 'visible'});
   await parkingMap.click({position: {x: 400, y: 273}});
   await closePane.waitFor({state: 'visible'});
@@ -48,6 +48,6 @@ test('Navigate bike parking map', async ({page, browserName}, testInfo) => {
   expect(await mapSelectButtons.count()).toBe(2);
 
   // map marker should change to selected when Select on Map button clicked
-  mapSelectButtons.first().click();
+  await mapSelectButtons.first().click();
   await expect(firstMarker).toHaveScreenshot({maxDiffPixelRatio: 0.2});
 });
