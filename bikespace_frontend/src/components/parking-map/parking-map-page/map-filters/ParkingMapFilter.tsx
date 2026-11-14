@@ -107,7 +107,7 @@ function sortPropertyOptions(
 const defaultFilterProperty = 'bicycle_parking';
 
 interface ParkingMapFilterProps {
-  mapRef: RefObject<MapRef>;
+  mapRef: RefObject<MapRef | null>;
   setFilter: React.Dispatch<React.SetStateAction<FilterSpecification>>;
   defaultProperty?: string;
   enabledFilterProperties?: FilterPropertyAttributes[];

@@ -1,6 +1,5 @@
-@import 'reset';
-@import 'variables.module.scss';
-@import 'typography';
+@use 'reset';
+@use 'typography';
 
 body {
   min-height: 100vh;
