@@ -1,7 +1,10 @@
 'use client';
 import {useMemo} from 'react';
+
 import {Layer, Source} from 'react-map-gl/maplibre';
-import type {StolenBikeReport} from '@/interfaces/BikeTheftProperties';
+
+import {attributions} from '@/utils/map-utils';
+
 import {
   BIKE_THEFT_SOURCE_ID,
   BIKE_THEFT_SELECTED_SOURCE_ID,
@@ -14,6 +17,8 @@ import {
   stolenClustersLayer,
   stolenClusterCountsLayer,
 } from './constants';
+
+import type {StolenBikeReport} from '@/interfaces/BikeTheftProperties';
 
 // --- GeoJSON helpers ---
 function reportsToGeoJSON(reports: StolenBikeReport[]) {
@@ -107,10 +112,14 @@ export function BikeTheftLayer({
   return (
     <>
       {/* All report pins */}
+      {/* Stolen, unknown, or stolen + unknown → red
+          Recovered only → green
+          Recovered + stolen or unknown → blue */}
       <Source
         id={BIKE_THEFT_SOURCE_ID}
         type="geojson"
         data={allPinsGeoJSON}
+        attribution={attributions['City of Toronto Open Data']}
         cluster
         clusterRadius={40}
         clusterMaxZoom={BIKE_THEFT_CLUSTER_MAX_ZOOM}
@@ -118,12 +127,15 @@ export function BikeTheftLayer({
           recoveredCount: [
             '+',
             ['case', ['==', ['get', 'status'], 'recovered'], 1, 0],
-            ['case', ['==', ['get', 'status'], 'unknown'], 1, 0],
           ],
           stolenCount: [
             '+',
-            ['case', ['==', ['get', 'status'], 'stolen'], 1, 0],
-            ['case', ['==', ['get', 'status'], 'unknown'], 1, 0],
+            [
+              'case',
+              ['in', ['get', 'status'], ['literal', ['stolen', 'unknown']]], // 'unknown' as stolen
+              1,
+              0,
+            ],
           ],
         }}
       >

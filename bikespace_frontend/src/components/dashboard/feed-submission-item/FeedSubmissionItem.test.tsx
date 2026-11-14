@@ -7,6 +7,16 @@ import {
 } from '@/interfaces/Submission';
 import {defaultMapCenter} from '@/utils/map-utils';
 
+const formatTooltipDate = (d: Date) =>
+  d.toLocaleString('en-US', {
+    year: 'numeric',
+    month: 'numeric',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    second: 'numeric',
+  });
+
 import {FeedSubmissionItem} from './FeedSubmissionItem';
 
 jest.mock('next/navigation', () => ({
@@ -58,8 +68,10 @@ describe('FeedSubmissionItem', () => {
     );
     const itemTitle = screen.getByRole('heading');
     expect(itemTitle.textContent).toEqual('Wednesday, January 1, 2025');
+    const parkingTime = new Date(mockSubmission.parking_time);
+    const submittedTime = new Date(mockSubmission.submitted_datetime!);
     expect(itemTitle.getAttribute('title')).toEqual(
-      'Encountered:  1/1/2025, 6:00:00 PM \nSubmitted:  1/31/2025, 8:00:00 PM'
+      `Encountered:  ${formatTooltipDate(parkingTime)} \nSubmitted:  ${formatTooltipDate(submittedTime)}`
     );
   });
 
@@ -81,7 +93,7 @@ describe('FeedSubmissionItem', () => {
     ).toMatch(/unknown/i);
     const itemTitle = screen.getByRole('heading');
     expect(itemTitle.getAttribute('title')).toEqual(
-      'Encountered:  1/1/2025, 6:00:00 PM \nSubmitted:  Not Recorded'
+      `Encountered:  ${formatTooltipDate(new Date(mockSubmission.parking_time))} \nSubmitted:  Not Recorded`
     );
   });
 

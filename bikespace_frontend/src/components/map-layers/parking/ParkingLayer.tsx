@@ -1,7 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import {Layer, Marker, Source, useMap} from 'react-map-gl/maplibre';
 
-import {getCentroid, getSpriteImageWithTextOverlay} from '@/utils/map-utils';
+import {
+  addAttribution,
+  attributions,
+  getCentroid,
+  getSpriteImageWithTextOverlay,
+} from '@/utils/map-utils';
 
 import type {CircleLayer, SymbolLayer} from 'react-map-gl/maplibre';
 import type {
@@ -27,13 +32,17 @@ interface ParkingLayerProps {
   selected: MapGeoJSONFeature[];
   groupSelected: MapGeoJSONFeature[];
   layerFilter?: FilterSpecification;
+  visible?: boolean;
 }
 
 export function ParkingLayer({
   selected,
   groupSelected,
   layerFilter = true,
+  visible = true,
 }: ParkingLayerProps) {
+  // hide via layout rather than unmounting so the layers stay queryable on click
+  const visibility = visible ? 'visible' : 'none';
   const bicycleParkingURL = process.env.DATA_BICYCLE_PARKING;
 
   const {current: map} = useMap();
@@ -78,6 +87,7 @@ export function ParkingLayer({
     source: parkingSourceId,
     filter: layerFilter,
     layout: {
+      visibility,
       'icon-image': [
         'match',
         ['to-string', ['get', 'access']],
@@ -126,6 +136,7 @@ export function ParkingLayer({
     type: 'circle',
     source: parkingSourceId,
     filter: layerFilter,
+    layout: {visibility},
     paint: {
       'circle-color': [
         'match',
@@ -152,10 +163,12 @@ export function ParkingLayer({
 
   return (
     <>
+      {addAttribution('osm-attribution', attributions['OpenStreetMap'])}
       <Source
         id={parkingSourceId}
         type="geojson"
         data={bicycleParkingURL}
+        attribution={attributions['City of Toronto Open Data']}
         generateId={true}
       >
         <Layer {...parkingLayerDense} />

@@ -1,5 +1,9 @@
 import {fetchBikeTheftReports} from './use-bike-theft-data-query';
 
+// Test the fetchBikeTheftReports function to ensure it correctly fetches and processes bike theft reports from a GeoJSON endpoint, handling various edge cases and errors.
+// Run this command to test: TZ='America/Toronto' npx jest --runInBand --coverage=false src/hooks/use-bike-theft-data-query.test.ts
+
+// Mock the global fetch function to simulate fetching bike theft reports from a GeoJSON endpoint.
 const originalFetch = global.fetch;
 afterEach(() => {
   global.fetch = originalFetch;
@@ -29,6 +33,83 @@ it('reports HTTP failures instead of returning an empty dataset', async () => {
   await expect(
     fetchBikeTheftReports('https://example.com/reports.geojson')
   ).rejects.toThrow('404');
+});
+
+it.each([
+  null,
+  undefined,
+  {type: 'LineString', coordinates: [[-79.4, 43.6]]},
+  {type: 'Point'},
+  {type: 'Point', coordinates: null},
+  {type: 'Point', coordinates: 'invalid'},
+  ...[
+    [],
+    [-79.4],
+    [null, 43.6],
+    [-79.4, null],
+    ['-79.4', 43.6],
+    [-79.4, '43.6'],
+    [NaN, 43.6],
+    [-79.4, Infinity],
+    [-Infinity, 43.6],
+    [-180.1, 43.6],
+    [180.1, 43.6],
+    [-79.4, -90.1],
+    [-79.4, 90.1],
+    [0, 0],
+  ].map(coordinates => ({type: 'Point', coordinates})),
+])(
+  'excludes invalid geometry %j while retaining valid reports',
+  async geometry => {
+    global.fetch = jest.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({
+        type: 'FeatureCollection',
+        features: [
+          {type: 'Feature', properties: {id: 'invalid'}, geometry},
+          {
+            type: 'Feature',
+            properties: {id: 'valid'},
+            geometry: {type: 'Point', coordinates: [-79.4, 43.6]},
+          },
+        ],
+      }),
+    });
+    await expect(
+      fetchBikeTheftReports('https://example.com/reports.geojson')
+    ).resolves.toEqual([{id: 'valid', longitude: -79.4, latitude: 43.6}]);
+  }
+);
+
+it.each([
+  [0, 43.6],
+  [-79.4, 0],
+  [-180, -90],
+  [180, 90],
+  [-79.4, 43.6, 100],
+])('retains valid coordinates %j', async (...coordinates) => {
+  global.fetch = jest.fn().mockResolvedValue({
+    ok: true,
+    json: async () => ({
+      type: 'FeatureCollection',
+      features: [
+        {
+          type: 'Feature',
+          properties: {id: 'valid'},
+          geometry: {type: 'Point', coordinates},
+        },
+      ],
+    }),
+  });
+  await expect(
+    fetchBikeTheftReports('https://example.com/reports.geojson')
+  ).resolves.toEqual([
+    {
+      id: 'valid',
+      longitude: coordinates[0],
+      latitude: coordinates[1],
+    },
+  ]);
 });
 it('reports missing configuration', async () => {
   await expect(fetchBikeTheftReports(undefined)).rejects.toThrow(

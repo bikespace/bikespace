@@ -40,12 +40,23 @@ export const FeedSubmissionItem = forwardRef(
     const parkingTime = new Date(parking_time);
     const submittedDateTime = submitted_datetime
       ? new Date(submitted_datetime) // submitted_datetime already has a tz offset
-      : 'Not Recorded';
+      : null;
+
+    const formatTooltipDate = (d: Date) =>
+      d.toLocaleString('en-US', {
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric',
+      });
+
     const timeDescriptionTitle = [
       'Encountered: ',
-      parkingTime.toLocaleString(),
+      formatTooltipDate(parkingTime),
       '\nSubmitted: ',
-      submittedDateTime.toLocaleString(),
+      submittedDateTime ? formatTooltipDate(submittedDateTime) : 'Not Recorded',
     ].join(' ');
 
     return (
