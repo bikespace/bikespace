@@ -90,7 +90,7 @@ prodtest-api-stop:
 
 # confirms that the production compose starts and runs 
 # uses dummy ENV values from bikespace_api/.env.prodtest
-# does not test backup functionality
+# backup service writes to a local SeaweedFS S3 mock (service `s3`)
 # needs local https for /admin login to work
 .PHONY: prodtest-api
 prodtest-api: prodtest-api-stop
