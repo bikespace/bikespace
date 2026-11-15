@@ -97,6 +97,8 @@ jobs:
         run: make lint-frontend
       - name: Run Jest tests
         run: make test-frontend
+      - name: Audit production dependencies
+        run: cd bikespace_frontend && npm audit --omit=dev --audit-level=high
 
   test-e2e:
     name: Frontend end-to-end tests
