@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 
 import {MapContainer, TileLayer} from 'react-leaflet';
 import MarkerClusterGroup from 'react-leaflet-cluster';
@@ -55,21 +55,46 @@ function Map({submissions, isFirstMarkerDataLoading}: MapProps) {
       setSelectedSubmission: state.ui.submissions.setSelectedSubmission,
     }));
 
-  const [markersReady, setMarkersReady] = useState(false);
+  // react-leaflet-cluster v4 buffers each <Marker>'s addLayer call and flushes
+  // them in a microtask as one addLayers() call. With `chunkedLoading`,
+  // addLayers() processes markers in time-boxed chunks spread over several
+  // macrotasks, so a marker can exist (and have a ref) well before it is placed
+  // in a cluster. `chunkProgress` is the only signal that clustering finished.
+  //
+  // clustersReady: the first batch of markers has been fully clustered.
+  // isClusteringDoneRef: the most recent addLayers() call has finished.
+  // pendingZoomRef: a zoom to run once the in-progress addLayers() finishes.
+  const [clustersReady, setClustersReady] = useState(false);
+  const isClusteringDoneRef = useRef(false);
+  const pendingZoomRef = useRef<(() => void) | null>(null);
+
+  const handleChunkProgress = useCallback(
+    (processed: number, total: number) => {
+      const done = processed === total;
+      isClusteringDoneRef.current = done;
+      if (!done) return;
+      setClustersReady(true);
+      const pendingZoom = pendingZoomRef.current;
+      pendingZoomRef.current = null;
+      pendingZoom?.();
+    },
+    []
+  );
+
   const [tilesReady, setTilesReady] = useState(false);
   const [initialized, setInitialized] = useState(false);
 
+  // With no submissions, addLayers() is never called, so chunkProgress never
+  // fires; treat an empty result as ready.
+  const markersReady =
+    !isFirstMarkerDataLoading && (clustersReady || submissions.length === 0);
+
   // Track whether the map is fully loaded using the initialized hook
   useEffect(() => {
-    if (
-      !initialized &&
-      !isFirstMarkerDataLoading &&
-      tilesReady &&
-      markersReady
-    ) {
+    if (!initialized && tilesReady && markersReady) {
       setInitialized(true);
     }
-  }, [isFirstMarkerDataLoading, tilesReady, markersReady, submissions.length]);
+  }, [initialized, tilesReady, markersReady]);
 
   // handle marker click on mobile
   function handleMarkerClick(submissionId: number) {
@@ -82,22 +107,37 @@ function Map({submissions, isFirstMarkerDataLoading}: MapProps) {
 
   // zoom to pin and open popup when a new submission is selected
   useEffect(() => {
-    if (!markersReady || !selectedSubmission) return;
-    // react-leaflet-cluster v4 buffers addLayer/removeLayer calls from child
-    // <Marker>s and applies them in a microtask. Child effects run before this
-    // one, so markers added in this commit are not clustered yet. Defer to a
-    // macrotask so zoomToShowLayer sees the final cluster state; otherwise it
-    // can act on a marker that is about to be absorbed into a cluster.
-    const timeoutId = setTimeout(() => {
+    if (!clustersReady || !selectedSubmission) return;
+
+    const zoomToSelected = () => {
       const currentMarker = markerRefs.current[selectedSubmission];
       const cluster = clusterRef.current;
-      if (!currentMarker || !cluster) return;
+      if (!currentMarker || !cluster || !cluster.hasLayer(currentMarker)) {
+        return;
+      }
       cluster.zoomToShowLayer(currentMarker, () => {
         currentMarker.openPopup();
       });
+    };
+
+    // Child effects run before this one, so markers added in this commit are
+    // still in react-leaflet-cluster's buffer. Wait one macrotask for the
+    // buffer to flush; its first addLayers() chunk runs synchronously and calls
+    // chunkProgress. If more chunks remain, defer the zoom until the last one,
+    // otherwise zoomToShowLayer can act on a marker that has no cluster parent
+    // yet (and throw) or on stale cluster bounds.
+    const timeoutId = setTimeout(() => {
+      if (isClusteringDoneRef.current) {
+        zoomToSelected();
+      } else {
+        pendingZoomRef.current = zoomToSelected;
+      }
     }, 0);
-    return () => clearTimeout(timeoutId);
-  }, [selectedSubmission, submissions, markersReady]);
+    return () => {
+      clearTimeout(timeoutId);
+      pendingZoomRef.current = null;
+    };
+  }, [selectedSubmission, submissions, clustersReady]);
 
   return (
     <MapContainer
@@ -124,20 +164,21 @@ function Map({submissions, isFirstMarkerDataLoading}: MapProps) {
           },
         }}
       />
-      <MarkerClusterGroup chunkedLoading ref={clusterRef}>
-        {submissions.map((submission, index) => {
+      <MarkerClusterGroup
+        chunkedLoading
+        chunkProgress={handleChunkProgress}
+        ref={clusterRef}
+      >
+        {submissions.map(submission => {
           return (
             <MapMarker
               key={submission.id}
               submission={submission}
               isSelected={submission.id === selectedSubmission}
               onClick={() => handleMarkerClick(submission.id)}
-              // track when the last marker is rendered
-              ref={(m: LeafletMarker) => {
-                markerRefs.current[submission.id] = m;
-                if (index === submissions.length - 1 && !initialized) {
-                  setMarkersReady(true);
-                }
+              ref={(m: LeafletMarker | null) => {
+                if (m) markerRefs.current[submission.id] = m;
+                else delete markerRefs.current[submission.id];
               }}
             />
           );
