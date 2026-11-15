@@ -52,6 +52,7 @@ export function ParkingLayer({
   visible = true,
 }: ParkingLayerProps) {
   const bicycleParkingURL = process.env.DATA_BICYCLE_PARKING!;
+  const visibility = visible ? 'visible' : 'none';
 
   const {current: map} = useMap();
 
