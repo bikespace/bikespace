@@ -31,23 +31,30 @@ test('Navigate bike parking map', async ({page, browserName}, testInfo) => {
 
   // wait for map to load
   await page.waitForEvent('console', msg => msg.text().includes('map loaded'));
+  // 'map loaded' fires before the parking layer is drawn; the spinner stays
+  // until the map is idle, so a click before then can miss the parking pins
+  await expect(page.locator('[aria-label="Loading map..."]')).toHaveCount(0);
   const parkingMap = page.locator('div.maplibregl-map');
   const closePane = page.getByRole('button', {name: 'close details pane'});
   const openPane = page.getByRole('button', {name: 'open details pane'});
-  const firstMarker = page.getByLabel(/map marker/i).first();
+  // parking markers are anchored at the bottom; maplibre's default marker
+  // (dropped on an empty-location click) is also labelled "Map marker"
+  const firstMarker = page
+    .locator('.maplibregl-marker-anchor-bottom[aria-label="Map marker"]')
+    .first();
 
   // details pane should re-open if a feature is clicked
-  closePane.click();
+  await closePane.click();
   await openPane.waitFor({state: 'visible'});
   await parkingMap.click({position: {x: 400, y: 273}});
   await closePane.waitFor({state: 'visible'});
 
   // marker should be unselected initially; two results returned
   const mapSelectButtons = page.getByRole('button', {name: 'Select on Map'});
+  await expect(mapSelectButtons).toHaveCount(2);
   await expect(firstMarker).toHaveScreenshot({maxDiffPixelRatio: 0.2});
-  expect(await mapSelectButtons.count()).toBe(2);
 
   // map marker should change to selected when Select on Map button clicked
-  mapSelectButtons.first().click();
+  await mapSelectButtons.first().click();
   await expect(firstMarker).toHaveScreenshot({maxDiffPixelRatio: 0.2});
 });

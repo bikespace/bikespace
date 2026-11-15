@@ -1,9 +1,15 @@
-import React from 'react';
+import React, {Suspense} from 'react';
 
 import {SubmissionPage} from '@/components/submission';
 
+// SubmissionForm calls useSearchParams(), which requires a Suspense boundary
+// for static export.
 const SubmissionRoute = () => {
-  return <SubmissionPage />;
+  return (
+    <Suspense>
+      <SubmissionPage />
+    </Suspense>
+  );
 };
 
 export default SubmissionRoute;

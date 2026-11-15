@@ -130,7 +130,7 @@ function SearchResults({
 }
 
 interface GeocoderSearchProps {
-  mapRef: RefObject<MapRef>;
+  mapRef: RefObject<MapRef | null>;
   isMinimized: boolean;
   setIsMinimized: Function;
   inputTimeOut?: number;

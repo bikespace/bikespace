@@ -1,11 +1,12 @@
-@import '@/styles/variables.module.scss';
+@use 'sass:math';
+@use '@/styles/variables.module.scss' as *;
 
 .profileDetails {
   background-color: white;
   padding: 1rem;
   border-radius: 1rem;
   width: 100%;
-  max-width: $wrapper-max-width / 2;
+  max-width: math.div($wrapper-max-width, 2);
 
   h2 {
     font-size: 1.5rem;

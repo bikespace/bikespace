@@ -1,4 +1,4 @@
-@import '@/styles/variables.module.scss';
+@use '@/styles/variables.module.scss' as *;
 
 .sidebar {
   background-color: $color-primary-20p;
