@@ -32,17 +32,27 @@ async function getReportCount(page: Page): Promise<number> {
 // The filtered count updates via an async effect reacting to filter state,
 // so it can lag a render behind the click that triggered it. Poll until two
 // consecutive reads agree before treating the value as settled.
-async function getStableReportCount(page: Page): Promise<number> {
+//
+// `requireNonZero` is for the unfiltered baseline: the seed data always has
+// submissions, so a 0 there means the count element is briefly missing (e.g.
+// the sidebar is remounting or reloading under load), not a real count.
+async function getStableReportCount(
+  page: Page,
+  {requireNonZero = false}: {requireNonZero?: boolean} = {}
+): Promise<number> {
   let previous: number | undefined;
+  let settled = 0;
   await expect
     .poll(async () => {
       const current = await getReportCount(page);
-      const stable = current === previous;
+      const stable = current === previous && (!requireNonZero || current > 0);
       previous = current;
+      if (stable) settled = current;
       return stable;
     })
     .toBe(true);
-  return getReportCount(page);
+  // return the value that was verified as stable, rather than re-reading it
+  return settled;
 }
 
 test.describe('Issue type filter', () => {
@@ -98,7 +108,9 @@ test.describe('Issue type filter', () => {
   test('filter mode changes which submissions are shown', async ({page}) => {
     const filterModeSelect = page.getByLabel('Filter mode');
 
-    const totalCount = await getStableReportCount(page);
+    const totalCount = await getStableReportCount(page, {
+      requireNonZero: true,
+    });
 
     const abandonedChip = page.getByRole('button', {
       name: 'Abandoned bicycle',
