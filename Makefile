@@ -208,6 +208,10 @@ lint-and-fix-frontend:
 build-frontend:
 	cd $(BIKESPACE_FRONTEND_DIR) && npm install && npm run build
 
+.PHONY: typecheck-frontend
+typecheck-frontend:
+	cd $(BIKESPACE_FRONTEND_DIR) && npm install && npm run typecheck
+
 .PHONY: test-frontend
 test-frontend:
 	cd $(BIKESPACE_FRONTEND_DIR) && npm install && npm run test

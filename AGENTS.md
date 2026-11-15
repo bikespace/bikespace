@@ -38,6 +38,7 @@ cd bikespace_api && ../venv/bin/python3 -m pytest path/to/test_file.py -v
 make dev-frontend         # Start Next.js dev server at http://localhost:8080
 make test-frontend        # Run Jest unit tests
 make lint-frontend        # Run ESLint
+make typecheck-frontend   # Run TypeScript type check (tsc --noEmit)
 make lint-and-fix-frontend
 ```
 

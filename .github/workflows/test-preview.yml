@@ -95,6 +95,8 @@ jobs:
           cache-dependency-path: bikespace_frontend/package-lock.json
       - name: Check code style
         run: make lint-frontend
+      - name: Type check
+        run: make typecheck-frontend
       - name: Run Jest tests
         run: make test-frontend
       - name: Audit production dependencies
