@@ -86,6 +86,34 @@ const MyComponent = dynamic(() => import('../my-component/MyComponent'), {
 });
 ```
 
+### Pages that read URL search params
+
+Since the frontend is a static site, every page is pre-rendered before any URL or query string.
+Any component that reads search params using `useSearchParams()`, or nuqs hook such as `useQueryState` must be
+inside a `<Suspense>` boundary.
+Next.js will then pre-render everything outside the boundary and then render the part that reads the params in the browser.
+If the boundary isn't present, `next build` will fail with:
+> useSearchParams() should be wrapped in a suspense boundary at page "/your-page"
+
+See example `src/app/dashboard/page.tsx` for reference:
+```ts
+'use client';
+
+import {Suspense} from 'react';
+
+import {DashboardPage} from '@/components/dashboard';
+
+// DashboardPage reads URL search params (via nuqs), which requires a
+// Suspense boundary for static export.
+export default function Page() {
+  return (
+    <Suspense>
+      <DashboardPage />
+    </Suspense>
+  );
+}
+```
+
 ## Notes on Dashboard Structure
 
 - `react-query` is used to manage getting data from the API, see: https://tanstack.com/query/latest/docs/framework/react/overview
