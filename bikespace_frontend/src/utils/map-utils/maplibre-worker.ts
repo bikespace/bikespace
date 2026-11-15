@@ -1,9 +1,9 @@
-import {getVersion, setWorkerUrl} from 'maplibre-gl';
+import {setWorkerUrl} from 'maplibre-gl';
 
-// maplibre-gl v6 locates its web worker relative to its own import.meta.url,
-// which the bundler rewrites to a build-time file:// path, so the worker would
-// fail to start. Point it at the copy that scripts/copy-maplibre-worker.mjs
-// puts in public/ before every dev or build run. The version query string
-// stops browsers using a cached worker from an older maplibre-gl.
+// maplibre-gl v6 loads its web worker from a separate file. Referencing it with
+// new URL(..., import.meta.url) makes webpack emit the worker as a hashed asset
+// and return its served URL.
 // Import this module (for its side effect) before creating a map.
-setWorkerUrl(`/maplibre-gl-worker.mjs?v=${getVersion()}`);
+setWorkerUrl(
+  new URL('maplibre-gl/dist/maplibre-gl-worker.mjs', import.meta.url).toString()
+);

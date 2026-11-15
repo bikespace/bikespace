@@ -9,13 +9,9 @@
     "node": ">=22.17.0"
   },
   "scripts": {
-    "copy-maplibre-worker": "node scripts/copy-maplibre-worker.mjs",
-    "predevelop": "npm run copy-maplibre-worker",
     "develop": "next dev --webpack --port 8080",
-    "predevelop-test": "npm run copy-maplibre-worker",
     "develop-test": "NODE_ENV=test next dev --webpack --port 8081",
     "start": "npx serve out -p 8080",
-    "prebuild": "npm run copy-maplibre-worker",
     "build": "next build --webpack",
     "lint": "eslint src --ext .js,.jsx,.ts,.tsx",
     "fix": "eslint src --ext .js,.jsx,.ts,.tsx --fix",
