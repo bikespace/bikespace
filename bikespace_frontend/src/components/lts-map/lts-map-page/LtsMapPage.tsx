@@ -1,13 +1,14 @@
 'use client';
 
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
 import Map, {
   GeolocateControl,
   Layer,
   NavigationControl,
   Source,
 } from 'react-map-gl/maplibre';
-import maplibregl from 'maplibre-gl';
+import * as maplibregl from 'maplibre-gl';
+import '@/utils/map-utils/maplibre-worker';
 import {Protocol} from 'pmtiles';
 import {layers, namedFlavor} from '@protomaps/basemaps';
 
@@ -26,10 +27,10 @@ import {
 import {SidebarButton} from '@/components/shared-ui/sidebar-button';
 
 import type {
-  LineLayer,
+  LineLayerSpecification,
   MapLayerMouseEvent,
   MapRef,
-  MapStyle,
+  StyleSpecification,
 } from 'react-map-gl/maplibre';
 import type {FilterSpecification, MapGeoJSONFeature} from 'maplibre-gl';
 
@@ -47,7 +48,7 @@ function ensurePmtilesProtocol() {
   pmtilesProtocolAdded = true;
 }
 
-const backupMapStyle: MapStyle = {
+const backupMapStyle: StyleSpecification = {
   version: 8,
   glyphs:
     'https://protomaps.github.io/basemaps-assets/fonts/{fontstack}/{range}.pbf',
@@ -66,7 +67,7 @@ const backupMapStyle: MapStyle = {
 const ltsPmtilesUrl = `pmtiles://${process.env.DATA_LEVEL_OF_TRAFFIC_STRESS}`;
 const ltsSourceLayer = 'lts_filtered_1_4';
 
-const ltsLineLayer: LineLayer = {
+const ltsLineLayer: LineLayerSpecification = {
   id: 'lts-lines',
   type: 'line',
   source: 'lts',
@@ -95,7 +96,7 @@ const ltsLineLayer: LineLayer = {
   },
 };
 
-const ltsHitLayer: LineLayer = {
+const ltsHitLayer: LineLayerSpecification = {
   id: 'lts-lines-hit',
   type: 'line',
   source: 'lts',
@@ -107,7 +108,7 @@ const ltsHitLayer: LineLayer = {
   },
 };
 
-const ltsSelectedLayer: LineLayer = {
+const ltsSelectedLayer: LineLayerSpecification = {
   id: 'lts-lines-selected',
   type: 'line',
   source: 'lts-selected',
@@ -212,14 +213,20 @@ export function LtsMapPage() {
   const selectedFeatureEntries = selectedFeatureProperties
     ? Object.entries(selectedFeatureProperties).filter(([key]) => key !== 'lts')
     : [];
-  const selectedFeatureGeoJSON =
-    selectedFeature?.geometry === undefined
-      ? null
-      : {
-          type: 'Feature' as const,
-          properties: selectedFeature.properties ?? {},
-          geometry: selectedFeature.geometry,
-        };
+  const selectedFeatureGeoJSON = useMemo(
+    () =>
+      selectedFeature?.geometry === undefined
+        ? null
+        : {
+            type: 'Feature' as const,
+            // maplibre-gl v6 creates vector tile feature properties with
+            // Object.create(null); copy them into a plain object because
+            // react-map-gl's Source prop diffing calls hasOwnProperty on them
+            properties: {...selectedFeature.properties},
+            geometry: selectedFeature.geometry,
+          },
+    [selectedFeature]
+  );
 
   return (
     <main className={styles.ltsMapPage}>

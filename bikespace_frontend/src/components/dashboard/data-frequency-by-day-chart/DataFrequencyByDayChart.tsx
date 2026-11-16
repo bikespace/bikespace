@@ -102,7 +102,6 @@ function DataFrequencyByDayChart({
           fixedrange: true, // prevent user zoom
         },
         xaxis: {
-          //@ts-expect-error labelalias attribute is present
           labelalias: dayLabels,
           automargin: true,
           fixedrange: true,

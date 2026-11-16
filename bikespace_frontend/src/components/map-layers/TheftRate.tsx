@@ -3,7 +3,7 @@ import {Layer, Source} from 'react-map-gl/maplibre';
 
 import {attributions} from '@/utils/map-utils';
 
-import type {FillLayer} from 'react-map-gl/maplibre';
+import type {FillLayerSpecification} from 'react-map-gl/maplibre';
 import type {ExpressionSpecification, Map as MapLibreMap} from 'maplibre-gl';
 
 import styles from './legend-tables.module.scss';
@@ -58,9 +58,9 @@ export function findWaterLayerId(map: MapLibreMap): string | undefined {
 }
 
 export function TheftRateLayer({beforeId}: {beforeId?: string}) {
-  const theftRateURL = process.env.DATA_BICYCLE_THEFT_RATE;
+  const theftRateURL = process.env.DATA_BICYCLE_THEFT_RATE!;
 
-  const theftRateLayer: FillLayer = {
+  const theftRateLayer: FillLayerSpecification = {
     id: 'bicycle-theft-rate',
     type: 'fill',
     source: 'bicycle-theft-rate',

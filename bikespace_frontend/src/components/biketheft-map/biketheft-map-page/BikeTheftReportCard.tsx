@@ -7,7 +7,7 @@ import styles from './bike-theft-report-card.module.scss';
 
 interface BikeTheftReportCardProps {
   selectedReports: StolenBikeReport[];
-  cardRef: RefObject<HTMLDivElement>;
+  cardRef: RefObject<HTMLDivElement | null>;
   onClearSelection: () => void;
 }
 export function BikeTheftReportCard({

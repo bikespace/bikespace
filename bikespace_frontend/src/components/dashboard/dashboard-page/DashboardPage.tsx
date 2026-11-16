@@ -36,12 +36,14 @@ export function DashboardPage() {
     setSubmissions,
     selectedSubmission,
     setSelectedSubmission,
+    setIsSidebarOpen,
     filters,
   } = useStore(state => ({
     submissions: state.submissions,
     setSubmissions: state.setSubmissions,
     selectedSubmission: state.ui.submissions.selectedSubmission,
     setSelectedSubmission: state.ui.submissions.setSelectedSubmission,
+    setIsSidebarOpen: state.ui.sidebar.setIsOpen,
     filters: state.filters,
   }));
 
@@ -62,6 +64,10 @@ export function DashboardPage() {
   useEffect(() => {
     if (selectedSubmissionInURL !== null) {
       setSidebarTab(SidebarTab.Feed);
+      // Open the sidebar explicitly: on mobile, <Sidebar> closes itself on
+      // mount when no tab is set, and its effect can run before this one
+      // (child effects run first), so it may not see the tab set above.
+      setIsSidebarOpen(true);
       setSelectedSubmission(selectedSubmissionInURL);
       // clear URL param to prevent potential user confusion if they later select other submissions
       setSelectedSubmissionInURL(null);

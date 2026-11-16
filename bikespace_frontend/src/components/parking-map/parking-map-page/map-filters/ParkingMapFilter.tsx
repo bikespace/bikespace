@@ -13,7 +13,7 @@ import {
 import type {RefObject} from 'react';
 import type {Feature, Geometry, GeoJsonProperties} from 'geojson';
 import type {FilterSpecification} from 'maplibre-gl';
-import type {MapRef} from 'react-map-gl/dist/esm/exports-maplibre';
+import type {MapRef} from 'react-map-gl/maplibre';
 
 import styles from './parking-map-filter.module.scss';
 
@@ -107,7 +107,7 @@ function sortPropertyOptions(
 const defaultFilterProperty = 'bicycle_parking';
 
 interface ParkingMapFilterProps {
-  mapRef: RefObject<MapRef>;
+  mapRef: RefObject<MapRef | null>;
   setFilter: React.Dispatch<React.SetStateAction<FilterSpecification>>;
   defaultProperty?: string;
   enabledFilterProperties?: FilterPropertyAttributes[];

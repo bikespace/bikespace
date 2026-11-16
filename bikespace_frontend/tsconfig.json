@@ -23,7 +23,12 @@
       "@/__test__/*": ["../__test__/*"]
     },
     "skipLibCheck": true,
-    "types": ["node", "jest", "@testing-library/jest-dom"],
+    "types": [
+      "node",
+      "jest",
+      "@testing-library/jest-dom",
+      "leaflet.markercluster"
+    ],
     "allowJs": true,
     "noEmit": true,
     "incremental": true,

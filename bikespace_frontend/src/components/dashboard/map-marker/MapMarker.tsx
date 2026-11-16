@@ -1,4 +1,4 @@
-import React, {useRef, forwardRef, useImperativeHandle} from 'react';
+import React, {useMemo, useRef, forwardRef, useImperativeHandle} from 'react';
 import {Marker} from 'react-leaflet';
 import {
   Popup as LeafletPopup,
@@ -42,11 +42,15 @@ const MapMarker = forwardRef(
     // pass MarkerRef to parent while also allowing it to be used in this component:
     useImperativeHandle(outerMarkerRef, () => innerMarkerRef.current!, []);
 
-    const position: LatLngTuple = [submission.latitude, submission.longitude];
-
-    const baseIconHeight = 36;
-    const iconHeight = isSelected ? baseIconHeight * 1.5 : baseIconHeight;
-    const iconWidth = iconHeight;
+    // `position` and `icon` are memoized because react-leaflet compares them by
+    // reference on every render. A new array calls marker.setLatLng(), which
+    // markercluster handles by removing and re-adding the marker; that
+    // collapses a spiderfied cluster (e.g. right after zoomToShowLayer).
+    const {latitude, longitude} = submission;
+    const position: LatLngTuple = useMemo(
+      () => [latitude, longitude],
+      [latitude, longitude]
+    );
 
     const trackPopupOpen = () => {
       trackUmamiEvent('popupopen', {
@@ -62,21 +66,26 @@ const MapMarker = forwardRef(
     }, null);
     const customMarker = markerIssueIcons[priorityIssue ?? IssueType.Other];
 
+    const icon = useMemo(() => {
+      const baseIconHeight = 36;
+      const iconHeight = isSelected ? baseIconHeight * 1.5 : baseIconHeight;
+      const iconWidth = iconHeight;
+      return new Icon({
+        shadowUrl: markerShadow.src,
+        iconSize: [iconWidth, iconHeight],
+        iconAnchor: [iconWidth / 2, iconHeight],
+        popupAnchor: [0, -(iconHeight * 0.8)],
+        shadowSize: [iconWidth, iconHeight],
+        shadowAnchor: [iconWidth / 3, iconHeight],
+        iconUrl: customMarker,
+        className: styles.marker,
+      });
+    }, [isSelected, customMarker]);
+
     return (
       <Marker
         position={position}
-        icon={
-          new Icon({
-            shadowUrl: markerShadow.src,
-            iconSize: [iconWidth, iconHeight],
-            iconAnchor: [iconWidth / 2, iconHeight],
-            popupAnchor: [0, -(iconHeight * 0.8)],
-            shadowSize: [iconWidth, iconHeight],
-            shadowAnchor: [iconWidth / 3, iconHeight],
-            iconUrl: customMarker,
-            className: styles.marker,
-          })
-        }
+        icon={icon}
         eventHandlers={{
           click: onClick,
           popupopen: trackPopupOpen,

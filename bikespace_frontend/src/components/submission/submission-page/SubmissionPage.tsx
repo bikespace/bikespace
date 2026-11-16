@@ -8,6 +8,8 @@ import {queryClient} from '@/config/query-client';
 import {SubmissionHeader} from '../submission-header';
 import {SubmissionForm} from '../submission-form';
 
+import backgroundImage from '@/assets/images/bikespace-background-desktop.jpeg';
+
 import styles from './submission-page.module.scss';
 
 export function SubmissionPage() {
@@ -15,7 +17,7 @@ export function SubmissionPage() {
     <QueryClientProvider client={queryClient}>
       <div className={styles.submissionPage}>
         <SubmissionHeader />
-        <main>
+        <main style={{backgroundImage: `url(${backgroundImage.src})`}}>
           <SubmissionForm />
         </main>
       </div>

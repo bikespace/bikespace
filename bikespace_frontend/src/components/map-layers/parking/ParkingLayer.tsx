@@ -8,11 +8,15 @@ import {
   getSpriteImageWithTextOverlay,
 } from '@/utils/map-utils';
 
-import type {CircleLayer, SymbolLayer} from 'react-map-gl/maplibre';
+import type {
+  CircleLayerSpecification,
+  SymbolLayerSpecification,
+} from 'react-map-gl/maplibre';
 import type {
   ExpressionSpecification,
   MapGeoJSONFeature,
   FilterSpecification,
+  Marker as MapLibreMarker,
 } from 'maplibre-gl';
 import type {layoutOptions} from '@/utils/map-utils';
 
@@ -28,6 +32,12 @@ export const parkingInteractiveLayers = ['bicycle-parking'];
 // access=* values that indicate that bicycle parking is open to the public
 const publicAccessTypes = ['yes', 'permissive', ''];
 
+// maplibre-gl v6 only gives its default marker an aria-label, so label the
+// custom sprite markers ourselves (e2e tests also locate them by this label)
+function labelMarker(marker: MapLibreMarker | null) {
+  marker?.getElement().setAttribute('aria-label', 'Map marker');
+}
+
 interface ParkingLayerProps {
   selected: MapGeoJSONFeature[];
   groupSelected: MapGeoJSONFeature[];
@@ -41,9 +51,8 @@ export function ParkingLayer({
   layerFilter = true,
   visible = true,
 }: ParkingLayerProps) {
-  // hide via layout rather than unmounting so the layers stay queryable on click
+  const bicycleParkingURL = process.env.DATA_BICYCLE_PARKING!;
   const visibility = visible ? 'visible' : 'none';
-  const bicycleParkingURL = process.env.DATA_BICYCLE_PARKING;
 
   const {current: map} = useMap();
 
@@ -81,7 +90,7 @@ export function ParkingLayer({
     16.05,
     ['case', ['boolean', ['feature-state', 'groupSelected'], false], 0, 1],
   ];
-  const parkingLayer: SymbolLayer = {
+  const parkingLayer: SymbolLayerSpecification = {
     id: 'bicycle-parking',
     type: 'symbol',
     source: parkingSourceId,
@@ -131,7 +140,7 @@ export function ParkingLayer({
     16.05,
     0,
   ];
-  const parkingLayerDense: CircleLayer = {
+  const parkingLayerDense: CircleLayerSpecification = {
     id: 'bicycle-parking-dense',
     type: 'circle',
     source: parkingSourceId,
@@ -179,6 +188,7 @@ export function ParkingLayer({
         return (
           <Marker
             key={feature.id}
+            ref={labelMarker}
             latitude={lat}
             longitude={lon}
             anchor="bottom"
@@ -211,6 +221,7 @@ export function ParkingLayer({
         return (
           <Marker
             key={feature.id}
+            ref={labelMarker}
             latitude={lat}
             longitude={lon}
             anchor="bottom"
