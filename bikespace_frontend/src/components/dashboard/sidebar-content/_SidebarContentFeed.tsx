@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
 
 import {useStore} from '@/states/store';
 import {useSubmissionsQuery} from '@/hooks';
@@ -6,6 +6,7 @@ import {useIsMobile} from '@/hooks/use-is-mobile';
 
 import {trackUmamiEvent} from '@/utils';
 
+import {SidebarButton} from '@/components/shared-ui/sidebar-button';
 import {Spinner} from '@/components/shared-ui/spinner';
 
 import {FeedSubmissionItem} from '../feed-submission-item';
@@ -13,6 +14,8 @@ import {FeedSubmissionItem} from '../feed-submission-item';
 import styles from './_SidebarContent.module.scss';
 
 type ItemRef = Record<number, HTMLButtonElement>;
+
+export const FEED_PAGE_SIZE = 50;
 
 export function SidebarContentFeed() {
   const {submissions, selectedSubmission, setSelectedSubmission} = useStore(
@@ -26,6 +29,30 @@ export function SidebarContentFeed() {
   const isMobile = useIsMobile();
 
   const itemRefs = useRef<ItemRef>({});
+  const [visibleCount, setVisibleCount] = useState(FEED_PAGE_SIZE);
+  const newestSubmissions = useMemo(
+    () => [...submissions].reverse(),
+    [submissions]
+  );
+  const visibleSubmissions = newestSubmissions.slice(0, visibleCount);
+  const hasMoreSubmissions = visibleCount < newestSubmissions.length;
+
+  useEffect(() => {
+    setVisibleCount(FEED_PAGE_SIZE);
+  }, [submissions]);
+
+  useEffect(() => {
+    if (!selectedSubmission) return;
+
+    const selectedIndex = newestSubmissions.findIndex(
+      submission => submission.id === selectedSubmission
+    );
+    if (selectedIndex < 0) return;
+
+    const requiredCount =
+      Math.ceil((selectedIndex + 1) / FEED_PAGE_SIZE) * FEED_PAGE_SIZE;
+    setVisibleCount(currentCount => Math.max(currentCount, requiredCount));
+  }, [selectedSubmission, newestSubmissions]);
 
   // scroll selected item into view when:
   // - focus changes
@@ -35,7 +62,7 @@ export function SidebarContentFeed() {
     if (!selectedSubmission) return;
 
     itemRefs.current[selectedSubmission]?.scrollIntoView();
-  }, [selectedSubmission, submissions, isMobile]);
+  }, [selectedSubmission, submissions, isMobile, visibleCount]);
 
   return (
     <>
@@ -46,7 +73,7 @@ export function SidebarContentFeed() {
         className={`${styles.ContentCard} ${styles.scrollableCard}`}
         data-testid="submissions-feed"
       >
-        {[...submissions].reverse().map(submission => (
+        {visibleSubmissions.map(submission => (
           <FeedSubmissionItem
             key={submission.id}
             submission={submission}
@@ -62,6 +89,16 @@ export function SidebarContentFeed() {
             }}
           />
         ))}
+        {hasMoreSubmissions ? (
+          <div className={styles.loadMore}>
+            <SidebarButton
+              type="button"
+              onClick={() => setVisibleCount(count => count + FEED_PAGE_SIZE)}
+            >
+              Load more submissions
+            </SidebarButton>
+          </div>
+        ) : null}
         <div className={styles.loadingIndicator}>
           {isLoading ? <Spinner label="Loading submissions..." /> : null}
         </div>
