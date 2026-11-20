@@ -14,6 +14,49 @@ They are split up accordingly into their own directories:
 
 To run any of these components please see the `README` in each directory.
 
+## Quick start (Docker)
+
+### Prerequisites
+
+- **Docker** with **Docker Compose v2.20 or newer** (the root `compose.yaml` uses `include:`). Check with `docker compose version`.
+  - macOS / Windows: install [Docker Desktop](https://docs.docker.com/desktop/), which includes Compose.
+  - Linux: install [Docker Engine](https://docs.docker.com/engine/install/) and the [Compose plugin](https://docs.docker.com/compose/install/linux/).
+- **make**. On macOS it comes with the Xcode Command Line Tools (`xcode-select --install`). On Windows, run the commands from a WSL 2 shell.
+- Free ports **8000**, **8080** and **25432** on your machine.
+
+Make sure the Docker daemon is running (e.g. Docker Desktop is open) before you start.
+
+### Running the stack
+
+Start the whole stack (Postgres, the API and the frontend) from the repo root with one command:
+
+```bash
+$ make dev
+```
+
+No host Python or Node install is needed, and no `.env` is required: the dev stack falls back to dev-only secrets. A `bikespace_api/.env` (see `bikespace_api/example.env`) overrides them if present.
+
+| Service | URL |
+|---|---|
+| Frontend | http://localhost:8080 |
+| API | http://localhost:8000 |
+| API docs | http://localhost:8000/api/v2/docs/ |
+| Admin | http://localhost:8000/admin/ |
+| Postgres | `localhost:25432` (user `postgres`, password `devpwd`, db `bikespace_dev`) |
+
+The database is recreated and seeded on every `make dev`. Seeded logins:
+- `admin@example.com` / `admin` (superuser)
+- `notanadmin@example.com` / `notanadmin` (regular user)
+- the seed user, `seedadmin@example.com` / `seedadmin` unless set in `bikespace_api/.env`
+
+Edits to API and frontend source reload automatically. After changing `package-lock.json` or `requirements.txt`, run `make dev` again.
+
+- `make dev-stop` stops the stack. Ctrl-C in the `make dev` terminal also stops it.
+- `make dev-clean` also deletes the frontend's cached `node_modules`, `.next` and npm cache volumes.
+- If frontend edits don't trigger a reload (e.g. on Windows/WSL), use `WATCHPACK_POLLING=true make dev`.
+
+The per-service targets (`make dev-api`, `make dev-frontend`) still work as before.
+
 This repository also has a `/datasets` folder for miscellaneous project data and an `/archive` folder for code from previous project webpages that are now deprecated.
 
 
