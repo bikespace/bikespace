@@ -18,10 +18,11 @@ services:
       DATABASE_URL: "postgresql://postgres:devpwd@db/bikespace_dev"
       FLASK_DEBUG: "true"
       FLASK_RUN_PORT: 8000
-      BIKESPACE_SECRET_KEY: ${BIKESPACE_SECRET_KEY}
-      BIKESPACE_SECURITY_PASSWORD_SALT: ${BIKESPACE_SECURITY_PASSWORD_SALT}
-      SEED_USER_EMAIL: ${SEED_USER_EMAIL}
-      SEED_USER_PASSWORD: ${SEED_USER_PASSWORD}
+      # secrets fall back to dev-only values so a fresh clone runs without a .env
+      BIKESPACE_SECRET_KEY: ${BIKESPACE_SECRET_KEY:-dev-only-secret-key}
+      BIKESPACE_SECURITY_PASSWORD_SALT: ${BIKESPACE_SECURITY_PASSWORD_SALT:-dev-only-password-salt}
+      SEED_USER_EMAIL: ${SEED_USER_EMAIL:-seedadmin@example.com}
+      SEED_USER_PASSWORD: ${SEED_USER_PASSWORD:-seedadmin}
     ports:
       - "8000:8000"
   db:

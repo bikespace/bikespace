@@ -6,7 +6,7 @@ The API service is a python Flask application paired with a Postgres database.
 To develop the API locally you'll require the following things:
  - Python version 3.12.0 or greater
  - Docker (docker daemon) running to launch Postgres database container
- - Set up local secrets used by flask-security using a `.env` file (see instructions in `/example.env`)
+ - Optional for Docker dev (`make dev`, `make dev-api`): set up local secrets used by flask-security using a `.env` file (see instructions in `/example.env`). Without one, the dev compose file falls back to dev-only values.
 
 Several tasks (e.g. running the API locally, running certain tests) require a database to be running, but the make targets will take care of launching a Postgres container for you as long as you have Docker running.
 
