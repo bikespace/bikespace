@@ -14,6 +14,14 @@ The root `Makefile` is the central entry point for all dev, test, and deployment
 
 All commands run from the repo root unless noted.
 
+### Full stack (Docker)
+
+```bash
+make dev                  # Start db + API (:8000) + frontend (:8080) in Docker via root compose.yaml; fresh DB each run
+make dev-stop             # Stop the full stack
+make dev-clean            # Stop and delete frontend node_modules/.next/npm cache volumes
+```
+
 ### API
 
 ```bash
