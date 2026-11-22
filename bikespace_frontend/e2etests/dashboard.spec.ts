@@ -72,7 +72,7 @@ test.describe('Dashboard navigation on mobile viewport size', () => {
     await page.waitForSelector('div.leaflet-container');
     await expect(
       page.getByRole('button', {name: /marker for submission 1/i, exact: true})
-    ).toBeVisible();
+    ).toBeVisible({timeout: feedLoadTimeout});
   });
 });
 
@@ -182,6 +182,104 @@ test.describe('Dashboard navigation on desktop viewport size', () => {
     await page.waitForSelector('div.leaflet-container');
     await expect(
       page.getByRole('button', {name: /marker for submission 1/i, exact: true})
+    ).toBeVisible({timeout: feedLoadTimeout});
+  });
+});
+
+test.describe('Dashboard rapid submission selection', () => {
+  test.use({
+    viewport: testDesktopViewport,
+  });
+
+  test('Desktop: selecting submissions in quick succession does not crash the map', async ({
+    page,
+    isMobile,
+  }) => {
+    test.skip(isMobile);
+    test.setTimeout(60 * 1000);
+
+    const pageErrors: string[] = [];
+    page.on('pageerror', error => pageErrors.push(error.message));
+
+    // A tight spiral of submissions forms one cluster that has to be
+    // spiderfied. Lower radius = higher ID, so the latest are closest together.
+    const submissions = Array.from({length: 30}, (_, index) => {
+      const id = index + 1;
+      const radius = (31 - id) * 0.000006;
+      return {
+        id,
+        latitude: 43.6572 + radius * Math.sin(id),
+        longitude: -79.448 + radius * 1.4 * Math.cos(id),
+        issues: ['not_provided'],
+        parking_duration: 'hours',
+        parking_time: new Date(Date.UTC(2025, 2, 19, 12, id)).toISOString(),
+        submitted_datetime: null,
+        comments: null,
+        user: null,
+        version: 3,
+      };
+    });
+    await page.route(/\/api\/v2\/submissions/, async route => {
+      const id = new URL(route.request().url()).pathname.match(/\/(\d+)$/)?.[1];
+      await route.fulfill({
+        json: id
+          ? submissions.find(submission => submission.id === Number(id))
+          : {
+              pagination: {
+                current_page: 1,
+                has_next: false,
+                has_prev: false,
+                total_items: submissions.length,
+                total_pages: 1,
+              },
+              submissions,
+            },
+      });
+    });
+
+    await page.goto('/dashboard');
+    await page.waitForSelector('div.leaflet-container');
+    await page.getByRole('button', {name: /feed/i}).click();
+
+    const feed = page.getByTestId('submissions-feed');
+    await expect(
+      feed.getByRole('button', {name: /id: \d+/i}).first()
+    ).toBeVisible({
+      timeout: feedLoadTimeout,
+    });
+
+    // Dispatch clicks directly: Playwright's actionability checks are too slow
+    // to land a new selection while the map is still moving to the last one.
+    // Moving between members of a spiderfied cluster is what closes the popup
+    // while it is still opening.
+    const clusterIds = [30, 29, 28, 27];
+    const lastSelectedId = await feed.evaluate(async (element, ids) => {
+      let crashed = false;
+      window.addEventListener('error', () => (crashed = true));
+
+      const clickSubmission = (id: number) =>
+        [...element.querySelectorAll('button')]
+          .find(button =>
+            new RegExp(`id: ${id}(\\D|$)`, 'i').test(button.textContent ?? '')
+          )
+          ?.click();
+
+      for (const delay of [150, 250, 350, 500, 700]) {
+        for (const id of ids) {
+          if (crashed) return id;
+          clickSubmission(id);
+          await new Promise(resolve => setTimeout(resolve, delay));
+        }
+      }
+      return ids.at(-1);
+    }, clusterIds);
+
+    await page.waitForTimeout(1500);
+    expect(pageErrors).toEqual([]);
+    await expect(
+      page
+        .locator('.leaflet-popup')
+        .getByRole('link', {name: `ID: ${lastSelectedId}`, exact: true})
     ).toBeVisible();
   });
 });

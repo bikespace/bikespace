@@ -16,6 +16,20 @@ interface MapPopupProps {
   submission: SubmissionApiPayload;
 }
 
+interface PopupInternals {
+  _adjustPan(): void;
+  _map: {_panAnim?: {stop(): void}} | null;
+}
+
+// Stopping a running pan fires moveend synchronously, and a moveend handler
+// can close this popup, leaving _adjustPan to continue with a null map.
+const popupProto = LeafletPopup.prototype as unknown as PopupInternals;
+const adjustPan = popupProto._adjustPan;
+popupProto._adjustPan = function (this: PopupInternals) {
+  this._map?._panAnim?.stop();
+  if (this._map) adjustPan.call(this);
+};
+
 export const MapPopup = forwardRef<LeafletPopup, MapPopupProps>(
   ({submission}: MapPopupProps, ref) => {
     const setSelectedSubmission = useStore(
