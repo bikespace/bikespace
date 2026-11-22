@@ -1,11 +1,6 @@
-import React, {useMemo, useRef, forwardRef, useImperativeHandle} from 'react';
+import React, {useMemo, forwardRef} from 'react';
 import {Marker} from 'react-leaflet';
-import {
-  Popup as LeafletPopup,
-  Marker as LeafletMarker,
-  Icon,
-  LatLngTuple,
-} from 'leaflet';
+import {Marker as LeafletMarker, Icon, LatLngTuple} from 'leaflet';
 
 import {IssueType, SubmissionApiPayload} from '@/interfaces/Submission';
 
@@ -33,15 +28,8 @@ interface MapMarkerProps {
 const MapMarker = forwardRef(
   (
     {submission, isSelected, onClick}: MapMarkerProps,
-    outerMarkerRef: React.ForwardedRef<LeafletMarker>
+    markerRef: React.ForwardedRef<LeafletMarker>
   ) => {
-    // popupRef for calling openPopup() upon focus change
-    // `Popup` from 'react-leaflet' forwards `Popup` from 'leaflet'
-    const popupRef = useRef<LeafletPopup>(null);
-    const innerMarkerRef = useRef<LeafletMarker>(null);
-    // pass MarkerRef to parent while also allowing it to be used in this component:
-    useImperativeHandle(outerMarkerRef, () => innerMarkerRef.current!, []);
-
     // `position` and `icon` are memoized because react-leaflet compares them by
     // reference on every render. A new array calls marker.setLatLng(), which
     // markercluster handles by removing and re-adding the marker; that
@@ -90,10 +78,10 @@ const MapMarker = forwardRef(
           click: onClick,
           popupopen: trackPopupOpen,
         }}
-        ref={innerMarkerRef}
+        ref={markerRef}
         alt={`Marker for submission ${submission.id}`}
       >
-        <MapPopup submission={submission} ref={popupRef} />
+        <MapPopup submission={submission} />
       </Marker>
     );
   }

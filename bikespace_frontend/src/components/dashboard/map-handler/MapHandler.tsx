@@ -7,10 +7,6 @@ import {trackUmamiEvent} from '@/utils';
 import {useStore} from '@/states/store';
 import {useSubmissionId} from '@/states/url-params';
 
-import 'leaflet/dist/leaflet.css';
-import 'leaflet-defaulticon-compatibility';
-import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css';
-
 export const MapHandler = () => {
   const map = useMap();
 

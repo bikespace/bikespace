@@ -1,4 +1,3 @@
-import React, {forwardRef} from 'react';
 import {Popup} from 'react-leaflet';
 import {Popup as LeafletPopup} from 'leaflet';
 import {SubmissionApiPayload} from '@/interfaces/Submission';
@@ -16,95 +15,104 @@ interface MapPopupProps {
   submission: SubmissionApiPayload;
 }
 
-export const MapPopup = forwardRef<LeafletPopup, MapPopupProps>(
-  ({submission}: MapPopupProps, ref) => {
-    const setSelectedSubmission = useStore(
-      state => state.ui.submissions.setSelectedSubmission
-    );
-    const [, setTab] = useSidebarTab();
+interface PopupInternals {
+  _adjustPan(): void;
+  _map: {_panAnim?: {stop(): void}} | null;
+}
 
-    const {
-      issues,
-      id,
-      comments,
-      parking_duration,
-      parking_time,
-      submitted_datetime,
-      user,
-    } = submission;
+// Stopping a running pan fires moveend synchronously, and a moveend handler
+// can close this popup, leaving _adjustPan to continue with a null map.
+const popupProto = LeafletPopup.prototype as unknown as PopupInternals;
+const adjustPan = popupProto._adjustPan;
+popupProto._adjustPan = function (this: PopupInternals) {
+  this._map?._panAnim?.stop();
+  if (this._map) adjustPan.call(this);
+};
 
-    const parkingTime = new Date(parking_time);
-    const submittedDateTime = submitted_datetime
-      ? new Date(submitted_datetime) // submitted_datetime already has a tz offset
-      : 'Not Recorded';
+export function MapPopup({submission}: MapPopupProps) {
+  const setSelectedSubmission = useStore(
+    state => state.ui.submissions.setSelectedSubmission
+  );
+  const [, setTab] = useSidebarTab();
 
-    const formattedParkingTime = new Date(parking_time).toLocaleString(
-      'en-CA',
-      {
-        dateStyle: 'full',
-        timeStyle: 'short',
-      }
-    );
-    const timeDescriptionTitle = [
-      'Encountered: ',
-      parkingTime.toLocaleString(),
-      '\nSubmitted: ',
-      submittedDateTime.toLocaleString(),
-    ].join(' ');
+  const {
+    issues,
+    id,
+    comments,
+    parking_duration,
+    parking_time,
+    submitted_datetime,
+    user,
+  } = submission;
 
-    return (
-      <Popup ref={ref} className={styles.popup}>
-        <div>
-          <strong>Issues:</strong>
-          {issues ? (
-            <div className={styles.issues}>
-              {
-                // de-duplicate issue list: guard for old incorrect entries where same issue was selected more than once
-                [...new Set(issues)]
-                  .sort((a, b) => issuePriority[a] - issuePriority[b])
-                  .map(issue => (
-                    <IssueBadge issue={issue} labelForm="long" key={issue} />
-                  ))
-              }
-            </div>
-          ) : (
-            <em>none</em>
-          )}
-        </div>
-        <p>
-          {user ? user : 'This person'} wanted to park for{' '}
-          <strong>{durationDescription[parking_duration]}</strong> on{' '}
-          <strong title={timeDescriptionTitle}>{formattedParkingTime}</strong>
-        </p>
-        <p>
-          <strong>Comments: </strong>
-          {comments ? comments : <em>none</em>}
-        </p>
-        <div className={styles.popupFooter}>
-          <button
-            className={styles.sidebarButton}
-            onClick={() => {
-              setTab(SidebarTab.Feed);
-              setSelectedSubmission(id);
-            }}
-            data-umami-event="issue-map_open_in_sidebar"
-            data-umami-event-id={id}
+  const parkingTime = new Date(parking_time);
+  const submittedDateTime = submitted_datetime
+    ? new Date(submitted_datetime) // submitted_datetime already has a tz offset
+    : 'Not Recorded';
+
+  const formattedParkingTime = new Date(parking_time).toLocaleString('en-CA', {
+    dateStyle: 'full',
+    timeStyle: 'short',
+  });
+  const timeDescriptionTitle = [
+    'Encountered: ',
+    parkingTime.toLocaleString(),
+    '\nSubmitted: ',
+    submittedDateTime.toLocaleString(),
+  ].join(' ');
+
+  return (
+    <Popup className={styles.popup}>
+      <div>
+        <strong>Issues:</strong>
+        {issues ? (
+          <div className={styles.issues}>
+            {
+              // de-duplicate issue list: guard for old incorrect entries where same issue was selected more than once
+              [...new Set(issues)]
+                .sort((a, b) => issuePriority[a] - issuePriority[b])
+                .map(issue => (
+                  <IssueBadge issue={issue} labelForm="long" key={issue} />
+                ))
+            }
+          </div>
+        ) : (
+          <em>none</em>
+        )}
+      </div>
+      <p>
+        {user ? user : 'This person'} wanted to park for{' '}
+        <strong>{durationDescription[parking_duration]}</strong> on{' '}
+        <strong title={timeDescriptionTitle}>{formattedParkingTime}</strong>
+      </p>
+      <p>
+        <strong>Comments: </strong>
+        {comments ? comments : <em>none</em>}
+      </p>
+      <div className={styles.popupFooter}>
+        <button
+          className={styles.sidebarButton}
+          onClick={() => {
+            setTab(SidebarTab.Feed);
+            setSelectedSubmission(id);
+          }}
+          data-umami-event="issue-map_open_in_sidebar"
+          data-umami-event-id={id}
+        >
+          Focus in Sidebar
+        </button>
+
+        <span className={styles.submissionId}>
+          <a
+            href={`${window.location.pathname}?submission_id=${submission.id}`}
           >
-            Focus in Sidebar
-          </button>
-
-          <span className={styles.submissionId}>
-            <a
-              href={`${window.location.pathname}?submission_id=${submission.id}`}
-            >
-              ID: {id}
-            </a>
-          </span>
-        </div>
-      </Popup>
-    );
-  }
-);
+            ID: {id}
+          </a>
+        </span>
+      </div>
+    </Popup>
+  );
+}
 
 const durationDescription = {
   minutes: 'less than an hour',
