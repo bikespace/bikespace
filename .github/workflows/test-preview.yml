@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       python-version: "3.12.14"
-      node-version: "24"
+      node-version: "26"
       postgres-image: postgres:18
     steps:
       - run: ":"
