@@ -109,6 +109,9 @@ function Map({submissions, isFirstMarkerDataLoading}: MapProps) {
   useEffect(() => {
     if (!clustersReady || !selectedSubmission) return;
 
+    // `cancelled` handles selection changing while the map is still moving to the previous selection
+    let cancelled = false;
+
     const zoomToSelected = () => {
       const currentMarker = markerRefs.current[selectedSubmission];
       const cluster = clusterRef.current;
@@ -116,7 +119,7 @@ function Map({submissions, isFirstMarkerDataLoading}: MapProps) {
         return;
       }
       cluster.zoomToShowLayer(currentMarker, () => {
-        currentMarker.openPopup();
+        if (!cancelled) currentMarker.openPopup();
       });
     };
 
@@ -134,6 +137,7 @@ function Map({submissions, isFirstMarkerDataLoading}: MapProps) {
       }
     }, 0);
     return () => {
+      cancelled = true;
       clearTimeout(timeoutId);
       pendingZoomRef.current = null;
     };
