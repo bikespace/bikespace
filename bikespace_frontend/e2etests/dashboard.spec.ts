@@ -6,7 +6,7 @@ import {
   testDesktopViewport,
 } from './constants';
 
-const stopClusterNavAfterFirstSubmission = true;
+const stopClusterNavAfterFirstSubmission = false;
 const retriesForKnownFlakyTests = 3;
 // The feed and map render every submission (~1,400 seeded), which can take
 // over the default 5s when other workers are loading the dashboard too
@@ -78,6 +78,7 @@ test.describe('Dashboard navigation on mobile viewport size', () => {
 
 test.describe('Dashboard navigation on mobile viewport size (flaky)', () => {
   if (retriesForKnownFlakyTests > 0) test.describe.configure({retries: 3});
+  test.slow(); // each selection re-renders every marker, slow with parallel workers
   test.use({
     viewport: testDefaultViewport,
   });
@@ -100,7 +101,7 @@ test.describe('Dashboard navigation on mobile viewport size (flaky)', () => {
         name: /marker for submission 1/i,
         exact: true,
       })
-    ).toBeVisible();
+    ).toBeVisible({timeout: feedLoadTimeout});
 
     if (stopClusterNavAfterFirstSubmission)
       test.fixme(
@@ -117,7 +118,7 @@ test.describe('Dashboard navigation on mobile viewport size (flaky)', () => {
         name: /marker for submission 2/i,
         exact: true,
       })
-    ).toBeVisible();
+    ).toBeVisible({timeout: feedLoadTimeout});
 
     await page.getByRole('button', {name: /id: 3\D/i}).click();
     await expect(
@@ -128,7 +129,7 @@ test.describe('Dashboard navigation on mobile viewport size (flaky)', () => {
         name: /marker for submission 3/i,
         exact: true,
       })
-    ).toBeVisible();
+    ).toBeVisible({timeout: feedLoadTimeout});
   });
 });
 
@@ -286,6 +287,7 @@ test.describe('Dashboard rapid submission selection', () => {
 
 test.describe('Dashboard navigation on desktop viewport size (flaky)', () => {
   if (retriesForKnownFlakyTests > 0) test.describe.configure({retries: 3});
+  test.slow(); // each selection re-renders every marker, slow with parallel workers
   test.use({
     viewport: testDesktopViewport,
   });
@@ -311,7 +313,7 @@ test.describe('Dashboard navigation on desktop viewport size (flaky)', () => {
         name: /marker for submission 1/i,
         exact: true,
       })
-    ).toBeVisible();
+    ).toBeVisible({timeout: feedLoadTimeout});
 
     if (stopClusterNavAfterFirstSubmission)
       test.fixme(
@@ -328,7 +330,7 @@ test.describe('Dashboard navigation on desktop viewport size (flaky)', () => {
         name: /marker for submission 2/i,
         exact: true,
       })
-    ).toBeVisible();
+    ).toBeVisible({timeout: feedLoadTimeout});
 
     await page.getByRole('button', {name: /id: 3\D/i}).click();
     await expect(
@@ -339,6 +341,6 @@ test.describe('Dashboard navigation on desktop viewport size (flaky)', () => {
         name: /marker for submission 3/i,
         exact: true,
       })
-    ).toBeVisible();
+    ).toBeVisible({timeout: feedLoadTimeout});
   });
 });
