@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import {useCallback, useEffect, useRef, useState} from 'react';
 
 import {MapContainer, TileLayer} from 'react-leaflet';
 import MarkerClusterGroup from 'react-leaflet-cluster';
@@ -23,6 +23,7 @@ import type {
 import type {SubmissionApiPayload} from '@/interfaces/Submission';
 
 import 'leaflet/dist/leaflet.css';
+import 'leaflet-defaulticon-compatibility';
 import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css';
 import 'leaflet.locatecontrol/dist/L.Control.Locate.css';
 // react-leaflet-cluster v4 no longer imports its own CSS.
@@ -40,7 +41,7 @@ export interface MapProps {
 type MarkerRefs = Record<number, LeafletMarker>;
 
 function Map({submissions, isFirstMarkerDataLoading}: MapProps) {
-  const mapRef: React.LegacyRef<lMap> = useRef(null);
+  const mapRef = useRef<lMap>(null);
   const clusterRef = useRef<LeafletMarkerClusterGroup>(null);
   const markerRefs = useRef<MarkerRefs>({});
   const tileLayerProps = getRasterTileLayerProps(process.env.MAPTILER_API_KEY);

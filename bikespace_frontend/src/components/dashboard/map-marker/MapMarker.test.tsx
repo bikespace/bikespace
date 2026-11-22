@@ -30,12 +30,9 @@ jest.mock('react-leaflet', () => ({
   },
 }));
 
-jest.mock('../map-popup', () => {
-  const ReactActual = jest.requireActual('react');
-  return {
-    MapPopup: ReactActual.forwardRef(() => null),
-  };
-});
+jest.mock('../map-popup', () => ({
+  MapPopup: () => null,
+}));
 
 const submission: SubmissionApiPayload = {
   id: 1,
