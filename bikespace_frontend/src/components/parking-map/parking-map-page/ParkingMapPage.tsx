@@ -96,6 +96,7 @@ export function ParkingMapPage() {
   const [zoomLevel, setZoomLevel] = useState<number>(12);
   const [sidebarIsOpen, setSidebarIsOpen] = useState<boolean>(true);
   const [isMapLoading, setIsMapLoading] = useState<boolean>(true);
+  const [isSpritesAdded, setIsSpritesAdded] = useState<boolean>(false);
   const [geoSearchIsMinimized, setGeoSearchIsMinimized] =
     useState<boolean>(false);
   const [parkingLayerFilter, setParkingLayerFilter] =
@@ -289,6 +290,7 @@ export function ParkingMapPage() {
     // console log required for playwright testing
     if (process.env.NODE_ENV !== 'production') console.log('map loaded');
     addSprite();
+    setIsSpritesAdded(true);
     handleMouseHover();
 
     // after styles load
@@ -469,7 +471,8 @@ export function ParkingMapPage() {
           selected={parkingSelectedOrHovered}
           groupSelected={parkingGroupSelected}
           layerFilter={parkingLayerFilter}
-          visible={showParking}
+          // only show layer after sprites are loaded
+          visible={showParking && isSpritesAdded}
         />
         {reportedFeatures.length > 0 ? (
           <ReportedIssuesLayer
