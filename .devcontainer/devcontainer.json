@@ -1,0 +1,25 @@
+{
+  "name": "BikeSpace",
+  "dockerComposeFile": "compose.yaml",
+  "service": "devcontainer",
+  "runServices": ["devcontainer", "bikespace_api", "bikespace_frontend", "db"],
+  "workspaceFolder": "/workspaces/bikespace",
+  "shutdownAction": "stopCompose",
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "24"
+    },
+  },
+  "forwardPorts": [8000, 8080, 25432],
+  "portsAttributes": {
+    "8000": {
+      "label": "BikeSpace API"
+    },
+    "8080": {
+      "label": "BikeSpace frontend"
+    },
+    "25432": {
+      "label": "PostgreSQL"
+    }
+  }
+}
