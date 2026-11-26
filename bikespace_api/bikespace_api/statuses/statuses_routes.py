@@ -26,6 +26,12 @@ class UserSchema(ma.Schema):
     username = ma.fields.String(allow_none=True)
 
 
+class SubmissionSchema(ma.Schema):
+    """Partial schema for Submission fields used by SubmissionUpdate handling"""
+
+    id = ma.fields.Integer(dump_only=True)
+
+
 class BikeParkingStatusSchema(ma.Schema):
     id = ma.fields.Integer(dump_only=True)
     code = ma.fields.Enum(StatusName, by_value=True)
@@ -49,12 +55,8 @@ class BikeParkingStatuses(MethodView):
 
 class SubmissionCommentSchema(ma.Schema):
     id = ma.fields.Integer(dump_only=True)
-    submission_ids = ma.fields.List(
-        ma.fields.Integer(),
-        required=True,
-        validate=ma.validate.Length(min=1),
-    )
     user = ma.fields.Pluck(UserSchema, "username")
+    submissions = ma.fields.Pluck(SubmissionSchema, "id", many=True)
     comments = ma.fields.String(validate=ma.validate.Length(max=5000))
     visibility = ma.fields.Enum(VisibilityStatus, by_value=True)
     submitted_datetime = ma.fields.AwareDateTime(format="iso", dump_only=True)
@@ -65,12 +67,10 @@ class SubmissionCommentSchema(ma.Schema):
     )
 
 
-# TODO status should just be a single string option here
-
-
 class SubmissionCommentCreateConfirmationSchema(ma.Schema):
     status = ma.fields.Constant("created")
     submission_comment_id = ma.fields.Integer()
+    # TODO should this confirmation also return the list of submission ids?
 
 
 class SubmissionCommentCreateErrorSchema(ma.Schema):
