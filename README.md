@@ -18,7 +18,7 @@ To run any of these components please see the `README` in each directory.
 
 ### Prerequisites
 
-- **Docker** with **Docker Compose v2.20 or newer** (the root `compose.yaml` uses `include:`). Check with `docker compose version`.
+- **Docker** with **Docker Compose v2.20 or newer** (the stack is configured in `.devcontainer/compose.yaml`). Check with `docker compose version`.
   - macOS / Windows: install [Docker Desktop](https://docs.docker.com/desktop/), which includes Compose.
   - Linux: install [Docker Engine](https://docs.docker.com/engine/install/) and the [Compose plugin](https://docs.docker.com/compose/install/linux/).
 - **make**. On macOS it comes with the Xcode Command Line Tools (`xcode-select --install`). On Windows, run the commands from a WSL 2 shell.
