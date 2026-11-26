@@ -9,8 +9,16 @@ from sqlalchemy_continuum import make_versioned
 from sqlalchemy_continuum.plugins import FlaskPlugin
 
 from bikespace_api import db  # type: ignore
+from bikespace_api.statuses.statuses_models import (
+    CommentUpdateToSubmission,
+    StatusUpdateToSubmission,
+    SubmissionComment,
+    SubmissionStatusUpdate,
+)
 
 make_versioned(plugins=[FlaskPlugin()])
+
+# TODO add a method to determine the current status of a submission
 
 
 class IssueType(Enum):
@@ -64,6 +72,12 @@ class Submission(db.Model):
         sa.ForeignKey("user.id"), index=True
     )
     user: so.Mapped[Optional["User"]] = so.relationship(back_populates="submissions")
+    status_updates: so.Mapped[list["SubmissionStatusUpdate"]] = sa.relationship(
+        secondary=StatusUpdateToSubmission, back_populates="bikeparking_submissions"
+    )
+    comment_updates: so.Mapped[list["SubmissionComment"]] = sa.relationship(
+        secondary=CommentUpdateToSubmission, back_populates="bikeparking_submissions"
+    )
 
     # __init__ params need to have a default value for revert from deleted state to work with sqlalchemy_continuum
     def __init__(

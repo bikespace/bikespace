@@ -16,6 +16,8 @@ from bikespace_api.statuses.statuses_models import (
     VisibilityStatus,
 )
 
+# TODO update the schemas with the proper relationships to submissions
+
 
 class UserSchema(ma.Schema):
     """Partial schema for User fields used by SubmissionUpdate handling"""

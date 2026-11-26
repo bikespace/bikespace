@@ -27,6 +27,8 @@ from bikespace_api.submissions.submissions_models import (
 
 DEFAULT_OFFSET_LIMIT = 100
 
+# TODO add the update types to the schemas
+
 
 class SubmissionSchema(ma.Schema):
     id = ma.fields.Integer(dump_only=True)

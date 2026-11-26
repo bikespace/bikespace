@@ -5,6 +5,7 @@ import sqlalchemy as sa
 import sqlalchemy.orm as so
 
 from bikespace_api import db  # type: ignore
+from bikespace_api.submissions.submissions_models import Submission
 
 
 class StatusName(Enum):
@@ -85,10 +86,6 @@ class SubmissionUpdate(db.Model):
     """Shared base model for SubmissionComment and SubmissionStatusUpdate"""
 
     id: so.Mapped[int] = so.mapped_column(primary_key=True, autoincrement=True)
-    # todo check how to make this a fk list?
-    submission_ids: so.Mapped[list[int]] = so.mapped_column(
-        sa.ForeignKey("bikeparking_submissions.id"), index=True
-    )
     user_id: so.Mapped[int | None] = so.mapped_column(
         sa.ForeignKey("user.id"), index=True
     )
@@ -109,16 +106,56 @@ class SubmissionUpdate(db.Model):
     )
 
 
+StatusUpdateToSubmission = sa.Table(
+    "status_update_submission",
+    db.Model.metadata,
+    sa.Column(
+        "status_update_id",
+        sa.ForeignKey("bikeparking_submission_status_updates.id"),
+        primary_key=True,
+        nullable=False,
+    ),
+    sa.Column(
+        "submission_id",
+        sa.ForeignKey("bikeparking_submissions.id"),
+        primary_key=True,
+        nullable=False,
+    ),
+)
+
+
 class SubmissionStatusUpdate(SubmissionUpdate):
     """Docstring TODO"""
 
     __tablename__ = "bikeparking_submission_status_updates"
     __versioned__ = {}
 
+    submission_ids: so.Mapped[list["Submission"]] = sa.relationship(
+        secondary=StatusUpdateToSubmission,
+        back_populates="bikeparking_submission_status_updates",
+    )
     user_id: so.Mapped[int] = so.mapped_column(sa.ForeignKey("user.id"), index=True)
     status_type: so.Mapped[int] = so.mapped_column(
         sa.ForeignKey("bikeparking_statuses.id"), index=True
     )
+
+
+CommentUpdateToSubmission = sa.Table(
+    "comment_update_submission",
+    db.Model.metadata,
+    sa.Column(
+        "comment_update_id",
+        sa.ForeignKey("bikeparking_submission_comments.id"),
+        primary_key=True,
+        nullable=False,
+    ),
+    sa.Column(
+        "submission_id",
+        sa.ForeignKey("bikeparking_submissions.id"),
+        primary_key=True,
+        nullable=False,
+    ),
+)
 
 
 class SubmissionComment(SubmissionUpdate):
@@ -127,6 +164,10 @@ class SubmissionComment(SubmissionUpdate):
     __tablename__ = "bikeparking_submission_comments"
     __versioned__ = {}
 
+    submission_ids: so.Mapped[list["Submission"]] = sa.relationship(
+        secondary=CommentUpdateToSubmission,
+        back_populates="bikeparking_submission_comments",
+    )
     comments: so.Mapped[str] = so.mapped_column(
         sa.Text,
         default=None,
