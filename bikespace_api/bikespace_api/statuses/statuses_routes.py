@@ -18,6 +18,9 @@ from bikespace_api.statuses.statuses_models import (
 
 # TODO update the schemas with the proper relationships to submissions
 
+# SHARED SCHEMAS
+# --------------
+
 
 class UserSchema(ma.Schema):
     """Partial schema for User fields used by SubmissionUpdate handling"""
@@ -30,6 +33,13 @@ class SubmissionSchema(ma.Schema):
     """Partial schema for Submission fields used by SubmissionUpdate handling"""
 
     id = ma.fields.Integer(dump_only=True)
+
+
+# TODO add a shared SubmissionUpdateSchema
+
+
+# STATUS TYPES
+# ------------
 
 
 class BikeParkingStatusSchema(ma.Schema):
@@ -53,12 +63,17 @@ class BikeParkingStatuses(MethodView):
         return db.session.execute(db.select(BikeParkingStatus)).scalars().all()
 
 
+# SUBMISSION COMMENT UPDATES
+# --------------------------
+
+
 class SubmissionCommentSchema(ma.Schema):
     id = ma.fields.Integer(dump_only=True)
     user = ma.fields.Pluck(UserSchema, "username")
-    submissions = ma.fields.Pluck(SubmissionSchema, "id", many=True)
+    submission_ids = ma.fields.Pluck(SubmissionSchema, "id", many=True)
     comments = ma.fields.String(validate=ma.validate.Length(max=5000))
     visibility = ma.fields.Enum(VisibilityStatus, by_value=True)
+    effective_datetime = ma.fields.AwareDateTime(format="iso")
     submitted_datetime = ma.fields.AwareDateTime(format="iso", dump_only=True)
     moderation_status = ma.fields.Enum(
         ModerationStatus,
@@ -135,3 +150,26 @@ def post_submission_comment(new_data):
             },
             HTTPStatus.INTERNAL_SERVER_ERROR,
         )
+
+
+# SUBMISSION STATUS UPDATES
+# -------------------------
+
+
+class SubmissionStatusUpdateSchema(ma.Schema):
+    id = ma.fields.Integer(dump_only=True)
+    user = ma.fields.Pluck(UserSchema, "username")
+    submission_ids = ma.fields.Pluck(SubmissionSchema, "id", many=True)
+    status_type = ma.fields.Nested(
+        BikeParkingStatusSchema,
+        only=("code", "label", "internal_code", "description"),
+    )
+    comments = ma.fields.String(validate=ma.validate.Length(max=5000), required=False)
+    visibility = ma.fields.Enum(VisibilityStatus, by_value=True)
+    effective_datetime = ma.fields.AwareDateTime(format="iso")
+    submitted_datetime = ma.fields.AwareDateTime(format="iso", dump_only=True)
+    moderation_status = ma.fields.Enum(
+        ModerationStatus,
+        by_value=True,
+        dump_only=True,
+    )
