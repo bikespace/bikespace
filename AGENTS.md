@@ -5,6 +5,7 @@ This file provides guidance to AI agents when working with code in this reposito
 ## Overview
 
 BikeSpace is a web app for reporting bicycle parking issues in Toronto. It has two main components:
+
 - **`bikespace_api/`** — Python/Flask REST API backed by PostgreSQL
 - **`bikespace_frontend/`** — React/TypeScript frontend using Next.js (static export)
 
@@ -13,6 +14,14 @@ The root `Makefile` is the central entry point for all dev, test, and deployment
 ## Common Commands
 
 All commands run from the repo root unless noted.
+
+### Full stack (Docker)
+
+```bash
+make dev                  # Start db + API (:8000) + frontend (:8080) via .devcontainer/compose.yaml; fresh DB each run
+make dev-stop             # Stop the full stack
+make dev-clean            # Stop and delete frontend node_modules/.next/npm cache volumes
+```
 
 ### API
 
@@ -28,6 +37,7 @@ make downgrade-db         # Revert last migration
 ```
 
 Single API test:
+
 ```bash
 cd bikespace_api && ../venv/bin/python3 -m pytest path/to/test_file.py -v
 ```
@@ -43,6 +53,7 @@ make lint-and-fix-frontend
 ```
 
 Single frontend test:
+
 ```bash
 cd bikespace_frontend && npx jest --coverage=false path/to/test_file.test.tsx
 # Date/time tests need timezone set:
@@ -70,10 +81,12 @@ E2E tests run against test servers on ports 8001 (API) and 8081 (frontend). They
 - **Test fixtures**: `bikespace_api/conftest.py` — sets up test app, fresh test DB, and client
 
 Databases:
+
 - Dev: `postgres://postgres:postgres@localhost:5432/bikespace_dev`
 - Test: `postgres://postgres:postgres@localhost:5432/bikespace_test`
 
 API `.env` requires:
+
 ```
 BIKESPACE_SECURITY_PASSWORD_SALT=
 BIKESPACE_SECRET_KEY=
@@ -94,6 +107,7 @@ SEED_USER_PASSWORD=
 - **Types**: `src/interfaces/` for shared TypeScript types
 
 Frontend env vars (`.env.development`, `.env.production`, `.env.test`):
+
 - `BIKESPACE_API_URL` — API base URL
 - `MAPTILER_API_KEY` — optional; falls back to ProtoMaps tiles for Toronto
 

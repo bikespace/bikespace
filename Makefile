@@ -50,6 +50,21 @@ $(VENV): check-python-version $(BIKESPACE_API_DIR)/requirements.txt
 pip-freeze: $(BIKESPACE_API_DIR)/requirements.txt
 	$(PIP) freeze > $(BIKESPACE_API_DIR)/requirements.txt
 
+# Full local stack (db + API on 8000 + frontend on 8080) from .devcontainer/compose.yaml.
+# Fresh DB on each start, same as dev-api.
+.PHONY: dev
+dev: dev-stop
+	docker compose --file .devcontainer/compose.yaml $(ENV_FILE_FLAG) up --build
+
+.PHONY: dev-stop
+dev-stop:
+	docker compose --file .devcontainer/compose.yaml $(ENV_FILE_FLAG) down --remove-orphans
+
+# Also removes the frontend node_modules / .next / npm cache volumes
+.PHONY: dev-clean
+dev-clean:
+	docker compose --file .devcontainer/compose.yaml $(ENV_FILE_FLAG) down --remove-orphans --volumes
+
 .PHONY: dev-api-stop
 dev-api-stop:
 	docker compose --file bikespace_api/docker/compose-dev.yaml $(ENV_FILE_FLAG) down
