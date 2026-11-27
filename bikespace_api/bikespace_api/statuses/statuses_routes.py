@@ -73,6 +73,23 @@ class BikeParkingStatuses(MethodView):
         return db.session.execute(db.select(BikeParkingStatus)).scalars().all()
 
 
+# SUBMISSION STATUS UPDATES
+# -------------------------
+
+
+class SubmissionStatusUpdateSchema(SubmissionUpdateSchema):
+    status_type = ma.fields.Nested(
+        BikeParkingStatusSchema,
+        only=("code", "label", "internal_code", "description"),
+    )
+
+
+class SubmissionStatusUpdateCreateConfirmationSchema(ma.Schema):
+    status = ma.fields.Constant("created")
+    submission_status_update_id = ma.fields.Integer()
+    # TODO should this confirmation also return the list of submission ids?
+
+
 # SUBMISSION COMMENT UPDATES
 # --------------------------
 
@@ -127,20 +144,3 @@ def post_submission_comment(new_data):
     except IntegrityError:
         db.session.rollback()
         abort(HTTPStatus.INTERNAL_SERVER_ERROR)
-
-
-# SUBMISSION STATUS UPDATES
-# -------------------------
-
-
-class SubmissionStatusUpdateSchema(SubmissionUpdateSchema):
-    status_type = ma.fields.Nested(
-        BikeParkingStatusSchema,
-        only=("code", "label", "internal_code", "description"),
-    )
-
-
-class SubmissionStatusUpdateCreateConfirmationSchema(ma.Schema):
-    status = ma.fields.Constant("created")
-    submission_status_update_id = ma.fields.Integer()
-    # TODO should this confirmation also return the list of submission ids?
