@@ -12,8 +12,6 @@ from bikespace_api import db  # type: ignore
 from bikespace_api.statuses.statuses_models import (
     CommentUpdateToSubmission,
     StatusUpdateToSubmission,
-    SubmissionComment,
-    SubmissionStatusUpdate,
 )
 
 make_versioned(plugins=[FlaskPlugin()])
@@ -72,10 +70,10 @@ class Submission(db.Model):
         sa.ForeignKey("user.id"), index=True
     )
     user: so.Mapped[Optional["User"]] = so.relationship(back_populates="submissions")
-    status_updates: so.Mapped[list["SubmissionStatusUpdate"]] = sa.relationship(
+    status_updates: so.Mapped[list["SubmissionStatusUpdate"]] = so.relationship(
         secondary=StatusUpdateToSubmission, back_populates="bikeparking_submissions"
     )
-    comment_updates: so.Mapped[list["SubmissionComment"]] = sa.relationship(
+    comment_updates: so.Mapped[list["SubmissionComment"]] = so.relationship(
         secondary=CommentUpdateToSubmission, back_populates="bikeparking_submissions"
     )
 

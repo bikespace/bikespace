@@ -5,7 +5,6 @@ import sqlalchemy as sa
 import sqlalchemy.orm as so
 
 from bikespace_api import db  # type: ignore
-from bikespace_api.submissions.submissions_models import Submission
 
 
 class StatusName(Enum):
@@ -130,7 +129,7 @@ class SubmissionStatusUpdate(SubmissionUpdate):
     __tablename__ = "bikeparking_submission_status_updates"
     __versioned__ = {}
 
-    submission_ids: so.Mapped[list["Submission"]] = sa.relationship(
+    submission_ids: so.Mapped[list["Submission"]] = so.relationship(
         secondary=StatusUpdateToSubmission,
         back_populates="bikeparking_submission_status_updates",
     )
@@ -164,7 +163,7 @@ class SubmissionComment(SubmissionUpdate):
     __tablename__ = "bikeparking_submission_comments"
     __versioned__ = {}
 
-    submission_ids: so.Mapped[list["Submission"]] = sa.relationship(
+    submission_ids: so.Mapped[list["Submission"]] = so.relationship(
         secondary=CommentUpdateToSubmission,
         back_populates="bikeparking_submission_comments",
     )
