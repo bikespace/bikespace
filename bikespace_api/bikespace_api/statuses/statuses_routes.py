@@ -109,13 +109,16 @@ def post_submission_status_update(new_data):
     profanity.load_censor_words()
     censored_comments = profanity.censor(new_data["comments"])
 
-    # TODO check does flask-smorest handle this automatically?
-    # TODO add error handling
     status = (
         db.session.query(BikeParkingStatus)
         .filter_by(internal_code=new_data["status_id"])
         .first()
     )
+    if not status:
+        abort(
+            HTTPStatus.NOT_FOUND,
+            message=f"Unable to find a status matching id {new_data['status_id']}.",
+        )
 
     try:
         new_submission_status_update = SubmissionStatusUpdate(
