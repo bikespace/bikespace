@@ -39,7 +39,13 @@ class SubmissionUpdateSchema(ma.Schema):
     id = ma.fields.Integer(dump_only=True)
     user = ma.fields.Pluck(UserSchema, "username")
     comments = ma.fields.String(validate=ma.validate.Length(max=5000))
-    submission_ids = ma.fields.Pluck(SubmissionSchema, "id", many=True)
+    submission_ids = ma.fields.Pluck(
+        SubmissionSchema,
+        "id",
+        many=True,
+        required=True,
+        validate=ma.validate.Length(min=1),
+    )
     effective_datetime = ma.fields.AwareDateTime(format="iso", required=True)
     submitted_datetime = ma.fields.AwareDateTime(format="iso", dump_only=True)
     moderation_status = ma.fields.Enum(
@@ -79,8 +85,12 @@ class BikeParkingStatuses(MethodView):
 
 
 class SubmissionStatusUpdateSchema(SubmissionUpdateSchema):
+    user = ma.fields.Pluck(UserSchema, "username", required=True)
     status_id = ma.fields.Pluck(
-        BikeParkingStatusSchema, "internal_code", load_only=True
+        BikeParkingStatusSchema,
+        "internal_code",
+        load_only=True,
+        required=True,
     )
     status = ma.fields.Nested(BikeParkingStatusSchema, dump_only=True)
 
