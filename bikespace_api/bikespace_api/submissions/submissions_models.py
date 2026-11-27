@@ -5,16 +5,12 @@ from typing import Optional
 import sqlalchemy as sa
 import sqlalchemy.dialects.postgresql as pg
 import sqlalchemy.orm as so
-from sqlalchemy_continuum import make_versioned
-from sqlalchemy_continuum.plugins import FlaskPlugin
 
 from bikespace_api import db  # type: ignore
 from bikespace_api.statuses.statuses_models import (
     CommentUpdateToSubmission,
     StatusUpdateToSubmission,
 )
-
-make_versioned(plugins=[FlaskPlugin()])
 
 # TODO add a method to determine the current status of a submission
 

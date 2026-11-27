@@ -4,6 +4,7 @@ import marshmallow as ma
 from better_profanity import profanity
 from flask.views import MethodView
 from flask_security import current_user
+from flask_smorest import abort
 from sqlalchemy.exc import IntegrityError
 
 from bikespace_api import db  # type: ignore
@@ -88,26 +89,10 @@ class SubmissionCommentCreateConfirmationSchema(ma.Schema):
     # TODO should this confirmation also return the list of submission ids?
 
 
-class SubmissionCommentCreateErrorSchema(ma.Schema):
-    code = ma.fields.Constant(HTTPStatus.INTERNAL_SERVER_ERROR)
-    status = ma.fields.Constant("error")
-    message = ma.fields.Constant("internal server error")
-    # TODO add errors as a dict of string key values
-    # TODO document where this error format comes from?
-
-
-# TODO should HTTPStatus.CREATED be sent if there's an error? Should I add an alternative response?
-
-
 @statuses_blueprint.route("/comments", methods=["POST"])
 @statuses_blueprint.arguments(SubmissionCommentSchema)
 @statuses_blueprint.response(
     HTTPStatus.CREATED, SubmissionCommentCreateConfirmationSchema
-)
-@statuses_blueprint.alt_response(
-    HTTPStatus.INTERNAL_SERVER_ERROR,
-    schema=SubmissionCommentCreateErrorSchema,
-    success=False,
 )
 @statuses_blueprint.doc(
     security=[
@@ -142,14 +127,7 @@ def post_submission_comment(new_data):
         )
     except IntegrityError:
         db.session.rollback()
-        return (
-            {
-                "code": 500,
-                "status": "error",
-                "message": "internal server error",
-            },
-            HTTPStatus.INTERNAL_SERVER_ERROR,
-        )
+        abort(HTTPStatus.INTERNAL_SERVER_ERROR)
 
 
 # SUBMISSION STATUS UPDATES
@@ -179,14 +157,3 @@ class SubmissionStatusUpdateCreateConfirmationSchema(ma.Schema):
     status = ma.fields.Constant("created")
     submission_status_update_id = ma.fields.Integer()
     # TODO should this confirmation also return the list of submission ids?
-
-
-class SubmissionStatusUpdateCreateErrorSchema(ma.Schema):
-    code = ma.fields.Constant(HTTPStatus.INTERNAL_SERVER_ERROR)
-    status = ma.fields.Constant("error")
-    message = ma.fields.Constant("internal server error")
-    # TODO add errors as a dict of string key values
-    # TODO document where this error format comes from?
-
-
-# TODO should HTTPStatus.CREATED be sent if there's an error? Should I add an alternative response?

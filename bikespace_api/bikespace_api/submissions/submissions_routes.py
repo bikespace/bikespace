@@ -213,7 +213,7 @@ class Submissions(MethodView):
             )
         except IntegrityError:
             db.session.rollback()
-            return ({"status": "error"}, HTTPStatus.INTERNAL_SERVER_ERROR)
+            abort(HTTPStatus.INTERNAL_SERVER_ERROR)
 
 
 def get_submissions_geo_json() -> Response:
@@ -342,7 +342,7 @@ class SingleSubmission(MethodView):
 
         except IntegrityError:
             db.session.rollback()
-            return ({"status": "error"}, HTTPStatus.INTERNAL_SERVER_ERROR)
+            abort(HTTPStatus.INTERNAL_SERVER_ERROR)
 
     # DELETE /submissions/<submission_id>
     @submissions_blueprint.response(HTTPStatus.OK, SubmissionDeleteConfirmationSchema)
@@ -365,7 +365,7 @@ class SingleSubmission(MethodView):
             return {"status": "deleted", "submission_id": submission_id}
         except IntegrityError:
             db.session.rollback()
-            return ({"status": "error"}, HTTPStatus.INTERNAL_SERVER_ERROR)
+            abort(HTTPStatus.INTERNAL_SERVER_ERROR)
 
 
 def get_changeset_fields(schema: type[ma.Schema]) -> type[ma.Schema]:

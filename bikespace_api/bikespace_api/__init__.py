@@ -8,13 +8,16 @@ from flask_admin import helpers as admin_helpers
 from flask_admin.theme import Bootstrap4Theme
 from flask_cors import CORS
 from flask_migrate import Migrate
-from flask_smorest import Api
 from flask_security.core import RoleMixin, Security, UserMixin
 from flask_security.datastore import SQLAlchemyUserDatastore
+from flask_smorest import Api
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import CSRFProtect
-
+from sqlalchemy_continuum import make_versioned
+from sqlalchemy_continuum.plugins import FlaskPlugin
 from werkzeug.middleware.proxy_fix import ProxyFix
+
+make_versioned(plugins=[FlaskPlugin()])
 
 # instantiate the db
 db = SQLAlchemy()
@@ -75,10 +78,10 @@ def create_app(script_info=None):
 
     # add admin views
     from bikespace_api.admin.admin_views import AdminRolesModelView, AdminUsersModelView
-    from bikespace_api.submissions.submissions_views import AdminSubmissionModelView
-    from bikespace_api.submissions.submissions_models import Submission
-    from bikespace_api.statuses.statuses_views import AdminBikeParkingStatusModelView
     from bikespace_api.statuses.statuses_models import BikeParkingStatus
+    from bikespace_api.statuses.statuses_views import AdminBikeParkingStatusModelView
+    from bikespace_api.submissions.submissions_models import Submission
+    from bikespace_api.submissions.submissions_views import AdminSubmissionModelView
 
     admin.add_view(AdminRolesModelView(Role, db.session))
     admin.add_view(AdminUsersModelView(User, db.session))

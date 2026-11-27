@@ -207,17 +207,17 @@ class TestPostSubmission:
         WHEN a POST to '/api/v2/submissions' triggers a database IntegrityError
         THEN check that the response returns a 500 error status
         """
-        with flask_app.app_context():
-            with patch(
+        with (
+            flask_app.app_context(),
+            patch(
                 "bikespace_api.submissions.submissions_routes.db.session.commit",
                 side_effect=SaIntegrityError(None, None, Exception()),
-            ):
-                response = test_client.post(
-                    "/api/v2/submissions", json=dummy_submission
-                )
+            ),
+        ):
+            response = test_client.post("/api/v2/submissions", json=dummy_submission)
 
         assert response.status_code == HTTPStatus.INTERNAL_SERVER_ERROR
-        assert json.loads(response.get_data())["status"] == "error"
+        assert json.loads(response.get_data())["status"] == "Internal Server Error"
 
 
 class TestGetSubmissionsWithID:
@@ -464,7 +464,7 @@ class TestPatchOrDeleteSubmission:
                 )
 
             assert response_patch.status_code == HTTPStatus.INTERNAL_SERVER_ERROR
-            assert response_patch.json["status"] == "error"
+            assert response_patch.json["status"] == "Internal Server Error"
 
     @pytest.mark.uses_db
     def test_delete_submission(
@@ -639,7 +639,7 @@ class TestPatchOrDeleteSubmission:
                 )
 
             assert response_patch.status_code == HTTPStatus.INTERNAL_SERVER_ERROR
-            assert response_patch.json["status"] == "error"
+            assert response_patch.json["status"] == "Internal Server Error"
 
 
 class TestGetSubmissionHistory:
