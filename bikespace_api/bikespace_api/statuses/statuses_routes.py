@@ -90,6 +90,9 @@ def post_submission_status_update(new_data):
 
     submissions = get_submissions_or_404(new_data["submission_ids"])
 
+    print(new_data["status_id"])
+    # TODO fix the schema - Pluck or Nested is not as flat as you think
+
     status = (
         db.session.query(BikeParkingStatus)
         .filter_by(internal_code=new_data["status_id"])

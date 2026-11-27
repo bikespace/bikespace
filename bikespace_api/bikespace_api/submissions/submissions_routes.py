@@ -58,6 +58,11 @@ class UserSchema(ma.Schema):
     username = ma.fields.String(allow_none=True)
 
 
+# TODO status_updates and comment_updates should only be returned on the single submission endpoint
+# but the single submission endpoint should be returned here
+# and there probably needs to be a way to show some kind of summary stat for number of updates as well as the current status
+
+
 class SubmissionSchemaWithVersion(SubmissionSchema):
     version = ma.fields.Integer(dump_only=True, validate=ma.validate.Range(min=1))
     version_history_url = ma.fields.Url(dump_only=True)
