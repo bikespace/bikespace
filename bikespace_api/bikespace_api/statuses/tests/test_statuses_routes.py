@@ -1,8 +1,8 @@
 from http import HTTPStatus
 
-from bikespace_api import db
 from bikespace_api.statuses.statuses_models import BikeParkingStatus, StatusName
 
+from bikespace_api import db
 
 VISIBLE_STATUS = {
     "code": StatusName.ACTION_REQUIRED,
@@ -35,7 +35,9 @@ class TestGetBikeParkingStatuses:
         assert response.headers["Content-Type"] == "application/json"
         assert isinstance(response.json, list)
 
-    def test_get_statuses_returns_all_including_hidden(self, flask_app, test_client, clean_db):
+    def test_get_statuses_returns_all_including_hidden(
+        self, flask_app, test_client, clean_db
+    ):
         """
         GIVEN a Flask application with one visible and one hidden status
         WHEN GET '/api/v2/submissions/bikeparking-statuses' is requested
@@ -69,7 +71,16 @@ class TestGetBikeParkingStatuses:
         item = response.json[0]
         assert all(
             k in item
-            for k in ("id", "code", "label", "internal_code", "description", "hide_by_default", "created_at", "updated_at")  # pragma: no cover
+            for k in (
+                "id",
+                "code",
+                "label",
+                "internal_code",
+                "description",
+                "hide_by_default",
+                "created_at",
+                "updated_at",
+            )  # pragma: no cover
         )
         assert isinstance(item["id"], int)
         assert isinstance(item["code"], str)
@@ -85,9 +96,7 @@ class TestGetBikeParkingStatuses:
         THEN an empty list is returned
         """
         with flask_app.app_context():
-            db.session.execute(
-                db.delete(BikeParkingStatus)
-            )
+            db.session.execute(db.delete(BikeParkingStatus))
             db.session.commit()
 
         response = test_client.get("/api/v2/submissions/bikeparking-statuses")

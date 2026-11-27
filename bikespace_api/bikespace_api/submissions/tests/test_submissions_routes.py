@@ -11,7 +11,7 @@ from bikespace_api.submissions.submissions_models import (
 )
 from bikespace_api.submissions.submissions_routes import OperationType
 from sqlalchemy.exc import IntegrityError as SaIntegrityError
-from sqlalchemy_continuum import version_class, count_versions
+from sqlalchemy_continuum import count_versions, version_class
 
 from bikespace_api import db  # type: ignore
 
