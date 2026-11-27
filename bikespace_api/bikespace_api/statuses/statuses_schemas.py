@@ -14,29 +14,17 @@ class UserSchema(ma.Schema):
     username = ma.fields.String(allow_none=True)
 
 
-class SubmissionSchema(ma.Schema):
-    """Partial schema for Submission fields used by SubmissionUpdate handling"""
-
-    id = ma.fields.Integer(dump_only=True)
-
-
 class SubmissionUpdateSchema(ma.Schema):
     id = ma.fields.Integer(dump_only=True)
     user = ma.fields.Pluck(UserSchema, "username", dump_only=True)
     comments = ma.fields.String(validate=ma.validate.Length(max=5000))
-    # note: cannot load submission_ids using Pluck since "id" on SubmissionSchema is dump-only
+    # Pluck doesn't work cleanly for submission_ids
+    # since SubmissionSchema.id is dump-only
+    # and the load format would be more complex like [{id: 1}, {id: 2}]
     submission_ids = ma.fields.List(
         ma.fields.Integer(),
-        load_only=True,
         required=True,
         validate=ma.validate.Length(min=1),
-    )
-    submissions = ma.fields.Pluck(
-        SubmissionSchema,
-        "id",
-        many=True,
-        dump_only=True,
-        data_key="submission_ids",
     )
     effective_datetime = ma.fields.AwareDateTime(format="iso", required=True)
     submitted_datetime = ma.fields.AwareDateTime(format="iso", dump_only=True)

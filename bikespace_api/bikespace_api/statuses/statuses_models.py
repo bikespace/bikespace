@@ -138,6 +138,10 @@ class SubmissionStatusUpdate(SubmissionUpdate, db.Model):
         sa.ForeignKey("bikeparking_statuses.id"), index=True
     )
 
+    @property
+    def submission_ids(self) -> list[int]:
+        return [s.id for s in self.submissions]
+
 
 CommentUpdateToSubmission = sa.Table(
     "comment_update_submission",
@@ -177,3 +181,7 @@ class SubmissionComment(SubmissionUpdate, db.Model):
         nullable=False,
         default=VisibilityStatus.PUBLIC,
     )
+
+    @property
+    def submission_ids(self) -> list[int]:
+        return [s.id for s in self.submissions]
