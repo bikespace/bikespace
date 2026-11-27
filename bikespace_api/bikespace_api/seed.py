@@ -12,12 +12,12 @@ from flask_security.utils import hash_password
 from bikespace_api import create_userdatastore, db
 from bikespace_api.admin.admin_models import Role, User
 from bikespace_api.admin.roles import ApplicationRoles
+from bikespace_api.statuses.statuses_models import BikeParkingStatus, StatusName
 from bikespace_api.submissions.submissions_models import (
     IssueType,
     ParkingDuration,
     Submission,
 )
-from bikespace_api.statuses.statuses_models import BikeParkingStatus, StatusName
 
 admin_user = {
     "username": "adminuser",
