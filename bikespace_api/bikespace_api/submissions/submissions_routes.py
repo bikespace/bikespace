@@ -39,11 +39,11 @@ class SubmissionSchema(ma.Schema):
     latitude = ma.fields.Float(required=True)
     longitude = ma.fields.Float(required=True)
     issues = ma.fields.List(
-        ma.fields.Enum(IssueType, by_value=True),
+        ma.fields.Enum(IssueType, by_value=ma.fields.String),
         required=True,
         validate=ma.validate.Length(max=len(IssueType)),
     )
-    parking_duration = ma.fields.Enum(ParkingDuration, by_value=True)
+    parking_duration = ma.fields.Enum(ParkingDuration, by_value=ma.fields.String)
     parking_time = ma.fields.AwareDateTime(format="iso", required=True)
     comments = ma.fields.String(validate=ma.validate.Length(max=5000))
     submitted_datetime = ma.fields.AwareDateTime(

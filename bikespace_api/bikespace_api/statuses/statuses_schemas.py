@@ -29,15 +29,13 @@ class SubmissionUpdateSchema(ma.Schema):
     effective_datetime = ma.fields.AwareDateTime(format="iso", required=True)
     submitted_datetime = ma.fields.AwareDateTime(format="iso", dump_only=True)
     moderation_status = ma.fields.Enum(
-        ModerationStatus,
-        by_value=True,
-        dump_only=True,
+        ModerationStatus, by_value=ma.fields.String, dump_only=True
     )
 
 
 class BikeParkingStatusSchema(ma.Schema):
     id = ma.fields.Integer(dump_only=True)
-    code = ma.fields.Enum(StatusName, by_value=True)
+    code = ma.fields.Enum(StatusName, by_value=ma.fields.String)
     label = ma.fields.String()
     internal_code = ma.fields.String()
     description = ma.fields.String()
@@ -59,4 +57,6 @@ class SubmissionStatusUpdateSchema(SubmissionUpdateSchema):
 
 class SubmissionCommentSchema(SubmissionUpdateSchema):
     comments = ma.fields.String(validate=ma.validate.Length(max=5000), required=True)
-    visibility = ma.fields.Enum(VisibilityStatus, by_value=True, required=True)
+    visibility = ma.fields.Enum(
+        VisibilityStatus, by_value=ma.fields.String, required=True
+    )
