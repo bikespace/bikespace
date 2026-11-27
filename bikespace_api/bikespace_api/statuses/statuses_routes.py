@@ -3,11 +3,12 @@ from http import HTTPStatus
 import marshmallow as ma
 from better_profanity import profanity
 from flask.views import MethodView
-from flask_security import current_user
+from flask_security import auth_required, current_user, roles_accepted
 from flask_smorest import abort
 from sqlalchemy.exc import IntegrityError
 
 from bikespace_api import db  # type: ignore
+from bikespace_api.admin.roles import ApplicationRoles
 from bikespace_api.statuses import statuses_blueprint
 from bikespace_api.statuses.statuses_models import (
     BikeParkingStatus,
@@ -68,7 +69,7 @@ class SubmissionStatusUpdateCreateConfirmationSchema(ma.Schema):
 # TODO implement GET and PATCH routes
 
 
-@statuses_blueprint.route("/status_updates", methods=["POST"])
+@statuses_blueprint.route("/status-updates", methods=["POST"])
 @statuses_blueprint.arguments(SubmissionStatusUpdateSchema)
 @statuses_blueprint.response(
     HTTPStatus.CREATED, SubmissionStatusUpdateCreateConfirmationSchema
@@ -78,6 +79,8 @@ class SubmissionStatusUpdateCreateConfirmationSchema(ma.Schema):
         {"apiKeyAuth": []},
     ]
 )
+@auth_required()
+@roles_accepted(ApplicationRoles.SUPERUSER, ApplicationRoles.EDITOR)
 def post_submission_status_update(new_data):
     """Docstring TODO"""
     profanity.load_censor_words()
