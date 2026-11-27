@@ -18,7 +18,7 @@ from sqlalchemy_continuum import count_versions, version_class
 
 from bikespace_api import db  # type: ignore
 from bikespace_api.admin.roles import ApplicationRoles
-from bikespace_api.statuses.statuses_routes import (
+from bikespace_api.statuses.statuses_schemas import (
     SubmissionCommentSchema,
     SubmissionStatusUpdateSchema,
 )

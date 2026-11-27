@@ -129,7 +129,7 @@ class SubmissionStatusUpdate(SubmissionUpdate, db.Model):
     __tablename__ = "bikeparking_submission_status_updates"
     __versioned__ = {}
 
-    submission_ids: so.Mapped[list["Submission"]] = so.relationship(
+    submissions: so.Mapped[list["Submission"]] = so.relationship(
         secondary=StatusUpdateToSubmission,
         back_populates="status_updates",
     )
@@ -163,7 +163,7 @@ class SubmissionComment(SubmissionUpdate, db.Model):
     __tablename__ = "bikeparking_submission_comments"
     __versioned__ = {}
 
-    submission_ids: so.Mapped[list["Submission"]] = so.relationship(
+    submissions: so.Mapped[list["Submission"]] = so.relationship(
         secondary=CommentUpdateToSubmission,
         back_populates="comment_updates",
     )

@@ -67,10 +67,10 @@ class Submission(db.Model):
     )
     user: so.Mapped[Optional["User"]] = so.relationship(back_populates="submissions")
     status_updates: so.Mapped[list["SubmissionStatusUpdate"]] = so.relationship(
-        secondary=StatusUpdateToSubmission, back_populates="submission_ids"
+        secondary=StatusUpdateToSubmission, back_populates="submissions"
     )
     comment_updates: so.Mapped[list["SubmissionComment"]] = so.relationship(
-        secondary=CommentUpdateToSubmission, back_populates="submission_ids"
+        secondary=CommentUpdateToSubmission, back_populates="submissions"
     )
 
     # __init__ params need to have a default value for revert from deleted state to work with sqlalchemy_continuum

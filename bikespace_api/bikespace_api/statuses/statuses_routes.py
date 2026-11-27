@@ -11,63 +11,38 @@ from bikespace_api import db  # type: ignore
 from bikespace_api.statuses import statuses_blueprint
 from bikespace_api.statuses.statuses_models import (
     BikeParkingStatus,
-    ModerationStatus,
-    StatusName,
     SubmissionComment,
     SubmissionStatusUpdate,
-    VisibilityStatus,
 )
+from bikespace_api.statuses.statuses_schemas import (
+    BikeParkingStatusSchema,
+    SubmissionCommentSchema,
+    SubmissionStatusUpdateSchema,
+)
+from bikespace_api.submissions.submissions_models import Submission
 
-# SHARED SCHEMAS
-# --------------
-
-
-class UserSchema(ma.Schema):
-    """Partial schema for User fields used by SubmissionUpdate handling"""
-
-    id = ma.fields.Integer(dump_only=True)
-    username = ma.fields.String(allow_none=True)
-
-
-class SubmissionSchema(ma.Schema):
-    """Partial schema for Submission fields used by SubmissionUpdate handling"""
-
-    id = ma.fields.Integer(dump_only=True)
+# SHARED SCHEMAS AND HELPERS
+# --------------------------
 
 
-class SubmissionUpdateSchema(ma.Schema):
-    id = ma.fields.Integer(dump_only=True)
-    user = ma.fields.Pluck(UserSchema, "username")
-    comments = ma.fields.String(validate=ma.validate.Length(max=5000))
-    submission_ids = ma.fields.Pluck(
-        SubmissionSchema,
-        "id",
-        many=True,
-        required=True,
-        validate=ma.validate.Length(min=1),
-    )
-    effective_datetime = ma.fields.AwareDateTime(format="iso", required=True)
-    submitted_datetime = ma.fields.AwareDateTime(format="iso", dump_only=True)
-    moderation_status = ma.fields.Enum(
-        ModerationStatus,
-        by_value=True,
-        dump_only=True,
-    )
+def get_submissions_or_404(submission_ids: list[int]) -> list[Submission]:
+    """Docstring TODO"""
+
+    ids = set(submission_ids)
+    submissions = db.session.scalars(
+        db.select(Submission).where(Submission.id.in_(ids))
+    ).all()
+    missing = ids - {s.id for s in submissions}
+    if missing:
+        abort(
+            HTTPStatus.NOT_FOUND,
+            message=f"Could not find submissions {', '.join(map(str, sorted(missing)))}",
+        )
+    return submissions
 
 
 # STATUS TYPES
 # ------------
-
-
-class BikeParkingStatusSchema(ma.Schema):
-    id = ma.fields.Integer(dump_only=True)
-    code = ma.fields.Enum(StatusName, by_value=True)
-    label = ma.fields.String()
-    internal_code = ma.fields.String()
-    description = ma.fields.String()
-    hide_by_default = ma.fields.Boolean()
-    created_at = ma.fields.AwareDateTime(format="iso", dump_only=True)
-    updated_at = ma.fields.AwareDateTime(format="iso", dump_only=True)
 
 
 @statuses_blueprint.route("/bikeparking-statuses")
@@ -82,17 +57,6 @@ class BikeParkingStatuses(MethodView):
 
 # SUBMISSION STATUS UPDATES
 # -------------------------
-
-
-class SubmissionStatusUpdateSchema(SubmissionUpdateSchema):
-    user = ma.fields.Pluck(UserSchema, "username", required=True)
-    status_id = ma.fields.Pluck(
-        BikeParkingStatusSchema,
-        "internal_code",
-        load_only=True,
-        required=True,
-    )
-    status = ma.fields.Nested(BikeParkingStatusSchema, dump_only=True)
 
 
 class SubmissionStatusUpdateCreateConfirmationSchema(ma.Schema):
@@ -117,7 +81,11 @@ class SubmissionStatusUpdateCreateConfirmationSchema(ma.Schema):
 def post_submission_status_update(new_data):
     """Docstring TODO"""
     profanity.load_censor_words()
-    censored_comments = profanity.censor(new_data["comments"])
+    censored_comments = (
+        profanity.censor(new_data["comments"]) if new_data.get("comments") else None
+    )
+
+    submissions = get_submissions_or_404(new_data["submission_ids"])
 
     status = (
         db.session.query(BikeParkingStatus)
@@ -132,7 +100,7 @@ def post_submission_status_update(new_data):
 
     try:
         new_submission_status_update = SubmissionStatusUpdate(
-            submission_ids=new_data["submission_ids"],
+            submissions=submissions,
             user_id=current_user.id,
             status_id=status.internal_code,
             comments=censored_comments,
@@ -153,11 +121,6 @@ def post_submission_status_update(new_data):
 
 # SUBMISSION COMMENT UPDATES
 # --------------------------
-
-
-class SubmissionCommentSchema(SubmissionUpdateSchema):
-    comments = ma.fields.String(validate=ma.validate.Length(max=5000), required=True)
-    visibility = ma.fields.Enum(VisibilityStatus, by_value=True, required=True)
 
 
 class SubmissionCommentCreateConfirmationSchema(ma.Schema):
@@ -185,14 +148,16 @@ def post_submission_comment(new_data):
     profanity.load_censor_words()
     censored_comments = profanity.censor(new_data["comments"])
 
+    submissions = get_submissions_or_404(new_data["submission_ids"])
+
     # TODO make visibility privilege gated
     # should warn and reject if the user tries to set it to private and they don't have the right privileges
     # see: https://flask-security-too.readthedocs.io/en/stable/patterns.html#authentication-and-authorization
 
     try:
         new_submission_comment = SubmissionComment(
-            submission_ids=new_data["submission_ids"],
-            user_id=current_user.id if current_user else None,
+            submissions=submissions,
+            user_id=current_user.id if current_user.is_authenticated else None,
             comments=censored_comments,
             visibility=new_data["visibility"],
         )
