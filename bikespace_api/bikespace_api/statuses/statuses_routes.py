@@ -14,6 +14,7 @@ from bikespace_api.statuses.statuses_models import (
     ModerationStatus,
     StatusName,
     SubmissionComment,
+    SubmissionStatusUpdate,
     VisibilityStatus,
 )
 
@@ -78,9 +79,13 @@ class BikeParkingStatuses(MethodView):
 
 
 class SubmissionStatusUpdateSchema(SubmissionUpdateSchema):
-    status_type = ma.fields.Nested(
+    status_id = ma.fields.Pluck(
+        BikeParkingStatusSchema, "internal_code", load_only=True
+    )
+    status = ma.fields.Nested(
         BikeParkingStatusSchema,
         only=("code", "label", "internal_code", "description"),
+        dump_only=True,
     )
 
 
@@ -88,6 +93,53 @@ class SubmissionStatusUpdateCreateConfirmationSchema(ma.Schema):
     status = ma.fields.Constant("created")
     submission_status_update_id = ma.fields.Integer()
     # TODO should this confirmation also return the list of submission ids?
+
+
+# TODO implement GET and PATCH routes
+
+
+@statuses_blueprint.route("/status_updates", methods=["POST"])
+@statuses_blueprint.arguments(SubmissionStatusUpdateSchema)
+@statuses_blueprint.response(
+    HTTPStatus.CREATED, SubmissionStatusUpdateCreateConfirmationSchema
+)
+@statuses_blueprint.doc(
+    security=[
+        {"apiKeyAuth": []},
+    ]
+)
+def post_submission_status_update(new_data):
+    """Docstring TODO"""
+    profanity.load_censor_words()
+    censored_comments = profanity.censor(new_data["comments"])
+
+    # TODO check does flask-smorest handle this automatically?
+    # TODO add error handling
+    status = (
+        db.session.query(BikeParkingStatus)
+        .filter_by(internal_code=new_data["status_id"])
+        .first()
+    )
+
+    try:
+        new_submission_status_update = SubmissionStatusUpdate(
+            submission_ids=new_data["submission_ids"],
+            user_id=current_user.id,
+            status_id=status.internal_code,
+            comments=censored_comments,
+        )
+        db.session.add(new_submission_status_update)
+        db.session.commit()
+        return (
+            {
+                "status": "created",
+                "submission_status_update_id": new_submission_status_update.id,
+            },
+            HTTPStatus.CREATED,
+        )
+    except IntegrityError:
+        db.session.rollback()
+        abort(HTTPStatus.INTERNAL_SERVER_ERROR)
 
 
 # SUBMISSION COMMENT UPDATES
@@ -103,6 +155,9 @@ class SubmissionCommentCreateConfirmationSchema(ma.Schema):
     status = ma.fields.Constant("created")
     submission_comment_id = ma.fields.Integer()
     # TODO should this confirmation also return the list of submission ids?
+
+
+# TODO implement GET and PATCH routes
 
 
 @statuses_blueprint.route("/comments", methods=["POST"])
