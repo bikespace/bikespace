@@ -82,11 +82,7 @@ class SubmissionStatusUpdateSchema(SubmissionUpdateSchema):
     status_id = ma.fields.Pluck(
         BikeParkingStatusSchema, "internal_code", load_only=True
     )
-    status = ma.fields.Nested(
-        BikeParkingStatusSchema,
-        only=("code", "label", "internal_code", "description"),
-        dump_only=True,
-    )
+    status = ma.fields.Nested(BikeParkingStatusSchema, dump_only=True)
 
 
 class SubmissionStatusUpdateCreateConfirmationSchema(ma.Schema):
