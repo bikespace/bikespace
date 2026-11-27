@@ -18,6 +18,10 @@ from sqlalchemy_continuum import count_versions, version_class
 
 from bikespace_api import db  # type: ignore
 from bikespace_api.admin.roles import ApplicationRoles
+from bikespace_api.statuses.statuses_routes import (
+    SubmissionCommentSchema,
+    SubmissionStatusUpdateSchema,
+)
 from bikespace_api.submissions import submissions_blueprint
 from bikespace_api.submissions.submissions_models import (
     IssueType,
@@ -58,6 +62,9 @@ class SubmissionSchemaWithVersion(SubmissionSchema):
     version = ma.fields.Integer(dump_only=True, validate=ma.validate.Range(min=1))
     version_history_url = ma.fields.Url(dump_only=True)
     user = ma.fields.Pluck(UserSchema, "username")
+    # TODO is there a way to show all the updates together in one list?
+    status_updates = ma.fields.Nested(SubmissionStatusUpdateSchema, many=True)
+    comment_updates = ma.fields.Nested(SubmissionCommentSchema, many=True)
 
 
 class SubmissionQueryArgsSchema(ma.Schema):
