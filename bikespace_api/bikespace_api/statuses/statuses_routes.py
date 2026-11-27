@@ -173,3 +173,20 @@ class SubmissionStatusUpdateSchema(ma.Schema):
         by_value=True,
         dump_only=True,
     )
+
+
+class SubmissionStatusUpdateCreateConfirmationSchema(ma.Schema):
+    status = ma.fields.Constant("created")
+    submission_status_update_id = ma.fields.Integer()
+    # TODO should this confirmation also return the list of submission ids?
+
+
+class SubmissionStatusUpdateCreateErrorSchema(ma.Schema):
+    code = ma.fields.Constant(HTTPStatus.INTERNAL_SERVER_ERROR)
+    status = ma.fields.Constant("error")
+    message = ma.fields.Constant("internal server error")
+    # TODO add errors as a dict of string key values
+    # TODO document where this error format comes from?
+
+
+# TODO should HTTPStatus.CREATED be sent if there's an error? Should I add an alternative response?
