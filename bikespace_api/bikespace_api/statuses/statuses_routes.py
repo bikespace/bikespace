@@ -17,8 +17,6 @@ from bikespace_api.statuses.statuses_models import (
     VisibilityStatus,
 )
 
-# TODO update the schemas with the proper relationships to submissions
-
 # SHARED SCHEMAS
 # --------------
 
@@ -36,7 +34,18 @@ class SubmissionSchema(ma.Schema):
     id = ma.fields.Integer(dump_only=True)
 
 
-# TODO add a shared SubmissionUpdateSchema
+class SubmissionUpdateSchema(ma.Schema):
+    id = ma.fields.Integer(dump_only=True)
+    user = ma.fields.Pluck(UserSchema, "username")
+    comments = ma.fields.String(validate=ma.validate.Length(max=5000))
+    submission_ids = ma.fields.Pluck(SubmissionSchema, "id", many=True)
+    effective_datetime = ma.fields.AwareDateTime(format="iso", required=True)
+    submitted_datetime = ma.fields.AwareDateTime(format="iso", dump_only=True)
+    moderation_status = ma.fields.Enum(
+        ModerationStatus,
+        by_value=True,
+        dump_only=True,
+    )
 
 
 # STATUS TYPES
@@ -68,19 +77,9 @@ class BikeParkingStatuses(MethodView):
 # --------------------------
 
 
-class SubmissionCommentSchema(ma.Schema):
-    id = ma.fields.Integer(dump_only=True)
-    user = ma.fields.Pluck(UserSchema, "username")
-    submission_ids = ma.fields.Pluck(SubmissionSchema, "id", many=True)
-    comments = ma.fields.String(validate=ma.validate.Length(max=5000))
-    visibility = ma.fields.Enum(VisibilityStatus, by_value=True)
-    effective_datetime = ma.fields.AwareDateTime(format="iso")
-    submitted_datetime = ma.fields.AwareDateTime(format="iso", dump_only=True)
-    moderation_status = ma.fields.Enum(
-        ModerationStatus,
-        by_value=True,
-        dump_only=True,
-    )
+class SubmissionCommentSchema(SubmissionUpdateSchema):
+    comments = ma.fields.String(validate=ma.validate.Length(max=5000), required=True)
+    visibility = ma.fields.Enum(VisibilityStatus, by_value=True, required=True)
 
 
 class SubmissionCommentCreateConfirmationSchema(ma.Schema):
@@ -134,22 +133,10 @@ def post_submission_comment(new_data):
 # -------------------------
 
 
-class SubmissionStatusUpdateSchema(ma.Schema):
-    id = ma.fields.Integer(dump_only=True)
-    user = ma.fields.Pluck(UserSchema, "username")
-    submission_ids = ma.fields.Pluck(SubmissionSchema, "id", many=True)
+class SubmissionStatusUpdateSchema(SubmissionUpdateSchema):
     status_type = ma.fields.Nested(
         BikeParkingStatusSchema,
         only=("code", "label", "internal_code", "description"),
-    )
-    comments = ma.fields.String(validate=ma.validate.Length(max=5000), required=False)
-    visibility = ma.fields.Enum(VisibilityStatus, by_value=True)
-    effective_datetime = ma.fields.AwareDateTime(format="iso")
-    submitted_datetime = ma.fields.AwareDateTime(format="iso", dump_only=True)
-    moderation_status = ma.fields.Enum(
-        ModerationStatus,
-        by_value=True,
-        dump_only=True,
     )
 
 
