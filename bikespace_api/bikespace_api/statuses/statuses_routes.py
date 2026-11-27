@@ -160,7 +160,9 @@ def post_submission_comment(new_data):
     try:
         new_submission_comment = SubmissionComment(
             submissions=submissions,
-            user_id=current_user.id if current_user.is_authenticated else None,
+            user_id=current_user.id
+            if (current_user and current_user.is_authenticated)
+            else None,
             comments=censored_comments,
             visibility=new_data["visibility"],
         )

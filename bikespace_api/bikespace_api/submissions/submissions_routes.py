@@ -207,7 +207,9 @@ class Submissions(MethodView):
                 parking_duration=new_data["parking_duration"],
                 parking_time=new_data["parking_time"],
                 comments=censored_comments,
-                user_id=current_user.id if current_user else None,
+                user_id=current_user.id
+                if (current_user and current_user.is_authenticated)
+                else None,
             )
             db.session.add(new_submission)
             db.session.commit()
