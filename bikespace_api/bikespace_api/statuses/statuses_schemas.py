@@ -24,12 +24,19 @@ class SubmissionUpdateSchema(ma.Schema):
     id = ma.fields.Integer(dump_only=True)
     user = ma.fields.Pluck(UserSchema, "username", dump_only=True)
     comments = ma.fields.String(validate=ma.validate.Length(max=5000))
-    submission_ids = ma.fields.Pluck(
+    # note: cannot load submission_ids using Pluck since "id" on SubmissionSchema is dump-only
+    submission_ids = ma.fields.List(
+        ma.fields.Integer(),
+        load_only=True,
+        required=True,
+        validate=ma.validate.Length(min=1),
+    )
+    submissions = ma.fields.Pluck(
         SubmissionSchema,
         "id",
         many=True,
-        required=True,
-        validate=ma.validate.Length(min=1),
+        dump_only=True,
+        data_key="submission_ids",
     )
     effective_datetime = ma.fields.AwareDateTime(format="iso", required=True)
     submitted_datetime = ma.fields.AwareDateTime(format="iso", dump_only=True)
