@@ -89,7 +89,7 @@ def create_app(script_info=None):
     admin.add_view(AdminBikeParkingStatusModelView(BikeParkingStatus, db.session))
 
     # set up submissions blueprint
-    from bikespace_api.submissions.submissions_routes import submissions_blueprint
+    from bikespace_api.submissions import submissions_blueprint
 
     api.register_blueprint(submissions_blueprint, url_prefix="/api/v2/")
 

@@ -8,3 +8,8 @@ statuses_blueprint = Blueprint(
 
 # register routes with blueprint
 from bikespace_api.statuses import statuses_routes
+
+# nest under submissions blueprint
+from bikespace_api.submissions import submissions_blueprint
+
+submissions_blueprint.register_blueprint(statuses_blueprint, url_prefix="/submissions")
