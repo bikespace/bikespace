@@ -81,7 +81,7 @@ class BikeParkingStatus(db.Model):
         self.updated_at = datetime.now(UTC)
 
 
-class SubmissionUpdate(db.Model):
+class SubmissionUpdate:
     """Shared base model for SubmissionComment and SubmissionStatusUpdate"""
 
     id: so.Mapped[int] = so.mapped_column(primary_key=True, autoincrement=True)
@@ -94,7 +94,7 @@ class SubmissionUpdate(db.Model):
         nullable=True,
     )
     effective_datetime: so.Mapped[datetime] = so.mapped_column(
-        sa.DateTime(timezone=True), nullable=False, default=datetime.now
+        sa.DateTime(timezone=True), nullable=False, default=datetime.now(UTC)
     )
     submitted_datetime: so.Mapped[datetime] = so.mapped_column(
         sa.DateTime(timezone=True), nullable=True
@@ -123,7 +123,7 @@ StatusUpdateToSubmission = sa.Table(
 )
 
 
-class SubmissionStatusUpdate(SubmissionUpdate):
+class SubmissionStatusUpdate(SubmissionUpdate, db.Model):
     """Docstring TODO"""
 
     __tablename__ = "bikeparking_submission_status_updates"
@@ -131,7 +131,7 @@ class SubmissionStatusUpdate(SubmissionUpdate):
 
     submission_ids: so.Mapped[list["Submission"]] = so.relationship(
         secondary=StatusUpdateToSubmission,
-        back_populates="bikeparking_submission_status_updates",
+        back_populates="status_updates",
     )
     user_id: so.Mapped[int] = so.mapped_column(sa.ForeignKey("user.id"), index=True)
     status_type: so.Mapped[int] = so.mapped_column(
@@ -157,7 +157,7 @@ CommentUpdateToSubmission = sa.Table(
 )
 
 
-class SubmissionComment(SubmissionUpdate):
+class SubmissionComment(SubmissionUpdate, db.Model):
     """Docstring TODO"""
 
     __tablename__ = "bikeparking_submission_comments"
@@ -165,7 +165,7 @@ class SubmissionComment(SubmissionUpdate):
 
     submission_ids: so.Mapped[list["Submission"]] = so.relationship(
         secondary=CommentUpdateToSubmission,
-        back_populates="bikeparking_submission_comments",
+        back_populates="comment_updates",
     )
     comments: so.Mapped[str] = so.mapped_column(
         sa.Text,
